@@ -57,7 +57,10 @@ target_link_libraries(backend_wmi_sim PRIVATE qinfo CURL::libcurl)
 target_link_libraries(backend_wmi_sim PRIVATE qinfo cjson)
 
 add_library(backend_q7 SHARED src/qdmi_backend_q7.c)
-target_link_libraries(backend_q7 PRIVATE qinfo LLVM) 
+target_link_libraries(backend_q7 PRIVATE qinfo LLVM)
+
+add_library(backend_planqc SHARED src/qdmi_backend_planqc.c)
+target_link_libraries(backend_planqc PRIVATE qinfo)
 
 set(PUBLIC_QDMI_HEADERS
     "include/qdmi.h"
@@ -169,4 +172,6 @@ add_executable(QDMIOpenClose testing/openclose.c)
 target_link_libraries(QDMIOpenClose qdmi)
 #add_test(QDMIOpenClose QDMIOpenClose)
 
- 
+
+add_executable(test_planqc testing/qdmi_test_planqc.c)
+target_link_libraries(test_planqc qdmi)
