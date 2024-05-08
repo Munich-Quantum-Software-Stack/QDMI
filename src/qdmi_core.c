@@ -324,7 +324,6 @@ int QDMI_load_libraries(QInfo sesioninfo)
         newlib->QDMI_query_gate_property_d=dlsym(newlib->libhandle,"QDMI_query_gate_property_d");
         newlib->QDMI_query_all_qubits=dlsym(newlib->libhandle,"QDMI_query_all_qubits");
         newlib->QDMI_query_qubit_property_exists=dlsym(newlib->libhandle,"QDMI_query_qubit_property_exists");
-        newlib->QDMI_query_qubit_property_type=dlsym(newlib->libhandle,"QDMI_query_qubit_property_type");
         newlib->QDMI_query_qubit_property_c=dlsym(newlib->libhandle,"QDMI_query_qubit_property_c");
         newlib->QDMI_query_qubit_property_i=dlsym(newlib->libhandle,"QDMI_query_qubit_property_i");
         newlib->QDMI_query_qubit_property_f=dlsym(newlib->libhandle,"QDMI_query_qubit_property_f");
