@@ -200,7 +200,6 @@ int QDMI_query_qubit_property_d(QDMI_Device dev, QDMI_Qubit qubit, QDMI_Qubit_pr
     return dev->library.QDMI_query_qubit_property_d(dev, qubit, prop, value);
 }
 
-
 /*----------------------------------------*/
 /* Stub routines for device API */
 
