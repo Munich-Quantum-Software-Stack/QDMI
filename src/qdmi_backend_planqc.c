@@ -3,8 +3,9 @@
 
 #include "qdmi_backend_planqc.h"
 
-#include "planqc/generated/include/apiClient.h"
-#include "planqc/generated/api/InfoAPI.h"
+#include "include/apiClient.h"
+#include "api/InfoAPI.h"
+#include "api/OpenqasmAPI.h"
 
 int QDMI_backend_init(QInfo info)
 {

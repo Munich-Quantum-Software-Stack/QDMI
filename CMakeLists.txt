@@ -88,6 +88,7 @@ if(OPENAPI_GENERATOR_EXECUTABLE)
     add_subdirectory(${PLANQC_API_OUTPUT_PATH} ${PLANQC_API_OUTPUT_PATH}/build)
 
     # Link the generated library with your backend_planqc library
+    include_directories(${PLANQC_API_OUTPUT_PATH})
     add_library(backend_planqc SHARED src/qdmi_backend_planqc.c)
     target_link_libraries(backend_planqc PRIVATE qinfo planqcapi)
 else()
