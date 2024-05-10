@@ -3,33 +3,8 @@ info:
   title: planqcapi
   version: 1.0.0
 paths:
-  /openqasm:
-    post:
-      tags:
-        - openqasm
-      operationId: api.qasminput
-      requestBody:
-        description: Input a qasm string
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/OpenQasmRequest'
-        required: true
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/OpenQasmResponse'
-        '401':
-          description: Invalid token
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/OpenQasmInvalid'
-        '405':
-          description: Invalid input
+
+
   /info:
     get:
       tags:
@@ -44,8 +19,121 @@ paths:
                 $ref: '#/components/schemas/Info'
         '405':
           description: Invalid input
+
+  /job:
+    post:
+      tags:
+        - openqasm
+      operationId: api.submit
+      requestBody:
+        description: Input a qasm string
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpenQasmRequest'
+        required: true
+      responses:
+        '202':
+          description: Job accepted and is processing
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobAccepted'
+        '401':
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '405':
+          description: Invalid input
+        '503':
+          description: Queue is full
+          content:
+             application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /job/{jobId}/status:
+    get:
+      tags:
+        - openqasm
+      operationId: api.status
+      parameters:
+        - name: jobId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Job status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobStatus'
+        '404':
+          description: Job not found
+
+  /job/{jobId}/result:
+    get:
+      tags:
+        - openqasm
+      operationId: api.result
+      parameters:
+        - name: jobId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Job result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpenQasmResponse'
+        '404':
+          description: Job not found
+        '409':
+          description: Job not finished
+
+
 components:
   schemas:
+    Info:
+      type: object
+      properties:
+        status:
+          type: string
+          example: up
+
+    JobAccepted:
+      type: object
+      properties:
+        jobId:
+          type: string
+          description: The unique identifier for the job
+      required:
+        - jobId
+
+    JobStatus:
+      type: object
+      properties:
+        jobId:
+          type: string
+          description: The unique identifier for the job
+        status:
+          type: string
+          description: The current status of the job
+          enum: [queued, running, completed, failed]
+        error_message:
+          type: string
+          description: Error message if status is "failed"
+      required:
+        - jobId
+        - status
+
     OpenQasmRequest:
       required:
         - openqasm
@@ -56,37 +144,37 @@ components:
       properties:
         openqasm:
           type: string
-          example: T1BFTlFBU00gMy4wOwpxdWJpdFsxXSBxOwp4IHFbMF07
+          description: OpenQasm 3.0 string as base64
+          example: T1BFTlFBU00gMy4wOwppbmNsdWRlICJzdGRnYXRlcy5pbmMiOwpxdWJpdFsxXSBxOwpiaXRbMV0gYzsKaCBxWzBdOwpjWzBdID0gbWVhc3VyZSBxWzBdOwo=
         shots:
           type: integer
+          description: How many times the circuit should be executed
           example: 10
         origin:
           type: string
+          description: From where the API is called
           example: cirq
         token:
+          description: AuthToken
           type: string
+
     OpenQasmResponse:
       type: object
       properties:
-        success:
-            type: boolean
         openqasm:
           type: string
-          example: T1BFTlFBU00gMy4wOwpxdWJpdFsxXSBxOwp4IHFbMF07
+          description: OpenQasm 3.0 string as base64
+          example: T1BFTlFBU00gMy4wOwppbmNsdWRlICJzdGRnYXRlcy5pbmMiOwpxdWJpdFsxXSBxOwpiaXRbMV0gYzsKaCBxWzBdOwpjWzBdID0gbWVhc3VyZSBxWzBdOwo=
         results:
           type: array
           items:
             type: string
-            example: 0
-    OpenQasmInvalid:
+            example: ["00", "11", "00"]
+
+    Error:
       type: object
       properties:
         message:
           type: string
           example: Expired token
-    Info:
-      type: object
-      properties:
-        status:
-          type: string
-          example: up
+

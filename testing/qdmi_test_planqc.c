@@ -69,8 +69,9 @@ int main(int argc, char** argv)
         }
     }
 
+    // Bell state
+    char* qasmstr = "OPENQASM 3.0;\ninclude \"stdgates.inc\";\nbit[2] c;\nqubit[2] q;\nh q[0];\ncx q[0], q[1];\nc[0] = measure q[0];\nc[1] = measure q[1];\n";
 
-    char* qasmstr = "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nh q[0];\ncx q[0],q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n";
 
     err = QDMI_control_pack_qasm2(device, qasmstr, &frag);
     CHECK_ERR(err, "QDMI_control_pack_qasm2");
@@ -94,7 +95,7 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    int* result = malloc_or_exit(numbits * sizeof(int));
+    int* result = (int*) calloc(numbits, sizeof(int));
 
     err = QDMI_control_readout_raw_num(device, &qdmiStatus, job->task_id, result);
     CHECK_ERR(err, "QDMI_control_readout_raw_num");
