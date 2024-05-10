@@ -1,0 +1,92 @@
+openapi: 3.0.3
+info:
+  title: planqcapi
+  version: 1.0.0
+paths:
+  /openqasm:
+    post:
+      tags:
+        - openqasm
+      operationId: api.qasminput
+      requestBody:
+        description: Input a qasm string
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpenQasmRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpenQasmResponse'
+        '401':
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpenQasmInvalid'
+        '405':
+          description: Invalid input
+  /info:
+    get:
+      tags:
+        - info
+      operationId: api.info
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Info'
+        '405':
+          description: Invalid input
+components:
+  schemas:
+    OpenQasmRequest:
+      required:
+        - openqasm
+        - shots
+        - origin
+        - token
+      type: object
+      properties:
+        openqasm:
+          type: string
+          example: T1BFTlFBU00gMy4wOwpxdWJpdFsxXSBxOwp4IHFbMF07
+        shots:
+          type: integer
+          example: 10
+        origin:
+          type: string
+          example: cirq
+        token:
+          type: string
+    OpenQasmResponse:
+      type: object
+      properties:
+        success:
+            type: boolean
+        openqasm:
+          type: string
+          example: T1BFTlFBU00gMy4wOwpxdWJpdFsxXSBxOwp4IHFbMF07
+        results:
+          type: array
+          items:
+            type: string
+            example: 0
+    OpenQasmInvalid:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Expired token
+    Info:
+      type: object
+      properties:
+        status:
+          type: string
+          example: up

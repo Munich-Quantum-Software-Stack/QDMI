@@ -1,0 +1,4 @@
+# OpenAPI Generator Configuration
+# https://openapi-generator.tech/docs/generators/c/
+
+skipDocs: true

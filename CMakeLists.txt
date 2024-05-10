@@ -59,8 +59,42 @@ target_link_libraries(backend_wmi_sim PRIVATE qinfo cjson)
 add_library(backend_q7 SHARED src/qdmi_backend_q7.c)
 target_link_libraries(backend_q7 PRIVATE qinfo LLVM)
 
-add_library(backend_planqc SHARED src/qdmi_backend_planqc.c)
-target_link_libraries(backend_planqc PRIVATE qinfo)
+#### START planqc backend
+
+# Find the openapi-generator program
+find_program(OPENAPI_GENERATOR_EXECUTABLE NAMES openapi-generator)
+
+if(OPENAPI_GENERATOR_EXECUTABLE)
+    # Define the path to the generated project
+    set(PLANQC_BACKEND_PATH ${CMAKE_CURRENT_SOURCE_DIR}/planqc_api/)
+    set(PLANQC_API_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR}/planqc_api)
+
+    message(STATUS "Generating planqcapi OpenAPI client files")
+    # Execute the openapi-generator command during the configuration phase
+    execute_process(
+        COMMAND ${OPENAPI_GENERATOR_EXECUTABLE} generate --input-spec ${PLANQC_BACKEND_PATH}/planqc_openapi_v1.yml --generator-name c --config ${PLANQC_BACKEND_PATH}/openapi-generator-config.yml --output ${PLANQC_API_OUTPUT_PATH}
+        RESULT_VARIABLE result
+        OUTPUT_VARIABLE output
+    )
+
+    # Check the result of the command
+    if(NOT ${result} EQUAL 0)
+        message(FATAL_ERROR "openapi-generator failed: ${output}")
+    else()
+        message(STATUS "Successfully generated planqcapi OpenAPI client files: ${PLANQC_API_OUTPUT_PATH}")
+    endif()
+
+    # Include the generated project's CMakeLists.txt
+    add_subdirectory(${PLANQC_API_OUTPUT_PATH} ${PLANQC_API_OUTPUT_PATH}/build)
+
+    # Link the generated library with your backend_planqc library
+    add_library(backend_planqc SHARED src/qdmi_backend_planqc.c)
+    target_link_libraries(backend_planqc PRIVATE qinfo planqcapi)
+else()
+    message(WARNING "openapi-generator not found. Please install it to build the planqc backend. See planqc_api/README.md for more details.")
+endif()
+
+#### END planqc backend
 
 set(PUBLIC_QDMI_HEADERS
     "include/qdmi.h"
@@ -123,10 +157,10 @@ target_include_directories(backend_q7 PUBLIC
     $<INSTALL_INTERFACE:include> ${LLVM_INCLUDE_DIRS}
 )
 
-add_library(qdmi SHARED 
-    src/qdmi_core.c 
-    src/qdmi_internal.c 
-    src/qdmi_stubs.c 
+add_library(qdmi SHARED
+    src/qdmi_core.c
+    src/qdmi_internal.c
+    src/qdmi_stubs.c
 )
 
 target_link_libraries(qdmi qinfo)
@@ -164,7 +198,7 @@ install(
     DESTINATION "${CMAKE_INSTALL_PREFIX}/cmake"
     NAMESPACE qdmi::
 )
-    
+
 # install(FILES ${CMAKE_BINARY_DIR}/mylib.pc
 #     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig)
 

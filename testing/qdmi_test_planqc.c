@@ -1,11 +1,10 @@
 #include "qdmi_internal.h"
 #include <qdmi.h>
 #include <stdio.h>
-#include <llvm-c/Core.h>
-#include <llvm-c/IRReader.h>
 #include <string.h>
+#include <unistd.h>
 
-#define CHECK_ERR(a,b) { if (a!=QDMI_SUCCESS) { printf("\n[Error]: %i at %s\n",a,b); return 1; }}
+#define CHECK_ERR(a,b) { if (a!=QDMI_SUCCESS) { printf("\n[Test] [Error]: %i at %s\n",a,b); return 1; }}
 
 
 void* malloc_or_exit(size_t size) {
@@ -29,7 +28,6 @@ int main(int argc, char** argv)
     QDMI_Fragment frag = (QDMI_Fragment) malloc_or_exit(sizeof(*frag));
     QDMI_Device device = (QDMI_Device) malloc_or_exit(sizeof(*device));
 
-    LLVMModuleRef qirModule;
 
     err = QInfo_create(&info);
     CHECK_ERR(err, "QInfo_create");
@@ -38,6 +36,10 @@ int main(int argc, char** argv)
     CHECK_ERR(err, "QDMI_session_init");
 
     char** avaiable_devices = get_qdmi_library_list_names();
+
+    float elapsed_time = 0;
+    float sleep_duration = 1.0;
+    float timeout = 10.0;
 
     while (avaiable_devices[index]) {
         QDMI_Library lib = find_library_by_name(avaiable_devices[index]);
@@ -52,11 +54,22 @@ int main(int argc, char** argv)
 
         if(status){
             const char *device_name = strrchr(avaiable_devices[index], '/');
-            printf("%s is found", device_name);
+            printf("[Test] %s is found", device_name);
             break;
         }
 
+        sleep(sleep_duration);
+        elapsed_time += sleep_duration;
+
+        printf("[Test] Waiting for device. Elapsed time: %f\n", elapsed_time);
+
+        if (elapsed_time >= timeout) {
+            printf("[Test] Timeout reached. Device status did not become 1 after %f seconds.\n", timeout);
+            exit(EXIT_FAILURE);
+        }
     }
+
+
     char* qasmstr = "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nh q[0];\ncx q[0],q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n";
 
     err = QDMI_control_pack_qasm2(device, qasmstr, &frag);
@@ -77,7 +90,7 @@ int main(int argc, char** argv)
     CHECK_ERR(err, "QDMI_control_readout_size");
 
     if (numbits < 0) {
-        printf("Error: numbits < 0");
+        printf("[Test] Error: numbits < 0");
         return 1;
     }
 
@@ -88,7 +101,7 @@ int main(int argc, char** argv)
 
     free(job);
     for (int i = 0; i < numbits; i++) {
-        printf("num[%d] = %d\n", i, result[i]);
+        printf("[Test] num[%d] = %d\n", i, result[i]);
     }
 
     free(result);
