@@ -78,7 +78,11 @@ typedef struct QDMI_Library_impl_d
     QDMI_query_gate_property_f_t        QDMI_query_gate_property_f;
     QDMI_query_gate_property_d_t        QDMI_query_gate_property_d;
     QDMI_query_all_qubits_t             QDMI_query_all_qubits;
-    QDMI_query_qubit_property_t         QDMI_query_qubit_property;
+    QDMI_query_qubit_property_exists_t  QDMI_query_qubit_property_exists;
+    QDMI_query_qubit_property_c_t      QDMI_query_qubit_property_c;
+    QDMI_query_qubit_property_i_t      QDMI_query_qubit_property_i;
+    QDMI_query_qubit_property_f_t      QDMI_query_qubit_property_f;
+    QDMI_query_qubit_property_d_t      QDMI_query_qubit_property_d;
     QDMI_device_status_t                QDMI_device_status;
     QDMI_device_quality_check_t         QDMI_device_quality_check;
     QDMI_device_quality_limit_t         QDMI_device_quality_limit;
@@ -124,12 +128,18 @@ typedef struct QDMI_Device_property_impl_d
     int type;  //INT_PROPERTY, etc,
 } QDMI_Device_property_impl_t;
 
+typedef struct QDMI_Qubit_property_impl_d
+{
+    int name;  // for e.g. 15 for backend_name
+    int type;  //INT_PROPERTY, etc,
+} QDMI_Qubit_property_impl_t;
+
 typedef struct QDMI_Gate_impl_d
 {
     const char *name;
     QDMI_Gate_property** coupling_mapping;
     char *unitary;
-    float fidelity;
+    double fidelity;
     size_t size_coupling_map;
     size_t gate_size;
 } QDMI_Gate_impl_t;
@@ -139,6 +149,10 @@ typedef struct QDMI_Qubit_impl_d
     QDMI_qubit_index index;
     QDMI_qubit_index* coupling_mapping;
     int size_coupling_mapping;
+    double t1;
+    double t2;
+    double readout_error;
+    double readout_length;
 } QDMI_Qubit_impl_t;
 
 /*----------------------------------------*/
@@ -168,4 +182,3 @@ char** get_qdmi_library_list_names(void);
 #endif
 
 #endif
-

@@ -156,10 +156,30 @@ int QDMI_query_all_qubits(QDMI_Device dev, QDMI_Qubit *qubits)
     return dev->library.QDMI_query_all_qubits(dev, qubits);
 }
 
-int QDMI_query_qubit_property(QDMI_Device dev, QDMI_Qubit_property prop, QDMI_Qubit qubit, int* coupling_map)
+int QDMI_query_qubit_property_exists(QDMI_Device dev, QDMI_Qubit_property prop, QDMI_Qubit qubit, int* scope)
 {
-    return dev->library.QDMI_query_qubit_property(dev, prop, qubit, coupling_map);
+    return dev->library.QDMI_query_qubit_property_exists(dev, prop, qubit, scope);
 }
+
+int QDMI_query_qubit_property_c(QDMI_Device dev, QDMI_Qubit qubit, QDMI_Qubit_property prop, char *value)
+{
+    return dev->library.QDMI_query_qubit_property_c(dev, qubit, prop, value);
+}
+int QDMI_query_qubit_property_i(QDMI_Device dev, QDMI_Qubit qubit, QDMI_Qubit_property prop, int *value)
+{
+    return dev->library.QDMI_query_qubit_property_i(dev, qubit, prop, value);
+}
+
+int QDMI_query_qubit_property_f(QDMI_Device dev, QDMI_Qubit qubit, QDMI_Qubit_property prop, float *value)
+{
+    return dev->library.QDMI_query_qubit_property_f(dev, qubit, prop, value);
+}
+
+int QDMI_query_qubit_property_d(QDMI_Device dev, QDMI_Qubit qubit, QDMI_Qubit_property prop, double *value)
+{
+    return dev->library.QDMI_query_qubit_property_d(dev, qubit, prop, value);
+}
+
 
 /*----------------------------------------*/
 /* Stub routines for device API */
