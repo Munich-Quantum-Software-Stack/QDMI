@@ -3,3 +3,5 @@ compile_qdmi.sh
 inputs/
 build
 inputs/token.txt
+.cache
+.vscode
