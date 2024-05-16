@@ -10,6 +10,15 @@
 #include "api/InfoAPI.h"
 #include "api/OpenqasmAPI.h"
 
+#define CHECK_ERR(a, b)                                         \
+    {                                                           \
+        if (a != QDMI_SUCCESS)                                  \
+        {                                                       \
+            printf("\n   [Backend] [Error]: %i at %s\n", a, b); \
+            return 1;                                           \
+        }                                                       \
+    }
+
 #define RING_BUFFER_SIZE 100 // Adjust this value to your needs
 
 typedef struct
@@ -36,6 +45,7 @@ int ring_buffer_push(RingBuffer *rb, char *uuid)
     {
         // The buffer is full, so we remove the oldest UUID
         free(rb->buffer[rb->start]);
+        rb->buffer[rb->start] = NULL;
         rb->start = (rb->start + 1) % RING_BUFFER_SIZE;
     }
     return pos;
@@ -54,6 +64,27 @@ char *ring_buffer_get(RingBuffer *rb, int index)
 
 RingBuffer g_ring_buffer;
 apiClient_t *g_api_client;
+char *g_api_token;
+
+int get_config(QInfo info, char *key, char **value)
+{
+    QInfo_topic topic;
+    int err = QInfo_topic_query(info, key, &topic);
+    if (err != QINFO_SUCCESS)
+    {
+        return err;
+    }
+
+    QInfo_value val;
+    err = QInfo_topic_get(info, topic, &val);
+    if (err != QINFO_SUCCESS)
+    {
+        return err;
+    }
+
+    *value = val.value_string;
+    return QINFO_SUCCESS;
+}
 
 int QDMI_backend_init(QInfo info)
 {
@@ -67,8 +98,22 @@ int QDMI_backend_init(QInfo info)
     // CHECK_ERR(err, "QDMI_core_register_belib");
 
     ring_buffer_init(&g_ring_buffer);
+
+    char *api_endpoint = NULL;
+    err = get_config(info, "api_endpoint", &api_endpoint);
+    CHECK_ERR(err, "get_config api_endpoint");
+
     g_api_client = apiClient_create(); // Create an API client
-    g_api_client->basePath = strdup("http://localhost:5000");
+    g_api_client->basePath = strdup(api_endpoint);
+
+    err = get_config(info, "api_token", &g_api_token);
+    CHECK_ERR(err, "get_config api_token");
+
+    if (strlen(g_api_token) == 0)
+    {
+        printf("   [Backend].............planqc api_token is empty\n");
+        return QDMI_ERROR_FATAL;
+    }
 
     return QDMI_SUCCESS;
 }
@@ -151,22 +196,35 @@ int QDMI_control_submit(QDMI_Device dev, QDMI_Fragment *frag, int numshots, QInf
     printf("   [Backend].............planqc qasm: %s\n", (*frag)->qasmstr);
 
     char *origin = "LRZ";
-    char *token = "6288f98721a7246c4b25638edddbd50e44ddbee732a9fb6f7461f3cbbc9ef990NzU4MjEyMzQtYmZkNi00YmZkLWEyYzQtZTY2ODdjNWNlODU3O2RhbmllbC5oYWFnOzE3MTcxOTI3NDAuMA==";
+    char *qasmstr_base64 = base64((*frag)->qasmstr);
+    if (!qasmstr_base64)
+    {
+        printf("   [Backend].............planqc Error: base64 encoding failed\n");
+        return QDMI_ERROR_FATAL;
+    }
 
-    char *b64_encoded = base64((*frag)->qasmstr);
+    open_qasm_request_t *request = open_qasm_request_create(qasmstr_base64, numshots, origin, g_api_token);
+    if (!request)
+    {
+        printf("   [Backend].............planqc Error: request creation failed\n");
+        free(qasmstr_base64);
+        return QDMI_ERROR_FATAL;
+    }
 
-    open_qasm_request_t *request = open_qasm_request_create(b64_encoded, numshots, origin, token);
     job_accepted_t *response = OpenqasmAPI_apiSubmit(g_api_client, request);
+
+    free(request);
+    free(qasmstr_base64);
 
     if (g_api_client->response_code != 202)
     {
-        printf("Error code {%li}: Server Error\n", g_api_client->response_code);
+        printf("   [Backend].............planqc Error code {%li}: Server Error\n", g_api_client->response_code);
         return QDMI_ERROR_FATAL;
     }
 
     if (!response)
     {
-        printf("Resquest not successful\n");
+        printf("   [Backend].............planqc Resquest not successful\n");
         return QDMI_ERROR_FATAL;
     }
 
@@ -174,7 +232,7 @@ int QDMI_control_submit(QDMI_Device dev, QDMI_Fragment *frag, int numshots, QInf
 
     printf("   [Backend].............planqc response job_id: %s -> QDMI job.task_id: %i\n", response->job_id, (*job)->task_id);
 
-    free(b64_encoded);
+    free(response);
     return QDMI_SUCCESS;
 }
 
@@ -189,44 +247,48 @@ int QDMI_control_test(QDMI_Device dev, QDMI_Job *job, int *flag, QDMI_Status *st
         return QDMI_ERROR_FATAL;
     }
 
-    if (response->status == planqcapi_job_status_STATUS_NULL) {
+    if (response->status == planqcapi_job_status_STATUS_NULL)
+    {
         printf("Missing Status\n");
         return QDMI_ERROR_FATAL;
     }
 
-    switch (response->status) {
-        case planqcapi_job_status_STATUS_queued:
-            *flag = QDMI_WAITING;
-            break;
-        case planqcapi_job_status_STATUS_running:
-            *flag = QDMI_EXECUTING;
-            break;
-        case planqcapi_job_status_STATUS_completed:
-            *flag = QDMI_COMPLETE;
-            break;
-        case planqcapi_job_status_STATUS_failed:
-            *flag = QDMI_HALTED;
-            break;
-        default:
-            printf("Unexpected status: %d\n", response->status);
-            return QDMI_ERROR_FATAL;
+    switch (response->status)
+    {
+    case planqcapi_job_status_STATUS_queued:
+        *flag = QDMI_WAITING;
+        break;
+    case planqcapi_job_status_STATUS_running:
+        *flag = QDMI_EXECUTING;
+        break;
+    case planqcapi_job_status_STATUS_completed:
+        *flag = QDMI_COMPLETE;
+        break;
+    case planqcapi_job_status_STATUS_failed:
+        *flag = QDMI_HALTED;
+        break;
+    default:
+        printf("Unexpected status: %d\n", response->status);
+        return QDMI_ERROR_FATAL;
     }
 
     return QDMI_SUCCESS;
 }
 
-const char* get_flag_status_str(int flag) {
-    switch (flag) {
-        case QDMI_WAITING:
-            return "QDMI_WAITING";
-        case QDMI_EXECUTING:
-            return "QDMI_EXECUTING";
-        case QDMI_COMPLETE:
-            return "QDMI_COMPLETE";
-        case QDMI_HALTED:
-            return "QDMI_HALTED";
-        default:
-            return "UNKNOWN";
+const char *get_flag_status_str(int flag)
+{
+    switch (flag)
+    {
+    case QDMI_WAITING:
+        return "QDMI_WAITING";
+    case QDMI_EXECUTING:
+        return "QDMI_EXECUTING";
+    case QDMI_COMPLETE:
+        return "QDMI_COMPLETE";
+    case QDMI_HALTED:
+        return "QDMI_HALTED";
+    default:
+        return "UNKNOWN";
     }
 }
 
@@ -246,14 +308,17 @@ int QDMI_control_wait(QDMI_Device dev, QDMI_Job *job, QDMI_Status *status)
     return QDMI_SUCCESS;
 }
 
-void process_list_entry(listEntry_t* entry, void* additionalData) {
-    char* binary_str = (char*)entry->data;
-    int* num = (int*)additionalData;
+void process_list_entry(listEntry_t *entry, void *additionalData)
+{
+    char *binary_str = (char *)entry->data;
+    int *num = (int *)additionalData;
 
-    //printf("[Debug] RESULT: %s\n", binary_str);
+    // printf("[Debug] RESULT: %s\n", binary_str);
 
-    for (int i = 0; binary_str[i] != '\0'; i++) {
-        if (binary_str[i] == '1') {
+    for (int i = 0; binary_str[i] != '\0'; i++)
+    {
+        if (binary_str[i] == '1')
+        {
             num[i]++;
         }
     }

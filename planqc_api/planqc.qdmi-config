@@ -1,4 +1,3 @@
 /home/adrian/dev/08_mqss/QDMI/build/libbackend_planqc.so
-param1=01234
-param2=0.0
-param3=one
+api_endpoint="http://4.210.16.223/scheduler"
+api_token="6288f98721a7246c4b25638edddbd50e44ddbee732a9fb6f7461f3cbbc9ef990NzU4MjEyMzQtYmZkNi00YmZkLWEyYzQtZTY2ODdjNWNlODU3O2RhbmllbC5oYWFnOzE3MTcxOTI3NDAuMA=="
