@@ -138,7 +138,17 @@ int QDMI_load_libraries(QInfo sesioninfo)
                 {
                     const char *valueString = separator + 1;
 
-                    if (strchr(valueString, '.') != NULL)
+
+                    /* If parameter starts end ends with " it is treated as string */
+                    int isQuotedString = 0;
+                    if ((valueString[0] == '"' && valueString[strlen(valueString)-1] == '"') ||
+                        (valueString[0] == '"' && valueString[strlen(valueString)-2] == '"' && valueString[strlen(valueString)-1] == '\n'))
+                    {
+                        isQuotedString = 1;
+                    }
+
+
+                    if (!isQuotedString && strchr(valueString, '.') != NULL)
                     {
                         value.value_double = strtod(valueString, NULL);
             
@@ -165,7 +175,7 @@ int QDMI_load_libraries(QInfo sesioninfo)
                             return qdmi_internal_translate_qinfo_error(err);
                         }
                     }
-                    else if( isdigit(*valueString) )
+                    else if(!isQuotedString && isdigit(*valueString) )
                     {
                         char *endptr;
                         value.value_long = strtol(valueString, &endptr, 10);
@@ -203,6 +213,19 @@ int QDMI_load_libraries(QInfo sesioninfo)
                         value.value_double = 0.0;
                         value.value_long = 0;
                         value.value_string = strdup(valueString);
+
+                        /* remove trailing newline */
+                        if (value.value_string != NULL && value.value_string[strlen(value.value_string)-1] == '\n') {
+                            value.value_string[strlen(value.value_string)-1] = '\0';
+                        }
+
+                        /* remove quotes */
+                        if (isQuotedString && value.value_string != NULL && value.value_string[0] == '"' && value.value_string[strlen(value.value_string)-1] == '"') {
+                            char *new_string = strndup(value.value_string + 1, strlen(value.value_string) - 2);
+                            free(value.value_string);
+                            value.value_string = new_string;
+                        }
+
 
                         if (value.value_string == NULL)
                         {
