@@ -93,7 +93,7 @@ int get_config(QInfo info, char *key, char **value)
 int planqc_device_status(backend_status_response_t **backend_status)
 {
     // Get info
-    info_t *info = InfoAPI_apiInfo(g_api_client);
+    info_t *info = InfoAPI_info(g_api_client);
     if (!g_api_client->response_code || info == NULL)
     {
         printf("   [Backend].............planqc query request failed\n");
@@ -110,7 +110,7 @@ int planqc_device_status(backend_status_response_t **backend_status)
 
     free(info);
 
-    *backend_status = BackendAPI_apiBackendStatus(g_api_client, g_backend_id);
+    *backend_status = BackendAPI_backendStatus(g_api_client, g_backend_id);
     return QDMI_SUCCESS;
 }
 
@@ -160,6 +160,12 @@ int QDMI_backend_init(QInfo info)
     err = planqc_device_status(&backend_status);
     if (err != QDMI_SUCCESS)
         return err;
+
+    if (backend_status == NULL)
+    {
+        printf("   [Backend].............planqc Error: backend_status is NULL\n");
+        return QDMI_ERROR_FATAL;
+    }
 
     g_num_qubits = backend_status->number_of_qubits;
 
@@ -264,7 +270,7 @@ int QDMI_control_submit(QDMI_Device dev, QDMI_Fragment *frag, int numshots, QInf
         return QDMI_ERROR_FATAL;
     }
 
-    job_request_response_t *response = JobAPI_apiSubmit(g_api_client, g_backend_id, request);
+    job_request_response_t *response = JobAPI_jobSubmit(g_api_client, g_backend_id, request);
 
     free(request);
     free(qasmstr_base64);
@@ -292,7 +298,7 @@ int QDMI_control_submit(QDMI_Device dev, QDMI_Fragment *frag, int numshots, QInf
 int QDMI_control_test(QDMI_Device dev, QDMI_Job *job, int *flag, QDMI_Status *status)
 {
     char *job_id = ring_buffer_get(&g_ring_buffer, (*job)->task_id);
-    job_response_t *response = JobAPI_apiGetJob(g_api_client, g_backend_id, job_id);
+    job_response_t *response = JobAPI_job(g_api_client, g_backend_id, job_id);
 
     if (g_api_client->response_code != 200)
     {
@@ -390,7 +396,7 @@ int QDMI_control_readout_raw_num(QDMI_Device dev, QDMI_Status *status, int task_
     printf("   [Backend].............planqc returning results\n");
 
     char *job_id = ring_buffer_get(&g_ring_buffer, task_id);
-    job_response_t *response = JobAPI_apiGetJob(g_api_client, g_backend_id, job_id);
+    job_response_t *response = JobAPI_job(g_api_client, g_backend_id, job_id);
 
     if (g_api_client->response_code != 200)
     {

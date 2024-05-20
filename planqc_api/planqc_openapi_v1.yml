@@ -4,12 +4,11 @@ info:
   version: 1.0.0
 paths:
 
-
   /info:
     get:
       tags:
         - info
-      operationId: api.info
+      operationId: info
       responses:
         '200':
           description: Successful operation
@@ -24,7 +23,7 @@ paths:
     get:
       tags:
         - backend
-      operationId: api.backends
+      operationId: backends
       responses:
         '200':
           description: Successful operation
@@ -37,7 +36,7 @@ paths:
     get:
       tags:
         - backend
-      operationId: api.backend_status
+      operationId: backend_status
       parameters:
         - name: backend_id
           in: path
@@ -58,7 +57,7 @@ paths:
     get:
       tags:
         - job
-      operationId: api.get_jobs
+      operationId: jobs
       parameters:
         - name: backend_id
           in: path
@@ -75,7 +74,7 @@ paths:
     post:
       tags:
         - job
-      operationId: api.submit
+      operationId: job_submit
       parameters:
         - name: backend_id
           in: path
@@ -115,7 +114,7 @@ paths:
     get:
       tags:
         - job
-      operationId: api.job_status
+      operationId: job_status
       parameters:
         - name: backend_id
           in: path
@@ -141,7 +140,7 @@ paths:
     get:
       tags:
         - job
-      operationId: api.get_job
+      operationId: job
       parameters:
         - name: backend_id
           in: path
@@ -163,7 +162,6 @@ paths:
         '404':
           description: JobResponse not found
 
-
 components:
   schemas:
     Info:
@@ -181,6 +179,13 @@ components:
 
     BackendStatusResponse:
       type: object
+      required:
+        - name
+        - version
+        - number_of_qubits
+        - native_gate_set
+        - status
+        - queue
       properties:
         name:
           type: string
@@ -309,4 +314,3 @@ components:
         message:
           type: string
           example: Expired token
-
