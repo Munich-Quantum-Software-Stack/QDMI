@@ -1,3 +1,11 @@
 /home/adrian/dev/08_mqss/QDMI/build/libbackend_planqc.so
-api_endpoint="http://4.210.16.223/scheduler"
+#
+# API endpoint to the planqc platform
+# api_endpoint="http://4.210.16.223/scheduler"
+api_endpoint="http://localhost:5000"
+#
+# planqc backend that will be initialized
+backend_id="simulator"
+#
+# API Token to authenticate to the platform
 api_token="6288f98721a7246c4b25638edddbd50e44ddbee732a9fb6f7461f3cbbc9ef990NzU4MjEyMzQtYmZkNi00YmZkLWEyYzQtZTY2ODdjNWNlODU3O2RhbmllbC5oYWFnOzE3MTcxOTI3NDAuMA=="

@@ -90,7 +90,7 @@ if(OPENAPI_GENERATOR_EXECUTABLE)
     # Link the generated library with your backend_planqc library
     include_directories(${PLANQC_API_OUTPUT_PATH})
     add_library(backend_planqc SHARED src/qdmi_backend_planqc.c)
-    target_link_libraries(backend_planqc PRIVATE qinfo planqcapi)
+    target_link_libraries(backend_planqc PRIVATE qinfo planqcapi m)
 else()
     message(WARNING "openapi-generator not found. Please install it to build the planqc backend. See planqc_api/README.md for more details.")
 endif()
@@ -209,4 +209,4 @@ target_link_libraries(QDMIOpenClose qdmi)
 
 
 add_executable(test_planqc testing/qdmi_test_planqc.c)
-target_link_libraries(test_planqc qdmi)
+target_link_libraries(test_planqc qdmi m)

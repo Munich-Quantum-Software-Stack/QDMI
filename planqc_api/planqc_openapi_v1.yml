@@ -20,25 +20,82 @@ paths:
         '405':
           description: Invalid input
 
-  /job:
+  /backends:
+    get:
+      tags:
+        - backend
+      operationId: api.backends
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BackendResponse'
+
+  /backends/{backend_id}/status:
+    get:
+      tags:
+        - backend
+      operationId: api.backend_status
+      parameters:
+        - name: backend_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Backend status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BackendStatusResponse'
+        '404':
+          description: Backend not found
+
+  /backends/{backend_id}/jobs:
+    get:
+      tags:
+        - job
+      operationId: api.get_jobs
+      parameters:
+        - name: backend_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsListResponse'
     post:
       tags:
-        - openqasm
+        - job
       operationId: api.submit
+      parameters:
+        - name: backend_id
+          in: path
+          required: true
+          schema:
+            type: string
       requestBody:
         description: Input a qasm string
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OpenQasmRequest'
+              $ref: '#/components/schemas/JobRequest'
         required: true
       responses:
         '202':
-          description: Job accepted and is processing
+          description: JobResponse accepted and is processing
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/JobAccepted'
+                $ref: '#/components/schemas/JobRequestResponse'
         '401':
           description: Invalid token
           content:
@@ -54,49 +111,57 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
-  /job/{jobId}/status:
+  /backends/{backend_id}/jobs/{job_id}/status:
     get:
       tags:
-        - openqasm
-      operationId: api.status
+        - job
+      operationId: api.job_status
       parameters:
-        - name: jobId
+        - name: backend_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: job_id
           in: path
           required: true
           schema:
             type: string
       responses:
         '200':
-          description: Job status
+          description: JobResponse status
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/JobStatus'
+                $ref: '#/components/schemas/JobStatusResponse'
         '404':
-          description: Job not found
+          description: JobResponse not found
 
-  /job/{jobId}/result:
+  /backends/{backend_id}/jobs/{job_id}:
     get:
       tags:
-        - openqasm
-      operationId: api.result
+        - job
+      operationId: api.get_job
       parameters:
-        - name: jobId
+        - name: backend_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: job_id
           in: path
           required: true
           schema:
             type: string
       responses:
         '200':
-          description: Job result
+          description: JobResponse
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OpenQasmResponse'
+                $ref: '#/components/schemas/JobResponse'
         '404':
-          description: Job not found
-        '409':
-          description: Job not finished
+          description: JobResponse not found
 
 
 components:
@@ -108,33 +173,52 @@ components:
           type: string
           example: up
 
-    JobAccepted:
-      type: object
-      properties:
-        jobId:
-          type: string
-          description: The unique identifier for the job
-      required:
-        - jobId
+    BackendResponse:
+      type: array
+      items:
+        type: string
+      example: ["simulator", "planqc_backend1"]
 
-    JobStatus:
+    BackendStatusResponse:
       type: object
       properties:
-        jobId:
+        name:
           type: string
-          description: The unique identifier for the job
+          description: The name of the backend
+          example: simulator
+        version:
+          type: string
+          description: The version of the backend
+          example: 1.0.0
+        number_of_qubits:
+          type: integer
+          description: The number of qubits the backend supports
+          example: 5
+        native_gate_set:
+          type: array
+          items:
+            type: string
+          description: The native gate set the backend supports
+          example: ["cx", "x", "y", "z"]
         status:
           type: string
-          description: The current status of the job
-          enum: [queued, running, completed, failed]
-        error_message:
-          type: string
-          description: Error message if status is "failed"
-      required:
-        - jobId
-        - status
+          description: The status of the backend
+          enum: [idle, running, maintance, error, offline]
+        queue:
+          type: integer
+          description: The number of jobs in the queue
+          example: 0
 
-    OpenQasmRequest:
+    JobRequestResponse:
+      type: object
+      properties:
+        job_id:
+          type: string
+          description: The unique identifier for the job
+      required:
+        - job_id
+
+    JobRequest:
       required:
         - openqasm
         - shots
@@ -158,13 +242,61 @@ components:
           description: AuthToken
           type: string
 
-    OpenQasmResponse:
+    JobStatusResponse:
       type: object
       properties:
+        status:
+          type: string
+          description: The current status of the job
+          enum: [queued, running, completed, failed]
+        error_message:
+          type: string
+          description: Error message if status is "failed"
+      required:
+        - job_id
+        - status
+        - backend_id
+
+    JobsListResponse:
+      type: array
+      items:
+        type: object
+        properties:
+          job_id:
+            type: string
+            description: The unique identifier for the job
+          status:
+            $ref: '#/components/schemas/JobResponse'
+        required:
+          - job_id
+          - status
+
+    JobResponse:
+      type: object
+      required:
+        - job_id
+        - backend_id
+        - status
+        - openqasm
+      properties:
+        job_id:
+          type: string
+          description: The unique identifier for the job
+        backend_id:
+          type: string
+          description: The backend the job is running on
         openqasm:
           type: string
           description: OpenQasm 3.0 string as base64
           example: T1BFTlFBU00gMy4wOwppbmNsdWRlICJzdGRnYXRlcy5pbmMiOwpxdWJpdFsxXSBxOwpiaXRbMV0gYzsKaCBxWzBdOwpjWzBdID0gbWVhc3VyZSBxWzBdOwo=
+        origin:
+          type: string
+          description: From where the API is called
+        shots:
+          type: integer
+          description: How many times the circuit should be executed
+        status:
+          $ref: '#/components/schemas/JobStatusResponse'
         results:
           type: array
           items:

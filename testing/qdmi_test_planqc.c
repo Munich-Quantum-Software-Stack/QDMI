@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include <math.h>
 
 #define CHECK_ERR(a,b) { if (a!=QDMI_SUCCESS) { printf("\n[Test] [Error]: %i at %s\n",a,b); return 1; }}
 
@@ -23,6 +24,7 @@ int main(int argc, char** argv)
     int err = 0, status = 0;
     int index = 0;
     int n_shots = 100;
+    int max_readout_size = 10;
     QInfo info = NULL;
     QDMI_Session session = NULL;
     QDMI_Fragment frag = (QDMI_Fragment) malloc_or_exit(sizeof(*frag));
@@ -44,7 +46,7 @@ int main(int argc, char** argv)
     while (avaiable_devices[index]) {
         QDMI_Library lib = find_library_by_name(avaiable_devices[index]);
         if(!lib){
-            printf("Library is not found!");
+            printf("Library is not found!\n");
             free(avaiable_devices[index++]);
             continue;
         }
@@ -54,7 +56,7 @@ int main(int argc, char** argv)
 
         if(status){
             const char *device_name = strrchr(avaiable_devices[index], '/');
-            printf("[Test] %s is found", device_name);
+            printf("[Test] %s is found.\n", device_name);
             break;
         }
 
@@ -91,17 +93,30 @@ int main(int argc, char** argv)
     CHECK_ERR(err, "QDMI_control_readout_size");
 
     if (numbits < 0) {
-        printf("[Test] Error: numbits < 0");
+        printf("[Test] Error: numbits < 0 \n");
         return 1;
     }
 
-    int* result = (int*) calloc(numbits, sizeof(int));
+    if (numbits > max_readout_size)
+    {
+        printf("[Test] Error: numbits > %i, to large to allocate memory\n", max_readout_size);
+        return 1;
+    }
+
+    size_t result_size = pow(2, numbits);
+    int *result = (int *)calloc(result_size, sizeof(int));
+    if (!result)
+    {
+        printf("[Test] Error: calloc failed for readout\n");
+        return 1;
+    }
 
     err = QDMI_control_readout_raw_num(device, &qdmiStatus, job->task_id, result);
     CHECK_ERR(err, "QDMI_control_readout_raw_num");
 
     free(job);
-    for (int i = 0; i < numbits; i++) {
+    for (int i = 0; i < result_size; i++)
+    {
         printf("[Test] num[%d] = %d\n", i, result[i]);
     }
 

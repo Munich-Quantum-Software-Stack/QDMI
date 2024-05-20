@@ -3,12 +3,14 @@
 #include <openssl/evp.h>
 #include <openssl/buffer.h>
 #include <unistd.h>
+#include <math.h>
 
 #include "qdmi_backend_planqc.h"
 
 #include "include/apiClient.h"
 #include "api/InfoAPI.h"
-#include "api/OpenqasmAPI.h"
+#include "api/JobAPI.h"
+#include "api/BackendAPI.h"
 
 #define CHECK_ERR(a, b)                                         \
     {                                                           \
@@ -65,6 +67,8 @@ char *ring_buffer_get(RingBuffer *rb, int index)
 RingBuffer g_ring_buffer;
 apiClient_t *g_api_client;
 char *g_api_token;
+char *g_backend_id;
+int g_num_qubits;
 
 int get_config(QInfo info, char *key, char **value)
 {
@@ -84,6 +88,30 @@ int get_config(QInfo info, char *key, char **value)
 
     *value = val.value_string;
     return QINFO_SUCCESS;
+}
+
+int planqc_device_status(backend_status_response_t **backend_status)
+{
+    // Get info
+    info_t *info = InfoAPI_apiInfo(g_api_client);
+    if (!g_api_client->response_code || info == NULL)
+    {
+        printf("   [Backend].............planqc query request failed\n");
+        return QDMI_ERROR_FATAL; // Or some other appropriate error code
+    }
+
+    if (strcmp(info->status, "up") != 0)
+    {
+        printf("   [Backend].............planqc platform is offline\n");
+        free(info);
+        return QDMI_SUCCESS;
+    }
+    printf("   [Backend].............planqc platform is online\n");
+
+    free(info);
+
+    *backend_status = BackendAPI_apiBackendStatus(g_api_client, g_backend_id);
+    return QDMI_SUCCESS;
 }
 
 int QDMI_backend_init(QInfo info)
@@ -115,6 +143,32 @@ int QDMI_backend_init(QInfo info)
         return QDMI_ERROR_FATAL;
     }
 
+    err = get_config(info, "backend_id", &g_backend_id);
+    CHECK_ERR(err, "get_config backend_id");
+
+    if (strlen(g_backend_id) == 0)
+    {
+        printf("   [Backend].............planqc backend_id is empty\n");
+        return QDMI_ERROR_FATAL;
+    }
+
+    // Success
+    printf("   [Backend].............planqc Backend %s initialized\n", g_backend_id);
+    printf("   [Backend].............planqc Backend Connection URL: %s \n", g_api_client->basePath);
+
+    backend_status_response_t *backend_status;
+    err = planqc_device_status(&backend_status);
+    if (err != QDMI_SUCCESS)
+        return err;
+
+    g_num_qubits = backend_status->number_of_qubits;
+
+    printf("   [Backend].............planqc Backend version: %s \n", backend_status->version);
+    printf("   [Backend].............planqc Backend status: %i \n", backend_status->status);
+    printf("   [Backend].............planqc Backend number of qubits: %i \n", backend_status->number_of_qubits);
+
+    backend_status_response_free(backend_status);
+
     return QDMI_SUCCESS;
 }
 
@@ -125,23 +179,22 @@ int QDMI_device_status(QDMI_Device dev, QInfo qinfo, int *status)
 
     *status = DEVICE_STATUS_OFFLINE;
 
-    // Get info
-    info_t *info = InfoAPI_apiInfo(g_api_client);
-    if (!g_api_client->response_code || info == NULL)
-    {
-        printf("   [Backend].............planqc query request failed\n");
-        // Cleanup
-        apiClient_free(g_api_client); // Free the API client when you're done with it
-        return QDMI_ERROR_FATAL;      // Or some other appropriate error code
-    }
+    backend_status_response_t *backend_status;
+    int err = planqc_device_status(&backend_status);
+    if (err != QDMI_SUCCESS)
+        return err;
 
-    if (strcmp(info->status, "up") == 0)
+    if (backend_status->status != planqcapi_backend_status_response_STATUS_idle &&
+        backend_status->status != planqcapi_backend_status_response_STATUS_running)
     {
-        *status = DEVICE_STATUS_ONLINE;
+        printf("   [Backend].............planqc backend is offline.\n");
+        free(backend_status);
+        return QDMI_SUCCESS;
     }
+    printf("   [Backend].............planqc backend is online.\n");
+    backend_status_response_free(backend_status);
 
-    // Cleanup
-    free(info);
+    *status = DEVICE_STATUS_ONLINE;
 
     return QDMI_SUCCESS;
 }
@@ -164,7 +217,7 @@ int QDMI_control_pack_qasm2(QDMI_Device dev, char *qasmstr, QDMI_Fragment *frag)
 
 int QDMI_control_readout_size(QDMI_Device dev, QDMI_Status *status, int *numbits)
 {
-    *numbits = 2;
+    *numbits = g_num_qubits;
     return QDMI_SUCCESS;
 }
 
@@ -203,7 +256,7 @@ int QDMI_control_submit(QDMI_Device dev, QDMI_Fragment *frag, int numshots, QInf
         return QDMI_ERROR_FATAL;
     }
 
-    open_qasm_request_t *request = open_qasm_request_create(qasmstr_base64, numshots, origin, g_api_token);
+    job_request_t *request = job_request_create(qasmstr_base64, numshots, origin, g_api_token);
     if (!request)
     {
         printf("   [Backend].............planqc Error: request creation failed\n");
@@ -211,7 +264,7 @@ int QDMI_control_submit(QDMI_Device dev, QDMI_Fragment *frag, int numshots, QInf
         return QDMI_ERROR_FATAL;
     }
 
-    job_accepted_t *response = OpenqasmAPI_apiSubmit(g_api_client, request);
+    job_request_response_t *response = JobAPI_apiSubmit(g_api_client, g_backend_id, request);
 
     free(request);
     free(qasmstr_base64);
@@ -239,7 +292,7 @@ int QDMI_control_submit(QDMI_Device dev, QDMI_Fragment *frag, int numshots, QInf
 int QDMI_control_test(QDMI_Device dev, QDMI_Job *job, int *flag, QDMI_Status *status)
 {
     char *job_id = ring_buffer_get(&g_ring_buffer, (*job)->task_id);
-    job_status_t *response = OpenqasmAPI_apiStatus(g_api_client, job_id);
+    job_response_t *response = JobAPI_apiGetJob(g_api_client, g_backend_id, job_id);
 
     if (g_api_client->response_code != 200)
     {
@@ -247,28 +300,34 @@ int QDMI_control_test(QDMI_Device dev, QDMI_Job *job, int *flag, QDMI_Status *st
         return QDMI_ERROR_FATAL;
     }
 
-    if (response->status == planqcapi_job_status_STATUS_NULL)
+    if (!response)
+    {
+        printf("   [Backend].............planqc Resquest could not be parsed\n");
+        return QDMI_ERROR_FATAL;
+    }
+
+    if (response->status->status == planqcapi_job_status_response_STATUS_NULL)
     {
         printf("Missing Status\n");
         return QDMI_ERROR_FATAL;
     }
 
-    switch (response->status)
+    switch (response->status->status)
     {
-    case planqcapi_job_status_STATUS_queued:
+    case planqcapi_job_status_response_STATUS_queued:
         *flag = QDMI_WAITING;
         break;
-    case planqcapi_job_status_STATUS_running:
+    case planqcapi_job_status_response_STATUS_running:
         *flag = QDMI_EXECUTING;
         break;
-    case planqcapi_job_status_STATUS_completed:
+    case planqcapi_job_status_response_STATUS_completed:
         *flag = QDMI_COMPLETE;
         break;
-    case planqcapi_job_status_STATUS_failed:
+    case planqcapi_job_status_response_STATUS_failed:
         *flag = QDMI_HALTED;
         break;
     default:
-        printf("Unexpected status: %d\n", response->status);
+        printf("Unexpected status: %d\n", response->status->status);
         return QDMI_ERROR_FATAL;
     }
 
@@ -300,38 +359,66 @@ int QDMI_control_wait(QDMI_Device dev, QDMI_Job *job, QDMI_Status *status)
     while (flag == QDMI_EXECUTING || flag == QDMI_WAITING)
     {
         QDMI_control_test(dev, job, &flag, status);
+
         printf("   [Backend].............planqc task %i status: %s\n", (*job)->task_id, get_flag_status_str(flag));
 
-        sleep(0.1);
+        sleep(1);
     }
 
     return QDMI_SUCCESS;
 }
 
-void process_list_entry(listEntry_t *entry, void *additionalData)
+void process_result(listEntry_t *entry, void *additionalData)
 {
+    size_t result_size = pow(2, g_num_qubits);
     char *binary_str = (char *)entry->data;
     int *num = (int *)additionalData;
 
-    // printf("[Debug] RESULT: %s\n", binary_str);
+    int result_index = (int)strtol(binary_str, NULL, 2);
 
-    for (int i = 0; binary_str[i] != '\0'; i++)
+    if (result_index < 0 || result_index >= result_size)
     {
-        if (binary_str[i] == '1')
-        {
-            num[i]++;
-        }
+        printf("   [Backend].............planqc Error: result index out of bounds\n");
+        return;
     }
+
+    num[result_index]++;
 }
 
 int QDMI_control_readout_raw_num(QDMI_Device dev, QDMI_Status *status, int task_id, int *num)
 {
-    printf("   [Backend].............Returning results\n");
+    printf("   [Backend].............planqc returning results\n");
 
     char *job_id = ring_buffer_get(&g_ring_buffer, task_id);
-    open_qasm_response_t *response = OpenqasmAPI_apiResult(g_api_client, job_id);
+    job_response_t *response = JobAPI_apiGetJob(g_api_client, g_backend_id, job_id);
 
-    list_iterateThroughListForward(response->results, process_list_entry, num);
+    if (g_api_client->response_code != 200)
+    {
+        printf("Error code {%li}: Server Error\n", g_api_client->response_code);
+        return QDMI_ERROR_FATAL;
+    }
+
+    if (!response)
+    {
+        printf("   [Backend].............planqc Resquest not successful\n");
+        return QDMI_ERROR_FATAL;
+    }
+
+    if (response->status->status != planqcapi_job_status_response_STATUS_completed)
+    {
+        printf("   [Backend].............planqc Job not completed\n");
+        return QDMI_ERROR_FATAL;
+    }
+
+    if (response->results == NULL)
+    {
+        printf("   [Backend].............planqc No results\n");
+        return QDMI_ERROR_FATAL;
+    }
+
+    list_iterateThroughListForward(response->results, process_result, num);
+
+    *status = QDMI_COMPLETE;
 
     return QDMI_SUCCESS;
 }
