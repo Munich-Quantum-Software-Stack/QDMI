@@ -138,7 +138,7 @@ int QDMI_set_coupling_mapping(QDMI_Device dev, int qubit_index, QDMI_Qubit qubit
             break;
         default:
             qubit->coupling_mapping = NULL;
-            break;
+            break; 
     }
 }
 
@@ -181,9 +181,9 @@ int QDMI_control_submit(QDMI_Device dev, QDMI_Fragment *frag, int numshots, QInf
     printf("   [Backend].............QIR received");
     LLVMModuleRef module = NULL;
     LLVMMemoryBufferRef mem_buffer = LLVMCreateMemoryBufferWithMemoryRange(
-        (const char *)(*frag)->qirmod,
-        (*frag)->sizebuffer,
-        "QIR_module",
+        (const char *)(*frag)->qirmod, 
+        (*frag)->sizebuffer, 
+        "QIR_module", 
         0
     );
 
