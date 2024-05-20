@@ -20,10 +20,3 @@ make clean backend_planqc test_planqc && QDMI_CONFIG_FILE="../planqc_api/planqc.
 
 ## Configuration
 The planqc backend can be configured over a QDMI config file. A example config file can be found as [`planqc.qdmi-config`](planqc.qdmi-config) in this directory.
-
-#### Parameters:
-```
-planqc.qdmi-config
-
-
-```
