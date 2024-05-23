@@ -62,7 +62,10 @@ install(
     NAMESPACE qdmi::
 )
 
+install(DIRECTORY include/ DESTINATION include)
+
 add_executable(QDMIOpenClose testing/openclose.c)
 target_link_libraries(QDMIOpenClose QDMI)
 add_test(QDMIOpenClose QDMIOpenClose)
+
 
