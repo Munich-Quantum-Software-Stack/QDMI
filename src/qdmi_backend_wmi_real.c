@@ -10,7 +10,7 @@
 #include <curl/curl.h>
 #include <cjson/cJSON.h>
 
-#include "qdmi_backend_wmi.h"
+#include "qdmi_backend_wmi_real.h"
 
 #define BUZZ_SIZE 65
 #define base_url "https://wmiqc-api.wmi.badw.de"
