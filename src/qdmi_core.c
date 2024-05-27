@@ -581,6 +581,17 @@ int QDMI_core_version(QDMI_Session *session, int* major, int* minor)
 
 int QDMI_core_device_count(QDMI_Session *session, int *count)
 {
+    QDMI_Library lib = qdmi_library_list;
+    int localCount = 0;
+    
+    while (lib != NULL)
+    {
+        localCount++;
+        lib = lib->next;
+    }
+
+    *count = localCount;
+
     return QDMI_SUCCESS;
 }
 
@@ -594,6 +605,31 @@ int QDMI_core_device_count(QDMI_Session *session, int *count)
 
 int QDMI_core_open_device(QDMI_Session *session, int idx, QInfo *info, QDMI_Device* handle)
 {
+
+    int count;
+    int err = QDMI_core_device_count(session, &count);
+    if(err  != QDMI_SUCCESS)
+        return err;
+
+    if(count < idx){
+        return  QDMI_ERROR_FATAL;
+    }
+
+    struct QDMI_Device_impl_d* device = (struct QDMI_Device_impl_d*)malloc(sizeof(struct QDMI_Device_impl_d));
+
+    err = QInfo_duplicate(*info, &(device->sessioninfo));
+    if(err  != QINFO_SUCCESS)
+        return err;
+
+    QDMI_Library lib = qdmi_library_list;
+    for(int index = 0; index < idx; index++){
+        lib = lib->next;
+    }
+
+    device->library = *lib;
+    
+    handle = (QDMI_Device*)device;
+
     return QDMI_SUCCESS;
 }
 

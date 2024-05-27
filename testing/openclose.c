@@ -29,13 +29,18 @@ int main(int argc, char** argv)
     printf("\nQDMI_internal_init: %d\n", QDMI_session_init(info, &session));
     CHECK_ERR(err, "During Startup");
 
-    printf("\nQDMI_internal_finalize: %d\n", QDMI_session_finalize(session));
+    int count;
+    QDMI_core_device_count(&session, &count);
 
-    printf("\nQDMI_internal_shutdown: %d\n", QDMI_internal_shutdown());
-    CHECK_ERR(err, "During Shutdown");
+    printf("Number of device = %d\n", count);
+    
+    QDMI_Device devices[count];
+    for(int index = 0; index < count; index++)
+        QDMI_core_open_device(&session, 0, &info, &devices[index]);
 
-    err = QInfo_free(info);
-    CHECK_ERR(err, "During Free");
+    
+
+    //printf("Name of the device %d\n", ibm_device-);
 
     return 0;
 }
