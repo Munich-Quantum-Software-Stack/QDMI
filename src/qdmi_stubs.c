@@ -81,6 +81,11 @@ int QDMI_query_device_property_exists(QDMI_Device dev, QDMI_Device_property prop
     return dev->library.QDMI_query_device_property_exists(dev, prop, scope);
 }
 
+int QDMI_query_device_property_type(QDMI_Device dev, QDMI_Device_property prop)
+{
+    return dev->library.QDMI_query_device_property_type(dev, prop);
+}
+
 int QDMI_query_device_property_i(QDMI_Device dev, QDMI_Device_property prop, int *value)
 {
     return dev->library.QDMI_query_device_property_i(dev, prop, value);
@@ -94,6 +99,11 @@ int QDMI_query_device_property_f(QDMI_Device dev, QDMI_Device_property prop, flo
 int QDMI_query_device_property_d(QDMI_Device dev, QDMI_Device_property prop, double *value)
 {
     return dev->library.QDMI_query_device_property_d(dev, prop, value);
+}
+
+int QDMI_query_device_property_c(QDMI_Device dev, QDMI_Device_property prop, char *value)
+{
+    return dev->library.QDMI_query_device_property_c(dev, prop, value);
 }
 
 int QDMI_query_gateset_num(QDMI_Device dev, int *num_gates)
@@ -136,6 +146,11 @@ int QDMI_query_gate_property_exists(QDMI_Device dev, QDMI_Gate gate, QDMI_Gate_p
     return dev->library.QDMI_query_gate_property_exists(dev, gate, prop, scope);
 }
 
+int QDMI_query_gate_property_type(QDMI_Device dev, QDMI_Gate gate, QDMI_Gate_property prop)
+{
+    return dev->library.QDMI_query_gate_property_type(dev, gate, prop);
+}
+
 int QDMI_query_gate_property_i(QDMI_Device dev, QDMI_Gate_property prop, QDMI_Gate gate, int *coor, int* value)
 {
     return dev->library.QDMI_query_gate_property_i(dev, prop, gate, coor, value);
@@ -156,9 +171,14 @@ int QDMI_query_all_qubits(QDMI_Device dev, QDMI_Qubit *qubits)
     return dev->library.QDMI_query_all_qubits(dev, qubits);
 }
 
-int QDMI_query_qubit_property_exists(QDMI_Device dev, QDMI_Qubit_property prop, QDMI_Qubit qubit, int* scope)
+int QDMI_query_qubit_property_exists(QDMI_Device dev, QDMI_Qubit qubit, QDMI_Qubit_property prop, int* scope)
 {
-    return dev->library.QDMI_query_qubit_property_exists(dev, prop, qubit, scope);
+    return dev->library.QDMI_query_qubit_property_exists(dev, qubit, prop, scope);
+}
+
+int QDMI_query_qubit_property_type(QDMI_Device dev, QDMI_Qubit qubit, QDMI_Qubit_property prop)
+{
+    return dev->library.QDMI_query_qubit_property_type(dev, qubit, prop);
 }
 
 int QDMI_query_qubit_property_c(QDMI_Device dev, QDMI_Qubit qubit, QDMI_Qubit_property prop, char *value)
