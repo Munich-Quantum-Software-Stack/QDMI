@@ -631,8 +631,8 @@ int QDMI_core_open_device(QDMI_Session *session, int idx, QInfo *info, QDMI_Devi
     }
 
     device->library = *lib;
-    
-    handle = (QDMI_Device*)device;
+
+    *handle = device;
 
     return QDMI_SUCCESS;
 }
