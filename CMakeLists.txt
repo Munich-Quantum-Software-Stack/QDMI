@@ -24,7 +24,6 @@ add_compile_options("-g")
 set(PUBLIC_QDMI_HEADERS
     "include/qdmi.h"
     "include/qdmi_backend.h"
-    "include/qdmi_internal.h"
 )
 
 add_library(qdmi SHARED 

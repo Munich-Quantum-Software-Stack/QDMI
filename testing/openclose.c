@@ -4,11 +4,9 @@
 #include <time.h>
 
 #include <qdmi.h>
-#include "qdmi_internal.h"
-
 int QDMI_session_init(QInfo info, QDMI_Session *session);
 int QDMI_session_finalize(QDMI_Session session);
-QDMI_Library find_library_by_name(const char *libname);
+//QDMI_Library find_library_by_name(const char *libname);
 
 #define CHECK_ERR(a, b)                          \
     {                                            \
@@ -21,10 +19,11 @@ QDMI_Library find_library_by_name(const char *libname);
 
 int main(int argc, char **argv)
 {
+    /*
     putenv("TOKEN_WMI=../inputs/token.txt");
     QInfo info;
     QDMI_Session session = NULL;
-    QDMI_Library lib;
+    //QDMI_Library lib;
     QDMI_Fragment frag;
     QDMI_Device device;
     QDMI_Job job;
@@ -131,5 +130,6 @@ int main(int argc, char **argv)
 
     printf("\n[DEBUG]: Test Finished\n\n");
 
+    */
     return 0;
 }
