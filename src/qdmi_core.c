@@ -608,7 +608,7 @@ int QDMI_core_open_device(QDMI_Session *session, int idx, QInfo *info, QDMI_Devi
    OUT: info object that describes the device
 */
 
-int QMPI_core_query_device(QDMI_Session *session, int idx, QInfo *info)
+int QDMI_core_query_device(QDMI_Session *session, int idx, QInfo *info)
 {
     return QDMI_SUCCESS;
 }

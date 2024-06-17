@@ -140,7 +140,7 @@ int QDMI_session_finalize(QDMI_Session session);
 int QDMI_core_version(QDMI_Session *session, int* major, int* minor);
 int QDMI_core_device_count(QDMI_Session *session, int *count);
 int QDMI_core_open_device(QDMI_Session *session, int idx, QInfo *info, QDMI_Device* handle);
-int QMPI_core_query_device(QDMI_Session *session, int idx, QInfo *info);
+int QDMI_core_query_device(QDMI_Session *session, int idx, QInfo *info);
 int QDMI_core_close_device(QDMI_Session *session, QDMI_Device handle);
 
 // support linear queue with reordering without QPU splitting
