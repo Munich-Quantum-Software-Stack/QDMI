@@ -5,7 +5,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "qdmi_internal.h"
+#include "private/qdmi_internal.h"
 
 
 /*----------------------------------------*/

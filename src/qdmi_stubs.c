@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "qdmi_internal.h"
+#include "private/qdmi_internal.h"
 
 
 /*----------------------------------------*/

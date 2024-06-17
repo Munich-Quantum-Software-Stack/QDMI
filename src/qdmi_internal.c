@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "qdmi_internal.h"
+#include "private/qdmi_internal.h"
     
 QDMI_Session       qdmi_session_list = NULL;
 QDMI_Library       qdmi_library_list = NULL;
