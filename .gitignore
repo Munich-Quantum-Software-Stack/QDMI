@@ -4,3 +4,4 @@ inputs/
 build
 inputs/token.txt
 .cache
+.vscode

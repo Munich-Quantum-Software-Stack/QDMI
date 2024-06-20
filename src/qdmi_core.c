@@ -14,7 +14,7 @@
 /*.....................................*/
 /* read configuration and load libraries */
 
-int QDMI_load_libraries(QInfo sesioninfo)
+int QDMI_load_libraries(QDMI_Session* session, QInfo sesioninfo)
 {
     char *configfilename = NULL;
     FILE *configfile;
@@ -22,12 +22,13 @@ int QDMI_load_libraries(QInfo sesioninfo)
     size_t  length;
     int  readlen;
     //char *separator,*key,*param;
-    QDMI_Library newlib,runlib,prevlib;
+    QDMI_Library newlib, runlib, prevlib, qdmi_library_list;
     double dval;
     long   lval;
     QInfo_topic topic;
     QInfo_value value;
     int retval,initerr,err;
+    qdmi_library_list = (*session)->qdmi_library_list;
     
 
     /* Determine location of configfile */
@@ -183,7 +184,7 @@ int QDMI_load_libraries(QInfo sesioninfo)
                                 if (line != NULL) 
                                 free(line);
 
-                                return qdmi_internal_translate_qinfo_error(err);
+                                    return qdmi_internal_translate_qinfo_error(err);
                             }
                             
                             err = QInfo_topic_set(newlib->info, topic, &value);
@@ -394,7 +395,6 @@ int QDMI_load_libraries(QInfo sesioninfo)
         newlib=newlib->next;
     }
     
-    
     /* Finish setup, cleanup after error */
     
     if (QDMI_IS_FATAL(retval))
@@ -405,13 +405,14 @@ int QDMI_load_libraries(QInfo sesioninfo)
         {
             free(runlib->libname);
             if (runlib->libhandle)
-            dlclose(runlib->libhandle);
+                dlclose(runlib->libhandle);
             QInfo_free(runlib->info);
             runlib=runlib->next;
         }
         qdmi_library_list=NULL;
         return retval;
     }
+    (*session)->qdmi_library_list = qdmi_library_list;
 
     return QDMI_SUCCESS;
 }
@@ -420,18 +421,9 @@ int QDMI_load_libraries(QInfo sesioninfo)
 /*.....................................*/
 /* Called when first session is created */
 
-int QDMI_internal_startup(QInfo info)
+int QDMI_internal_startup(QDMI_Session* session, QInfo info)
 {
-    int err;
-    
-    if (qdmi_library_list==NULL)
-    {
-        err=QDMI_load_libraries(info);
-        if (err!=QDMI_SUCCESS)
-            return err;
-    }
-
-    return QDMI_SUCCESS;
+    return QDMI_load_libraries(session, info);
 }
 
 
@@ -475,7 +467,7 @@ int QDMI_session_init(QInfo info, QDMI_Session *session)
     {
         /* First session */
         
-        err=QDMI_internal_startup(info);
+        err=QDMI_internal_startup(session, info);
 
         //printf("\n[TODO]: (qdmi_core.c) if (err !=/*==*/ QDMI_SUCCESS)");
 
@@ -584,7 +576,7 @@ int QDMI_core_version(QDMI_Session *session, int* major, int* minor)
 
 int QDMI_core_device_count(QDMI_Session *session, int *count)
 {
-    QDMI_Library lib = qdmi_library_list;
+    QDMI_Library lib = (*session)->qdmi_library_list;
     *count = 0;
     
     while (lib != NULL)
@@ -609,20 +601,19 @@ int QDMI_core_open_device(QDMI_Session *session, int idx, QInfo *info, QDMI_Devi
 {
     int count;
     int err = QDMI_core_device_count(session, &count);
-    if(err  != QDMI_SUCCESS)
-        return err;
+    if QDMI_IS_ERROR(err) return err;
 
-    if(count < idx){
-        return  QDMI_ERROR_FATAL;
-    }
+    if(count < idx) return  QDMI_ERROR_FATAL;
 
-    (*handle) = (struct QDMI_Device_impl_d*)malloc(sizeof(struct QDMI_Device_impl_d));
+    (*handle) = (struct QDMI_Device_impl_d*)malloc(sizeof(struct QDMI_Device_impl_d));    
+    if(*handle == NULL) return QDMI_ERROR_OUTOFMEM;
 
     err = QInfo_duplicate(*info, &((*handle)->sessioninfo));
-    if(err  != QINFO_SUCCESS)
-        return err;
+    if QINFO_IS_ERROR(err) return err;
 
-    QDMI_Library lib = qdmi_library_list;
+    QDMI_Library lib = (*session)->qdmi_library_list;
+    if(lib == NULL) return QDMI_ERROR_FATAL;
+
     for(int index = 0; index < idx; index++)
         lib = lib->next;
     

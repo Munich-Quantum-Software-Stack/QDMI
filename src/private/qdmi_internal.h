@@ -115,6 +115,7 @@ typedef struct QDMI_Session_impl_d
 {
     QInfo info;
     struct QDMI_Session_impl_d *next;
+    QDMI_Library qdmi_library_list;
 } QDMI_Session_impl_t;
 
 typedef struct QDMI_Device_impl_d
@@ -162,7 +163,7 @@ typedef struct QDMI_Qubit_impl_d
 /* Anchors for global lists */
 
 extern QDMI_Session      qdmi_session_list;
-extern QDMI_Library      qdmi_library_list;
+//extern QDMI_Library      qdmi_library_list;
 extern QDMI_Devicelist_t *qdmi_device_list;
 
 

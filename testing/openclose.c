@@ -19,6 +19,35 @@ int QDMI_session_finalize(QDMI_Session session);
 
 int main(int argc, char **argv)
 {
+
+    QInfo info;
+    QDMI_Device* devices;
+    QDMI_Session session = NULL;
+    QDMI_Fragment frag;
+    int err, count = 0;
+    err = QInfo_create(&info);
+    CHECK_ERR(err, "QInfo_create");
+
+    err = QDMI_session_init(info, &session);
+    CHECK_ERR(err, "QDMI_session_init");
+
+    QDMI_core_device_count(&session, &count);
+    //CHECK_ERR(err, "QDMI_session_init");
+
+    printf("%d\n", count);
+    devices = malloc(sizeof(QDMI_Device) * count);
+    
+    for(int i = 0; i < count; i++){
+        err = QDMI_core_open_device(&session, i, &info, &devices[i]);
+        CHECK_ERR(err, "QDMI_core_open_device");
+        if(devices[i] == NULL)
+            printf("HELLO WORLD!!!\n");
+    }
+
+    QDMI_control_pack_qasm2(devices[0], "testsfrt", &frag);
+    
+
+
     /*
     putenv("TOKEN_WMI=../inputs/token.txt");
     QInfo info;
@@ -48,8 +77,8 @@ int main(int argc, char **argv)
     CHECK_ERR(err, "QInfo_create");
 
     // QDMI_session_init(info, &session) -> QDMI_internal_startup(info) -> QDMI_load_libraries(info) -> QInfo_create(&(newlib->info))
-    err = QDMI_session_init(info, &session);
-    CHECK_ERR(err, "QDMI_session_init");
+
+    QInfo info;    CHECK_ERR(err, "QDMI_session_init");
 
     frag = (QDMI_Fragment)malloc(sizeof(struct QDMI_Fragment_d));
     if (frag == NULL)
