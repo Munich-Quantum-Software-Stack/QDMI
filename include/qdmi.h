@@ -1,3 +1,9 @@
+/*------------------------------------------------------------------------------
+  Part of the MQSS Project, under the Apache License v2.0 with LLVM Exceptions.
+  See https://llvm.org/LICENSE.txt for license information.
+  SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+------------------------------------------------------------------------------*/
+
 /* Headerfile to be included by all QDMI clients */
 
 #ifndef QDMI_H
@@ -279,4 +285,3 @@ typedef int (*QDMI_device_quality_calibrate_t)(QDMI_Device dev);
 #endif
 
 #endif
-
