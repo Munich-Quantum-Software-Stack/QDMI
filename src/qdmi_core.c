@@ -614,9 +614,6 @@ int QDMI_core_open_device(QDMI_Session *session, int idx, QInfo *info, QDMI_Devi
     (*handle) = (struct QDMI_Device_impl_d*)malloc(sizeof(struct QDMI_Device_impl_d));    
     if(*handle == NULL) return QDMI_ERROR_OUTOFMEM;
 
-    err = QInfo_duplicate(*info, &((*handle)->sessioninfo));
-    if QINFO_IS_ERROR(err) return err;
-
     QDMI_Library lib = (*session)->qdmi_library_list;
     if(lib == NULL) return QDMI_ERROR_FATAL;
 
