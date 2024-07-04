@@ -31,7 +31,7 @@ QDMI is provided as a C header file to allow fast integration into an HPC enviro
 ### What is MQSS?
 
 **MQSS** stands for *Munich Quantum Software Stack* employed at the *LRZ* developed in collaboration with the *Chair of Design Automation (CDA)* and *Chair for Computer Architecture and Parallel Systems (CAPS)* at TUM.
-It connects the end-user with the quantum computing platforms integrated in the HPC infrastructure at the LRZ.
+It facilitates the connection between end-users and quantum computing platforms by its integration within HPC infrastructures, such as those found at the LRZ.
 
 ### What is QDMI?
 
@@ -71,7 +71,7 @@ So while it might not be as straightforward as the usage from C/C++, it is defin
 ## Contact
 
 The development of this project is led by [Laura Schulz](mailto:laura.schulz@lrz.de) (LRZ), [Martin Schulz](mailto:martin.w.j.schulz@tum.de) (TUM CAPS), and [Robert Wille](mailto:robert.wille@tum.de) (TUM CDA) on the management side
-and [Lukas Burgholzer](mailto:lukas.burgholzer@tum.de) (TUM CDA) as well as [Jorge Echavarria](jorge.echavarria@lrz.de) (LRZ) from the technical side.
+and [Lukas Burgholzer](mailto:lukas.burgholzer@tum.de) (TUM CDA) as well as [Jorge Echavarria](mailto:jorge.echavarria@lrz.de) (LRZ) from the technical side.
 
 Please try to use the publicly accessible GitHub
 channels ([issues](https://github.com/Munich-Quantum-Software-Stack/QDMI/issues), [discussions](https://github.com/Munich-Quantum-Software-Stack/QDMI/discussions), [pull requests](https://github.com/Munich-Quantum-Software-Stack/QDMI/pulls))
