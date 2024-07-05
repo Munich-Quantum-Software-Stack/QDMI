@@ -50,12 +50,6 @@ Moreover, tools implementing QDMI can also be seemlessly integrated in other sof
 
 The code is publicly available hosted on GitHub at [github.com/Munich-Quantum-Software-Stack/QDMI](https://github.com/Munich-Quantum-Software-Stack/QDMI).
 
-### How can I contribute?
-
-The preferred way to contribute is to fork the main repository on GitHub, create a new branch, and submit a pull request.
-Feature requests and bug reports can be submitted via the [issues page](https://github.com/Munich-Quantum-Software-Stack/QDMI/issues).
-If you'd simply like to discuss some aspect or feel unsure about your contribution, please feel free to start a discussion on the [discussions page](https://github.com/Munich-Quantum-Software-Stack/QDMI/discussions).
-
 ### Under which license is QDMI released?
 
 QDMI is released under the Apache License v2.0 with LLVM Exceptions.
