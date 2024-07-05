@@ -38,7 +38,7 @@ It facilitates the connection between end-users and quantum computing platforms 
 
 ### What is QDMI?
 
-**QDMI** stands for *Quantum Device Management Interface* and is designed as the communication interface between software and hardware within the MQSS.
+**QDMI** , or *Quantum Device Management Interface*, serves as the communication interface between software within the MQSS and the quantum hardware connected to the MQSS.
 The aim is to provide a standard way to communicate with quantum resources that can be widely used by the whole quantum community.
 
 ### Who is using QDMI?
