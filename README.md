@@ -12,14 +12,14 @@
 # QDMI — Quantum Device Management Interface (QDMI)
 
 The Quantum Device Management Interface (QDMI) is the central part of the Munich Quantum Software Stack (MQSS)—a sophisticated software stack to connect end users to the wide range of possible quantum backends.
-It enables software tools to automatically retrieve and adapt to changing physical characteristics and constraints of different platforms.
-QDMI strives to connect the software and hardware developers, mediating between their competing interests, and eventually providing corresponding figures of merits and constraints to be considered.
+It enables the submission to and the control of gate-based quantum systems and enables software tools to automatically retrieve and adapt to changing physical characteristics and constraints of different platforms.
+QDMI strives to connect the software and hardware developers, mediating between their competing interests, bridging between technologies, and eventually providing corresponding figures of merits and constraints to be considered.
 QDMI is therefore the method of choice for integrating new platforms or software tools into the MQSS.
 QDMI is provided as a C header file to allow fast integration into an HPC environment and consists of four main components:
 
 - **QDMI Core**: Provides core functionality to manage sessions as well as to open and close connections to devices.
-- **QDMI Control**: Enables the control of the quantum device. One can submit quantum circuits, control the job queue, and readout measurement results.
-- **QDMI Device**: Provides device handling functionality like initiating the calibration or checking the status of the device.
+- **QDMI Control**: Enables the control of the quantum devices. One can submit quantum circuits, control the job queue, and readout measurement results.
+- **QDMI Device**: Provides device handling functionality, like initiating the calibration or checking the status of the device.
 - **QDMI Query**: Allows querying properties of the device, e.g., supported gates, error rates, gate duration, etc.
 
 > [!IMPORTANT]
@@ -44,7 +44,7 @@ The aim is to provide a standard way to communicate with quantum resources that 
 ### Who is using QDMI?
 
 QDMI will be the default communication channel within the MQSS, meaning all hardware and software tools integrated into the MQSS will have to support QDMI.
-Moreover, tools implementing QDMI can also be seemlessly integrated in other software stacks understanding QDMI.
+Moreover, platforms implementing QDMI can also be seemlessly integrated in other software stacks understanding QDMI, as can software tools interfacing with QDMI for platform feedback.
 
 ### Where is the code?
 
@@ -58,12 +58,12 @@ Any contribution to the project is assumed to be under the same license.
 
 ### Why is it written in C and not in Python?
 
-The interface is written in C to allow close integration within the MQSS and fulfill the performance as well as stability requirements of such an HPC system.
+The interface is written in C to allow close integration within the MQSS and fulfill the performance as well as stability requirements needed for production systems, in particular as we scale quantum systems. Further, this enables a clean integration into existing and well-established system software stacks, including those for HPC.
 
 ### Can I still integrate my Python code?
 
 Python natively allows calling C APIs.
-So while it might not be as straightforward as the usage from C/C++, it is definitely possible.
+So while it might not be as straightforward as the usage from C/C++, it is definitely possible. However, we generally do expect Python-based programming approaches to be used as front-ends, feeding into a natively implemented compiler infrastructure, which then relies on QDMI. This is very analog on how Python is used in many other parts of high-performance computing.
 
 ## Contact
 
