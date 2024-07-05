@@ -4,6 +4,9 @@
   SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 -->
 
+> [!IMPORTANT]
+> The Quantum Device Management Interface (QDMI) is experimental at this stage, and significant changes, including breaking changes, are anticipated in upcoming releases.
+
 ![QDMI](images/qdmi.svg)
 
 # QDMI — Quantum Device Management Interface (QDMI)
