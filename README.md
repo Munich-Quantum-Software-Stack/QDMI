@@ -33,7 +33,8 @@ QDMI is provided as a C header file to allow fast integration into an HPC enviro
 
 ### What is MQSS?
 
-**MQSS** stands for *Munich Quantum Software Stack* employed at the *LRZ* developed in collaboration with the *Chair of Design Automation (CDA)* and *Chair for Computer Architecture and Parallel Systems (CAPS)* at TUM.
+**MQSS** stands for *Munich Quantum Software Stack*, which is a project of the of the *Munich Quantum Valley (MQV)* initiative and is jointly developed by the *Leibniz Supercomputing Centre (LRZ)* and the Chairs for *Design Automation (CDA)*, and  for *Computer Architecture and Parallel Systems (CAPS)* at TUM. 
+It provides a comprehensive compilation and runtime infrastructure for on-premise and remote quantum devices, support for modern compilation and optimization techniques, and enables both current and future high-level abstractions for quantum programming. This stack is designed to be capable of deployment in a variety of scenarios via flexible configuration options, including stand-alone scenarios for individual systems, cloud access to a variety of backends as well as tight integration into HPC environments supporting quantum acceleration. Within the MQV, a concrete instance of the MQSS is deployed at the LRZ for the MQV, serving as a single access point to all of its quantum devices via multiple compatible access paths, including a web portal, command line access via web credentials as well as the option for hybrid access with tight integration with LRZ's HPC systems.
 It facilitates the connection between end-users and quantum computing platforms by its integration within HPC infrastructures, such as those found at the LRZ.
 
 ### What is QDMI?
