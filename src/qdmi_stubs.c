@@ -92,6 +92,11 @@ int QDMI_query_device_property_type(QDMI_Device dev, QDMI_Device_property prop)
     return dev->library.QDMI_query_device_property_type(dev, prop);
 }
 
+int QDMI_query_device_property_c(QDMI_Device dev, QDMI_Device_property prop, char **value)
+{
+    return dev->library.QDMI_query_device_property_c(dev, prop, value);
+}
+
 int QDMI_query_device_property_i(QDMI_Device dev, QDMI_Device_property prop, int *value)
 {
     return dev->library.QDMI_query_device_property_i(dev, prop, value);
