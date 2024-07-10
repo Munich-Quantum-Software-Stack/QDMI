@@ -38,7 +38,6 @@ int main(int argc, char **argv)
     CHECK_ERR(err, "QDMI_session_init");
 
     QDMI_core_device_count(&session, &count);
-    //CHECK_ERR(err, "QDMI_session_init");
 
     printf("%d\n", count);
     devices = malloc(sizeof(QDMI_Device) * count);

@@ -164,7 +164,6 @@ typedef struct QDMI_Qubit_impl_d
 /* Anchors for global lists */
 
 extern QDMI_Session      qdmi_session_list;
-//extern QDMI_Library      qdmi_library_list;
 extern QDMI_Devicelist_t *qdmi_device_list;
 
 
