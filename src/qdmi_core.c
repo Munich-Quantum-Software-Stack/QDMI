@@ -316,6 +316,7 @@ int QDMI_load_libraries(QDMI_Session* session, QInfo sesioninfo)
         newlib->QDMI_query_device_property_i=dlsym(newlib->libhandle,"QDMI_query_device_property_i");
         newlib->QDMI_query_device_property_f=dlsym(newlib->libhandle,"QDMI_query_device_property_f");
         newlib->QDMI_query_device_property_d=dlsym(newlib->libhandle,"QDMI_query_device_property_d");
+        newlib->QDMI_query_device_property_c=dlsym(newlib->libhandle,"QDMI_query_device_property_c");
         newlib->QDMI_query_gateset_num=dlsym(newlib->libhandle,"QDMI_query_gateset_num");
         newlib->QDMI_query_qubits_num=dlsym(newlib->libhandle,"QDMI_query_qubits_num");
         newlib->QDMI_query_all_gates=dlsym(newlib->libhandle,"QDMI_query_all_gates");
