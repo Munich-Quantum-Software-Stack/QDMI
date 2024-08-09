@@ -22,7 +22,7 @@ endif()
 
 if(NOT TARGET qdmi)
   add_library(
-    qdmi
+    qdmi SHARED
     ${QDMI_INCLUDE_BUILD_DIR}/qdmi.h ${QDMI_INCLUDE_BUILD_DIR}/qdmi_backend.h
     qdmi_core.c qdmi_internal.c qdmi_stubs.c)
 
