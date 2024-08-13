@@ -130,7 +130,15 @@ int QDMI_load_libraries(QDMI_Session *session, QInfo sesioninfo) {
         if (param != NULL) {
           const char *valueString = separator + 1;
 
-          if (strchr(valueString, '.') != NULL) {
+          /* if parameter starts end ends with ", treat it as a string */
+          int isQuotedString = 0;
+          if ((valueString[0] == '"' && valueString[strlen(valueString) - 1] == '"') ||
+              (valueString[0] == '"' && valueString[strlen(valueString) - 2] == '"' && valueString[strlen(valueString) - 1] == '\n'))
+          {
+              isQuotedString = 1;
+          }
+
+          if (!isQuotedString && strchr(valueString, '.') != NULL) {
             QInfo_index index;
             err = QInfo_add(newlib->info, param, QINFO_TYPE_DOUBLE, &index);
             if (err != QINFO_SUCCESS) {
@@ -146,7 +154,7 @@ int QDMI_load_libraries(QDMI_Session *session, QInfo sesioninfo) {
               }
               return qdmi_internal_translate_qinfo_error(err);
             }
-          } else if (isdigit(*valueString)) {
+          } else if (!isQuotedString && isdigit(*valueString)) {
             char *endptr;
             int64_t val = strtoll(valueString, &endptr, 10);
             if (*endptr == '\0') {
@@ -175,6 +183,16 @@ int QDMI_load_libraries(QDMI_Session *session, QInfo sesioninfo) {
                 free(line);
               }
               return qdmi_internal_translate_qinfo_error(err);
+            }
+            /* remove trailing newline */
+            if (valueString[strlen(valueString) - 1] == '\n') {
+                valueString[strlen(valueString) - 1] = '\0';
+            }
+            /* remove quotes */
+            if (isQuotedString) {
+                char *new_string = strndup(valueString + 1, strlen(valueString) - 2);
+                free(valueString);
+                valueString = new_string;
             }
             err = QInfo_set_c(newlib->info, index, valueString);
             if (err != QINFO_SUCCESS) {
