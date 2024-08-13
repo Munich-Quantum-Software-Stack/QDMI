@@ -185,24 +185,24 @@ int QDMI_load_libraries(QDMI_Session *session, QInfo sesioninfo) {
               return qdmi_internal_translate_qinfo_error(err);
             }
             /* remove trailing newline */
-            if (valueString[strlen(valueString) - 1] == '\n') {
-                char *new_string = strndup(valueString, strlen(valueString) - 1);
-                free(valueString);
-                valueString = new_string;
+            char *localValueString = strndup(valueString, strlen(valueString));
+            if (string[strlen(localValueString) - 1] == '\n') {
+                string[strlen(localValueString) - 1] = '\0';
             }
             /* remove quotes */
+            char *strippedLocalValueString = localValueString;
             if (isQuotedString) {
-                char *new_string = strndup(valueString + 1, strlen(valueString) - 2);
-                free(valueString);
-                valueString = new_string;
+                strippedLocalValueString[strlen(strippedLocalValueString) - 1] = '\0';
+                strippedLocalValueString = strippedLocalValueString + 1;
             }
-            err = QInfo_set_c(newlib->info, index, valueString);
+            err = QInfo_set_c(newlib->info, index, strippedLocalValueString);
             if (err != QINFO_SUCCESS) {
               if (line != NULL) {
                 free(line);
               }
               return qdmi_internal_translate_qinfo_error(err);
             }
+            free(localValueString);
           }
         }
 
