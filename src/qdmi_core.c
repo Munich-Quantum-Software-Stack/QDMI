@@ -186,7 +186,9 @@ int QDMI_load_libraries(QDMI_Session *session, QInfo sesioninfo) {
             }
             /* remove trailing newline */
             if (valueString[strlen(valueString) - 1] == '\n') {
-                valueString[strlen(valueString) - 1] = '\0';
+                char *new_string = strndup(valueString, strlen(valueString) - 1);
+                free(valueString);
+                valueString = new_string;
             }
             /* remove quotes */
             if (isQuotedString) {
