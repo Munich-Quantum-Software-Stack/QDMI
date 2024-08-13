@@ -186,8 +186,8 @@ int QDMI_load_libraries(QDMI_Session *session, QInfo sesioninfo) {
             }
             /* remove trailing newline */
             char *localValueString = strndup(valueString, strlen(valueString));
-            if (string[strlen(localValueString) - 1] == '\n') {
-                string[strlen(localValueString) - 1] = '\0';
+            if (localValueString[strlen(localValueString) - 1] == '\n') {
+                localValueString[strlen(localValueString) - 1] = '\0';
             }
             /* remove quotes */
             char *strippedLocalValueString = localValueString;
