@@ -184,27 +184,27 @@ typedef int (*QDMI_control_extract_state_t)(QDMI_Device dev, QDMI_Status status,
 
 /* read out routines */
 
-int QDMI_control_readout_size(QDMI_Device dev, QDMI_Status *status, QDMI_Job *job,
+int QDMI_control_readout_size(QDMI_Device dev, QDMI_Status *status, QDMI_Job job,
                               int *numbits);
-typedef int (*QDMI_control_readout_size_t)(QDMI_Device dev, QDMI_Status *status, QDMI_Job *job,
+typedef int (*QDMI_control_readout_size_t)(QDMI_Device dev, QDMI_Status *status, QDMI_Job job,
                                            int *numbits);
 
 /* Histogram */
-int QDMI_control_readout_hist_size(QDMI_Device dev, QDMI_Status *status, QDMI_Job *job,
+int QDMI_control_readout_hist_size(QDMI_Device dev, QDMI_Status *status, QDMI_Job job,
                                    int *size);
 typedef int (*QDMI_control_readout_hist_size_t)(QDMI_Device dev,QDMI_Status *status, 
-                                  QDMI_Job *job, int *size);
-int QDMI_control_readout_hist_top(QDMI_Device dev, QDMI_Status *status, QDMI_Job *job,
+                                  QDMI_Job job, int *size);
+int QDMI_control_readout_hist_top(QDMI_Device dev, QDMI_Status *status, QDMI_Job job,
                                   int numhist, QInfo info, long *hist);
 typedef int (*QDMI_control_readout_hist_top_t)(QDMI_Device dev,
-                                               QDMI_Status *status, QDMI_Job *job, int numhist,
+                                               QDMI_Status *status, QDMI_Job job, int numhist,
                                                QInfo info, long *hist);
 
 /* Full data */
 int QDMI_control_readout_raw_num(QDMI_Device dev, QDMI_Status *status, 
-                                QDMI_Job *job, int *num);
+                                QDMI_Job job, int *num);
 typedef int (*QDMI_control_readout_raw_num_t)(QDMI_Device dev,
-                                              QDMI_Status *status, QDMI_Job *job,
+                                              QDMI_Status *status, QDMI_Job job,
                                               int *num);
 int QDMI_control_readout_raw_sample(QDMI_Device dev, QDMI_Status *status,
                                     int numraw, QInfo info, long *hist);

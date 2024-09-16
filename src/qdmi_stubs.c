@@ -48,24 +48,24 @@ int QDMI_control_extract_state(QDMI_Device dev, QDMI_Status status,
   return dev->library.QDMI_control_extract_state(dev, status, state);
 }
 
-int QDMI_control_readout_size(QDMI_Device dev, QDMI_Status *status, QDMI_Job *job,
+int QDMI_control_readout_size(QDMI_Device dev, QDMI_Status *status, QDMI_Job job,
                               int *numbits) {
   return dev->library.QDMI_control_readout_size(dev, status, job, numbits);
 }
 
-int QDMI_control_readout_hist_size(QDMI_Device dev, QDMI_Status *status, QDMI_Job *job,
+int QDMI_control_readout_hist_size(QDMI_Device dev, QDMI_Status *status, QDMI_Job job,
                                    int *size) {
   return dev->library.QDMI_control_readout_hist_size(dev, status, job, size);
 }
 
-int QDMI_control_readout_hist_top(QDMI_Device dev, QDMI_Status *status, QDMI_Job *job,
+int QDMI_control_readout_hist_top(QDMI_Device dev, QDMI_Status *status, QDMI_Job job,
                                   int numhist, QInfo info, long *hist) {
   return dev->library.QDMI_control_readout_hist_top(dev, status, job, numhist, info,
                                                     hist);
 }
 
 int QDMI_control_readout_raw_num(QDMI_Device dev, QDMI_Status *status,
-                                 QDMI_Job *job, int *num) {
+                                 QDMI_Job job, int *num) {
   return dev->library.QDMI_control_readout_raw_num(dev, status, job, num);
 }
 
