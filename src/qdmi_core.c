@@ -472,10 +472,11 @@ int QDMI_session_init(QInfo info, QDMI_Session *session) {
   *session = (QDMI_Session_impl_t *)malloc(sizeof(QDMI_Session_impl_t));
   if (*session == NULL)
     return QDMI_ERROR_OUTOFMEM;
+  
+  (*session)->qdmi_library_list = NULL;
 
   // Copy `info` to `session->info`
   err = QInfo_duplicate(info, &((*session)->info));
-  (*session)->qdmi_library_list = NULL;
   if (err != QINFO_SUCCESS) {
     free(*session);
     return qdmi_internal_translate_qinfo_error(err);
