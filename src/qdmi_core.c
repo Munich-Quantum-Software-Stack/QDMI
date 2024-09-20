@@ -475,6 +475,7 @@ int QDMI_session_init(QInfo info, QDMI_Session *session) {
 
   // Copy `info` to `session->info`
   err = QInfo_duplicate(info, &((*session)->info));
+  (*session)->qdmi_library_list = NULL;
   if (err != QINFO_SUCCESS) {
     free(*session);
     return qdmi_internal_translate_qinfo_error(err);
