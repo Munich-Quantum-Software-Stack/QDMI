@@ -102,7 +102,7 @@ typedef QDMI_Library_impl_t *QDMI_Library;
 
 typedef struct QDMI_Job_impl_d {
   QInfo info;
-  int task_id;
+  char* task_id;
 } QDMI_Job_impl_t;
 
 typedef struct QDMI_Fragment_d {
