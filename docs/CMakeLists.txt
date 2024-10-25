@@ -17,8 +17,11 @@ file(GLOB_RECURSE DOXYGEN_INPUT_FILES ${PROJECT_SOURCE_DIR}/include/*.h
 # The order the files with the static content are added here influences their
 # order in the generated documentation.
 set(DOXYGEN_INPUT_DIRS
-    ${DOXYGEN_INPUT_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/index.md
-    ${CMAKE_CURRENT_SOURCE_DIR}/faq.md ${CMAKE_CURRENT_SOURCE_DIR}/support.md
+    ${DOXYGEN_INPUT_DIRS}
+    ${CMAKE_CURRENT_SOURCE_DIR}/index.md
+    ${CMAKE_CURRENT_SOURCE_DIR}/faq.md
+    ${CMAKE_CURRENT_SOURCE_DIR}/support.md
+    ${CMAKE_CURRENT_SOURCE_DIR}/examples.md
     ${CMAKE_CURRENT_SOURCE_DIR}/guide.md)
 # By default the files are separated by a semicolon. This is not what Doxygen
 # wants, so we replace it with a space.
