@@ -6,7 +6,7 @@
 
 ![QDMI](docs/_static/qdmi.png)
 
-# QDMI — Quantum Device Management Interface (QDMI)
+# QDMI — Quantum Device Management Interface
 
 <p align="center">
   <a href="https://munich-quantum-software-stack.github.io/QDMI/">
