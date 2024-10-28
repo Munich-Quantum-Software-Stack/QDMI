@@ -106,7 +106,7 @@ struct QDMI_Session_impl_d {
 /**
  * @brief Global list of devices managed by the driver.
  */
-std::vector<std::shared_ptr<QDMI_Device_impl_d>> devices;
+std::vector<std::shared_ptr<QDMI_Device_impl_d>> device_list;
 
 #define LOAD_SYMBOL(device, symbol)                                            \
   {                                                                            \
@@ -197,7 +197,7 @@ int QDMI_Driver_init() {
     }
 
     try {
-      devices.emplace_back(QDMI_Device_open(lib_name, mode));
+      device_list.emplace_back(QDMI_Device_open(lib_name, mode));
     } catch (const std::exception &e) {
       std::cerr << "Failed to open device: " << e.what() << "\n";
       return QDMI_ERROR_FATAL;
@@ -211,7 +211,7 @@ int QDMI_Driver_init() {
 int QDMI_session_alloc(QDMI_Session *session) {
   *session = new QDMI_Session_impl_d();
   // in this simple implementation, each session has access to all devices
-  (*session)->device_list = devices;
+  (*session)->device_list = device_list;
   return QDMI_SUCCESS;
 }
 
@@ -252,7 +252,7 @@ void QDMI_session_free(QDMI_Session session) { delete session; }
 
 int QDMI_Driver_shutdown() {
   // Close all devices
-  devices.clear();
+  device_list.clear();
   return QDMI_SUCCESS;
 }
 
