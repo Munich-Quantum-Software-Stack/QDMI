@@ -17,6 +17,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include <cstdlib>
 #include <dlfcn.h>
 #include <exception>
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <memory>
@@ -24,7 +25,6 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include <stdexcept>
 #include <string>
 #include <vector>
-#include <filesystem>
 
 /** @name Definition of the QDMI Device and Session data structures
  * @{
