@@ -16,6 +16,8 @@ project(
 # make scripts available to cmake
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
+include(cmake/Cache.cmake)
+
 # check if this is the master project or used via add_subdirectory
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   set(QDMI_MASTER_PROJECT ON)
