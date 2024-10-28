@@ -165,7 +165,7 @@ QDMI_Device_open(const std::string &lib_name, const QDMI_Device_Mode mode) {
 
 bool Is_path_allowed(const std::filesystem::path &path) {
   // Define the whitelist of allowed directories
-  std::vector<std::filesystem::path> whitelist = {
+  const std::vector<std::filesystem::path> whitelist = {
       std::filesystem::current_path(),
       std::filesystem::path(std::getenv("HOME"))};
 
