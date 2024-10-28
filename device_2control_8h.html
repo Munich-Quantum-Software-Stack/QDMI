@@ -330,7 +330,7 @@ It is <em>not</em> necessary to call this function before calling <a class="el" 
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a8039f5cd8202553b2a91a1c0b01d6751">QDMI_SUCCESS</a> if the job was successfully created. </dd>
 <dd>
-<a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642">QDMI_ERROR_INVALIDARGUMENT</a> if the program <code>prog</code> is invalid. </dd>
+<a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642">QDMI_ERROR_INVALIDARGUMENT</a> if <code>size</code> is less than or equal to zero or the program <code>prog</code> is invalid, e.g. <code>NULL</code>. </dd>
 <dd>
 <a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a> if the device does not support the program format. </dd>
 <dd>
@@ -532,13 +532,11 @@ It is <em>not</em> necessary to call this function before calling <a class="el" 
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a8039f5cd8202553b2a91a1c0b01d6751">QDMI_SUCCESS</a> if the job was successfully submitted </dd>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a8039f5cd8202553b2a91a1c0b01d6751">QDMI_SUCCESS</a> if the job was successfully submitted. </dd>
 <dd>
-<a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642">QDMI_ERROR_INVALIDARGUMENT</a> if the QASM string is invalid </dd>
+<a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642">QDMI_ERROR_INVALIDARGUMENT</a> if the job is in an invalid state </dd>
 <dd>
-<a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a> if the device does not support QASM </dd>
-<dd>
-<a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3">QDMI_ERROR_FATAL</a> if the job submission failed </dd></dl>
+<a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3">QDMI_ERROR_FATAL</a> if the job submission failed. </dd></dl>
 
 </div>
 </div>
