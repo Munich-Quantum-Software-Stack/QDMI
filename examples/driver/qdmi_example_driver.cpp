@@ -163,21 +163,20 @@ QDMI_Device_open(const std::string &lib_name, const QDMI_Device_Mode mode) {
   return device_handle;
 }
 
-bool is_path_allowed(const std::filesystem::path &path) {
+bool Is_path_allowed(const std::filesystem::path &path) {
   // Define the whitelist of allowed directories
   std::vector<std::filesystem::path> whitelist = {
       std::filesystem::current_path(),
       std::filesystem::path(std::getenv("HOME"))};
 
-  // Check if the path is within any of the whitelisted directories
-  for (const auto &allowed_path : whitelist) {
-    if (std::filesystem::equivalent(path, allowed_path) ||
-        std::filesystem::equivalent(path.parent_path(), allowed_path)) {
-      return true;
-    }
-  }
+  // Resolve the provided path to its absolute form
+  std::filesystem::path resolved_path = std::filesystem::absolute(path);
 
-  return false;
+  // Check if the resolved path starts with any of the whitelisted directories
+  return std::any_of(
+      whitelist.begin(), whitelist.end(), [&](const auto &allowed_path) {
+        return resolved_path.string().rfind(allowed_path.string(), 0) == 0;
+      });
 }
 } // namespace
 
@@ -188,9 +187,8 @@ int QDMI_Driver_init() {
   }
 
   // Validate the configuration file path
-  if (!is_path_allowed(config_file)) {
-    std::cerr << "Configuration file path is not allowed: " << config_file
-              << "\n";
+  if (!Is_path_allowed(config_file)) {
+    std::cerr << "Config file path is not allowed: " << config_file << "\n";
     return QDMI_ERROR_FATAL;
   }
 
