@@ -103,9 +103,11 @@ struct QDMI_Session_impl_d {
  * @{
  */
 
+namespace {
 /**
  * @brief Global list of devices managed by the driver.
  */
+// NOLINTNEXTLINE(cppcoreguidelines-avoid-non-const-global-variables)
 std::vector<std::shared_ptr<QDMI_Device_impl_d>> device_list;
 
 #define LOAD_SYMBOL(device, symbol)                                            \
@@ -159,6 +161,7 @@ QDMI_Device_open(const std::string &lib_name, const QDMI_Device_Mode mode) {
 
   return device_handle;
 }
+} // namespace
 
 int QDMI_Driver_init() {
   const char *config_file = std::getenv("QDMI_CONF");
@@ -273,13 +276,13 @@ int QDMI_query_get_operations(const QDMI_Device device, const int num_entries,
 }
 
 int QDMI_query_device_property(const QDMI_Device device,
-                               const QDMI_Device_Property prop, const int size,
+                               QDMI_Device_Property prop, const int size,
                                void *value, int *size_ret) {
   return device->query_device_property(prop, size, value, size_ret);
 }
 
 int QDMI_query_site_property(const QDMI_Device device, const QDMI_Site site,
-                             const QDMI_Site_Property prop, const int size,
+                             QDMI_Site_Property prop, const int size,
                              void *value, int *size_ret) {
   return device->query_site_property(site, prop, size, value, size_ret);
 }
@@ -287,14 +290,14 @@ int QDMI_query_site_property(const QDMI_Device device, const QDMI_Site site,
 int QDMI_query_operation_property(const QDMI_Device device,
                                   const QDMI_Operation operation,
                                   const int num_sites, const QDMI_Site *sites,
-                                  const QDMI_Operation_Property prop,
-                                  const int size, void *value, int *size_ret) {
+                                  QDMI_Operation_Property prop, const int size,
+                                  void *value, int *size_ret) {
   return device->query_operation_property(operation, num_sites, sites, prop,
                                           size, value, size_ret);
 }
 
 int QDMI_control_create_job(QDMI_Device dev, QDMI_Program_Format format,
-                            int size, const void *prog, QDMI_Job *job) {
+                            const int size, const void *prog, QDMI_Job *job) {
   if ((dev->mode & QDMI_DEVICE_MODE_READWRITE) != 0) {
     return dev->control_create_job(format, size, prog, job);
   }
@@ -302,7 +305,7 @@ int QDMI_control_create_job(QDMI_Device dev, QDMI_Program_Format format,
 }
 
 int QDMI_control_set_parameter(QDMI_Device dev, QDMI_Job job,
-                               QDMI_Job_Parameter param, int size,
+                               QDMI_Job_Parameter param, const int size,
                                const void *value) {
   if ((dev->mode & QDMI_DEVICE_MODE_READWRITE) != 0) {
     return dev->control_set_parameter(job, param, size, value);
@@ -339,7 +342,7 @@ int QDMI_control_wait(QDMI_Device dev, QDMI_Job job) {
 }
 
 int QDMI_control_get_data(QDMI_Device dev, QDMI_Job job, QDMI_Job_Result result,
-                          int size, void *data, int *size_ret) {
+                          const int size, void *data, int *size_ret) {
   if ((dev->mode & QDMI_DEVICE_MODE_READWRITE) != 0) {
     return dev->control_get_data(job, result, size, data, size_ret);
   }
