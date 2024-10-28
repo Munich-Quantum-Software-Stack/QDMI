@@ -8,6 +8,6 @@ updates:
           - "*"
     schedule:
       interval: "weekly"
-      day: "Monday"
+      day: "monday"
       time: "06:00"
       timezone: "Europe/Vienna"
