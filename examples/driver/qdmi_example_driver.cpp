@@ -265,30 +265,28 @@ int QDMI_Driver_shutdown() {
  * @{
  */
 
-int QDMI_query_get_sites(const QDMI_Device device, const int num_entries,
+int QDMI_query_get_sites(QDMI_Device device, const int num_entries,
                          QDMI_Site *sites, int *num_sites_ret) {
   return device->query_get_sites(num_entries, sites, num_sites_ret);
 }
 
-int QDMI_query_get_operations(const QDMI_Device device, const int num_entries,
+int QDMI_query_get_operations(QDMI_Device device, const int num_entries,
                               QDMI_Operation *operations, int *num_operations) {
   return device->query_get_operations(num_entries, operations, num_operations);
 }
 
-int QDMI_query_device_property(const QDMI_Device device,
-                               QDMI_Device_Property prop, const int size,
-                               void *value, int *size_ret) {
+int QDMI_query_device_property(QDMI_Device device, QDMI_Device_Property prop,
+                               const int size, void *value, int *size_ret) {
   return device->query_device_property(prop, size, value, size_ret);
 }
 
-int QDMI_query_site_property(const QDMI_Device device, const QDMI_Site site,
+int QDMI_query_site_property(QDMI_Device device, QDMI_Site site,
                              QDMI_Site_Property prop, const int size,
                              void *value, int *size_ret) {
   return device->query_site_property(site, prop, size, value, size_ret);
 }
 
-int QDMI_query_operation_property(const QDMI_Device device,
-                                  const QDMI_Operation operation,
+int QDMI_query_operation_property(QDMI_Device device, QDMI_Operation operation,
                                   const int num_sites, const QDMI_Site *sites,
                                   QDMI_Operation_Property prop, const int size,
                                   void *value, int *size_ret) {
