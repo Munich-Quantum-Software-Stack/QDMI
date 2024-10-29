@@ -30,9 +30,36 @@ typedef struct QDMI_Operation_impl_d {
   char *name;
 } QDMI_Operation_impl_t;
 
-/// Global variable to store the status of the device
-// NOLINTNEXTLINE(cppcoreguidelines-avoid-non-const-global-variables)
-QDMI_Device_Status device_status = QDMI_DEVICE_STATUS_OFFLINE;
+/**
+ * @brief Static function to maintain the device status.
+ * @return a pointer to the device status.
+ * @note This function is considered private and should not be used outside of
+ * this file. Hence, it is not part of any header file.
+ */
+static QDMI_Device_Status *QDMI_get_device_status() {
+  static QDMI_Device_Status device_status = QDMI_DEVICE_STATUS_OFFLINE;
+  return &device_status;
+}
+
+/**
+ * @brief Local function to set the device status.
+ * @param status the new device status.
+ * @note This function is considered private and should not be used outside of
+ * this file. Hence, it is not part of any header file.
+ */
+void QDMI_set_device_status(QDMI_Device_Status status) {
+  *QDMI_get_device_status() = status;
+}
+
+/**
+ * @brief Local function to read the device status.
+ * @return the current device status.
+ * @note This function is considered private and should not be used outside of
+ * this file. Hence, it is not part of any header file.
+ */
+QDMI_Device_Status QDMI_read_device_status() {
+  return *QDMI_get_device_status();
+}
 
 const QDMI_Site DEVICE_SITES[] = {
     &(QDMI_Site_impl_t){0}, &(QDMI_Site_impl_t){1}, &(QDMI_Site_impl_t){2},
@@ -67,7 +94,8 @@ const QDMI_Operation DEVICE_OPERATIONS[] = {
         if ((size) < strlen(prop_value) + 1) {                                 \
           return QDMI_ERROR_INVALIDARGUMENT;                                   \
         }                                                                      \
-        strcpy((char *)(value), prop_value);                                   \
+        strncpy((char *)(value), prop_value, (size) - 1);                      \
+        ((char *)(value))[(size) - 1] = '\0';                                  \
       }                                                                        \
       if ((size_ret) != NULL) {                                                \
         *(size_ret) = (int)strlen(prop_value) + 1;                             \
@@ -143,7 +171,8 @@ int QDMI_query_device_property_dev(const QDMI_Device_Property prop,
   ADD_SINGLE_VALUE_PROPERTY(QDMI_DEVICE_PROPERTY_QUBITSNUM, int, 5, prop, size,
                             value, size_ret)
   ADD_SINGLE_VALUE_PROPERTY(QDMI_DEVICE_PROPERTY_STATUS, QDMI_Device_Status,
-                            device_status, prop, size, value, size_ret)
+                            QDMI_read_device_status(), prop, size, value,
+                            size_ret)
   ADD_LIST_PROPERTY(
       QDMI_DEVICE_PROPERTY_COUPLINGMAP, QDMI_Site,
       ((QDMI_Site[]){
@@ -247,7 +276,7 @@ int QDMI_query_operation_property_dev(QDMI_Operation operation,
 int QDMI_control_create_job_dev(const QDMI_Program_Format format,
                                 const int size, const void *prog,
                                 QDMI_Job *job) {
-  if (device_status != QDMI_DEVICE_STATUS_IDLE) {
+  if (QDMI_read_device_status() != QDMI_DEVICE_STATUS_IDLE) {
     return QDMI_ERROR_FATAL;
   }
   if (size <= 0 || prog == NULL || job == NULL) {
@@ -259,7 +288,7 @@ int QDMI_control_create_job_dev(const QDMI_Program_Format format,
     return QDMI_ERROR_NOTSUPPORTED;
   }
 
-  device_status = QDMI_DEVICE_STATUS_BUSY;
+  QDMI_set_device_status(QDMI_DEVICE_STATUS_BUSY);
   *job = (QDMI_Job)malloc(sizeof(QDMI_Job_impl_t));
   // set job id to current time for demonstration purposes
   (*job)->id = rand();
@@ -286,7 +315,7 @@ int QDMI_control_submit_job_dev(QDMI_Job job) {
   if (job == NULL || job->status != QDMI_JOB_STATUS_CREATED) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
-  device_status = QDMI_DEVICE_STATUS_BUSY;
+  QDMI_set_device_status(QDMI_DEVICE_STATUS_BUSY);
   job->status = QDMI_JOB_STATUS_SUBMITTED;
   // here, the actual submission of the problem to the device would happen
   // ...
@@ -317,14 +346,14 @@ int QDMI_control_cancel_dev(QDMI_Job job) {
   }
 
   job->status = QDMI_JOB_STATUS_CANCELLED;
-  device_status = QDMI_DEVICE_STATUS_IDLE;
+  QDMI_set_device_status(QDMI_DEVICE_STATUS_IDLE);
   return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]
 
 int QDMI_control_check_dev(QDMI_Job job, QDMI_Job_Status *status) {
   // randomly decide whether job is done or not
   if (job->status == QDMI_JOB_STATUS_RUNNING && rand() % 2 == 0) {
-    device_status = QDMI_DEVICE_STATUS_IDLE;
+    QDMI_set_device_status(QDMI_DEVICE_STATUS_IDLE);
     job->status = QDMI_JOB_STATUS_DONE;
   }
   *status = job->status;
@@ -334,7 +363,7 @@ int QDMI_control_check_dev(QDMI_Job job, QDMI_Job_Status *status) {
 int QDMI_control_wait_dev(QDMI_Job job) {
   // in a real implementation, this would wait for the job to finish
   job->status = QDMI_JOB_STATUS_DONE;
-  device_status = QDMI_DEVICE_STATUS_IDLE;
+  QDMI_set_device_status(QDMI_DEVICE_STATUS_IDLE);
   return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]
 
@@ -343,7 +372,7 @@ int Compare_results(const void *a, const void *b) {
   return strcmp(*(char **)a, *(char **)b);
 } /// [DOXYGEN FUNCTION END]
 
-int QDMI_control_get_data_dev(QDMI_Job job, const QDMI_Job_Result result,
+int QDMI_control_get_data_dev(const QDMI_Job job, const QDMI_Job_Result result,
                               const int size, void *data, int *size_ret) {
   if (job->status != QDMI_JOB_STATUS_DONE) {
     return QDMI_ERROR_INVALIDARGUMENT;
@@ -491,11 +520,11 @@ void QDMI_control_free_job_dev(QDMI_Job job) {
 } /// [DOXYGEN FUNCTION END]
 
 int QDMI_control_initialize_dev(void) {
-  device_status = QDMI_DEVICE_STATUS_IDLE;
+  QDMI_set_device_status(QDMI_DEVICE_STATUS_IDLE);
   return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]
 
 int QDMI_control_finalize_dev(void) {
-  device_status = QDMI_DEVICE_STATUS_OFFLINE;
+  QDMI_set_device_status(QDMI_DEVICE_STATUS_OFFLINE);
   return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]
