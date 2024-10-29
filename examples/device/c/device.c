@@ -11,8 +11,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 #include "qdmi/device.h"
 
-#include <assert.h>
-#include <stdio.h>
+#include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -32,6 +31,7 @@ typedef struct QDMI_Operation_impl_d {
 } QDMI_Operation_impl_t;
 
 /// Global variable to store the status of the device
+// NOLINTNEXTLINE(cppcoreguidelines-avoid-non-const-global-variables)
 QDMI_Device_Status device_status = QDMI_DEVICE_STATUS_OFFLINE;
 
 const QDMI_Site DEVICE_SITES[] = {
@@ -135,15 +135,15 @@ int QDMI_query_device_property_dev(const QDMI_Device_Property prop,
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   ADD_STRING_PROPERTY(QDMI_DEVICE_PROPERTY_NAME, "Device with 5 qubits", prop,
-                      size, value, size_ret);
+                      size, value, size_ret)
   ADD_STRING_PROPERTY(QDMI_DEVICE_PROPERTY_VERSION, "0.1.0", prop, size, value,
-                      size_ret);
+                      size_ret)
   ADD_STRING_PROPERTY(QDMI_DEVICE_PROPERTY_LIBRARYVERSION, "1.0.0b1", prop,
-                      size, value, size_ret);
+                      size, value, size_ret)
   ADD_SINGLE_VALUE_PROPERTY(QDMI_DEVICE_PROPERTY_QUBITSNUM, int, 5, prop, size,
-                            value, size_ret);
+                            value, size_ret)
   ADD_SINGLE_VALUE_PROPERTY(QDMI_DEVICE_PROPERTY_STATUS, QDMI_Device_Status,
-                            device_status, prop, size, value, size_ret);
+                            device_status, prop, size, value, size_ret)
   ADD_LIST_PROPERTY(
       QDMI_DEVICE_PROPERTY_COUPLINGMAP, QDMI_Site,
       ((QDMI_Site[]){
@@ -152,47 +152,47 @@ int QDMI_query_device_property_dev(const QDMI_Device_Property prop,
           DEVICE_SITES[2], DEVICE_SITES[3], DEVICE_SITES[3], DEVICE_SITES[2],
           DEVICE_SITES[3], DEVICE_SITES[4], DEVICE_SITES[4], DEVICE_SITES[3],
           DEVICE_SITES[4], DEVICE_SITES[0], DEVICE_SITES[0], DEVICE_SITES[4]}),
-      10, prop, size, value, size_ret);
+      10, prop, size, value, size_ret)
   return QDMI_ERROR_NOTSUPPORTED;
 } /// [DOXYGEN FUNCTION END]
 
-int QDMI_query_site_property_dev(const QDMI_Site site,
-                                 const QDMI_Site_Property prop, const int size,
-                                 void *value, int *size_ret) {
-  if (prop >= QDMI_DEVICE_PROPERTY_MAX || (value == NULL && size_ret == NULL)) {
+int QDMI_query_site_property_dev(
+    QDMI_Site site, QDMI_Site_Property prop, // NOLINT(*-unused-parameter*)
+    int size, void *value, int *size_ret) {
+  if (prop >= QDMI_SITE_PROPERTY_MAX || (value == NULL && size_ret == NULL)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   ADD_SINGLE_VALUE_PROPERTY(QDMI_SITE_PROPERTY_TIME_T1, double, 1000.0, prop,
-                            size, value, size_ret);
+                            size, value, size_ret)
   ADD_SINGLE_VALUE_PROPERTY(QDMI_SITE_PROPERTY_TIME_T2, double, 100000.0, prop,
-                            size, value, size_ret);
+                            size, value, size_ret)
   return QDMI_ERROR_NOTSUPPORTED;
 } /// [DOXYGEN FUNCTION END]
 
-int QDMI_query_operation_property_dev(const QDMI_Operation operation,
+int QDMI_query_operation_property_dev(QDMI_Operation operation,
                                       const int num_sites,
                                       const QDMI_Site *sites,
                                       const QDMI_Operation_Property prop,
                                       const int size, void *value,
                                       int *size_ret) {
-  if (prop >= QDMI_DEVICE_PROPERTY_MAX || operation == NULL ||
+  if (prop >= QDMI_OPERATION_PROPERTY_MAX || operation == NULL ||
       (sites != NULL && num_sites <= 0) ||
       (value == NULL && size_ret == NULL)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   // General properties
   ADD_STRING_PROPERTY(QDMI_OPERATION_PROPERTY_NAME, operation->name, prop, size,
-                      value, size_ret);
+                      value, size_ret)
   // Two-qubit gates
   if (strcmp(operation->name, "cx") == 0) {
     if (sites != NULL && num_sites != 2) {
       return QDMI_ERROR_INVALIDARGUMENT;
     }
     ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_DURATION, double, 0.01,
-                              prop, size, value, size_ret);
+                              prop, size, value, size_ret)
     if (sites == NULL) {
       ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_QUBITSNUM, int, 2, prop,
-                                size, value, size_ret);
+                                size, value, size_ret)
       return QDMI_ERROR_NOTSUPPORTED;
     }
     if (sites[0] == sites[1]) {
@@ -201,27 +201,27 @@ int QDMI_query_operation_property_dev(const QDMI_Operation operation,
     if ((sites[0]->id == 0 && sites[1]->id == 1) ||
         (sites[0]->id == 1 && sites[1]->id == 0)) {
       ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_FIDELITY, double, 0.99,
-                                prop, size, value, size_ret);
+                                prop, size, value, size_ret)
     }
     if ((sites[0]->id == 1 && sites[1]->id == 2) ||
         (sites[0]->id == 2 && sites[1]->id == 1)) {
       ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_FIDELITY, double, 0.98,
-                                prop, size, value, size_ret);
+                                prop, size, value, size_ret)
     }
     if ((sites[0]->id == 2 && sites[1]->id == 3) ||
         (sites[0]->id == 3 && sites[1]->id == 2)) {
       ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_FIDELITY, double, 0.97,
-                                prop, size, value, size_ret);
+                                prop, size, value, size_ret)
     }
     if ((sites[0]->id == 3 && sites[1]->id == 4) ||
         (sites[0]->id == 4 && sites[1]->id == 3)) {
       ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_FIDELITY, double, 0.96,
-                                prop, size, value, size_ret);
+                                prop, size, value, size_ret)
     }
     if ((sites[0]->id == 4 && sites[1]->id == 0) ||
         (sites[0]->id == 0 && sites[1]->id == 4)) {
       ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_FIDELITY, double, 0.95,
-                                prop, size, value, size_ret);
+                                prop, size, value, size_ret)
     }
     if (prop == QDMI_OPERATION_PROPERTY_FIDELITY) {
       return QDMI_ERROR_INVALIDARGUMENT;
@@ -235,11 +235,11 @@ int QDMI_query_operation_property_dev(const QDMI_Operation operation,
       return QDMI_ERROR_INVALIDARGUMENT;
     }
     ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_DURATION, double, 0.01,
-                              prop, size, value, size_ret);
+                              prop, size, value, size_ret)
     ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_QUBITSNUM, int, 1, prop,
-                              size, value, size_ret);
+                              size, value, size_ret)
     ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_FIDELITY, double, 0.999,
-                              prop, size, value, size_ret);
+                              prop, size, value, size_ret)
   }
   return QDMI_ERROR_NOTSUPPORTED;
 } /// [DOXYGEN FUNCTION END]
@@ -339,7 +339,7 @@ int QDMI_control_wait_dev(QDMI_Job job) {
 } /// [DOXYGEN FUNCTION END]
 
 // Comparison function for qsort
-int compare_results(const void *a, const void *b) {
+int Compare_results(const void *a, const void *b) {
   return strcmp(*(char **)a, *(char **)b);
 } /// [DOXYGEN FUNCTION END]
 
@@ -382,7 +382,7 @@ int QDMI_control_get_data_dev(QDMI_Job job, const QDMI_Job_Result result,
     }
     // Sort the array
     qsort((void *)raw_data_split, job->num_shots, sizeof(char *),
-          compare_results);
+          Compare_results);
     // Count unique elements
     int count = 1; // First element is always unique
     for (int j = 1; j < job->num_shots; j++) {
@@ -443,7 +443,7 @@ int QDMI_control_get_data_dev(QDMI_Job job, const QDMI_Job_Result result,
     }
     // Sort the array
     qsort((void *)raw_data_split, job->num_shots, sizeof(char *),
-          compare_results);
+          Compare_results);
     // Count unique elements
     int count = 1; // First element is always unique
     for (int j = 1; j < job->num_shots; j++) {
