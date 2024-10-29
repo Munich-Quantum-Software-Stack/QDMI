@@ -110,7 +110,7 @@ int QDMI_query_get_sites_dev(const int num_entries, QDMI_Site *sites,
     *num_sites = 5;
   }
   return QDMI_SUCCESS;
-}
+} /// [DOXYGEN FUNCTION END]
 
 int QDMI_query_get_operations_dev(const int num_entries,
                                   QDMI_Operation *operations,
@@ -127,7 +127,7 @@ int QDMI_query_get_operations_dev(const int num_entries,
     *num_operations = 4;
   }
   return QDMI_SUCCESS;
-}
+} /// [DOXYGEN FUNCTION END]
 
 int QDMI_query_device_property_dev(const QDMI_Device_Property prop,
                                    const int size, void *value, int *size_ret) {
@@ -278,7 +278,7 @@ int QDMI_control_set_parameter_dev(QDMI_Job job, const QDMI_Job_Parameter param,
     return QDMI_SUCCESS;
   }
   return QDMI_ERROR_NOTSUPPORTED;
-}
+} /// [DOXYGEN FUNCTION END]
 
 int QDMI_control_submit_job_dev(QDMI_Job job) {
   if (job == NULL || job->status != QDMI_JOB_STATUS_CREATED) {
@@ -306,7 +306,7 @@ int QDMI_control_submit_job_dev(QDMI_Job job) {
   }
   *(job->results + (job->num_shots * (num_qubits + 1) - 1)) = '\0';
   return QDMI_SUCCESS;
-}
+} /// [DOXYGEN FUNCTION END]
 
 int QDMI_control_cancel_dev(QDMI_Job job) {
   // cannot cancel a job that is already done

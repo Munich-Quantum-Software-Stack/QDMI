@@ -93,7 +93,7 @@ struct Pair_hash {
     auto hash2 = std::hash<T2>{}(p.second);
     return hash1 ^ hash2;
   }
-}; /// [DOXYGEN FUNCTION END]
+};
 
 const static std::unordered_map<
     const QDMI_Operation_impl_d *,
@@ -188,7 +188,7 @@ int QDMI_query_get_sites_dev(const int num_entries, QDMI_Site *sites,
     *num_sites = static_cast<int>(device_sites.size());
   }
   return QDMI_SUCCESS;
-}
+} /// [DOXYGEN FUNCTION END]
 
 int QDMI_query_get_operations_dev(const int num_entries,
                                   QDMI_Operation *operations,
@@ -208,7 +208,7 @@ int QDMI_query_get_operations_dev(const int num_entries,
     *num_operations = static_cast<int>(device_operations.size());
   }
   return QDMI_SUCCESS;
-}
+} /// [DOXYGEN FUNCTION END]
 
 int QDMI_query_device_property_dev(const QDMI_Device_Property prop,
                                    const int size, void *value, int *size_ret) {
@@ -333,7 +333,7 @@ int QDMI_control_set_parameter_dev(QDMI_Job job, const QDMI_Job_Parameter param,
     return QDMI_SUCCESS;
   }
   return QDMI_ERROR_NOTSUPPORTED;
-}
+} /// [DOXYGEN FUNCTION END]
 
 int QDMI_control_submit_job_dev(QDMI_Job job) {
   if (job == nullptr || job->status != QDMI_JOB_STATUS_CREATED) {
