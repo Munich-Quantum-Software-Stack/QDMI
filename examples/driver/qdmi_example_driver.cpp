@@ -17,6 +17,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include <cstdlib>
 #include <dlfcn.h>
 #include <exception>
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <memory>
@@ -103,10 +104,12 @@ struct QDMI_Session_impl_d {
  * @{
  */
 
+namespace {
 /**
  * @brief Global list of devices managed by the driver.
  */
-std::vector<std::shared_ptr<QDMI_Device_impl_d>> devices;
+// NOLINTNEXTLINE(cppcoreguidelines-avoid-non-const-global-variables)
+std::vector<std::shared_ptr<QDMI_Device_impl_d>> device_list;
 
 #define LOAD_SYMBOL(device, symbol)                                            \
   {                                                                            \
@@ -160,10 +163,33 @@ QDMI_Device_open(const std::string &lib_name, const QDMI_Device_Mode mode) {
   return device_handle;
 }
 
+bool Is_path_allowed(const std::filesystem::path &path) {
+  // Define the whitelist of allowed directories
+  const std::vector<std::filesystem::path> whitelist = {
+      std::filesystem::current_path(),
+      std::filesystem::path(std::getenv("HOME"))};
+
+  // Resolve the provided path to its absolute form
+  std::filesystem::path resolved_path = std::filesystem::absolute(path);
+
+  // Check if the resolved path starts with any of the whitelisted directories
+  return std::any_of(
+      whitelist.begin(), whitelist.end(), [&](const auto &allowed_path) {
+        return resolved_path.string().rfind(allowed_path.string(), 0) == 0;
+      });
+}
+} // namespace
+
 int QDMI_Driver_init() {
   const char *config_file = std::getenv("QDMI_CONF");
   if (config_file == nullptr) {
     config_file = "qdmi.conf";
+  }
+
+  // Validate the configuration file path
+  if (!Is_path_allowed(config_file)) {
+    std::cerr << "Config file path is not allowed: " << config_file << "\n";
+    return QDMI_ERROR_FATAL;
   }
 
   std::ifstream file(config_file);
@@ -197,7 +223,7 @@ int QDMI_Driver_init() {
     }
 
     try {
-      devices.emplace_back(QDMI_Device_open(lib_name, mode));
+      device_list.emplace_back(QDMI_Device_open(lib_name, mode));
     } catch (const std::exception &e) {
       std::cerr << "Failed to open device: " << e.what() << "\n";
       return QDMI_ERROR_FATAL;
@@ -211,7 +237,7 @@ int QDMI_Driver_init() {
 int QDMI_session_alloc(QDMI_Session *session) {
   *session = new QDMI_Session_impl_d();
   // in this simple implementation, each session has access to all devices
-  (*session)->device_list = devices;
+  (*session)->device_list = device_list;
   return QDMI_SUCCESS;
 }
 
@@ -252,7 +278,7 @@ void QDMI_session_free(QDMI_Session session) { delete session; }
 
 int QDMI_Driver_shutdown() {
   // Close all devices
-  devices.clear();
+  device_list.clear();
   return QDMI_SUCCESS;
 }
 
@@ -262,39 +288,37 @@ int QDMI_Driver_shutdown() {
  * @{
  */
 
-int QDMI_query_get_sites(const QDMI_Device device, const int num_entries,
+int QDMI_query_get_sites(QDMI_Device device, const int num_entries,
                          QDMI_Site *sites, int *num_sites_ret) {
   return device->query_get_sites(num_entries, sites, num_sites_ret);
 }
 
-int QDMI_query_get_operations(const QDMI_Device device, const int num_entries,
+int QDMI_query_get_operations(QDMI_Device device, const int num_entries,
                               QDMI_Operation *operations, int *num_operations) {
   return device->query_get_operations(num_entries, operations, num_operations);
 }
 
-int QDMI_query_device_property(const QDMI_Device device,
-                               const QDMI_Device_Property prop, const int size,
-                               void *value, int *size_ret) {
+int QDMI_query_device_property(QDMI_Device device, QDMI_Device_Property prop,
+                               const int size, void *value, int *size_ret) {
   return device->query_device_property(prop, size, value, size_ret);
 }
 
-int QDMI_query_site_property(const QDMI_Device device, const QDMI_Site site,
-                             const QDMI_Site_Property prop, const int size,
+int QDMI_query_site_property(QDMI_Device device, QDMI_Site site,
+                             QDMI_Site_Property prop, const int size,
                              void *value, int *size_ret) {
   return device->query_site_property(site, prop, size, value, size_ret);
 }
 
-int QDMI_query_operation_property(const QDMI_Device device,
-                                  const QDMI_Operation operation,
+int QDMI_query_operation_property(QDMI_Device device, QDMI_Operation operation,
                                   const int num_sites, const QDMI_Site *sites,
-                                  const QDMI_Operation_Property prop,
-                                  const int size, void *value, int *size_ret) {
+                                  QDMI_Operation_Property prop, const int size,
+                                  void *value, int *size_ret) {
   return device->query_operation_property(operation, num_sites, sites, prop,
                                           size, value, size_ret);
 }
 
 int QDMI_control_create_job(QDMI_Device dev, QDMI_Program_Format format,
-                            int size, const void *prog, QDMI_Job *job) {
+                            const int size, const void *prog, QDMI_Job *job) {
   if ((dev->mode & QDMI_DEVICE_MODE_READWRITE) != 0) {
     return dev->control_create_job(format, size, prog, job);
   }
@@ -302,7 +326,7 @@ int QDMI_control_create_job(QDMI_Device dev, QDMI_Program_Format format,
 }
 
 int QDMI_control_set_parameter(QDMI_Device dev, QDMI_Job job,
-                               QDMI_Job_Parameter param, int size,
+                               QDMI_Job_Parameter param, const int size,
                                const void *value) {
   if ((dev->mode & QDMI_DEVICE_MODE_READWRITE) != 0) {
     return dev->control_set_parameter(job, param, size, value);
@@ -339,7 +363,7 @@ int QDMI_control_wait(QDMI_Device dev, QDMI_Job job) {
 }
 
 int QDMI_control_get_data(QDMI_Device dev, QDMI_Job job, QDMI_Job_Result result,
-                          int size, void *data, int *size_ret) {
+                          const int size, void *data, int *size_ret) {
   if ((dev->mode & QDMI_DEVICE_MODE_READWRITE) != 0) {
     return dev->control_get_data(job, result, size, data, size_ret);
   }

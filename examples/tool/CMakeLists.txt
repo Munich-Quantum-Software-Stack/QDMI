@@ -10,10 +10,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-add_library(qdmi_example_driver qdmi_example_driver.cpp qdmi_example_driver.h)
-target_link_libraries(qdmi_example_driver PRIVATE qdmi::qdmi)
-target_include_directories(qdmi_example_driver
-                           PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-set_target_properties(qdmi_example_driver PROPERTIES POSITION_INDEPENDENT_CODE
-                                                     ON)
-add_library(qdmi::example_driver ALIAS qdmi_example_driver)
+add_library(qdmi_example_tool example_tool.cpp example_tool.hpp)
+target_link_libraries(qdmi_example_tool PRIVATE qdmi::qdmi qdmi::example_fomac)
+target_include_directories(qdmi_example_tool PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+add_library(qdmi::example_tool ALIAS qdmi_example_tool)

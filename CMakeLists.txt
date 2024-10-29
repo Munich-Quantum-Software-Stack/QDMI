@@ -16,6 +16,8 @@ project(
 # make scripts available to cmake
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
+include(cmake/Cache.cmake)
+
 # check if this is the master project or used via add_subdirectory
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   set(QDMI_MASTER_PROJECT ON)
@@ -26,6 +28,12 @@ endif()
 option(QDMI_INSTALL "Generate installation instructions for QDMI"
        ${QDMI_MASTER_PROJECT})
 option(BUILD_QDMI_TESTS "Also build tests for the QDMI project"
+       ${QDMI_MASTER_PROJECT})
+option(BUILD_QDMI_EXAMPLES "Also build examples for the QDMI project"
+       ${QDMI_MASTER_PROJECT})
+option(BUILD_QDMI_DOCS "Also build documentation for the QDMI project"
+       ${QDMI_MASTER_PROJECT})
+option(BUILD_QDMI_TEMPLATES "Also build templates for the QDMI project"
        ${QDMI_MASTER_PROJECT})
 
 # enable organization of targets into folders
@@ -155,14 +163,28 @@ if(QDMI_INSTALL)
 endif()
 
 # add documentation
-add_subdirectory(docs)
+if(BUILD_QDMI_DOCS)
+  add_subdirectory(docs)
+endif()
+
+# add examples (used by tests)
+if(BUILD_QDMI_EXAMPLES OR BUILD_QDMI_TESTS)
+  add_subdirectory(examples)
+endif()
 
 # add test code
 if(BUILD_QDMI_TESTS)
   enable_testing()
   include(GoogleTest)
-  # include examples, these are used by the tests
-  add_subdirectory(examples)
   # include the tests itself
   add_subdirectory(test)
+endif()
+
+# add templates
+if(BUILD_QDMI_TEMPLATES OR BUILD_QDMI_TESTS)
+  # if testing is enabled, also enable building the tests in the templates
+  set(BUILD_MY_DEVICE_TESTS
+      ${BUILD_QDMI_TESTS}
+      CACHE BOOL "Build tests for MyDevice" FORCE)
+  add_subdirectory(templates/device)
 endif()

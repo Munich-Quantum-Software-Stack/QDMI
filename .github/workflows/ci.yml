@@ -1,0 +1,84 @@
+name: CI
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+  merge_group:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  change-detection:
+    name: 🔍 Change
+    uses: ./.github/workflows/reusable-change-detection.yml
+
+  tests:
+    name: 🇨‌ Test
+    needs: change-detection
+    if: fromJSON(needs.change-detection.outputs.run-tests)
+    uses: ./.github/workflows/reusable-cpp-ci.yml
+    with:
+      # do not try to build docs in test builds
+      cmake-args: "-DBUILD_QDMI_DOCS=OFF -G Ninja"
+
+  linter:
+    name: 🇨‌ Lint
+    needs: change-detection
+    if: fromJSON(needs.change-detection.outputs.run-linter)
+    uses: cda-tum/mqt-workflows/.github/workflows/reusable-cpp-linter.yml@v1.4
+    with:
+      clang-version: 19
+      cpp-linter-extra-args: ""
+      # do not try to build docs in linter builds
+      cmake-args: "-DBUILD_QDMI_DOCS=OFF"
+
+  code-ql:
+    name: 📝 CodeQL
+    needs: change-detection
+    if: fromJSON(needs.change-detection.outputs.run-code-ql)
+    uses: cda-tum/mqt-workflows/.github/workflows/reusable-code-ql-cpp.yml@v1.4
+    with:
+      # do not try to build docs in CodeQL builds
+      cmake-args: "-DBUILD_QDMI_DOCS=OFF"
+
+  docs:
+    name: 📝 Build and Deploy Docs
+    needs: change-detection
+    if: fromJSON(needs.change-detection.outputs.run-docs)
+    uses: ./.github/workflows/reusable-docs.yml
+    permissions:
+      contents: write
+
+  required-checks-pass: # This job does nothing and is only used for branch protection
+    name: 🚦 Check
+    if: always()
+    needs:
+      - change-detection
+      - tests
+      - linter
+      - code-ql
+      - docs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Decide whether the needed jobs succeeded or failed
+        uses: re-actors/alls-green@release/v1
+        with:
+          allowed-skips: >-
+            ${{
+              fromJSON(needs.change-detection.outputs.run-tests)
+              && '' || 'tests,'
+            }} ${{
+              fromJSON(needs.change-detection.outputs.run-linter)
+              && '' || 'linter,'
+            }} ${{
+              fromJSON(needs.change-detection.outputs.run-code-ql)
+              && '' || 'code-ql,'
+            }} ${{
+              fromJSON(needs.change-detection.outputs.run-docs)
+              && '' || 'docs,'
+            }}
+          jobs: ${{ toJSON(needs) }}

@@ -33,7 +33,8 @@ extern "C" {
  * @param[in] prog is the program to run.
  * @param[out] job is a handle to the job created.
  * @return @ref QDMI_SUCCESS if the job was successfully created.
- * @return @ref QDMI_ERROR_INVALIDARGUMENT if the program @p prog is invalid.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p size is less than or equal to
+ * zero or the program @p prog is invalid, e.g. @c NULL.
  * @return @ref QDMI_ERROR_NOTSUPPORTED if the device does not support the
  * program format.
  * @return @ref QDMI_ERROR_FATAL if the job creation failed.
@@ -73,10 +74,9 @@ int QDMI_control_set_parameter(QDMI_Device dev, QDMI_Job job,
  * to check the status and wait for the job to finish.
  * @param[in] dev The device to submit the job to.
  * @param[in] job The job to submit.
- * @return @ref QDMI_SUCCESS if the job was successfully submitted
- * @return @ref QDMI_ERROR_INVALIDARGUMENT if the QASM string is invalid
- * @return @ref QDMI_ERROR_NOTSUPPORTED if the device does not support QASM
- * @return @ref QDMI_ERROR_FATAL if the job submission failed
+ * @return @ref QDMI_SUCCESS if the job was successfully submitted.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if the job is in an invalid state
+ * @return @ref QDMI_ERROR_FATAL if the job submission failed.
  */
 int QDMI_control_submit_job(QDMI_Device dev, QDMI_Job job);
 

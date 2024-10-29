@@ -9,17 +9,40 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include "qdmi/client.h"
 #include "qdmi_example_driver.h"
 
+#include <algorithm>
+#include <array>
+#include <cstddef>
+#include <cstdlib>
+#include <filesystem>
 #include <fstream>
 #include <gtest/gtest.h>
 #include <string>
 
 void QDMIImplementationTest::SetUp() {
-  device_name = GetParam();
-  std::ofstream conf_file("qdmi.conf");
-  conf_file << device_name << Shared_library_file_extension()
+  library_name = GetParam();
+
+  // Get the current test info
+  const ::testing::TestInfo *test_info =
+      ::testing::UnitTest::GetInstance()->current_test_info();
+  auto test_name =
+      test_info->test_suite_name() + std::string("_") + test_info->name();
+  // replace all `/` with `_` in the test name
+  std::replace(test_name.begin(), test_name.end(), '/', '_');
+
+  config_file_name = "qdmi_" + test_name + ".conf";
+  std::ofstream conf_file(config_file_name);
+  conf_file << library_name << Shared_library_file_extension()
             << " read_write\n";
-  conf_file << device_name << Shared_library_file_extension() << " read_only\n";
+  conf_file << library_name << Shared_library_file_extension()
+            << " read_only\n";
   conf_file.close();
+
+#ifdef _WIN32
+  _putenv_s("QDMI_CONF", config_file_name.c_str());
+#else
+  // NOLINTNEXTLINE(misc-include-cleaner) already included from `<cstdlib>`
+  setenv("QDMI_CONF", config_file_name.c_str(), 1);
+#endif
 
   ASSERT_EQ(QDMI_Driver_init(), QDMI_SUCCESS)
       << "Failed to initialize the driver";
@@ -35,7 +58,7 @@ void QDMIImplementationTest::SetUp() {
 void QDMIImplementationTest::TearDown() {
   QDMI_session_free(session);
   QDMI_Driver_shutdown();
-  std::remove("qdmi.conf");
+  std::filesystem::remove(config_file_name);
 }
 
 TEST_P(QDMIImplementationTest, QueryGetSitesImplemented) {
@@ -55,7 +78,7 @@ TEST_P(QDMIImplementationTest, QueryDevicePropertyImplemented) {
 }
 
 TEST_P(QDMIImplementationTest, QuerySitePropertyImplemented) {
-  ASSERT_EQ(QDMI_query_site_property(device, 0, QDMI_SITE_PROPERTY_MAX, 0,
+  ASSERT_EQ(QDMI_query_site_property(device, nullptr, QDMI_SITE_PROPERTY_MAX, 0,
                                      nullptr, nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
 }
@@ -67,6 +90,7 @@ TEST_P(QDMIImplementationTest, QueryOperationPropertyImplemented) {
             QDMI_ERROR_INVALIDARGUMENT);
 }
 
+namespace {
 std::string Get_test_circuit() {
   return "OPENQASM 2.0;\n"
          "include \"qelib1.inc\";\n"
@@ -76,6 +100,7 @@ std::string Get_test_circuit() {
          "cx q[0], q[1];\n"
          "measure q -> c;\n";
 }
+} // namespace
 
 TEST_P(QDMIImplementationTest, ControlCreateJobImplemented) {
   QDMI_Job job = nullptr;
@@ -165,7 +190,7 @@ TEST_P(QDMIImplementationTest, QueryDeviceNameImplemented) {
                                        nullptr, &size),
             QDMI_SUCCESS)
       << "Devices must provide a name";
-  std::string value(static_cast<std::size_t>(size), '\0');
+  std::string value(static_cast<size_t>(size), '\0');
   ASSERT_EQ(QDMI_query_device_property(device, QDMI_DEVICE_PROPERTY_NAME, size,
                                        value.data(), nullptr),
             QDMI_SUCCESS)
@@ -179,7 +204,7 @@ TEST_P(QDMIImplementationTest, QueryDeviceVersionImplemented) {
                                        nullptr, &size),
             QDMI_SUCCESS)
       << "Devices must provide a version";
-  std::string value(static_cast<std::size_t>(size), '\0');
+  std::string value(static_cast<size_t>(size), '\0');
   ASSERT_EQ(QDMI_query_device_property(device, QDMI_DEVICE_PROPERTY_VERSION,
                                        size, value.data(), nullptr),
             QDMI_SUCCESS)
@@ -193,7 +218,7 @@ TEST_P(QDMIImplementationTest, QueryDeviceLibraryVersionImplemented) {
                 device, QDMI_DEVICE_PROPERTY_LIBRARYVERSION, 0, nullptr, &size),
             QDMI_SUCCESS)
       << "Devices must provide a library version";
-  std::string value(static_cast<std::size_t>(size), '\0');
+  std::string value(static_cast<size_t>(size), '\0');
   ASSERT_EQ(QDMI_query_device_property(device,
                                        QDMI_DEVICE_PROPERTY_LIBRARYVERSION,
                                        size, value.data(), nullptr),
@@ -205,12 +230,12 @@ TEST_P(QDMIImplementationTest, QueryDeviceLibraryVersionImplemented) {
 TEST_P(QDMIImplementationTest, ControlDeviceModeReadOnly) {
   // attempt to get the second device in the session, which should be in
   // read-only mode
-  QDMI_Device devices[2];
-  ASSERT_EQ(QDMI_session_get_devices(session, 2, devices, nullptr),
+  std::array<QDMI_Device, 2> devices{};
+  ASSERT_EQ(QDMI_session_get_devices(session, 2, devices.data(), nullptr),
             QDMI_SUCCESS);
   device = devices[1];
   ASSERT_NE(device, nullptr) << "Failed to get read-only device";
-  QDMI_Job job;
+  QDMI_Job job{};
   ASSERT_EQ(
       QDMI_control_create_job(device, QDMI_PROGRAM_FORMAT_QASM2,
                               static_cast<int>(Get_test_circuit().length() + 1),

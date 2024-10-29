@@ -142,8 +142,6 @@ int QDMI_query_device_property(QDMI_Device device, QDMI_Device_Property prop,
  * by @p size is less than the size of the data being queried as specified for
  * the @ref QDMI_Site_Property @p prop and @p value is not a @c NULL value, or
  * if both @p value and @p size_ret are @c NULL.
- * @return @ref QDMI_ERROR_OUTOFRANGE if the site index is out of range, i.e.,
- * less than zero or greater than the number of sites minus one.
  * @return @ref QDMI_ERROR_NOTSUPPORTED if the property is not supported by the
  * device.
  * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.

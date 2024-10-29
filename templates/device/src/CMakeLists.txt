@@ -4,5 +4,6 @@
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 # ------------------------------------------------------------------------------
 
-add_subdirectory(c)
-add_subdirectory(cxx)
+add_library(my_device SHARED my_device.cpp)
+target_link_libraries(my_device PRIVATE qdmi::qdmi qdmi::project_warnings)
+add_library(qdmi::my_device ALIAS my_device)

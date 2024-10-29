@@ -38,5 +38,6 @@ protected:
 
   QDMI_Session session = nullptr;
   QDMI_Device device = nullptr;
-  std::string device_name;
+  std::string library_name;
+  std::string config_file_name;
 };
