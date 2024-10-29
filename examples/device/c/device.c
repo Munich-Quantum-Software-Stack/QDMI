@@ -368,7 +368,7 @@ int QDMI_control_wait_dev(QDMI_Job job) {
 } /// [DOXYGEN FUNCTION END]
 
 // Comparison function for qsort
-int Compare_results(const void *a, const void *b) {
+int QDMI_Compare_results(const void *a, const void *b) {
   return strcmp(*(char **)a, *(char **)b);
 } /// [DOXYGEN FUNCTION END]
 
@@ -411,7 +411,7 @@ int QDMI_control_get_data_dev(const QDMI_Job job, const QDMI_Job_Result result,
     }
     // Sort the array
     qsort((void *)raw_data_split, job->num_shots, sizeof(char *),
-          Compare_results);
+          QDMI_Compare_results);
     // Count unique elements
     int count = 1; // First element is always unique
     for (int j = 1; j < job->num_shots; j++) {
@@ -472,7 +472,7 @@ int QDMI_control_get_data_dev(const QDMI_Job job, const QDMI_Job_Result result,
     }
     // Sort the array
     qsort((void *)raw_data_split, job->num_shots, sizeof(char *),
-          Compare_results);
+          QDMI_Compare_results);
     // Count unique elements
     int count = 1; // First element is always unique
     for (int j = 1; j < job->num_shots; j++) {
