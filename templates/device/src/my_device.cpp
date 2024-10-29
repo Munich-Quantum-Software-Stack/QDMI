@@ -14,11 +14,15 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include "qdmi/device.h"
 
 // The following line ignores the unused parameters in the functions.
-// Additionally, it ignores warnings for easily swappable parameters.
-// Please remove the `misc-unused-parameters` part while populating the
-// functions.
-// NOLINTBEGIN(misc-unused-parameters,clang-diagnostic-unused-parameter,bugprone-easily-swappable-parameters)
-
+// Please remove the following code block after populating the functions.
+// NOLINTBEGIN(misc-unused-parameters,clang-diagnostic-unused-parameter)
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-parameter"
+#elif defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
 /**
  * @brief Implementation of the QDMI_Job structure.
  * @details This structure can, e.g., be used to store the job id.
@@ -86,7 +90,10 @@ int QDMI_control_initialize_dev() { return QDMI_ERROR_NOTIMPLEMENTED; }
 int QDMI_control_finalize_dev() { return QDMI_ERROR_NOTIMPLEMENTED; }
 
 // The following line ignores the unused parameters in the functions.
-// Additionally, it ignores warnings for easily swappable parameters.
-// Please remove the `misc-unused-parameters` part while populating the
-// functions.
-// NOLINTEND(misc-unused-parameters,clang-diagnostic-unused-parameter,bugprone-easily-swappable-parameters)
+// Please remove the following code block after populating the functions.
+// NOLINTEND(misc-unused-parameters,clang-diagnostic-unused-parameter)
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#elif defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
