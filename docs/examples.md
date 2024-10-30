@@ -33,7 +33,7 @@ QDMI_query_device_property_dev function. Below you find the respective implement
   \dontinclude device.c
   \skip QDMI_query_device_property_dev
   \until QDMI_DEVICE_PROPERTY_LIBRARYVERSION
-  \until ;
+  \until )
   \skipline }
 - <b class="tab-title">C++</b>
   \dontinclude device.cpp
@@ -121,7 +121,7 @@ Following two examples for returning `double` and `int` properties.
   \until {
   \skip QDMI_DEVICE_PROPERTY_QUBITSNUM
   \until QDMI_DEVICE_PROPERTY_STATUS
-  \until ;
+  \until )
   \skipline }
 - <b class="tab-title">C++</b>
   \dontinclude device.cpp
