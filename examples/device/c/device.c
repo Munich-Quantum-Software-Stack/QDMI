@@ -372,7 +372,7 @@ int QDMI_Compare_results(const void *a, const void *b) {
   return strcmp(*(char **)a, *(char **)b);
 } /// [DOXYGEN FUNCTION END]
 
-int QDMI_control_get_data_dev(const QDMI_Job job, const QDMI_Job_Result result,
+int QDMI_control_get_data_dev(QDMI_Job job, const QDMI_Job_Result result,
                               const int size, void *data, int *size_ret) {
   if (job->status != QDMI_JOB_STATUS_DONE) {
     return QDMI_ERROR_INVALIDARGUMENT;
