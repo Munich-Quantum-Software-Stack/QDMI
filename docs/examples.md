@@ -33,14 +33,12 @@ QDMI_query_device_property_dev function. Below you find the respective implement
   \dontinclude device.c
   \skip QDMI_query_device_property_dev
   \until QDMI_DEVICE_PROPERTY_LIBRARYVERSION
-  \until )
-  \skipline }
+  \until size_ret)
 - <b class="tab-title">C++</b>
   \dontinclude device.cpp
   \skip QDMI_query_device_property_dev
   \until QDMI_DEVICE_PROPERTY_LIBRARYVERSION
-  \until )
-  \skipline }
+  \until size_ret)
 </div>
 <!-- prettier-ignore-end -->
 
@@ -107,11 +105,12 @@ Another macro is defined for list properties of the data types above.
 </div>
 <!-- prettier-ignore-end -->
 
-The use of the two latter macros is demonstrated in the following sections.
+The usage of the two latter macros is demonstrated in the following sections.
 
-### Double and Integer Properties {#device-double-int}
+### Integer or Enumeration Properties {#device-int-enumeration}
 
-Following two examples for returning `double` and `int` properties.
+The following two examples demonstrate how to return integer or enumeration properties of the
+device.
 
 <!-- prettier-ignore-start -->
 <div class="tabbed">
@@ -121,22 +120,20 @@ Following two examples for returning `double` and `int` properties.
   \until {
   \skip QDMI_DEVICE_PROPERTY_QUBITSNUM
   \until QDMI_DEVICE_PROPERTY_STATUS
-  \until )
-  \skipline }
+  \until size_ret)
 - <b class="tab-title">C++</b>
   \dontinclude device.cpp
   \skip QDMI_query_device_property_dev
   \until {
   \skip QDMI_DEVICE_PROPERTY_QUBITSNUM
   \until QDMI_DEVICE_PROPERTY_STATUS
-  \until )
-  \skipline }
+  \until size_ret)
 </div>
 <!-- prettier-ignore-end -->
 
 ### List Properties {#device-list}
 
-Some properties are returned as a list of the various data type. The following example shows how to
+Some properties are returned as a list of various data types. The following example shows how to
 return the coupling map of the device as a list of pairs of @ref QDMI_Site's. The pairs are
 flattened into a single list of @ref QDMI_Site's.
 
@@ -146,8 +143,8 @@ flattened into a single list of @ref QDMI_Site's.
   \dontinclude device.c
   \skip QDMI_query_device_property_dev
   \until {
-  \skip QDMI_DEVICE_PROPERTY_COUPLINGMAP
-  \until }
+  \skip ADD_LIST_PROPERTY
+  \until size_ret)
 - <b class="tab-title">C++</b>
   \dontinclude device.cpp
   \skipline constexpr static std::array<const QDMI_Site_impl_d *const, 20>
@@ -156,7 +153,7 @@ flattened into a single list of @ref QDMI_Site's.
   \skip QDMI_query_device_property_dev
   \until {
   \skip QDMI_DEVICE_PROPERTY_COUPLINGMAP
-  \until }
+  \until size_ret)
 </div>
 <!-- prettier-ignore-end -->
 
@@ -174,8 +171,7 @@ function.
   \dontinclude device.c
   \skip DEVICE_SITES
   \until ;
-  \skip Min
-  \until QDMI_query_get_sites_dev
+  \skip QDMI_query_get_sites_dev
   \until DOXYGEN FUNCTION END
 - <b class="tab-title">C++</b>
   \dontinclude device.cpp
@@ -198,7 +194,7 @@ fidelities of two-qubit gates can be returned.
   \until DOXYGEN FUNCTION END
 - <b class="tab-title">C++</b>
   \dontinclude device.cpp
-  \skip Pair_hash
+  \skip QDMI_Pair_hash
   \until OPERATION_FIDELITIES
   \until ;
   \skip QDMI_query_operation_property_dev

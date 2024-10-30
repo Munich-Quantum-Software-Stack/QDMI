@@ -316,7 +316,7 @@ int QDMI_control_create_job_dev(const QDMI_Program_Format format,
 
   device_state.status = QDMI_DEVICE_STATUS_BUSY;
   *job = new QDMI_Job_impl_d;
-  // set job id to current time for demonstration purposes
+  // set job id to random number for demonstration purposes
   (*job)->id = device_state.dis(device_state.gen);
   (*job)->status = QDMI_JOB_STATUS_CREATED;
   return QDMI_SUCCESS;
