@@ -122,20 +122,22 @@ const QDMI_Operation DEVICE_OPERATIONS[] = {
     }                                                                          \
   }
 
-int Min(const int a, const int b) { return a < b ? a : b; }
-
 int QDMI_query_get_sites_dev(const int num_entries, QDMI_Site *sites,
                              int *num_sites) {
   if ((sites != NULL && num_entries <= 0) ||
       (sites == NULL && num_sites == NULL)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
+  const size_t device_sites_size =
+      sizeof(DEVICE_SITES) / sizeof(DEVICE_SITES[0]);
   if (sites != NULL) {
+    const size_t copy_size =
+        (num_entries < device_sites_size ? num_entries : device_sites_size);
     memcpy((void *)sites, (const void *)DEVICE_SITES,
-           Min(num_entries, 5) * sizeof(QDMI_Site));
+           copy_size * sizeof(QDMI_Site));
   }
   if (num_sites != NULL) {
-    *num_sites = 5;
+    *num_sites = (int)device_sites_size;
   }
   return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]
@@ -147,12 +149,17 @@ int QDMI_query_get_operations_dev(const int num_entries,
       (operations == NULL && num_operations == NULL)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
+  const size_t device_operations_size =
+      sizeof(DEVICE_OPERATIONS) / sizeof(DEVICE_OPERATIONS[0]);
   if (operations != NULL) {
+    const size_t copy_size =
+        (num_entries < device_operations_size ? num_entries
+                                              : device_operations_size);
     memcpy((void *)operations, (void *)DEVICE_OPERATIONS,
-           Min(num_entries, 4) * sizeof(QDMI_Operation));
+           copy_size * sizeof(QDMI_Operation));
   }
   if (num_operations != NULL) {
-    *num_operations = 4;
+    *num_operations = (int)device_operations_size;
   }
   return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]
@@ -290,10 +297,10 @@ int QDMI_control_create_job_dev(const QDMI_Program_Format format,
 
   QDMI_set_device_status(QDMI_DEVICE_STATUS_BUSY);
   *job = (QDMI_Job)malloc(sizeof(QDMI_Job_impl_t));
-  // set job id to current time for demonstration purposes
+  // set job id to random number for demonstration purposes
   (*job)->id = rand();
   (*job)->status = QDMI_JOB_STATUS_CREATED;
-  (*job)->num_shots = 1;
+  (*job)->num_shots = 0;
   (*job)->results = NULL;
   return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]
