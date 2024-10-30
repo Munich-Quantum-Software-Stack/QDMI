@@ -86,7 +86,7 @@ const static std::unordered_map<const QDMI_Operation_impl_d *, double>
         {&device_operations[3], 0.1},
 };
 
-struct Pair_hash {
+struct QDMI_Pair_hash {
   template <class T1, class T2>
   std::size_t operator()(const std::pair<T1, T2> &p) const {
     auto hash1 = std::hash<T1>{}(p.first);
@@ -99,7 +99,7 @@ const static std::unordered_map<
     const QDMI_Operation_impl_d *,
     std::unordered_map<
         std::pair<const QDMI_Site_impl_d *, const QDMI_Site_impl_d *>, double,
-        Pair_hash>>
+        QDMI_Pair_hash>>
     OPERATION_FIDELITIES = {
         {&device_operations[3],
          {{{device_sites.data(), &device_sites[1]}, 0.99},
