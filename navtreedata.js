@@ -28,6 +28,16 @@ var NAVTREE =
     [ "User Guide", null, [
       [ "FAQ", "md_docs_2faq.html", null ],
       [ "Support", "md_docs_2support.html", null ],
+      [ "Examples", "md_docs_2examples.html", [
+        [ "Implementing a Device", "md_docs_2examples.html#device", [
+          [ "Basic String Properties", "md_docs_2examples.html#device-string", null ],
+          [ "Auxiliary Macros", "md_docs_2examples.html#device-macros", null ],
+          [ "Integer or Enumeration Properties", "md_docs_2examples.html#device-int-enumeration", null ],
+          [ "List Properties", "md_docs_2examples.html#device-list", null ],
+          [ "Complex Properties", "md_docs_2examples.html#device-complex", null ],
+          [ "Submitting a Job", "md_docs_2examples.html#device-submit", null ]
+        ] ]
+      ] ],
       [ "Development Guide", "md_docs_2guide.html", null ]
     ] ],
     [ "API Reference", "files.html", [

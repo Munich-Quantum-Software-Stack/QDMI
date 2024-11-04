@@ -191,9 +191,9 @@ Functions</h2></td></tr>
 <tr class="memitem:aa11305e72710d4f2439c0c72892fce11" id="r_aa11305e72710d4f2439c0c72892fce11"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa11305e72710d4f2439c0c72892fce11">QDMI_session_alloc</a> (<a class="el" href="types_8h.html#a4dd0162b0321d12934f815f29504106e">QDMI_Session</a> *session)</td></tr>
 <tr class="memdesc:aa11305e72710d4f2439c0c72892fce11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate a new QDMI session.  <br /></td></tr>
 <tr class="separator:aa11305e72710d4f2439c0c72892fce11"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a099fd7897e93d703277d7626d0f8be6f" id="r_a099fd7897e93d703277d7626d0f8be6f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a099fd7897e93d703277d7626d0f8be6f">QDMI_session_get_devices</a> (<a class="el" href="types_8h.html#a4dd0162b0321d12934f815f29504106e">QDMI_Session</a> session, int num_entries, <a class="el" href="types_8h.html#a2772c94ab19957ce5aaef652b626baec">QDMI_Device</a> *devices, int *num_devices)</td></tr>
-<tr class="memdesc:a099fd7897e93d703277d7626d0f8be6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the devices associated with <code>session</code>.  <br /></td></tr>
-<tr class="separator:a099fd7897e93d703277d7626d0f8be6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd09d9ab40a4eeca0abaa853cb9ec113" id="r_abd09d9ab40a4eeca0abaa853cb9ec113"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abd09d9ab40a4eeca0abaa853cb9ec113">QDMI_session_get_devices</a> (<a class="el" href="types_8h.html#a4dd0162b0321d12934f815f29504106e">QDMI_Session</a> session, size_t num_entries, <a class="el" href="types_8h.html#a2772c94ab19957ce5aaef652b626baec">QDMI_Device</a> *devices, size_t *num_devices)</td></tr>
+<tr class="memdesc:abd09d9ab40a4eeca0abaa853cb9ec113"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the devices associated with <code>session</code>.  <br /></td></tr>
+<tr class="separator:abd09d9ab40a4eeca0abaa853cb9ec113"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a24d3efdb64f9ae6d88b32b011f7549ae" id="r_a24d3efdb64f9ae6d88b32b011f7549ae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a24d3efdb64f9ae6d88b32b011f7549ae">QDMI_session_free</a> (<a class="el" href="types_8h.html#a4dd0162b0321d12934f815f29504106e">QDMI_Session</a> session)</td></tr>
 <tr class="memdesc:a24d3efdb64f9ae6d88b32b011f7549ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a QDMI session.  <br /></td></tr>
 <tr class="separator:a24d3efdb64f9ae6d88b32b011f7549ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -218,7 +218,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Allocate a new QDMI session. </p>
-<p>The returned handle can be used in subsequent calls to <a class="el" href="#a099fd7897e93d703277d7626d0f8be6f">QDMI_session_get_devices</a> to get the devices that are available to the client. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>The returned handle can be used in subsequent calls to <a class="el" href="#abd09d9ab40a4eeca0abaa853cb9ec113">QDMI_session_get_devices</a> to get the devices that are available to the client. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[out]</td><td class="paramname">session</td><td>a handle to the session that is allocated. The session must be freed by calling <a class="el" href="#a24d3efdb64f9ae6d88b32b011f7549ae">QDMI_session_free</a> when it is no longer needed. </td></tr>
   </table>
@@ -257,8 +257,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a099fd7897e93d703277d7626d0f8be6f" name="a099fd7897e93d703277d7626d0f8be6f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a099fd7897e93d703277d7626d0f8be6f">&#9670;&#160;</a></span>QDMI_session_get_devices()</h2>
+<a id="abd09d9ab40a4eeca0abaa853cb9ec113" name="abd09d9ab40a4eeca0abaa853cb9ec113"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd09d9ab40a4eeca0abaa853cb9ec113">&#9670;&#160;</a></span>QDMI_session_get_devices()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -271,7 +271,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>num_entries</em></span>, </td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>num_entries</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -281,7 +281,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int *</td>          <td class="paramname"><span class="paramname"><em>num_devices</em></span>&#160;)</td>
+          <td class="paramtype">size_t *</td>          <td class="paramname"><span class="paramname"><em>num_devices</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -298,7 +298,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a8039f5cd8202553b2a91a1c0b01d6751">QDMI_SUCCESS</a> if the function is executed successfully. Otherwise, it returns one of the following error codes: </dd>
 <dd>
-<a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642">QDMI_ERROR_INVALIDARGUMENT</a> if <code>num_entries</code> is less than or equal to zero and <code>devices</code> is not <code>NULL</code> or if both <code>devices</code> and <code>num_devices</code> are <code>NULL</code>. </dd>
+<a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642">QDMI_ERROR_INVALIDARGUMENT</a> if <code>num_entries</code> is zero and <code>devices</code> is not <code>NULL</code> or if both <code>devices</code> and <code>num_devices</code> are <code>NULL</code>. </dd>
 <dd>
 <a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3">QDMI_ERROR_FATAL</a> if an unexpected error occurred. </dd></dl>
 

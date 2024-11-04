@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['client_2eh_0',['client.h',['../client_8h.html',1,'']]],
-  ['control_2eh_1',['control.h',['../client_2control_8h.html',1,'(Global Namespace)'],['../device_2control_8h.html',1,'(Global Namespace)']]]
+  ['a_20device_0',['Implementing a Device',['../md_docs_2examples.html#device',1,'']]],
+  ['a_20job_1',['Submitting a Job',['../md_docs_2examples.html#device-submit',1,'']]],
+  ['auxiliary_20macros_2',['Auxiliary Macros',['../md_docs_2examples.html#device-macros',1,'']]]
 ];

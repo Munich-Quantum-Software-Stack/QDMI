@@ -319,14 +319,21 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97">QDMI_JOB_RESULT_SHOTS</a>
 , <a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1a56e81ab3ca174c75290adaf9227bf090">QDMI_JOB_RESULT_HIST_KEYS</a>
 , <a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1a7df344f160e5bc6589c85ee71b311a52">QDMI_JOB_RESULT_HIST_VALUES</a>
+, <a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1a3ca51337735f43e024d012880cd2c7bd">QDMI_JOB_RESULT_STATEVECTOR_DENSE</a>
+, <br />
+&#160;&#160;<a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1a320b256c2cddbd933eea4b765dc1a216">QDMI_JOB_RESULT_PROBABILITIES_DENSE</a>
+, <a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1ac9a550895edecffb9cdcf72c3c8140c2">QDMI_JOB_RESULT_STATEVECTOR_SPARSE_KEYS</a>
+, <a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1a82263dc1b055d7237a2c32d318609350">QDMI_JOB_RESULT_STATEVECTOR_SPARSE_VALUES</a>
+, <a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1aff6709af04527a8d5e03f6f0064dd281">QDMI_JOB_RESULT_PROBABILITIES_SPARSE_KEYS</a>
+, <br />
+&#160;&#160;<a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1a68c0d721fa322f5c5b404a088c2e1504">QDMI_JOB_RESULT_PROBABILITIES_SPARSE_VALUES</a>
 , <a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1a57f2aed7959f77d9c3e371545ae52415">QDMI_JOB_RESULT_CUSTOM_1</a>
-, <br />
-&#160;&#160;<a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1a65f02aa4323a9c3ec03d21f8a7485c55">QDMI_JOB_RESULT_CUSTOM_2</a>
+, <a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1a65f02aa4323a9c3ec03d21f8a7485c55">QDMI_JOB_RESULT_CUSTOM_2</a>
 , <a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1a73af651609703659ed7cecdc996a9d01">QDMI_JOB_RESULT_CUSTOM_3</a>
-, <a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1a9cad228441877e6e49dcd32505e38e23">QDMI_JOB_RESULT_CUSTOM_4</a>
-, <a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1a0f55204217f660f3048f5f8ca996519c">QDMI_JOB_RESULT_CUSTOM_5</a>
 , <br />
-&#160;&#160;<a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1a392aa5d821440fd4650119f3986d3196">QDMI_JOB_RESULT_MAX</a>
+&#160;&#160;<a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1a9cad228441877e6e49dcd32505e38e23">QDMI_JOB_RESULT_CUSTOM_4</a>
+, <a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1a0f55204217f660f3048f5f8ca996519c">QDMI_JOB_RESULT_CUSTOM_5</a>
+, <a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1a392aa5d821440fd4650119f3986d3196">QDMI_JOB_RESULT_MAX</a>
 <br />
  }</td></tr>
 <tr class="memdesc:aa154b942b0f67e437c393ad7b33cadd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum of data-types of the result.  <a href="#aa154b942b0f67e437c393ad7b33cadd1">More...</a><br /></td></tr>
@@ -380,7 +387,7 @@ Enumerations</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="ad251d8ae8fbbe9a5c7a10d66b243d526a5fa26a0ebfe6894b53ed1e8c79d5f090" name="ad251d8ae8fbbe9a5c7a10d66b243d526a5fa26a0ebfe6894b53ed1e8c79d5f090"></a>QDMI_DEVICE_PROPERTY_LIBRARYVERSION&#160;</td><td class="fielddoc"><p><code>char*</code> (string) The implemented version of QDMI. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ad251d8ae8fbbe9a5c7a10d66b243d526a7ada8f720629c4cac8d74ac4270a1c46" name="ad251d8ae8fbbe9a5c7a10d66b243d526a7ada8f720629c4cac8d74ac4270a1c46"></a>QDMI_DEVICE_PROPERTY_QUBITSNUM&#160;</td><td class="fielddoc"><p><code>int</code> The number of qubits in the device. </p>
+<tr><td class="fieldname"><a id="ad251d8ae8fbbe9a5c7a10d66b243d526a7ada8f720629c4cac8d74ac4270a1c46" name="ad251d8ae8fbbe9a5c7a10d66b243d526a7ada8f720629c4cac8d74ac4270a1c46"></a>QDMI_DEVICE_PROPERTY_QUBITSNUM&#160;</td><td class="fielddoc"><p><code>size_t</code> The number of qubits in the device. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="ad251d8ae8fbbe9a5c7a10d66b243d526a8550a0c1b86c2f97791289647a159efd" name="ad251d8ae8fbbe9a5c7a10d66b243d526a8550a0c1b86c2f97791289647a159efd"></a>QDMI_DEVICE_PROPERTY_COUPLINGMAP&#160;</td><td class="fielddoc"><p><code>int*</code> (int list) The coupling map of the device. </p>
 <p>The returned list contains pairs of qubits that are coupled. The pairs in the list are flattened such that the first qubit of the pair is at index 2n and the second qubit is at index 2n+1. For example, a 2-qubit device with a coupling map of (0, 1) would return <code>{0, 1}</code>. A 3-qubit device with a coupling map of (0, 1), (1, 2) would return <code>{0, 1, 1, 2}</code>. </p>
@@ -450,7 +457,7 @@ Enumerations</h2></td></tr>
 
 <p>Enum of the job parameters that can be set. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a1e7131664b094eb409d0f44d731f51f5a0fc11e9295172abcbf6a2116a7985507" name="a1e7131664b094eb409d0f44d731f51f5a0fc11e9295172abcbf6a2116a7985507"></a>QDMI_JOB_PARAMETER_SHOTS_NUM&#160;</td><td class="fielddoc"><p><code>int</code> The number of shots to take. </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a1e7131664b094eb409d0f44d731f51f5a0fc11e9295172abcbf6a2116a7985507" name="a1e7131664b094eb409d0f44d731f51f5a0fc11e9295172abcbf6a2116a7985507"></a>QDMI_JOB_PARAMETER_SHOTS_NUM&#160;</td><td class="fielddoc"><p><code>size_t</code> The number of shots to take. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a1e7131664b094eb409d0f44d731f51f5a0f61f4266a577983438331aa9867b144" name="a1e7131664b094eb409d0f44d731f51f5a0f61f4266a577983438331aa9867b144"></a>QDMI_JOB_PARAMETER_CUSTOM_1&#160;</td><td class="fielddoc"><p>This property is reserved for a custom property. </p>
 <p>The meaning and the type of this property is defined by the device. </p>
@@ -487,11 +494,33 @@ Enumerations</h2></td></tr>
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97" name="aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97"></a>QDMI_JOB_RESULT_SHOTS&#160;</td><td class="fielddoc"><p><code>char*</code>(string) The results of the individual shots as a comma-separated list, e.g., "0010,1101,0101,1100,1001,1100" for four qubits and six shots. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="aa154b942b0f67e437c393ad7b33cadd1a56e81ab3ca174c75290adaf9227bf090" name="aa154b942b0f67e437c393ad7b33cadd1a56e81ab3ca174c75290adaf9227bf090"></a>QDMI_JOB_RESULT_HIST_KEYS&#160;</td><td class="fielddoc"><p><code>char*</code>(string) The keys for the histogram of the results. </p>
-<p>The histogram of the measurement results is represented as a key-value mapping. This mapping is returned as a list of keys and a equal-length list of values. The corresponding partners of keys and values can be found at the same index in the lists.</p>
+<p>The histogram of the measurement results is represented as a key-value mapping. This mapping is returned as a list of keys and an equal-length list of values. The corresponding partners of keys and values can be found at the same index in the lists.</p>
 <p>This constant denotes the list of keys, <a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1a7df344f160e5bc6589c85ee71b311a52">QDMI_JOB_RESULT_HIST_VALUES</a> denotes the list of values. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="aa154b942b0f67e437c393ad7b33cadd1a7df344f160e5bc6589c85ee71b311a52" name="aa154b942b0f67e437c393ad7b33cadd1a7df344f160e5bc6589c85ee71b311a52"></a>QDMI_JOB_RESULT_HIST_VALUES&#160;</td><td class="fielddoc"><p><code>int*</code> (int list) The values for the histogram of the results. </p>
+<tr><td class="fieldname"><a id="aa154b942b0f67e437c393ad7b33cadd1a7df344f160e5bc6589c85ee71b311a52" name="aa154b942b0f67e437c393ad7b33cadd1a7df344f160e5bc6589c85ee71b311a52"></a>QDMI_JOB_RESULT_HIST_VALUES&#160;</td><td class="fielddoc"><p><code>size_t*</code> (int list) The values for the histogram of the results. </p>
 <dl class="section see"><dt>See also</dt><dd>QDMI_JOB_RESULT_HIST_KEY </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="aa154b942b0f67e437c393ad7b33cadd1a3ca51337735f43e024d012880cd2c7bd" name="aa154b942b0f67e437c393ad7b33cadd1a3ca51337735f43e024d012880cd2c7bd"></a>QDMI_JOB_RESULT_STATEVECTOR_DENSE&#160;</td><td class="fielddoc"><p><code>double*</code> (double list) The state vector of the result. </p>
+<p>The complex amplitudes are stored as a list of real and imaginary parts. The real part of the amplitude is at index 2n and the imaginary part is at index 2n+1. For example, the state vector of a 2-qubit system with amplitudes (0.5, 0.5), (0.5, -0.5), (-0.5, 0.5), (-0.5, -0.5) would be represented as <code>{0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5}</code>. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aa154b942b0f67e437c393ad7b33cadd1a320b256c2cddbd933eea4b765dc1a216" name="aa154b942b0f67e437c393ad7b33cadd1a320b256c2cddbd933eea4b765dc1a216"></a>QDMI_JOB_RESULT_PROBABILITIES_DENSE&#160;</td><td class="fielddoc"><p><code>double*</code> (double list) The probabilities of the result. </p>
+<p>The probabilities are stored as a list of real numbers. The probability of the state with index n is at index n in the list. For example, the probabilities of a 2-qubit system with states 00, 01, 10, 11 would be represented as <code>{0.25, 0.25, 0.25, 0.25}</code>. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aa154b942b0f67e437c393ad7b33cadd1ac9a550895edecffb9cdcf72c3c8140c2" name="aa154b942b0f67e437c393ad7b33cadd1ac9a550895edecffb9cdcf72c3c8140c2"></a>QDMI_JOB_RESULT_STATEVECTOR_SPARSE_KEYS&#160;</td><td class="fielddoc"><p><code>char*</code>(string) The keys for the sparse state vector of the result. </p>
+<p>The sparse state vector is represented as a key-value mapping. This mapping is returned as a list of keys and an equal-length list of values. The corresponding partners of keys and values can be found at the same index in the lists. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aa154b942b0f67e437c393ad7b33cadd1a82263dc1b055d7237a2c32d318609350" name="aa154b942b0f67e437c393ad7b33cadd1a82263dc1b055d7237a2c32d318609350"></a>QDMI_JOB_RESULT_STATEVECTOR_SPARSE_VALUES&#160;</td><td class="fielddoc"><p><code>double*</code> (double list) The values for the sparse state vector of the result. </p>
+<p>The complex amplitudes are stored in the same way as the dense state vector only that the values are only stored for the non-zero amplitudes. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1a3ca51337735f43e024d012880cd2c7bd" title="double* (double list) The state vector of the result.">QDMI_JOB_RESULT_STATEVECTOR_DENSE</a> </dd>
+<dd>
+<a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1ac9a550895edecffb9cdcf72c3c8140c2" title="char*(string) The keys for the sparse state vector of the result.">QDMI_JOB_RESULT_STATEVECTOR_SPARSE_KEYS</a> </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="aa154b942b0f67e437c393ad7b33cadd1aff6709af04527a8d5e03f6f0064dd281" name="aa154b942b0f67e437c393ad7b33cadd1aff6709af04527a8d5e03f6f0064dd281"></a>QDMI_JOB_RESULT_PROBABILITIES_SPARSE_KEYS&#160;</td><td class="fielddoc"><p><code>char*</code>(string) The keys for the sparse probabilities of the result. </p>
+<p>The sparse probabilities are represented as a key-value mapping. This mapping is returned as a list of keys and an equal-length list of values. The corresponding partners of keys and values can be found at the same index in the lists. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aa154b942b0f67e437c393ad7b33cadd1a68c0d721fa322f5c5b404a088c2e1504" name="aa154b942b0f67e437c393ad7b33cadd1a68c0d721fa322f5c5b404a088c2e1504"></a>QDMI_JOB_RESULT_PROBABILITIES_SPARSE_VALUES&#160;</td><td class="fielddoc"><p><code>double*</code> (double list) The values for the sparse probabilities of the result. </p>
+<p>The probabilities are stored in the same way as the dense probabilities only that the values are only stored for the non-zero probabilities. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1a320b256c2cddbd933eea4b765dc1a216" title="double* (double list) The probabilities of the result.">QDMI_JOB_RESULT_PROBABILITIES_DENSE</a> </dd>
+<dd>
+<a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1aff6709af04527a8d5e03f6f0064dd281" title="char*(string) The keys for the sparse probabilities of the result.">QDMI_JOB_RESULT_PROBABILITIES_SPARSE_KEYS</a> </dd></dl>
 </td></tr>
 <tr><td class="fieldname"><a id="aa154b942b0f67e437c393ad7b33cadd1a57f2aed7959f77d9c3e371545ae52415" name="aa154b942b0f67e437c393ad7b33cadd1a57f2aed7959f77d9c3e371545ae52415"></a>QDMI_JOB_RESULT_CUSTOM_1&#160;</td><td class="fielddoc"><p>This property is reserved for a custom property. </p>
 <p>The meaning and the type of this property is defined by the device. </p>
@@ -525,7 +554,7 @@ Enumerations</h2></td></tr>
 
 <p>Enum of the device properties that can be queried. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a04e5c793bcbe8b354a9223bb60f828a6a2d985c815c2e1024b9eb5605e8825df5" name="a04e5c793bcbe8b354a9223bb60f828a6a2d985c815c2e1024b9eb5605e8825df5"></a>QDMI_JOB_STATUS_CREATED&#160;</td><td class="fielddoc"><p>The job was created and can be configured via <a class="el" href="client_2control_8h.html#a2bd658560f62270df3c88dedbc24bdb3">QDMI_control_set_parameter</a>. </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a04e5c793bcbe8b354a9223bb60f828a6a2d985c815c2e1024b9eb5605e8825df5" name="a04e5c793bcbe8b354a9223bb60f828a6a2d985c815c2e1024b9eb5605e8825df5"></a>QDMI_JOB_STATUS_CREATED&#160;</td><td class="fielddoc"><p>The job was created and can be configured via <a class="el" href="client_2control_8h.html#a6e3dfe222ae9404308f6a70283daf496">QDMI_control_set_parameter</a>. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a04e5c793bcbe8b354a9223bb60f828a6a3c531c6a92164cfb31a6c4c1a6cc5dfe" name="a04e5c793bcbe8b354a9223bb60f828a6a3c531c6a92164cfb31a6c4c1a6cc5dfe"></a>QDMI_JOB_STATUS_SUBMITTED&#160;</td><td class="fielddoc"><p>The job was submitted and is waiting to be executed. </p>
 </td></tr>
@@ -555,7 +584,7 @@ Enumerations</h2></td></tr>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ab23d5f0c5296e3eab4243e91f1213726a5197136670f9d415464f09f283921b5a" name="ab23d5f0c5296e3eab4243e91f1213726a5197136670f9d415464f09f283921b5a"></a>QDMI_OPERATION_PROPERTY_NAME&#160;</td><td class="fielddoc"><p><code>char*</code> (string) The string identifier of the operation. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ab23d5f0c5296e3eab4243e91f1213726a50c6ef3ffc889f80f8767bfe7296dc49" name="ab23d5f0c5296e3eab4243e91f1213726a50c6ef3ffc889f80f8767bfe7296dc49"></a>QDMI_OPERATION_PROPERTY_QUBITSNUM&#160;</td><td class="fielddoc"><p><code>int</code> The number of qubits in the operation. </p>
+<tr><td class="fieldname"><a id="ab23d5f0c5296e3eab4243e91f1213726a50c6ef3ffc889f80f8767bfe7296dc49" name="ab23d5f0c5296e3eab4243e91f1213726a50c6ef3ffc889f80f8767bfe7296dc49"></a>QDMI_OPERATION_PROPERTY_QUBITSNUM&#160;</td><td class="fielddoc"><p><code>size_t</code> The number of qubits in the operation. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="ab23d5f0c5296e3eab4243e91f1213726ad45aa26cc41c80c697fa71a08f622eca" name="ab23d5f0c5296e3eab4243e91f1213726ad45aa26cc41c80c697fa71a08f622eca"></a>QDMI_OPERATION_PROPERTY_DURATION&#160;</td><td class="fielddoc"><p><code>double</code> The duration of an operation in µs. </p>
 </td></tr>
@@ -599,7 +628,7 @@ Enumerations</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09ad95c42d4fc8782d119eae27a258342fa" name="a3eff3252203fcad146d5896e4466ec09ad95c42d4fc8782d119eae27a258342fa"></a>QDMI_PROGRAM_FORMAT_QIRSTRING&#160;</td><td class="fielddoc"><p><code>char*</code>(string) The QIR program to run as a string. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09a3a59c7404dd8f1225252ed2fae52f195" name="a3eff3252203fcad146d5896e4466ec09a3a59c7404dd8f1225252ed2fae52f195"></a>QDMI_PROGRAM_FORMAT_QIRMODULE&#160;</td><td class="fielddoc"><p><code>char*</code>(string) The QIR program as a binary module. </p>
+<tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09a3a59c7404dd8f1225252ed2fae52f195" name="a3eff3252203fcad146d5896e4466ec09a3a59c7404dd8f1225252ed2fae52f195"></a>QDMI_PROGRAM_FORMAT_QIRMODULE&#160;</td><td class="fielddoc"><p><code>void*</code> The QIR program as a binary module. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09a5c09736e32b7ae6f61852d2de9eb8e70" name="a3eff3252203fcad146d5896e4466ec09a5c09736e32b7ae6f61852d2de9eb8e70"></a>QDMI_PROGRAM_FORMAT_CUSTOM_1&#160;</td><td class="fielddoc"><p>This value is reserved for a custom format. </p>
 <p>The meaning and the type of this format is defined by the device. </p>
