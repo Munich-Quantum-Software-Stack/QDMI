@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=11" />
     <meta name="generator" content="Doxygen 1.12.0" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>QDMI: client.h Source File</title>
+    <title>QDMI: device/types.h Source File</title>
     <link href="tabs.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="jquery.js"></script>
     <script type="text/javascript" src="dynsections.js"></script>
@@ -149,7 +149,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('client_8h_source.html',''); initResizable(true); });
+$(function(){initNavTree('device_2types_8h_source.html',''); initResizable(true); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -175,39 +175,45 @@ $(function(){initNavTree('client_8h_source.html',''); initResizable(true); });
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">client.h</div></div>
+  <div class="headertitle"><div class="title">types.h</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="client_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">/*------------------------------------------------------------------------------</span></div>
+<a href="device_2types_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">/*------------------------------------------------------------------------------</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">Part of the MQSS Project, under the Apache License v2.0 with LLVM Exceptions.</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">See https://llvm.org/LICENSE.txt for license information.</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">------------------------------------------------------------------------------*/</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#pragma once</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment">// IWYU pragma: begin_exports</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;<a class="code" href="client_2control_8h.html">qdmi/client/control.h</a>&quot;</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &quot;<a class="code" href="client_2query_8h.html">qdmi/client/query.h</a>&quot;</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &quot;<a class="code" href="enums_8h.html">qdmi/common/enums.h</a>&quot;</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &quot;<a class="code" href="common_2types_8h.html">qdmi/common/types.h</a>&quot;</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#include &quot;<a class="code" href="device_2types_8h.html">qdmi/device/types.h</a>&quot;</span></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#include &quot;<a class="code" href="session_8h.html">qdmi/driver/session.h</a>&quot;</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#include &quot;<a class="code" href="driver_2types_8h.html">qdmi/driver/types.h</a>&quot;</span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment">// IWYU pragma: end_exports</span></div>
-<div class="ttc" id="aclient_2control_8h_html"><div class="ttname"><a href="client_2control_8h.html">control.h</a></div><div class="ttdoc">The interface for controlling a device via QDMI.</div></div>
-<div class="ttc" id="aclient_2query_8h_html"><div class="ttname"><a href="client_2query_8h.html">query.h</a></div><div class="ttdoc">Define the interface for querying properties of a device.</div></div>
-<div class="ttc" id="acommon_2types_8h_html"><div class="ttname"><a href="common_2types_8h.html">types.h</a></div><div class="ttdoc">Defines all common types used throughout QDMI.</div></div>
-<div class="ttc" id="adevice_2types_8h_html"><div class="ttname"><a href="device_2types_8h.html">types.h</a></div><div class="ttdoc">Defines all types implemented by a QDMI device.</div></div>
-<div class="ttc" id="adriver_2types_8h_html"><div class="ttname"><a href="driver_2types_8h.html">types.h</a></div><div class="ttdoc">Defines all types defined by a QDMI driver.</div></div>
-<div class="ttc" id="aenums_8h_html"><div class="ttname"><a href="enums_8h.html">enums.h</a></div><div class="ttdoc">Defines all enums used within QDMI.</div></div>
-<div class="ttc" id="asession_8h_html"><div class="ttname"><a href="session_8h.html">session.h</a></div><div class="ttdoc">The QDMI driver interface.</div></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment">// The following disables the clang-tidy warning modernize-use-using.</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment">// Since this is C code, we cannot use the using keyword.</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment">// NOLINTBEGIN(modernize-use-using)</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="device_2types_8h.html#ab63357cf9e4546c7ee86b7378c620981">   29</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>QDMI_Job_impl_d *<a class="code hl_typedef" href="device_2types_8h.html#ab63357cf9e4546c7ee86b7378c620981">QDMI_Job</a>;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="device_2types_8h.html#ab26279159380e378f258cb663968b9ec">   44</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>QDMI_Site_impl_d *<a class="code hl_typedef" href="device_2types_8h.html#ab26279159380e378f258cb663968b9ec">QDMI_Site</a>;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="device_2types_8h.html#ae777e8f92186c1e6f836eeaa53b149d7">   52</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>QDMI_Operation_impl_d *<a class="code hl_typedef" href="device_2types_8h.html#ae777e8f92186c1e6f836eeaa53b149d7">QDMI_Operation</a>;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="comment">// NOLINTEND(modernize-use-using)</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>} <span class="comment">// extern &quot;C&quot;</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="adevice_2types_8h_html_ab26279159380e378f258cb663968b9ec"><div class="ttname"><a href="device_2types_8h.html#ab26279159380e378f258cb663968b9ec">QDMI_Site</a></div><div class="ttdeci">struct QDMI_Site_impl_d * QDMI_Site</div><div class="ttdoc">Opaque type for a site.</div><div class="ttdef"><b>Definition</b> types.h:44</div></div>
+<div class="ttc" id="adevice_2types_8h_html_ab63357cf9e4546c7ee86b7378c620981"><div class="ttname"><a href="device_2types_8h.html#ab63357cf9e4546c7ee86b7378c620981">QDMI_Job</a></div><div class="ttdeci">struct QDMI_Job_impl_d * QDMI_Job</div><div class="ttdoc">Opaque type for a job.</div><div class="ttdef"><b>Definition</b> types.h:29</div></div>
+<div class="ttc" id="adevice_2types_8h_html_ae777e8f92186c1e6f836eeaa53b149d7"><div class="ttname"><a href="device_2types_8h.html#ae777e8f92186c1e6f836eeaa53b149d7">QDMI_Operation</a></div><div class="ttdeci">struct QDMI_Operation_impl_d * QDMI_Operation</div><div class="ttdoc">Opaque type for an operation.</div><div class="ttdef"><b>Definition</b> types.h:52</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="client_8h.html">client.h</a></li>
+    <li class="navelem"><a class="el" href="dir_e2a3c7222bbd36e7bf5cc7ce1aed8f55.html">device</a></li><li class="navelem"><a class="el" href="device_2types_8h.html">types.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.12.0 </li>
   </ul>
 </div>

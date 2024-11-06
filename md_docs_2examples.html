@@ -219,38 +219,37 @@ Basic String Properties</h2>
 </ul>
 <p>All of those properties are of type <code>char*</code> (string). Hence, they are returned by the <a class="el" href="device_2query_8h.html#a02d910d9f09537ab363f4bf701379d5d">QDMI_query_device_property_dev</a> function. Below you find the respective implementation in C and C++.</p>
 <div class="tabbed"><ul>
-<li><b class="tab-title">C</b>  <div class="fragment"><div class="line"><span class="keywordtype">int</span> <a class="code hl_function" href="device_2query_8h.html#a02d910d9f09537ab363f4bf701379d5d">QDMI_query_device_property_dev</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="types_8h.html#afeaad074a7321ebb8fb87e06598fc055">QDMI_Device_Property</a> prop,</div>
-<div class="line">                                   <span class="keyword">const</span> <span class="keywordtype">size_t</span> size, <span class="keywordtype">void</span> *value,</div>
-<div class="line">                                   <span class="keywordtype">size_t</span> *size_ret) {</div>
+<li><b class="tab-title">C</b>  <div class="fragment"><div class="line"><span class="keywordtype">int</span> C_QDMI_query_device_property_dev(<span class="keyword">const</span> <a class="code hl_typedef" href="common_2types_8h.html#afeaad074a7321ebb8fb87e06598fc055">QDMI_Device_Property</a> prop,</div>
+<div class="line">                                     <span class="keyword">const</span> <span class="keywordtype">size_t</span> size, <span class="keywordtype">void</span> *value,</div>
+<div class="line">                                     <span class="keywordtype">size_t</span> *size_ret) {</div>
 <div class="line">  <span class="keywordflow">if</span> (prop &gt;= <a class="code hl_enumvalue" href="enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526afe696a25133fa887276e666460981688">QDMI_DEVICE_PROPERTY_MAX</a> || (value == NULL &amp;&amp; size_ret == NULL)) {</div>
 <div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642">QDMI_ERROR_INVALIDARGUMENT</a>;</div>
 <div class="line">  }</div>
-<div class="line">  ADD_STRING_PROPERTY(<a class="code hl_enumvalue" href="enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a18d3f183afc4d65c9e368f7cedf2d741">QDMI_DEVICE_PROPERTY_NAME</a>, <span class="stringliteral">&quot;Device with 5 qubits&quot;</span>, prop,</div>
+<div class="line">  ADD_STRING_PROPERTY(<a class="code hl_enumvalue" href="enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a18d3f183afc4d65c9e368f7cedf2d741">QDMI_DEVICE_PROPERTY_NAME</a>, <span class="stringliteral">&quot;C Device with 5 qubits&quot;</span>, prop,</div>
 <div class="line">                      size, value, size_ret)</div>
 <div class="line">  ADD_STRING_PROPERTY(<a class="code hl_enumvalue" href="enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a58520573bb0cdefb7498675a1baf890d">QDMI_DEVICE_PROPERTY_VERSION</a>, <span class="stringliteral">&quot;0.1.0&quot;</span>, prop, size, value,</div>
 <div class="line">                      size_ret)</div>
 <div class="line">  ADD_STRING_PROPERTY(<a class="code hl_enumvalue" href="enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a5fa26a0ebfe6894b53ed1e8c79d5f090">QDMI_DEVICE_PROPERTY_LIBRARYVERSION</a>, <span class="stringliteral">&quot;1.0.0b1&quot;</span>, prop,</div>
-<div class="ttc" id="adevice_2query_8h_html_a02d910d9f09537ab363f4bf701379d5d"><div class="ttname"><a href="device_2query_8h.html#a02d910d9f09537ab363f4bf701379d5d">QDMI_query_device_property_dev</a></div><div class="ttdeci">int QDMI_query_device_property_dev(QDMI_Device_Property prop, size_t size, void *value, size_t *size_ret)</div><div class="ttdoc">Query a device property.</div></div>
+<div class="ttc" id="acommon_2types_8h_html_afeaad074a7321ebb8fb87e06598fc055"><div class="ttname"><a href="common_2types_8h.html#afeaad074a7321ebb8fb87e06598fc055">QDMI_Device_Property</a></div><div class="ttdeci">enum QDMI_DEVICE_PROPERTY_T QDMI_Device_Property</div><div class="ttdoc">Type of the device properties.</div><div class="ttdef"><b>Definition</b> types.h:24</div></div>
 <div class="ttc" id="aenums_8h_html_a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642"><div class="ttname"><a href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642">QDMI_ERROR_INVALIDARGUMENT</a></div><div class="ttdeci">@ QDMI_ERROR_INVALIDARGUMENT</div><div class="ttdoc">Invalid argument.</div><div class="ttdef"><b>Definition</b> enums.h:181</div></div>
 <div class="ttc" id="aenums_8h_html_ad251d8ae8fbbe9a5c7a10d66b243d526a18d3f183afc4d65c9e368f7cedf2d741"><div class="ttname"><a href="enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a18d3f183afc4d65c9e368f7cedf2d741">QDMI_DEVICE_PROPERTY_NAME</a></div><div class="ttdeci">@ QDMI_DEVICE_PROPERTY_NAME</div><div class="ttdef"><b>Definition</b> enums.h:23</div></div>
 <div class="ttc" id="aenums_8h_html_ad251d8ae8fbbe9a5c7a10d66b243d526a58520573bb0cdefb7498675a1baf890d"><div class="ttname"><a href="enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a58520573bb0cdefb7498675a1baf890d">QDMI_DEVICE_PROPERTY_VERSION</a></div><div class="ttdeci">@ QDMI_DEVICE_PROPERTY_VERSION</div><div class="ttdoc">char* (string) The version of the device.</div><div class="ttdef"><b>Definition</b> enums.h:25</div></div>
 <div class="ttc" id="aenums_8h_html_ad251d8ae8fbbe9a5c7a10d66b243d526a5fa26a0ebfe6894b53ed1e8c79d5f090"><div class="ttname"><a href="enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a5fa26a0ebfe6894b53ed1e8c79d5f090">QDMI_DEVICE_PROPERTY_LIBRARYVERSION</a></div><div class="ttdeci">@ QDMI_DEVICE_PROPERTY_LIBRARYVERSION</div><div class="ttdoc">char* (string) The implemented version of QDMI.</div><div class="ttdef"><b>Definition</b> enums.h:29</div></div>
 <div class="ttc" id="aenums_8h_html_ad251d8ae8fbbe9a5c7a10d66b243d526afe696a25133fa887276e666460981688"><div class="ttname"><a href="enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526afe696a25133fa887276e666460981688">QDMI_DEVICE_PROPERTY_MAX</a></div><div class="ttdeci">@ QDMI_DEVICE_PROPERTY_MAX</div><div class="ttdoc">The maximum value of the enum.</div><div class="ttdef"><b>Definition</b> enums.h:62</div></div>
-<div class="ttc" id="atypes_8h_html_afeaad074a7321ebb8fb87e06598fc055"><div class="ttname"><a href="types_8h.html#afeaad074a7321ebb8fb87e06598fc055">QDMI_Device_Property</a></div><div class="ttdeci">enum QDMI_DEVICE_PROPERTY_T QDMI_Device_Property</div><div class="ttdoc">Type of the device properties.</div><div class="ttdef"><b>Definition</b> types.h:24</div></div>
 <div class="line">                      size, value, size_ret)</div>
 <div class="line">  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a>;</div>
 <div class="line">} </div>
 <div class="ttc" id="aenums_8h_html_a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651"><div class="ttname"><a href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a></div><div class="ttdeci">@ QDMI_ERROR_NOTSUPPORTED</div><div class="ttdoc">Operation is not supported.</div><div class="ttdef"><b>Definition</b> enums.h:183</div></div>
 </div><!-- fragment --></li>
-<li><b class="tab-title">C++</b>  <div class="fragment"><div class="line"><span class="keywordtype">int</span> <a class="code hl_function" href="device_2query_8h.html#a02d910d9f09537ab363f4bf701379d5d">QDMI_query_device_property_dev</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="types_8h.html#afeaad074a7321ebb8fb87e06598fc055">QDMI_Device_Property</a> prop,</div>
-<div class="line">                                   <span class="keyword">const</span> <span class="keywordtype">size_t</span> size, <span class="keywordtype">void</span> *value,</div>
-<div class="line">                                   <span class="keywordtype">size_t</span> *size_ret) {</div>
+<li><b class="tab-title">C++</b>  <div class="fragment"><div class="line"><span class="keywordtype">int</span> CXX_QDMI_query_device_property_dev(<span class="keyword">const</span> <a class="code hl_typedef" href="common_2types_8h.html#afeaad074a7321ebb8fb87e06598fc055">QDMI_Device_Property</a> prop,</div>
+<div class="line">                                       <span class="keyword">const</span> <span class="keywordtype">size_t</span> size, <span class="keywordtype">void</span> *value,</div>
+<div class="line">                                       <span class="keywordtype">size_t</span> *size_ret) {</div>
 <div class="line">  <span class="keywordflow">if</span> (prop &gt;= <a class="code hl_enumvalue" href="enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526afe696a25133fa887276e666460981688">QDMI_DEVICE_PROPERTY_MAX</a> ||</div>
 <div class="line">      (value == <span class="keyword">nullptr</span> &amp;&amp; size_ret == <span class="keyword">nullptr</span>)) {</div>
 <div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642">QDMI_ERROR_INVALIDARGUMENT</a>;</div>
 <div class="line">  }</div>
-<div class="line">  ADD_STRING_PROPERTY(<a class="code hl_enumvalue" href="enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a18d3f183afc4d65c9e368f7cedf2d741">QDMI_DEVICE_PROPERTY_NAME</a>, <span class="stringliteral">&quot;Device with 5 qubits&quot;</span>, prop,</div>
-<div class="line">                      size, value, size_ret)</div>
+<div class="line">  ADD_STRING_PROPERTY(<a class="code hl_enumvalue" href="enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a18d3f183afc4d65c9e368f7cedf2d741">QDMI_DEVICE_PROPERTY_NAME</a>, <span class="stringliteral">&quot;C++ Device with 5 qubits&quot;</span>,</div>
+<div class="line">                      prop, size, value, size_ret)</div>
 <div class="line">  ADD_STRING_PROPERTY(<a class="code hl_enumvalue" href="enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a58520573bb0cdefb7498675a1baf890d">QDMI_DEVICE_PROPERTY_VERSION</a>, <span class="stringliteral">&quot;0.1.0&quot;</span>, prop, size, value,</div>
 <div class="line">                      size_ret)</div>
 <div class="line">  ADD_STRING_PROPERTY(<a class="code hl_enumvalue" href="enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a5fa26a0ebfe6894b53ed1e8c79d5f090">QDMI_DEVICE_PROPERTY_LIBRARYVERSION</a>, <span class="stringliteral">&quot;1.0.0b1&quot;</span>, prop,</div>
@@ -383,41 +382,42 @@ Auxiliary Macros</h2>
 Integer or Enumeration Properties</h2>
 <p>The following two examples demonstrate how to return integer or enumeration properties of the device.</p>
 <div class="tabbed"><ul>
-<li><b class="tab-title">C</b>  <div class="fragment"><div class="line"><span class="keywordtype">int</span> <a class="code hl_function" href="device_2query_8h.html#a02d910d9f09537ab363f4bf701379d5d">QDMI_query_device_property_dev</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="types_8h.html#afeaad074a7321ebb8fb87e06598fc055">QDMI_Device_Property</a> prop,</div>
-<div class="line">                                   <span class="keyword">const</span> <span class="keywordtype">size_t</span> size, <span class="keywordtype">void</span> *value,</div>
-<div class="line">                                   <span class="keywordtype">size_t</span> *size_ret) {</div>
+<li><b class="tab-title">C</b>  <div class="fragment"><div class="line"><span class="keywordtype">int</span> C_QDMI_query_device_property_dev(<span class="keyword">const</span> <a class="code hl_typedef" href="common_2types_8h.html#afeaad074a7321ebb8fb87e06598fc055">QDMI_Device_Property</a> prop,</div>
+<div class="line">                                     <span class="keyword">const</span> <span class="keywordtype">size_t</span> size, <span class="keywordtype">void</span> *value,</div>
+<div class="line">                                     <span class="keywordtype">size_t</span> *size_ret) {</div>
 <div class="line">  ADD_SINGLE_VALUE_PROPERTY(<a class="code hl_enumvalue" href="enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a7ada8f720629c4cac8d74ac4270a1c46">QDMI_DEVICE_PROPERTY_QUBITSNUM</a>, <span class="keywordtype">size_t</span>, 5, prop,</div>
 <div class="line">                            size, value, size_ret)</div>
-<div class="line">  ADD_SINGLE_VALUE_PROPERTY(<a class="code hl_enumvalue" href="enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a45312a1e61ebb282417b2c74a4992790">QDMI_DEVICE_PROPERTY_STATUS</a>, <a class="code hl_typedef" href="types_8h.html#a0ae270851e3adac50d4584088ebe67d4">QDMI_Device_Status</a>,</div>
+<div class="line">  ADD_SINGLE_VALUE_PROPERTY(<a class="code hl_enumvalue" href="enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a45312a1e61ebb282417b2c74a4992790">QDMI_DEVICE_PROPERTY_STATUS</a>, <a class="code hl_typedef" href="common_2types_8h.html#a0ae270851e3adac50d4584088ebe67d4">QDMI_Device_Status</a>,</div>
+<div class="ttc" id="acommon_2types_8h_html_a0ae270851e3adac50d4584088ebe67d4"><div class="ttname"><a href="common_2types_8h.html#a0ae270851e3adac50d4584088ebe67d4">QDMI_Device_Status</a></div><div class="ttdeci">enum QDMI_DEVICE_STATUS_T QDMI_Device_Status</div><div class="ttdoc">Type of the device status.</div><div class="ttdef"><b>Definition</b> types.h:27</div></div>
 <div class="ttc" id="aenums_8h_html_ad251d8ae8fbbe9a5c7a10d66b243d526a45312a1e61ebb282417b2c74a4992790"><div class="ttname"><a href="enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a45312a1e61ebb282417b2c74a4992790">QDMI_DEVICE_PROPERTY_STATUS</a></div><div class="ttdeci">@ QDMI_DEVICE_PROPERTY_STATUS</div><div class="ttdoc">int The QDMI_Device_Status of the device.</div><div class="ttdef"><b>Definition</b> enums.h:27</div></div>
 <div class="ttc" id="aenums_8h_html_ad251d8ae8fbbe9a5c7a10d66b243d526a7ada8f720629c4cac8d74ac4270a1c46"><div class="ttname"><a href="enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a7ada8f720629c4cac8d74ac4270a1c46">QDMI_DEVICE_PROPERTY_QUBITSNUM</a></div><div class="ttdeci">@ QDMI_DEVICE_PROPERTY_QUBITSNUM</div><div class="ttdoc">size_t The number of qubits in the device.</div><div class="ttdef"><b>Definition</b> enums.h:31</div></div>
-<div class="ttc" id="atypes_8h_html_a0ae270851e3adac50d4584088ebe67d4"><div class="ttname"><a href="types_8h.html#a0ae270851e3adac50d4584088ebe67d4">QDMI_Device_Status</a></div><div class="ttdeci">enum QDMI_DEVICE_STATUS_T QDMI_Device_Status</div><div class="ttdoc">Type of the device status.</div><div class="ttdef"><b>Definition</b> types.h:27</div></div>
-<div class="line">                            QDMI_read_device_status(), prop, size, value,</div>
+<div class="line">                            C_QDMI_read_device_status(), prop, size, value,</div>
 <div class="line">                            size_ret)</div>
 <div class="line">  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a>;</div>
 <div class="line">} </div>
 </div><!-- fragment --></li>
-<li><b class="tab-title">C++</b>  <div class="fragment"><div class="line"><span class="keywordtype">int</span> <a class="code hl_function" href="device_2query_8h.html#a02d910d9f09537ab363f4bf701379d5d">QDMI_query_device_property_dev</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="types_8h.html#afeaad074a7321ebb8fb87e06598fc055">QDMI_Device_Property</a> prop,</div>
-<div class="line">                                   <span class="keyword">const</span> <span class="keywordtype">size_t</span> size, <span class="keywordtype">void</span> *value,</div>
-<div class="line">                                   <span class="keywordtype">size_t</span> *size_ret) {</div>
+<li><b class="tab-title">C++</b>  <div class="fragment"><div class="line"><span class="keywordtype">int</span> CXX_QDMI_query_device_property_dev(<span class="keyword">const</span> <a class="code hl_typedef" href="common_2types_8h.html#afeaad074a7321ebb8fb87e06598fc055">QDMI_Device_Property</a> prop,</div>
+<div class="line">                                       <span class="keyword">const</span> <span class="keywordtype">size_t</span> size, <span class="keywordtype">void</span> *value,</div>
+<div class="line">                                       <span class="keywordtype">size_t</span> *size_ret) {</div>
 <div class="line">  ADD_SINGLE_VALUE_PROPERTY(<a class="code hl_enumvalue" href="enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a7ada8f720629c4cac8d74ac4270a1c46">QDMI_DEVICE_PROPERTY_QUBITSNUM</a>, <span class="keywordtype">size_t</span>, 5, prop,</div>
 <div class="line">                            size, value, size_ret)</div>
-<div class="line">  ADD_SINGLE_VALUE_PROPERTY(<a class="code hl_enumvalue" href="enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a45312a1e61ebb282417b2c74a4992790">QDMI_DEVICE_PROPERTY_STATUS</a>, <a class="code hl_typedef" href="types_8h.html#a0ae270851e3adac50d4584088ebe67d4">QDMI_Device_Status</a>,</div>
-<div class="line">                            device_state.status, prop, size, value, size_ret)</div>
+<div class="line">  ADD_SINGLE_VALUE_PROPERTY(<a class="code hl_enumvalue" href="enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a45312a1e61ebb282417b2c74a4992790">QDMI_DEVICE_PROPERTY_STATUS</a>, <a class="code hl_typedef" href="common_2types_8h.html#a0ae270851e3adac50d4584088ebe67d4">QDMI_Device_Status</a>,</div>
+<div class="line">                            CXX_QDMI_get_device_status(), prop, size, value,</div>
+<div class="line">                            size_ret)</div>
 <div class="line">  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a>;</div>
 <div class="line">} </div>
 </div><!-- fragment --></li>
 </ul>
 </div><h2><a class="anchor" id="device-list"></a>
 List Properties</h2>
-<p>Some properties are returned as a list of various data types. The following example shows how to return the coupling map of the device as a list of pairs of <a class="el" href="types_8h.html#ab26279159380e378f258cb663968b9ec">QDMI_Site</a>'s. The pairs are flattened into a single list of <a class="el" href="types_8h.html#ab26279159380e378f258cb663968b9ec">QDMI_Site</a>'s.</p>
+<p>Some properties are returned as a list of various data types. The following example shows how to return the coupling map of the device as a list of pairs of <a class="el" href="device_2types_8h.html#ab26279159380e378f258cb663968b9ec">QDMI_Site</a>'s. The pairs are flattened into a single list of <a class="el" href="device_2types_8h.html#ab26279159380e378f258cb663968b9ec">QDMI_Site</a>'s.</p>
 <div class="tabbed"><ul>
-<li><b class="tab-title">C</b>  <div class="fragment"><div class="line"><span class="keywordtype">int</span> <a class="code hl_function" href="device_2query_8h.html#a02d910d9f09537ab363f4bf701379d5d">QDMI_query_device_property_dev</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="types_8h.html#afeaad074a7321ebb8fb87e06598fc055">QDMI_Device_Property</a> prop,</div>
-<div class="line">                                   <span class="keyword">const</span> <span class="keywordtype">size_t</span> size, <span class="keywordtype">void</span> *value,</div>
-<div class="line">                                   <span class="keywordtype">size_t</span> *size_ret) {</div>
+<li><b class="tab-title">C</b>  <div class="fragment"><div class="line"><span class="keywordtype">int</span> C_QDMI_query_device_property_dev(<span class="keyword">const</span> <a class="code hl_typedef" href="common_2types_8h.html#afeaad074a7321ebb8fb87e06598fc055">QDMI_Device_Property</a> prop,</div>
+<div class="line">                                     <span class="keyword">const</span> <span class="keywordtype">size_t</span> size, <span class="keywordtype">void</span> *value,</div>
+<div class="line">                                     <span class="keywordtype">size_t</span> *size_ret) {</div>
 <div class="line">  ADD_LIST_PROPERTY(</div>
-<div class="line">      <a class="code hl_enumvalue" href="enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a8550a0c1b86c2f97791289647a159efd">QDMI_DEVICE_PROPERTY_COUPLINGMAP</a>, <a class="code hl_typedef" href="types_8h.html#ab26279159380e378f258cb663968b9ec">QDMI_Site</a>,</div>
-<div class="line">      ((<a class="code hl_typedef" href="types_8h.html#ab26279159380e378f258cb663968b9ec">QDMI_Site</a>[]){</div>
+<div class="line">      <a class="code hl_enumvalue" href="enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a8550a0c1b86c2f97791289647a159efd">QDMI_DEVICE_PROPERTY_COUPLINGMAP</a>, C_QDMI_Site,</div>
+<div class="line">      ((C_QDMI_Site[]){</div>
 <div class="line">          DEVICE_SITES[0], DEVICE_SITES[1], DEVICE_SITES[1], DEVICE_SITES[0],</div>
 <div class="line">          DEVICE_SITES[1], DEVICE_SITES[2], DEVICE_SITES[2], DEVICE_SITES[1],</div>
 <div class="line">          DEVICE_SITES[2], DEVICE_SITES[3], DEVICE_SITES[3], DEVICE_SITES[2],</div>
@@ -427,9 +427,8 @@ List Properties</h2>
 <div class="line">  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a>;</div>
 <div class="line">} </div>
 <div class="ttc" id="aenums_8h_html_ad251d8ae8fbbe9a5c7a10d66b243d526a8550a0c1b86c2f97791289647a159efd"><div class="ttname"><a href="enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a8550a0c1b86c2f97791289647a159efd">QDMI_DEVICE_PROPERTY_COUPLINGMAP</a></div><div class="ttdeci">@ QDMI_DEVICE_PROPERTY_COUPLINGMAP</div><div class="ttdoc">int* (int list) The coupling map of the device.</div><div class="ttdef"><b>Definition</b> enums.h:41</div></div>
-<div class="ttc" id="atypes_8h_html_ab26279159380e378f258cb663968b9ec"><div class="ttname"><a href="types_8h.html#ab26279159380e378f258cb663968b9ec">QDMI_Site</a></div><div class="ttdeci">struct QDMI_Site_impl_d * QDMI_Site</div><div class="ttdoc">Opaque type for a site.</div><div class="ttdef"><b>Definition</b> types.h:95</div></div>
 </div><!-- fragment --></li>
-<li><b class="tab-title">C++</b>  <div class="fragment"><div class="line"><span class="keyword">constexpr</span> <span class="keyword">static</span> std::array&lt;const QDMI_Site_impl_d *const, 20&gt;</div>
+<li><b class="tab-title">C++</b>  <div class="fragment"><div class="line"><span class="keyword">constexpr</span> <span class="keyword">static</span> std::array&lt;const CXX_QDMI_Site_impl_d *const, 20&gt;</div>
 <div class="line">    DEVICE_COUPLING_MAP = {</div>
 <div class="line">      device_sites.data(), &amp;device_sites[1],</div>
 <div class="line">      &amp;device_sites[1], device_sites.data(),</div>
@@ -441,10 +440,10 @@ List Properties</h2>
 <div class="line">      &amp;device_sites[4], &amp;device_sites[3],</div>
 <div class="line">      &amp;device_sites[4], device_sites.data(),</div>
 <div class="line">      device_sites.data(), &amp;device_sites[4]};</div>
-<div class="line"><span class="keywordtype">int</span> <a class="code hl_function" href="device_2query_8h.html#a02d910d9f09537ab363f4bf701379d5d">QDMI_query_device_property_dev</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="types_8h.html#afeaad074a7321ebb8fb87e06598fc055">QDMI_Device_Property</a> prop,</div>
-<div class="line">                                   <span class="keyword">const</span> <span class="keywordtype">size_t</span> size, <span class="keywordtype">void</span> *value,</div>
-<div class="line">                                   <span class="keywordtype">size_t</span> *size_ret) {</div>
-<div class="line">  ADD_LIST_PROPERTY(<a class="code hl_enumvalue" href="enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a8550a0c1b86c2f97791289647a159efd">QDMI_DEVICE_PROPERTY_COUPLINGMAP</a>, <a class="code hl_typedef" href="types_8h.html#ab26279159380e378f258cb663968b9ec">QDMI_Site</a>,</div>
+<div class="line"><span class="keywordtype">int</span> CXX_QDMI_query_device_property_dev(<span class="keyword">const</span> <a class="code hl_typedef" href="common_2types_8h.html#afeaad074a7321ebb8fb87e06598fc055">QDMI_Device_Property</a> prop,</div>
+<div class="line">                                       <span class="keyword">const</span> <span class="keywordtype">size_t</span> size, <span class="keywordtype">void</span> *value,</div>
+<div class="line">                                       <span class="keywordtype">size_t</span> *size_ret) {</div>
+<div class="line">  ADD_LIST_PROPERTY(<a class="code hl_enumvalue" href="enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a8550a0c1b86c2f97791289647a159efd">QDMI_DEVICE_PROPERTY_COUPLINGMAP</a>, CXX_QDMI_Site,</div>
 <div class="line">                    DEVICE_COUPLING_MAP, prop, size, value, size_ret)</div>
 <div class="line">  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a>;</div>
 <div class="line">} </div>
@@ -452,13 +451,14 @@ List Properties</h2>
 </ul>
 </div><h2><a class="anchor" id="device-complex"></a>
 Complex Properties</h2>
-<p>The properties that are returned by <a class="el" href="device_2query_8h.html#a511d07c2d60e15de259151e60c9405f3">QDMI_query_operation_property_dev</a> may depend on the actual site. The available <a class="el" href="types_8h.html#ae777e8f92186c1e6f836eeaa53b149d7">QDMI_Operation</a> operations and <a class="el" href="types_8h.html#ab26279159380e378f258cb663968b9ec">QDMI_Site</a> sites, first, need to be retrieved through <a class="el" href="device_2query_8h.html#ac1ce8837763eac62752e11c877c2b203">QDMI_query_get_operations_dev</a> and <a class="el" href="device_2query_8h.html#a4362e47e5f811a08cda6787255d8e2c7">QDMI_query_get_sites_dev</a>, respectively. Following is an example of how to implement the <a class="el" href="device_2query_8h.html#a4362e47e5f811a08cda6787255d8e2c7">QDMI_query_get_sites_dev</a> function.</p>
+<p>The properties that are returned by <a class="el" href="device_2query_8h.html#a511d07c2d60e15de259151e60c9405f3">QDMI_query_operation_property_dev</a> may depend on the actual site. The available <a class="el" href="device_2types_8h.html#ae777e8f92186c1e6f836eeaa53b149d7">QDMI_Operation</a> operations and <a class="el" href="device_2types_8h.html#ab26279159380e378f258cb663968b9ec">QDMI_Site</a> sites, first, need to be retrieved through <a class="el" href="device_2query_8h.html#ac1ce8837763eac62752e11c877c2b203">QDMI_query_get_operations_dev</a> and <a class="el" href="device_2query_8h.html#a4362e47e5f811a08cda6787255d8e2c7">QDMI_query_get_sites_dev</a>, respectively. Following is an example of how to implement the <a class="el" href="device_2query_8h.html#a4362e47e5f811a08cda6787255d8e2c7">QDMI_query_get_sites_dev</a> function.</p>
 <div class="tabbed"><ul>
-<li><b class="tab-title">C</b>  <div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code hl_typedef" href="types_8h.html#ab26279159380e378f258cb663968b9ec">QDMI_Site</a> DEVICE_SITES[] = {</div>
-<div class="line">    &amp;(QDMI_Site_impl_t){0}, &amp;(QDMI_Site_impl_t){1}, &amp;(QDMI_Site_impl_t){2},</div>
-<div class="line">    &amp;(QDMI_Site_impl_t){3}, &amp;(QDMI_Site_impl_t){4}};</div>
-<div class="line"><span class="keywordtype">int</span> <a class="code hl_function" href="device_2query_8h.html#a4362e47e5f811a08cda6787255d8e2c7">QDMI_query_get_sites_dev</a>(<span class="keyword">const</span> <span class="keywordtype">size_t</span> num_entries, <a class="code hl_typedef" href="types_8h.html#ab26279159380e378f258cb663968b9ec">QDMI_Site</a> *sites,</div>
-<div class="line">                             <span class="keywordtype">size_t</span> *num_sites) {</div>
+<li><b class="tab-title">C</b>  <div class="fragment"><div class="line"><span class="keyword">const</span> C_QDMI_Site DEVICE_SITES[] = {</div>
+<div class="line">    &amp;(C_QDMI_Site_impl_t){0}, &amp;(C_QDMI_Site_impl_t){1},</div>
+<div class="line">    &amp;(C_QDMI_Site_impl_t){2}, &amp;(C_QDMI_Site_impl_t){3},</div>
+<div class="line">    &amp;(C_QDMI_Site_impl_t){4}};</div>
+<div class="line"><span class="keywordtype">int</span> C_QDMI_query_get_sites_dev(<span class="keyword">const</span> <span class="keywordtype">size_t</span> num_entries, C_QDMI_Site *sites,</div>
+<div class="line">                               <span class="keywordtype">size_t</span> *num_sites) {</div>
 <div class="line">  <span class="keywordflow">if</span> ((sites != NULL &amp;&amp; num_entries == 0) ||</div>
 <div class="line">      (sites == NULL &amp;&amp; num_sites == NULL)) {</div>
 <div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642">QDMI_ERROR_INVALIDARGUMENT</a>;</div>
@@ -469,21 +469,20 @@ Complex Properties</h2>
 <div class="line">    <span class="keyword">const</span> <span class="keywordtype">size_t</span> copy_size =</div>
 <div class="line">        (num_entries &lt; device_sites_size ? num_entries : device_sites_size);</div>
 <div class="line">    memcpy((<span class="keywordtype">void</span> *)sites, (<span class="keyword">const</span> <span class="keywordtype">void</span> *)DEVICE_SITES,</div>
-<div class="line">           copy_size * <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="types_8h.html#ab26279159380e378f258cb663968b9ec">QDMI_Site</a>));</div>
+<div class="line">           copy_size * <span class="keyword">sizeof</span>(C_QDMI_Site));</div>
 <div class="line">  }</div>
 <div class="line">  <span class="keywordflow">if</span> (num_sites != NULL) {</div>
 <div class="line">    *num_sites = device_sites_size;</div>
 <div class="line">  }</div>
 <div class="line">  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a8039f5cd8202553b2a91a1c0b01d6751">QDMI_SUCCESS</a>;</div>
 <div class="line">} </div>
-<div class="ttc" id="adevice_2query_8h_html_a4362e47e5f811a08cda6787255d8e2c7"><div class="ttname"><a href="device_2query_8h.html#a4362e47e5f811a08cda6787255d8e2c7">QDMI_query_get_sites_dev</a></div><div class="ttdeci">int QDMI_query_get_sites_dev(size_t num_entries, QDMI_Site *sites, size_t *num_sites)</div><div class="ttdoc">Get the sites associated with device.</div></div>
 <div class="ttc" id="aenums_8h_html_a450b1adf81abc6f0accbf0ce4abe92f8a8039f5cd8202553b2a91a1c0b01d6751"><div class="ttname"><a href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a8039f5cd8202553b2a91a1c0b01d6751">QDMI_SUCCESS</a></div><div class="ttdeci">@ QDMI_SUCCESS</div><div class="ttdoc">The operation was successful.</div><div class="ttdef"><b>Definition</b> enums.h:174</div></div>
 </div><!-- fragment --></li>
-<li><b class="tab-title">C++</b>  <div class="fragment"><div class="line">std::array&lt;QDMI_Site_impl_d, 5&gt; device_sites = {</div>
-<div class="line">    QDMI_Site_impl_d{0}, QDMI_Site_impl_d{1}, QDMI_Site_impl_d{2},</div>
-<div class="line">    QDMI_Site_impl_d{3}, QDMI_Site_impl_d{4}};</div>
-<div class="line"><span class="keywordtype">int</span> <a class="code hl_function" href="device_2query_8h.html#a4362e47e5f811a08cda6787255d8e2c7">QDMI_query_get_sites_dev</a>(<span class="keyword">const</span> <span class="keywordtype">size_t</span> num_entries, <a class="code hl_typedef" href="types_8h.html#ab26279159380e378f258cb663968b9ec">QDMI_Site</a> *sites,</div>
-<div class="line">                             <span class="keywordtype">size_t</span> *num_sites) {</div>
+<li><b class="tab-title">C++</b>  <div class="fragment"><div class="line">std::array&lt;CXX_QDMI_Site_impl_d, 7&gt; device_sites = {</div>
+<div class="line">    CXX_QDMI_Site_impl_d{0}, CXX_QDMI_Site_impl_d{1}, CXX_QDMI_Site_impl_d{2},</div>
+<div class="line">    CXX_QDMI_Site_impl_d{3}, CXX_QDMI_Site_impl_d{4}};</div>
+<div class="line"><span class="keywordtype">int</span> CXX_QDMI_query_get_sites_dev(<span class="keyword">const</span> <span class="keywordtype">size_t</span> num_entries, CXX_QDMI_Site *sites,</div>
+<div class="line">                                 <span class="keywordtype">size_t</span> *num_sites) {</div>
 <div class="line">  <span class="keywordflow">if</span> ((sites != <span class="keyword">nullptr</span> &amp;&amp; num_entries == 0) ||</div>
 <div class="line">      (sites == <span class="keyword">nullptr</span> &amp;&amp; num_sites == <span class="keyword">nullptr</span>)) {</div>
 <div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642">QDMI_ERROR_INVALIDARGUMENT</a>;</div>
@@ -500,14 +499,14 @@ Complex Properties</h2>
 <div class="line">} </div>
 </div><!-- fragment --></li>
 </ul>
-</div><p>With the handles for <a class="el" href="types_8h.html#ae777e8f92186c1e6f836eeaa53b149d7">QDMI_Operation</a> and <a class="el" href="types_8h.html#ab26279159380e378f258cb663968b9ec">QDMI_Site</a>, corresponding properties can be queried. The following example demonstrates how different properties of operations, e.g., varying fidelities of two-qubit gates can be returned.</p>
+</div><p>With the handles for <a class="el" href="device_2types_8h.html#ae777e8f92186c1e6f836eeaa53b149d7">QDMI_Operation</a> and <a class="el" href="device_2types_8h.html#ab26279159380e378f258cb663968b9ec">QDMI_Site</a>, corresponding properties can be queried. The following example demonstrates how different properties of operations, e.g., varying fidelities of two-qubit gates can be returned.</p>
 <div class="tabbed"><ul>
-<li><b class="tab-title">C</b>  <div class="fragment"><div class="line"><span class="keywordtype">int</span> <a class="code hl_function" href="device_2query_8h.html#a511d07c2d60e15de259151e60c9405f3">QDMI_query_operation_property_dev</a>(<a class="code hl_typedef" href="types_8h.html#ae777e8f92186c1e6f836eeaa53b149d7">QDMI_Operation</a> operation,</div>
-<div class="line">                                      <span class="keyword">const</span> <span class="keywordtype">size_t</span> num_sites,</div>
-<div class="line">                                      <span class="keyword">const</span> <a class="code hl_typedef" href="types_8h.html#ab26279159380e378f258cb663968b9ec">QDMI_Site</a> *sites,</div>
-<div class="line">                                      <span class="keyword">const</span> <a class="code hl_typedef" href="types_8h.html#abc8a0427b96af9020c80aedabcf393b3">QDMI_Operation_Property</a> prop,</div>
-<div class="line">                                      <span class="keyword">const</span> <span class="keywordtype">size_t</span> size, <span class="keywordtype">void</span> *value,</div>
-<div class="line">                                      <span class="keywordtype">size_t</span> *size_ret) {</div>
+<li><b class="tab-title">C</b>  <div class="fragment"><div class="line"><span class="keywordtype">int</span> C_QDMI_query_operation_property_dev(C_QDMI_Operation operation,</div>
+<div class="line">                                        <span class="keyword">const</span> <span class="keywordtype">size_t</span> num_sites,</div>
+<div class="line">                                        <span class="keyword">const</span> C_QDMI_Site *sites,</div>
+<div class="line">                                        <span class="keyword">const</span> <a class="code hl_typedef" href="common_2types_8h.html#abc8a0427b96af9020c80aedabcf393b3">QDMI_Operation_Property</a> prop,</div>
+<div class="line">                                        <span class="keyword">const</span> <span class="keywordtype">size_t</span> size, <span class="keywordtype">void</span> *value,</div>
+<div class="line">                                        <span class="keywordtype">size_t</span> *size_ret) {</div>
 <div class="line">  <span class="keywordflow">if</span> (prop &gt;= <a class="code hl_enumvalue" href="enums_8h.html#ab23d5f0c5296e3eab4243e91f1213726a049ae95ba8acfe7191dd7d5139389468">QDMI_OPERATION_PROPERTY_MAX</a> || operation == NULL ||</div>
 <div class="line">      (sites != NULL &amp;&amp; num_sites == 0) ||</div>
 <div class="line">      (value == NULL &amp;&amp; size_ret == NULL)) {</div>
@@ -576,18 +575,16 @@ Complex Properties</h2>
 <div class="line">  }</div>
 <div class="line">  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a>;</div>
 <div class="line">} </div>
-<div class="ttc" id="adevice_2query_8h_html_a511d07c2d60e15de259151e60c9405f3"><div class="ttname"><a href="device_2query_8h.html#a511d07c2d60e15de259151e60c9405f3">QDMI_query_operation_property_dev</a></div><div class="ttdeci">int QDMI_query_operation_property_dev(QDMI_Operation operation, size_t num_sites, const QDMI_Site *sites, QDMI_Operation_Property prop, size_t size, void *value, size_t *size_ret)</div><div class="ttdoc">Query an operation property.</div></div>
+<div class="ttc" id="acommon_2types_8h_html_abc8a0427b96af9020c80aedabcf393b3"><div class="ttname"><a href="common_2types_8h.html#abc8a0427b96af9020c80aedabcf393b3">QDMI_Operation_Property</a></div><div class="ttdeci">enum QDMI_OPERATION_PROPERTY_T QDMI_Operation_Property</div><div class="ttdoc">Type of the operation properties.</div><div class="ttdef"><b>Definition</b> types.h:33</div></div>
 <div class="ttc" id="aenums_8h_html_ab23d5f0c5296e3eab4243e91f1213726a049ae95ba8acfe7191dd7d5139389468"><div class="ttname"><a href="enums_8h.html#ab23d5f0c5296e3eab4243e91f1213726a049ae95ba8acfe7191dd7d5139389468">QDMI_OPERATION_PROPERTY_MAX</a></div><div class="ttdeci">@ QDMI_OPERATION_PROPERTY_MAX</div><div class="ttdoc">The maximum value of the enum.</div><div class="ttdef"><b>Definition</b> enums.h:139</div></div>
 <div class="ttc" id="aenums_8h_html_ab23d5f0c5296e3eab4243e91f1213726a50c6ef3ffc889f80f8767bfe7296dc49"><div class="ttname"><a href="enums_8h.html#ab23d5f0c5296e3eab4243e91f1213726a50c6ef3ffc889f80f8767bfe7296dc49">QDMI_OPERATION_PROPERTY_QUBITSNUM</a></div><div class="ttdeci">@ QDMI_OPERATION_PROPERTY_QUBITSNUM</div><div class="ttdoc">size_t The number of qubits in the operation.</div><div class="ttdef"><b>Definition</b> enums.h:114</div></div>
 <div class="ttc" id="aenums_8h_html_ab23d5f0c5296e3eab4243e91f1213726a5197136670f9d415464f09f283921b5a"><div class="ttname"><a href="enums_8h.html#ab23d5f0c5296e3eab4243e91f1213726a5197136670f9d415464f09f283921b5a">QDMI_OPERATION_PROPERTY_NAME</a></div><div class="ttdeci">@ QDMI_OPERATION_PROPERTY_NAME</div><div class="ttdoc">char* (string) The string identifier of the operation.</div><div class="ttdef"><b>Definition</b> enums.h:112</div></div>
 <div class="ttc" id="aenums_8h_html_ab23d5f0c5296e3eab4243e91f1213726ad45aa26cc41c80c697fa71a08f622eca"><div class="ttname"><a href="enums_8h.html#ab23d5f0c5296e3eab4243e91f1213726ad45aa26cc41c80c697fa71a08f622eca">QDMI_OPERATION_PROPERTY_DURATION</a></div><div class="ttdeci">@ QDMI_OPERATION_PROPERTY_DURATION</div><div class="ttdoc">double The duration of an operation in µs.</div><div class="ttdef"><b>Definition</b> enums.h:116</div></div>
 <div class="ttc" id="aenums_8h_html_ab23d5f0c5296e3eab4243e91f1213726aeff33960f7a3da9e17058cf9bf05da77"><div class="ttname"><a href="enums_8h.html#ab23d5f0c5296e3eab4243e91f1213726aeff33960f7a3da9e17058cf9bf05da77">QDMI_OPERATION_PROPERTY_FIDELITY</a></div><div class="ttdeci">@ QDMI_OPERATION_PROPERTY_FIDELITY</div><div class="ttdoc">double The fidelity of an operation.</div><div class="ttdef"><b>Definition</b> enums.h:118</div></div>
-<div class="ttc" id="atypes_8h_html_abc8a0427b96af9020c80aedabcf393b3"><div class="ttname"><a href="types_8h.html#abc8a0427b96af9020c80aedabcf393b3">QDMI_Operation_Property</a></div><div class="ttdeci">enum QDMI_OPERATION_PROPERTY_T QDMI_Operation_Property</div><div class="ttdoc">Type of the operation properties.</div><div class="ttdef"><b>Definition</b> types.h:33</div></div>
-<div class="ttc" id="atypes_8h_html_ae777e8f92186c1e6f836eeaa53b149d7"><div class="ttname"><a href="types_8h.html#ae777e8f92186c1e6f836eeaa53b149d7">QDMI_Operation</a></div><div class="ttdeci">struct QDMI_Operation_impl_d * QDMI_Operation</div><div class="ttdoc">Opaque type for an operation.</div><div class="ttdef"><b>Definition</b> types.h:103</div></div>
 </div><!-- fragment --></li>
-<li><b class="tab-title">C++</b>  <div class="fragment"><div class="line"><span class="keyword">struct </span>QDMI_Pair_hash {</div>
+<li><b class="tab-title">C++</b>  <div class="fragment"><div class="line"><span class="keyword">struct </span>CXX_QDMI_Pair_hash {</div>
 <div class="line">  <span class="keyword">template</span> &lt;<span class="keyword">class</span> T1, <span class="keyword">class</span> T2&gt;</div>
-<div class="line">  std::size_t operator()(<span class="keyword">const</span> std::pair&lt;T1, T2&gt; &amp;p)<span class="keyword"> const </span>{</div>
+<div class="line">  <span class="keywordtype">size_t</span> operator()(<span class="keyword">const</span> std::pair&lt;T1, T2&gt; &amp;p)<span class="keyword"> const </span>{</div>
 <div class="line">    <span class="keyword">auto</span> hash1 = std::hash&lt;T1&gt;{}(p.first);</div>
 <div class="line">    <span class="keyword">auto</span> hash2 = std::hash&lt;T2&gt;{}(p.second);</div>
 <div class="line">    <span class="keywordflow">return</span> hash1 ^ hash2;</div>
@@ -595,10 +592,10 @@ Complex Properties</h2>
 <div class="line">};</div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">const</span> <span class="keyword">static</span> std::unordered_map&lt;</div>
-<div class="line">    <span class="keyword">const</span> QDMI_Operation_impl_d *,</div>
+<div class="line">    <span class="keyword">const</span> CXX_QDMI_Operation_impl_d *,</div>
 <div class="line">    std::unordered_map&lt;</div>
-<div class="line">        std::pair&lt;const QDMI_Site_impl_d *, const QDMI_Site_impl_d *&gt;, double,</div>
-<div class="line">        QDMI_Pair_hash&gt;&gt;</div>
+<div class="line">        std::pair&lt;const CXX_QDMI_Site_impl_d *, const CXX_QDMI_Site_impl_d *&gt;,</div>
+<div class="line">        double, CXX_QDMI_Pair_hash&gt;&gt;</div>
 <div class="line">    OPERATION_FIDELITIES = {</div>
 <div class="line">        {&amp;device_operations[3],</div>
 <div class="line">         {{{device_sites.data(), &amp;device_sites[1]}, 0.99},</div>
@@ -613,10 +610,9 @@ Complex Properties</h2>
 <div class="line">          {{device_sites.data(), &amp;device_sites[4]}, 0.95}}},</div>
 <div class="line">        <span class="comment">// No need to specify single-qubit fidelities here</span></div>
 <div class="line">};</div>
-<div class="line"><span class="keywordtype">int</span> <a class="code hl_function" href="device_2query_8h.html#a511d07c2d60e15de259151e60c9405f3">QDMI_query_operation_property_dev</a>(<a class="code hl_typedef" href="types_8h.html#ae777e8f92186c1e6f836eeaa53b149d7">QDMI_Operation</a> operation,</div>
-<div class="line">                                      <span class="keywordtype">size_t</span> num_sites, <span class="keyword">const</span> <a class="code hl_typedef" href="types_8h.html#ab26279159380e378f258cb663968b9ec">QDMI_Site</a> *sites,</div>
-<div class="line">                                      <a class="code hl_typedef" href="types_8h.html#abc8a0427b96af9020c80aedabcf393b3">QDMI_Operation_Property</a> prop, <span class="keywordtype">size_t</span> size,</div>
-<div class="line">                                      <span class="keywordtype">void</span> *value, <span class="keywordtype">size_t</span> *size_ret) {</div>
+<div class="line"><span class="keywordtype">int</span> CXX_QDMI_query_operation_property_dev(</div>
+<div class="line">    CXX_QDMI_Operation operation, <span class="keywordtype">size_t</span> num_sites, <span class="keyword">const</span> CXX_QDMI_Site *sites,</div>
+<div class="line">    <a class="code hl_typedef" href="common_2types_8h.html#abc8a0427b96af9020c80aedabcf393b3">QDMI_Operation_Property</a> prop, <span class="keywordtype">size_t</span> size, <span class="keywordtype">void</span> *value, <span class="keywordtype">size_t</span> *size_ret) {</div>
 <div class="line">  <span class="keywordflow">if</span> (prop &gt;= <a class="code hl_enumvalue" href="enums_8h.html#ab23d5f0c5296e3eab4243e91f1213726a049ae95ba8acfe7191dd7d5139389468">QDMI_OPERATION_PROPERTY_MAX</a> || operation == <span class="keyword">nullptr</span> ||</div>
 <div class="line">      (sites != <span class="keyword">nullptr</span> &amp;&amp; num_sites == 0) ||</div>
 <div class="line">      (value == <span class="keyword">nullptr</span> &amp;&amp; size_ret == <span class="keyword">nullptr</span>)) {</div>
@@ -672,10 +668,10 @@ Complex Properties</h2>
 Submitting a Job</h2>
 <p>One crucial part of QDMI is, that it allows to submit a job to the device for execution. The following example provides a mock implementation of the necessary functions to submit a job. The first example shows a mock implementation of <a class="el" href="device_2control_8h.html#a137e2d744984715e30477dd815a0e1e8">QDMI_control_create_job_dev</a>.</p>
 <div class="tabbed"><ul>
-<li><b class="tab-title">C</b>  <div class="fragment"><div class="line"><span class="keywordtype">int</span> <a class="code hl_function" href="device_2control_8h.html#a137e2d744984715e30477dd815a0e1e8">QDMI_control_create_job_dev</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="types_8h.html#a475336f0c08bd0218dd76a6016098231">QDMI_Program_Format</a> format,</div>
-<div class="line">                                <span class="keyword">const</span> <span class="keywordtype">size_t</span> size, <span class="keyword">const</span> <span class="keywordtype">void</span> *prog,</div>
-<div class="line">                                <a class="code hl_typedef" href="types_8h.html#ab63357cf9e4546c7ee86b7378c620981">QDMI_Job</a> *job) {</div>
-<div class="line">  <span class="keywordflow">if</span> (QDMI_read_device_status() != <a class="code hl_enumvalue" href="enums_8h.html#aa13ac5e1c93a4b358d84bb9fd1f5fd99a085a5b7c40531ff46ca59848462dc376">QDMI_DEVICE_STATUS_IDLE</a>) {</div>
+<li><b class="tab-title">C</b>  <div class="fragment"><div class="line"><span class="keywordtype">int</span> C_QDMI_control_create_job_dev(<span class="keyword">const</span> <a class="code hl_typedef" href="common_2types_8h.html#a475336f0c08bd0218dd76a6016098231">QDMI_Program_Format</a> format,</div>
+<div class="line">                                  <span class="keyword">const</span> <span class="keywordtype">size_t</span> size, <span class="keyword">const</span> <span class="keywordtype">void</span> *prog,</div>
+<div class="line">                                  C_QDMI_Job *job) {</div>
+<div class="line">  <span class="keywordflow">if</span> (C_QDMI_read_device_status() != <a class="code hl_enumvalue" href="enums_8h.html#aa13ac5e1c93a4b358d84bb9fd1f5fd99a085a5b7c40531ff46ca59848462dc376">QDMI_DEVICE_STATUS_IDLE</a>) {</div>
 <div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3">QDMI_ERROR_FATAL</a>;</div>
 <div class="line">  }</div>
 <div class="line">  <span class="keywordflow">if</span> (size == 0 || prog == NULL || job == NULL) {</div>
@@ -687,8 +683,7 @@ Submitting a Job</h2>
 <div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a>;</div>
 <div class="line">  }</div>
 <div class="line"> </div>
-<div class="line">  QDMI_set_device_status(<a class="code hl_enumvalue" href="enums_8h.html#aa13ac5e1c93a4b358d84bb9fd1f5fd99aedb7fbd4f25c108ab71385aec61e4409">QDMI_DEVICE_STATUS_BUSY</a>);</div>
-<div class="line">  *job = (<a class="code hl_typedef" href="types_8h.html#ab63357cf9e4546c7ee86b7378c620981">QDMI_Job</a>)malloc(<span class="keyword">sizeof</span>(QDMI_Job_impl_t));</div>
+<div class="line">  *job = (C_QDMI_Job)malloc(<span class="keyword">sizeof</span>(C_QDMI_Job_impl_t));</div>
 <div class="line">  <span class="comment">// set job id to random number for demonstration purposes</span></div>
 <div class="line">  (*job)-&gt;id = rand();</div>
 <div class="line">  (*job)-&gt;status = <a class="code hl_enumvalue" href="enums_8h.html#a04e5c793bcbe8b354a9223bb60f828a6a2d985c815c2e1024b9eb5605e8825df5">QDMI_JOB_STATUS_CREATED</a>;</div>
@@ -697,21 +692,18 @@ Submitting a Job</h2>
 <div class="line">  (*job)-&gt;state_vec = NULL;</div>
 <div class="line">  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a8039f5cd8202553b2a91a1c0b01d6751">QDMI_SUCCESS</a>;</div>
 <div class="line">} </div>
-<div class="ttc" id="adevice_2control_8h_html_a137e2d744984715e30477dd815a0e1e8"><div class="ttname"><a href="device_2control_8h.html#a137e2d744984715e30477dd815a0e1e8">QDMI_control_create_job_dev</a></div><div class="ttdeci">int QDMI_control_create_job_dev(QDMI_Program_Format format, size_t size, const void *prog, QDMI_Job *job)</div><div class="ttdoc">Create a job on a device.</div></div>
+<div class="ttc" id="acommon_2types_8h_html_a475336f0c08bd0218dd76a6016098231"><div class="ttname"><a href="common_2types_8h.html#a475336f0c08bd0218dd76a6016098231">QDMI_Program_Format</a></div><div class="ttdeci">enum QDMI_PROGRAM_FORMAT_T QDMI_Program_Format</div><div class="ttdoc">Type of the program format.</div><div class="ttdef"><b>Definition</b> types.h:42</div></div>
 <div class="ttc" id="aenums_8h_html_a04e5c793bcbe8b354a9223bb60f828a6a2d985c815c2e1024b9eb5605e8825df5"><div class="ttname"><a href="enums_8h.html#a04e5c793bcbe8b354a9223bb60f828a6a2d985c815c2e1024b9eb5605e8825df5">QDMI_JOB_STATUS_CREATED</a></div><div class="ttdeci">@ QDMI_JOB_STATUS_CREATED</div><div class="ttdoc">The job was created and can be configured via QDMI_control_set_parameter.</div><div class="ttdef"><b>Definition</b> enums.h:148</div></div>
 <div class="ttc" id="aenums_8h_html_a3eff3252203fcad146d5896e4466ec09a3a59c7404dd8f1225252ed2fae52f195"><div class="ttname"><a href="enums_8h.html#a3eff3252203fcad146d5896e4466ec09a3a59c7404dd8f1225252ed2fae52f195">QDMI_PROGRAM_FORMAT_QIRMODULE</a></div><div class="ttdeci">@ QDMI_PROGRAM_FORMAT_QIRMODULE</div><div class="ttdoc">void* The QIR program as a binary module.</div><div class="ttdef"><b>Definition</b> enums.h:197</div></div>
 <div class="ttc" id="aenums_8h_html_a3eff3252203fcad146d5896e4466ec09ad95c42d4fc8782d119eae27a258342fa"><div class="ttname"><a href="enums_8h.html#a3eff3252203fcad146d5896e4466ec09ad95c42d4fc8782d119eae27a258342fa">QDMI_PROGRAM_FORMAT_QIRSTRING</a></div><div class="ttdeci">@ QDMI_PROGRAM_FORMAT_QIRSTRING</div><div class="ttdoc">char*(string) The QIR program to run as a string.</div><div class="ttdef"><b>Definition</b> enums.h:195</div></div>
 <div class="ttc" id="aenums_8h_html_a3eff3252203fcad146d5896e4466ec09afd3bab5e29afc660e29b2a132246471b"><div class="ttname"><a href="enums_8h.html#a3eff3252203fcad146d5896e4466ec09afd3bab5e29afc660e29b2a132246471b">QDMI_PROGRAM_FORMAT_QASM2</a></div><div class="ttdeci">@ QDMI_PROGRAM_FORMAT_QASM2</div><div class="ttdoc">char*(string) The OpenQASM 2.0 program to run.</div><div class="ttdef"><b>Definition</b> enums.h:191</div></div>
 <div class="ttc" id="aenums_8h_html_a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3"><div class="ttname"><a href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3">QDMI_ERROR_FATAL</a></div><div class="ttdeci">@ QDMI_ERROR_FATAL</div><div class="ttdoc">A fatal error.</div><div class="ttdef"><b>Definition</b> enums.h:175</div></div>
 <div class="ttc" id="aenums_8h_html_aa13ac5e1c93a4b358d84bb9fd1f5fd99a085a5b7c40531ff46ca59848462dc376"><div class="ttname"><a href="enums_8h.html#aa13ac5e1c93a4b358d84bb9fd1f5fd99a085a5b7c40531ff46ca59848462dc376">QDMI_DEVICE_STATUS_IDLE</a></div><div class="ttdeci">@ QDMI_DEVICE_STATUS_IDLE</div><div class="ttdoc">The device is idle.</div><div class="ttdef"><b>Definition</b> enums.h:68</div></div>
-<div class="ttc" id="aenums_8h_html_aa13ac5e1c93a4b358d84bb9fd1f5fd99aedb7fbd4f25c108ab71385aec61e4409"><div class="ttname"><a href="enums_8h.html#aa13ac5e1c93a4b358d84bb9fd1f5fd99aedb7fbd4f25c108ab71385aec61e4409">QDMI_DEVICE_STATUS_BUSY</a></div><div class="ttdeci">@ QDMI_DEVICE_STATUS_BUSY</div><div class="ttdoc">The device is busy.</div><div class="ttdef"><b>Definition</b> enums.h:69</div></div>
-<div class="ttc" id="atypes_8h_html_a475336f0c08bd0218dd76a6016098231"><div class="ttname"><a href="types_8h.html#a475336f0c08bd0218dd76a6016098231">QDMI_Program_Format</a></div><div class="ttdeci">enum QDMI_PROGRAM_FORMAT_T QDMI_Program_Format</div><div class="ttdoc">Type of the program format.</div><div class="ttdef"><b>Definition</b> types.h:42</div></div>
-<div class="ttc" id="atypes_8h_html_ab63357cf9e4546c7ee86b7378c620981"><div class="ttname"><a href="types_8h.html#ab63357cf9e4546c7ee86b7378c620981">QDMI_Job</a></div><div class="ttdeci">struct QDMI_Job_impl_d * QDMI_Job</div><div class="ttdoc">Opaque type for a job.</div><div class="ttdef"><b>Definition</b> types.h:80</div></div>
 </div><!-- fragment --></li>
-<li><b class="tab-title">C++</b>  <div class="fragment"><div class="line"><span class="keywordtype">int</span> <a class="code hl_function" href="device_2control_8h.html#a137e2d744984715e30477dd815a0e1e8">QDMI_control_create_job_dev</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="types_8h.html#a475336f0c08bd0218dd76a6016098231">QDMI_Program_Format</a> format,</div>
-<div class="line">                                <span class="keyword">const</span> <span class="keywordtype">size_t</span> size, <span class="keyword">const</span> <span class="keywordtype">void</span> *prog,</div>
-<div class="line">                                <a class="code hl_typedef" href="types_8h.html#ab63357cf9e4546c7ee86b7378c620981">QDMI_Job</a> *job) {</div>
-<div class="line">  <span class="keywordflow">if</span> (device_state.status != <a class="code hl_enumvalue" href="enums_8h.html#aa13ac5e1c93a4b358d84bb9fd1f5fd99a085a5b7c40531ff46ca59848462dc376">QDMI_DEVICE_STATUS_IDLE</a>) {</div>
+<li><b class="tab-title">C++</b>  <div class="fragment"><div class="line"><span class="keywordtype">int</span> CXX_QDMI_control_create_job_dev(<span class="keyword">const</span> <a class="code hl_typedef" href="common_2types_8h.html#a475336f0c08bd0218dd76a6016098231">QDMI_Program_Format</a> format,</div>
+<div class="line">                                    <span class="keyword">const</span> <span class="keywordtype">size_t</span> size, <span class="keyword">const</span> <span class="keywordtype">void</span> *prog,</div>
+<div class="line">                                    CXX_QDMI_Job *job) {</div>
+<div class="line">  <span class="keywordflow">if</span> (CXX_QDMI_get_device_status() != <a class="code hl_enumvalue" href="enums_8h.html#aa13ac5e1c93a4b358d84bb9fd1f5fd99a085a5b7c40531ff46ca59848462dc376">QDMI_DEVICE_STATUS_IDLE</a>) {</div>
 <div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3">QDMI_ERROR_FATAL</a>;</div>
 <div class="line">  }</div>
 <div class="line">  <span class="keywordflow">if</span> (size == 0 || prog == <span class="keyword">nullptr</span> || job == <span class="keyword">nullptr</span>) {</div>
@@ -723,10 +715,9 @@ Submitting a Job</h2>
 <div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a>;</div>
 <div class="line">  }</div>
 <div class="line"> </div>
-<div class="line">  device_state.status = <a class="code hl_enumvalue" href="enums_8h.html#aa13ac5e1c93a4b358d84bb9fd1f5fd99aedb7fbd4f25c108ab71385aec61e4409">QDMI_DEVICE_STATUS_BUSY</a>;</div>
-<div class="line">  *job = <span class="keyword">new</span> QDMI_Job_impl_d;</div>
+<div class="line">  *job = <span class="keyword">new</span> CXX_QDMI_Job_impl_d;</div>
 <div class="line">  <span class="comment">// set job id to random number for demonstration purposes</span></div>
-<div class="line">  (*job)-&gt;id = device_state.dis(device_state.gen);</div>
+<div class="line">  (*job)-&gt;id = CXX_QDMI_generate_job_id();</div>
 <div class="line">  (*job)-&gt;status = <a class="code hl_enumvalue" href="enums_8h.html#a04e5c793bcbe8b354a9223bb60f828a6a2d985c815c2e1024b9eb5605e8825df5">QDMI_JOB_STATUS_CREATED</a>;</div>
 <div class="line">  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a8039f5cd8202553b2a91a1c0b01d6751">QDMI_SUCCESS</a>;</div>
 <div class="line">} </div>
@@ -734,8 +725,9 @@ Submitting a Job</h2>
 </ul>
 </div><p>The function <a class="el" href="device_2control_8h.html#a2de15823556ee1b6c407404cedbc9498">QDMI_control_set_parameter_dev</a> allows to set different parameters for the job, e.g., the number of shots (<a class="el" href="enums_8h.html#a1e7131664b094eb409d0f44d731f51f5a0fc11e9295172abcbf6a2116a7985507">QDMI_JOB_PARAMETER_SHOTS_NUM</a>).</p>
 <div class="tabbed"><ul>
-<li><b class="tab-title">C</b>  <div class="fragment"><div class="line"><span class="keywordtype">int</span> <a class="code hl_function" href="device_2control_8h.html#a2de15823556ee1b6c407404cedbc9498">QDMI_control_set_parameter_dev</a>(<a class="code hl_typedef" href="types_8h.html#ab63357cf9e4546c7ee86b7378c620981">QDMI_Job</a> job, <span class="keyword">const</span> <a class="code hl_typedef" href="types_8h.html#a4d37195d9d0765b10a6ad681304a4512">QDMI_Job_Parameter</a> param,</div>
-<div class="line">                                   <span class="keyword">const</span> <span class="keywordtype">size_t</span> size, <span class="keyword">const</span> <span class="keywordtype">void</span> *value) {</div>
+<li><b class="tab-title">C</b>  <div class="fragment"><div class="line"><span class="keywordtype">int</span> C_QDMI_control_set_parameter_dev(C_QDMI_Job job,</div>
+<div class="line">                                     <span class="keyword">const</span> <a class="code hl_typedef" href="common_2types_8h.html#a4d37195d9d0765b10a6ad681304a4512">QDMI_Job_Parameter</a> param,</div>
+<div class="line">                                     <span class="keyword">const</span> <span class="keywordtype">size_t</span> size, <span class="keyword">const</span> <span class="keywordtype">void</span> *value) {</div>
 <div class="line">  <span class="keywordflow">if</span> (job == NULL || param &gt;= <a class="code hl_enumvalue" href="enums_8h.html#a1e7131664b094eb409d0f44d731f51f5aa94ff18351f57072ad1e9223583ff978">QDMI_JOB_PARAMETER_MAX</a> || size == 0 ||</div>
 <div class="line">      job-&gt;status != <a class="code hl_enumvalue" href="enums_8h.html#a04e5c793bcbe8b354a9223bb60f828a6a2d985c815c2e1024b9eb5605e8825df5">QDMI_JOB_STATUS_CREATED</a>) {</div>
 <div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642">QDMI_ERROR_INVALIDARGUMENT</a>;</div>
@@ -746,13 +738,13 @@ Submitting a Job</h2>
 <div class="line">  }</div>
 <div class="line">  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a>;</div>
 <div class="line">} </div>
-<div class="ttc" id="adevice_2control_8h_html_a2de15823556ee1b6c407404cedbc9498"><div class="ttname"><a href="device_2control_8h.html#a2de15823556ee1b6c407404cedbc9498">QDMI_control_set_parameter_dev</a></div><div class="ttdeci">int QDMI_control_set_parameter_dev(QDMI_Job job, QDMI_Job_Parameter param, size_t size, const void *value)</div><div class="ttdoc">Set a parameter for a job.</div></div>
+<div class="ttc" id="acommon_2types_8h_html_a4d37195d9d0765b10a6ad681304a4512"><div class="ttname"><a href="common_2types_8h.html#a4d37195d9d0765b10a6ad681304a4512">QDMI_Job_Parameter</a></div><div class="ttdeci">enum QDMI_JOB_PARAMETER_T QDMI_Job_Parameter</div><div class="ttdoc">Type of the job parameter.</div><div class="ttdef"><b>Definition</b> types.h:45</div></div>
 <div class="ttc" id="aenums_8h_html_a1e7131664b094eb409d0f44d731f51f5a0fc11e9295172abcbf6a2116a7985507"><div class="ttname"><a href="enums_8h.html#a1e7131664b094eb409d0f44d731f51f5a0fc11e9295172abcbf6a2116a7985507">QDMI_JOB_PARAMETER_SHOTS_NUM</a></div><div class="ttdeci">@ QDMI_JOB_PARAMETER_SHOTS_NUM</div><div class="ttdoc">size_t The number of shots to take.</div><div class="ttdef"><b>Definition</b> enums.h:225</div></div>
 <div class="ttc" id="aenums_8h_html_a1e7131664b094eb409d0f44d731f51f5aa94ff18351f57072ad1e9223583ff978"><div class="ttname"><a href="enums_8h.html#a1e7131664b094eb409d0f44d731f51f5aa94ff18351f57072ad1e9223583ff978">QDMI_JOB_PARAMETER_MAX</a></div><div class="ttdeci">@ QDMI_JOB_PARAMETER_MAX</div><div class="ttdoc">The maximum value of the enum.</div><div class="ttdef"><b>Definition</b> enums.h:246</div></div>
-<div class="ttc" id="atypes_8h_html_a4d37195d9d0765b10a6ad681304a4512"><div class="ttname"><a href="types_8h.html#a4d37195d9d0765b10a6ad681304a4512">QDMI_Job_Parameter</a></div><div class="ttdeci">enum QDMI_JOB_PARAMETER_T QDMI_Job_Parameter</div><div class="ttdoc">Type of the job parameter.</div><div class="ttdef"><b>Definition</b> types.h:45</div></div>
 </div><!-- fragment --></li>
-<li><b class="tab-title">C++</b>  <div class="fragment"><div class="line"><span class="keywordtype">int</span> <a class="code hl_function" href="device_2control_8h.html#a2de15823556ee1b6c407404cedbc9498">QDMI_control_set_parameter_dev</a>(<a class="code hl_typedef" href="types_8h.html#ab63357cf9e4546c7ee86b7378c620981">QDMI_Job</a> job, <span class="keyword">const</span> <a class="code hl_typedef" href="types_8h.html#a4d37195d9d0765b10a6ad681304a4512">QDMI_Job_Parameter</a> param,</div>
-<div class="line">                                   <span class="keyword">const</span> <span class="keywordtype">size_t</span> size, <span class="keyword">const</span> <span class="keywordtype">void</span> *value) {</div>
+<li><b class="tab-title">C++</b>  <div class="fragment"><div class="line"><span class="keywordtype">int</span> CXX_QDMI_control_set_parameter_dev(CXX_QDMI_Job job,</div>
+<div class="line">                                       <span class="keyword">const</span> <a class="code hl_typedef" href="common_2types_8h.html#a4d37195d9d0765b10a6ad681304a4512">QDMI_Job_Parameter</a> param,</div>
+<div class="line">                                       <span class="keyword">const</span> <span class="keywordtype">size_t</span> size, <span class="keyword">const</span> <span class="keywordtype">void</span> *value) {</div>
 <div class="line">  <span class="keywordflow">if</span> (job == <span class="keyword">nullptr</span> || param &gt;= <a class="code hl_enumvalue" href="enums_8h.html#a1e7131664b094eb409d0f44d731f51f5aa94ff18351f57072ad1e9223583ff978">QDMI_JOB_PARAMETER_MAX</a> || size == 0 ||</div>
 <div class="line">      job-&gt;status != <a class="code hl_enumvalue" href="enums_8h.html#a04e5c793bcbe8b354a9223bb60f828a6a2d985c815c2e1024b9eb5605e8825df5">QDMI_JOB_STATUS_CREATED</a>) {</div>
 <div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642">QDMI_ERROR_INVALIDARGUMENT</a>;</div>
@@ -767,11 +759,11 @@ Submitting a Job</h2>
 </ul>
 </div><p>After the job is set up, it can be submitted to the device. The following example shows a mock implementation of <a class="el" href="device_2control_8h.html#a2ac219929e5c12f99a3d843a637f115b">QDMI_control_submit_job_dev</a>.</p>
 <div class="tabbed"><ul>
-<li><b class="tab-title">C</b>  <div class="fragment"><div class="line"><span class="keywordtype">int</span> <a class="code hl_function" href="device_2control_8h.html#a2ac219929e5c12f99a3d843a637f115b">QDMI_control_submit_job_dev</a>(<a class="code hl_typedef" href="types_8h.html#ab63357cf9e4546c7ee86b7378c620981">QDMI_Job</a> job) {</div>
+<li><b class="tab-title">C</b>  <div class="fragment"><div class="line"><span class="keywordtype">int</span> C_QDMI_control_submit_job_dev(C_QDMI_Job job) {</div>
 <div class="line">  <span class="keywordflow">if</span> (job == NULL || job-&gt;status != <a class="code hl_enumvalue" href="enums_8h.html#a04e5c793bcbe8b354a9223bb60f828a6a2d985c815c2e1024b9eb5605e8825df5">QDMI_JOB_STATUS_CREATED</a>) {</div>
 <div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642">QDMI_ERROR_INVALIDARGUMENT</a>;</div>
 <div class="line">  }</div>
-<div class="line">  QDMI_set_device_status(<a class="code hl_enumvalue" href="enums_8h.html#aa13ac5e1c93a4b358d84bb9fd1f5fd99aedb7fbd4f25c108ab71385aec61e4409">QDMI_DEVICE_STATUS_BUSY</a>);</div>
+<div class="line">  C_QDMI_set_device_status(<a class="code hl_enumvalue" href="enums_8h.html#aa13ac5e1c93a4b358d84bb9fd1f5fd99aedb7fbd4f25c108ab71385aec61e4409">QDMI_DEVICE_STATUS_BUSY</a>);</div>
 <div class="line">  job-&gt;status = <a class="code hl_enumvalue" href="enums_8h.html#a04e5c793bcbe8b354a9223bb60f828a6a3c531c6a92164cfb31a6c4c1a6cc5dfe">QDMI_JOB_STATUS_SUBMITTED</a>;</div>
 <div class="line">  <span class="comment">// here, the actual submission of the problem to the device would happen</span></div>
 <div class="line">  <span class="comment">// ...</span></div>
@@ -779,8 +771,8 @@ Submitting a Job</h2>
 <div class="line">  job-&gt;status = <a class="code hl_enumvalue" href="enums_8h.html#a04e5c793bcbe8b354a9223bb60f828a6ac1203df2c0360fafd873b42cdcbe9cc5">QDMI_JOB_STATUS_RUNNING</a>;</div>
 <div class="line">  <span class="comment">// generate random result data</span></div>
 <div class="line">  <span class="keywordtype">size_t</span> num_qubits = 0;</div>
-<div class="line">  <a class="code hl_function" href="device_2query_8h.html#a02d910d9f09537ab363f4bf701379d5d">QDMI_query_device_property_dev</a>(<a class="code hl_enumvalue" href="enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a7ada8f720629c4cac8d74ac4270a1c46">QDMI_DEVICE_PROPERTY_QUBITSNUM</a>, <span class="keyword">sizeof</span>(<span class="keywordtype">size_t</span>),</div>
-<div class="line">                                 &amp;num_qubits, NULL);</div>
+<div class="line">  C_QDMI_query_device_property_dev(<a class="code hl_enumvalue" href="enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a7ada8f720629c4cac8d74ac4270a1c46">QDMI_DEVICE_PROPERTY_QUBITSNUM</a>,</div>
+<div class="line">                                   <span class="keyword">sizeof</span>(<span class="keywordtype">size_t</span>), &amp;num_qubits, NULL);</div>
 <div class="line">  job-&gt;results_length = job-&gt;num_shots * (num_qubits + 1);</div>
 <div class="line">  job-&gt;results = (<span class="keywordtype">char</span> *)malloc(job-&gt;results_length);</div>
 <div class="line">  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; job-&gt;num_shots; ++i) {</div>
@@ -812,15 +804,15 @@ Submitting a Job</h2>
 <div class="line">  }</div>
 <div class="line">  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a8039f5cd8202553b2a91a1c0b01d6751">QDMI_SUCCESS</a>;</div>
 <div class="line">} </div>
-<div class="ttc" id="adevice_2control_8h_html_a2ac219929e5c12f99a3d843a637f115b"><div class="ttname"><a href="device_2control_8h.html#a2ac219929e5c12f99a3d843a637f115b">QDMI_control_submit_job_dev</a></div><div class="ttdeci">int QDMI_control_submit_job_dev(QDMI_Job job)</div><div class="ttdoc">Submit a job to the device.</div></div>
 <div class="ttc" id="aenums_8h_html_a04e5c793bcbe8b354a9223bb60f828a6a3c531c6a92164cfb31a6c4c1a6cc5dfe"><div class="ttname"><a href="enums_8h.html#a04e5c793bcbe8b354a9223bb60f828a6a3c531c6a92164cfb31a6c4c1a6cc5dfe">QDMI_JOB_STATUS_SUBMITTED</a></div><div class="ttdeci">@ QDMI_JOB_STATUS_SUBMITTED</div><div class="ttdoc">The job was submitted and is waiting to be executed.</div><div class="ttdef"><b>Definition</b> enums.h:150</div></div>
 <div class="ttc" id="aenums_8h_html_a04e5c793bcbe8b354a9223bb60f828a6ac1203df2c0360fafd873b42cdcbe9cc5"><div class="ttname"><a href="enums_8h.html#a04e5c793bcbe8b354a9223bb60f828a6ac1203df2c0360fafd873b42cdcbe9cc5">QDMI_JOB_STATUS_RUNNING</a></div><div class="ttdeci">@ QDMI_JOB_STATUS_RUNNING</div><div class="ttdoc">The job is running, and the result is not yet available.</div><div class="ttdef"><b>Definition</b> enums.h:154</div></div>
+<div class="ttc" id="aenums_8h_html_aa13ac5e1c93a4b358d84bb9fd1f5fd99aedb7fbd4f25c108ab71385aec61e4409"><div class="ttname"><a href="enums_8h.html#aa13ac5e1c93a4b358d84bb9fd1f5fd99aedb7fbd4f25c108ab71385aec61e4409">QDMI_DEVICE_STATUS_BUSY</a></div><div class="ttdeci">@ QDMI_DEVICE_STATUS_BUSY</div><div class="ttdoc">The device is busy.</div><div class="ttdef"><b>Definition</b> enums.h:69</div></div>
 </div><!-- fragment --></li>
-<li><b class="tab-title">C++</b>  <div class="fragment"><div class="line"><span class="keywordtype">int</span> <a class="code hl_function" href="device_2control_8h.html#a2ac219929e5c12f99a3d843a637f115b">QDMI_control_submit_job_dev</a>(<a class="code hl_typedef" href="types_8h.html#ab63357cf9e4546c7ee86b7378c620981">QDMI_Job</a> job) {</div>
+<li><b class="tab-title">C++</b>  <div class="fragment"><div class="line"><span class="keywordtype">int</span> CXX_QDMI_control_submit_job_dev(CXX_QDMI_Job job) {</div>
 <div class="line">  <span class="keywordflow">if</span> (job == <span class="keyword">nullptr</span> || job-&gt;status != <a class="code hl_enumvalue" href="enums_8h.html#a04e5c793bcbe8b354a9223bb60f828a6a2d985c815c2e1024b9eb5605e8825df5">QDMI_JOB_STATUS_CREATED</a>) {</div>
 <div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642">QDMI_ERROR_INVALIDARGUMENT</a>;</div>
 <div class="line">  }</div>
-<div class="line">  device_state.status = <a class="code hl_enumvalue" href="enums_8h.html#aa13ac5e1c93a4b358d84bb9fd1f5fd99aedb7fbd4f25c108ab71385aec61e4409">QDMI_DEVICE_STATUS_BUSY</a>;</div>
+<div class="line">  CXX_QDMI_set_device_status(<a class="code hl_enumvalue" href="enums_8h.html#aa13ac5e1c93a4b358d84bb9fd1f5fd99aedb7fbd4f25c108ab71385aec61e4409">QDMI_DEVICE_STATUS_BUSY</a>);</div>
 <div class="line">  job-&gt;status = <a class="code hl_enumvalue" href="enums_8h.html#a04e5c793bcbe8b354a9223bb60f828a6a3c531c6a92164cfb31a6c4c1a6cc5dfe">QDMI_JOB_STATUS_SUBMITTED</a>;</div>
 <div class="line">  <span class="comment">// here, the actual submission of the problem to the device would happen</span></div>
 <div class="line">  <span class="comment">// ...</span></div>
@@ -828,16 +820,15 @@ Submitting a Job</h2>
 <div class="line">  job-&gt;status = <a class="code hl_enumvalue" href="enums_8h.html#a04e5c793bcbe8b354a9223bb60f828a6ac1203df2c0360fafd873b42cdcbe9cc5">QDMI_JOB_STATUS_RUNNING</a>;</div>
 <div class="line">  <span class="comment">// generate random result data</span></div>
 <div class="line">  <span class="keywordtype">size_t</span> num_qubits = 0;</div>
-<div class="line">  <a class="code hl_function" href="device_2query_8h.html#a02d910d9f09537ab363f4bf701379d5d">QDMI_query_device_property_dev</a>(<a class="code hl_enumvalue" href="enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a7ada8f720629c4cac8d74ac4270a1c46">QDMI_DEVICE_PROPERTY_QUBITSNUM</a>, <span class="keyword">sizeof</span>(<span class="keywordtype">size_t</span>),</div>
-<div class="line">                                 &amp;num_qubits, <span class="keyword">nullptr</span>);</div>
+<div class="line">  CXX_QDMI_query_device_property_dev(<a class="code hl_enumvalue" href="enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a7ada8f720629c4cac8d74ac4270a1c46">QDMI_DEVICE_PROPERTY_QUBITSNUM</a>,</div>
+<div class="line">                                     <span class="keyword">sizeof</span>(<span class="keywordtype">size_t</span>), &amp;num_qubits, <span class="keyword">nullptr</span>);</div>
 <div class="line">  job-&gt;results.clear();</div>
 <div class="line">  job-&gt;results.reserve(job-&gt;num_shots);</div>
 <div class="line">  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; job-&gt;num_shots; ++i) {</div>
 <div class="line">    <span class="comment">// generate random bitstring</span></div>
 <div class="line">    std::string result(num_qubits, <span class="charliteral">&#39;0&#39;</span>);</div>
-<div class="line">    std::generate(result.begin(), result.end(), [&amp;]() {</div>
-<div class="line">      return device_state.dis(device_state.gen) % 2 ? <span class="stringliteral">&#39;1&#39;</span> : <span class="stringliteral">&#39;0&#39;</span>;</div>
-<div class="line">    });</div>
+<div class="line">    std::generate(result.begin(), result.end(),</div>
+<div class="line">                  [&amp;]() { return CXX_QDMI_generate_bit() ? <span class="stringliteral">&#39;1&#39;</span> : <span class="stringliteral">&#39;0&#39;</span>; });</div>
 <div class="line">    job-&gt;results.emplace_back(std::move(result));</div>
 <div class="line">  }</div>
 <div class="line">  <span class="comment">// Generate random complex numbers and calculate the norm</span></div>
@@ -845,9 +836,8 @@ Submitting a Job</h2>
 <div class="line">  job-&gt;state_vec.reserve(1U &lt;&lt; num_qubits);</div>
 <div class="line">  <span class="keywordtype">double</span> norm = 0.0;</div>
 <div class="line">  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; 1U &lt;&lt; num_qubits; ++i) {</div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;c =</div>
-<div class="line">        job-&gt;state_vec.emplace_back(device_state.dis_real(device_state.gen),</div>
-<div class="line">                                    device_state.dis_real(device_state.gen));</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;c = job-&gt;state_vec.emplace_back(CXX_QDMI_generate_real(),</div>
+<div class="line">                                                CXX_QDMI_generate_real());</div>
 <div class="line">    norm += std::norm(c);</div>
 <div class="line">  }</div>
 <div class="line">  <span class="comment">// Normalize the vector</span></div>
