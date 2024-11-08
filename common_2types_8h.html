@@ -93,6 +93,20 @@
           animation: octocat-wave 560ms ease-in-out;
         }
       }
+      /* image path depending on the color scheme */
+      /* Default (light mode) */
+      .logo {
+        width: 130px;
+        height: auto;
+        display: block;
+      }
+      .logo {
+        content: url("mqss_logo.svg"); /* this is set by doxygen, see PROJECT_LOGO in the Doxyfile.in */
+      }
+      /* Dark mode */
+      html.dark-mode .logo {
+        content: url("mqss_logo_dark.svg");
+      }
     </style>
       <div id="top">
         <!-- do not remove this div, it is closed by doxygen! -->
@@ -100,11 +114,11 @@
           <table cellspacing="0" cellpadding="0">
             <tbody>
               <tr id="projectrow">
-                <td id="projectlogo"><img alt="Logo" src="mqss_logo.png"  /></td>
+                <td id="projectlogo"><img class="logo" alt="Logo"/></td>
                 <td id="projectalign">
                   <div id="projectname">
                     QDMI<span id="projectnumber"
-                      >&#160;v1.0.0b1</span
+                      >&#160;v1.0.0b2</span
                     >
                   </div>
                   <div id="projectbrief">Quantum Device Management Interface</div>
@@ -181,7 +195,7 @@ $(function(){initNavTree('common_2types_8h.html',''); initResizable(true); });
 </div><!--header-->
 <div class="contents">
 
-<p>Defines all common types used throughout QDMI.  
+<p>Defines all common types shared between all components.  
 <a href="#details">More...</a></p>
 
 <p><a href="common_2types_8h_source.html">Go to the source code of this file.</a></p>
@@ -226,7 +240,7 @@ typedef enum <a class="el" href="enums_8h.html#aa154b942b0f67e437c393ad7b33cadd1
 <tr class="separator:a52254cd217f8627659a19c8e0c2feed6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Defines all common types used throughout QDMI. </p>
+<div class="textblock"><p>Defines all common types shared between all components. </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

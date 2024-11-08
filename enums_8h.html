@@ -93,6 +93,20 @@
           animation: octocat-wave 560ms ease-in-out;
         }
       }
+      /* image path depending on the color scheme */
+      /* Default (light mode) */
+      .logo {
+        width: 130px;
+        height: auto;
+        display: block;
+      }
+      .logo {
+        content: url("mqss_logo.svg"); /* this is set by doxygen, see PROJECT_LOGO in the Doxyfile.in */
+      }
+      /* Dark mode */
+      html.dark-mode .logo {
+        content: url("mqss_logo_dark.svg");
+      }
     </style>
       <div id="top">
         <!-- do not remove this div, it is closed by doxygen! -->
@@ -100,11 +114,11 @@
           <table cellspacing="0" cellpadding="0">
             <tbody>
               <tr id="projectrow">
-                <td id="projectlogo"><img alt="Logo" src="mqss_logo.png"  /></td>
+                <td id="projectlogo"><img class="logo" alt="Logo"/></td>
                 <td id="projectalign">
                   <div id="projectname">
                     QDMI<span id="projectnumber"
-                      >&#160;v1.0.0b1</span
+                      >&#160;v1.0.0b2</span
                     >
                   </div>
                   <div id="projectbrief">Quantum Device Management Interface</div>
@@ -218,7 +232,7 @@ Enumerations</h2></td></tr>
 , <a class="el" href="#aa13ac5e1c93a4b358d84bb9fd1f5fd99a974d09c52e8a39e509639b2ceb7f96ee">QDMI_DEVICE_STATUS_MAX</a>
 <br />
  }</td></tr>
-<tr class="memdesc:aa13ac5e1c93a4b358d84bb9fd1f5fd99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum of the site properties that can be queried.  <a href="#aa13ac5e1c93a4b358d84bb9fd1f5fd99">More...</a><br /></td></tr>
+<tr class="memdesc:aa13ac5e1c93a4b358d84bb9fd1f5fd99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum of different status the device can be in.  <a href="#aa13ac5e1c93a4b358d84bb9fd1f5fd99">More...</a><br /></td></tr>
 <tr class="separator:aa13ac5e1c93a4b358d84bb9fd1f5fd99"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69ef10d452cc6f03cac8a917ba48d6e2" id="r_a69ef10d452cc6f03cac8a917ba48d6e2"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a69ef10d452cc6f03cac8a917ba48d6e2">QDMI_SITE_PROPERTY_T</a> { <br />
 &#160;&#160;<a class="el" href="#a69ef10d452cc6f03cac8a917ba48d6e2a92d5990450ff518ef6d14babc5c19777">QDMI_SITE_PROPERTY_TIME_T1</a>
@@ -260,12 +274,12 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="#a04e5c793bcbe8b354a9223bb60f828a6a407ef0a153d588eca3321bee32239ecf">QDMI_JOB_STATUS_CANCELLED</a>
 <br />
  }</td></tr>
-<tr class="memdesc:a04e5c793bcbe8b354a9223bb60f828a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum of the device properties that can be queried.  <a href="#a04e5c793bcbe8b354a9223bb60f828a6">More...</a><br /></td></tr>
+<tr class="memdesc:a04e5c793bcbe8b354a9223bb60f828a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum of the status a job can have.  <a href="#a04e5c793bcbe8b354a9223bb60f828a6">More...</a><br /></td></tr>
 <tr class="separator:a04e5c793bcbe8b354a9223bb60f828a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c446bd0fbb78133119cb485aed8d6b5" id="r_a2c446bd0fbb78133119cb485aed8d6b5"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2c446bd0fbb78133119cb485aed8d6b5">QDMI_DEVICE_MODE_T</a> { <a class="el" href="#a2c446bd0fbb78133119cb485aed8d6b5a6a3e15075cebda1c4a8c11cb3446c9ea">QDMI_DEVICE_MODE_READONLY</a> = 0
 , <a class="el" href="#a2c446bd0fbb78133119cb485aed8d6b5a605a099d8f981d472d21570cf40dbba5">QDMI_DEVICE_MODE_READWRITE</a> = 1
  }</td></tr>
-<tr class="memdesc:a2c446bd0fbb78133119cb485aed8d6b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum of the device properties that can be queried.  <a href="#a2c446bd0fbb78133119cb485aed8d6b5">More...</a><br /></td></tr>
+<tr class="memdesc:a2c446bd0fbb78133119cb485aed8d6b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum of the modes a device can be opened in.  <a href="#a2c446bd0fbb78133119cb485aed8d6b5">More...</a><br /></td></tr>
 <tr class="separator:a2c446bd0fbb78133119cb485aed8d6b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a450b1adf81abc6f0accbf0ce4abe92f8" id="r_a450b1adf81abc6f0accbf0ce4abe92f8"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a450b1adf81abc6f0accbf0ce4abe92f8">QDMI_STATUS</a> { <br />
 &#160;&#160;<a class="el" href="#a450b1adf81abc6f0accbf0ce4abe92f8a3cada2f96b62a5d1893e5a74dfd8c78a">QDMI_WARN_GENERAL</a> = 1
@@ -336,7 +350,7 @@ Enumerations</h2></td></tr>
 , <a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1a392aa5d821440fd4650119f3986d3196">QDMI_JOB_RESULT_MAX</a>
 <br />
  }</td></tr>
-<tr class="memdesc:aa154b942b0f67e437c393ad7b33cadd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum of data-types of the result.  <a href="#aa154b942b0f67e437c393ad7b33cadd1">More...</a><br /></td></tr>
+<tr class="memdesc:aa154b942b0f67e437c393ad7b33cadd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum of the formats the results can be returned in.  <a href="#aa154b942b0f67e437c393ad7b33cadd1">More...</a><br /></td></tr>
 <tr class="separator:aa154b942b0f67e437c393ad7b33cadd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -354,7 +368,7 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Enum of the device properties that can be queried. </p>
+<p>Enum of the modes a device can be opened in. </p>
 <dl class="section note"><dt>Note</dt><dd>The values of this enum are meant to be used as bitflags. Hence, their values must be powers of 2. </dd></dl>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a2c446bd0fbb78133119cb485aed8d6b5a6a3e15075cebda1c4a8c11cb3446c9ea" name="a2c446bd0fbb78133119cb485aed8d6b5a6a3e15075cebda1c4a8c11cb3446c9ea"></a>QDMI_DEVICE_MODE_READONLY&#160;</td><td class="fielddoc"><p>To open the device in read-only mode. </p>
@@ -422,7 +436,7 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Enum of the site properties that can be queried. </p>
+<p>Enum of different status the device can be in. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aa13ac5e1c93a4b358d84bb9fd1f5fd99a1c87741b5f3bd792ce461306ae457cee" name="aa13ac5e1c93a4b358d84bb9fd1f5fd99a1c87741b5f3bd792ce461306ae457cee"></a>QDMI_DEVICE_STATUS_OFFLINE&#160;</td><td class="fielddoc"><p>The device is offline. </p>
 </td></tr>
@@ -489,7 +503,7 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Enum of data-types of the result. </p>
+<p>Enum of the formats the results can be returned in. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97" name="aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97"></a>QDMI_JOB_RESULT_SHOTS&#160;</td><td class="fielddoc"><p><code>char*</code>(string) The results of the individual shots as a comma-separated list, e.g., "0010,1101,0101,1100,1001,1100" for four qubits and six shots. </p>
 </td></tr>
@@ -552,7 +566,8 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Enum of the device properties that can be queried. </p>
+<p>Enum of the status a job can have. </p>
+<p>See also <a class="el" href="md_docs_2rationale.html">Rationale</a> for a description of the job's lifecycle. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a04e5c793bcbe8b354a9223bb60f828a6a2d985c815c2e1024b9eb5605e8825df5" name="a04e5c793bcbe8b354a9223bb60f828a6a2d985c815c2e1024b9eb5605e8825df5"></a>QDMI_JOB_STATUS_CREATED&#160;</td><td class="fielddoc"><p>The job was created and can be configured via <a class="el" href="client_2control_8h.html#a6e3dfe222ae9404308f6a70283daf496">QDMI_control_set_parameter</a>. </p>
 </td></tr>

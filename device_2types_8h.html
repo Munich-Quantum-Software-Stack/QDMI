@@ -93,6 +93,20 @@
           animation: octocat-wave 560ms ease-in-out;
         }
       }
+      /* image path depending on the color scheme */
+      /* Default (light mode) */
+      .logo {
+        width: 130px;
+        height: auto;
+        display: block;
+      }
+      .logo {
+        content: url("mqss_logo.svg"); /* this is set by doxygen, see PROJECT_LOGO in the Doxyfile.in */
+      }
+      /* Dark mode */
+      html.dark-mode .logo {
+        content: url("mqss_logo_dark.svg");
+      }
     </style>
       <div id="top">
         <!-- do not remove this div, it is closed by doxygen! -->
@@ -100,11 +114,11 @@
           <table cellspacing="0" cellpadding="0">
             <tbody>
               <tr id="projectrow">
-                <td id="projectlogo"><img alt="Logo" src="mqss_logo.png"  /></td>
+                <td id="projectlogo"><img class="logo" alt="Logo"/></td>
                 <td id="projectalign">
                   <div id="projectname">
                     QDMI<span id="projectnumber"
-                      >&#160;v1.0.0b1</span
+                      >&#160;v1.0.0b2</span
                     >
                   </div>
                   <div id="projectbrief">Quantum Device Management Interface</div>
@@ -232,7 +246,8 @@ Typedefs</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Opaque type for an operation. </p>
-<p>An operation represents a quantum operation that can be executed on a device. The operation is defined by the device and can be executed on the device. </p>
+<p>An operation represents a quantum operation that can be executed on a device.</p>
+<dl class="section user"><dt></dt><dd>This type is implemented by the device. </dd></dl>
 
 </div>
 </div>
@@ -249,8 +264,8 @@ Typedefs</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Opaque type for a site. </p>
-<p>A site is a place that can potentially hold a qubit. In the case of superconducting qubits, sites can be used synonymously with qubits. In the case of neutral atoms, sites represent individual traps that can confine atoms. Those atoms are then used as qubits.</p>
-<dl class="section user"><dt></dt><dd>To this end, sites are a generalization of qubits that denote locations where qubits can be placed on a device. Sites are identified by an integer index that is unique for each site on a device. The indices start at zero and go up to the number of sites minus one. </dd></dl>
+<p>A site is a place that can potentially hold a qubit. In the case of superconducting qubits, sites can be used synonymously with qubits. In the case of neutral atoms, sites represent individual traps that can confine atoms. Those atoms are then used as qubits. To this end, sites are a generalization of qubits that denote locations where qubits can be placed on a device.</p>
+<dl class="section user"><dt></dt><dd>This type is implemented by the device. </dd></dl>
 
 </div>
 </div>

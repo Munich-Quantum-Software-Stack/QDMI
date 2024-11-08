@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['support_0',['Support',['../md_docs_2support.html',1,'']]]
+  ['rationale_0',['Rationale',['../md_docs_2rationale.html',1,'']]]
 ];

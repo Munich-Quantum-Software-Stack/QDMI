@@ -93,6 +93,20 @@
           animation: octocat-wave 560ms ease-in-out;
         }
       }
+      /* image path depending on the color scheme */
+      /* Default (light mode) */
+      .logo {
+        width: 130px;
+        height: auto;
+        display: block;
+      }
+      .logo {
+        content: url("mqss_logo.svg"); /* this is set by doxygen, see PROJECT_LOGO in the Doxyfile.in */
+      }
+      /* Dark mode */
+      html.dark-mode .logo {
+        content: url("mqss_logo_dark.svg");
+      }
     </style>
       <div id="top">
         <!-- do not remove this div, it is closed by doxygen! -->
@@ -100,11 +114,11 @@
           <table cellspacing="0" cellpadding="0">
             <tbody>
               <tr id="projectrow">
-                <td id="projectlogo"><img alt="Logo" src="mqss_logo.png"  /></td>
+                <td id="projectlogo"><img class="logo" alt="Logo"/></td>
                 <td id="projectalign">
                   <div id="projectname">
                     QDMI<span id="projectnumber"
-                      >&#160;v1.0.0b1</span
+                      >&#160;v1.0.0b2</span
                     >
                   </div>
                   <div id="projectbrief">Quantum Device Management Interface</div>
@@ -186,7 +200,7 @@ $(function(){initNavTree('device_8h.html',''); initResizable(true); });
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The QDMI device interface. </p>
 <p>A device is a physical quantum computer or a classical quantum simulator. For the device to be accessible by the clients, it must provide functions to query the properties of the device and to control the device.</p>
-<dl class="section user"><dt></dt><dd>An implementation of a device must include this header and implement all entities defined <a class="el" href="device_2control_8h.html">device/control.h</a> and <a class="el" href="device_2query_8h.html">device/query.h</a>. </dd></dl>
+<dl class="section user"><dt></dt><dd>An implementation of a device must include this header and implement all entities defined in <a class="el" href="device_2control_8h.html">device/control.h</a>, <a class="el" href="device_2query_8h.html">device/query.h</a>, and <a class="el" href="device_2types_8h.html">device/types.h</a>. </dd></dl>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

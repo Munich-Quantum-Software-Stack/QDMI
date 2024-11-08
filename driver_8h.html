@@ -93,6 +93,20 @@
           animation: octocat-wave 560ms ease-in-out;
         }
       }
+      /* image path depending on the color scheme */
+      /* Default (light mode) */
+      .logo {
+        width: 130px;
+        height: auto;
+        display: block;
+      }
+      .logo {
+        content: url("mqss_logo.svg"); /* this is set by doxygen, see PROJECT_LOGO in the Doxyfile.in */
+      }
+      /* Dark mode */
+      html.dark-mode .logo {
+        content: url("mqss_logo_dark.svg");
+      }
     </style>
       <div id="top">
         <!-- do not remove this div, it is closed by doxygen! -->
@@ -100,11 +114,11 @@
           <table cellspacing="0" cellpadding="0">
             <tbody>
               <tr id="projectrow">
-                <td id="projectlogo"><img alt="Logo" src="mqss_logo.png"  /></td>
+                <td id="projectlogo"><img class="logo" alt="Logo"/></td>
                 <td id="projectalign">
                   <div id="projectname">
                     QDMI<span id="projectnumber"
-                      >&#160;v1.0.0b1</span
+                      >&#160;v1.0.0b2</span
                     >
                   </div>
                   <div id="projectbrief">Quantum Device Management Interface</div>
@@ -185,8 +199,8 @@ $(function(){initNavTree('driver_8h.html',''); initResizable(true); });
 <p><a href="driver_8h_source.html">Go to the source code of this file.</a></p>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The QDMI driver interface. </p>
-<p>The purpose of the driver is to connect QDMI device interface implementations to the client interface. The driver is responsible for loading the available devices from their libraries and making them available to the clients. It is also intended to facilitate user management and access control via sessions.</p>
-<dl class="section user"><dt></dt><dd>A driver must include this header and implement all entities defined in this header and <a class="el" href="session_8h.html">driver/session.h</a>. </dd></dl>
+<p>The purpose of the driver is to connect QDMI device interface implementations to the client interface. The driver is responsible for loading the available devices from their libraries and making them available to the clients.</p>
+<dl class="section user"><dt></dt><dd>A driver must include this header and implement all entities defined in <a class="el" href="session_8h.html">driver/session.h</a> and <a class="el" href="driver_2types_8h.html">driver/types.h</a>. </dd></dl>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

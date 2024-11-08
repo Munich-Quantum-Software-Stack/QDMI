@@ -93,6 +93,20 @@
           animation: octocat-wave 560ms ease-in-out;
         }
       }
+      /* image path depending on the color scheme */
+      /* Default (light mode) */
+      .logo {
+        width: 130px;
+        height: auto;
+        display: block;
+      }
+      .logo {
+        content: url("mqss_logo.svg"); /* this is set by doxygen, see PROJECT_LOGO in the Doxyfile.in */
+      }
+      /* Dark mode */
+      html.dark-mode .logo {
+        content: url("mqss_logo_dark.svg");
+      }
     </style>
       <div id="top">
         <!-- do not remove this div, it is closed by doxygen! -->
@@ -100,11 +114,11 @@
           <table cellspacing="0" cellpadding="0">
             <tbody>
               <tr id="projectrow">
-                <td id="projectlogo"><img alt="Logo" src="mqss_logo.png"  /></td>
+                <td id="projectlogo"><img class="logo" alt="Logo"/></td>
                 <td id="projectalign">
                   <div id="projectname">
                     QDMI<span id="projectnumber"
-                      >&#160;v1.0.0b1</span
+                      >&#160;v1.0.0b2</span
                     >
                   </div>
                   <div id="projectbrief">Quantum Device Management Interface</div>
@@ -182,10 +196,10 @@ $(function(){initNavTree('dir_0d7cf804146230722880657c9c064103.html',''); initRe
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="files" name="files"></a>
 Files</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="client_2control_8h_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="client_2control_8h.html">control.h</a></td></tr>
-<tr class="memdesc:client_2control_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">The interface for controlling a device via QDMI. <br /></td></tr>
+<tr class="memdesc:client_2control_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the functions for controlling a device. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="client_2query_8h_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="client_2query_8h.html">query.h</a></td></tr>
-<tr class="memdesc:client_2query_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define the interface for querying properties of a device. <br /></td></tr>
+<tr class="memdesc:client_2query_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the interface for querying properties of a device. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->

@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=11" />
     <meta name="generator" content="Doxygen 1.12.0" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>QDMI: client.h File Reference</title>
+    <title>QDMI: Template</title>
     <link href="tabs.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="jquery.js"></script>
     <script type="text/javascript" src="dynsections.js"></script>
@@ -163,7 +163,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('client_8h.html',''); initResizable(true); });
+$(function(){initNavTree('md_docs_2templates.html',''); initResizable(true); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -188,24 +188,70 @@ $(function(){initNavTree('client_8h.html',''); initResizable(true); });
 </div>
 </div>
 
-<div class="header">
-  <div class="headertitle"><div class="title">client.h File Reference</div></div>
+<div><div class="header">
+  <div class="headertitle"><div class="title">Template</div></div>
 </div><!--header-->
 <div class="contents">
-
-<p>The QDMI client interface.  
-<a href="#details">More...</a></p>
-
-<p><a href="client_8h_source.html">Go to the source code of this file.</a></p>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>The QDMI client interface. </p>
-<p>The purpose of the client interface is to provide a set of functions that allow the user to interact with the QDMI devices. The client interface provides functions to query the properties of the devices and to control the devices. </p><dl class="section user"><dt></dt><dd>The detailed description of the functions provided by the interface is provided in <a class="el" href="client_2control_8h.html">client/control.h</a> and <a class="el" href="client_2query_8h.html">client/query.h</a>. </dd></dl>
+<div class="toc"><h3>Table of Contents</h3>
+<ul>
+  <li class="level1">
+    <a href="#template-create">Creating a new Project</a>
+  </li>
+  <li class="level1">
+    <a href="#template-configure">Configuring the Template</a>
+  </li>
+  <li class="level1">
+    <a href="#template-working">Working with the Template</a>
+  </li>
+  <li class="level1">
+    <a href="#template-building">Building the Template and Running the Tests</a>
+  </li>
+</ul>
+</div>
+<div class="textblock"><p>Together with QDMI we provide a template that is meant to kick-start the implementation of a new device. The following sections describe how to set up and use the template.</p>
+<h1><a class="anchor" id="template-create"></a>
+Creating a new Project</h1>
+<p>The code for the template is contained in the <code>template/</code> directory of the QDMI repository. To start a new project based on the template, perform the following CMake command from the main project directory. Keep in mind to replace the prefix and the path as desired. To follow the naming conventions in QDMI, choose a prefix with uppercase letters.</p>
+<dl class="section note"><dt>Note</dt><dd>An internet connection is needed for this step as the QDMI repository will be fetched from GitHub.</dd></dl>
+<div class="fragment"><div class="line">cmake -DCONFIGURE_TEMPLATE=ON \     # activate template creation</div>
+<div class="line">    -DTEMPLATE_PREFIX=&quot;PREFIX&quot; \    # set your prefix here</div>
+<div class="line">    -DTEMPLATE_PATH=&quot;path/to/dir&quot; \ # set the path to your project</div>
+<div class="line">    -S . -B build</div>
+</div><!-- fragment --><p>This command should add a directory <code>build/</code> to your project where all the build files are stored. The configure step above only needs to be performed once. If the option <code>TEMPLATE_PATH</code> is not given it will be placed in <code>PREFIX_qdmi_device</code> relative to the parent directory where QDMI was cloned in. After this step you can directly start implementing your device in C++. If you want to implement in C, see also the next section. Example implementations are provided in the <code>examples/</code> directory. See <a class="el" href="md_docs_2examples.html">Examples</a> for more information.</p>
+<h1><a class="anchor" id="template-configure"></a>
+Configuring the Template</h1>
+<p>The default template is set up with the specified prefix and as a C++ project. You can easily switch the project to a purely C project by setting the <code>CXX_DEVICE</code> option to <code>OFF</code> in the <code>CMakeLists.txt</code> file in the root directory of the template.</p>
+<p>For stability, we recommend to pin the version of QDMI that you are using for your implementation. You can use any valid git tag, branch, or commit hash for that. To this end, adjust the <code>QDMI_REV</code> variable in <code>cmake/ExternalDependecies.cmake</code> as follows:</p>
+<div class="fragment"><div class="line">-   set(QDMI_REV &quot;develop&quot;</div>
+<div class="line">+   set(QDMI_REV &quot;v1.0.0&quot;</div>
+</div><!-- fragment --><p>When you want to change the prefix after creation of the template, you need to change the prefix in a couple of places. We want to give you some hints where you have to change it but depending on your personal project setup they might be different or there might be more than the ones listed. All paths are given relative to the root of the template project directory.</p>
+<ul>
+<li><code>CMakeLists.txt</code>,</li>
+<li><code>src/CMakeLists.txt</code>: the target <code>prefix_qdmi</code> and <code>prefix_qdmi.cpp</code></li>
+<li>Rename <code>src/prefix_qdmi.cpp</code> accordingly</li>
+<li><code>src/prefix_qdmi.cpp</code>: adopt the includes and the prefix of each function</li>
+<li>Rename <code>test/test_prefix_qdmi.cpp</code> accordingly</li>
+<li><code>test/test_prefix_qdmi.cpp</code>: adopt the includes and the prefix of each function</li>
+</ul>
+<h1><a class="anchor" id="template-working"></a>
+Working with the Template</h1>
+<p>The template is structured into three directories plus the top-level <code>CMakeLists.txt</code>. The top-level <code>CMakeLists.txt</code> contains settings for the entire project. Some additional CMake code that imports required dependencies is outsourced into <code>cmake/</code>.</p>
+<p>The most important directory for your implementation is <code>src/</code> and the <code>.cpp</code> file located in that directory. Here you find stubs for all functions that have to be implemented by a device. For every function the <code>return QDMI_ERROR_NOTIMPLEMENTED;</code> should be replaced by a proper implementation of the function. In particular, there should not be any computation path at the end that returns <a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8ab69c1e1729bae7b7a2db0138e7c32ffd">QDMI_ERROR_NOTIMPLEMENTED</a>. Instead some other error code from <a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8">QDMI_STATUS</a> should be returned in case of an erroneous state.</p>
+<p>The implementation in the <code>src/</code> directory is complemented with a testing framework in <code>test/</code>. The <code>.cpp</code> source file already contains some examples for tests. They are meant to serve as an inspiration and more tests should be implemented to cover everything in your device implementation.</p>
+<h1><a class="anchor" id="template-building"></a>
+Building the Template and Running the Tests</h1>
+<p>All following commands are meant to be executed from the root directory of the template. After configuring your project (see <a class="el" href="#template-configure">Configuring the Template</a>), you can build your project with the following command:</p>
+<div class="fragment"><div class="line">cmake --build build</div>
+</div><!-- fragment --><p>If you only want to build a specific target, you can append, e.g., <code>--target prefix_device_test</code> to the command above, which will build the tests. If you only want to build the device implementation, you can use <code>--target prefix_qdmi</code>.</p>
+<p>To run the tests perform the following command:</p>
+<div class="fragment"><div class="line">ctest --test-dir build</div>
+</div><!-- fragment --><p>For more details on the development process, also check out the <a class="el" href="md_docs_2guide.html">Development Guide</a>. </p>
 </div></div><!-- contents -->
+</div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="client_8h.html">client.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.12.0 </li>
   </ul>
 </div>

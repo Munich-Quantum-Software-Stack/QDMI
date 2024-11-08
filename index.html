@@ -93,6 +93,20 @@
           animation: octocat-wave 560ms ease-in-out;
         }
       }
+      /* image path depending on the color scheme */
+      /* Default (light mode) */
+      .logo {
+        width: 130px;
+        height: auto;
+        display: block;
+      }
+      .logo {
+        content: url("mqss_logo.svg"); /* this is set by doxygen, see PROJECT_LOGO in the Doxyfile.in */
+      }
+      /* Dark mode */
+      html.dark-mode .logo {
+        content: url("mqss_logo_dark.svg");
+      }
     </style>
       <div id="top">
         <!-- do not remove this div, it is closed by doxygen! -->
@@ -100,11 +114,11 @@
           <table cellspacing="0" cellpadding="0">
             <tbody>
               <tr id="projectrow">
-                <td id="projectlogo"><img alt="Logo" src="mqss_logo.png"  /></td>
+                <td id="projectlogo"><img class="logo" alt="Logo"/></td>
                 <td id="projectalign">
                   <div id="projectname">
                     QDMI<span id="projectnumber"
-                      >&#160;v1.0.0b1</span
+                      >&#160;v1.0.0b2</span
                     >
                   </div>
                   <div id="projectbrief">Quantum Device Management Interface</div>
@@ -180,10 +194,16 @@ $(function(){initNavTree('index.html',''); initResizable(true); });
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="mainpage"></a></p>
 <h1>Quantum Device Management Interface</h1>
-<div class="image">
-<img src="qdmi.png" alt=""/>
-</div>
-    <p>The Quantum Device Management Interface (QDMI) is the central part of the Munich Quantum Software Stack (MQSS)—a sophisticated software stack to connect end users to the wide range of possible quantum devices. It enables the submission to and the control of gate-based quantum systems and enables software tools to automatically retrieve and adapt to changing physical characteristics and constraints of different platforms. QDMI strives to connect the software and hardware developers, mediating between their competing interests, bridging between technologies, and eventually providing corresponding figures of merits and constraints to be considered. QDMI is therefore the method of choice for integrating new platforms into the MQSS and for software tools to query information from these platforms. QDMI is provided as a collection of C header files to allow fast integration into an HPC environment.</p>
+<p><img src="qdmi.svg" alt="QDMI in Quantum Software Stack" style="pointer-events: none;" class="qdmi" class="inline"/></p>
+<p>The Quantum Device Management Interface (QDMI) is the central part of the Munich Quantum Software Stack (MQSS)—a sophisticated software stack to connect end users to the wide range of possible quantum devices. It enables the submission to and the control of gate-based quantum systems and enables software tools to automatically retrieve and adapt to changing physical characteristics and constraints of different platforms. QDMI strives to connect the software and hardware developers, mediating between their competing interests, bridging between technologies, and eventually providing corresponding figures of merits and constraints to be considered. QDMI is therefore the method of choice for integrating new platforms into the MQSS and for software tools to query information from these platforms. QDMI is provided as a collection of C header files to allow fast integration into an HPC environment.</p>
+<h2>How to Use this Documentation?</h2>
+<p>This documentation tries to provide helpful information to get you started with QDMI.</p>
+<h3>General Information</h3>
+<p>The <a class="el" href="md_docs_2faq.html">FAQ</a> page gives an overview over frequently asked questions. More details about the design and implementation can be found in the <a class="el" href="md_docs_2rationale.html">Rationale</a> page.</p>
+<h3>Hands-On</h3>
+<p>The <a class="el" href="md_docs_2examples.html">Examples</a> page provides a collection of examples to see QDMI in action. When you want to start your own implementation of QDMI, the <a class="el" href="md_docs_2templates.html">Templates</a> page is a good starting point.</p>
+<h3>Nitty-Gritty Details</h3>
+<p>When you are interested in the details of the semantics of functions and the whole API, the <a href="files.html">Reference Documentation</a> page is the right place to look for. </p>
 </div></div><!-- PageDoc -->
 <a href="doxygen_crawl.html"></a>
 </div><!-- contents -->

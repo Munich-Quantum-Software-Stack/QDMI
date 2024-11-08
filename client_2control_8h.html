@@ -93,6 +93,20 @@
           animation: octocat-wave 560ms ease-in-out;
         }
       }
+      /* image path depending on the color scheme */
+      /* Default (light mode) */
+      .logo {
+        width: 130px;
+        height: auto;
+        display: block;
+      }
+      .logo {
+        content: url("mqss_logo.svg"); /* this is set by doxygen, see PROJECT_LOGO in the Doxyfile.in */
+      }
+      /* Dark mode */
+      html.dark-mode .logo {
+        content: url("mqss_logo_dark.svg");
+      }
     </style>
       <div id="top">
         <!-- do not remove this div, it is closed by doxygen! -->
@@ -100,11 +114,11 @@
           <table cellspacing="0" cellpadding="0">
             <tbody>
               <tr id="projectrow">
-                <td id="projectlogo"><img alt="Logo" src="mqss_logo.png"  /></td>
+                <td id="projectlogo"><img class="logo" alt="Logo"/></td>
                 <td id="projectalign">
                   <div id="projectname">
                     QDMI<span id="projectnumber"
-                      >&#160;v1.0.0b1</span
+                      >&#160;v1.0.0b2</span
                     >
                   </div>
                   <div id="projectbrief">Quantum Device Management Interface</div>
@@ -181,7 +195,7 @@ $(function(){initNavTree('client_2control_8h.html',''); initResizable(true); });
 </div><!--header-->
 <div class="contents">
 
-<p>The interface for controlling a device via QDMI.  
+<p>Defines the functions for controlling a device.  
 <a href="#details">More...</a></p>
 
 <p><a href="client_2control_8h_source.html">Go to the source code of this file.</a></p>
@@ -214,8 +228,8 @@ Functions</h2></td></tr>
 <tr class="separator:a83b0dfe2f61af2aa9dc24aba3b379f6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>The interface for controlling a device via QDMI. </p>
-<p>The control interface allows submitting jobs to a device, managing the jobs, and retrieving the results. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="device_2control_8h.html" title="The control interface implemented by a QDMI device.">qdmi/device/control.h</a> for the device interface. </dd></dl>
+<div class="textblock"><p>Defines the functions for controlling a device. </p>
+<p>The control interface allows submitting jobs to a device, managing the jobs, and retrieving the results. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="device_2control_8h.html" title="Defines functions to be implemented by a device for controlling it.">qdmi/device/control.h</a> for the device interface. </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="ac1f01f1dc9bde056c56418aa8e595768" name="ac1f01f1dc9bde056c56418aa8e595768"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac1f01f1dc9bde056c56418aa8e595768">&#9670;&#160;</a></span>QDMI_control_cancel()</h2>
@@ -246,7 +260,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a8039f5cd8202553b2a91a1c0b01d6751">QDMI_SUCCESS</a> if the job was successfully cancelled. </dd>
 <dd>
-<a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642">QDMI_ERROR_INVALIDARGUMENT</a> if the job has already the status QDMI_JOB_STATUS_DONE or the job does not exist. </dd>
+<a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642">QDMI_ERROR_INVALIDARGUMENT</a> if the job has already the status <a class="el" href="enums_8h.html#a04e5c793bcbe8b354a9223bb60f828a6ad3dad6dd89491e223f42ff9cd9bdade2">QDMI_JOB_STATUS_DONE</a> or the job does not exist. </dd>
 <dd>
 <a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3">QDMI_ERROR_FATAL</a> if the job could not be cancelled. </dd></dl>
 
@@ -523,7 +537,7 @@ It is <em>not</em> necessary to call this function before calling <a class="el" 
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a8039f5cd8202553b2a91a1c0b01d6751">QDMI_SUCCESS</a> if the job was successfully submitted. </dd>
 <dd>
-<a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642">QDMI_ERROR_INVALIDARGUMENT</a> if the job is in an invalid state </dd>
+<a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642">QDMI_ERROR_INVALIDARGUMENT</a> if the job is in an invalid state. </dd>
 <dd>
 <a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3">QDMI_ERROR_FATAL</a> if the job submission failed. </dd></dl>
 

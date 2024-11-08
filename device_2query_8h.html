@@ -93,6 +93,20 @@
           animation: octocat-wave 560ms ease-in-out;
         }
       }
+      /* image path depending on the color scheme */
+      /* Default (light mode) */
+      .logo {
+        width: 130px;
+        height: auto;
+        display: block;
+      }
+      .logo {
+        content: url("mqss_logo.svg"); /* this is set by doxygen, see PROJECT_LOGO in the Doxyfile.in */
+      }
+      /* Dark mode */
+      html.dark-mode .logo {
+        content: url("mqss_logo_dark.svg");
+      }
     </style>
       <div id="top">
         <!-- do not remove this div, it is closed by doxygen! -->
@@ -100,11 +114,11 @@
           <table cellspacing="0" cellpadding="0">
             <tbody>
               <tr id="projectrow">
-                <td id="projectlogo"><img alt="Logo" src="mqss_logo.png"  /></td>
+                <td id="projectlogo"><img class="logo" alt="Logo"/></td>
                 <td id="projectalign">
                   <div id="projectname">
                     QDMI<span id="projectnumber"
-                      >&#160;v1.0.0b1</span
+                      >&#160;v1.0.0b2</span
                     >
                   </div>
                   <div id="projectbrief">Quantum Device Management Interface</div>
@@ -181,7 +195,7 @@ $(function(){initNavTree('device_2query_8h.html',''); initResizable(true); });
 </div><!--header-->
 <div class="contents">
 
-<p>Define the interface for querying properties of a device.  
+<p>Defines the functions to be implemented by the device for querying its properties.  
 <a href="#details">More...</a></p>
 
 <p><a href="device_2query_8h_source.html">Go to the source code of this file.</a></p>
@@ -205,7 +219,8 @@ Functions</h2></td></tr>
 <tr class="separator:a511d07c2d60e15de259151e60c9405f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Define the interface for querying properties of a device. </p>
+<div class="textblock"><p>Defines the functions to be implemented by the device for querying its properties. </p>
+<p>The query interface enables to query static and dynamic properties of the device in a unified fashion. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="client_2query_8h.html" title="Defines the interface for querying properties of a device.">qdmi/client/query.h</a> for the client interface. </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="a02d910d9f09537ab363f4bf701379d5d" name="a02d910d9f09537ab363f4bf701379d5d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a02d910d9f09537ab363f4bf701379d5d">&#9670;&#160;</a></span>QDMI_query_device_property_dev()</h2>
@@ -387,9 +402,9 @@ Functions</h2></td></tr>
 <dl class="section user"><dt></dt><dd>The device may return <a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a> also if the queried property cannot be provided for the given sites. E.g., some properties may only be available as an average value for all sites. Those may, nevertheless, be queried through this function by providing no sites at all, i.e., passing <code>NULL</code> to <code>sites</code>. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">operation</td><td>is the name of the operation for which the property is queried. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">operation</td><td>is the operation returned by <a class="el" href="client_2query_8h.html#ab85b32d7773183a86505951e2a16e982">QDMI_query_get_operations</a> for which the property is queried. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">num_sites</td><td>is the number of sites for which the property is queried. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">sites</td><td>is a list of indices of the sites for which the property is queried or can be <code>NULL</code>. If <code>sites</code> is <code>NULL</code>, the property is queried for all sites, e.g., as an average value over all sites. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">sites</td><td>is a list sites for which the property is queried or can be <code>NULL</code>. If <code>sites</code> is <code>NULL</code>, the property is queried for all sites, e.g., as an average value over all sites. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">prop</td><td>is an enumeration constant that identifies the platform information being queried. It can be one of the values specified for <a class="el" href="common_2types_8h.html#a699a82efc1fb132a1b67a6e9d5592080">QDMI_Site_Property</a>. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">size</td><td>specifies the size in bytes of memory pointed to by <code>value</code>. This size in bytes must be greater or equal to the size of the return type specified for the <a class="el" href="common_2types_8h.html#a699a82efc1fb132a1b67a6e9d5592080">QDMI_Site_Property</a> <code>prop</code>. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">value</td><td>is a pointer to a memory location where appropriate values as specified for the <a class="el" href="common_2types_8h.html#a699a82efc1fb132a1b67a6e9d5592080">QDMI_Site_Property</a> <code>prop</code>, will be returned. If <code>value</code> is <code>NULL</code>, it is ignored. </td></tr>
@@ -444,7 +459,7 @@ Functions</h2></td></tr>
 <p>Query a site property. </p>
 <p>This function queries a property of a site. The property can be one of the predefined properties in <a class="el" href="common_2types_8h.html#a699a82efc1fb132a1b67a6e9d5592080">QDMI_Site_Property</a>. The property can be of different types, such as defined for the individual property. The function returns the value of the property in the memory pointed to by <code>value</code>. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">site</td><td>is the index of the site for which the property is queried. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">site</td><td>is the site returned by <a class="el" href="client_2query_8h.html#a2283b9161354fd64b3b976951a2cdcd8">QDMI_query_get_sites</a> for which the property is queried. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">prop</td><td>is an enumeration constant that identifies the platform information being queried. It can be one of the values specified for <a class="el" href="common_2types_8h.html#a699a82efc1fb132a1b67a6e9d5592080">QDMI_Site_Property</a>. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">size</td><td>specifies the size in bytes of memory pointed to by <code>value</code>. This size in bytes must be greater or equal to the size of the return type specified for the <a class="el" href="common_2types_8h.html#a699a82efc1fb132a1b67a6e9d5592080">QDMI_Site_Property</a> <code>prop</code>. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">value</td><td>is a pointer to a memory location where appropriate values as specified for the <a class="el" href="common_2types_8h.html#a699a82efc1fb132a1b67a6e9d5592080">QDMI_Site_Property</a> <code>prop</code>, will be returned. If <code>value</code> is <code>NULL</code>, it is ignored. </td></tr>

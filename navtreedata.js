@@ -28,6 +28,12 @@ var NAVTREE =
     [ "User Guide", null, [
       [ "FAQ", "md_docs_2faq.html", null ],
       [ "Support", "md_docs_2support.html", null ],
+      [ "Rationale", "md_docs_2rationale.html", [
+        [ "Components of the Interface", "md_docs_2rationale.html#rationale-components", null ],
+        [ "Session, Control and Query Interface", "md_docs_2rationale.html#rationale-interfaces", null ],
+        [ "Prefixing Device Implementations", "md_docs_2rationale.html#rationale-prefix", null ],
+        [ "Data Retrieval Management", "md_docs_2rationale.html#rationale-retrieval", null ]
+      ] ],
       [ "Examples", "md_docs_2examples.html", [
         [ "Implementing a Device", "md_docs_2examples.html#device", [
           [ "Basic String Properties", "md_docs_2examples.html#device-string", null ],
@@ -37,6 +43,12 @@ var NAVTREE =
           [ "Complex Properties", "md_docs_2examples.html#device-complex", null ],
           [ "Submitting a Job", "md_docs_2examples.html#device-submit", null ]
         ] ]
+      ] ],
+      [ "Template", "md_docs_2templates.html", [
+        [ "Creating a new Project", "md_docs_2templates.html#template-create", null ],
+        [ "Configuring the Template", "md_docs_2templates.html#template-configure", null ],
+        [ "Working with the Template", "md_docs_2templates.html#template-working", null ],
+        [ "Building the Template and Running the Tests", "md_docs_2templates.html#template-building", null ]
       ] ],
       [ "Development Guide", "md_docs_2guide.html", null ]
     ] ],

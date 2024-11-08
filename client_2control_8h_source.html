@@ -93,6 +93,20 @@
           animation: octocat-wave 560ms ease-in-out;
         }
       }
+      /* image path depending on the color scheme */
+      /* Default (light mode) */
+      .logo {
+        width: 130px;
+        height: auto;
+        display: block;
+      }
+      .logo {
+        content: url("mqss_logo.svg"); /* this is set by doxygen, see PROJECT_LOGO in the Doxyfile.in */
+      }
+      /* Dark mode */
+      html.dark-mode .logo {
+        content: url("mqss_logo_dark.svg");
+      }
     </style>
       <div id="top">
         <!-- do not remove this div, it is closed by doxygen! -->
@@ -100,11 +114,11 @@
           <table cellspacing="0" cellpadding="0">
             <tbody>
               <tr id="projectrow">
-                <td id="projectlogo"><img alt="Logo" src="mqss_logo.png"  /></td>
+                <td id="projectlogo"><img class="logo" alt="Logo"/></td>
                 <td id="projectalign">
                   <div id="projectname">
                     QDMI<span id="projectnumber"
-                      >&#160;v1.0.0b1</span
+                      >&#160;v1.0.0b2</span
                     >
                   </div>
                   <div id="projectbrief">Quantum Device Management Interface</div>
@@ -229,14 +243,14 @@ $(function(){initNavTree('client_2control_8h_source.html',''); initResizable(tru
 <div class="ttc" id="aclient_2control_8h_html_a83b0dfe2f61af2aa9dc24aba3b379f6c"><div class="ttname"><a href="client_2control_8h.html#a83b0dfe2f61af2aa9dc24aba3b379f6c">QDMI_control_free_job</a></div><div class="ttdeci">void QDMI_control_free_job(QDMI_Device dev, QDMI_Job job)</div><div class="ttdoc">Free a job.</div></div>
 <div class="ttc" id="aclient_2control_8h_html_ac1f01f1dc9bde056c56418aa8e595768"><div class="ttname"><a href="client_2control_8h.html#ac1f01f1dc9bde056c56418aa8e595768">QDMI_control_cancel</a></div><div class="ttdeci">int QDMI_control_cancel(QDMI_Device dev, QDMI_Job job)</div><div class="ttdoc">Cancel an already submitted job.</div></div>
 <div class="ttc" id="aclient_2control_8h_html_ad5e245b39b8ad791c599a8303258cffc"><div class="ttname"><a href="client_2control_8h.html#ad5e245b39b8ad791c599a8303258cffc">QDMI_control_wait</a></div><div class="ttdeci">int QDMI_control_wait(QDMI_Device dev, QDMI_Job job)</div><div class="ttdoc">Wait for a job to finish.</div></div>
-<div class="ttc" id="acommon_2types_8h_html"><div class="ttname"><a href="common_2types_8h.html">types.h</a></div><div class="ttdoc">Defines all common types used throughout QDMI.</div></div>
+<div class="ttc" id="acommon_2types_8h_html"><div class="ttname"><a href="common_2types_8h.html">types.h</a></div><div class="ttdoc">Defines all common types shared between all components.</div></div>
 <div class="ttc" id="acommon_2types_8h_html_a28c071c6750e755deb9f375fdf4c5bfc"><div class="ttname"><a href="common_2types_8h.html#a28c071c6750e755deb9f375fdf4c5bfc">QDMI_Job_Status</a></div><div class="ttdeci">enum QDMI_JOB_STATUS_T QDMI_Job_Status</div><div class="ttdoc">Type of the device status.</div><div class="ttdef"><b>Definition</b> types.h:36</div></div>
 <div class="ttc" id="acommon_2types_8h_html_a475336f0c08bd0218dd76a6016098231"><div class="ttname"><a href="common_2types_8h.html#a475336f0c08bd0218dd76a6016098231">QDMI_Program_Format</a></div><div class="ttdeci">enum QDMI_PROGRAM_FORMAT_T QDMI_Program_Format</div><div class="ttdoc">Type of the program format.</div><div class="ttdef"><b>Definition</b> types.h:42</div></div>
 <div class="ttc" id="acommon_2types_8h_html_a4d37195d9d0765b10a6ad681304a4512"><div class="ttname"><a href="common_2types_8h.html#a4d37195d9d0765b10a6ad681304a4512">QDMI_Job_Parameter</a></div><div class="ttdeci">enum QDMI_JOB_PARAMETER_T QDMI_Job_Parameter</div><div class="ttdoc">Type of the job parameter.</div><div class="ttdef"><b>Definition</b> types.h:45</div></div>
 <div class="ttc" id="acommon_2types_8h_html_a52254cd217f8627659a19c8e0c2feed6"><div class="ttname"><a href="common_2types_8h.html#a52254cd217f8627659a19c8e0c2feed6">QDMI_Job_Result</a></div><div class="ttdeci">enum QDMI_JOB_RESULT_T QDMI_Job_Result</div><div class="ttdoc">Type of the job result.</div><div class="ttdef"><b>Definition</b> types.h:48</div></div>
 <div class="ttc" id="adevice_2types_8h_html"><div class="ttname"><a href="device_2types_8h.html">types.h</a></div><div class="ttdoc">Defines all types implemented by a QDMI device.</div></div>
 <div class="ttc" id="adevice_2types_8h_html_ab63357cf9e4546c7ee86b7378c620981"><div class="ttname"><a href="device_2types_8h.html#ab63357cf9e4546c7ee86b7378c620981">QDMI_Job</a></div><div class="ttdeci">struct QDMI_Job_impl_d * QDMI_Job</div><div class="ttdoc">Opaque type for a job.</div><div class="ttdef"><b>Definition</b> types.h:29</div></div>
-<div class="ttc" id="adriver_2types_8h_html"><div class="ttname"><a href="driver_2types_8h.html">types.h</a></div><div class="ttdoc">Defines all types defined by a QDMI driver.</div></div>
+<div class="ttc" id="adriver_2types_8h_html"><div class="ttname"><a href="driver_2types_8h.html">types.h</a></div><div class="ttdoc">Defines all types implemented by a QDMI driver.</div></div>
 <div class="ttc" id="adriver_2types_8h_html_a2772c94ab19957ce5aaef652b626baec"><div class="ttname"><a href="driver_2types_8h.html#a2772c94ab19957ce5aaef652b626baec">QDMI_Device</a></div><div class="ttdeci">struct QDMI_Device_impl_d * QDMI_Device</div><div class="ttdoc">Opaque type for a device.</div><div class="ttdef"><b>Definition</b> types.h:41</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

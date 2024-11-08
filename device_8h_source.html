@@ -93,6 +93,20 @@
           animation: octocat-wave 560ms ease-in-out;
         }
       }
+      /* image path depending on the color scheme */
+      /* Default (light mode) */
+      .logo {
+        width: 130px;
+        height: auto;
+        display: block;
+      }
+      .logo {
+        content: url("mqss_logo.svg"); /* this is set by doxygen, see PROJECT_LOGO in the Doxyfile.in */
+      }
+      /* Dark mode */
+      html.dark-mode .logo {
+        content: url("mqss_logo_dark.svg");
+      }
     </style>
       <div id="top">
         <!-- do not remove this div, it is closed by doxygen! -->
@@ -100,11 +114,11 @@
           <table cellspacing="0" cellpadding="0">
             <tbody>
               <tr id="projectrow">
-                <td id="projectlogo"><img alt="Logo" src="mqss_logo.png"  /></td>
+                <td id="projectlogo"><img class="logo" alt="Logo"/></td>
                 <td id="projectalign">
                   <div id="projectname">
                     QDMI<span id="projectnumber"
-                      >&#160;v1.0.0b1</span
+                      >&#160;v1.0.0b2</span
                     >
                   </div>
                   <div id="projectbrief">Quantum Device Management Interface</div>
@@ -184,18 +198,18 @@ $(function(){initNavTree('device_8h_source.html',''); initResizable(true); });
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">------------------------------------------------------------------------------*/</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#pragma once</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment">// IWYU pragma: begin_exports</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;<a class="code" href="enums_8h.html">qdmi/common/enums.h</a>&quot;</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &quot;<a class="code" href="common_2types_8h.html">qdmi/common/types.h</a>&quot;</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &quot;<a class="code" href="device_2control_8h.html">qdmi/device/control.h</a>&quot;</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &quot;<a class="code" href="device_2query_8h.html">qdmi/device/query.h</a>&quot;</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#include &quot;<a class="code" href="device_2types_8h.html">qdmi/device/types.h</a>&quot;</span></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment">// IWYU pragma: end_exports</span></div>
-<div class="ttc" id="acommon_2types_8h_html"><div class="ttname"><a href="common_2types_8h.html">types.h</a></div><div class="ttdoc">Defines all common types used throughout QDMI.</div></div>
-<div class="ttc" id="adevice_2control_8h_html"><div class="ttname"><a href="device_2control_8h.html">control.h</a></div><div class="ttdoc">The control interface implemented by a QDMI device.</div></div>
-<div class="ttc" id="adevice_2query_8h_html"><div class="ttname"><a href="device_2query_8h.html">query.h</a></div><div class="ttdoc">Define the interface for querying properties of a device.</div></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment">// IWYU pragma: begin_exports</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &quot;<a class="code" href="enums_8h.html">qdmi/common/enums.h</a>&quot;</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &quot;<a class="code" href="common_2types_8h.html">qdmi/common/types.h</a>&quot;</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &quot;<a class="code" href="device_2control_8h.html">qdmi/device/control.h</a>&quot;</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#include &quot;<a class="code" href="device_2query_8h.html">qdmi/device/query.h</a>&quot;</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#include &quot;<a class="code" href="device_2types_8h.html">qdmi/device/types.h</a>&quot;</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment">// IWYU pragma: end_exports</span></div>
+<div class="ttc" id="acommon_2types_8h_html"><div class="ttname"><a href="common_2types_8h.html">types.h</a></div><div class="ttdoc">Defines all common types shared between all components.</div></div>
+<div class="ttc" id="adevice_2control_8h_html"><div class="ttname"><a href="device_2control_8h.html">control.h</a></div><div class="ttdoc">Defines functions to be implemented by a device for controlling it.</div></div>
+<div class="ttc" id="adevice_2query_8h_html"><div class="ttname"><a href="device_2query_8h.html">query.h</a></div><div class="ttdoc">Defines the functions to be implemented by the device for querying its properties.</div></div>
 <div class="ttc" id="adevice_2types_8h_html"><div class="ttname"><a href="device_2types_8h.html">types.h</a></div><div class="ttdoc">Defines all types implemented by a QDMI device.</div></div>
 <div class="ttc" id="aenums_8h_html"><div class="ttname"><a href="enums_8h.html">enums.h</a></div><div class="ttdoc">Defines all enums used within QDMI.</div></div>
 </div><!-- fragment --></div><!-- contents -->

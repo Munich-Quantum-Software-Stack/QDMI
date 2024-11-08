@@ -93,6 +93,20 @@
           animation: octocat-wave 560ms ease-in-out;
         }
       }
+      /* image path depending on the color scheme */
+      /* Default (light mode) */
+      .logo {
+        width: 130px;
+        height: auto;
+        display: block;
+      }
+      .logo {
+        content: url("mqss_logo.svg"); /* this is set by doxygen, see PROJECT_LOGO in the Doxyfile.in */
+      }
+      /* Dark mode */
+      html.dark-mode .logo {
+        content: url("mqss_logo_dark.svg");
+      }
     </style>
       <div id="top">
         <!-- do not remove this div, it is closed by doxygen! -->
@@ -100,11 +114,11 @@
           <table cellspacing="0" cellpadding="0">
             <tbody>
               <tr id="projectrow">
-                <td id="projectlogo"><img alt="Logo" src="mqss_logo.png"  /></td>
+                <td id="projectlogo"><img class="logo" alt="Logo"/></td>
                 <td id="projectalign">
                   <div id="projectname">
                     QDMI<span id="projectnumber"
-                      >&#160;v1.0.0b1</span
+                      >&#160;v1.0.0b2</span
                     >
                   </div>
                   <div id="projectbrief">Quantum Device Management Interface</div>
@@ -181,7 +195,7 @@ $(function(){initNavTree('client_2query_8h.html',''); initResizable(true); });
 </div><!--header-->
 <div class="contents">
 
-<p>Define the interface for querying properties of a device.  
+<p>Defines the interface for querying properties of a device.  
 <a href="#details">More...</a></p>
 
 <p><a href="client_2query_8h_source.html">Go to the source code of this file.</a></p>
@@ -205,7 +219,8 @@ Functions</h2></td></tr>
 <tr class="separator:a751cd51f787152f1e8a076ec6fc9aaea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Define the interface for querying properties of a device. </p>
+<div class="textblock"><p>Defines the interface for querying properties of a device. </p>
+<p>The query interface enables to query static and dynamic properties of the device in a unified fashion. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="device_2query_8h.html" title="Defines the functions to be implemented by the device for querying its properties.">qdmi/device/query.h</a> for the device interface. </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="ab6edd968d89e13d440fc7a00bb273388" name="ab6edd968d89e13d440fc7a00bb273388"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab6edd968d89e13d440fc7a00bb273388">&#9670;&#160;</a></span>QDMI_query_device_property()</h2>
@@ -244,7 +259,7 @@ Functions</h2></td></tr>
 <p>Query a device property. </p>
 <p>This function queries a property of a device. The property can be one of the predefined properties in <a class="el" href="common_2types_8h.html#afeaad074a7321ebb8fb87e06598fc055">QDMI_Device_Property</a>. The property can be of different types, such as defined for the individual property. The function returns the value of the property in the memory pointed to by <code>value</code>. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">device</td><td>refers to the device returned by <a class="el" href="session_8h.html#abd09d9ab40a4eeca0abaa853cb9ec113">QDMI_session_get_devices</a> or can be <code>NULL</code>. If <code>session</code> is <code>NULL</code>, the behavior is implementation-defined. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">device</td><td>refers to the device returned by <a class="el" href="session_8h.html#abd09d9ab40a4eeca0abaa853cb9ec113">QDMI_session_get_devices</a>. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">prop</td><td>is an enumeration constant that identifies the platform information being queried. It can be one of the values specified for <a class="el" href="common_2types_8h.html#afeaad074a7321ebb8fb87e06598fc055">QDMI_Device_Property</a>. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">size</td><td>specifies the size in bytes of memory pointed to by <code>value</code>. This size in bytes must be greater or equal to the size of the return type specified for the <a class="el" href="common_2types_8h.html#afeaad074a7321ebb8fb87e06598fc055">QDMI_Device_Property</a> <code>prop</code>. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">value</td><td>is a pointer to a memory location where appropriate values as specified for the <a class="el" href="common_2types_8h.html#afeaad074a7321ebb8fb87e06598fc055">QDMI_Device_Property</a> <code>prop</code>, will be returned. If <code>value</code> is <code>NULL</code>, it is ignored. </td></tr>
@@ -294,7 +309,7 @@ Functions</h2></td></tr>
 <p>Get the operations available on the <code>device</code>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">device</td><td>refers to the device returned by <a class="el" href="session_8h.html#abd09d9ab40a4eeca0abaa853cb9ec113">QDMI_session_get_devices</a> or can be <code>NULL</code>. If <code>session</code> is <code>NULL</code>, the behavior is implementation-defined. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">device</td><td>refers to the device returned by <a class="el" href="session_8h.html#abd09d9ab40a4eeca0abaa853cb9ec113">QDMI_session_get_devices</a>. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">num_entries</td><td>the number of entries that can be added to <code>operations</code>. If <code>operations</code> is not <code>NULL</code>, <code>num_entries</code> must be greater than zero. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">operations</td><td>returns a list of operations available on the device. The <a class="el" href="device_2types_8h.html#ae777e8f92186c1e6f836eeaa53b149d7">QDMI_Operation</a> values returned in <code>operations</code> can be used to identify a specific <a class="el" href="device_2types_8h.html#ae777e8f92186c1e6f836eeaa53b149d7">QDMI_Operation</a>. If <code>operations</code> is <code>NULL</code>, this argument is ignored. The number of <a class="el" href="device_2types_8h.html#ae777e8f92186c1e6f836eeaa53b149d7">QDMI_Operation</a> values returned is the minimum of the value specified by <code>num_entries</code> and the number of operations found. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">num_operations</td><td>returns the number of operations available. If <code>num_operations</code> is <code>NULL</code>, this argument is ignored. </td></tr>
@@ -341,7 +356,7 @@ Functions</h2></td></tr>
 <p>Get the sites associated with <code>device</code>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">device</td><td>refers to the device returned by <a class="el" href="session_8h.html#abd09d9ab40a4eeca0abaa853cb9ec113">QDMI_session_get_devices</a> or can be <code>NULL</code>. If <code>session</code> is <code>NULL</code>, the behavior is implementation-defined. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">device</td><td>refers to the device returned by <a class="el" href="session_8h.html#abd09d9ab40a4eeca0abaa853cb9ec113">QDMI_session_get_devices</a>. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">num_entries</td><td>the number of entries that can be added to <code>sites</code>. If <code>sites</code> is not <code>NULL</code>, <code>num_entries</code> must be greater than zero. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">sites</td><td>returns a list of sites available on the device. The <a class="el" href="device_2types_8h.html#ab26279159380e378f258cb663968b9ec">QDMI_Site</a> values returned in <code>sites</code> can be used to identify a specific <a class="el" href="device_2types_8h.html#ab26279159380e378f258cb663968b9ec">QDMI_Site</a>. If <code>sites</code> is <code>NULL</code>, this argument is ignored. The number of <a class="el" href="device_2types_8h.html#ab26279159380e378f258cb663968b9ec">QDMI_Site</a> values returned is the minimum of the value specified by <code>num_entries</code> and the number of sites found. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">num_sites</td><td>returns the number of sites available. If <code>num_sites</code> is <code>NULL</code>, this argument is ignored. </td></tr>
@@ -410,10 +425,10 @@ Functions</h2></td></tr>
 <dl class="section user"><dt></dt><dd>The device may return <a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a> also if the queried property cannot be provided for the given sites. E.g., some properties may only be available as an average value for all sites. Those may, nevertheless, be queried through this function by providing no sites at all, i.e., passing <code>NULL</code> to <code>sites</code>. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">device</td><td>refers to the device returned by <a class="el" href="session_8h.html#abd09d9ab40a4eeca0abaa853cb9ec113">QDMI_session_get_devices</a> or can be <code>NULL</code>. If <code>session</code> is <code>NULL</code>, the behavior is implementation-defined. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">operation</td><td>is the name of the operation for which the property is queried. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">device</td><td>refers to the device returned by <a class="el" href="session_8h.html#abd09d9ab40a4eeca0abaa853cb9ec113">QDMI_session_get_devices</a>. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">operation</td><td>is the operation returned by <a class="el" href="#ab85b32d7773183a86505951e2a16e982">QDMI_query_get_operations</a> for which the property is queried. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">num_sites</td><td>is the number of sites for which the property is queried. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">sites</td><td>is a list of indices of the sites for which the property is queried or can be <code>NULL</code>. If <code>sites</code> is <code>NULL</code>, the property is queried for all sites, e.g., as an average value over all sites. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">sites</td><td>is a list of sites for which the property is queried or can be <code>NULL</code>. If <code>sites</code> is <code>NULL</code>, the property is queried for all sites, e.g., as an average value over all sites. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">prop</td><td>is an enumeration constant that identifies the platform information being queried. It can be one of the values specified for <a class="el" href="common_2types_8h.html#a699a82efc1fb132a1b67a6e9d5592080">QDMI_Site_Property</a>. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">size</td><td>specifies the size in bytes of memory pointed to by <code>value</code>. This size in bytes must be greater or equal to the size of the return type specified for the <a class="el" href="common_2types_8h.html#a699a82efc1fb132a1b67a6e9d5592080">QDMI_Site_Property</a> <code>prop</code>. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">value</td><td>is a pointer to a memory location where appropriate values as specified for the <a class="el" href="common_2types_8h.html#a699a82efc1fb132a1b67a6e9d5592080">QDMI_Site_Property</a> <code>prop</code>, will be returned. If <code>value</code> is <code>NULL</code>, it is ignored. </td></tr>
@@ -471,13 +486,10 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Query a site property. </p>
-<p>This function queries a property of a site. The property can be one of the predefined properties in <a class="el" href="common_2types_8h.html#a699a82efc1fb132a1b67a6e9d5592080">QDMI_Site_Property</a>. The property can be of different types, such as defined for the individual property. The function returns the value of the property in the memory pointed to by <code>value</code>.</p>
-<dl class="section user"><dt></dt><dd>A site is a place that can potentially hold a qubit. In the case of superconducting qubits, sites can be used synonymously with qubits. In the case of neutral atoms, sites represent individual traps that can confine atoms. Those atoms are then used as qubits.</dd></dl>
-<dl class="section user"><dt></dt><dd>To this end, sites are a generalization of qubits that denote locations where qubits can be placed on a device. Sites are identified by an integer index that is unique for each site on a device. The indices start at zero and go up to the number of sites minus one. </dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>This function queries a property of a site. The property can be one of the predefined properties in <a class="el" href="common_2types_8h.html#a699a82efc1fb132a1b67a6e9d5592080">QDMI_Site_Property</a>. The property can be of different types, such as defined for the individual property. The function returns the value of the property in the memory pointed to by <code>value</code>. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">device</td><td>refers to the device returned by <a class="el" href="session_8h.html#abd09d9ab40a4eeca0abaa853cb9ec113">QDMI_session_get_devices</a> or can be <code>NULL</code>. If <code>session</code> is <code>NULL</code>, the behavior is implementation-defined. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">site</td><td>is the index of the site for which the property is queried. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">device</td><td>refers to the device returned by <a class="el" href="session_8h.html#abd09d9ab40a4eeca0abaa853cb9ec113">QDMI_session_get_devices</a>. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">site</td><td>is the site returned by <a class="el" href="#a2283b9161354fd64b3b976951a2cdcd8">QDMI_query_get_sites</a> for which the property is queried. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">prop</td><td>is an enumeration constant that identifies the platform information being queried. It can be one of the values specified for <a class="el" href="common_2types_8h.html#a699a82efc1fb132a1b67a6e9d5592080">QDMI_Site_Property</a>. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">size</td><td>specifies the size in bytes of memory pointed to by <code>value</code>. This size in bytes must be greater or equal to the size of the return type specified for the <a class="el" href="common_2types_8h.html#a699a82efc1fb132a1b67a6e9d5592080">QDMI_Site_Property</a> <code>prop</code>. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">value</td><td>is a pointer to a memory location where appropriate values as specified for the <a class="el" href="common_2types_8h.html#a699a82efc1fb132a1b67a6e9d5592080">QDMI_Site_Property</a> <code>prop</code>, will be returned. If <code>value</code> is <code>NULL</code>, it is ignored. </td></tr>
