@@ -7,8 +7,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 /** @file
  * @brief The QDMI session interface.
  * @details The driver manages resources provided to clients in sessions. This
- * header provides the interface for these sessions. It is also intended to
- * facilitate user management and access control.
+ * header provides the interface for these sessions.
  */
 
 #pragma once
