@@ -59,6 +59,9 @@ typedef enum QDMI_JOB_PARAMETER_T QDMI_Job_Parameter;
 /// Type of the job result.
 typedef enum QDMI_JOB_RESULT_T QDMI_Job_Result;
 
+/// Type of the session parameter.
+typedef enum QDMI_SESSION_PARAMETER_T QDMI_Session_Parameter;
+
 // NOLINTEND(modernize-use-using)
 
 #ifdef __cplusplus

@@ -363,6 +363,37 @@ enum QDMI_JOB_RESULT_T {
   QDMI_JOB_RESULT_MAX
 };
 
+/**
+ * @brief Enum of the session parameters that can be set.
+ */
+enum QDMI_SESSION_PARAMETER_T {
+  /// `char*` (string) The owner of the session.
+  QDMI_SESSION_PARAMETER_OWNER,
+  /// `char*` (string) The access token for the session.
+  QDMI_SESSION_PARAMETER_TOKEN,
+  /**
+   * @brief This property is reserved for a custom property.
+   * @details The meaning and the type of this property is defined by the
+   * driver.
+   */
+  QDMI_SESSION_PARAMETER_CUSTOM_1,
+  /// @see QDMI_SESSION_PARAMETER_CUSTOM_1
+  QDMI_SESSION_PARAMETER_CUSTOM_2,
+  /// @see QDMI_SESSION_PARAMETER_CUSTOM_1
+  QDMI_SESSION_PARAMETER_CUSTOM_3,
+  /// @see QDMI_SESSION_PARAMETER_CUSTOM_1
+  QDMI_SESSION_PARAMETER_CUSTOM_4,
+  /// @see QDMI_SESSION_PARAMETER_CUSTOM_1
+  QDMI_SESSION_PARAMETER_CUSTOM_5,
+  /**
+   * @brief The maximum value of the enum.
+   * @details This value can be used for bounds checks by the drivers.
+   * @note This value should always be updated to be the last and maximum value
+   * of the enum.
+   */
+  QDMI_SESSION_PARAMETER_MAX
+};
+
 // NOLINTEND(performance-enum-size)
 
 #ifdef __cplusplus

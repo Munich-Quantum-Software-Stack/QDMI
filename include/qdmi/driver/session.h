@@ -47,6 +47,24 @@ extern "C" {
 int QDMI_session_alloc(QDMI_Session *session);
 
 /**
+ * @brief Set a parameter for a session.
+ * @details This function sets a parameter for a session. The parameter can be
+ * one of the predefined parameters in @ref QDMI_Session_Parameter.
+ * @param[in] session refers to the session to set the parameter for.
+ * @param[in] param the parameter to set.
+ * @param[in] size the size of the value in bytes.
+ * @param[in] value the value to set the parameter to.
+ * @return @ref QDMI_SUCCESS if the parameter was set successfully.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if the session does not exist, is in
+ * an invalid state or the parameter is invalid.
+ * @return @ref QDMI_ERROR_NOTSUPPORTED if the device does not support the
+ * parameter.
+ * @return @ref QDMI_ERROR_FATAL if the parameter could not be set.
+ */
+int QDMI_session_set_parameter(QDMI_Session session,
+                               QDMI_Session_Parameter param, size_t size,
+                               const void *value);
+/**
  * @brief Get the devices associated with @p session.
  * @param[in] session refers to the session returned by @ref QDMI_session_alloc
  * or can be `NULL`. If @p session is `NULL`, the behavior is
