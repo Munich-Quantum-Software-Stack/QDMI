@@ -271,6 +271,8 @@ int QDMI_session_set_parameter(QDMI_Session session,
   case QDMI_SESSION_PARAMETER_TOKEN:
     session->token = std::string(static_cast<const char *>(value), size);
     return QDMI_SUCCESS;
+  default:
+    break;
   }
   return QDMI_ERROR_NOTSUPPORTED;
 }

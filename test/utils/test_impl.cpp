@@ -64,7 +64,7 @@ void QDMIImplementationTest::SetUp() {
   ASSERT_EQ(QDMI_session_alloc(&session), QDMI_SUCCESS)
       << "Failed to allocate session";
 
-  std::string test_token = "test_token";
+  const std::string test_token = "test_token";
   ASSERT_EQ(QDMI_session_set_parameter(session, QDMI_SESSION_PARAMETER_TOKEN,
                                        test_token.length() + 1,
                                        test_token.c_str()),
@@ -281,7 +281,7 @@ TEST_P(QDMIImplementationTest, SessionGetDevicesImplemented) {
   ASSERT_EQ(QDMI_session_get_devices(session, 2, devices.data(), nullptr),
             QDMI_ERROR_PERMISSIONDENIED);
 
-  std::string test_token = "test_token";
+  const std::string test_token = "test_token";
   ASSERT_EQ(QDMI_session_set_parameter(session, QDMI_SESSION_PARAMETER_TOKEN,
                                        test_token.length() + 1,
                                        test_token.c_str()),
@@ -295,13 +295,13 @@ TEST_P(QDMIImplementationTest, SessionSetParameterImplemented) {
                                        nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
 
-  std::string test_token = "test_token";
+  const std::string test_token = "test_token";
   ASSERT_EQ(QDMI_session_set_parameter(session, QDMI_SESSION_PARAMETER_TOKEN,
                                        test_token.length() + 1,
                                        test_token.c_str()),
             QDMI_SUCCESS);
 
-  std::string test_owner = "test_owner";
+  const std::string test_owner = "test_owner";
   ASSERT_EQ(QDMI_session_set_parameter(session, QDMI_SESSION_PARAMETER_OWNER,
                                        test_owner.length() + 1,
                                        test_owner.c_str()),
