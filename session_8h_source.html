@@ -223,28 +223,28 @@ $(function(){initNavTree('session_8h_source.html',''); initResizable(true); });
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception</span></div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment">------------------------------------------------------------------------------*/</span></div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#pragma once</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#include &quot;<a class="code" href="driver_2types_8h.html">qdmi/driver/types.h</a>&quot;</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="preprocessor">#include &lt;cstddef&gt;</span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="preprocessor">#else</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#include &lt;stddef.h&gt;</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="session_8h.html#aa11305e72710d4f2439c0c72892fce11">   48</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="session_8h.html#aa11305e72710d4f2439c0c72892fce11">QDMI_session_alloc</a>(<a class="code hl_typedef" href="driver_2types_8h.html#a4dd0162b0321d12934f815f29504106e">QDMI_Session</a> *session);</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="session_8h.html#abd09d9ab40a4eeca0abaa853cb9ec113">   70</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="session_8h.html#abd09d9ab40a4eeca0abaa853cb9ec113">QDMI_session_get_devices</a>(<a class="code hl_typedef" href="driver_2types_8h.html#a4dd0162b0321d12934f815f29504106e">QDMI_Session</a> session, <span class="keywordtype">size_t</span> num_entries,</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>                             <a class="code hl_typedef" href="driver_2types_8h.html#a2772c94ab19957ce5aaef652b626baec">QDMI_Device</a> *devices, <span class="keywordtype">size_t</span> *num_devices);</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno"><a class="line" href="session_8h.html#a24d3efdb64f9ae6d88b32b011f7549ae">   80</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="session_8h.html#a24d3efdb64f9ae6d88b32b011f7549ae">QDMI_session_free</a>(<a class="code hl_typedef" href="driver_2types_8h.html#a4dd0162b0321d12934f815f29504106e">QDMI_Session</a> session);</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>} <span class="comment">// extern &quot;C&quot;</span></div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#include &quot;<a class="code" href="driver_2types_8h.html">qdmi/driver/types.h</a>&quot;</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="preprocessor">#include &lt;cstddef&gt;</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="preprocessor">#include &lt;stddef.h&gt;</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="session_8h.html#aa11305e72710d4f2439c0c72892fce11">   47</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="session_8h.html#aa11305e72710d4f2439c0c72892fce11">QDMI_session_alloc</a>(<a class="code hl_typedef" href="driver_2types_8h.html#a4dd0162b0321d12934f815f29504106e">QDMI_Session</a> *session);</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="session_8h.html#abd09d9ab40a4eeca0abaa853cb9ec113">   69</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="session_8h.html#abd09d9ab40a4eeca0abaa853cb9ec113">QDMI_session_get_devices</a>(<a class="code hl_typedef" href="driver_2types_8h.html#a4dd0162b0321d12934f815f29504106e">QDMI_Session</a> session, <span class="keywordtype">size_t</span> num_entries,</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>                             <a class="code hl_typedef" href="driver_2types_8h.html#a2772c94ab19957ce5aaef652b626baec">QDMI_Device</a> *devices, <span class="keywordtype">size_t</span> *num_devices);</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="session_8h.html#a24d3efdb64f9ae6d88b32b011f7549ae">   79</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="session_8h.html#a24d3efdb64f9ae6d88b32b011f7549ae">QDMI_session_free</a>(<a class="code hl_typedef" href="driver_2types_8h.html#a4dd0162b0321d12934f815f29504106e">QDMI_Session</a> session);</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>} <span class="comment">// extern &quot;C&quot;</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="adriver_2types_8h_html"><div class="ttname"><a href="driver_2types_8h.html">types.h</a></div><div class="ttdoc">Defines all types implemented by a QDMI driver.</div></div>
 <div class="ttc" id="adriver_2types_8h_html_a2772c94ab19957ce5aaef652b626baec"><div class="ttname"><a href="driver_2types_8h.html#a2772c94ab19957ce5aaef652b626baec">QDMI_Device</a></div><div class="ttdeci">struct QDMI_Device_impl_d * QDMI_Device</div><div class="ttdoc">Opaque type for a device.</div><div class="ttdef"><b>Definition</b> types.h:53</div></div>
 <div class="ttc" id="adriver_2types_8h_html_a4dd0162b0321d12934f815f29504106e"><div class="ttname"><a href="driver_2types_8h.html#a4dd0162b0321d12934f815f29504106e">QDMI_Session</a></div><div class="ttdeci">struct QDMI_Session_impl_d * QDMI_Session</div><div class="ttdoc">Opaque type for a QDMI session.</div><div class="ttdef"><b>Definition</b> types.h:42</div></div>
