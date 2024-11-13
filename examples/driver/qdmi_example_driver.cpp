@@ -108,6 +108,8 @@ struct QDMI_Device_impl_d {
  */
 struct QDMI_Session_impl_d {
   std::vector<std::shared_ptr<QDMI_Device_impl_d>> device_list;
+  std::string owner;
+  std::string token;
 };
 
 /// @}
@@ -250,9 +252,27 @@ int QDMI_Driver_init() {
 
 int QDMI_session_alloc(QDMI_Session *session) {
   *session = new QDMI_Session_impl_d();
-  // in this simple implementation, each session has access to all devices
-  (*session)->device_list = device_list;
   return QDMI_SUCCESS;
+}
+
+int QDMI_session_set_parameter(QDMI_Session session,
+                               QDMI_Session_Parameter param, const size_t size,
+                               const void *value) {
+  // size == 0 and value == nullptr are allowed in case the client want to reset
+  // the parameter
+  if (session == nullptr || param >= QDMI_SESSION_PARAMETER_MAX) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+
+  switch (param) {
+  case QDMI_SESSION_PARAMETER_OWNER:
+    session->owner = std::string(static_cast<const char *>(value), size);
+    return QDMI_SUCCESS;
+  case QDMI_SESSION_PARAMETER_TOKEN:
+    session->token = std::string(static_cast<const char *>(value), size);
+    return QDMI_SUCCESS;
+  }
+  return QDMI_ERROR_NOTSUPPORTED;
 }
 
 int QDMI_session_get_devices(QDMI_Session session, const size_t num_entries,
@@ -270,6 +290,16 @@ int QDMI_session_get_devices(QDMI_Session session, const size_t num_entries,
     }
     return QDMI_SUCCESS;
   }
+
+  // In this simple implementation, each session has access to all devices if an
+  // owner or token is provided. If the owner or token is not provided, the
+  // session has access to no devices and return QDMI_ERROR_PERMISSIONDENIED
+  if (session->owner.empty() && session->token.empty()) {
+    session->device_list.clear();
+    return QDMI_ERROR_PERMISSIONDENIED;
+  }
+
+  session->device_list = device_list;
 
   const auto num_devices_in_session = session->device_list.size();
   if (devices == nullptr) {

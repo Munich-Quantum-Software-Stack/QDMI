@@ -64,6 +64,13 @@ void QDMIImplementationTest::SetUp() {
   ASSERT_EQ(QDMI_session_alloc(&session), QDMI_SUCCESS)
       << "Failed to allocate session";
 
+  std::string test_token = "test_token";
+  ASSERT_EQ(QDMI_session_set_parameter(session, QDMI_SESSION_PARAMETER_TOKEN,
+                                       test_token.length() + 1,
+                                       test_token.c_str()),
+            QDMI_SUCCESS)
+      << "Failed to set session parameter";
+
   ASSERT_EQ(QDMI_session_get_devices(session, 1, &device, nullptr),
             QDMI_SUCCESS)
       << "Failed to get device";
@@ -258,4 +265,50 @@ TEST_P(QDMIImplementationTest, ControlDeviceModeReadOnly) {
   EXPECT_EQ(QDMI_control_get_data(device, job, QDMI_JOB_RESULT_MAX, 0, nullptr,
                                   nullptr),
             QDMI_ERROR_PERMISSIONDENIED);
+}
+
+TEST_P(QDMIImplementationTest, SessionGetDevicesImplemented) {
+  ASSERT_EQ(QDMI_session_get_devices(session, 0, nullptr, nullptr),
+            QDMI_ERROR_INVALIDARGUMENT);
+
+  ASSERT_EQ(QDMI_session_set_parameter(session, QDMI_SESSION_PARAMETER_TOKEN, 0,
+                                       nullptr),
+            QDMI_SUCCESS);
+  ASSERT_EQ(QDMI_session_set_parameter(session, QDMI_SESSION_PARAMETER_OWNER, 0,
+                                       nullptr),
+            QDMI_SUCCESS);
+  std::array<QDMI_Device, 2> devices{};
+  ASSERT_EQ(QDMI_session_get_devices(session, 2, devices.data(), nullptr),
+            QDMI_ERROR_PERMISSIONDENIED);
+
+  std::string test_token = "test_token";
+  ASSERT_EQ(QDMI_session_set_parameter(session, QDMI_SESSION_PARAMETER_TOKEN,
+                                       test_token.length() + 1,
+                                       test_token.c_str()),
+            QDMI_SUCCESS);
+  ASSERT_EQ(QDMI_session_get_devices(session, 2, devices.data(), nullptr),
+            QDMI_SUCCESS);
+}
+
+TEST_P(QDMIImplementationTest, SessionSetParameterImplemented) {
+  ASSERT_EQ(QDMI_session_set_parameter(session, QDMI_SESSION_PARAMETER_MAX, 0,
+                                       nullptr),
+            QDMI_ERROR_INVALIDARGUMENT);
+
+  std::string test_token = "test_token";
+  ASSERT_EQ(QDMI_session_set_parameter(session, QDMI_SESSION_PARAMETER_TOKEN,
+                                       test_token.length() + 1,
+                                       test_token.c_str()),
+            QDMI_SUCCESS);
+
+  std::string test_owner = "test_owner";
+  ASSERT_EQ(QDMI_session_set_parameter(session, QDMI_SESSION_PARAMETER_OWNER,
+                                       test_owner.length() + 1,
+                                       test_owner.c_str()),
+            QDMI_SUCCESS);
+
+  ASSERT_EQ(QDMI_session_set_parameter(session, QDMI_SESSION_PARAMETER_CUSTOM_1,
+                                       test_owner.length() + 1,
+                                       test_owner.c_str()),
+            QDMI_ERROR_NOTSUPPORTED);
 }
