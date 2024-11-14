@@ -30,5 +30,6 @@ var searchData=
   ['qdmi_5fquery_5fsite_5fproperty_5fdev_27',['QDMI_query_site_property_dev',['../device_2query_8h.html#a609fc0045c31f7d0174df70db1ccfabc',1,'query.h']]],
   ['qdmi_5fsession_5falloc_28',['QDMI_session_alloc',['../session_8h.html#aa11305e72710d4f2439c0c72892fce11',1,'session.h']]],
   ['qdmi_5fsession_5ffree_29',['QDMI_session_free',['../session_8h.html#a24d3efdb64f9ae6d88b32b011f7549ae',1,'session.h']]],
-  ['qdmi_5fsession_5fget_5fdevices_30',['QDMI_session_get_devices',['../session_8h.html#abd09d9ab40a4eeca0abaa853cb9ec113',1,'session.h']]]
+  ['qdmi_5fsession_5fget_5fdevices_30',['QDMI_session_get_devices',['../session_8h.html#abd09d9ab40a4eeca0abaa853cb9ec113',1,'session.h']]],
+  ['qdmi_5fsession_5fset_5fparameter_31',['QDMI_session_set_parameter',['../session_8h.html#a39d34b2a95cd9e2b8d9d6ab551bff078',1,'session.h']]]
 ];

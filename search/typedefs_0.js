@@ -12,6 +12,7 @@ var searchData=
   ['qdmi_5foperation_5fproperty_9',['QDMI_Operation_Property',['../common_2types_8h.html#abc8a0427b96af9020c80aedabcf393b3',1,'types.h']]],
   ['qdmi_5fprogram_5fformat_10',['QDMI_Program_Format',['../common_2types_8h.html#a475336f0c08bd0218dd76a6016098231',1,'types.h']]],
   ['qdmi_5fsession_11',['QDMI_Session',['../driver_2types_8h.html#a4dd0162b0321d12934f815f29504106e',1,'types.h']]],
-  ['qdmi_5fsite_12',['QDMI_Site',['../device_2types_8h.html#ab26279159380e378f258cb663968b9ec',1,'types.h']]],
-  ['qdmi_5fsite_5fproperty_13',['QDMI_Site_Property',['../common_2types_8h.html#a699a82efc1fb132a1b67a6e9d5592080',1,'types.h']]]
+  ['qdmi_5fsession_5fparameter_12',['QDMI_Session_Parameter',['../common_2types_8h.html#aae2a513b3364705ca75f709215d912f5',1,'types.h']]],
+  ['qdmi_5fsite_13',['QDMI_Site',['../device_2types_8h.html#ab26279159380e378f258cb663968b9ec',1,'types.h']]],
+  ['qdmi_5fsite_5fproperty_14',['QDMI_Site_Property',['../common_2types_8h.html#a699a82efc1fb132a1b67a6e9d5592080',1,'types.h']]]
 ];

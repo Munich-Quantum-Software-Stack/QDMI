@@ -8,5 +8,6 @@ var common_2types_8h =
     [ "QDMI_Job_Status", "common_2types_8h.html#a28c071c6750e755deb9f375fdf4c5bfc", null ],
     [ "QDMI_Operation_Property", "common_2types_8h.html#abc8a0427b96af9020c80aedabcf393b3", null ],
     [ "QDMI_Program_Format", "common_2types_8h.html#a475336f0c08bd0218dd76a6016098231", null ],
+    [ "QDMI_Session_Parameter", "common_2types_8h.html#aae2a513b3364705ca75f709215d912f5", null ],
     [ "QDMI_Site_Property", "common_2types_8h.html#a699a82efc1fb132a1b67a6e9d5592080", null ]
 ];

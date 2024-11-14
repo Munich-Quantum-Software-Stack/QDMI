@@ -365,6 +365,20 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:aa154b942b0f67e437c393ad7b33cadd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum of the formats the results can be returned in.  <a href="#aa154b942b0f67e437c393ad7b33cadd1">More...</a><br /></td></tr>
 <tr class="separator:aa154b942b0f67e437c393ad7b33cadd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac5ae9f0bf8046987569c6f4e75611d3" id="r_aac5ae9f0bf8046987569c6f4e75611d3"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aac5ae9f0bf8046987569c6f4e75611d3">QDMI_SESSION_PARAMETER_T</a> { <br />
+&#160;&#160;<a class="el" href="#aac5ae9f0bf8046987569c6f4e75611d3a08cb96b53ee1b7a5c9031ddff2cc6132">QDMI_SESSION_PARAMETER_OWNER</a>
+, <a class="el" href="#aac5ae9f0bf8046987569c6f4e75611d3af68e93d8a13dacb31e6bbdf43c9c5283">QDMI_SESSION_PARAMETER_TOKEN</a>
+, <a class="el" href="#aac5ae9f0bf8046987569c6f4e75611d3ad87261bdac716fb56f9f5ccdee45d288">QDMI_SESSION_PARAMETER_CUSTOM_1</a>
+, <a class="el" href="#aac5ae9f0bf8046987569c6f4e75611d3a2b73aa650ab625004673790643559084">QDMI_SESSION_PARAMETER_CUSTOM_2</a>
+, <br />
+&#160;&#160;<a class="el" href="#aac5ae9f0bf8046987569c6f4e75611d3a4dc7230903f5f0d47f0eeccef612096e">QDMI_SESSION_PARAMETER_CUSTOM_3</a>
+, <a class="el" href="#aac5ae9f0bf8046987569c6f4e75611d3ab2504a743a8b169d56acd22ec4be9b1b">QDMI_SESSION_PARAMETER_CUSTOM_4</a>
+, <a class="el" href="#aac5ae9f0bf8046987569c6f4e75611d3ace9ab4e7719ab071d38b0abcb2d1819a">QDMI_SESSION_PARAMETER_CUSTOM_5</a>
+, <a class="el" href="#aac5ae9f0bf8046987569c6f4e75611d3a687f1bf96e2c4467d483c196c8b56292">QDMI_SESSION_PARAMETER_MAX</a>
+<br />
+ }</td></tr>
+<tr class="memdesc:aac5ae9f0bf8046987569c6f4e75611d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum of the session parameters that can be set.  <a href="#aac5ae9f0bf8046987569c6f4e75611d3">More...</a><br /></td></tr>
+<tr class="separator:aac5ae9f0bf8046987569c6f4e75611d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Defines all enums used within QDMI. </p>
@@ -671,6 +685,42 @@ Enumerations</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09aed0bf48a068be1cc41e339c6ae48e655" name="a3eff3252203fcad146d5896e4466ec09aed0bf48a068be1cc41e339c6ae48e655"></a>QDMI_PROGRAM_FORMAT_MAX&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
 <p>This value can be used for bounds checks by the devices. </p><dl class="section note"><dt>Note</dt><dd>This value should always be updated to be the last and maximum value of the enum. </dd></dl>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="aac5ae9f0bf8046987569c6f4e75611d3" name="aac5ae9f0bf8046987569c6f4e75611d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac5ae9f0bf8046987569c6f4e75611d3">&#9670;&#160;</a></span>QDMI_SESSION_PARAMETER_T</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="#aac5ae9f0bf8046987569c6f4e75611d3">QDMI_SESSION_PARAMETER_T</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Enum of the session parameters that can be set. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aac5ae9f0bf8046987569c6f4e75611d3a08cb96b53ee1b7a5c9031ddff2cc6132" name="aac5ae9f0bf8046987569c6f4e75611d3a08cb96b53ee1b7a5c9031ddff2cc6132"></a>QDMI_SESSION_PARAMETER_OWNER&#160;</td><td class="fielddoc"><p><code>char*</code> (string) The owner of the session. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aac5ae9f0bf8046987569c6f4e75611d3af68e93d8a13dacb31e6bbdf43c9c5283" name="aac5ae9f0bf8046987569c6f4e75611d3af68e93d8a13dacb31e6bbdf43c9c5283"></a>QDMI_SESSION_PARAMETER_TOKEN&#160;</td><td class="fielddoc"><p><code>char*</code> (string) The access token for the session. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aac5ae9f0bf8046987569c6f4e75611d3ad87261bdac716fb56f9f5ccdee45d288" name="aac5ae9f0bf8046987569c6f4e75611d3ad87261bdac716fb56f9f5ccdee45d288"></a>QDMI_SESSION_PARAMETER_CUSTOM_1&#160;</td><td class="fielddoc"><p>This property is reserved for a custom property. </p>
+<p>The meaning and the type of this property is defined by the driver. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aac5ae9f0bf8046987569c6f4e75611d3a2b73aa650ab625004673790643559084" name="aac5ae9f0bf8046987569c6f4e75611d3a2b73aa650ab625004673790643559084"></a>QDMI_SESSION_PARAMETER_CUSTOM_2&#160;</td><td class="fielddoc"><dl class="section see"><dt>See also</dt><dd><a class="el" href="#aac5ae9f0bf8046987569c6f4e75611d3ad87261bdac716fb56f9f5ccdee45d288" title="This property is reserved for a custom property.">QDMI_SESSION_PARAMETER_CUSTOM_1</a> </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="aac5ae9f0bf8046987569c6f4e75611d3a4dc7230903f5f0d47f0eeccef612096e" name="aac5ae9f0bf8046987569c6f4e75611d3a4dc7230903f5f0d47f0eeccef612096e"></a>QDMI_SESSION_PARAMETER_CUSTOM_3&#160;</td><td class="fielddoc"><dl class="section see"><dt>See also</dt><dd><a class="el" href="#aac5ae9f0bf8046987569c6f4e75611d3ad87261bdac716fb56f9f5ccdee45d288" title="This property is reserved for a custom property.">QDMI_SESSION_PARAMETER_CUSTOM_1</a> </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="aac5ae9f0bf8046987569c6f4e75611d3ab2504a743a8b169d56acd22ec4be9b1b" name="aac5ae9f0bf8046987569c6f4e75611d3ab2504a743a8b169d56acd22ec4be9b1b"></a>QDMI_SESSION_PARAMETER_CUSTOM_4&#160;</td><td class="fielddoc"><dl class="section see"><dt>See also</dt><dd><a class="el" href="#aac5ae9f0bf8046987569c6f4e75611d3ad87261bdac716fb56f9f5ccdee45d288" title="This property is reserved for a custom property.">QDMI_SESSION_PARAMETER_CUSTOM_1</a> </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="aac5ae9f0bf8046987569c6f4e75611d3ace9ab4e7719ab071d38b0abcb2d1819a" name="aac5ae9f0bf8046987569c6f4e75611d3ace9ab4e7719ab071d38b0abcb2d1819a"></a>QDMI_SESSION_PARAMETER_CUSTOM_5&#160;</td><td class="fielddoc"><dl class="section see"><dt>See also</dt><dd><a class="el" href="#aac5ae9f0bf8046987569c6f4e75611d3ad87261bdac716fb56f9f5ccdee45d288" title="This property is reserved for a custom property.">QDMI_SESSION_PARAMETER_CUSTOM_1</a> </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="aac5ae9f0bf8046987569c6f4e75611d3a687f1bf96e2c4467d483c196c8b56292" name="aac5ae9f0bf8046987569c6f4e75611d3a687f1bf96e2c4467d483c196c8b56292"></a>QDMI_SESSION_PARAMETER_MAX&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
+<p>This value can be used for bounds checks by the drivers. </p><dl class="section note"><dt>Note</dt><dd>This value should always be updated to be the last and maximum value of the enum. </dd></dl>
 </td></tr>
 </table>
 

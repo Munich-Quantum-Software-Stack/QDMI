@@ -218,6 +218,9 @@ Functions</h2></td></tr>
 <tr class="memitem:aa11305e72710d4f2439c0c72892fce11" id="r_aa11305e72710d4f2439c0c72892fce11"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa11305e72710d4f2439c0c72892fce11">QDMI_session_alloc</a> (<a class="el" href="driver_2types_8h.html#a4dd0162b0321d12934f815f29504106e">QDMI_Session</a> *session)</td></tr>
 <tr class="memdesc:aa11305e72710d4f2439c0c72892fce11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate a new QDMI session.  <br /></td></tr>
 <tr class="separator:aa11305e72710d4f2439c0c72892fce11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39d34b2a95cd9e2b8d9d6ab551bff078" id="r_a39d34b2a95cd9e2b8d9d6ab551bff078"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a39d34b2a95cd9e2b8d9d6ab551bff078">QDMI_session_set_parameter</a> (<a class="el" href="driver_2types_8h.html#a4dd0162b0321d12934f815f29504106e">QDMI_Session</a> session, <a class="el" href="common_2types_8h.html#aae2a513b3364705ca75f709215d912f5">QDMI_Session_Parameter</a> param, size_t size, const void *value)</td></tr>
+<tr class="memdesc:a39d34b2a95cd9e2b8d9d6ab551bff078"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a parameter for a session.  <br /></td></tr>
+<tr class="separator:a39d34b2a95cd9e2b8d9d6ab551bff078"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd09d9ab40a4eeca0abaa853cb9ec113" id="r_abd09d9ab40a4eeca0abaa853cb9ec113"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abd09d9ab40a4eeca0abaa853cb9ec113">QDMI_session_get_devices</a> (<a class="el" href="driver_2types_8h.html#a4dd0162b0321d12934f815f29504106e">QDMI_Session</a> session, size_t num_entries, <a class="el" href="driver_2types_8h.html#a2772c94ab19957ce5aaef652b626baec">QDMI_Device</a> *devices, size_t *num_devices)</td></tr>
 <tr class="memdesc:abd09d9ab40a4eeca0abaa853cb9ec113"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the devices associated with <code>session</code>.  <br /></td></tr>
 <tr class="separator:abd09d9ab40a4eeca0abaa853cb9ec113"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -328,6 +331,55 @@ Functions</h2></td></tr>
 <a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642">QDMI_ERROR_INVALIDARGUMENT</a> if <code>num_entries</code> is zero and <code>devices</code> is not <code>NULL</code> or if both <code>devices</code> and <code>num_devices</code> are <code>NULL</code>. </dd>
 <dd>
 <a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3">QDMI_ERROR_FATAL</a> if an unexpected error occurred. </dd></dl>
+
+</div>
+</div>
+<a id="a39d34b2a95cd9e2b8d9d6ab551bff078" name="a39d34b2a95cd9e2b8d9d6ab551bff078"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39d34b2a95cd9e2b8d9d6ab551bff078">&#9670;&#160;</a></span>QDMI_session_set_parameter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int QDMI_session_set_parameter </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="driver_2types_8h.html#a4dd0162b0321d12934f815f29504106e">QDMI_Session</a></td>          <td class="paramname"><span class="paramname"><em>session</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="common_2types_8h.html#aae2a513b3364705ca75f709215d912f5">QDMI_Session_Parameter</a></td>          <td class="paramname"><span class="paramname"><em>param</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>size</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const void *</td>          <td class="paramname"><span class="paramname"><em>value</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set a parameter for a session. </p>
+<p>This function sets a parameter for a session. The parameter can be one of the predefined parameters in <a class="el" href="common_2types_8h.html#aae2a513b3364705ca75f709215d912f5">QDMI_Session_Parameter</a>. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">session</td><td>refers to the session to set the parameter for. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">param</td><td>the parameter to set. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">size</td><td>the size of the value in bytes. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>the value to set the parameter to. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a8039f5cd8202553b2a91a1c0b01d6751">QDMI_SUCCESS</a> if the parameter was set successfully. </dd>
+<dd>
+<a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642">QDMI_ERROR_INVALIDARGUMENT</a> if the session does not exist, is in an invalid state or the parameter is invalid. </dd>
+<dd>
+<a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a> if the device does not support the parameter. </dd>
+<dd>
+<a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3">QDMI_ERROR_FATAL</a> if the parameter could not be set. </dd></dl>
 
 </div>
 </div>

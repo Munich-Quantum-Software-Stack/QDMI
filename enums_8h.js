@@ -84,6 +84,16 @@ var enums_8h =
       [ "QDMI_PROGRAM_FORMAT_CUSTOM_5", "enums_8h.html#a3eff3252203fcad146d5896e4466ec09a60f5bda9cc23644034cb3a7f9768f2da", null ],
       [ "QDMI_PROGRAM_FORMAT_MAX", "enums_8h.html#a3eff3252203fcad146d5896e4466ec09aed0bf48a068be1cc41e339c6ae48e655", null ]
     ] ],
+    [ "QDMI_SESSION_PARAMETER_T", "enums_8h.html#aac5ae9f0bf8046987569c6f4e75611d3", [
+      [ "QDMI_SESSION_PARAMETER_OWNER", "enums_8h.html#aac5ae9f0bf8046987569c6f4e75611d3a08cb96b53ee1b7a5c9031ddff2cc6132", null ],
+      [ "QDMI_SESSION_PARAMETER_TOKEN", "enums_8h.html#aac5ae9f0bf8046987569c6f4e75611d3af68e93d8a13dacb31e6bbdf43c9c5283", null ],
+      [ "QDMI_SESSION_PARAMETER_CUSTOM_1", "enums_8h.html#aac5ae9f0bf8046987569c6f4e75611d3ad87261bdac716fb56f9f5ccdee45d288", null ],
+      [ "QDMI_SESSION_PARAMETER_CUSTOM_2", "enums_8h.html#aac5ae9f0bf8046987569c6f4e75611d3a2b73aa650ab625004673790643559084", null ],
+      [ "QDMI_SESSION_PARAMETER_CUSTOM_3", "enums_8h.html#aac5ae9f0bf8046987569c6f4e75611d3a4dc7230903f5f0d47f0eeccef612096e", null ],
+      [ "QDMI_SESSION_PARAMETER_CUSTOM_4", "enums_8h.html#aac5ae9f0bf8046987569c6f4e75611d3ab2504a743a8b169d56acd22ec4be9b1b", null ],
+      [ "QDMI_SESSION_PARAMETER_CUSTOM_5", "enums_8h.html#aac5ae9f0bf8046987569c6f4e75611d3ace9ab4e7719ab071d38b0abcb2d1819a", null ],
+      [ "QDMI_SESSION_PARAMETER_MAX", "enums_8h.html#aac5ae9f0bf8046987569c6f4e75611d3a687f1bf96e2c4467d483c196c8b56292", null ]
+    ] ],
     [ "QDMI_SITE_PROPERTY_T", "enums_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2", [
       [ "QDMI_SITE_PROPERTY_TIME_T1", "enums_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2a92d5990450ff518ef6d14babc5c19777", null ],
       [ "QDMI_SITE_PROPERTY_TIME_T2", "enums_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2a15efbbe5c84710bfa199a2940a26f7a0", null ],
