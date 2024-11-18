@@ -6,7 +6,8 @@ __pycache__/
 # C extensions
 *.so
 .ccache/
-cmake-build-*
+cmake-build-*/
+*install-dir/
 
 # Distribution / packaging
 .Python
