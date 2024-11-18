@@ -97,7 +97,7 @@ endif()
 FetchContent_MakeAvailable(${FETCH_PACKAGES})
 
 if(USE_INSTALLED_QDMI)
-  find_package(QDMI)
+  find_package(QDMI QUIET)
   if(NOT QDMI_FOUND)
     message(
       FATAL_ERROR
