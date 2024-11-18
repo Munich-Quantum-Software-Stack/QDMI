@@ -95,3 +95,22 @@ endif()
 
 # Make all declared dependencies available.
 FetchContent_MakeAvailable(${FETCH_PACKAGES})
+
+if(USE_INSTALLED_QDMI)
+  find_package(QDMI)
+  if(NOT QDMI_FOUND)
+    message(
+      FATAL_ERROR
+        "QDMI package not found. Please ensure it is installed and try again.")
+    elif(QDMI_VERSION VERSION_LESS PROJECT_VERSION)
+    message(
+      WARNING
+        "Installed version of QDMI is older then the project version. This might lead to problems. Found installed version ${QDMI_VERSION}; project version is ${PROJECT_VERSION}."
+    )
+    elif(QDMI_VERSION VERSION_GREATER PROJECT_VERSION)
+    message(
+      WARNING
+        "Installed version of QDMI is newer then the project version. This might lead to problems. Found installed version ${QDMI_VERSION}; project version is ${PROJECT_VERSION}."
+    )
+  endif()
+endif()

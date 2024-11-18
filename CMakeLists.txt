@@ -58,6 +58,10 @@ option(BUILD_QDMI_DOCS "Also build documentation for the QDMI project"
        ${QDMI_MASTER_PROJECT})
 option(BUILD_QDMI_TEMPLATES "Also build templates for the QDMI project"
        ${QDMI_MASTER_PROJECT})
+option(
+  USE_INSTALLED_QDMI
+  "Use an installed version of QDMI to build examples, templates, and tests"
+  OFF)
 
 # enable organization of targets into folders
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
@@ -101,7 +105,7 @@ if(NOT TARGET project_warnings)
 endif()
 
 # add main library code
-if(NOT TARGET qdmi)
+if(NOT TARGET qdmi AND NOT USE_INSTALLED_QDMI)
   # add main library code
   add_library(qdmi INTERFACE)
 
