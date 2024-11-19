@@ -9,7 +9,7 @@ on:
 
 jobs:
   cpp-tests-install:
-    name: ${{ matrix.name }}
+    name: ${{ matrix.name }} ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:

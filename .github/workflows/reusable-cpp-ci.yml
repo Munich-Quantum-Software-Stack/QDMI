@@ -34,7 +34,7 @@ jobs:
       cmake-args: ${{ inputs.cmake-args }} ${{ inputs.cmake-args-macos }}
 
   cpp-tests-install:
-    name: 📦
+    name: 📦 Install
     uses: ./.github/workflows/reusable-cpp-install-tests.yml
     with:
       cmake-args: ${{ inputs.cmake-args }}
