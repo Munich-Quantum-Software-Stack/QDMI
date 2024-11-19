@@ -54,11 +54,10 @@ jobs:
         run: pipx install ninja
       # configure CMake in the specified mode for QDMI installation, set the install-prefix
       - name: Configure CMake for QDMI Installation
-        run:
-          cmake -S . -B install-build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=install-dir
+        run: cmake -S . -B install-build -DCMAKE_BUILD_TYPE=Release
       # build the project in the specified mode
       - name: Build and Install QDMI
-        run: cmake --build install-build --target install
+        run: cmake --build install-build --target install --prefix /my/install/prefix
       # configure CMake in the specified mode for using the installed QDMI
       - name: Configure CMake for use of installed QDMI
         run:
