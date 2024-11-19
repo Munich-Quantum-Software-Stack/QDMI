@@ -60,12 +60,12 @@ jobs:
         run: cmake --build install-build
       # install the built project
       - name: Install QDMI
-        run: cmake --install install-build --prefix qdmi-install-dir
+        run: cmake --install install-build --prefix install-dir
       # configure CMake in the specified mode for using the installed QDMI
       - name: Configure CMake for use of installed QDMI
         run:
           cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DUSE_INSTALLED_QDMI=ON
-          -DBUILD_QDMI_DOCS=OFF -G Ninja -DCMAKE_INSTALL_PREFIX=install-dir
+          -DBUILD_QDMI_DOCS=OFF -G Ninja -DCMAKE_PREFIX_PATH=install-dir
       # build the project in the specified mode
       - name: Build QDMI examples, templates, and tests with installed QDMI
         run: cmake --build build
