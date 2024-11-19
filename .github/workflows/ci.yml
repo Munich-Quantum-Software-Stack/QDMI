@@ -56,8 +56,11 @@ jobs:
       - name: Configure CMake for QDMI Installation
         run: cmake -S . -B install-build -DCMAKE_BUILD_TYPE=Release
       # build the project in the specified mode
-      - name: Build and Install QDMI
-        run: cmake --build install-build --target install --prefix /my/install/prefix
+      - name: Build QDMI
+        run: cmake --build install-build
+      # install the built project
+      - name: Install QDMI
+        run: cmake --install install-build --prefix qdmi-install-dir
       # configure CMake in the specified mode for using the installed QDMI
       - name: Configure CMake for use of installed QDMI
         run:

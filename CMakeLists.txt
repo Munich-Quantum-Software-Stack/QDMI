@@ -48,8 +48,19 @@ else()
   set(QDMI_MASTER_PROJECT OFF)
 endif()
 
-option(QDMI_INSTALL "Generate installation instructions for QDMI"
-       ${QDMI_MASTER_PROJECT})
+option(
+  USE_INSTALLED_QDMI
+  "Use an installed version of QDMI to build examples, templates, and tests"
+  OFF)
+
+if(USE_INSTALLED_QDMI)
+  set(QDMI_INSTALL
+      OFF
+      CACHE BOOL "Generate installation instructions for QDMI" FORCE)
+else()
+  option(QDMI_INSTALL "Generate installation instructions for QDMI"
+         ${QDMI_MASTER_PROJECT})
+endif()
 option(BUILD_QDMI_TESTS "Also build tests for the QDMI project"
        ${QDMI_MASTER_PROJECT})
 option(BUILD_QDMI_EXAMPLES "Also build examples for the QDMI project"
@@ -58,10 +69,6 @@ option(BUILD_QDMI_DOCS "Also build documentation for the QDMI project"
        ${QDMI_MASTER_PROJECT})
 option(BUILD_QDMI_TEMPLATES "Also build templates for the QDMI project"
        ${QDMI_MASTER_PROJECT})
-option(
-  USE_INSTALLED_QDMI
-  "Use an installed version of QDMI to build examples, templates, and tests"
-  OFF)
 
 # enable organization of targets into folders
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
@@ -90,9 +97,10 @@ set(CMAKE_C_EXTENSIONS False)
 
 include(cmake/ExternalDependencies.cmake)
 include(cmake/PrefixHandling.cmake)
+include(GNUInstallDirs)
 
 # add warnings target
-if(NOT TARGET project_warnings)
+if(NOT TARGET qdmi::project_warnings)
   # use the warnings specified in CompilerWarnings.cmake
   add_library(project_warnings INTERFACE)
 
@@ -105,13 +113,14 @@ if(NOT TARGET project_warnings)
 endif()
 
 # add main library code
-if(NOT TARGET qdmi AND NOT USE_INSTALLED_QDMI)
+if(NOT TARGET qdmi::qdmi)
   # add main library code
   add_library(qdmi INTERFACE)
 
   # set include directories
   target_include_directories(
-    qdmi INTERFACE $<BUILD_INTERFACE:${QDMI_INCLUDE_BUILD_DIR}>)
+    qdmi INTERFACE $<BUILD_INTERFACE:${QDMI_INCLUDE_BUILD_DIR}>
+                   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
   # set required C standard
   target_compile_features(qdmi INTERFACE c_std_11)
@@ -165,49 +174,35 @@ endif()
 
 # Installation instructions for the main library
 if(QDMI_INSTALL)
-  include(GNUInstallDirs)
-  set(QDMI_CONFIG_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/cmake/qdmi")
-  set(QDMI_INCLUDE_INSTALL_DIR "${CMAKE_INSTALL_INCLUDEDIR}/qdmi")
-  set(QDMI_TARGETS_EXPORT_NAME "qdmi-targets")
-  set(QDMI_CMAKE_CONFIG_TEMPLATE
-      "${PROJECT_SOURCE_DIR}/cmake/qdmi-config.cmake.in")
-  set(QDMI_CMAKE_CONFIG_DIR "${CMAKE_CURRENT_BINARY_DIR}")
-  set(QDMI_CMAKE_VERSION_CONFIG_FILE
-      "${QDMI_CMAKE_CONFIG_DIR}/qdmi-config-version.cmake")
-  set(QDMI_CMAKE_PROJECT_CONFIG_FILE
-      "${QDMI_CMAKE_CONFIG_DIR}/qdmi-config.cmake")
-  set(QDMI_CMAKE_PROJECT_TARGETS_FILE
-      "${QDMI_CMAKE_CONFIG_DIR}/qdmi-targets.cmake")
-
-  include(CMakePackageConfigHelpers)
-  configure_package_config_file(
-    ${QDMI_CMAKE_CONFIG_TEMPLATE} ${QDMI_CMAKE_PROJECT_CONFIG_FILE}
-    INSTALL_DESTINATION ${QDMI_CONFIG_INSTALL_DIR}
-    NO_SET_AND_CHECK_MACRO NO_CHECK_REQUIRED_COMPONENTS_MACRO)
-  write_basic_package_version_file(
-    ${QDMI_CMAKE_VERSION_CONFIG_FILE}
-    VERSION ${PROJECT_VERSION}
-    COMPATIBILITY SameMinorVersion)
-
-  install(FILES ${QDMI_CMAKE_PROJECT_CONFIG_FILE}
-                ${QDMI_CMAKE_VERSION_CONFIG_FILE}
-          DESTINATION ${QDMI_CONFIG_INSTALL_DIR})
-
   install(
     TARGETS qdmi
-    EXPORT ${QDMI_TARGETS_EXPORT_NAME}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT QDMI_Runtime
+    EXPORT ${PROJECT_NAME}-targets
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT Development
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-            COMPONENT QDMI_Runtime
-            NAMELINK_COMPONENT QDMI_Development
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT QDMI_Development
-    INCLUDES
-    DESTINATION ${QDMI_INCLUDE_INSTALL_DIR})
+            COMPONENT Runtime
+            NAMELINK_COMPONENT Development
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT Runtime
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME})
+
+  include(CMakePackageConfigHelpers)
+  write_basic_package_version_file(
+    "${PROJECT_NAME}-config-version.cmake"
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY SameMajorVersion)
+  configure_package_config_file(
+    "${PROJECT_SOURCE_DIR}/cmake/${PROJECT_NAME}-config.cmake.in"
+    "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config.cmake"
+    INSTALL_DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}/cmake)
 
   install(
-    EXPORT ${QDMI_TARGETS_EXPORT_NAME}
-    FILE ${QDMI_PROJECT_TARGETS_FILE}
-    NAMESPACE qdmi::
-    DESTINATION ${QDMI_CONFIG_INSTALL_DIR}
-    COMPONENT QDMI_Development)
+    EXPORT ${PROJECT_NAME}-targets
+    FILE ${PROJECT_NAME}-targets.cmake
+    NAMESPACE ${PROJECT_NAME}::
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}/cmake)
+
+  install(FILES "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config.cmake"
+                "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake"
+          DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}/cmake)
+
+  install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/qdmi DESTINATION include)
 endif()

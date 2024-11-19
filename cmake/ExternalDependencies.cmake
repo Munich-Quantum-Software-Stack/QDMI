@@ -80,6 +80,9 @@ if(BUILD_QDMI_TESTS)
   set(GTEST_URL
       https://github.com/google/googletest/archive/refs/tags/v${GTEST_VERSION}.tar.gz
   )
+  set(INSTALL_GTEST
+      OFF
+      CACHE BOOL "Disable GoogleTest installation")
   if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.24)
     FetchContent_Declare(googletest URL ${GTEST_URL} FIND_PACKAGE_ARGS
                                         ${GTEST_VERSION} NAMES GTest)
@@ -97,20 +100,5 @@ endif()
 FetchContent_MakeAvailable(${FETCH_PACKAGES})
 
 if(USE_INSTALLED_QDMI)
-  find_package(QDMI QUIET)
-  if(NOT QDMI_FOUND)
-    message(
-      FATAL_ERROR
-        "QDMI package not found. Please ensure it is installed and try again.")
-    elif(QDMI_VERSION VERSION_LESS PROJECT_VERSION)
-    message(
-      WARNING
-        "Installed version of QDMI is older then the project version. This might lead to problems. Found installed version ${QDMI_VERSION}; project version is ${PROJECT_VERSION}."
-    )
-    elif(QDMI_VERSION VERSION_GREATER PROJECT_VERSION)
-    message(
-      WARNING
-        "Installed version of QDMI is newer then the project version. This might lead to problems. Found installed version ${QDMI_VERSION}; project version is ${PROJECT_VERSION}."
-    )
-  endif()
+  find_package(QDMI ${PROJECT_VERSION} REQUIRED)
 endif()
