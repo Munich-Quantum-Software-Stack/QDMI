@@ -33,6 +33,60 @@ jobs:
     with:
       cmake-args: ${{ inputs.cmake-args }} ${{ inputs.cmake-args-macos }}
 
+  cpp-tests-install:
+    name: ${{ matrix.name }} Install
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - name: 🐧
+            os: ubuntu-latest
+          - name: 🍎
+            os: macos-13
+          - name: 🍎
+            os: macos-14
+      fail-fast: false
+    env:
+      CMAKE_BUILD_PARALLEL_LEVEL: 4
+      CTEST_PARALLEL_LEVEL: 4
+      FORCE_COLOR: 3
+    steps:
+      # check out the repository (including submodules and all history)
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+      # set up ccache for faster C++ builds
+      - name: Setup ccache
+        uses: Chocobo1/setup-ccache-action@v1
+        with:
+          prepend_symlinks_to_path: false
+          override_cache_key: c++-tests-install-${{ inputs.os }}
+      # set up mold as linker for faster C++ builds
+      - name: Set up mold as linker
+        uses: rui314/setup-mold@v1
+      # make sure ninja is installed
+      - name: Install Ninja
+        run: pipx install ninja
+      # configure CMake
+      - name: Configure CMake for QDMI Installation
+        run: cmake -S . -B install-build -DCMAKE_BUILD_TYPE=Release ${{ inputs.cmake-args }}
+      # install the project
+      - name: Install QDMI
+        run: cmake --install install-build --prefix install-dir
+      # configure CMake for using the installed QDMI
+      - name: Configure CMake for use of installed QDMI
+        run:
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DUSE_INSTALLED_QDMI=ON
+          -DCMAKE_PREFIX_PATH=install-dir ${{ inputs.cmake-args }}
+      # build the project
+      - name: Build QDMI examples, templates, and tests with installed QDMI
+        run: cmake --build build --config Release
+      # run the tests
+      - name: Test
+        run:
+          ctest -C Release --output-on-failure --test-dir build --repeat until-pass:3 --timeout 600
+
   coverage:
     name: 📈
     uses: cda-tum/mqt-workflows/.github/workflows/reusable-cpp-coverage.yml@v1.4

@@ -25,55 +25,6 @@ jobs:
       # do not try to build docs in test builds
       cmake-args: "-DBUILD_QDMI_DOCS=OFF -G Ninja"
 
-  install:
-    name: 📦 Install
-    needs: change-detection
-    if: fromJSON(needs.change-detection.outputs.run-tests)
-    runs-on: ubuntu-latest
-    env:
-      CMAKE_BUILD_PARALLEL_LEVEL: 4
-      CTEST_PARALLEL_LEVEL: 4
-      FORCE_COLOR: 3
-    steps:
-      # check out the repository (including submodules and all history)
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-          fetch-depth: 0
-      # set up ccache for faster C++ builds
-      - name: Setup ccache
-        uses: Chocobo1/setup-ccache-action@v1
-        with:
-          prepend_symlinks_to_path: false
-          override_cache_key: c++-tests-ubuntu-latest-install
-      # set up mold as linker for faster C++ builds
-      - name: Set up mold as linker
-        uses: rui314/setup-mold@v1
-      # make sure ninja is installed
-      - name: Install Ninja
-        run: pipx install ninja
-      # configure CMake in the specified mode for QDMI installation, set the install-prefix
-      - name: Configure CMake for QDMI Installation
-        run: cmake -S . -B install-build -DCMAKE_BUILD_TYPE=Release -DBUILD_QDMI_DOCS=OFF -G Ninja
-      # build the project in the specified mode
-      - name: Build QDMI
-        run: cmake --build install-build
-      # install the built project
-      - name: Install QDMI
-        run: cmake --install install-build --prefix install-dir
-      # configure CMake in the specified mode for using the installed QDMI
-      - name: Configure CMake for use of installed QDMI
-        run:
-          cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DUSE_INSTALLED_QDMI=ON
-          -DBUILD_QDMI_DOCS=OFF -G Ninja -DCMAKE_PREFIX_PATH=install-dir
-      # build the project in the specified mode
-      - name: Build QDMI examples, templates, and tests with installed QDMI
-        run: cmake --build build
-      # run the tests
-      - name: Test
-        run:
-          ctest -C Release --output-on-failure --test-dir build --repeat until-pass:3 --timeout 600
-
   linter:
     name: 🇨‌ Lint
     needs: change-detection
