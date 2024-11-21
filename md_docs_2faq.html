@@ -219,7 +219,16 @@ $(function(){initNavTree('md_docs_2faq.html',''); initResizable(true); });
 <p>The interface is written in C to allow close integration within the MQSS and fulfill the performance as well as stability requirements needed for production systems, in particular as we scale quantum systems. Further, this enables a clean integration into existing and well-established system software stacks, including those for HPC.</p>
 <h2>Can I still integrate my Python code?</h2>
 <p>Python natively allows calling C APIs. So while it might not be as straightforward as the usage from C/C++, it is definitely possible. However, we generally do expect Python-based programming approaches to be used as front-ends, feeding into a natively implemented compiler infrastructure, which then relies on QDMI. This is very similar to how Python is used in many other parts of high-performance computing.</p>
-</div></div><!-- contents -->
+<h2>How do I cite QDMI?</h2>
+<p>If you use QDMI in your research, please cite the following paper:</p>
+<div class="fragment"><div class="line">@inproceedings{qdmi,</div>
+<div class="line">    title = {{QDMI -- Quantum Device Management Interface: A Standardized Interface for Quantum Computing Platforms}},</div>
+<div class="line">    shorttitle = {{QDMI -- Quantum Device Management Interface}},</div>
+<div class="line">    booktitle = {IEEE International Conference on Quantum Computing and Engineering (QCE)},</div>
+<div class="line">    author = {Wille, Robert and Schmid, Ludwig and Stade, Yannick and Echavarria, Jorge and Schulz, Martin and Schulz, Laura and Burgholzer, Lukas},</div>
+<div class="line">    date = {2024},</div>
+<div class="line">}</div>
+</div><!-- fragment --></div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->
