@@ -54,26 +54,27 @@ enum QDMI_DEVICE_PROPERTY_T {
    */
   QDMI_DEVICE_PROPERTY_COUPLINGMAP,
   /**
+   * @brief The maximum value of the enum.
+   * @details This value can be used for bounds checks by the devices to
+   * validate the input parameters.
+   * @note This value should always be updated to be the last regular member
+   * of the enum besides the custom members.
+   */
+  QDMI_DEVICE_PROPERTY_MAX,
+  /**
    * @brief This property is reserved for a custom property.
    * @details The meaning and the type of this property is defined by the
    * device.
    */
-  QDMI_DEVICE_PROPERTY_CUSTOM_1,
+  QDMI_DEVICE_PROPERTY_CUSTOM_1 = 999999995,
   /// @see QDMI_DEVICE_PROPERTY_CUSTOM_1
-  QDMI_DEVICE_PROPERTY_CUSTOM_2,
+  QDMI_DEVICE_PROPERTY_CUSTOM_2 = 999999996,
   /// @see QDMI_DEVICE_PROPERTY_CUSTOM_1
-  QDMI_DEVICE_PROPERTY_CUSTOM_3,
+  QDMI_DEVICE_PROPERTY_CUSTOM_3 = 999999997,
   /// @see QDMI_DEVICE_PROPERTY_CUSTOM_1
-  QDMI_DEVICE_PROPERTY_CUSTOM_4,
+  QDMI_DEVICE_PROPERTY_CUSTOM_4 = 999999998,
   /// @see QDMI_DEVICE_PROPERTY_CUSTOM_1
-  QDMI_DEVICE_PROPERTY_CUSTOM_5,
-  /**
-   * @brief The maximum value of the enum.
-   * @details This value can be used for bounds checks by the devices.
-   * @note This value should always be updated to be the last and maximum value
-   * of the enum.
-   */
-  QDMI_DEVICE_PROPERTY_MAX
+  QDMI_DEVICE_PROPERTY_CUSTOM_5 = 999999999
 };
 
 /// Enum of different status the device can be in.
@@ -86,9 +87,10 @@ enum QDMI_DEVICE_STATUS_T {
   QDMI_DEVICE_STATUS_CALIBRATION, ///< The device is in calibration.
   /**
    * @brief The maximum value of the enum.
-   * @details This value can be used for bounds checks by the devices.
-   * @note This value should always be updated to be the last and maximum value
-   * of the enum.
+   * @details This value can be used for bounds checks by the devices to
+   * validate the input parameters.
+   * @note This value should always be updated to be the last regular member
+   * of the enum besides the custom members.
    */
   QDMI_DEVICE_STATUS_MAX
 };
@@ -98,26 +100,27 @@ enum QDMI_SITE_PROPERTY_T {
   QDMI_SITE_PROPERTY_TIME_T1, ///< `double` The T1 time of a site in µs.
   QDMI_SITE_PROPERTY_TIME_T2, ///< `double` The T2 time of a site in µs.
   /**
+   * @brief The maximum value of the enum.
+   * @details This value can be used for bounds checks by the devices to
+   * validate the input parameters.
+   * @note This value should always be updated to be the last regular member
+   * of the enum besides the custom members.
+   */
+  QDMI_SITE_PROPERTY_MAX,
+  /**
    * @brief This property is reserved for a custom property.
    * @details The meaning and the type of this property is defined by the
    * device.
    */
-  QDMI_SITE_PROPERTY_CUSTOM_1,
+  QDMI_SITE_PROPERTY_CUSTOM_1 = 999999995,
   /// @see QDMI_SITE_PROPERTY_CUSTOM_1
-  QDMI_SITE_PROPERTY_CUSTOM_2,
+  QDMI_SITE_PROPERTY_CUSTOM_2 = 999999996,
   /// @see QDMI_SITE_PROPERTY_CUSTOM_1
-  QDMI_SITE_PROPERTY_CUSTOM_3,
+  QDMI_SITE_PROPERTY_CUSTOM_3 = 999999997,
   /// @see QDMI_SITE_PROPERTY_CUSTOM_1
-  QDMI_SITE_PROPERTY_CUSTOM_4,
+  QDMI_SITE_PROPERTY_CUSTOM_4 = 999999998,
   /// @see QDMI_SITE_PROPERTY_CUSTOM_1
-  QDMI_SITE_PROPERTY_CUSTOM_5,
-  /**
-   * @brief The maximum value of the enum.
-   * @details This value can be used for bounds checks by the devices.
-   * @note This value should always be updated to be the last and maximum value
-   * of the enum.
-   */
-  QDMI_SITE_PROPERTY_MAX
+  QDMI_SITE_PROPERTY_CUSTOM_5 = 999999999
 };
 
 /// Enum of the operation properties that can be queried.
@@ -131,26 +134,27 @@ enum QDMI_OPERATION_PROPERTY_T {
   /// `double` The fidelity of an operation.
   QDMI_OPERATION_PROPERTY_FIDELITY,
   /**
+   * @brief The maximum value of the enum.
+   * @details This value can be used for bounds checks by the devices to
+   * validate the input parameters.
+   * @note This value should always be updated to be the last regular member
+   * of the enum besides the custom members.
+   */
+  QDMI_OPERATION_PROPERTY_MAX,
+  /**
    * @brief This property is reserved for a custom property.
    * @details The meaning and the type of this property is defined by the
    * device.
    */
-  QDMI_OPERATION_PROPERTY_CUSTOM_1,
+  QDMI_OPERATION_PROPERTY_CUSTOM_1 = 999999995,
   /// @see QDMI_OPERATION_PROPERTY_CUSTOM_1
-  QDMI_OPERATION_PROPERTY_CUSTOM_2,
+  QDMI_OPERATION_PROPERTY_CUSTOM_2 = 999999996,
   /// @see QDMI_OPERATION_PROPERTY_CUSTOM_1
-  QDMI_OPERATION_PROPERTY_CUSTOM_3,
+  QDMI_OPERATION_PROPERTY_CUSTOM_3 = 999999997,
   /// @see QDMI_OPERATION_PROPERTY_CUSTOM_1
-  QDMI_OPERATION_PROPERTY_CUSTOM_4,
+  QDMI_OPERATION_PROPERTY_CUSTOM_4 = 999999998,
   /// @see QDMI_OPERATION_PROPERTY_CUSTOM_1
-  QDMI_OPERATION_PROPERTY_CUSTOM_5,
-  /**
-   * @brief The maximum value of the enum.
-   * @details This value can be used for bounds checks by the devices.
-   * @note This value should always be updated to be the last and maximum value
-   * of the enum.
-   */
-  QDMI_OPERATION_PROPERTY_MAX
+  QDMI_OPERATION_PROPERTY_CUSTOM_5 = 999999999
 };
 
 /**
@@ -213,25 +217,26 @@ enum QDMI_PROGRAM_FORMAT_T {
   /// `void*` The QIR program as a binary module.
   QDMI_PROGRAM_FORMAT_QIRMODULE,
   /**
+   * @brief The maximum value of the enum.
+   * @details This value can be used for bounds checks by the devices to
+   * validate the input parameters.
+   * @note This value should always be updated to be the last regular member
+   * of the enum besides the custom members.
+   */
+  QDMI_PROGRAM_FORMAT_MAX,
+  /**
    * @brief This value is reserved for a custom format.
    * @details The meaning and the type of this format is defined by the device.
    */
-  QDMI_PROGRAM_FORMAT_CUSTOM_1,
+  QDMI_PROGRAM_FORMAT_CUSTOM_1 = 999999995,
   /// @see QDMI_PROGRAM_FORMAT_CUSTOM_1
-  QDMI_PROGRAM_FORMAT_CUSTOM_2,
+  QDMI_PROGRAM_FORMAT_CUSTOM_2 = 999999996,
   /// @see QDMI_PROGRAM_FORMAT_CUSTOM_1
-  QDMI_PROGRAM_FORMAT_CUSTOM_3,
+  QDMI_PROGRAM_FORMAT_CUSTOM_3 = 999999997,
   /// @see QDMI_PROGRAM_FORMAT_CUSTOM_1
-  QDMI_PROGRAM_FORMAT_CUSTOM_4,
+  QDMI_PROGRAM_FORMAT_CUSTOM_4 = 999999998,
   /// @see QDMI_PROGRAM_FORMAT_CUSTOM_1
-  QDMI_PROGRAM_FORMAT_CUSTOM_5,
-  /**
-   * @brief The maximum value of the enum.
-   * @details This value can be used for bounds checks by the devices.
-   * @note This value should always be updated to be the last and maximum value
-   * of the enum.
-   */
-  QDMI_PROGRAM_FORMAT_MAX
+  QDMI_PROGRAM_FORMAT_CUSTOM_5 = 999999999
 };
 
 /**
@@ -241,26 +246,27 @@ enum QDMI_JOB_PARAMETER_T {
   /// `size_t` The number of shots to take.
   QDMI_JOB_PARAMETER_SHOTS_NUM,
   /**
+   * @brief The maximum value of the enum.
+   * @details This value can be used for bounds checks by the devices to
+   * validate the input parameters.
+   * @note This value should always be updated to be the last regular member
+   * of the enum besides the custom members.
+   */
+  QDMI_JOB_PARAMETER_MAX,
+  /**
    * @brief This property is reserved for a custom property.
    * @details The meaning and the type of this property is defined by the
    * device.
    */
-  QDMI_JOB_PARAMETER_CUSTOM_1,
+  QDMI_JOB_PARAMETER_CUSTOM_1 = 999999995,
   /// @see QDMI_JOB_PARAMETER_CUSTOM_1
-  QDMI_JOB_PARAMETER_CUSTOM_2,
+  QDMI_JOB_PARAMETER_CUSTOM_2 = 999999996,
   /// @see QDMI_JOB_PARAMETER_CUSTOM_1
-  QDMI_JOB_PARAMETER_CUSTOM_3,
+  QDMI_JOB_PARAMETER_CUSTOM_3 = 999999997,
   /// @see QDMI_JOB_PARAMETER_CUSTOM_1
-  QDMI_JOB_PARAMETER_CUSTOM_4,
+  QDMI_JOB_PARAMETER_CUSTOM_4 = 999999998,
   /// @see QDMI_JOB_PARAMETER_CUSTOM_1
-  QDMI_JOB_PARAMETER_CUSTOM_5,
-  /**
-   * @brief The maximum value of the enum.
-   * @details This value can be used for bounds checks by the devices.
-   * @note This value should always be updated to be the last and maximum value
-   * of the enum.
-   */
-  QDMI_JOB_PARAMETER_MAX
+  QDMI_JOB_PARAMETER_CUSTOM_5 = 999999999
 };
 
 /**
@@ -343,26 +349,27 @@ enum QDMI_JOB_RESULT_T {
    */
   QDMI_JOB_RESULT_PROBABILITIES_SPARSE_VALUES,
   /**
+   * @brief The maximum value of the enum.
+   * @details This value can be used for bounds checks by the devices to
+   * validate the input parameters.
+   * @note This value should always be updated to be the last regular member
+   * of the enum besides the custom members.
+   */
+  QDMI_JOB_RESULT_MAX,
+  /**
    * @brief This property is reserved for a custom property.
    * @details The meaning and the type of this property is defined by the
    * device.
    */
-  QDMI_JOB_RESULT_CUSTOM_1,
+  QDMI_JOB_RESULT_CUSTOM_1 = 999999995,
   /// @see QDMI_JOB_RESULT_CUSTOM_1
-  QDMI_JOB_RESULT_CUSTOM_2,
+  QDMI_JOB_RESULT_CUSTOM_2 = 999999996,
   /// @see QDMI_JOB_RESULT_CUSTOM_1
-  QDMI_JOB_RESULT_CUSTOM_3,
+  QDMI_JOB_RESULT_CUSTOM_3 = 999999997,
   /// @see QDMI_JOB_RESULT_CUSTOM_1
-  QDMI_JOB_RESULT_CUSTOM_4,
+  QDMI_JOB_RESULT_CUSTOM_4 = 999999998,
   /// @see QDMI_JOB_RESULT_CUSTOM_1
-  QDMI_JOB_RESULT_CUSTOM_5,
-  /**
-   * @brief The maximum value of the enum.
-   * @details This value can be used for bounds checks by the devices.
-   * @note This value should always be updated to be the last and maximum value
-   * of the enum.
-   */
-  QDMI_JOB_RESULT_MAX
+  QDMI_JOB_RESULT_CUSTOM_5 = 999999999
 };
 
 /**
@@ -374,26 +381,27 @@ enum QDMI_SESSION_PARAMETER_T {
   /// `char*` (string) The access token for the session.
   QDMI_SESSION_PARAMETER_TOKEN,
   /**
+   * @brief The maximum value of the enum.
+   * @details This value can be used for bounds checks by the drivers to
+   * validate the input parameters.
+   * @note This value should always be updated to be the last regular member
+   * of the enum besides the custom members.
+   */
+  QDMI_SESSION_PARAMETER_MAX,
+  /**
    * @brief This property is reserved for a custom property.
    * @details The meaning and the type of this property is defined by the
    * driver.
    */
-  QDMI_SESSION_PARAMETER_CUSTOM_1,
+  QDMI_SESSION_PARAMETER_CUSTOM_1 = 999999995,
   /// @see QDMI_SESSION_PARAMETER_CUSTOM_1
-  QDMI_SESSION_PARAMETER_CUSTOM_2,
+  QDMI_SESSION_PARAMETER_CUSTOM_2 = 999999996,
   /// @see QDMI_SESSION_PARAMETER_CUSTOM_1
-  QDMI_SESSION_PARAMETER_CUSTOM_3,
+  QDMI_SESSION_PARAMETER_CUSTOM_3 = 999999997,
   /// @see QDMI_SESSION_PARAMETER_CUSTOM_1
-  QDMI_SESSION_PARAMETER_CUSTOM_4,
+  QDMI_SESSION_PARAMETER_CUSTOM_4 = 999999998,
   /// @see QDMI_SESSION_PARAMETER_CUSTOM_1
-  QDMI_SESSION_PARAMETER_CUSTOM_5,
-  /**
-   * @brief The maximum value of the enum.
-   * @details This value can be used for bounds checks by the drivers.
-   * @note This value should always be updated to be the last and maximum value
-   * of the enum.
-   */
-  QDMI_SESSION_PARAMETER_MAX
+  QDMI_SESSION_PARAMETER_CUSTOM_5 = 999999999
 };
 
 // NOLINTEND(performance-enum-size)
