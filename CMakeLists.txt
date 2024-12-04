@@ -102,14 +102,14 @@ include(GNUInstallDirs)
 # add warnings target
 if(NOT TARGET qdmi::project_warnings)
   # use the warnings specified in CompilerWarnings.cmake
-  add_library(project_warnings INTERFACE)
+  add_library(qdmi_project_warnings INTERFACE)
 
   # standard compiler warnings
   include(${PROJECT_SOURCE_DIR}/cmake/CompilerWarnings.cmake)
-  set_project_warnings(project_warnings)
+  set_project_warnings(qdmi_project_warnings)
 
   # add alias
-  add_library(qdmi::project_warnings ALIAS project_warnings)
+  add_library(qdmi::project_warnings ALIAS qdmi_project_warnings)
 endif()
 
 # add main library code
