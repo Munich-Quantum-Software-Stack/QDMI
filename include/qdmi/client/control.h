@@ -67,12 +67,16 @@ int QDMI_control_create_job(QDMI_Device dev, QDMI_Program_Format format,
  * is passed as a pointer to the value and the size of the value.
  * @param[in] dev The device to set the parameter on.
  * @param[in] job The job to set the parameter for.
- * @param[in] param is the parameter to set.
- * @param[in] size is the size of the value.
- * @param[in] value is the value to set.
+ * @param[in] param identifies the parameter whose value will be set.
+ * @param[in] size specifies the size in bytes of the data pointed to by @p
+ * value.
+ * @param[in] value  is a pointer to the memory location that contains the value
+ * of the parameter to be set. The data pointed to by @p value are copied and
+ * can be safely reused after this function returns.
  * @return @ref QDMI_SUCCESS if the parameter was successfully set.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if the job does not exist, is in an
- * invalid state or the parameter is invalid.
+ * invalid state, the parameter is invalid, @p value is @c NULL, or if @p size
+ * is not the expected size for the parameter (if specified by the parameter).
  * @return @ref QDMI_ERROR_NOTSUPPORTED if the device does not support the
  * parameter.
  * @return @ref QDMI_ERROR_FATAL if the parameter could not be set.
