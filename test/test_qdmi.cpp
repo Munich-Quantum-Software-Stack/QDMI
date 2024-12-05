@@ -155,7 +155,7 @@ TEST_P(QDMIImplementationTest, ControlJob) {
   EXPECT_EQ(QDMI_control_set_parameter(
                 device, job, QDMI_JOB_PARAMETER_SHOTS_NUM, 0, nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
-  EXPECT_EQ(QDMI_control_set_parameter(device, job, QDMI_JOB_PARAMETER_CUSTOM_5,
+  EXPECT_EQ(QDMI_control_set_parameter(device, job, QDMI_JOB_PARAMETER_CUSTOM5,
                                        sizeof(size_t), &shots),
             QDMI_ERROR_NOTSUPPORTED);
   ASSERT_EQ(QDMI_control_set_parameter(device, job,
