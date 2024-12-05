@@ -59,15 +59,15 @@ int QDMI_control_create_job_dev(QDMI_Program_Format format, size_t size,
 
 /**
  * @brief Set a parameter for a job.
- * @details Set a parameter for a job. The parameter can be one of the
- * predefined parameters in @ref QDMI_Job_Parameter. The value of the parameter
- * is passed as a pointer to the value and the size of the value.
- * @param[in] job The job to set the parameter for.
+ * @details The parameter must be one of the parameters defined in @ref
+ * QDMI_Job_Parameter. It is specified by a @p value pointer and the @p
+ * size of the value being pointed to in bytes.
+ * @param[in] job is a handle to a job for which to set @p param.
  * @param[in] param identifies the parameter whose value will be set.
  * @param[in] size specifies the size in bytes of the data pointed to by @p
  * value.
- * @param[in] value  is a pointer to the memory location that contains the value
- * of the parameter to be set. The data pointed to by @p value are copied and
+ * @param[in] value is a pointer to the memory location that contains the value
+ * of the parameter to be set. The data pointed to by @p value is copied and
  * can be safely reused after this function returns.
  * @return @ref QDMI_SUCCESS if the parameter was successfully set.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if the job does not exist, is in an
