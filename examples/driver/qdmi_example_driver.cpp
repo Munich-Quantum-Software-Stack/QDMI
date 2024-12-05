@@ -266,10 +266,10 @@ int QDMI_session_set_parameter(QDMI_Session session,
 
   switch (param) {
   case QDMI_SESSION_PARAMETER_OWNER:
-    session->owner = std::string(static_cast<const char *>(value), size);
+    session->owner = std::string(static_cast<const char *>(value), size - 1);
     return QDMI_SUCCESS;
   case QDMI_SESSION_PARAMETER_TOKEN:
-    session->token = std::string(static_cast<const char *>(value), size);
+    session->token = std::string(static_cast<const char *>(value), size - 1);
     return QDMI_SUCCESS;
   default:
     break;
