@@ -32,15 +32,15 @@ extern "C" {
 
 /// Enum of the device properties that can be queried.
 enum QDMI_DEVICE_PROPERTY_T {
-  QDMI_DEVICE_PROPERTY_NAME, ///< `char*` (string) The name of the device.
+  QDMI_DEVICE_PROPERTY_NAME = 0, ///< `char*` (string) The name of the device.
   /// `char*` (string) The version of the device.
-  QDMI_DEVICE_PROPERTY_VERSION,
+  QDMI_DEVICE_PROPERTY_VERSION = 1,
   /// `int` The @ref QDMI_Device_Status of the device.
-  QDMI_DEVICE_PROPERTY_STATUS,
+  QDMI_DEVICE_PROPERTY_STATUS = 2,
   /// `char*` (string) The implemented version of QDMI.
-  QDMI_DEVICE_PROPERTY_LIBRARYVERSION,
+  QDMI_DEVICE_PROPERTY_LIBRARYVERSION = 3,
   /// `size_t` The number of qubits in the device.
-  QDMI_DEVICE_PROPERTY_QUBITSNUM,
+  QDMI_DEVICE_PROPERTY_QUBITSNUM = 4,
   /**
    * @brief `QDMI_Site*` (@ref QDMI_Site list) The coupling map of the device.
    * @details The returned list contains pairs of sites that are coupled. The
@@ -52,7 +52,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * coupling map (0, 1), (1, 2). Additionally, `site_i` is the pointer to the
    * i-th site. Then, `{site_0, site_1, site_1, site_2}` would be returned.
    */
-  QDMI_DEVICE_PROPERTY_COUPLINGMAP,
+  QDMI_DEVICE_PROPERTY_COUPLINGMAP = 5,
   /**
    * @brief The maximum value of the enum.
    * @details This value can be used for bounds checks by the devices to
@@ -60,7 +60,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @note This value should always be updated to be the last regular member
    * of the enum besides the custom members.
    */
-  QDMI_DEVICE_PROPERTY_MAX,
+  QDMI_DEVICE_PROPERTY_MAX = 6, // adapt this value when you add more members
   /**
    * @brief This property is reserved for a custom property.
    * @details The meaning and the type of this property is defined by the
@@ -79,12 +79,12 @@ enum QDMI_DEVICE_PROPERTY_T {
 
 /// Enum of different status the device can be in.
 enum QDMI_DEVICE_STATUS_T {
-  QDMI_DEVICE_STATUS_OFFLINE,     ///< The device is offline.
-  QDMI_DEVICE_STATUS_IDLE,        ///< The device is idle.
-  QDMI_DEVICE_STATUS_BUSY,        ///< The device is busy.
-  QDMI_DEVICE_STATUS_ERROR,       ///< The device is in an error state.
-  QDMI_DEVICE_STATUS_MAINTENANCE, ///< The device is in maintenance.
-  QDMI_DEVICE_STATUS_CALIBRATION, ///< The device is in calibration.
+  QDMI_DEVICE_STATUS_OFFLINE = 0,     ///< The device is offline.
+  QDMI_DEVICE_STATUS_IDLE = 1,        ///< The device is idle.
+  QDMI_DEVICE_STATUS_BUSY = 2,        ///< The device is busy.
+  QDMI_DEVICE_STATUS_ERROR = 3,       ///< The device is in an error state.
+  QDMI_DEVICE_STATUS_MAINTENANCE = 4, ///< The device is in maintenance.
+  QDMI_DEVICE_STATUS_CALIBRATION = 5, ///< The device is in calibration.
   /**
    * @brief The maximum value of the enum.
    * @details This value can be used for bounds checks by the devices to
@@ -92,13 +92,13 @@ enum QDMI_DEVICE_STATUS_T {
    * @note This value should always be updated to be the last regular member
    * of the enum besides the custom members.
    */
-  QDMI_DEVICE_STATUS_MAX
+  QDMI_DEVICE_STATUS_MAX = 6 // adapt this value when you add more members
 };
 
 /// Enum of the site properties that can be queried.
 enum QDMI_SITE_PROPERTY_T {
-  QDMI_SITE_PROPERTY_TIME_T1, ///< `double` The T1 time of a site in µs.
-  QDMI_SITE_PROPERTY_TIME_T2, ///< `double` The T2 time of a site in µs.
+  QDMI_SITE_PROPERTY_TIME_T1 = 0, ///< `double` The T1 time of a site in µs.
+  QDMI_SITE_PROPERTY_TIME_T2 = 1, ///< `double` The T2 time of a site in µs.
   /**
    * @brief The maximum value of the enum.
    * @details This value can be used for bounds checks by the devices to
@@ -106,7 +106,7 @@ enum QDMI_SITE_PROPERTY_T {
    * @note This value should always be updated to be the last regular member
    * of the enum besides the custom members.
    */
-  QDMI_SITE_PROPERTY_MAX,
+  QDMI_SITE_PROPERTY_MAX = 2, // adapt this value when you add more members
   /**
    * @brief This property is reserved for a custom property.
    * @details The meaning and the type of this property is defined by the
@@ -126,13 +126,13 @@ enum QDMI_SITE_PROPERTY_T {
 /// Enum of the operation properties that can be queried.
 enum QDMI_OPERATION_PROPERTY_T {
   /// `char*` (string) The string identifier of the operation.
-  QDMI_OPERATION_PROPERTY_NAME,
+  QDMI_OPERATION_PROPERTY_NAME = 0,
   /// `size_t` The number of qubits in the operation.
-  QDMI_OPERATION_PROPERTY_QUBITSNUM,
+  QDMI_OPERATION_PROPERTY_QUBITSNUM = 1,
   /// `double` The duration of an operation in µs.
-  QDMI_OPERATION_PROPERTY_DURATION,
+  QDMI_OPERATION_PROPERTY_DURATION = 2,
   /// `double` The fidelity of an operation.
-  QDMI_OPERATION_PROPERTY_FIDELITY,
+  QDMI_OPERATION_PROPERTY_FIDELITY = 3,
   /**
    * @brief The maximum value of the enum.
    * @details This value can be used for bounds checks by the devices to
@@ -140,7 +140,7 @@ enum QDMI_OPERATION_PROPERTY_T {
    * @note This value should always be updated to be the last regular member
    * of the enum besides the custom members.
    */
-  QDMI_OPERATION_PROPERTY_MAX,
+  QDMI_OPERATION_PROPERTY_MAX = 4, // adapt this value when you add more members
   /**
    * @brief This property is reserved for a custom property.
    * @details The meaning and the type of this property is defined by the
@@ -166,15 +166,15 @@ enum QDMI_JOB_STATUS_T {
    * @brief The job was created and can be configured via @ref
    * QDMI_control_set_parameter.
    */
-  QDMI_JOB_STATUS_CREATED,
+  QDMI_JOB_STATUS_CREATED = 0,
   /// The job was submitted and is waiting to be executed
-  QDMI_JOB_STATUS_SUBMITTED,
+  QDMI_JOB_STATUS_SUBMITTED = 1,
   /// The job is done, and the result can be retrieved.
-  QDMI_JOB_STATUS_DONE,
+  QDMI_JOB_STATUS_DONE = 2,
   /// The job is running, and the result is not yet available.
-  QDMI_JOB_STATUS_RUNNING,
+  QDMI_JOB_STATUS_RUNNING = 3,
   /// The job was cancelled and the result is not available.
-  QDMI_JOB_STATUS_CANCELLED
+  QDMI_JOB_STATUS_CANCELLED = 4
 };
 
 /**
@@ -209,13 +209,13 @@ enum QDMI_STATUS {
  */
 enum QDMI_PROGRAM_FORMAT_T {
   /// `char*`(string) The OpenQASM 2.0 program to run.
-  QDMI_PROGRAM_FORMAT_QASM2,
+  QDMI_PROGRAM_FORMAT_QASM2 = 0,
   /// `char*`(string) The OpenQASM 3 program to run.
-  QDMI_PROGRAM_FORMAT_QASM3,
+  QDMI_PROGRAM_FORMAT_QASM3 = 1,
   /// `char*`(string) The QIR program to run as a string.
-  QDMI_PROGRAM_FORMAT_QIRSTRING,
+  QDMI_PROGRAM_FORMAT_QIRSTRING = 2,
   /// `void*` The QIR program as a binary module.
-  QDMI_PROGRAM_FORMAT_QIRMODULE,
+  QDMI_PROGRAM_FORMAT_QIRMODULE = 3,
   /**
    * @brief The maximum value of the enum.
    * @details This value can be used for bounds checks by the devices to
@@ -223,7 +223,7 @@ enum QDMI_PROGRAM_FORMAT_T {
    * @note This value should always be updated to be the last regular member
    * of the enum besides the custom members.
    */
-  QDMI_PROGRAM_FORMAT_MAX,
+  QDMI_PROGRAM_FORMAT_MAX = 4, // adapt this value when you add more members
   /**
    * @brief This value is reserved for a custom format.
    * @details The meaning and the type of this format is defined by the device.
@@ -244,7 +244,7 @@ enum QDMI_PROGRAM_FORMAT_T {
  */
 enum QDMI_JOB_PARAMETER_T {
   /// `size_t` The number of shots to take.
-  QDMI_JOB_PARAMETER_SHOTS_NUM,
+  QDMI_JOB_PARAMETER_SHOTS_NUM = 0,
   /**
    * @brief The maximum value of the enum.
    * @details This value can be used for bounds checks by the devices to
@@ -252,7 +252,7 @@ enum QDMI_JOB_PARAMETER_T {
    * @note This value should always be updated to be the last regular member
    * of the enum besides the custom members.
    */
-  QDMI_JOB_PARAMETER_MAX,
+  QDMI_JOB_PARAMETER_MAX = 1, // adapt this value when you add more members
   /**
    * @brief This property is reserved for a custom property.
    * @details The meaning and the type of this property is defined by the
@@ -278,7 +278,7 @@ enum QDMI_JOB_RESULT_T {
    * comma-separated list, e.g., "0010,1101,0101,1100,1001,1100" for four qubits
    * and six shots.
    */
-  QDMI_JOB_RESULT_SHOTS,
+  QDMI_JOB_RESULT_SHOTS = 0,
   /**
    * @brief `char*`(string) The keys for the histogram of the results.
    * @details The histogram of the measurement results is represented as a
@@ -289,12 +289,12 @@ enum QDMI_JOB_RESULT_T {
    * This constant denotes the list of keys, @ref QDMI_JOB_RESULT_HIST_VALUES
    * denotes the list of values.
    */
-  QDMI_JOB_RESULT_HIST_KEYS,
+  QDMI_JOB_RESULT_HIST_KEYS = 1,
   /**
    * @brief `size_t*` (int list) The values for the histogram of the results.
    * @see QDMI_JOB_RESULT_HIST_KEY
    */
-  QDMI_JOB_RESULT_HIST_VALUES,
+  QDMI_JOB_RESULT_HIST_VALUES = 2,
   /**
    * @brief `double*` (double list) The state vector of the result.
    * @details The complex amplitudes are stored as a list of real and imaginary
@@ -303,7 +303,7 @@ enum QDMI_JOB_RESULT_T {
    * amplitudes (0.5, 0.5), (0.5, -0.5), (-0.5, 0.5), (-0.5, -0.5) would be
    * represented as `{0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5}`.
    */
-  QDMI_JOB_RESULT_STATEVECTOR_DENSE,
+  QDMI_JOB_RESULT_STATEVECTOR_DENSE = 3,
   /**
    * @brief `double*` (double list) The probabilities of the result.
    * @details The probabilities are stored as a list of real numbers. The
@@ -311,7 +311,7 @@ enum QDMI_JOB_RESULT_T {
    * example, the probabilities of a 2-qubit system with states 00, 01, 10, 11
    * would be represented as `{0.25, 0.25, 0.25, 0.25}`.
    */
-  QDMI_JOB_RESULT_PROBABILITIES_DENSE,
+  QDMI_JOB_RESULT_PROBABILITIES_DENSE = 4,
   /**
    * @brief `char*`(string) The keys for the sparse state vector of the result.
    * @details The sparse state vector is represented as a key-value mapping.
@@ -319,7 +319,7 @@ enum QDMI_JOB_RESULT_T {
    * values. The corresponding partners of keys and values can be found at the
    * same index in the lists.
    */
-  QDMI_JOB_RESULT_STATEVECTOR_SPARSE_KEYS,
+  QDMI_JOB_RESULT_STATEVECTOR_SPARSE_KEYS = 5,
   /**
    * @brief `double*` (double list) The values for the sparse state vector of
    * the result.
@@ -329,7 +329,7 @@ enum QDMI_JOB_RESULT_T {
    * @see QDMI_JOB_RESULT_STATEVECTOR_DENSE
    * @see QDMI_JOB_RESULT_STATEVECTOR_SPARSE_KEYS
    */
-  QDMI_JOB_RESULT_STATEVECTOR_SPARSE_VALUES,
+  QDMI_JOB_RESULT_STATEVECTOR_SPARSE_VALUES = 6,
   /**
    * @brief `char*`(string) The keys for the sparse probabilities of the result.
    * @details The sparse probabilities are represented as a key-value mapping.
@@ -337,7 +337,7 @@ enum QDMI_JOB_RESULT_T {
    * values. The corresponding partners of keys and values can be found at the
    * same index in the lists.
    */
-  QDMI_JOB_RESULT_PROBABILITIES_SPARSE_KEYS,
+  QDMI_JOB_RESULT_PROBABILITIES_SPARSE_KEYS = 7,
   /**
    * @brief `double*` (double list) The values for the sparse probabilities of
    * the result.
@@ -347,7 +347,7 @@ enum QDMI_JOB_RESULT_T {
    * @see QDMI_JOB_RESULT_PROBABILITIES_DENSE
    * @see QDMI_JOB_RESULT_PROBABILITIES_SPARSE_KEYS
    */
-  QDMI_JOB_RESULT_PROBABILITIES_SPARSE_VALUES,
+  QDMI_JOB_RESULT_PROBABILITIES_SPARSE_VALUES = 8,
   /**
    * @brief The maximum value of the enum.
    * @details This value can be used for bounds checks by the devices to
@@ -355,7 +355,7 @@ enum QDMI_JOB_RESULT_T {
    * @note This value should always be updated to be the last regular member
    * of the enum besides the custom members.
    */
-  QDMI_JOB_RESULT_MAX,
+  QDMI_JOB_RESULT_MAX = 9, // adapt this value when you add more members
   /**
    * @brief This property is reserved for a custom property.
    * @details The meaning and the type of this property is defined by the
@@ -377,9 +377,9 @@ enum QDMI_JOB_RESULT_T {
  */
 enum QDMI_SESSION_PARAMETER_T {
   /// `char*` (string) The owner of the session.
-  QDMI_SESSION_PARAMETER_OWNER,
+  QDMI_SESSION_PARAMETER_OWNER = 0,
   /// `char*` (string) The access token for the session.
-  QDMI_SESSION_PARAMETER_TOKEN,
+  QDMI_SESSION_PARAMETER_TOKEN = 1,
   /**
    * @brief The maximum value of the enum.
    * @details This value can be used for bounds checks by the drivers to
@@ -387,7 +387,7 @@ enum QDMI_SESSION_PARAMETER_T {
    * @note This value should always be updated to be the last regular member
    * of the enum besides the custom members.
    */
-  QDMI_SESSION_PARAMETER_MAX,
+  QDMI_SESSION_PARAMETER_MAX = 2, // adapt this value when you add more members
   /**
    * @brief This property is reserved for a custom property.
    * @details The meaning and the type of this property is defined by the
