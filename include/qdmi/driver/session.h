@@ -56,8 +56,10 @@ int QDMI_session_alloc(QDMI_Session *session);
  * @param[in] size the size of the value in bytes.
  * @param[in] value the value to set the parameter to.
  * @return @ref QDMI_SUCCESS if the parameter was set successfully.
- * @return @ref QDMI_ERROR_INVALIDARGUMENT if the session does not exist, is in
- * an invalid state or the parameter is invalid.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if the job does not exist, is in an
+ * invalid state, the parameter is invalid, @p value is @c NULL, or if @p size
+ * is not the expected size for the parameter (if specified by the @ref
+ * QDMI_Session_Parameter documentation).
  * @return @ref QDMI_ERROR_NOTSUPPORTED if the device does not support the
  * parameter.
  * @return @ref QDMI_ERROR_FATAL if the parameter could not be set.
