@@ -272,10 +272,4 @@ TEST_P(QDMIImplementationTest, SessionSetParameterImplemented) {
   ASSERT_EQ(QDMI_session_set_parameter(session, QDMI_SESSION_PARAMETER_MAX, 0,
                                        nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
-
-  const std::string test_token = "test_token";
-  ASSERT_EQ(QDMI_session_set_parameter(session, QDMI_SESSION_PARAMETER_TOKEN,
-                                       test_token.length() + 1,
-                                       test_token.c_str()),
-            QDMI_SUCCESS);
 }

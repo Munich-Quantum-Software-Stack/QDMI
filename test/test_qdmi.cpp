@@ -33,8 +33,10 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 // Instantiate the test suite with different parameters
 INSTANTIATE_TEST_SUITE_P(
-    QDMIDevice,             // Custom instantiation name
-    QDMIImplementationTest, // Test suite name
+    QDMIDevice,
+    // Custom instantiation name
+    QDMIImplementationTest,
+    // Test suite name
     // Parameters to test with
     ::testing::Values(std::pair{"../examples/device/c/libc_device", "C"},
                       std::pair{"../examples/device/cxx/libcxx_device", "CXX"}),
@@ -576,4 +578,16 @@ TEST_P(QDMIImplementationTest, ControlGetProbsSparseValuesBufferTooSmall) {
                                   buffer.size(), buffer.data(), nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
   QDMI_control_free_job(device, job);
+}
+
+TEST_P(QDMIImplementationTest, SessionSetParameter) {
+  const std::string test_token = "test_token";
+  ASSERT_EQ(QDMI_session_set_parameter(session, QDMI_SESSION_PARAMETER_TOKEN,
+                                       test_token.length() + 1,
+                                       test_token.c_str()),
+            QDMI_SUCCESS);
+
+  ASSERT_EQ(
+      QDMI_session_set_parameter(session, QDMI_SESSION_PARAMETER_OWNER, 1, ""),
+      QDMI_ERROR_NOTSUPPORTED);
 }
