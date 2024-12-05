@@ -108,6 +108,7 @@ struct QDMI_Device_impl_d {
  */
 struct QDMI_Session_impl_d {
   std::vector<std::shared_ptr<QDMI_Device_impl_d>> device_list;
+  std::string token;
 };
 
 /// @}
@@ -261,6 +262,13 @@ int QDMI_session_set_parameter(QDMI_Session session,
   if (session == nullptr || param >= QDMI_SESSION_PARAMETER_MAX ||
       value == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  switch (param) {
+  case QDMI_SESSION_PARAMETER_TOKEN:
+    session->token = std::string(static_cast<const char *>(value), size);
+    return QDMI_SUCCESS;
+  default:
+    break;
   }
   return QDMI_ERROR_NOTSUPPORTED;
 }
