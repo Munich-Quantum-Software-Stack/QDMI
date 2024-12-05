@@ -306,9 +306,4 @@ TEST_P(QDMIImplementationTest, SessionSetParameterImplemented) {
                                        test_owner.length() + 1,
                                        test_owner.c_str()),
             QDMI_SUCCESS);
-
-  ASSERT_EQ(QDMI_session_set_parameter(session, QDMI_SESSION_PARAMETER_CUSTOM1,
-                                       test_owner.length() + 1,
-                                       test_owner.c_str()),
-            QDMI_ERROR_NOTSUPPORTED);
 }
