@@ -375,7 +375,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a8039f5cd8202553b2a91a1c0b01d6751">QDMI_SUCCESS</a> if the parameter was set successfully. </dd>
 <dd>
-<a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642">QDMI_ERROR_INVALIDARGUMENT</a> if the session does not exist, is in an invalid state or the parameter is invalid. </dd>
+<a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642">QDMI_ERROR_INVALIDARGUMENT</a> if the job does not exist, is in an invalid state, the parameter is invalid, <code>value</code> is <code>NULL</code>, or if <code>size</code> is not the expected size for the parameter (if specified by the <a class="el" href="common_2types_8h.html#aae2a513b3364705ca75f709215d912f5">QDMI_Session_Parameter</a> documentation). </dd>
 <dd>
 <a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a> if the device does not support the parameter. </dd>
 <dd>

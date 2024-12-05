@@ -11,12 +11,12 @@ var enums_8h =
       [ "QDMI_DEVICE_PROPERTY_LIBRARYVERSION", "enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a5fa26a0ebfe6894b53ed1e8c79d5f090", null ],
       [ "QDMI_DEVICE_PROPERTY_QUBITSNUM", "enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a7ada8f720629c4cac8d74ac4270a1c46", null ],
       [ "QDMI_DEVICE_PROPERTY_COUPLINGMAP", "enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a8550a0c1b86c2f97791289647a159efd", null ],
-      [ "QDMI_DEVICE_PROPERTY_CUSTOM_1", "enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a53829f2077184ba97321667eccedced9", null ],
-      [ "QDMI_DEVICE_PROPERTY_CUSTOM_2", "enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526afd8fa9121176036129e5cac80e5c55d5", null ],
-      [ "QDMI_DEVICE_PROPERTY_CUSTOM_3", "enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a60d23bf5e8a41f1c27441c789cfd6981", null ],
-      [ "QDMI_DEVICE_PROPERTY_CUSTOM_4", "enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526ab8ac8e7a4000d9c62a1b5d2de66a9b3b", null ],
-      [ "QDMI_DEVICE_PROPERTY_CUSTOM_5", "enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526ae17064f11531b0d96f59f9feb1c574b8", null ],
-      [ "QDMI_DEVICE_PROPERTY_MAX", "enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526afe696a25133fa887276e666460981688", null ]
+      [ "QDMI_DEVICE_PROPERTY_MAX", "enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526afe696a25133fa887276e666460981688", null ],
+      [ "QDMI_DEVICE_PROPERTY_CUSTOM1", "enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a994b8261b6addc3f56993c467641b122", null ],
+      [ "QDMI_DEVICE_PROPERTY_CUSTOM2", "enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a36730bc67d1fd3c7578a352adf47745e", null ],
+      [ "QDMI_DEVICE_PROPERTY_CUSTOM3", "enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a32e4c833c31ffb4add4245a722d70e88", null ],
+      [ "QDMI_DEVICE_PROPERTY_CUSTOM4", "enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526ac8f6978f4bf1ad2e263b74bb3bb98aef", null ],
+      [ "QDMI_DEVICE_PROPERTY_CUSTOM5", "enums_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526adb994f1dc9dfee2910261951f7e4b39f", null ]
     ] ],
     [ "QDMI_DEVICE_STATUS_T", "enums_8h.html#aa13ac5e1c93a4b358d84bb9fd1f5fd99", [
       [ "QDMI_DEVICE_STATUS_OFFLINE", "enums_8h.html#aa13ac5e1c93a4b358d84bb9fd1f5fd99a1c87741b5f3bd792ce461306ae457cee", null ],
@@ -29,12 +29,12 @@ var enums_8h =
     ] ],
     [ "QDMI_JOB_PARAMETER_T", "enums_8h.html#a1e7131664b094eb409d0f44d731f51f5", [
       [ "QDMI_JOB_PARAMETER_SHOTS_NUM", "enums_8h.html#a1e7131664b094eb409d0f44d731f51f5a0fc11e9295172abcbf6a2116a7985507", null ],
-      [ "QDMI_JOB_PARAMETER_CUSTOM_1", "enums_8h.html#a1e7131664b094eb409d0f44d731f51f5a0f61f4266a577983438331aa9867b144", null ],
-      [ "QDMI_JOB_PARAMETER_CUSTOM_2", "enums_8h.html#a1e7131664b094eb409d0f44d731f51f5a58e4f6f33ac6ed61b930f6cd24d3df44", null ],
-      [ "QDMI_JOB_PARAMETER_CUSTOM_3", "enums_8h.html#a1e7131664b094eb409d0f44d731f51f5ac53f987590d91a4f10f069d25984e8e9", null ],
-      [ "QDMI_JOB_PARAMETER_CUSTOM_4", "enums_8h.html#a1e7131664b094eb409d0f44d731f51f5a98f967abc14711d953a79e1f6b8b7b04", null ],
-      [ "QDMI_JOB_PARAMETER_CUSTOM_5", "enums_8h.html#a1e7131664b094eb409d0f44d731f51f5a937e55bace949c9a714f627585d44c0b", null ],
-      [ "QDMI_JOB_PARAMETER_MAX", "enums_8h.html#a1e7131664b094eb409d0f44d731f51f5aa94ff18351f57072ad1e9223583ff978", null ]
+      [ "QDMI_JOB_PARAMETER_MAX", "enums_8h.html#a1e7131664b094eb409d0f44d731f51f5aa94ff18351f57072ad1e9223583ff978", null ],
+      [ "QDMI_JOB_PARAMETER_CUSTOM1", "enums_8h.html#a1e7131664b094eb409d0f44d731f51f5a06fddbae216743659f3268c0e31554c8", null ],
+      [ "QDMI_JOB_PARAMETER_CUSTOM2", "enums_8h.html#a1e7131664b094eb409d0f44d731f51f5aa6438cc893fc43e5124f0ee5a969de2b", null ],
+      [ "QDMI_JOB_PARAMETER_CUSTOM3", "enums_8h.html#a1e7131664b094eb409d0f44d731f51f5a40cc64aa3dfe3a837a3d9b86024cb8ef", null ],
+      [ "QDMI_JOB_PARAMETER_CUSTOM4", "enums_8h.html#a1e7131664b094eb409d0f44d731f51f5a1afd4ae62865f54f0e16584b50b940e3", null ],
+      [ "QDMI_JOB_PARAMETER_CUSTOM5", "enums_8h.html#a1e7131664b094eb409d0f44d731f51f5a88cae1a3c7f8af76fa83ceaaaa5f7998", null ]
     ] ],
     [ "QDMI_JOB_RESULT_T", "enums_8h.html#aa154b942b0f67e437c393ad7b33cadd1", [
       [ "QDMI_JOB_RESULT_SHOTS", "enums_8h.html#aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97", null ],
@@ -46,12 +46,12 @@ var enums_8h =
       [ "QDMI_JOB_RESULT_STATEVECTOR_SPARSE_VALUES", "enums_8h.html#aa154b942b0f67e437c393ad7b33cadd1a82263dc1b055d7237a2c32d318609350", null ],
       [ "QDMI_JOB_RESULT_PROBABILITIES_SPARSE_KEYS", "enums_8h.html#aa154b942b0f67e437c393ad7b33cadd1aff6709af04527a8d5e03f6f0064dd281", null ],
       [ "QDMI_JOB_RESULT_PROBABILITIES_SPARSE_VALUES", "enums_8h.html#aa154b942b0f67e437c393ad7b33cadd1a68c0d721fa322f5c5b404a088c2e1504", null ],
-      [ "QDMI_JOB_RESULT_CUSTOM_1", "enums_8h.html#aa154b942b0f67e437c393ad7b33cadd1a57f2aed7959f77d9c3e371545ae52415", null ],
-      [ "QDMI_JOB_RESULT_CUSTOM_2", "enums_8h.html#aa154b942b0f67e437c393ad7b33cadd1a65f02aa4323a9c3ec03d21f8a7485c55", null ],
-      [ "QDMI_JOB_RESULT_CUSTOM_3", "enums_8h.html#aa154b942b0f67e437c393ad7b33cadd1a73af651609703659ed7cecdc996a9d01", null ],
-      [ "QDMI_JOB_RESULT_CUSTOM_4", "enums_8h.html#aa154b942b0f67e437c393ad7b33cadd1a9cad228441877e6e49dcd32505e38e23", null ],
-      [ "QDMI_JOB_RESULT_CUSTOM_5", "enums_8h.html#aa154b942b0f67e437c393ad7b33cadd1a0f55204217f660f3048f5f8ca996519c", null ],
-      [ "QDMI_JOB_RESULT_MAX", "enums_8h.html#aa154b942b0f67e437c393ad7b33cadd1a392aa5d821440fd4650119f3986d3196", null ]
+      [ "QDMI_JOB_RESULT_MAX", "enums_8h.html#aa154b942b0f67e437c393ad7b33cadd1a392aa5d821440fd4650119f3986d3196", null ],
+      [ "QDMI_JOB_RESULT_CUSTOM1", "enums_8h.html#aa154b942b0f67e437c393ad7b33cadd1a885df1084d1067b6336ad6a0eaaffac2", null ],
+      [ "QDMI_JOB_RESULT_CUSTOM2", "enums_8h.html#aa154b942b0f67e437c393ad7b33cadd1aaf1c0677ce0a98b75c9a372c790ae7dc", null ],
+      [ "QDMI_JOB_RESULT_CUSTOM3", "enums_8h.html#aa154b942b0f67e437c393ad7b33cadd1af9d2b9a0c39d1288be2428a6af7c0842", null ],
+      [ "QDMI_JOB_RESULT_CUSTOM4", "enums_8h.html#aa154b942b0f67e437c393ad7b33cadd1af3bb2512523d7a0ab9838a6810b257d6", null ],
+      [ "QDMI_JOB_RESULT_CUSTOM5", "enums_8h.html#aa154b942b0f67e437c393ad7b33cadd1aa892eb092c55f5c7ea34c47358675125", null ]
     ] ],
     [ "QDMI_JOB_STATUS_T", "enums_8h.html#a04e5c793bcbe8b354a9223bb60f828a6", [
       [ "QDMI_JOB_STATUS_CREATED", "enums_8h.html#a04e5c793bcbe8b354a9223bb60f828a6a2d985c815c2e1024b9eb5605e8825df5", null ],
@@ -65,44 +65,44 @@ var enums_8h =
       [ "QDMI_OPERATION_PROPERTY_QUBITSNUM", "enums_8h.html#ab23d5f0c5296e3eab4243e91f1213726a50c6ef3ffc889f80f8767bfe7296dc49", null ],
       [ "QDMI_OPERATION_PROPERTY_DURATION", "enums_8h.html#ab23d5f0c5296e3eab4243e91f1213726ad45aa26cc41c80c697fa71a08f622eca", null ],
       [ "QDMI_OPERATION_PROPERTY_FIDELITY", "enums_8h.html#ab23d5f0c5296e3eab4243e91f1213726aeff33960f7a3da9e17058cf9bf05da77", null ],
-      [ "QDMI_OPERATION_PROPERTY_CUSTOM_1", "enums_8h.html#ab23d5f0c5296e3eab4243e91f1213726a2b3397e81ca34073e2bf34c4a87fbf28", null ],
-      [ "QDMI_OPERATION_PROPERTY_CUSTOM_2", "enums_8h.html#ab23d5f0c5296e3eab4243e91f1213726adb6ad5de92a81daece0801482e2340dd", null ],
-      [ "QDMI_OPERATION_PROPERTY_CUSTOM_3", "enums_8h.html#ab23d5f0c5296e3eab4243e91f1213726a62f3eb66a9bea13af5a8fc2d157fe7ec", null ],
-      [ "QDMI_OPERATION_PROPERTY_CUSTOM_4", "enums_8h.html#ab23d5f0c5296e3eab4243e91f1213726a367c57734a7004ccee6c50f92aae96c2", null ],
-      [ "QDMI_OPERATION_PROPERTY_CUSTOM_5", "enums_8h.html#ab23d5f0c5296e3eab4243e91f1213726aac590ad7533edf554a22382bd45d6f2a", null ],
-      [ "QDMI_OPERATION_PROPERTY_MAX", "enums_8h.html#ab23d5f0c5296e3eab4243e91f1213726a049ae95ba8acfe7191dd7d5139389468", null ]
+      [ "QDMI_OPERATION_PROPERTY_MAX", "enums_8h.html#ab23d5f0c5296e3eab4243e91f1213726a049ae95ba8acfe7191dd7d5139389468", null ],
+      [ "QDMI_OPERATION_PROPERTY_CUSTOM1", "enums_8h.html#ab23d5f0c5296e3eab4243e91f1213726aa8a314f70a9f754463dd1b8861230322", null ],
+      [ "QDMI_OPERATION_PROPERTY_CUSTOM2", "enums_8h.html#ab23d5f0c5296e3eab4243e91f1213726a0475dc2bb362d79e84f539f09ea43160", null ],
+      [ "QDMI_OPERATION_PROPERTY_CUSTOM3", "enums_8h.html#ab23d5f0c5296e3eab4243e91f1213726ad091b00466f4429b0b4a61df3ecee07e", null ],
+      [ "QDMI_OPERATION_PROPERTY_CUSTOM4", "enums_8h.html#ab23d5f0c5296e3eab4243e91f1213726af340d37b0cb6a28660c0a064088125d0", null ],
+      [ "QDMI_OPERATION_PROPERTY_CUSTOM5", "enums_8h.html#ab23d5f0c5296e3eab4243e91f1213726ae4414f8e1b54a24d9db057f8214ad579", null ]
     ] ],
     [ "QDMI_PROGRAM_FORMAT_T", "enums_8h.html#a3eff3252203fcad146d5896e4466ec09", [
       [ "QDMI_PROGRAM_FORMAT_QASM2", "enums_8h.html#a3eff3252203fcad146d5896e4466ec09afd3bab5e29afc660e29b2a132246471b", null ],
       [ "QDMI_PROGRAM_FORMAT_QASM3", "enums_8h.html#a3eff3252203fcad146d5896e4466ec09a46cb051d6e1f54c658570dee57813903", null ],
       [ "QDMI_PROGRAM_FORMAT_QIRSTRING", "enums_8h.html#a3eff3252203fcad146d5896e4466ec09ad95c42d4fc8782d119eae27a258342fa", null ],
       [ "QDMI_PROGRAM_FORMAT_QIRMODULE", "enums_8h.html#a3eff3252203fcad146d5896e4466ec09a3a59c7404dd8f1225252ed2fae52f195", null ],
-      [ "QDMI_PROGRAM_FORMAT_CUSTOM_1", "enums_8h.html#a3eff3252203fcad146d5896e4466ec09a5c09736e32b7ae6f61852d2de9eb8e70", null ],
-      [ "QDMI_PROGRAM_FORMAT_CUSTOM_2", "enums_8h.html#a3eff3252203fcad146d5896e4466ec09a908e291a3420a0d3693d5a13310f1e14", null ],
-      [ "QDMI_PROGRAM_FORMAT_CUSTOM_3", "enums_8h.html#a3eff3252203fcad146d5896e4466ec09a121a581f90cadb25de54e0ea54174fb1", null ],
-      [ "QDMI_PROGRAM_FORMAT_CUSTOM_4", "enums_8h.html#a3eff3252203fcad146d5896e4466ec09aed934433ff0369e08defebe5c788df4f", null ],
-      [ "QDMI_PROGRAM_FORMAT_CUSTOM_5", "enums_8h.html#a3eff3252203fcad146d5896e4466ec09a60f5bda9cc23644034cb3a7f9768f2da", null ],
-      [ "QDMI_PROGRAM_FORMAT_MAX", "enums_8h.html#a3eff3252203fcad146d5896e4466ec09aed0bf48a068be1cc41e339c6ae48e655", null ]
+      [ "QDMI_PROGRAM_FORMAT_MAX", "enums_8h.html#a3eff3252203fcad146d5896e4466ec09aed0bf48a068be1cc41e339c6ae48e655", null ],
+      [ "QDMI_PROGRAM_FORMAT_CUSTOM1", "enums_8h.html#a3eff3252203fcad146d5896e4466ec09ae4c406dd4f873011195a218898ad2348", null ],
+      [ "QDMI_PROGRAM_FORMAT_CUSTOM2", "enums_8h.html#a3eff3252203fcad146d5896e4466ec09aa623b6643ae8806cc0beae73b13723e4", null ],
+      [ "QDMI_PROGRAM_FORMAT_CUSTOM3", "enums_8h.html#a3eff3252203fcad146d5896e4466ec09a25fa2e815d2f0e788117c54188c379a8", null ],
+      [ "QDMI_PROGRAM_FORMAT_CUSTOM4", "enums_8h.html#a3eff3252203fcad146d5896e4466ec09a606a32a79bea4e188111ac5728b04212", null ],
+      [ "QDMI_PROGRAM_FORMAT_CUSTOM5", "enums_8h.html#a3eff3252203fcad146d5896e4466ec09ac2fc29b4f13482775b7d080f281f9a21", null ]
     ] ],
     [ "QDMI_SESSION_PARAMETER_T", "enums_8h.html#aac5ae9f0bf8046987569c6f4e75611d3", [
       [ "QDMI_SESSION_PARAMETER_OWNER", "enums_8h.html#aac5ae9f0bf8046987569c6f4e75611d3a08cb96b53ee1b7a5c9031ddff2cc6132", null ],
       [ "QDMI_SESSION_PARAMETER_TOKEN", "enums_8h.html#aac5ae9f0bf8046987569c6f4e75611d3af68e93d8a13dacb31e6bbdf43c9c5283", null ],
-      [ "QDMI_SESSION_PARAMETER_CUSTOM_1", "enums_8h.html#aac5ae9f0bf8046987569c6f4e75611d3ad87261bdac716fb56f9f5ccdee45d288", null ],
-      [ "QDMI_SESSION_PARAMETER_CUSTOM_2", "enums_8h.html#aac5ae9f0bf8046987569c6f4e75611d3a2b73aa650ab625004673790643559084", null ],
-      [ "QDMI_SESSION_PARAMETER_CUSTOM_3", "enums_8h.html#aac5ae9f0bf8046987569c6f4e75611d3a4dc7230903f5f0d47f0eeccef612096e", null ],
-      [ "QDMI_SESSION_PARAMETER_CUSTOM_4", "enums_8h.html#aac5ae9f0bf8046987569c6f4e75611d3ab2504a743a8b169d56acd22ec4be9b1b", null ],
-      [ "QDMI_SESSION_PARAMETER_CUSTOM_5", "enums_8h.html#aac5ae9f0bf8046987569c6f4e75611d3ace9ab4e7719ab071d38b0abcb2d1819a", null ],
-      [ "QDMI_SESSION_PARAMETER_MAX", "enums_8h.html#aac5ae9f0bf8046987569c6f4e75611d3a687f1bf96e2c4467d483c196c8b56292", null ]
+      [ "QDMI_SESSION_PARAMETER_MAX", "enums_8h.html#aac5ae9f0bf8046987569c6f4e75611d3a687f1bf96e2c4467d483c196c8b56292", null ],
+      [ "QDMI_SESSION_PARAMETER_CUSTOM1", "enums_8h.html#aac5ae9f0bf8046987569c6f4e75611d3a3e125af4fb52d626a4ff73d81f22cf46", null ],
+      [ "QDMI_SESSION_PARAMETER_CUSTOM2", "enums_8h.html#aac5ae9f0bf8046987569c6f4e75611d3ac0c579e30bd180a00d5e398b03c987f6", null ],
+      [ "QDMI_SESSION_PARAMETER_CUSTOM3", "enums_8h.html#aac5ae9f0bf8046987569c6f4e75611d3a4f9b44b3b04b77d2b560cedcee3cfa08", null ],
+      [ "QDMI_SESSION_PARAMETER_CUSTOM4", "enums_8h.html#aac5ae9f0bf8046987569c6f4e75611d3acc5c97b9d346e291b730956970561124", null ],
+      [ "QDMI_SESSION_PARAMETER_CUSTOM5", "enums_8h.html#aac5ae9f0bf8046987569c6f4e75611d3aaafd9df4e1090164a7cc087faaa8557a", null ]
     ] ],
     [ "QDMI_SITE_PROPERTY_T", "enums_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2", [
       [ "QDMI_SITE_PROPERTY_TIME_T1", "enums_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2a92d5990450ff518ef6d14babc5c19777", null ],
       [ "QDMI_SITE_PROPERTY_TIME_T2", "enums_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2a15efbbe5c84710bfa199a2940a26f7a0", null ],
-      [ "QDMI_SITE_PROPERTY_CUSTOM_1", "enums_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2addc2e89228bcd9d75289f31ef737fb1f", null ],
-      [ "QDMI_SITE_PROPERTY_CUSTOM_2", "enums_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2acfbabeb2187f10835b4e4f2b383c4a83", null ],
-      [ "QDMI_SITE_PROPERTY_CUSTOM_3", "enums_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2ad7e60aaf6703600e7b872d315406b8ff", null ],
-      [ "QDMI_SITE_PROPERTY_CUSTOM_4", "enums_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2a3930e7b44345691b4f220b41b86c8019", null ],
-      [ "QDMI_SITE_PROPERTY_CUSTOM_5", "enums_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2a8a4a6eb0ddafdc3d5b5cb4a6da2fcb41", null ],
-      [ "QDMI_SITE_PROPERTY_MAX", "enums_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2ade44c67aa77a26645d41d7529cdbff8e", null ]
+      [ "QDMI_SITE_PROPERTY_MAX", "enums_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2ade44c67aa77a26645d41d7529cdbff8e", null ],
+      [ "QDMI_SITE_PROPERTY_CUSTOM1", "enums_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2a1ad5483fe6bcbedf073cd6ae41031e3a", null ],
+      [ "QDMI_SITE_PROPERTY_CUSTOM2", "enums_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2a4be19ea36b28202b31f21816f968d977", null ],
+      [ "QDMI_SITE_PROPERTY_CUSTOM3", "enums_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2a522b513285959f510e03e12e9ba21c5a", null ],
+      [ "QDMI_SITE_PROPERTY_CUSTOM4", "enums_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2a27cdae762dcc09f9df6ba78d91fa3063", null ],
+      [ "QDMI_SITE_PROPERTY_CUSTOM5", "enums_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2ae75701dbdb3fd96feb949fa37b405455", null ]
     ] ],
     [ "QDMI_STATUS", "enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8", [
       [ "QDMI_WARN_GENERAL", "enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a3cada2f96b62a5d1893e5a74dfd8c78a", null ],

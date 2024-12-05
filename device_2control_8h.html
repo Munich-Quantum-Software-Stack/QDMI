@@ -517,18 +517,18 @@ It is <em>not</em> necessary to call this function before calling <a class="el" 
 </div><div class="memdoc">
 
 <p>Set a parameter for a job. </p>
-<p>Set a parameter for a job. The parameter can be one of the predefined parameters in <a class="el" href="common_2types_8h.html#a4d37195d9d0765b10a6ad681304a4512">QDMI_Job_Parameter</a>. The value of the parameter is passed as a pointer to the value and the size of the value. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>The parameter must be one of the parameters defined in <a class="el" href="common_2types_8h.html#a4d37195d9d0765b10a6ad681304a4512">QDMI_Job_Parameter</a>. It is specified by a <code>value</code> pointer and the <code>size</code> of the value being pointed to in bytes. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">job</td><td>The job to set the parameter for. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">param</td><td>is the parameter to set. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">size</td><td>is the size of the value. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>is the value to set. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">job</td><td>is a handle to a job for which to set <code>param</code>. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">param</td><td>identifies the parameter whose value will be set. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">size</td><td>specifies the size in bytes of the data pointed to by <code>value</code>. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>is a pointer to the memory location that contains the value of the parameter to be set. The data pointed to by <code>value</code> is copied and can be safely reused after this function returns. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a8039f5cd8202553b2a91a1c0b01d6751">QDMI_SUCCESS</a> if the parameter was successfully set. </dd>
 <dd>
-<a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642">QDMI_ERROR_INVALIDARGUMENT</a> if the job does not exist, is in an invalid state or the parameter is invalid. </dd>
+<a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642">QDMI_ERROR_INVALIDARGUMENT</a> if the job does not exist, is in an invalid state, the parameter is invalid, <code>value</code> is <code>NULL</code>, or if <code>size</code> is not the expected size for the parameter (if specified by the parameter). </dd>
 <dd>
 <a class="el" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a> if the device does not support the parameter. </dd>
 <dd>
