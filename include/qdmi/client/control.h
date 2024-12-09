@@ -43,18 +43,21 @@ extern "C" {
  * number of shots (@ref QDMI_JOB_PARAMETER_SHOTS_NUM) can be set via @ref
  * QDMI_control_submit_job. After setting all parameters, the job must be
  * submitted for execution through @ref QDMI_control_submit_job.
- * @param[in] dev The device to create the job on.
+ * @param[in] dev identifies the device to create the job on.
  * @param[in] format is the format of the program, see @ref
  * QDMI_PROGRAM_FORMAT_T for available options. Note that the availability also
  * depends on the device.
  * @param[in] size is the number of bytes of the program.
- * @param[in] prog is the program to run.
+ * @param[in] prog is the program to run. If this is @c NULL, it is ignored.
  * @param[out] job is a handle to the job created.
- * @return @ref QDMI_SUCCESS if the job was successfully created.
- * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p size is zero or the program
- * @p prog is invalid, e.g. @c NULL.
+ * @return @ref QDMI_SUCCESS if the device supports the given @ref
+ * QDMI_Program_Format @p format and, if @p prog was not
+ * @c NULL, if the job was successfully created.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p prog is not @c NULL and @p size
+ * is less than or equal to zero or the program @p prog is invalid, e.g. a
+ * syntax error.
  * @return @ref QDMI_ERROR_NOTSUPPORTED if the device does not support the
- * program format.
+ * program format @p format.
  * @return @ref QDMI_ERROR_FATAL if the job creation failed.
  */
 int QDMI_control_create_job(QDMI_Device dev, QDMI_Program_Format format,
