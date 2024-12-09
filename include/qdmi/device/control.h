@@ -37,25 +37,32 @@ extern "C" {
 
 /**
  * @brief Create a job on a device.
- * @details Create a job consisting of a circuit. Other parameters like the
- * number of shots (@ref QDMI_JOB_PARAMETER_SHOTS_NUM) can be set via @ref
- * QDMI_control_submit_job. After setting all parameters, the job must be
- * submitted for execution through @ref QDMI_control_submit_job.
- * @param[in] format is the format of the program, see @ref
- * QDMI_PROGRAM_FORMAT_T for available options. Note that the availability also
- * depends on the device.
- * @param[in] size is the number of bytes of the program.
+ * @details This function creates a job that consists of a circuit.
+ * Additional parameters, such as the number of shots, can be set using @ref
+ * QDMI_control_set_parameter_dev. After setting all necessary parameters, the
+ * job must be submitted for execution using @ref QDMI_control_submit_job_dev.
+ * @param[in] format is the format of the program. Refer to @ref
+ * QDMI_PROGRAM_FORMAT_T for available options. Note that the availability of
+ * formats depends on the device.
+ * @param[in] size is the size of the program in bytes.
  * @param[in] prog is the program to run. If this is @c NULL, it is ignored.
- * @param[out] job is a handle to the job created.
- * @return @ref QDMI_SUCCESS if the device supports the given @ref
- * QDMI_Program_Format @p format and, if @p prog was not
- * @c NULL, if the job was successfully created.
+ * @param[out] job is a pointer to a handle that will store the created job.
+ * Must not be @c NULL, except when @p prog is @c NULL, in which case it is
+ * ignored.
+ * @return @ref QDMI_SUCCESS if the device supports the specified @ref
+ * QDMI_Program_Format @p format and, when @p prog is not @c NULL, the job was
+ * successfully created.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p prog is not @c NULL and @p size
- * is less than or equal to zero or the program @p prog is invalid, e.g. a
- * syntax error.
+ * is less than or equal to zero, or the program @p prog is invalid (e.g.,
+ * contains a syntax error).
  * @return @ref QDMI_ERROR_NOTSUPPORTED if the device does not support the
- * program format @p format.
- * @return @ref QDMI_ERROR_FATAL if the job creation failed.
+ * specified program format @p format.
+ * @return @ref QDMI_ERROR_FATAL if the job creation failed due to a fatal
+ * error.
+ *
+ * @note By calling this function with @p prog and @p job set to @c NULL, the
+ * function can be used to check if the device supports the specified program
+ * format without creating a job and without the need to provide a program.
  */
 int QDMI_control_create_job_dev(QDMI_Program_Format format, size_t size,
                                 const void *prog, QDMI_Job *job);

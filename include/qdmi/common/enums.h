@@ -211,19 +211,19 @@ enum QDMI_STATUS {
  * @brief Enum of formats that can be submitted to the device.
  */
 enum QDMI_PROGRAM_FORMAT_T {
-  /// `char*`(string) The OpenQASM 2.0 program to run.
+  /// `char*`(string) An OpenQASM 2.0 program.
   QDMI_PROGRAM_FORMAT_QASM2 = 0,
-  /// `char*`(string) The OpenQASM 3 program to run.
+  /// `char*`(string) An OpenQASM 3.0 program.
   QDMI_PROGRAM_FORMAT_QASM3 = 1,
-  /// `char*`(string) The QIR program satisfying the base profile as a string.
+  /// `char*`(string) A text-based QIR program complying to the QIR base
+  /// profile.
   QDMI_PROGRAM_FORMAT_QIRBASESTRING = 2,
-  /// `void*` The QIR program satisfying the base profile as a binary module.
+  /// `void*` A QIR binary complying to the QIR base profile.
   QDMI_PROGRAM_FORMAT_QIRBASEMODULE = 3,
-  /// `char*`(string) The QIR program satisfying the adaptive profile as a
-  /// string.
+  /// `char*`(string) A text-based QIR program complying to the QIR adaptive
+  /// profile.
   QDMI_PROGRAM_FORMAT_QIRADAPTIVESTRING = 4,
-  /// `void*` The QIR program satisfying the adaptive profile as a binary
-  /// module.
+  /// `void*` A QIR binary complying to the QIR adaptive profile.
   QDMI_PROGRAM_FORMAT_QIRADAPTIVEMODULE = 5,
   /**
    * @brief The maximum value of the enum.
