@@ -303,7 +303,7 @@ int C_QDMI_query_operation_property_dev(C_QDMI_Operation operation,
 int C_QDMI_control_create_job_dev(const QDMI_Program_Format format,
                                   const size_t size, const void *prog,
                                   C_QDMI_Job *job) {
-  if (prog != NULL && (size <= 0 || job == NULL)) {
+  if (prog != NULL && (size == 0 || job == NULL)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   if (format != QDMI_PROGRAM_FORMAT_QASM2 &&
