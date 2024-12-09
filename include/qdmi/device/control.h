@@ -45,13 +45,16 @@ extern "C" {
  * QDMI_PROGRAM_FORMAT_T for available options. Note that the availability also
  * depends on the device.
  * @param[in] size is the number of bytes of the program.
- * @param[in] prog is the program to run.
+ * @param[in] prog is the program to run. If this is @c NULL, it is ignored.
  * @param[out] job is a handle to the job created.
- * @return @ref QDMI_SUCCESS if the job was successfully created.
- * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p size is less than or equal to
- * zero or the program @p prog is invalid, e.g. @c NULL.
+ * @return @ref QDMI_SUCCESS if the device supports the given @ref
+ * QDMI_Program_Format @p format and, if @p prog was not
+ * @c NULL, if the job was successfully created.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p prog is not @c NULL and @p size
+ * is less than or equal to zero or the program @p prog is invalid, e.g. a
+ * syntax error.
  * @return @ref QDMI_ERROR_NOTSUPPORTED if the device does not support the
- * program format.
+ * program format @p format.
  * @return @ref QDMI_ERROR_FATAL if the job creation failed.
  */
 int QDMI_control_create_job_dev(QDMI_Program_Format format, size_t size,
