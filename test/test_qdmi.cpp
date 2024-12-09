@@ -146,6 +146,15 @@ TEST_P(QDMIImplementationTest, ControlJob) {
   EXPECT_EQ(QDMI_control_create_job(device, QDMI_PROGRAM_FORMAT_QASM2,
                                     input.length() + 1, input.c_str(), nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
+
+  // Test format support
+  EXPECT_EQ(QDMI_control_create_job(device, QDMI_PROGRAM_FORMAT_QASM3, 0,
+                                    nullptr, nullptr),
+            QDMI_ERROR_NOTSUPPORTED);
+  EXPECT_EQ(QDMI_control_create_job(device,
+                                    QDMI_PROGRAM_FORMAT_QIRADAPTIVESTRING, 0,
+                                    nullptr, nullptr),
+            QDMI_ERROR_NOTSUPPORTED);
   EXPECT_EQ(QDMI_control_create_job(device,
                                     QDMI_PROGRAM_FORMAT_QIRADAPTIVEMODULE, 0,
                                     nullptr, nullptr),
@@ -153,6 +162,14 @@ TEST_P(QDMIImplementationTest, ControlJob) {
   ASSERT_EQ(QDMI_control_create_job(device, QDMI_PROGRAM_FORMAT_QASM2, 0,
                                     nullptr, nullptr),
             QDMI_SUCCESS);
+  ASSERT_EQ(QDMI_control_create_job(device, QDMI_PROGRAM_FORMAT_QIRBASEMODULE,
+                                    0, nullptr, nullptr),
+            QDMI_SUCCESS);
+  ASSERT_EQ(QDMI_control_create_job(device, QDMI_PROGRAM_FORMAT_QIRBASESTRING,
+                                    0, nullptr, nullptr),
+            QDMI_SUCCESS);
+
+  // Test actual job creation and submission
   ASSERT_EQ(QDMI_control_create_job(device, QDMI_PROGRAM_FORMAT_QASM2,
                                     input.length() + 1, input.c_str(), &job),
             QDMI_SUCCESS);
