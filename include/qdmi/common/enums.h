@@ -215,10 +215,16 @@ enum QDMI_PROGRAM_FORMAT_T {
   QDMI_PROGRAM_FORMAT_QASM2 = 0,
   /// `char*`(string) The OpenQASM 3 program to run.
   QDMI_PROGRAM_FORMAT_QASM3 = 1,
-  /// `char*`(string) The QIR program to run as a string.
-  QDMI_PROGRAM_FORMAT_QIRSTRING = 2,
-  /// `void*` The QIR program as a binary module.
-  QDMI_PROGRAM_FORMAT_QIRMODULE = 3,
+  /// `char*`(string) The QIR program satisfying the base profile as a string.
+  QDMI_PROGRAM_FORMAT_QIRBASESTRING = 2,
+  /// `void*` The QIR program satisfying the base profile as a binary module.
+  QDMI_PROGRAM_FORMAT_QIRBASEMODULE = 3,
+  /// `char*`(string) The QIR program satisfying the adaptive profile as a
+  /// string.
+  QDMI_PROGRAM_FORMAT_QIRADAPTIVESTRING = 4,
+  /// `void*` The QIR program satisfying the adaptive profile as a binary
+  /// module.
+  QDMI_PROGRAM_FORMAT_QIRADAPTIVEMODULE = 5,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
@@ -226,7 +232,7 @@ enum QDMI_PROGRAM_FORMAT_T {
    * enum besides the custom members and must be updated when new members are
    * added.
    */
-  QDMI_PROGRAM_FORMAT_MAX = 4,
+  QDMI_PROGRAM_FORMAT_MAX = 6,
   /**
    * @brief This property is reserved for a custom property.
    * @details The meaning and the type of this property are defined by the
