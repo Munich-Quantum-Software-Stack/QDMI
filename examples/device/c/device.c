@@ -303,18 +303,20 @@ int C_QDMI_query_operation_property_dev(C_QDMI_Operation operation,
 int C_QDMI_control_create_job_dev(const QDMI_Program_Format format,
                                   const size_t size, const void *prog,
                                   C_QDMI_Job *job) {
-  if (C_QDMI_read_device_status() != QDMI_DEVICE_STATUS_IDLE) {
-    return QDMI_ERROR_FATAL;
-  }
-  if (size == 0 || prog == NULL || job == NULL) {
+  if (prog != NULL && (size == 0 || job == NULL)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   if (format != QDMI_PROGRAM_FORMAT_QASM2 &&
-      format != QDMI_PROGRAM_FORMAT_QIRSTRING &&
-      format != QDMI_PROGRAM_FORMAT_QIRMODULE) {
+      format != QDMI_PROGRAM_FORMAT_QIRBASESTRING &&
+      format != QDMI_PROGRAM_FORMAT_QIRBASEMODULE) {
     return QDMI_ERROR_NOTSUPPORTED;
   }
-
+  if (prog == NULL) {
+    return QDMI_SUCCESS;
+  }
+  if (C_QDMI_read_device_status() != QDMI_DEVICE_STATUS_IDLE) {
+    return QDMI_ERROR_FATAL;
+  }
   *job = (C_QDMI_Job)malloc(sizeof(C_QDMI_Job_impl_t));
   // set job id to random number for demonstration purposes
   (*job)->id = rand();
