@@ -28,7 +28,24 @@ extern "C" {
 
 // The following clang-tidy warning cannot be addressed because this header is
 // used from both C and C++ code.
-// NOLINTBEGIN(performance-enum-size)
+// NOLINTBEGIN(performance-enum-size,modernize-use-using)
+
+/**
+ * @brief Status codes returned by the API.
+ */
+enum QDMI_STATUS {
+  QDMI_WARN_GENERAL = 1,            ///< A general warning.
+  QDMI_SUCCESS = 0,                 ///< The operation was successful.
+  QDMI_ERROR_FATAL = -1,            ///< A fatal error.
+  QDMI_ERROR_OUTOFMEM = -2,         ///< Out of memory.
+  QDMI_ERROR_NOTIMPLEMENTED = -3,   ///< Not implemented.
+  QDMI_ERROR_LIBNOTFOUND = -4,      ///< Library not found.
+  QDMI_ERROR_NOTFOUND = -5,         ///< Element not found.
+  QDMI_ERROR_OUTOFRANGE = -6,       ///< Out of range.
+  QDMI_ERROR_INVALIDARGUMENT = -7,  ///< Invalid argument.
+  QDMI_ERROR_PERMISSIONDENIED = -8, ///< Permission denied.
+  QDMI_ERROR_NOTSUPPORTED = -9,     ///< Operation is not supported.
+};
 
 /// Enum of the device properties that can be queried.
 enum QDMI_DEVICE_PROPERTY_T {
@@ -78,6 +95,9 @@ enum QDMI_DEVICE_PROPERTY_T {
   QDMI_DEVICE_PROPERTY_CUSTOM5 = 999999999
 };
 
+/// Type of the device properties.
+typedef enum QDMI_DEVICE_PROPERTY_T QDMI_Device_Property;
+
 /// Enum of different status the device can be in.
 enum QDMI_DEVICE_STATUS_T {
   QDMI_DEVICE_STATUS_OFFLINE = 0,     ///< The device is offline.
@@ -95,6 +115,9 @@ enum QDMI_DEVICE_STATUS_T {
    */
   QDMI_DEVICE_STATUS_MAX = 6
 };
+
+/// Type of the device status.
+typedef enum QDMI_DEVICE_STATUS_T QDMI_Device_Status;
 
 /// Enum of the site properties that can be queried.
 enum QDMI_SITE_PROPERTY_T {
@@ -124,6 +147,9 @@ enum QDMI_SITE_PROPERTY_T {
   /// @see QDMI_SITE_PROPERTY_CUSTOM1
   QDMI_SITE_PROPERTY_CUSTOM5 = 999999999
 };
+
+/// Type of the site properties.
+typedef enum QDMI_SITE_PROPERTY_T QDMI_Site_Property;
 
 /// Enum of the operation properties that can be queried.
 enum QDMI_OPERATION_PROPERTY_T {
@@ -160,6 +186,9 @@ enum QDMI_OPERATION_PROPERTY_T {
   QDMI_OPERATION_PROPERTY_CUSTOM5 = 999999999
 };
 
+/// Type of the operation properties.
+typedef enum QDMI_OPERATION_PROPERTY_T QDMI_Operation_Property;
+
 /**
  * @brief Enum of the status a job can have.
  * @details See also @ref rationale.md for a description of the job's lifecycle.
@@ -180,32 +209,8 @@ enum QDMI_JOB_STATUS_T {
   QDMI_JOB_STATUS_CANCELLED = 4
 };
 
-/**
- * @brief Enum of the modes a device can be opened in.
- * @note The values of this enum are meant to be used as bitflags. Hence, their
- * values must be powers of 2.
- */
-enum QDMI_DEVICE_MODE_T {
-  QDMI_DEVICE_MODE_READONLY = 0,  ///< To open the device in read-only mode.
-  QDMI_DEVICE_MODE_READWRITE = 1, ///< To open the device in read-write mode.
-};
-
-/**
- * @brief Status codes returned by the API.
- */
-enum QDMI_STATUS {
-  QDMI_WARN_GENERAL = 1,            ///< A general warning.
-  QDMI_SUCCESS = 0,                 ///< The operation was successful.
-  QDMI_ERROR_FATAL = -1,            ///< A fatal error.
-  QDMI_ERROR_OUTOFMEM = -2,         ///< Out of memory.
-  QDMI_ERROR_NOTIMPLEMENTED = -3,   ///< Not implemented.
-  QDMI_ERROR_LIBNOTFOUND = -4,      ///< Library not found.
-  QDMI_ERROR_NOTFOUND = -5,         ///< Element not found.
-  QDMI_ERROR_OUTOFRANGE = -6,       ///< Out of range.
-  QDMI_ERROR_INVALIDARGUMENT = -7,  ///< Invalid argument.
-  QDMI_ERROR_PERMISSIONDENIED = -8, ///< Permission denied.
-  QDMI_ERROR_NOTSUPPORTED = -9,     ///< Operation is not supported.
-};
+/// Type of the device status.
+typedef enum QDMI_JOB_STATUS_T QDMI_Job_Status;
 
 /**
  * @brief Enum of formats that can be submitted to the device.
@@ -250,35 +255,8 @@ enum QDMI_PROGRAM_FORMAT_T {
   QDMI_PROGRAM_FORMAT_CUSTOM5 = 999999999
 };
 
-/**
- * @brief Enum of the job parameters that can be set.
- */
-enum QDMI_JOB_PARAMETER_T {
-  /// `size_t` The number of shots to take.
-  QDMI_JOB_PARAMETER_SHOTS_NUM = 0,
-  /**
-   * @brief The maximum value of the enum.
-   * @details It can be used by devices for bounds checking and validation of
-   * function parameters. This value must remain the last regular member of the
-   * enum besides the custom members and must be updated when new members are
-   * added.
-   */
-  QDMI_JOB_PARAMETER_MAX = 1,
-  /**
-   * @brief This property is reserved for a custom property.
-   * @details The meaning and the type of this property is defined by the
-   * device.
-   */
-  QDMI_JOB_PARAMETER_CUSTOM1 = 999999995,
-  /// @see QDMI_JOB_PARAMETER_CUSTOM1
-  QDMI_JOB_PARAMETER_CUSTOM2 = 999999996,
-  /// @see QDMI_JOB_PARAMETER_CUSTOM1
-  QDMI_JOB_PARAMETER_CUSTOM3 = 999999997,
-  /// @see QDMI_JOB_PARAMETER_CUSTOM1
-  QDMI_JOB_PARAMETER_CUSTOM4 = 999999998,
-  /// @see QDMI_JOB_PARAMETER_CUSTOM1
-  QDMI_JOB_PARAMETER_CUSTOM5 = 999999999
-};
+/// Type of the program format.
+typedef enum QDMI_PROGRAM_FORMAT_T QDMI_Program_Format;
 
 /**
  * @brief Enum of the formats the results can be returned in.
@@ -384,40 +362,10 @@ enum QDMI_JOB_RESULT_T {
   QDMI_JOB_RESULT_CUSTOM5 = 999999999
 };
 
-/**
- * @brief Enum of the session parameters that can be set.
- */
-enum QDMI_SESSION_PARAMETER_T {
-  /// `char*` (string) The owner of the session.
-  QDMI_SESSION_PARAMETER_OWNER = 0,
-  /// `char*` (string) The access token for the session.
-  QDMI_SESSION_PARAMETER_TOKEN = 1,
-  /**
-   * @brief The maximum value of the enum.
-   * @details It can be used by devices for bounds checking and validation of
-   * function parameters. This value must remain the last regular member of the
-   * enum besides the custom members and must be updated when new members are
-   * added.
-   */
-  QDMI_SESSION_PARAMETER_MAX = 2,
-  /**
-   * @brief This property is reserved for a custom property.
-   * @details The meaning and the type of this property are defined by the
-   * device. To maintain binary compatibility, the value of this enum member
-   * must not be changed.
-   */
-  QDMI_SESSION_PARAMETER_CUSTOM1 = 999999995,
-  /// @see QDMI_SESSION_PARAMETER_CUSTOM1
-  QDMI_SESSION_PARAMETER_CUSTOM2 = 999999996,
-  /// @see QDMI_SESSION_PARAMETER_CUSTOM1
-  QDMI_SESSION_PARAMETER_CUSTOM3 = 999999997,
-  /// @see QDMI_SESSION_PARAMETER_CUSTOM1
-  QDMI_SESSION_PARAMETER_CUSTOM4 = 999999998,
-  /// @see QDMI_SESSION_PARAMETER_CUSTOM1
-  QDMI_SESSION_PARAMETER_CUSTOM5 = 999999999
-};
+/// Type of the job result.
+typedef enum QDMI_JOB_RESULT_T QDMI_Job_Result;
 
-// NOLINTEND(performance-enum-size)
+// NOLINTEND(performance-enum-size,modernize-use-using)
 
 #ifdef __cplusplus
 } // extern "C"
