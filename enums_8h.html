@@ -315,15 +315,17 @@ Enumerations</h2></td></tr>
 <tr class="memitem:a3eff3252203fcad146d5896e4466ec09" id="r_a3eff3252203fcad146d5896e4466ec09"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3eff3252203fcad146d5896e4466ec09">QDMI_PROGRAM_FORMAT_T</a> { <br />
 &#160;&#160;<a class="el" href="#a3eff3252203fcad146d5896e4466ec09afd3bab5e29afc660e29b2a132246471b">QDMI_PROGRAM_FORMAT_QASM2</a> = 0
 , <a class="el" href="#a3eff3252203fcad146d5896e4466ec09a46cb051d6e1f54c658570dee57813903">QDMI_PROGRAM_FORMAT_QASM3</a> = 1
-, <a class="el" href="#a3eff3252203fcad146d5896e4466ec09ad95c42d4fc8782d119eae27a258342fa">QDMI_PROGRAM_FORMAT_QIRSTRING</a> = 2
-, <a class="el" href="#a3eff3252203fcad146d5896e4466ec09a3a59c7404dd8f1225252ed2fae52f195">QDMI_PROGRAM_FORMAT_QIRMODULE</a> = 3
+, <a class="el" href="#a3eff3252203fcad146d5896e4466ec09a3645597dc4c99852e2820de66569ceac">QDMI_PROGRAM_FORMAT_QIRBASESTRING</a> = 2
+, <a class="el" href="#a3eff3252203fcad146d5896e4466ec09a705ba084cac8769dc2bf91c0beb35ac7">QDMI_PROGRAM_FORMAT_QIRBASEMODULE</a> = 3
 , <br />
-&#160;&#160;<a class="el" href="#a3eff3252203fcad146d5896e4466ec09aed0bf48a068be1cc41e339c6ae48e655">QDMI_PROGRAM_FORMAT_MAX</a> = 4
+&#160;&#160;<a class="el" href="#a3eff3252203fcad146d5896e4466ec09ad749b99003f2b2f6bd07916b2e45be14">QDMI_PROGRAM_FORMAT_QIRADAPTIVESTRING</a> = 4
+, <a class="el" href="#a3eff3252203fcad146d5896e4466ec09aded29a50e3dc815777fb45f54dbc1b02">QDMI_PROGRAM_FORMAT_QIRADAPTIVEMODULE</a> = 5
+, <a class="el" href="#a3eff3252203fcad146d5896e4466ec09aed0bf48a068be1cc41e339c6ae48e655">QDMI_PROGRAM_FORMAT_MAX</a> = 6
 , <a class="el" href="#a3eff3252203fcad146d5896e4466ec09ae4c406dd4f873011195a218898ad2348">QDMI_PROGRAM_FORMAT_CUSTOM1</a> = 999999995
-, <a class="el" href="#a3eff3252203fcad146d5896e4466ec09aa623b6643ae8806cc0beae73b13723e4">QDMI_PROGRAM_FORMAT_CUSTOM2</a> = 999999996
-, <a class="el" href="#a3eff3252203fcad146d5896e4466ec09a25fa2e815d2f0e788117c54188c379a8">QDMI_PROGRAM_FORMAT_CUSTOM3</a> = 999999997
 , <br />
-&#160;&#160;<a class="el" href="#a3eff3252203fcad146d5896e4466ec09a606a32a79bea4e188111ac5728b04212">QDMI_PROGRAM_FORMAT_CUSTOM4</a> = 999999998
+&#160;&#160;<a class="el" href="#a3eff3252203fcad146d5896e4466ec09aa623b6643ae8806cc0beae73b13723e4">QDMI_PROGRAM_FORMAT_CUSTOM2</a> = 999999996
+, <a class="el" href="#a3eff3252203fcad146d5896e4466ec09a25fa2e815d2f0e788117c54188c379a8">QDMI_PROGRAM_FORMAT_CUSTOM3</a> = 999999997
+, <a class="el" href="#a3eff3252203fcad146d5896e4466ec09a606a32a79bea4e188111ac5728b04212">QDMI_PROGRAM_FORMAT_CUSTOM4</a> = 999999998
 , <a class="el" href="#a3eff3252203fcad146d5896e4466ec09ac2fc29b4f13482775b7d080f281f9a21">QDMI_PROGRAM_FORMAT_CUSTOM5</a> = 999999999
 <br />
  }</td></tr>
@@ -665,13 +667,17 @@ Enumerations</h2></td></tr>
 
 <p>Enum of formats that can be submitted to the device. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09afd3bab5e29afc660e29b2a132246471b" name="a3eff3252203fcad146d5896e4466ec09afd3bab5e29afc660e29b2a132246471b"></a>QDMI_PROGRAM_FORMAT_QASM2&#160;</td><td class="fielddoc"><p><code>char*</code>(string) The OpenQASM 2.0 program to run. </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09afd3bab5e29afc660e29b2a132246471b" name="a3eff3252203fcad146d5896e4466ec09afd3bab5e29afc660e29b2a132246471b"></a>QDMI_PROGRAM_FORMAT_QASM2&#160;</td><td class="fielddoc"><p><code>char*</code>(string) An OpenQASM 2.0 program. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09a46cb051d6e1f54c658570dee57813903" name="a3eff3252203fcad146d5896e4466ec09a46cb051d6e1f54c658570dee57813903"></a>QDMI_PROGRAM_FORMAT_QASM3&#160;</td><td class="fielddoc"><p><code>char*</code>(string) The OpenQASM 3 program to run. </p>
+<tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09a46cb051d6e1f54c658570dee57813903" name="a3eff3252203fcad146d5896e4466ec09a46cb051d6e1f54c658570dee57813903"></a>QDMI_PROGRAM_FORMAT_QASM3&#160;</td><td class="fielddoc"><p><code>char*</code>(string) An OpenQASM 3.0 program. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09ad95c42d4fc8782d119eae27a258342fa" name="a3eff3252203fcad146d5896e4466ec09ad95c42d4fc8782d119eae27a258342fa"></a>QDMI_PROGRAM_FORMAT_QIRSTRING&#160;</td><td class="fielddoc"><p><code>char*</code>(string) The QIR program to run as a string. </p>
+<tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09a3645597dc4c99852e2820de66569ceac" name="a3eff3252203fcad146d5896e4466ec09a3645597dc4c99852e2820de66569ceac"></a>QDMI_PROGRAM_FORMAT_QIRBASESTRING&#160;</td><td class="fielddoc"><p><code>char*</code>(string) A text-based QIR program complying to the QIR base profile. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09a3a59c7404dd8f1225252ed2fae52f195" name="a3eff3252203fcad146d5896e4466ec09a3a59c7404dd8f1225252ed2fae52f195"></a>QDMI_PROGRAM_FORMAT_QIRMODULE&#160;</td><td class="fielddoc"><p><code>void*</code> The QIR program as a binary module. </p>
+<tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09a705ba084cac8769dc2bf91c0beb35ac7" name="a3eff3252203fcad146d5896e4466ec09a705ba084cac8769dc2bf91c0beb35ac7"></a>QDMI_PROGRAM_FORMAT_QIRBASEMODULE&#160;</td><td class="fielddoc"><p><code>void*</code> A QIR binary complying to the QIR base profile. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09ad749b99003f2b2f6bd07916b2e45be14" name="a3eff3252203fcad146d5896e4466ec09ad749b99003f2b2f6bd07916b2e45be14"></a>QDMI_PROGRAM_FORMAT_QIRADAPTIVESTRING&#160;</td><td class="fielddoc"><p><code>char*</code>(string) A text-based QIR program complying to the QIR adaptive profile. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09aded29a50e3dc815777fb45f54dbc1b02" name="a3eff3252203fcad146d5896e4466ec09aded29a50e3dc815777fb45f54dbc1b02"></a>QDMI_PROGRAM_FORMAT_QIRADAPTIVEMODULE&#160;</td><td class="fielddoc"><p><code>void*</code> A QIR binary complying to the QIR adaptive profile. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09aed0bf48a068be1cc41e339c6ae48e655" name="a3eff3252203fcad146d5896e4466ec09aed0bf48a068be1cc41e339c6ae48e655"></a>QDMI_PROGRAM_FORMAT_MAX&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
 <p>It can be used by devices for bounds checking and validation of function parameters. This value must remain the last regular member of the enum besides the custom members and must be updated when new members are added. </p>

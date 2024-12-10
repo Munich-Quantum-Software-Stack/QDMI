@@ -699,16 +699,19 @@ Submitting a Job</h2>
 <li><b class="tab-title">C++</b>  <div class="fragment"><div class="line"><span class="keywordtype">int</span> CXX_QDMI_control_create_job_dev(<span class="keyword">const</span> <a class="code hl_typedef" href="common_2types_8h.html#a475336f0c08bd0218dd76a6016098231">QDMI_Program_Format</a> format,</div>
 <div class="line">                                    <span class="keyword">const</span> <span class="keywordtype">size_t</span> size, <span class="keyword">const</span> <span class="keywordtype">void</span> *prog,</div>
 <div class="line">                                    CXX_QDMI_Job *job) {</div>
-<div class="line">  <span class="keywordflow">if</span> (CXX_QDMI_get_device_status() != <a class="code hl_enumvalue" href="enums_8h.html#aa13ac5e1c93a4b358d84bb9fd1f5fd99a085a5b7c40531ff46ca59848462dc376">QDMI_DEVICE_STATUS_IDLE</a>) {</div>
-<div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3">QDMI_ERROR_FATAL</a>;</div>
-<div class="line">  }</div>
-<div class="line">  <span class="keywordflow">if</span> (size == 0 || prog == <span class="keyword">nullptr</span> || job == <span class="keyword">nullptr</span>) {</div>
+<div class="line">  <span class="keywordflow">if</span> (prog != <span class="keyword">nullptr</span> &amp;&amp; (size == 0 || job == <span class="keyword">nullptr</span>)) {</div>
 <div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642">QDMI_ERROR_INVALIDARGUMENT</a>;</div>
 <div class="line">  }</div>
 <div class="line">  <span class="keywordflow">if</span> (format != <a class="code hl_enumvalue" href="enums_8h.html#a3eff3252203fcad146d5896e4466ec09afd3bab5e29afc660e29b2a132246471b">QDMI_PROGRAM_FORMAT_QASM2</a> &amp;&amp;</div>
-<div class="line">      format != <a class="code hl_enumvalue" href="enums_8h.html#a3eff3252203fcad146d5896e4466ec09ad95c42d4fc8782d119eae27a258342fa">QDMI_PROGRAM_FORMAT_QIRSTRING</a> &amp;&amp;</div>
-<div class="line">      format != <a class="code hl_enumvalue" href="enums_8h.html#a3eff3252203fcad146d5896e4466ec09a3a59c7404dd8f1225252ed2fae52f195">QDMI_PROGRAM_FORMAT_QIRMODULE</a>) {</div>
+<div class="line">      format != <a class="code hl_enumvalue" href="enums_8h.html#a3eff3252203fcad146d5896e4466ec09a3645597dc4c99852e2820de66569ceac">QDMI_PROGRAM_FORMAT_QIRBASESTRING</a> &amp;&amp;</div>
+<div class="line">      format != <a class="code hl_enumvalue" href="enums_8h.html#a3eff3252203fcad146d5896e4466ec09a705ba084cac8769dc2bf91c0beb35ac7">QDMI_PROGRAM_FORMAT_QIRBASEMODULE</a>) {</div>
 <div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a>;</div>
+<div class="line">  }</div>
+<div class="line">  <span class="keywordflow">if</span> (prog == <span class="keyword">nullptr</span>) {</div>
+<div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a8039f5cd8202553b2a91a1c0b01d6751">QDMI_SUCCESS</a>;</div>
+<div class="line">  }</div>
+<div class="line">  <span class="keywordflow">if</span> (CXX_QDMI_get_device_status() != <a class="code hl_enumvalue" href="enums_8h.html#aa13ac5e1c93a4b358d84bb9fd1f5fd99a085a5b7c40531ff46ca59848462dc376">QDMI_DEVICE_STATUS_IDLE</a>) {</div>
+<div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3">QDMI_ERROR_FATAL</a>;</div>
 <div class="line">  }</div>
 <div class="line"> </div>
 <div class="line">  *job = <span class="keyword">new</span> CXX_QDMI_Job_impl_d;</div>
@@ -719,27 +722,29 @@ Submitting a Job</h2>
 <div class="line">} </div>
 <div class="ttc" id="acommon_2types_8h_html_a475336f0c08bd0218dd76a6016098231"><div class="ttname"><a href="common_2types_8h.html#a475336f0c08bd0218dd76a6016098231">QDMI_Program_Format</a></div><div class="ttdeci">enum QDMI_PROGRAM_FORMAT_T QDMI_Program_Format</div><div class="ttdoc">Type of the program format.</div><div class="ttdef"><b>Definition</b> types.h:54</div></div>
 <div class="ttc" id="aenums_8h_html_a04e5c793bcbe8b354a9223bb60f828a6a2d985c815c2e1024b9eb5605e8825df5"><div class="ttname"><a href="enums_8h.html#a04e5c793bcbe8b354a9223bb60f828a6a2d985c815c2e1024b9eb5605e8825df5">QDMI_JOB_STATUS_CREATED</a></div><div class="ttdeci">@ QDMI_JOB_STATUS_CREATED</div><div class="ttdoc">The job was created and can be configured via QDMI_control_set_parameter.</div><div class="ttdef"><b>Definition</b> enums.h:172</div></div>
-<div class="ttc" id="aenums_8h_html_a3eff3252203fcad146d5896e4466ec09a3a59c7404dd8f1225252ed2fae52f195"><div class="ttname"><a href="enums_8h.html#a3eff3252203fcad146d5896e4466ec09a3a59c7404dd8f1225252ed2fae52f195">QDMI_PROGRAM_FORMAT_QIRMODULE</a></div><div class="ttdeci">@ QDMI_PROGRAM_FORMAT_QIRMODULE</div><div class="ttdoc">void* The QIR program as a binary module.</div><div class="ttdef"><b>Definition</b> enums.h:221</div></div>
-<div class="ttc" id="aenums_8h_html_a3eff3252203fcad146d5896e4466ec09ad95c42d4fc8782d119eae27a258342fa"><div class="ttname"><a href="enums_8h.html#a3eff3252203fcad146d5896e4466ec09ad95c42d4fc8782d119eae27a258342fa">QDMI_PROGRAM_FORMAT_QIRSTRING</a></div><div class="ttdeci">@ QDMI_PROGRAM_FORMAT_QIRSTRING</div><div class="ttdoc">char*(string) The QIR program to run as a string.</div><div class="ttdef"><b>Definition</b> enums.h:219</div></div>
-<div class="ttc" id="aenums_8h_html_a3eff3252203fcad146d5896e4466ec09afd3bab5e29afc660e29b2a132246471b"><div class="ttname"><a href="enums_8h.html#a3eff3252203fcad146d5896e4466ec09afd3bab5e29afc660e29b2a132246471b">QDMI_PROGRAM_FORMAT_QASM2</a></div><div class="ttdeci">@ QDMI_PROGRAM_FORMAT_QASM2</div><div class="ttdoc">char*(string) The OpenQASM 2.0 program to run.</div><div class="ttdef"><b>Definition</b> enums.h:215</div></div>
+<div class="ttc" id="aenums_8h_html_a3eff3252203fcad146d5896e4466ec09a3645597dc4c99852e2820de66569ceac"><div class="ttname"><a href="enums_8h.html#a3eff3252203fcad146d5896e4466ec09a3645597dc4c99852e2820de66569ceac">QDMI_PROGRAM_FORMAT_QIRBASESTRING</a></div><div class="ttdeci">@ QDMI_PROGRAM_FORMAT_QIRBASESTRING</div><div class="ttdef"><b>Definition</b> enums.h:220</div></div>
+<div class="ttc" id="aenums_8h_html_a3eff3252203fcad146d5896e4466ec09a705ba084cac8769dc2bf91c0beb35ac7"><div class="ttname"><a href="enums_8h.html#a3eff3252203fcad146d5896e4466ec09a705ba084cac8769dc2bf91c0beb35ac7">QDMI_PROGRAM_FORMAT_QIRBASEMODULE</a></div><div class="ttdeci">@ QDMI_PROGRAM_FORMAT_QIRBASEMODULE</div><div class="ttdoc">void* A QIR binary complying to the QIR base profile.</div><div class="ttdef"><b>Definition</b> enums.h:222</div></div>
+<div class="ttc" id="aenums_8h_html_a3eff3252203fcad146d5896e4466ec09afd3bab5e29afc660e29b2a132246471b"><div class="ttname"><a href="enums_8h.html#a3eff3252203fcad146d5896e4466ec09afd3bab5e29afc660e29b2a132246471b">QDMI_PROGRAM_FORMAT_QASM2</a></div><div class="ttdeci">@ QDMI_PROGRAM_FORMAT_QASM2</div><div class="ttdoc">char*(string) An OpenQASM 2.0 program.</div><div class="ttdef"><b>Definition</b> enums.h:215</div></div>
 <div class="ttc" id="aenums_8h_html_a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3"><div class="ttname"><a href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3">QDMI_ERROR_FATAL</a></div><div class="ttdeci">@ QDMI_ERROR_FATAL</div><div class="ttdoc">A fatal error.</div><div class="ttdef"><b>Definition</b> enums.h:199</div></div>
 <div class="ttc" id="aenums_8h_html_aa13ac5e1c93a4b358d84bb9fd1f5fd99a085a5b7c40531ff46ca59848462dc376"><div class="ttname"><a href="enums_8h.html#aa13ac5e1c93a4b358d84bb9fd1f5fd99a085a5b7c40531ff46ca59848462dc376">QDMI_DEVICE_STATUS_IDLE</a></div><div class="ttdeci">@ QDMI_DEVICE_STATUS_IDLE</div><div class="ttdoc">The device is idle.</div><div class="ttdef"><b>Definition</b> enums.h:84</div></div>
 </div><!-- fragment --></li>
 <li><b class="tab-title">C</b>  <div class="fragment"><div class="line"><span class="keywordtype">int</span> C_QDMI_control_create_job_dev(<span class="keyword">const</span> <a class="code hl_typedef" href="common_2types_8h.html#a475336f0c08bd0218dd76a6016098231">QDMI_Program_Format</a> format,</div>
 <div class="line">                                  <span class="keyword">const</span> <span class="keywordtype">size_t</span> size, <span class="keyword">const</span> <span class="keywordtype">void</span> *prog,</div>
 <div class="line">                                  C_QDMI_Job *job) {</div>
-<div class="line">  <span class="keywordflow">if</span> (C_QDMI_read_device_status() != <a class="code hl_enumvalue" href="enums_8h.html#aa13ac5e1c93a4b358d84bb9fd1f5fd99a085a5b7c40531ff46ca59848462dc376">QDMI_DEVICE_STATUS_IDLE</a>) {</div>
-<div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3">QDMI_ERROR_FATAL</a>;</div>
-<div class="line">  }</div>
-<div class="line">  <span class="keywordflow">if</span> (size == 0 || prog == NULL || job == NULL) {</div>
+<div class="line">  <span class="keywordflow">if</span> (prog != NULL &amp;&amp; (size == 0 || job == NULL)) {</div>
 <div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642">QDMI_ERROR_INVALIDARGUMENT</a>;</div>
 <div class="line">  }</div>
 <div class="line">  <span class="keywordflow">if</span> (format != <a class="code hl_enumvalue" href="enums_8h.html#a3eff3252203fcad146d5896e4466ec09afd3bab5e29afc660e29b2a132246471b">QDMI_PROGRAM_FORMAT_QASM2</a> &amp;&amp;</div>
-<div class="line">      format != <a class="code hl_enumvalue" href="enums_8h.html#a3eff3252203fcad146d5896e4466ec09ad95c42d4fc8782d119eae27a258342fa">QDMI_PROGRAM_FORMAT_QIRSTRING</a> &amp;&amp;</div>
-<div class="line">      format != <a class="code hl_enumvalue" href="enums_8h.html#a3eff3252203fcad146d5896e4466ec09a3a59c7404dd8f1225252ed2fae52f195">QDMI_PROGRAM_FORMAT_QIRMODULE</a>) {</div>
+<div class="line">      format != <a class="code hl_enumvalue" href="enums_8h.html#a3eff3252203fcad146d5896e4466ec09a3645597dc4c99852e2820de66569ceac">QDMI_PROGRAM_FORMAT_QIRBASESTRING</a> &amp;&amp;</div>
+<div class="line">      format != <a class="code hl_enumvalue" href="enums_8h.html#a3eff3252203fcad146d5896e4466ec09a705ba084cac8769dc2bf91c0beb35ac7">QDMI_PROGRAM_FORMAT_QIRBASEMODULE</a>) {</div>
 <div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a>;</div>
 <div class="line">  }</div>
-<div class="line"> </div>
+<div class="line">  <span class="keywordflow">if</span> (prog == NULL) {</div>
+<div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a8039f5cd8202553b2a91a1c0b01d6751">QDMI_SUCCESS</a>;</div>
+<div class="line">  }</div>
+<div class="line">  <span class="keywordflow">if</span> (C_QDMI_read_device_status() != <a class="code hl_enumvalue" href="enums_8h.html#aa13ac5e1c93a4b358d84bb9fd1f5fd99a085a5b7c40531ff46ca59848462dc376">QDMI_DEVICE_STATUS_IDLE</a>) {</div>
+<div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3">QDMI_ERROR_FATAL</a>;</div>
+<div class="line">  }</div>
 <div class="line">  *job = (C_QDMI_Job)malloc(<span class="keyword">sizeof</span>(C_QDMI_Job_impl_t));</div>
 <div class="line">  <span class="comment">// set job id to random number for demonstration purposes</span></div>
 <div class="line">  (*job)-&gt;id = rand();</div>
@@ -767,8 +772,8 @@ Submitting a Job</h2>
 <div class="line">  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="enums_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a>;</div>
 <div class="line">} </div>
 <div class="ttc" id="acommon_2types_8h_html_a4d37195d9d0765b10a6ad681304a4512"><div class="ttname"><a href="common_2types_8h.html#a4d37195d9d0765b10a6ad681304a4512">QDMI_Job_Parameter</a></div><div class="ttdeci">enum QDMI_JOB_PARAMETER_T QDMI_Job_Parameter</div><div class="ttdoc">Type of the job parameter.</div><div class="ttdef"><b>Definition</b> types.h:57</div></div>
-<div class="ttc" id="aenums_8h_html_a1e7131664b094eb409d0f44d731f51f5a0fc11e9295172abcbf6a2116a7985507"><div class="ttname"><a href="enums_8h.html#a1e7131664b094eb409d0f44d731f51f5a0fc11e9295172abcbf6a2116a7985507">QDMI_JOB_PARAMETER_SHOTS_NUM</a></div><div class="ttdeci">@ QDMI_JOB_PARAMETER_SHOTS_NUM</div><div class="ttdoc">size_t The number of shots to take.</div><div class="ttdef"><b>Definition</b> enums.h:252</div></div>
-<div class="ttc" id="aenums_8h_html_a1e7131664b094eb409d0f44d731f51f5aa94ff18351f57072ad1e9223583ff978"><div class="ttname"><a href="enums_8h.html#a1e7131664b094eb409d0f44d731f51f5aa94ff18351f57072ad1e9223583ff978">QDMI_JOB_PARAMETER_MAX</a></div><div class="ttdeci">@ QDMI_JOB_PARAMETER_MAX</div><div class="ttdoc">The maximum value of the enum.</div><div class="ttdef"><b>Definition</b> enums.h:260</div></div>
+<div class="ttc" id="aenums_8h_html_a1e7131664b094eb409d0f44d731f51f5a0fc11e9295172abcbf6a2116a7985507"><div class="ttname"><a href="enums_8h.html#a1e7131664b094eb409d0f44d731f51f5a0fc11e9295172abcbf6a2116a7985507">QDMI_JOB_PARAMETER_SHOTS_NUM</a></div><div class="ttdeci">@ QDMI_JOB_PARAMETER_SHOTS_NUM</div><div class="ttdoc">size_t The number of shots to take.</div><div class="ttdef"><b>Definition</b> enums.h:258</div></div>
+<div class="ttc" id="aenums_8h_html_a1e7131664b094eb409d0f44d731f51f5aa94ff18351f57072ad1e9223583ff978"><div class="ttname"><a href="enums_8h.html#a1e7131664b094eb409d0f44d731f51f5aa94ff18351f57072ad1e9223583ff978">QDMI_JOB_PARAMETER_MAX</a></div><div class="ttdeci">@ QDMI_JOB_PARAMETER_MAX</div><div class="ttdoc">The maximum value of the enum.</div><div class="ttdef"><b>Definition</b> enums.h:266</div></div>
 </div><!-- fragment --></li>
 <li><b class="tab-title">C</b>  <div class="fragment"><div class="line"><span class="keywordtype">int</span> C_QDMI_control_set_parameter_dev(C_QDMI_Job job,</div>
 <div class="line">                                     <span class="keyword">const</span> <a class="code hl_typedef" href="common_2types_8h.html#a4d37195d9d0765b10a6ad681304a4512">QDMI_Job_Parameter</a> param,</div>
