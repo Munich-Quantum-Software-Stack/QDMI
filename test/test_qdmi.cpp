@@ -189,6 +189,10 @@ TEST_P(QDMIImplementationTest, ControlJob) {
                                        sizeof(size_t), &shots),
             QDMI_SUCCESS);
   ASSERT_EQ(QDMI_control_submit_job(device, job), QDMI_SUCCESS);
+  QDMI_Job job2 = nullptr;
+  ASSERT_EQ(QDMI_control_create_job(device, QDMI_PROGRAM_FORMAT_QASM2,
+                                    input.length() + 1, input.c_str(), &job2),
+            QDMI_ERROR_FATAL);
   EXPECT_EQ(QDMI_control_submit_job(device, job), QDMI_ERROR_INVALIDARGUMENT);
   QDMI_Job_Status status{};
   EXPECT_EQ(QDMI_control_check(device, job, &status), QDMI_SUCCESS);
