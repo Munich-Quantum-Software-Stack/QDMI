@@ -53,7 +53,7 @@ extern "C" {
  * QDMI_Program_Format @p format and, when @p prog is not @c NULL, the job was
  * successfully created.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p prog is not @c NULL and @p size
- * is less than or equal to zero, or the program @p prog is invalid (e.g.,
+ * is equal to zero, or the program @p prog is invalid (e.g.,
  * contains a syntax error).
  * @return @ref QDMI_ERROR_NOTSUPPORTED if the device does not support the
  * specified program format @p format.

@@ -41,7 +41,7 @@ extern "C" {
  * @brief Create a job on a device.
  * @details This function creates a job that consists of a circuit.
  * Additional parameters, such as the number of shots, can be set using @ref
- * QDMI_control_set_parameter_dev. After setting all necessary parameters, the
+ * QDMI_control_set_parameter. After setting all necessary parameters, the
  * job must be submitted for execution using @ref QDMI_control_submit_job.
  * @param[in] dev identifies the device to create the job on.
  * @param[in] format is the format of the program. Refer to @ref
@@ -56,7 +56,7 @@ extern "C" {
  * QDMI_Program_Format @p format and, when @p prog is not @c NULL, the job was
  * successfully created.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p prog is not @c NULL and @p size
- * is less than or equal to zero, or the program @p prog is invalid (e.g.,
+ * is equal to zero, or the program @p prog is invalid (e.g.,
  * contains a syntax error).
  * @return @ref QDMI_ERROR_NOTSUPPORTED if the device does not support the
  * specified program format @p format.
