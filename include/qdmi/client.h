@@ -17,18 +17,17 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 ------------------------------------------------------------------------------*/
 
 /** @file
- * @brief The QDMI device interface.
- * @details The purpose of the device interface is to provide a set of functions
- * that allow one to represent a physical quantum computer or classical quantum
- * simulator with a unified interface. The device interface provides functions
- * to establish sessions between a QDMI driver and a device, as well as to
- * interact with the device by querying its properties and submitting jobs to
- * the device.
+ * @brief The QDMI client interface.
+ * @details The purpose of the client interface is to provide a set of functions
+ * that allow users to interact with QDMI devices. The client interface provides
+ * functions to establish sessions with a QDMI driver, retrieve available QDMI
+ * devices, and interact with the devices by querying their properties and
+ * submitting jobs.
  */
 
 #pragma once
 
-#include "qdmi/common/enums.h"
+#include "qdmi/constants.h"
 
 #ifdef __cplusplus
 #include <cstddef>
@@ -43,52 +42,37 @@ extern "C" {
 // NOLINTBEGIN(performance-enum-size,modernize-use-using)
 
 /**
- * @brief Initialize a device.
- * @details A device can expect that this function is called once in the
- * beginning and has returned before any other functions are invoked on that
- * device.
- * @return @ref QDMI_SUCCESS if the initialization was successful.
- * @return @ref QDMI_ERROR_FATAL if the initialization failed.
+ * @brief A handle for a device.
+ * @details An opaque pointer to an implementation of the QDMI device interface.
+ * The actual implementation is defined by the driver.
  */
-int QDMI_device_initialize(void);
+typedef struct QDMI_Device_impl_d *QDMI_Device;
 
-/**
- * @brief Finalize a device.
- * @details A device can expect that this function is called once at the end of
- * using the device and no other functions are invoked on that device after that
- * anymore.
- * @return @ref QDMI_SUCCESS if the finalization was successful.
- * @return @ref QDMI_ERROR_FATAL if the finalization failed, this could, e.g.,
- * be due to a job that is still running.
- */
-int QDMI_device_finalize(void);
-
-/** @defgroup device_session QDMI Device Session Interface
- *  The concept of sessions is used to establish a connection between a driver
- *  and a device. Sessions are used to authenticate with the device and to
- *  manage resources required for the interaction with the device.
+/** @defgroup client_session QDMI Client Session Interface
+ *  The driver manages resources provided to clients in sessions TODO: Expand
  *  @{
  */
 
 /**
- * @brief A handle for a QDMI device session.
- * @details An opaque pointer to an implementation of the QDMI device session
- * concept. The actual implementation is defined by the device.
+ * @brief A handle for a QDMI session.
+ * @details An opaque pointer to an implementation of the QDMI session interface
+ * that makes @ref QDMI_Device handles available to clients. The actual
+ * implementation is defined by the driver.
  */
-typedef struct QDMI_Device_Session_impl_d *QDMI_Device_Session;
+typedef struct QDMI_Session_impl_d *QDMI_Session;
 
 /**
- * @brief Allocate a new QDMI device session.
- * @details The returned handle can be used in subsequent calls throughout the
- * client interface to refer to the session.
+ * @brief Allocate a new QDMI session.
+ * @details The returned handle can be used in subsequent calls to @ref
+ * QDMI_session_get_devices to get the devices available to the client.
  * @param[in] token The token used to authenticate the session. Must not be @c
  * NULL. It is implementation-defined whether the token is a username, a
  * password, an API key, or something else, and how it is used. It is up to
- * documentation of the device to specify the requirements for the token, if
+ * documentation of the driver to specify the requirements for the token, if
  * any.
  * @param[in] size The size of the @p token in bytes. Must be greater than zero.
  * @param[out] session A handle to the session that is allocated. Must not be
- * @c NULL. The session must be freed by calling @ref QDMI_device_session_free
+ * @c NULL. The session must be freed by calling @ref QDMI_session_free
  * when it is no longer needed.
  * @return @ref QDMI_SUCCESS if the session was allocated successfully.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p token is @c NULL, @p size is
@@ -96,120 +80,132 @@ typedef struct QDMI_Device_Session_impl_d *QDMI_Device_Session;
  * @return @ref QDMI_ERROR_OUTOFMEM if memory space ran out.
  * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
  */
-int QDMI_device_session_alloc(const char *token, size_t size,
-                              QDMI_Device_Session *session);
+int QDMI_session_alloc(const char *token, size_t size, QDMI_Session *session);
 
 /**
- * @brief Free a QDMI device session.
+ * @brief Free a QDMI session.
  * @details This function frees the memory that was allocated for the session.
- * Using a session handle after it was freed is undefined behavior.
- * @param[in] session The session to free.
+ * Accessing a (dangling) handle to a device that was attached to the session
+ * after the session was freed is undefined behavior.
+ * @param[in] session the session to free.
  */
-void QDMI_device_session_free(QDMI_Device_Session session);
+void QDMI_session_free(QDMI_Session session);
 
 /**
  * @brief Enum of the session parameters that can be set.
- * @details If not noted otherwise, parameters are optional and devices must not
+ * @details If not noted otherwise, parameters are optional and drivers must not
  * require them to be set.
  */
-enum QDMI_DEVICE_SESSION_PARAMETER_T {
+enum QDMI_SESSION_PARAMETER_T {
   /**
-   * @brief `char*` (string) The baseURL or API endpoint to be used for
-   * accessing the device within the session.
-   * @details If this parameter is set and the device supports it, the device
-   * must use the specified baseURL or API endpoint for the session. If this
-   * parameter is not set, the device must use a reasonable default value.
+   * @brief `char*` (string) The project ID to use for the session.
+   * @details Can be used to associate the job with a certain project, e.g., for
+   * billing purposes. The driver documentation *must* document if the
+   * implementation requires this parameter to be set.
    */
-  QDMI_DEVICE_SESSION_PARAMETER_BASEURL = 0,
+  QDMI_SESSION_PARAMETER_PROJECTID = 0,
   /**
    * @brief The maximum value of the enum.
-   * @details It can be used by devices for bounds checking and validation of
+   * @details It can be used by drivers for bounds checking and validation of
    * function parameters. This value must remain the last regular member of the
    * enum besides the custom members and must be updated when new members are
    * added.
    */
-  QDMI_DEVICE_SESSION_PARAMETER_MAX = 1,
+  QDMI_SESSION_PARAMETER_MAX = 1,
   /**
    * @brief This property is reserved for a custom property.
    * @details The meaning and the type of this property are defined by the
-   * device. To maintain binary compatibility, the value of this enum member
+   * driver. To maintain binary compatibility, the value of this enum member
    * must not be changed.
    */
-  QDMI_DEVICE_SESSION_PARAMETER_CUSTOM1 = 999999995,
-  /// @see QDMI_DEVICE_SESSION_PARAMETER_CUSTOM1
-  QDMI_DEVICE_SESSION_PARAMETER_CUSTOM2 = 999999996,
-  /// @see QDMI_DEVICE_SESSION_PARAMETER_CUSTOM1
-  QDMI_DEVICE_SESSION_PARAMETER_CUSTOM3 = 999999997,
-  /// @see QDMI_DEVICE_SESSION_PARAMETER_CUSTOM1
-  QDMI_DEVICE_SESSION_PARAMETER_CUSTOM4 = 999999998,
-  /// @see QDMI_DEVICE_SESSION_PARAMETER_CUSTOM1
-  QDMI_DEVICE_SESSION_PARAMETER_CUSTOM5 = 999999999
+  QDMI_SESSION_PARAMETER_CUSTOM1 = 999999995,
+  /// @see QDMI_SESSION_PARAMETER_CUSTOM1
+  QDMI_SESSION_PARAMETER_CUSTOM2 = 999999996,
+  /// @see QDMI_SESSION_PARAMETER_CUSTOM1
+  QDMI_SESSION_PARAMETER_CUSTOM3 = 999999997,
+  /// @see QDMI_SESSION_PARAMETER_CUSTOM1
+  QDMI_SESSION_PARAMETER_CUSTOM4 = 999999998,
+  /// @see QDMI_SESSION_PARAMETER_CUSTOM1
+  QDMI_SESSION_PARAMETER_CUSTOM5 = 999999999
 };
 
-/// Type of the device session parameter.
-typedef enum QDMI_DEVICE_SESSION_PARAMETER_T QDMI_Device_Session_Parameter;
+/// Type of the session parameter.
+typedef enum QDMI_SESSION_PARAMETER_T QDMI_Session_Parameter;
 
 /**
- * @brief Set a parameter for a device session.
+ * @brief Set a parameter for a session.
  * @param[in] session A handle to the session to set the parameter for. Must not
  * be @c NULL.
  * @param[in] param The parameter to set. Must be one of the values specified
- * for @ref QDMI_Device_Session_Parameter.
+ * for @ref QDMI_Session_Parameter.
  * @param[in] size The size of the data pointed by @p value in bytes. Must not
  * be zero, except when @p value is @c NULL, in which case it is ignored.
  * @param[in] value The value to set the parameter to. If this is @c NULL, it is
  * ignored.
- * @return @ref QDMI_SUCCESS if the device supports the specified @ref
- * QDMI_Device_Session_Parameter and, when @p value is not @c NULL, the value of
+ * @return @ref QDMI_SUCCESS if the driver supports the specified @ref
+ * QDMI_Session_Parameter and, when @p value is not @c NULL, the value of
  * the parameter was set successfully.
- * @return @ref QDMI_ERROR_NOTSUPPORTED if the device does not support the
+ * @return @ref QDMI_ERROR_NOTSUPPORTED if the driver does not support the
  * parameter.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p session is @c NULL, if @p param
  * is invalid, if @p value is not @c NULL and @p size is
  * zero or not the expected size for the parameter (if specified by the @ref
- * QDMI_Device_Session_Parameter documentation).
+ * QDMI_Session_Parameter documentation).
  * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
  *
  * @note By calling this function with @p value set to @c NULL, the function can
- * be used to check if the device supports the specified parameter without
+ * be used to check if the driver supports the specified parameter without
  * setting a value.
  */
-int QDMI_device_session_set_parameter(QDMI_Device_Session session,
-                                      QDMI_Device_Session_Parameter param,
-                                      size_t size, const void *value);
+int QDMI_session_set_parameter(QDMI_Session session,
+                               QDMI_Session_Parameter param, size_t size,
+                               const void *value);
+/**
+ * @brief Query the devices associated with @p session.
+ * @param[in] session The session to query. Must not be @c NULL.
+ * @param[in] num_entries The number of entries that can be added to @p devices.
+ * Must be greater than zero, except when @p devices is @c NULL, in which case
+ * it is ignored.
+ * @param[out] devices A pointer to a list of handles where the devices
+ * available to the client will be stored. If this is @c NULL, it is ignored.
+ * The number of devices returned is the minimum of the value specified by
+ * @p num_entries and the number of devices found.
+ * @param[out] num_devices The number of devices available. If this is @c NULL,
+ * it is ignored.
+ * @return @ref QDMI_SUCCESS if the function is executed successfully.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p session is @c NULL, if @p
+ * num_entries is zero and @p devices is not @c NULL or if both @p devices and
+ * @p num_devices are @c NULL.
+ * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
+ *
+ * @note By calling this function with @p devices set to @c NULL, the function
+ * can be used to query the number of devices available without retrieving the
+ * devices.
+ */
+int QDMI_session_get_devices(QDMI_Session session, size_t num_entries,
+                             QDMI_Device *devices, size_t *num_devices);
 
-/** @} */ // end of device_session
+/** @} */ // end of client_session
 
-/** @defgroup device_job QDMI Device Job Interface
+/** @defgroup client_job QDMI Client Job Interface
  *  The job interface allows managing jobs on a device.
  *  @{
  */
 
 /**
- * @brief A handle for a QDMI device job.
- * @details An opaque pointer to an implementation of the QDMI device job
- * concept. The actual implementation is defined by the device.
- * Most implementation will want to store the session handle used to create the
- * job in the job handle to be able to access the session information when
- * needed.
+ * @brief A handle for a QDMI job.
+ * @details An opaque pointer to an implementation of the QDMI job concept. The
+ * actual implementation is defined by the driver. Most implementations will
+ * want to store the device handle used to create the job in the job handle to
+ * be able to access the device information when needed.
  *
- * A job is a program that is executed on a device. The program can be a quantum
- * circuit (in various formats) or some other routine that the device can run.
- * Jobs are created using the @ref QDMI_device_job_create function. After
- * creating a job, additional parameters can be set using @ref
- * QDMI_device_job_set_parameter. Then, the job must be submitted for execution
- * using @ref QDMI_device_job_submit. The status of the job can be checked using
- * @ref QDMI_device_job_status. The job can be waited for using @ref
- * QDMI_device_job_wait. The job can be canceled using @ref
- * QDMI_device_job_cancel. The results of the job can be retrieved using @ref
- * QDMI_device_job_get_result. Finally, the job must be freed using @ref
- * QDMI_device_job_free.
+ * @see QDMI_Device_Job
  */
-typedef struct QDMI_Device_Job_impl_d *QDMI_Device_Job;
+typedef struct QDMI_Job_impl_d *QDMI_Job;
 
 /**
  * @brief Create a job with a certain program on a device.
- * @param[in] session The session to create the job on. Must not be @c NULL.
+ * @param[in] dev The device to create the job on. Must not be @c NULL.
  * @param[in] format The format of the program. Must be one of the values
  * specified for @ref QDMI_Program_Format.
  * @param[in] size The size of the program in bytes. Must not be zero, except
@@ -234,100 +230,98 @@ typedef struct QDMI_Device_Job_impl_d *QDMI_Device_Job;
  * function can be used to check if the device supports the specified program
  * format without creating a job and without the need to provide a program.
  */
-int QDMI_device_job_create(QDMI_Device_Session session,
-                           QDMI_Program_Format format, size_t size,
-                           const void *prog, QDMI_Device_Job *job);
+int QDMI_job_create(QDMI_Device dev, QDMI_Program_Format format, size_t size,
+                    const void *prog, QDMI_Job *job);
 
 /**
  * @brief Free a job.
  * @details Free the resources associated with a job.
  * @param[in] job The job to free.
  */
-void QDMI_device_job_free(QDMI_Device_Job job);
+void QDMI_job_free(QDMI_Job job);
 
 /**
- * @brief Enum of the device job parameters that can be set.
+ * @brief Enum of the job parameters that can be set.
  * @details If not noted otherwise, parameters are optional and drivers must not
  * require them to be set.
  */
-enum QDMI_DEVICE_JOB_PARAMETER_T {
+enum QDMI_JOB_PARAMETER_T {
   /**
    * @brief `size_t` The number of shots to execute for a quantum circuit job.
    * @details If this parameter is not set, a device-specific default number of
    * shots is used.
    */
-  QDMI_DEVICE_JOB_PARAMETER_SHOTS_NUM = 0,
+  QDMI_JOB_PARAMETER_SHOTS_NUM = 0,
   /**
    * @brief The maximum value of the enum.
-   * @details It can be used by devices for bounds checking and validation of
+   * @details It can be used by drivers for bounds checking and validation of
    * function parameters. This value must remain the last regular member of the
    * enum besides the custom members and must be updated when new members are
    * added.
    */
-  QDMI_DEVICE_JOB_PARAMETER_MAX = 1,
+  QDMI_JOB_PARAMETER_MAX = 1,
   /**
    * @brief This property is reserved for a custom property.
    * @details The meaning and the type of this property is defined by the
    * device.
    */
-  QDMI_DEVICE_JOB_PARAMETER_CUSTOM1 = 999999995,
-  /// @see QDMI_DEVICE_JOB_PARAMETER_CUSTOM1
-  QDMI_DEVICE_JOB_PARAMETER_CUSTOM2 = 999999996,
-  /// @see QDMI_DEVICE_JOB_PARAMETER_CUSTOM1
-  QDMI_DEVICE_JOB_PARAMETER_CUSTOM3 = 999999997,
-  /// @see QDMI_DEVICE_JOB_PARAMETER_CUSTOM1
-  QDMI_DEVICE_JOB_PARAMETER_CUSTOM4 = 999999998,
-  /// @see QDMI_DEVICE_JOB_PARAMETER_CUSTOM1
-  QDMI_DEVICE_JOB_PARAMETER_CUSTOM5 = 999999999
+  QDMI_JOB_PARAMETER_CUSTOM1 = 999999995,
+  /// @see QDMI_JOB_PARAMETER_CUSTOM1
+  QDMI_JOB_PARAMETER_CUSTOM2 = 999999996,
+  /// @see QDMI_JOB_PARAMETER_CUSTOM1
+  QDMI_JOB_PARAMETER_CUSTOM3 = 999999997,
+  /// @see QDMI_JOB_PARAMETER_CUSTOM1
+  QDMI_JOB_PARAMETER_CUSTOM4 = 999999998,
+  /// @see QDMI_JOB_PARAMETER_CUSTOM1
+  QDMI_JOB_PARAMETER_CUSTOM5 = 999999999
 };
 
-/// Type of the device job parameter.
-typedef enum QDMI_DEVICE_JOB_PARAMETER_T QDMI_Device_Job_Parameter;
+/// Type of the job parameter.
+typedef enum QDMI_JOB_PARAMETER_T QDMI_Job_Parameter;
 
 /**
  * @brief Set a parameter for a job.
  * @param[in] job A handle to a job for which to set @p param. Must not be @c
  * NULL.
  * @param[in] param The parameter whose value will be set. Must be one of the
- * values specified for @ref QDMI_Device_Job_Parameter.
+ * values specified for @ref QDMI_Job_Parameter.
  * @param[in] size The size of the data pointed to by @p value in bytes. Must
  * not be zero, except when @p value is @c NULL, in which case it is ignored.
  * @param[in] value A pointer to the memory location that contains the value of
  * the parameter to be set. The data pointed to by @p value is copied and can be
  * safely reused after this function returns. If this is @c NULL, it is ignored.
- * @return @ref QDMI_SUCCESS if the device supports the specified @ref
- * QDMI_Device_Job_Parameter @p param and, when @p value is not @c NULL, the
+ * @return @ref QDMI_SUCCESS if the driver supports the specified @ref
+ * QDMI_Job_Parameter @p param and, when @p value is not @c NULL, the
  * parameter was successfully set.
- * @return @ref QDMI_ERROR_NOTSUPPORTED if the device does not support the
+ * @return @ref QDMI_ERROR_NOTSUPPORTED if the driver does not support the
  * parameter.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p job is @c NULL, if @p param is
  * invalid, if @p value is not @c NULL and @p size is zero or not the expected
- * size for the parameter (if specified by the @ref QDMI_Device_Job_Parameter
+ * size for the parameter (if specified by the @ref QDMI_Job_Parameter
  * documentation).
  * @return @ref QDMI_ERROR_FATAL if setting the parameter failed due to a fatal
  * error.
  *
  * @note By calling this function with @p value set to @c NULL, the function can
- * be used to check if the device supports the specified parameter without
+ * be used to check if the driver supports the specified parameter without
  * setting the parameter and without the need to provide a value.
  */
-int QDMI_device_job_set_parameter(QDMI_Device_Job job,
-                                  QDMI_Device_Job_Parameter param, size_t size,
-                                  const void *value);
+int QDMI_job_set_parameter(QDMI_Job job, QDMI_Job_Parameter param, size_t size,
+                           const void *value);
 
 /**
  * @brief Submit a job to the device.
  * @details This function can either be blocking until the job is finished or
  * non-blocking and return while the job is running. In the latter case, the
- * functions @ref QDMI_device_job_check and @ref QDMI_device_job_wait can be
- * used to check the status and wait for the job to finish.
+ * functions @ref QDMI_job_check and @ref QDMI_job_wait can be used to check the
+ * status and wait for the job to finish.
  * @param[in] job The job to submit. Must not be @c NULL.
  * @return @ref QDMI_SUCCESS if the job was successfully submitted.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p job is @c NULL or in an invalid
  * state.
  * @return @ref QDMI_ERROR_FATAL if the job submission failed.
  */
-int QDMI_device_job_submit(QDMI_Device_Job job);
+int QDMI_job_submit(QDMI_Job job);
 
 /**
  * @brief Cancel an already submitted job.
@@ -339,19 +333,19 @@ int QDMI_device_job_submit(QDMI_Device_Job job);
  * has the status @ref QDMI_JOB_STATUS_DONE.
  * @return @ref QDMI_ERROR_FATAL if the job could not be cancelled.
  */
-int QDMI_device_job_cancel(QDMI_Device_Job job);
+int QDMI_job_cancel(QDMI_Job job);
 
 /**
  * @brief Check the status of a job.
  * @details This function is non-blocking and returns immediately with the job
  * status. It is not necessary to call this function before calling @ref
- * QDMI_device_job_get_data.
+ * QDMI_job_get_data.
  * @param[in] job The job to check the status of. Must not be @c NULL.
  * @param[out] status The status of the job. Must not be @c NULL.
  * @return @ref QDMI_SUCCESS if the job status was successfully checked.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p job or @p status is @c NULL.
  */
-int QDMI_device_job_check(QDMI_Device_Job job, QDMI_Job_Status *status);
+int QDMI_job_check(QDMI_Job job, QDMI_Job_Status *status);
 
 /**
  * @brief Wait for a job to finish.
@@ -363,7 +357,7 @@ int QDMI_device_job_check(QDMI_Device_Job job, QDMI_Job_Status *status);
  * @return @ref QDMI_ERROR_FATAL if the job could not be waited for and this
  * function returns before the job has finished or has been cancelled.
  */
-int QDMI_device_job_wait(QDMI_Device_Job job);
+int QDMI_job_wait(QDMI_Job job);
 
 /**
  * @brief Retrieve the results of a job.
@@ -387,15 +381,15 @@ int QDMI_device_job_wait(QDMI_Device_Job job);
  * @note By calling this function with @p data set to @c NULL, the function can
  * be used to check if the device supports the specified result without
  * retrieving the result and without the need to provide a buffer for the
- * result. The size of the buffer required to retrieve the result is returned in
+ * result. The size of the buffer needed to retrieve the result is returned in
  * @p size_ret if @p size_ret is not @c NULL.
  */
-int QDMI_device_job_get_data(QDMI_Device_Job job, QDMI_Job_Result result,
-                             size_t size, void *data, size_t *size_ret);
+int QDMI_job_get_data(QDMI_Job job, QDMI_Job_Result result, size_t size,
+                      void *data, size_t *size_ret);
 
-/** @} */ // end of device_job
+/** @} */ // end of client_job
 
-/** @defgroup device_query QDMI Device Query Interface
+/** @defgroup client_query QDMI Client Query Interface
  *  The query interface enables to query static and dynamic properties of the
  *  device in a unified fashion.
  *  @{
@@ -403,7 +397,7 @@ int QDMI_device_job_get_data(QDMI_Device_Job job, QDMI_Job_Result result,
 
 /**
  * @brief Query a device property.
- * @param[in] session The session used for the query. Must not be @c NULL.
+ * @param[in] device The device to query. Must not be @c NULL.
  * @param[in] prop The property to query. Must be one of the values specified
  * for @ref QDMI_Device_Property.
  * @param[in] size The size of the memory pointed to by @p value in bytes. Must
@@ -418,7 +412,7 @@ int QDMI_device_job_get_data(QDMI_Device_Job job, QDMI_Job_Result result,
  * when @p value is not @c NULL, the property was successfully retrieved.
  * @return @ref QDMI_ERROR_NOTSUPPORTED if the property is not supported by the
  * device.
- * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p session is @c NULL, if @p prop
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p device is @c NULL, if @p prop
  * is invalid, if the size in bytes specified by @p size is less than the size
  * of the data being queried as specified for the @ref QDMI_Device_Property @p
  * prop and @p value is not @c NULL, or if both @p value and @p size_ret are @c
@@ -431,29 +425,28 @@ int QDMI_device_job_get_data(QDMI_Device_Job job, QDMI_Job_Result result,
  * size of the buffer needed to retrieve the property is returned in @p size_ret
  * if @p size_ret is not @c NULL.
  */
-int QDMI_query_device_property(QDMI_Device_Session session,
-                               QDMI_Device_Property prop, size_t size,
-                               void *value, size_t *size_ret);
+int QDMI_device_query_property(QDMI_Device device, QDMI_Device_Property prop,
+                               size_t size, void *value, size_t *size_ret);
 
 /**
- * @brief A handle for a device site.
- * @details An opaque pointer to an implementation of the QDMI device site
- * concept. A site is a place that can potentially hold a qubit. In the case of
+ * @brief A handle for a site.
+ * @details An opaque pointer to an implementation of the QDMI site concept.
+ * A site is a place that can potentially hold a qubit. In the case of
  * superconducting qubits, sites can be used synonymously with qubits. In the
  * case of neutral atoms, sites represent individual traps that can confine
  * atoms. Those atoms are then used as qubits. To this end, sites are a
  * generalization of qubits that denote locations where qubits can be placed on
  * a device.
- * The actual implementation of the concept is defined by the device.
- * Most implementation will want to store the session handle used to create the
- * site in the site handle to be able to access the session information when
+ * The actual implementation of the concept is defined by the driver.
+ * Most implementation will want to store the device handle used to create the
+ * site in the site handle to be able to access the device information when
  * needed.
  */
-typedef struct QDMI_Device_Site_impl_d *QDMI_Device_Site;
+typedef struct QDMI_Site_impl_d *QDMI_Site;
 
 /**
- * @brief Query the sites associated with the device.
- * @param[in] session The session used for the query. Must not be @c NULL.
+ * @brief Get the sites associated with @p device.
+ * @param[in] device The device to query. Must not be @c NULL.
  * @param[in] num_entries The number of entries that can be added to @p sites.
  * Must be greater than zero, except when @p sites is @c NULL, in which case it
  * is ignored.
@@ -464,7 +457,7 @@ typedef struct QDMI_Device_Site_impl_d *QDMI_Device_Site;
  * @param[out] num_sites The number of sites available. If this is @c NULL, it
  * is ignored.
  * @return @ref QDMI_SUCCESS if the function is executed successfully.
- * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p session is @c NULL, if @p
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p device is @c NULL, if @p
  * num_entries is zero and @p sites is not @c NULL or if both @p sites and @p
  * num_sites are @c NULL.
  * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
@@ -472,23 +465,23 @@ typedef struct QDMI_Device_Site_impl_d *QDMI_Device_Site;
  * @note By calling this function with @p sites set to @c NULL, the function can
  * be used to query the number of sites available without retrieving the sites.
  */
-int QDMI_query_device_sites(QDMI_Device_Session session, size_t num_entries,
-                            QDMI_Device_Site *sites, size_t *num_sites);
+int QDMI_device_get_sites(QDMI_Device device, size_t num_entries,
+                          QDMI_Site *sites, size_t *num_sites);
 
 /**
- * @brief A handle for a device operation.
- * @details An opaque pointer to an implementation of the QDMI device operation
+ * @brief A handle for an operation.
+ * @details An opaque pointer to an implementation of the QDMI operation
  * concept. An operation represents a quantum operation that can be executed on
- * a device. The actual implementation of the concept is defined by the device.
- * Most implementation will want to store the session handle used to create the
- * operation in the operation handle to be able to access the session
- * information when needed.
+ * a device. The actual implementation of the concept is defined by the driver.
+ * Most implementation will want to store the device handle used to create the
+ * operation in the operation handle to be able to access the device information
+ * when needed.
  */
-typedef struct QDMI_Device_Operation_impl_d *QDMI_Device_Operation;
+typedef struct QDMI_Operation_impl_d *QDMI_Operation;
 
 /**
- * @brief Query the operations available on the device.
- * @param[in] session The session used for the query. Must not be @c NULL.
+ * @brief Get the operations available on @p device.
+ * @param[in] device The device to query. Must not be @c NULL.
  * @param[in] num_entries The number of entries that can be added to @p
  * operations. Must be greater than zero, except when @p operations is @c NULL,
  * in which case it is ignored.
@@ -499,7 +492,7 @@ typedef struct QDMI_Device_Operation_impl_d *QDMI_Device_Operation;
  * @param[out] num_operations The number of operations available. If this is @c
  * NULL, it is ignored.
  * @return @ref QDMI_SUCCESS if the function is executed successfully.
- * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p session is @c NULL, if @p
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p device is @c NULL, if @p
  * num_entries is zero and @p operations is not @c NULL or if both @p operations
  * and @p num_operations are @c NULL.
  * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
@@ -508,10 +501,9 @@ typedef struct QDMI_Device_Operation_impl_d *QDMI_Device_Operation;
  * function can be used to query the number of operations available without
  * retrieving the operations.
  */
-int QDMI_query_device_operations(QDMI_Device_Session session,
-                                 size_t num_entries,
-                                 QDMI_Device_Operation *operations,
-                                 size_t *num_operations);
+int QDMI_device_get_operations(QDMI_Device device, size_t num_entries,
+                               QDMI_Operation *operations,
+                               size_t *num_operations);
 
 /**
  * @brief Query a site property.
@@ -540,9 +532,8 @@ int QDMI_query_device_operations(QDMI_Device_Session session,
  * be used to check if the device supports the specified property without
  * retrieving the property and without the need to provide a buffer for it.
  */
-int QDMI_device_site_query_property(QDMI_Device_Site site,
-                                    QDMI_Site_Property prop, size_t size,
-                                    void *value, size_t *size_ret);
+int QDMI_site_query_property(QDMI_Site site, QDMI_Site_Property prop,
+                             size_t size, void *value, size_t *size_ret);
 
 /**
  * @brief Query a device operation property.
@@ -581,14 +572,12 @@ int QDMI_device_site_query_property(QDMI_Device_Site site,
  * @p sites. In this case, the device may return the average value of the
  * property for all sites.
  */
-int QDMI_device_operation_query_property(QDMI_Device_Operation operation,
-                                         size_t num_sites,
-                                         const QDMI_Device_Site *sites,
-                                         QDMI_Operation_Property prop,
-                                         size_t size, void *value,
-                                         size_t *size_ret);
+int QDMI_operation_query_property(QDMI_Operation operation, size_t num_sites,
+                                  const QDMI_Site *sites,
+                                  QDMI_Operation_Property prop, size_t size,
+                                  void *value, size_t *size_ret);
 
-/** @} */ // end of device_query
+/** @} */ // end of client_query
 
 // NOLINTEND(performance-enum-size,modernize-use-using)
 
