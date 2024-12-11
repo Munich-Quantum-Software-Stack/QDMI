@@ -27,7 +27,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 #pragma once
 
-#include "qdmi/constants.h"
+#include "qdmi/constants.h" // IWYU pragma: export
 
 #ifdef __cplusplus
 #include <cstddef>
