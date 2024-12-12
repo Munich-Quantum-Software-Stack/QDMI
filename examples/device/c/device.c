@@ -174,10 +174,13 @@ int C_QDMI_device_session_init(C_QDMI_Device_Session session) {
   if (session == NULL) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
-  if (C_QDMI_read_device_status() == QDMI_DEVICE_STATUS_ERROR ||
-      C_QDMI_read_device_status() == QDMI_DEVICE_STATUS_OFFLINE ||
-      C_QDMI_read_device_status() == QDMI_DEVICE_STATUS_MAINTENANCE) {
+  switch (C_QDMI_read_device_status()) {
+  case QDMI_DEVICE_STATUS_ERROR:
+  case QDMI_DEVICE_STATUS_OFFLINE:
+  case QDMI_DEVICE_STATUS_MAINTENANCE:
     return QDMI_ERROR_FATAL;
+  default:
+    break;
   }
   if (session->token == NULL) {
     return QDMI_ERROR_PERMISSIONDENIED;
@@ -218,9 +221,12 @@ int C_QDMI_device_job_create(C_QDMI_Device_Session session,
       session->status != INITIALIZED) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
-  if (format != QDMI_PROGRAM_FORMAT_QASM2 &&
-      format != QDMI_PROGRAM_FORMAT_QIRBASESTRING &&
-      format != QDMI_PROGRAM_FORMAT_QIRBASEMODULE) {
+  switch (format) {
+  case QDMI_PROGRAM_FORMAT_QASM2:
+  case QDMI_PROGRAM_FORMAT_QIRBASESTRING:
+  case QDMI_PROGRAM_FORMAT_QIRBASEMODULE:
+    break;
+  default:
     return QDMI_ERROR_NOTSUPPORTED;
   }
   if (prog == NULL) {
@@ -230,8 +236,8 @@ int C_QDMI_device_job_create(C_QDMI_Device_Session session,
     return QDMI_ERROR_FATAL;
   }
   *job = (C_QDMI_Device_Job)malloc(sizeof(C_QDMI_Device_Job_impl_t));
-  // set job id to random number for demonstration purposes
   (*job)->session = session;
+  // set job id to random number for demonstration purposes
   (*job)->id = rand();
   (*job)->status = QDMI_JOB_STATUS_CREATED;
   (*job)->num_shots = 0;
@@ -257,9 +263,12 @@ int C_QDMI_device_job_set_parameter(C_QDMI_Device_Job job,
       value == NULL || job->status != QDMI_JOB_STATUS_CREATED) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
-  if (param == QDMI_DEVICE_JOB_PARAMETER_SHOTS_NUM) {
+  switch (param) {
+  case QDMI_DEVICE_JOB_PARAMETER_SHOTS_NUM:
     job->num_shots = *(const size_t *)value;
     return QDMI_SUCCESS;
+  default:
+    break;
   }
   return QDMI_ERROR_NOTSUPPORTED;
 } /// [DOXYGEN FUNCTION END]
@@ -313,8 +322,11 @@ int C_QDMI_device_job_submit(C_QDMI_Device_Job job) {
 
 int C_QDMI_device_job_cancel(C_QDMI_Device_Job job) {
   // cannot cancel a job that is already done
-  if (job->status == QDMI_JOB_STATUS_DONE) {
+  switch (job->status) {
+  case QDMI_JOB_STATUS_DONE:
     return QDMI_ERROR_INVALIDARGUMENT;
+  default:
+    break;
   }
 
   job->status = QDMI_JOB_STATUS_CANCELLED;
@@ -350,7 +362,8 @@ int C_QDMI_device_job_get_data(C_QDMI_Device_Job job,
   if (job->status != QDMI_JOB_STATUS_DONE) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
-  if (result == QDMI_JOB_RESULT_SHOTS) {
+  switch (result) {
+  case QDMI_JOB_RESULT_SHOTS: {
     const size_t req_size = job->results_length;
     if (data != NULL) {
       if (size < req_size) {
@@ -363,8 +376,8 @@ int C_QDMI_device_job_get_data(C_QDMI_Device_Job job,
     }
     return QDMI_SUCCESS;
   }
-  if (result == QDMI_JOB_RESULT_HIST_KEYS ||
-      result == QDMI_JOB_RESULT_HIST_VALUES) {
+  case QDMI_JOB_RESULT_HIST_KEYS:
+  case QDMI_JOB_RESULT_HIST_VALUES: {
     char *raw_data = malloc(job->results_length);
     strncpy(raw_data, job->results, job->results_length);
     // split the string at the commas
@@ -388,8 +401,8 @@ int C_QDMI_device_job_get_data(C_QDMI_Device_Job job,
         count++;
       }
     }
-
-    if (result == QDMI_JOB_RESULT_HIST_KEYS) {
+    switch (result) {
+    case QDMI_JOB_RESULT_HIST_KEYS: {
       const size_t req_size = count * (num_qubits + 1);
       if (size_ret != NULL) {
         *size_ret = req_size;
@@ -414,7 +427,9 @@ int C_QDMI_device_job_get_data(C_QDMI_Device_Job job,
         }
         *data_ptr = '\0';
       }
-    } else {
+    }
+    default: {
+      // case QDMI_JOB_RESULT_HIST_VALUES:
       const size_t req_size = count * sizeof(size_t);
       if (size_ret != NULL) {
         *size_ret = req_size;
@@ -439,11 +454,12 @@ int C_QDMI_device_job_get_data(C_QDMI_Device_Job job,
         *data_ptr = n;
       }
     }
+    }
     free((void *)raw_data_split);
     free(raw_data);
     return QDMI_SUCCESS;
   }
-  if (result == QDMI_JOB_RESULT_STATEVECTOR_DENSE) {
+  case QDMI_JOB_RESULT_STATEVECTOR_DENSE: {
     const size_t req_size = job->state_vec_length * sizeof(double);
     if (data != NULL) {
       if (size < req_size) {
@@ -456,10 +472,10 @@ int C_QDMI_device_job_get_data(C_QDMI_Device_Job job,
     }
     return QDMI_SUCCESS;
   }
-  if (result == QDMI_JOB_RESULT_STATEVECTOR_SPARSE_KEYS ||
-      result == QDMI_JOB_RESULT_STATEVECTOR_SPARSE_VALUES ||
-      result == QDMI_JOB_RESULT_PROBABILITIES_SPARSE_KEYS ||
-      result == QDMI_JOB_RESULT_PROBABILITIES_SPARSE_VALUES) {
+  case QDMI_JOB_RESULT_STATEVECTOR_SPARSE_KEYS:
+  case QDMI_JOB_RESULT_STATEVECTOR_SPARSE_VALUES:
+  case QDMI_JOB_RESULT_PROBABILITIES_SPARSE_KEYS:
+  case QDMI_JOB_RESULT_PROBABILITIES_SPARSE_VALUES: {
     const size_t length = job->state_vec_length / 2;
     const size_t num_qubits = (size_t)log2((double)length);
     const double *vec = job->state_vec;
@@ -470,8 +486,9 @@ int C_QDMI_device_job_get_data(C_QDMI_Device_Job job,
         count++;
       }
     }
-    if (result == QDMI_JOB_RESULT_STATEVECTOR_SPARSE_KEYS ||
-        result == QDMI_JOB_RESULT_PROBABILITIES_SPARSE_KEYS) {
+    switch (result) {
+    case QDMI_JOB_RESULT_STATEVECTOR_SPARSE_KEYS:
+    case QDMI_JOB_RESULT_PROBABILITIES_SPARSE_KEYS: {
       const size_t req_size = count * (num_qubits + 1);
       if (data != NULL) {
         if (size < req_size) {
@@ -493,7 +510,7 @@ int C_QDMI_device_job_get_data(C_QDMI_Device_Job job,
       }
       return QDMI_SUCCESS;
     }
-    if (result == QDMI_JOB_RESULT_STATEVECTOR_SPARSE_VALUES) {
+    case QDMI_JOB_RESULT_STATEVECTOR_SPARSE_VALUES: {
       const size_t req_size = count * 2 * sizeof(double);
       if (data != NULL) {
         if (size < req_size) {
@@ -510,7 +527,9 @@ int C_QDMI_device_job_get_data(C_QDMI_Device_Job job,
       if ((size_ret) != NULL) {
         *(size_ret) = req_size;
       }
-    } else {
+    }
+    default: {
+      // case QDMI_JOB_RESULT_PROBABILITIES_SPARSE_VALUES:
       const size_t req_size = count * sizeof(double);
       if (data != NULL) {
         if (size < req_size) {
@@ -528,9 +547,10 @@ int C_QDMI_device_job_get_data(C_QDMI_Device_Job job,
         *(size_ret) = req_size;
       }
     }
+    }
     return QDMI_SUCCESS;
   }
-  if (result == QDMI_JOB_RESULT_PROBABILITIES_DENSE) {
+  case QDMI_JOB_RESULT_PROBABILITIES_DENSE: {
     const size_t length = job->state_vec_length / 2;
     const size_t req_size = length * sizeof(double);
     if (data != NULL) {
@@ -550,7 +570,9 @@ int C_QDMI_device_job_get_data(C_QDMI_Device_Job job,
     }
     return QDMI_SUCCESS;
   }
-  return QDMI_ERROR_NOTSUPPORTED;
+  default:
+    return QDMI_ERROR_NOTSUPPORTED;
+  }
 } /// [DOXYGEN FUNCTION END]
 
 int C_QDMI_device_session_query_property(C_QDMI_Device_Session session,
