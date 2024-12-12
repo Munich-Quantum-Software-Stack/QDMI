@@ -104,7 +104,7 @@ auto FoMaC::throw_if_error(int status, const std::string &message) -> void {
 auto FoMaC::get_qubits_num() const -> size_t {
   size_t num_qubits = 0;
   const int ret =
-      QDMI_query_device_property(device, QDMI_DEVICE_PROPERTY_QUBITSNUM,
+      QDMI_device_query_property(device, QDMI_DEVICE_PROPERTY_QUBITSNUM,
                                  sizeof(size_t), &num_qubits, nullptr);
   throw_if_error(ret, "Failed to query the number of qubits.");
   return num_qubits;
@@ -112,20 +112,19 @@ auto FoMaC::get_qubits_num() const -> size_t {
 
 auto FoMaC::get_operation_map() const -> std::map<std::string, QDMI_Operation> {
   size_t ops_num = 0;
-  int ret = QDMI_query_get_operations(device, 0, nullptr, &ops_num);
+  int ret = QDMI_device_get_operations(device, 0, nullptr, &ops_num);
   throw_if_error(ret, "Failed to retrieve operation number.");
   std::vector<QDMI_Operation> ops(ops_num);
-  ret = QDMI_query_get_operations(device, ops_num, ops.data(), nullptr);
+  ret = QDMI_device_get_operations(device, ops_num, ops.data(), nullptr);
   throw_if_error(ret, "Failed to retrieve operations.");
   std::map<std::string, QDMI_Operation> ops_map;
   for (const auto &op : ops) {
     size_t name_length = 0;
-    ret = QDMI_query_operation_property(device, op, 0, nullptr,
-                                        QDMI_OPERATION_PROPERTY_NAME, 0,
-                                        nullptr, &name_length);
+    ret = QDMI_operation_query_property(
+        op, 0, nullptr, QDMI_OPERATION_PROPERTY_NAME, 0, nullptr, &name_length);
     throw_if_error(ret, "Failed to retrieve operation name length.");
     std::string name(name_length, '\0');
-    ret = QDMI_query_operation_property(device, op, 0, nullptr,
+    ret = QDMI_operation_query_property(op, 0, nullptr,
                                         QDMI_OPERATION_PROPERTY_NAME,
                                         name_length, name.data(), nullptr);
     throw_if_error(ret, "Failed to retrieve operation name.");
@@ -137,7 +136,7 @@ auto FoMaC::get_operation_map() const -> std::map<std::string, QDMI_Operation> {
 auto FoMaC::get_coupling_map() const
     -> std::vector<std::pair<QDMI_Site, QDMI_Site>> {
   size_t size = 0;
-  int ret = QDMI_query_device_property(device, QDMI_DEVICE_PROPERTY_COUPLINGMAP,
+  int ret = QDMI_device_query_property(device, QDMI_DEVICE_PROPERTY_COUPLINGMAP,
                                        0, nullptr, &size);
   throw_if_error(ret, "Failed to query the coupling map size.");
 
@@ -150,7 +149,7 @@ auto FoMaC::get_coupling_map() const
   // `std::vector` guarantees that the elements are contiguous in memory.
   std::vector<std::pair<QDMI_Site, QDMI_Site>> coupling_pairs(
       coupling_map_size / 2);
-  ret = QDMI_query_device_property(
+  ret = QDMI_device_query_property(
       device, QDMI_DEVICE_PROPERTY_COUPLINGMAP, size,
       static_cast<void *>(coupling_pairs.data()), nullptr);
   throw_if_error(ret, "Failed to query the coupling map.");
@@ -159,18 +158,18 @@ auto FoMaC::get_coupling_map() const
 
 auto FoMaC::get_sites() const -> std::vector<QDMI_Site> {
   size_t sites_num = 0;
-  int ret = QDMI_query_get_sites(device, 0, nullptr, &sites_num);
+  int ret = QDMI_device_get_sites(device, 0, nullptr, &sites_num);
   throw_if_error(ret, "Failed to get the sites number.");
   std::vector<QDMI_Site> sites(sites_num);
-  ret = QDMI_query_get_sites(device, sites_num, sites.data(), nullptr);
+  ret = QDMI_device_get_sites(device, sites_num, sites.data(), nullptr);
   throw_if_error(ret, "Failed to get the sites.");
   return sites;
 }
 
 auto FoMaC::get_operands_num(const QDMI_Operation &op) const -> size_t {
   size_t operands_num = 0;
-  const int ret = QDMI_query_operation_property(
-      device, op, 0, nullptr, QDMI_OPERATION_PROPERTY_QUBITSNUM, sizeof(size_t),
+  const int ret = QDMI_operation_query_property(
+      op, 0, nullptr, QDMI_OPERATION_PROPERTY_QUBITSNUM, sizeof(size_t),
       &operands_num, nullptr);
   throw_if_error(ret, "Failed to query the operand number");
   return operands_num;
