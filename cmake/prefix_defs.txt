@@ -16,6 +16,8 @@ QDMI_device_session_get_sites
 QDMI_device_session_get_operations
 QDMI_device_site_query_property
 QDMI_device_operation_query_property
+QDMI_Device_Session
+QDMI_Device_Session_impl_d
 QDMI_Device_Job
 QDMI_Device_Job_impl_d
 QDMI_Device_Site
