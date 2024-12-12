@@ -28,26 +28,26 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include "@QDMI_prefix@_qdmi/device.h"
 
 int main() {
+  @QDMI_PREFIX@_QDMI_Session session = nullptr;
   @QDMI_PREFIX@_QDMI_Job job = nullptr;
   @QDMI_PREFIX@_QDMI_Site site = nullptr;
   @QDMI_PREFIX@_QDMI_Operation operation = nullptr;
-  // query interface
-  @QDMI_PREFIX@_QDMI_query_get_sites_dev(1, &site, nullptr);
-  @QDMI_PREFIX@_QDMI_query_get_operations_dev(1, &operation, nullptr);
-  @QDMI_PREFIX@_QDMI_query_device_property_dev(QDMI_DEVICE_PROPERTY_MAX, 0, nullptr, nullptr);
-  @QDMI_PREFIX@_QDMI_query_site_property_dev(site, QDMI_SITE_PROPERTY_MAX, 0, nullptr,
-                               nullptr);
-  @QDMI_PREFIX@_QDMI_query_operation_property_dev(
-      operation, 0, nullptr, QDMI_OPERATION_PROPERTY_MAX, 0, nullptr, nullptr);
-  // control interface
-  @QDMI_PREFIX@_QDMI_control_create_job_dev(QDMI_PROGRAM_FORMAT_MAX, 0, nullptr, &job);
-  @QDMI_PREFIX@_QDMI_control_set_parameter_dev(job, QDMI_JOB_PARAMETER_MAX, 0, nullptr);
-  @QDMI_PREFIX@_QDMI_control_submit_job_dev(job);
-  @QDMI_PREFIX@_QDMI_control_cancel_dev(job);
-  @QDMI_PREFIX@_QDMI_control_check_dev(job, nullptr);
-  @QDMI_PREFIX@_QDMI_control_wait_dev(job);
-  @QDMI_PREFIX@_QDMI_control_get_data_dev(job, QDMI_JOB_RESULT_MAX, 0, nullptr, nullptr);
-  @QDMI_PREFIX@_QDMI_control_free_job_dev(job);
-  @QDMI_PREFIX@_QDMI_control_initialize_dev();
-  @QDMI_PREFIX@_QDMI_control_finalize_dev();
+  @QDMI_PREFIX@_QDMI_device_initialize();
+  @QDMI_PREFIX@_QDMI_device_finalize();
+  @QDMI_PREFIX@_QDMI_device_session_alloc(nullptr, 0, &session);
+  @QDMI_PREFIX@_QDMI_device_session_free(session);
+  @QDMI_PREFIX@_QDMI_device_session_set_parameter(session, QDMI_DEVICE_SESSION_PARAMETER_MAX, 0, nullptr);
+  @QDMI_PREFIX@_QDMI_device_job_create(session, QDMI_PROGRAM_FORMAT_MAX, 0, nullptr, &job);
+  @QDMI_PREFIX@_QDMI_device_job_free(job);
+  @QDMI_PREFIX@_QDMI_device_job_set_parameter(job, QDMI_DEVICE_JOB_PARAMETER_MAX, 0, nullptr);
+  @QDMI_PREFIX@_QDMI_device_job_submit(job);
+  @QDMI_PREFIX@_QDMI_device_job_cancel(job);
+  @QDMI_PREFIX@_QDMI_device_job_check(job, nullptr);
+  @QDMI_PREFIX@_QDMI_device_job_wait(job);
+  @QDMI_PREFIX@_QDMI_device_job_get_data(job, QDMI_JOB_RESULT_MAX, 0, nullptr, nullptr);
+  @QDMI_PREFIX@_QDMI_device_session_query_property(session, QDMI_DEVICE_PROPERTY_MAX, 0, nullptr, nullptr);
+  @QDMI_PREFIX@_QDMI_device_session_get_sites(session, 0, nullptr, nullptr);
+  @QDMI_PREFIX@_QDMI_device_session_get_operations(session, 0, nullptr, nullptr);
+  @QDMI_PREFIX@_QDMI_device_site_query_property(site, QDMI_SITE_PROPERTY_MAX, 0, nullptr, nullptr);
+  @QDMI_PREFIX@_QDMI_device_operation_query_property(operation, 0, nullptr, QDMI_OPERATION_PROPERTY_MAX, 0, nullptr, nullptr);
 }
