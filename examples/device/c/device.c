@@ -28,8 +28,11 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include <stdlib.h>
 #include <string.h>
 
+enum C_QDMI_DEVICE_SESSION_STATUS { ALLOCATED, INITIALIZED };
+
 typedef struct C_QDMI_Device_Session_impl_d {
   char *token;
+  enum C_QDMI_DEVICE_SESSION_STATUS status;
 } C_QDMI_Device_Session_impl_t;
 
 typedef struct C_QDMI_Device_Job_impl_d {
@@ -146,19 +149,29 @@ const C_QDMI_Device_Operation DEVICE_OPERATIONS[] = {
     }                                                                          \
   } /// [DOXYGEN MACRO END]
 
-int C_QDMI_control_initialize_dev(void) {
+int C_QDMI_device_initialize(void) {
   C_QDMI_set_device_status(QDMI_DEVICE_STATUS_IDLE);
   return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]
 
-int C_QDMI_control_finalize_dev(void) {
+int C_QDMI_device_finalize(void) {
   C_QDMI_set_device_status(QDMI_DEVICE_STATUS_OFFLINE);
   return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]
 
-int C_QDMI_device_session_alloc(const char *token, const size_t size,
-                                C_QDMI_Device_Session *session) {
-  if (token == NULL || size == 0 || session == NULL) {
+int C_QDMI_device_session_alloc(C_QDMI_Device_Session *session) {
+  if (session == NULL) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  *session =
+      (C_QDMI_Device_Session)malloc(sizeof(C_QDMI_Device_Session_impl_t));
+  (*session)->token = NULL;
+  (*session)->status = ALLOCATED;
+  return QDMI_SUCCESS;
+} /// [DOXYGEN FUNCTION END]
+
+int C_QDMI_device_session_init(C_QDMI_Device_Session session) {
+  if (session == NULL) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   if (C_QDMI_read_device_status() == QDMI_DEVICE_STATUS_ERROR ||
@@ -166,11 +179,10 @@ int C_QDMI_device_session_alloc(const char *token, const size_t size,
       C_QDMI_read_device_status() == QDMI_DEVICE_STATUS_MAINTENANCE) {
     return QDMI_ERROR_FATAL;
   }
-  *session =
-      (C_QDMI_Device_Session)malloc(sizeof(C_QDMI_Device_Session_impl_t));
-  // set job id to random number for demonstration purposes
-  (*session)->token = (char *)malloc(size);
-  strncpy((*session)->token, token, size);
+  if (session->token == NULL) {
+    return QDMI_ERROR_PERMISSIONDENIED;
+  }
+  session->status = INITIALIZED;
   return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]
 
@@ -185,17 +197,25 @@ int C_QDMI_device_session_set_parameter(
     C_QDMI_Device_Session session, const QDMI_Device_Session_Parameter param,
     const size_t size, const void *value) {
   if (session == NULL || param >= QDMI_DEVICE_SESSION_PARAMETER_MAX ||
-      size == 0 || value == NULL) {
+      size == 0 || value == NULL || session->status != ALLOCATED) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
-  return QDMI_ERROR_NOTSUPPORTED;
+  switch (param) {
+  case QDMI_DEVICE_SESSION_PARAMETER_TOKEN:
+    session->token = (char *)malloc(size);
+    strncpy(session->token, (const char *)value, size);
+    return QDMI_SUCCESS;
+  default:
+    return QDMI_ERROR_NOTSUPPORTED;
+  }
 } /// [DOXYGEN FUNCTION END]
 
 int C_QDMI_device_job_create(C_QDMI_Device_Session session,
                              const QDMI_Program_Format format,
                              const size_t size, const void *prog,
                              C_QDMI_Device_Job *job) {
-  if (prog != NULL && (size == 0 || job == NULL)) {
+  if (prog != NULL && (size == 0 || job == NULL) || session == NULL ||
+      session->status != INITIALIZED) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   if (format != QDMI_PROGRAM_FORMAT_QASM2 &&
@@ -537,8 +557,8 @@ int C_QDMI_device_session_query_property(C_QDMI_Device_Session session,
                                          const QDMI_Device_Property prop,
                                          size_t size, void *value,
                                          size_t *size_ret) {
-  if (session == NULL || prop >= QDMI_DEVICE_PROPERTY_MAX ||
-      (value == NULL && size_ret == NULL)) {
+  if (prop >= QDMI_DEVICE_PROPERTY_MAX || (value == NULL && size_ret == NULL) ||
+      session == NULL || session->status != INITIALIZED) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   ADD_STRING_PROPERTY(QDMI_DEVICE_PROPERTY_NAME, "C Device with 5 qubits", prop,
@@ -568,8 +588,9 @@ int C_QDMI_device_session_get_sites(C_QDMI_Device_Session session,
                                     const size_t num_entries,
                                     C_QDMI_Device_Site *sites,
                                     size_t *num_sites) {
-  if (session == NULL || (sites != NULL && num_entries == 0) ||
-      (sites == NULL && num_sites == NULL)) {
+  if ((sites != NULL && num_entries == 0) ||
+      (sites == NULL && num_sites == NULL) || session == NULL ||
+      session->status != INITIALIZED) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   const size_t device_sites_size =
@@ -590,8 +611,9 @@ int C_QDMI_device_session_get_operations(C_QDMI_Device_Session session,
                                          const size_t num_entries,
                                          C_QDMI_Device_Operation *operations,
                                          size_t *num_operations) {
-  if (session == NULL || (operations != NULL && num_entries == 0) ||
-      (operations == NULL && num_operations == NULL)) {
+  if ((operations != NULL && num_entries == 0) ||
+      (operations == NULL && num_operations == NULL) || session == NULL ||
+      session->status != INITIALIZED) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   const size_t device_operations_size =
