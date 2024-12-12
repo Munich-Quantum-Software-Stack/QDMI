@@ -65,22 +65,32 @@ typedef struct QDMI_Session_impl_d *QDMI_Session;
  * @brief Allocate a new QDMI session.
  * @details The returned handle can be used in subsequent calls to @ref
  * QDMI_session_get_devices to get the devices available to the client.
- * @param[in] token The token used to authenticate the session. Must not be @c
- * NULL. It is implementation-defined whether the token is a username, a
- * password, an API key, or something else, and how it is used. It is up to
- * documentation of the driver to specify the requirements for the token, if
- * any.
- * @param[in] size The size of the @p token in bytes. Must be greater than zero.
+ * Prior to using the session, it must be initialized using @ref
+ * QDMI_session_init.
  * @param[out] session A handle to the session that is allocated. Must not be
  * @c NULL. The session must be freed by calling @ref QDMI_session_free
  * when it is no longer needed.
  * @return @ref QDMI_SUCCESS if the session was allocated successfully.
- * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p token is @c NULL, @p size is
- * zero, or @p session is @c NULL.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p session is @c NULL.
  * @return @ref QDMI_ERROR_OUTOFMEM if memory space ran out.
  * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
+ * @see QDMI_session_init
  */
-int QDMI_session_alloc(const char *token, size_t size, QDMI_Session *session);
+int QDMI_session_alloc(QDMI_Session *session);
+
+/**
+ * @brief Initialize a QDMI session.
+ * @details This function initializes the session and prepares it for use. The
+ * session must be initialized before it can be used in @ref
+ * QDMI_session_get_devices. Some devices may require authentication prior to
+ * initializing the session. The required authentication information must be set
+ * using @ref QDMI_session_set_parameter before calling this function.
+ * @param[in] session the session to initialize.
+ * @return @ref QDMI_SUCCESS if the session was initialized successfully.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p session is @c NULL.
+ * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
+ */
+int QDMI_session_init(QDMI_Session session);
 
 /**
  * @brief Free a QDMI session.
@@ -98,12 +108,26 @@ void QDMI_session_free(QDMI_Session session);
  */
 enum QDMI_SESSION_PARAMETER_T {
   /**
+   * @brief `char*` (string) The token to use for the session.
+   * @details The token is used for authentication within the session. The
+   * driver documentation *must* document if the implementation requires this
+   * parameter to be set.
+   */
+  QDMI_SESSION_PARAMETER_TOKEN = 0,
+  /**
+   * @brief `char*` (string) The username to use for the session.
+   * @details The username is used for authentication within the session. The
+   * driver documentation *must* document if the implementation requires this
+   * parameter to be set.
+   */
+  QDMI_SESSION_PARAMETER_USERNAME = 1,
+  /**
    * @brief `char*` (string) The project ID to use for the session.
    * @details Can be used to associate the job with a certain project, e.g., for
-   * billing purposes. The driver documentation *must* document if the
+   * accounting purposes. The driver documentation *must* document if the
    * implementation requires this parameter to be set.
    */
-  QDMI_SESSION_PARAMETER_PROJECTID = 0,
+  QDMI_SESSION_PARAMETER_PROJECTID = 2,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by drivers for bounds checking and validation of
@@ -111,7 +135,7 @@ enum QDMI_SESSION_PARAMETER_T {
    * enum besides the custom members and must be updated when new members are
    * added.
    */
-  QDMI_SESSION_PARAMETER_MAX = 1,
+  QDMI_SESSION_PARAMETER_MAX = 3,
   /**
    * @brief This property is reserved for a custom property.
    * @details The meaning and the type of this property are defined by the

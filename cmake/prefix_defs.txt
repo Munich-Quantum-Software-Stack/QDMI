@@ -1,6 +1,7 @@
 QDMI_device_initialize
 QDMI_device_finalize
 QDMI_device_session_alloc
+QDMI_device_session_init
 QDMI_device_session_free
 QDMI_device_session_set_parameter
 QDMI_device_job_create

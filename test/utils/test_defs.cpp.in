@@ -34,7 +34,8 @@ int main() {
   @QDMI_PREFIX@_QDMI_Operation operation = nullptr;
   @QDMI_PREFIX@_QDMI_device_initialize();
   @QDMI_PREFIX@_QDMI_device_finalize();
-  @QDMI_PREFIX@_QDMI_device_session_alloc(nullptr, 0, &session);
+  @QDMI_PREFIX@_QDMI_device_session_alloc(&session);
+  @QDMI_PREFIX@_QDMI_device_session_init(session);
   @QDMI_PREFIX@_QDMI_device_session_free(session);
   @QDMI_PREFIX@_QDMI_device_session_set_parameter(session, QDMI_DEVICE_SESSION_PARAMETER_MAX, 0, nullptr);
   @QDMI_PREFIX@_QDMI_device_job_create(session, QDMI_PROGRAM_FORMAT_MAX, 0, nullptr, &job);

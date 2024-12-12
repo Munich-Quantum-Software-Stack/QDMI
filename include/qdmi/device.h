@@ -80,24 +80,35 @@ typedef struct QDMI_Device_Session_impl_d *QDMI_Device_Session;
 /**
  * @brief Allocate a new QDMI device session.
  * @details The returned handle can be used in subsequent calls throughout the
- * client interface to refer to the session.
- * @param[in] token The token used to authenticate the session. Must not be @c
- * NULL. It is implementation-defined whether the token is a username, a
- * password, an API key, or something else, and how it is used. It is up to
- * documentation of the device to specify the requirements for the token, if
- * any.
- * @param[in] size The size of the @p token in bytes. Must be greater than zero.
+ * client interface to refer to the session. However, the session must be
+ * initialized with @ref QDMI_device_session_init before it can be used to
+ * interact with the device.
  * @param[out] session A handle to the session that is allocated. Must not be
  * @c NULL. The session must be freed by calling @ref QDMI_device_session_free
  * when it is no longer needed.
  * @return @ref QDMI_SUCCESS if the session was allocated successfully.
- * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p token is @c NULL, @p size is
- * zero, or @p session is @c NULL.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p session is @c NULL.
  * @return @ref QDMI_ERROR_OUTOFMEM if memory space ran out.
  * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
+ * @see QDMI_device_session_init
  */
-int QDMI_device_session_alloc(const char *token, size_t size,
-                              QDMI_Device_Session *session);
+int QDMI_device_session_alloc(QDMI_Device_Session *session);
+
+/**
+ * @brief Initialize a QDMI device session.
+ * @details This function initializes the session with the device. The session
+ * must be initialized before it can be used to interact with the device. Some
+ * devices may require authentication prior to using the session. The required
+ * authentication information must be set using @ref
+ * QDMI_device_session_set_parameter before calling this function. Functions
+ * like @ref QDMI_device_query_property or @ref QDMI_job_create must not be
+ * called before the session is initialized.
+ * @param[in] session The session to initialize. Must not be @c NULL.
+ * @return @ref QDMI_SUCCESS if the session was initialized successfully.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p session is @c NULL.
+ * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
+ */
+int QDMI_device_session_init(QDMI_Device_Session session);
 
 /**
  * @brief Free a QDMI device session.
@@ -114,6 +125,13 @@ void QDMI_device_session_free(QDMI_Device_Session session);
  */
 enum QDMI_DEVICE_SESSION_PARAMETER_T {
   /**
+   * @brief `char*` (string) The token to be used for authentication within the
+   * session.
+   * @details If the device authentication via a token, this parameter must be
+   * set prior to calling @ref QDMI_device_session_init.
+   */
+  QDMI_DEVICE_SESSION_PARAMETER_TOKEN = 0,
+  /**
    * @brief `char*` (string) The baseURL or API endpoint to be used for
    * accessing the device within the session.
    * @details If this parameter is set and the device supports it, the device
@@ -128,7 +146,7 @@ enum QDMI_DEVICE_SESSION_PARAMETER_T {
    * enum besides the custom members and must be updated when new members are
    * added.
    */
-  QDMI_DEVICE_SESSION_PARAMETER_MAX = 1,
+  QDMI_DEVICE_SESSION_PARAMETER_MAX = 2,
   /**
    * @brief This property is reserved for a custom property.
    * @details The meaning and the type of this property are defined by the
