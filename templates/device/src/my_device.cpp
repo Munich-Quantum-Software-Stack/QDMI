@@ -42,87 +42,119 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 #endif
 /**
- * @brief Implementation of the MY_QDMI_Job structure.
+ * @brief Implementation of the MY_QDMI_Device_Session structure.
+ * @details This structure can, e.g., be used to store a token to access an API.
+ */
+struct MY_QDMI_Device_Session_impl_d {};
+
+/**
+ * @brief Implementation of the MY_QDMI_Device_Job structure.
  * @details This structure can, e.g., be used to store the job id.
  */
-struct MY_QDMI_Job_impl_d {};
+struct MY_QDMI_Device_Job_impl_d {};
 
 /**
- * @brief Implementation of the MY_QDMI_Site structure.
+ * @brief Implementation of the MY_QDMI_Device_Site structure.
  * @details This structure can, e.g., be used to store the site id.
  */
-struct MY_QDMI_Site_impl_d {};
+struct MY_QDMI_Device_Site_impl_d {};
 
 /**
- * @brief Implementation of the MY_QDMI_Operation structure.
+ * @brief Implementation of the MY_QDMI_Device_Operation structure.
  * @details This structure can, e.g., be used to store the operation id.
  */
-struct MY_QDMI_Operation_impl_d {};
+struct MY_QDMI_Device_Operation_impl_d {};
 
-int MY_QDMI_query_get_sites_dev(size_t num_entries, MY_QDMI_Site *sites,
-                                size_t *num_sites) {
+int MY_QDMI_device_initialize() { return QDMI_ERROR_NOTIMPLEMENTED; }
+
+int MY_QDMI_device_finalize() { return QDMI_ERROR_NOTIMPLEMENTED; }
+
+int MY_QDMI_device_session_alloc(MY_QDMI_Device_Session *session) {
   return QDMI_ERROR_NOTIMPLEMENTED;
 }
 
-int MY_QDMI_query_get_operations_dev(size_t num_entries,
-                                     MY_QDMI_Operation *operations,
-                                     size_t *num_operations) {
+int MY_QDMI_device_session_init(MY_QDMI_Device_Session session) {
   return QDMI_ERROR_NOTIMPLEMENTED;
 }
 
-int MY_QDMI_query_device_property_dev(QDMI_Device_Property prop, size_t size,
-                                      void *value, size_t *size_ret) {
+void MY_QDMI_device_session_free(MY_QDMI_Device_Session session) {}
+
+int MY_QDMI_device_session_set_parameter(MY_QDMI_Device_Session session,
+                                         QDMI_Device_Session_Parameter param,
+                                         size_t size, const void *value) {
   return QDMI_ERROR_NOTIMPLEMENTED;
 }
 
-int MY_QDMI_query_site_property_dev(MY_QDMI_Site site, QDMI_Site_Property prop,
-                                    size_t size, void *value,
-                                    size_t *size_ret) {
+int MY_QDMI_device_job_create(MY_QDMI_Device_Session session,
+                              QDMI_Program_Format format, size_t size,
+                              const void *prog, MY_QDMI_Device_Job *job) {
   return QDMI_ERROR_NOTIMPLEMENTED;
 }
 
-int MY_QDMI_query_operation_property_dev(
-    MY_QDMI_Operation operation, size_t num_sites, const MY_QDMI_Site *sites,
-    QDMI_Operation_Property prop, size_t size, void *value, size_t *size_ret) {
+void MY_QDMI_device_job_free(MY_QDMI_Device_Job job) {}
+
+int MY_QDMI_device_job_set_parameter(MY_QDMI_Device_Job job,
+                                     QDMI_Device_Job_Parameter param,
+                                     size_t size, const void *value) {
   return QDMI_ERROR_NOTIMPLEMENTED;
 }
 
-int MY_QDMI_control_create_job_dev(QDMI_Program_Format format, size_t size,
-                                   const void *prog, MY_QDMI_Job *job) {
+int MY_QDMI_device_job_submit(MY_QDMI_Device_Job job) {
   return QDMI_ERROR_NOTIMPLEMENTED;
 }
 
-int MY_QDMI_control_set_parameter_dev(MY_QDMI_Job job, QDMI_Job_Parameter param,
-                                      size_t size, const void *value) {
+int MY_QDMI_device_job_cancel(MY_QDMI_Device_Job job) {
   return QDMI_ERROR_NOTIMPLEMENTED;
 }
 
-int MY_QDMI_control_submit_job_dev(MY_QDMI_Job job) {
+int MY_QDMI_device_job_check(MY_QDMI_Device_Job job, QDMI_Job_Status *status) {
   return QDMI_ERROR_NOTIMPLEMENTED;
 }
 
-int MY_QDMI_control_cancel_dev(MY_QDMI_Job job) {
+int MY_QDMI_device_job_wait(MY_QDMI_Device_Job job) {
   return QDMI_ERROR_NOTIMPLEMENTED;
 }
 
-int MY_QDMI_control_check_dev(MY_QDMI_Job job, QDMI_Job_Status *status) {
+int MY_QDMI_device_job_get_data(MY_QDMI_Device_Job job, QDMI_Job_Result result,
+                                size_t size, void *data, size_t *size_ret) {
   return QDMI_ERROR_NOTIMPLEMENTED;
 }
 
-int MY_QDMI_control_wait_dev(MY_QDMI_Job job) {
+int MY_QDMI_device_session_query_property(MY_QDMI_Device_Session session,
+                                          QDMI_Device_Property prop,
+                                          size_t size, void *value,
+                                          size_t *size_ret) {
   return QDMI_ERROR_NOTIMPLEMENTED;
 }
 
-int MY_QDMI_control_get_data_dev(MY_QDMI_Job job, QDMI_Job_Result result,
-                                 size_t size, void *data, size_t *size_ret) {
+int MY_QDMI_device_session_get_sites(MY_QDMI_Device_Session session,
+                                     size_t num_entries,
+                                     MY_QDMI_Device_Site *sites,
+                                     size_t *num_sites) {
   return QDMI_ERROR_NOTIMPLEMENTED;
 }
 
-void MY_QDMI_control_free_job_dev(MY_QDMI_Job job) {}
+int MY_QDMI_device_session_get_operations(MY_QDMI_Device_Session session,
+                                          size_t num_entries,
+                                          MY_QDMI_Device_Operation *operations,
+                                          size_t *num_operations) {
+  return QDMI_ERROR_NOTIMPLEMENTED;
+}
 
-int MY_QDMI_control_initialize_dev() { return QDMI_ERROR_NOTIMPLEMENTED; }
+int MY_QDMI_device_site_query_property(MY_QDMI_Device_Site site,
+                                       QDMI_Site_Property prop, size_t size,
+                                       void *value, size_t *size_ret) {
+  return QDMI_ERROR_NOTIMPLEMENTED;
+}
 
-int MY_QDMI_control_finalize_dev() { return QDMI_ERROR_NOTIMPLEMENTED; }
+int MY_QDMI_device_operation_query_property(MY_QDMI_Device_Operation operation,
+                                            size_t num_sites,
+                                            const MY_QDMI_Device_Site *sites,
+                                            QDMI_Operation_Property prop,
+                                            size_t size, void *value,
+                                            size_t *size_ret) {
+  return QDMI_ERROR_NOTIMPLEMENTED;
+}
 
 // The following line ignores the unused parameters in the functions.
 // Please remove the following code block after populating the functions.
