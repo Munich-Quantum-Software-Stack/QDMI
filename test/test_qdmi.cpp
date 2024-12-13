@@ -136,6 +136,19 @@ TEST_P(QDMIImplementationTest, QueryGatePropertiesForEachGate) {
   }
 }
 
+TEST_P(QDMIImplementationTest, QuerySiteProperties) {
+  // for every gate in the gate set, query the duration of the gate
+  const auto fomac = FoMaC(device);
+  const auto sites = fomac.get_sites();
+  const auto qubits_num = fomac.get_qubits_num();
+  EXPECT_EQ(sites.size(), qubits_num);
+
+  for (const auto &site : sites) {
+    const auto site_id = fomac.get_site_id(site);
+    EXPECT_LT(site_id, qubits_num);
+  }
+}
+
 TEST_P(QDMIImplementationTest, ControlJob) {
   QDMI_Job job{};
   const std::string input = "OPENQASM 2.0;\n"
