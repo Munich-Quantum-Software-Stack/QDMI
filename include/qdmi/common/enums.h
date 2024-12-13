@@ -98,8 +98,11 @@ enum QDMI_DEVICE_STATUS_T {
 
 /// Enum of the site properties that can be queried.
 enum QDMI_SITE_PROPERTY_T {
-  QDMI_SITE_PROPERTY_TIME_T1 = 0, ///< `double` The T1 time of a site in µs.
-  QDMI_SITE_PROPERTY_TIME_T2 = 1, ///< `double` The T2 time of a site in µs.
+  /// `size_t` The id to identify the site in the circuit.
+  /// @details For example, `q[1]` in a QASM code identifies the site with id 1.
+  QDMI_SITE_PROPERTY_ID = 0,
+  QDMI_SITE_PROPERTY_TIME_T1 = 1, ///< `double` The T1 time of a site in µs.
+  QDMI_SITE_PROPERTY_TIME_T2 = 2, ///< `double` The T2 time of a site in µs.
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
@@ -107,7 +110,7 @@ enum QDMI_SITE_PROPERTY_T {
    * enum besides the custom members and must be updated when new members are
    * added.
    */
-  QDMI_SITE_PROPERTY_MAX = 2,
+  QDMI_SITE_PROPERTY_MAX = 3,
   /**
    * @brief This property is reserved for a custom property.
    * @details The meaning and the type of this property are defined by the
