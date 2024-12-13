@@ -35,7 +35,7 @@ extern "C" {
  * @return @ref QDMI_SUCCESS if the driver was initialized successfully.
  * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
  */
-int QDMI_Driver_init();
+int QDMI_driver_init();
 
 /**
  * @brief Shutdown the QDMI driver.
@@ -46,7 +46,7 @@ int QDMI_Driver_init();
  * @return @ref QDMI_SUCCESS if the driver was shut down successfully.
  * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
  */
-int QDMI_Driver_shutdown();
+int QDMI_driver_shutdown();
 
 #ifdef __cplusplus
 } // extern "C"

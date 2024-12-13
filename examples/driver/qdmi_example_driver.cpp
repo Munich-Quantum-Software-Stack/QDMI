@@ -194,7 +194,7 @@ bool Is_path_allowed(const std::filesystem::path &path) {
 }
 } // namespace
 
-int QDMI_Driver_init() {
+int QDMI_driver_init() {
   const char *config_file = std::getenv("QDMI_CONF");
   if (config_file == nullptr) {
     config_file = "qdmi.conf";
@@ -308,7 +308,7 @@ int QDMI_session_get_devices(QDMI_Session session, const size_t num_entries,
 
 void QDMI_session_free(QDMI_Session session) { delete session; }
 
-int QDMI_Driver_shutdown() {
+int QDMI_driver_shutdown() {
   // Close all devices
   device_list.clear();
   return QDMI_SUCCESS;

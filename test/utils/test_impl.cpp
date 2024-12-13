@@ -58,11 +58,17 @@ void QDMIImplementationTest::SetUp() {
   setenv("QDMI_CONF", config_file_name.c_str(), 1);
 #endif
 
-  ASSERT_EQ(QDMI_Driver_init(), QDMI_SUCCESS)
+  ASSERT_EQ(QDMI_driver_init(), QDMI_SUCCESS)
       << "Failed to initialize the driver";
 
   ASSERT_EQ(QDMI_session_alloc(&session), QDMI_SUCCESS)
       << "Failed to allocate session";
+
+  ASSERT_EQ(QDMI_session_init(session), QDMI_SUCCESS)
+      << "Failed to initialize session. Potential errors: Wrong or missing "
+         "authentication information, device status is offline, or in "
+         "maintenance. To provide credentials, take a look in " __FILE__
+      << (__LINE__ - 4);
 
   ASSERT_EQ(QDMI_session_get_devices(session, 1, &device, nullptr),
             QDMI_SUCCESS)
@@ -71,37 +77,8 @@ void QDMIImplementationTest::SetUp() {
 
 void QDMIImplementationTest::TearDown() {
   QDMI_session_free(session);
-  QDMI_Driver_shutdown();
+  QDMI_driver_shutdown();
   std::filesystem::remove(config_file_name);
-}
-
-TEST_P(QDMIImplementationTest, QueryGetSitesImplemented) {
-  ASSERT_EQ(QDMI_query_get_sites(device, 0, nullptr, nullptr),
-            QDMI_ERROR_INVALIDARGUMENT);
-}
-
-TEST_P(QDMIImplementationTest, QueryGetOperationsImplemented) {
-  ASSERT_EQ(QDMI_query_get_operations(device, 0, nullptr, nullptr),
-            QDMI_ERROR_INVALIDARGUMENT);
-}
-
-TEST_P(QDMIImplementationTest, QueryDevicePropertyImplemented) {
-  ASSERT_EQ(QDMI_query_device_property(device, QDMI_DEVICE_PROPERTY_NAME, 0,
-                                       nullptr, nullptr),
-            QDMI_ERROR_INVALIDARGUMENT);
-}
-
-TEST_P(QDMIImplementationTest, QuerySitePropertyImplemented) {
-  ASSERT_EQ(QDMI_query_site_property(device, nullptr, QDMI_SITE_PROPERTY_MAX, 0,
-                                     nullptr, nullptr),
-            QDMI_ERROR_INVALIDARGUMENT);
-}
-
-TEST_P(QDMIImplementationTest, QueryOperationPropertyImplemented) {
-  ASSERT_EQ(QDMI_query_operation_property(device, nullptr, 0, nullptr,
-                                          QDMI_OPERATION_PROPERTY_MAX, 0,
-                                          nullptr, nullptr),
-            QDMI_ERROR_INVALIDARGUMENT);
 }
 
 namespace {
@@ -116,125 +93,85 @@ std::string Get_test_circuit() {
 }
 } // namespace
 
-TEST_P(QDMIImplementationTest, ControlCreateJobImplemented) {
-  QDMI_Job job = nullptr;
-  ASSERT_NE(QDMI_control_create_job(device, QDMI_PROGRAM_FORMAT_QASM2,
-                                    Get_test_circuit().length() + 1,
-                                    Get_test_circuit().c_str(), &job),
-            QDMI_ERROR_NOTIMPLEMENTED);
-  QDMI_control_free_job(device, job);
-}
-
-TEST_P(QDMIImplementationTest, ControlSetParameterImplemented) {
-  QDMI_Job job = nullptr;
-  ASSERT_EQ(QDMI_control_create_job(device, QDMI_PROGRAM_FORMAT_QASM2,
-                                    Get_test_circuit().length() + 1,
-                                    Get_test_circuit().c_str(), &job),
-            QDMI_SUCCESS);
-  ASSERT_EQ(QDMI_control_set_parameter(device, job, QDMI_JOB_PARAMETER_MAX, 0,
+TEST_P(QDMIImplementationTest, SetSessionParameterImplemented) {
+  ASSERT_EQ(QDMI_session_set_parameter(session, QDMI_SESSION_PARAMETER_MAX, 0,
                                        nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
-  QDMI_control_free_job(device, job);
 }
 
-TEST_P(QDMIImplementationTest, ControlSubmitJobImplemented) {
+TEST_P(QDMIImplementationTest, CreateJobImplemented) {
   QDMI_Job job = nullptr;
-  ASSERT_EQ(QDMI_control_create_job(device, QDMI_PROGRAM_FORMAT_QASM2,
-                                    Get_test_circuit().length() + 1,
-                                    Get_test_circuit().c_str(), &job),
-            QDMI_SUCCESS);
-  ASSERT_NE(QDMI_control_submit_job(device, job), QDMI_ERROR_NOTIMPLEMENTED);
-  QDMI_control_free_job(device, job);
+  ASSERT_NE(QDMI_job_create(device, QDMI_PROGRAM_FORMAT_QASM2,
+                            Get_test_circuit().length() + 1,
+                            Get_test_circuit().c_str(), &job),
+            QDMI_ERROR_NOTIMPLEMENTED);
+  QDMI_job_free(job);
 }
 
-TEST_P(QDMIImplementationTest, ControlCancelImplemented) {
+TEST_P(QDMIImplementationTest, SetJobParameterImplemented) {
   QDMI_Job job = nullptr;
-  ASSERT_EQ(QDMI_control_create_job(device, QDMI_PROGRAM_FORMAT_QASM2,
-                                    Get_test_circuit().length() + 1,
-                                    Get_test_circuit().c_str(), &job),
+  ASSERT_EQ(QDMI_job_create(device, QDMI_PROGRAM_FORMAT_QASM2,
+                            Get_test_circuit().length() + 1,
+                            Get_test_circuit().c_str(), &job),
             QDMI_SUCCESS);
-  ASSERT_NE(QDMI_control_cancel(device, job), QDMI_ERROR_NOTIMPLEMENTED);
-  QDMI_control_free_job(device, job);
+  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_MAX, 0, nullptr),
+            QDMI_ERROR_INVALIDARGUMENT);
+  QDMI_job_free(job);
 }
 
-TEST_P(QDMIImplementationTest, ControlCheckImplemented) {
+TEST_P(QDMIImplementationTest, SubmitJobImplemented) {
+  QDMI_Job job = nullptr;
+  ASSERT_EQ(QDMI_job_create(device, QDMI_PROGRAM_FORMAT_QASM2,
+                            Get_test_circuit().length() + 1,
+                            Get_test_circuit().c_str(), &job),
+            QDMI_SUCCESS);
+  ASSERT_NE(QDMI_job_submit(job), QDMI_ERROR_NOTIMPLEMENTED);
+  QDMI_job_free(job);
+}
+
+TEST_P(QDMIImplementationTest, CancelJobImplemented) {
+  QDMI_Job job = nullptr;
+  ASSERT_EQ(QDMI_job_create(device, QDMI_PROGRAM_FORMAT_QASM2,
+                            Get_test_circuit().length() + 1,
+                            Get_test_circuit().c_str(), &job),
+            QDMI_SUCCESS);
+  ASSERT_NE(QDMI_job_cancel(job), QDMI_ERROR_NOTIMPLEMENTED);
+  QDMI_job_free(job);
+}
+
+TEST_P(QDMIImplementationTest, CheckJobStatusImplemented) {
   QDMI_Job job = nullptr;
   QDMI_Job_Status status = QDMI_JOB_STATUS_RUNNING;
-  ASSERT_EQ(QDMI_control_create_job(device, QDMI_PROGRAM_FORMAT_QASM2,
-                                    Get_test_circuit().length() + 1,
-                                    Get_test_circuit().c_str(), &job),
+  ASSERT_EQ(QDMI_job_create(device, QDMI_PROGRAM_FORMAT_QASM2,
+                            Get_test_circuit().length() + 1,
+                            Get_test_circuit().c_str(), &job),
             QDMI_SUCCESS);
-  ASSERT_NE(QDMI_control_check(device, job, &status),
-            QDMI_ERROR_NOTIMPLEMENTED);
-  QDMI_control_free_job(device, job);
+  ASSERT_NE(QDMI_job_check(job, &status), QDMI_ERROR_NOTIMPLEMENTED);
+  QDMI_job_free(job);
 }
 
-TEST_P(QDMIImplementationTest, ControlWaitImplemented) {
+TEST_P(QDMIImplementationTest, WaitOnJobImplemented) {
   QDMI_Job job = nullptr;
-  ASSERT_EQ(QDMI_control_create_job(device, QDMI_PROGRAM_FORMAT_QASM2,
-                                    Get_test_circuit().length() + 1,
-                                    Get_test_circuit().c_str(), &job),
+  ASSERT_EQ(QDMI_job_create(device, QDMI_PROGRAM_FORMAT_QASM2,
+                            Get_test_circuit().length() + 1,
+                            Get_test_circuit().c_str(), &job),
             QDMI_SUCCESS);
-  ASSERT_NE(QDMI_control_wait(device, job), QDMI_ERROR_NOTIMPLEMENTED);
-  QDMI_control_free_job(device, job);
+  ASSERT_NE(QDMI_job_wait(job), QDMI_ERROR_NOTIMPLEMENTED);
+  QDMI_job_free(job);
 }
 
-TEST_P(QDMIImplementationTest, ControlGetHistImplemented) {
+TEST_P(QDMIImplementationTest, GetJobDataImplemented) {
   QDMI_Job job = nullptr;
-  ASSERT_EQ(QDMI_control_create_job(device, QDMI_PROGRAM_FORMAT_QASM2,
-                                    Get_test_circuit().length() + 1,
-                                    Get_test_circuit().c_str(), &job),
+  ASSERT_EQ(QDMI_job_create(device, QDMI_PROGRAM_FORMAT_QASM2,
+                            Get_test_circuit().length() + 1,
+                            Get_test_circuit().c_str(), &job),
             QDMI_SUCCESS);
-  ASSERT_EQ(QDMI_control_get_data(device, job, QDMI_JOB_RESULT_MAX, 0, nullptr,
-                                  nullptr),
+  ASSERT_EQ(QDMI_job_get_data(job, QDMI_JOB_RESULT_MAX, 0, nullptr, nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
-  QDMI_control_free_job(device, job);
+  QDMI_job_free(job);
 }
 
-TEST_P(QDMIImplementationTest, QueryDeviceNameImplemented) {
-  size_t size = 0;
-  ASSERT_EQ(QDMI_query_device_property(device, QDMI_DEVICE_PROPERTY_NAME, 0,
-                                       nullptr, &size),
-            QDMI_SUCCESS)
-      << "Devices must provide a name";
-  std::string value(size - 1, '\0');
-  ASSERT_EQ(QDMI_query_device_property(device, QDMI_DEVICE_PROPERTY_NAME, size,
-                                       value.data(), nullptr),
-            QDMI_SUCCESS)
-      << "Devices must provide a name";
-  ASSERT_FALSE(value.empty()) << "Devices must provide a name";
-}
-
-TEST_P(QDMIImplementationTest, QueryDeviceVersionImplemented) {
-  size_t size = 0;
-  ASSERT_EQ(QDMI_query_device_property(device, QDMI_DEVICE_PROPERTY_VERSION, 0,
-                                       nullptr, &size),
-            QDMI_SUCCESS)
-      << "Devices must provide a version";
-  std::string value(size - 1, '\0');
-  ASSERT_EQ(QDMI_query_device_property(device, QDMI_DEVICE_PROPERTY_VERSION,
-                                       size, value.data(), nullptr),
-            QDMI_SUCCESS)
-      << "Devices must provide a version";
-  ASSERT_FALSE(value.empty()) << "Devices must provide a version";
-}
-
-TEST_P(QDMIImplementationTest, QueryDeviceLibraryVersionImplemented) {
-  size_t size = 0;
-  ASSERT_EQ(QDMI_query_device_property(
-                device, QDMI_DEVICE_PROPERTY_LIBRARYVERSION, 0, nullptr, &size),
-            QDMI_SUCCESS)
-      << "Devices must provide a library version";
-  std::string value(size - 1, '\0');
-  ASSERT_EQ(QDMI_query_device_property(device,
-                                       QDMI_DEVICE_PROPERTY_LIBRARYVERSION,
-                                       size, value.data(), nullptr),
-            QDMI_SUCCESS)
-      << "Devices must provide a library version";
-  ASSERT_FALSE(value.empty()) << "Devices must provide a library version";
-}
-
-TEST_P(QDMIImplementationTest, ControlDeviceModeReadOnly) {
+TEST_P(QDMIImplementationTest, DeviceModeReadOnly) {
   // attempt to get the second device in the session, which should be in
   // read-only mode
   std::array<QDMI_Device, 2> devices{};
@@ -243,33 +180,88 @@ TEST_P(QDMIImplementationTest, ControlDeviceModeReadOnly) {
   device = devices[1];
   ASSERT_NE(device, nullptr) << "Failed to get read-only device";
   QDMI_Job job{};
-  ASSERT_EQ(QDMI_control_create_job(device, QDMI_PROGRAM_FORMAT_QASM2,
-                                    Get_test_circuit().length() + 1,
-                                    Get_test_circuit().c_str(), &job),
+  ASSERT_EQ(QDMI_job_create(device, QDMI_PROGRAM_FORMAT_QASM2,
+                            Get_test_circuit().length() + 1,
+                            Get_test_circuit().c_str(), &job),
             QDMI_ERROR_PERMISSIONDENIED);
-  ASSERT_EQ(QDMI_control_set_parameter(device, job, QDMI_JOB_PARAMETER_MAX, 0,
-                                       nullptr),
+  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_MAX, 0, nullptr),
             QDMI_ERROR_PERMISSIONDENIED);
-  ASSERT_EQ(QDMI_control_submit_job(device, job), QDMI_ERROR_PERMISSIONDENIED);
-  EXPECT_EQ(QDMI_control_cancel(device, job), QDMI_ERROR_PERMISSIONDENIED);
-  EXPECT_EQ(QDMI_control_check(device, job, nullptr),
-            QDMI_ERROR_PERMISSIONDENIED);
-  EXPECT_EQ(QDMI_control_wait(device, job), QDMI_ERROR_PERMISSIONDENIED);
-  EXPECT_EQ(QDMI_control_get_data(device, job, QDMI_JOB_RESULT_MAX, 0, nullptr,
-                                  nullptr),
+  ASSERT_EQ(QDMI_job_submit(job), QDMI_ERROR_PERMISSIONDENIED);
+  EXPECT_EQ(QDMI_job_cancel(job), QDMI_ERROR_PERMISSIONDENIED);
+  EXPECT_EQ(QDMI_job_check(job, nullptr), QDMI_ERROR_PERMISSIONDENIED);
+  EXPECT_EQ(QDMI_job_wait(job), QDMI_ERROR_PERMISSIONDENIED);
+  EXPECT_EQ(QDMI_job_get_data(job, QDMI_JOB_RESULT_MAX, 0, nullptr, nullptr),
             QDMI_ERROR_PERMISSIONDENIED);
 }
 
-TEST_P(QDMIImplementationTest, SessionGetDevicesImplemented) {
-  ASSERT_EQ(QDMI_session_get_devices(session, 0, nullptr, nullptr),
+TEST_P(QDMIImplementationTest, QueryDevicePropertyImplemented) {
+  ASSERT_EQ(QDMI_device_query_property(device, QDMI_DEVICE_PROPERTY_NAME, 0,
+                                       nullptr, nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
-  std::array<QDMI_Device, 2> devices{};
-  ASSERT_EQ(QDMI_session_get_devices(session, 2, devices.data(), nullptr),
-            QDMI_SUCCESS);
 }
 
-TEST_P(QDMIImplementationTest, SessionSetParameterImplemented) {
-  ASSERT_EQ(QDMI_session_set_parameter(session, QDMI_SESSION_PARAMETER_MAX, 0,
-                                       nullptr),
+TEST_P(QDMIImplementationTest, GetSitesImplemented) {
+  ASSERT_EQ(QDMI_device_get_sites(device, 0, nullptr, nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
+}
+
+TEST_P(QDMIImplementationTest, GetOperationsImplemented) {
+  ASSERT_EQ(QDMI_device_get_operations(device, 0, nullptr, nullptr),
+            QDMI_ERROR_INVALIDARGUMENT);
+}
+
+TEST_P(QDMIImplementationTest, QuerySitePropertyImplemented) {
+  ASSERT_EQ(QDMI_site_query_property(nullptr, QDMI_SITE_PROPERTY_MAX, 0,
+                                     nullptr, nullptr),
+            QDMI_ERROR_INVALIDARGUMENT);
+}
+
+TEST_P(QDMIImplementationTest, QueryOperationPropertyImplemented) {
+  ASSERT_EQ(QDMI_operation_query_property(nullptr, 0, nullptr,
+                                          QDMI_OPERATION_PROPERTY_MAX, 0,
+                                          nullptr, nullptr),
+            QDMI_ERROR_INVALIDARGUMENT);
+}
+
+TEST_P(QDMIImplementationTest, QueryDeviceNameImplemented) {
+  size_t size = 0;
+  ASSERT_EQ(QDMI_device_query_property(device, QDMI_DEVICE_PROPERTY_NAME, 0,
+                                       nullptr, &size),
+            QDMI_SUCCESS)
+      << "Devices must provide a name";
+  std::string value(size - 1, '\0');
+  ASSERT_EQ(QDMI_device_query_property(device, QDMI_DEVICE_PROPERTY_NAME, size,
+                                       value.data(), nullptr),
+            QDMI_SUCCESS)
+      << "Devices must provide a name";
+  ASSERT_FALSE(value.empty()) << "Devices must provide a name";
+}
+
+TEST_P(QDMIImplementationTest, QueryDeviceVersionImplemented) {
+  size_t size = 0;
+  ASSERT_EQ(QDMI_device_query_property(device, QDMI_DEVICE_PROPERTY_VERSION, 0,
+                                       nullptr, &size),
+            QDMI_SUCCESS)
+      << "Devices must provide a version";
+  std::string value(size - 1, '\0');
+  ASSERT_EQ(QDMI_device_query_property(device, QDMI_DEVICE_PROPERTY_VERSION,
+                                       size, value.data(), nullptr),
+            QDMI_SUCCESS)
+      << "Devices must provide a version";
+  ASSERT_FALSE(value.empty()) << "Devices must provide a version";
+}
+
+TEST_P(QDMIImplementationTest, QueryDeviceLibraryVersionImplemented) {
+  size_t size = 0;
+  ASSERT_EQ(QDMI_device_query_property(
+                device, QDMI_DEVICE_PROPERTY_LIBRARYVERSION, 0, nullptr, &size),
+            QDMI_SUCCESS)
+      << "Devices must provide a library version";
+  std::string value(size - 1, '\0');
+  ASSERT_EQ(QDMI_device_query_property(device,
+                                       QDMI_DEVICE_PROPERTY_LIBRARYVERSION,
+                                       size, value.data(), nullptr),
+            QDMI_SUCCESS)
+      << "Devices must provide a library version";
+  ASSERT_FALSE(value.empty()) << "Devices must provide a library version";
 }
