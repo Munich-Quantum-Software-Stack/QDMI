@@ -110,6 +110,14 @@ auto FoMaC::get_qubits_num() const -> size_t {
   return num_qubits;
 }
 
+auto FoMaC::get_site_id(QDMI_Site site) const -> size_t {
+  size_t site_id = 0;
+  const int ret = QDMI_query_site_property(device, site, QDMI_SITE_PROPERTY_ID,
+                                           sizeof(size_t), &site_id, nullptr);
+  throw_if_error(ret, "Failed to query the number of qubits.");
+  return site_id;
+}
+
 auto FoMaC::get_operation_map() const -> std::map<std::string, QDMI_Operation> {
   size_t ops_num = 0;
   int ret = QDMI_query_get_operations(device, 0, nullptr, &ops_num);

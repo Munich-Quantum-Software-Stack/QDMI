@@ -44,6 +44,8 @@ public:
 
   [[nodiscard]] auto get_qubits_num() const -> size_t;
 
+  [[nodiscard]] auto get_site_id(QDMI_Site site) const -> size_t;
+
   [[nodiscard]] auto get_operation_map() const
       -> std::map<std::string, QDMI_Operation>;
 
