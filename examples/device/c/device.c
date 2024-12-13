@@ -218,6 +218,8 @@ int C_QDMI_query_site_property_dev(C_QDMI_Site site,
       (value == NULL && size_ret == NULL)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
+  ADD_SINGLE_VALUE_PROPERTY(QDMI_SITE_PROPERTY_ID, size_t, site->id, prop, size,
+                            value, size_ret)
   ADD_SINGLE_VALUE_PROPERTY(QDMI_SITE_PROPERTY_TIME_T1, double, 1000.0, prop,
                             size, value, size_ret)
   ADD_SINGLE_VALUE_PROPERTY(QDMI_SITE_PROPERTY_TIME_T2, double, 100000.0, prop,
