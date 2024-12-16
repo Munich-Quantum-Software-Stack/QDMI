@@ -28,10 +28,10 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include "@QDMI_prefix@_qdmi/device.h"
 
 int main() {
-  @QDMI_PREFIX@_QDMI_Session session = nullptr;
-  @QDMI_PREFIX@_QDMI_Job job = nullptr;
-  @QDMI_PREFIX@_QDMI_Site site = nullptr;
-  @QDMI_PREFIX@_QDMI_Operation operation = nullptr;
+  @QDMI_PREFIX@_QDMI_Device_Session session = nullptr;
+  @QDMI_PREFIX@_QDMI_Device_Job job = nullptr;
+  @QDMI_PREFIX@_QDMI_Device_Site site = nullptr;
+  @QDMI_PREFIX@_QDMI_Device_Operation operation = nullptr;
   @QDMI_PREFIX@_QDMI_device_initialize();
   @QDMI_PREFIX@_QDMI_device_finalize();
   @QDMI_PREFIX@_QDMI_device_session_alloc(&session);

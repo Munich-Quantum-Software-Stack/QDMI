@@ -326,7 +326,8 @@ int CXX_QDMI_device_job_create(CXX_QDMI_Device_Session session,
                                const QDMI_Program_Format format,
                                const size_t size, const void *prog,
                                CXX_QDMI_Device_Job *job) {
-  if (prog != nullptr && (size == 0 || job == nullptr) || session == nullptr ||
+  if ((prog != nullptr && (size == 0 || job == nullptr)) ||
+      session == nullptr ||
       session->status != CXX_QDMI_DEVICE_SESSION_STATUS::INITIALIZED) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
