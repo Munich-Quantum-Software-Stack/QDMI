@@ -46,6 +46,8 @@ enum QDMI_STATUS {
   QDMI_ERROR_INVALIDARGUMENT = -7,  ///< Invalid argument.
   QDMI_ERROR_PERMISSIONDENIED = -8, ///< Permission denied.
   QDMI_ERROR_NOTSUPPORTED = -9,     ///< Operation is not supported.
+  /// Resource is in the wrong state for the operation.
+  QDMI_ERROR_BADSTATE = -10,
 };
 
 /// Enum of the device properties that can be queried.

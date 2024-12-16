@@ -327,9 +327,11 @@ int CXX_QDMI_device_job_create(CXX_QDMI_Device_Session session,
                                const size_t size, const void *prog,
                                CXX_QDMI_Device_Job *job) {
   if ((prog != nullptr && (size == 0 || job == nullptr)) ||
-      session == nullptr ||
-      session->status != CXX_QDMI_DEVICE_SESSION_STATUS::INITIALIZED) {
+      session == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  if (session->status != CXX_QDMI_DEVICE_SESSION_STATUS::INITIALIZED) {
+    return QDMI_ERROR_BADSTATE;
   }
   switch (format) {
   case QDMI_PROGRAM_FORMAT_QASM2:

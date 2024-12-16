@@ -342,8 +342,11 @@ int QDMI_session_set_parameter(QDMI_Session session,
                                QDMI_Session_Parameter param, const size_t size,
                                const void *value) {
   if (session == nullptr || param >= QDMI_SESSION_PARAMETER_MAX ||
-      value == nullptr || session->status != QDMI_SESSION_STATUS::ALLOCATED) {
+      value == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  if (session->status != QDMI_SESSION_STATUS::ALLOCATED) {
+    return QDMI_ERROR_BADSTATE;
   }
   switch (param) {
   case QDMI_SESSION_PARAMETER_TOKEN:

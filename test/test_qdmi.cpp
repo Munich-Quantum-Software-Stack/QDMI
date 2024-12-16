@@ -27,6 +27,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include <gtest/gtest.h>
 #include <sstream>
 #include <string>
+#include <tuple>
 #include <unordered_map>
 #include <utility>
 #include <vector>
@@ -38,14 +39,21 @@ INSTANTIATE_TEST_SUITE_P(
     QDMIImplementationTest,
     // Test suite name
     // Parameters to test with
-    ::testing::Values(std::pair{"../examples/device/c/libc_device", "C"},
-                      std::pair{"../examples/device/cxx/libcxx_device", "CXX"}),
-    [](const testing::TestParamInfo<std::pair<std::string, std::string>> &inf) {
+    ::testing::Values(std::tuple{"../examples/device/c/libc_device", "C",
+                                 TEST_SESSION_MODE::READONLY},
+                      std::tuple{"../examples/device/c/libc_device", "C",
+                                 TEST_SESSION_MODE::READWRITE},
+                      std::tuple{"../examples/device/cxx/libcxx_device", "CXX",
+                                 TEST_SESSION_MODE::READONLY},
+                      std::tuple{"../examples/device/cxx/libcxx_device", "CXX",
+                                 TEST_SESSION_MODE::READWRITE}),
+    [](const testing::TestParamInfo<
+        std::tuple<std::string, std::string, TEST_SESSION_MODE>> &inf) {
       // Extract the last part of the file path
-      const size_t pos = inf.param.first.find_last_of("/\\");
+      const size_t pos = std::get<0>(inf.param).find_last_of("/\\");
       std::string filename = (pos == std::string::npos)
-                                 ? inf.param.first
-                                 : inf.param.first.substr(pos + 1);
+                                 ? std::get<0>(inf.param)
+                                 : std::get<0>(inf.param).substr(pos + 1);
 
       // Strip the 'lib' prefix if it exists
       const std::string prefix = "lib";
@@ -54,7 +62,12 @@ INSTANTIATE_TEST_SUITE_P(
       }
 
       // return name for the test
-      return filename;
+      switch (std::get<2>(inf.param)) {
+      case TEST_SESSION_MODE::READONLY:
+        return filename + "__readonly";
+      case TEST_SESSION_MODE::READWRITE:
+        return filename + "__readwrite";
+      }
     });
 
 TEST_P(QDMIImplementationTest, QueryNumQubits) {
@@ -133,6 +146,9 @@ TEST_P(QDMIImplementationTest, QueryGatePropertiesForEachGate) {
 }
 
 TEST_P(QDMIImplementationTest, ControlJob) {
+  if (mode == TEST_SESSION_MODE::READONLY) {
+    GTEST_SKIP() << "Skipping test for read-only session";
+  }
   QDMI_Job job{};
   const std::string input = "OPENQASM 2.0;\n"
                             "include \"qelib1.inc\";\n"
@@ -246,6 +262,9 @@ measure q -> c;
 } // namespace
 
 TEST_P(QDMIImplementationTest, ControlGetShots) {
+  if (mode == TEST_SESSION_MODE::READONLY) {
+    GTEST_SKIP() << "Skipping test for read-only session";
+  }
   const auto fomac = FoMaC(device);
   const size_t shots_num = 64;
   QDMI_Job job = Submit_test_job(device, shots_num);
@@ -268,6 +287,9 @@ TEST_P(QDMIImplementationTest, ControlGetShots) {
 }
 
 TEST_P(QDMIImplementationTest, ControlGetHistogram) {
+  if (mode == TEST_SESSION_MODE::READONLY) {
+    GTEST_SKIP() << "Skipping test for read-only session";
+  }
   const auto fomac = FoMaC(device);
   const size_t shots_num = 64;
   QDMI_Job job = Submit_test_job(device, shots_num);
@@ -320,6 +342,9 @@ TEST_P(QDMIImplementationTest, ControlGetHistogram) {
 }
 
 TEST_P(QDMIImplementationTest, ControlGetStateDense) {
+  if (mode == TEST_SESSION_MODE::READONLY) {
+    GTEST_SKIP() << "Skipping test for read-only session";
+  }
   QDMI_Job job = Submit_test_job(device);
 
   size_t state_size = 0;
@@ -351,6 +376,9 @@ TEST_P(QDMIImplementationTest, ControlGetStateDense) {
 }
 
 TEST_P(QDMIImplementationTest, ControlGetStateSparse) {
+  if (mode == TEST_SESSION_MODE::READONLY) {
+    GTEST_SKIP() << "Skipping test for read-only session";
+  }
   const auto fomac = FoMaC(device);
   QDMI_Job job = Submit_test_job(device);
   size_t size = 0;
@@ -395,6 +423,9 @@ TEST_P(QDMIImplementationTest, ControlGetStateSparse) {
 }
 
 TEST_P(QDMIImplementationTest, ControlGetProbsDense) {
+  if (mode == TEST_SESSION_MODE::READONLY) {
+    GTEST_SKIP() << "Skipping test for read-only session";
+  }
   const auto fomac = FoMaC(device);
   QDMI_Job job = Submit_test_job(device);
 
@@ -414,6 +445,9 @@ TEST_P(QDMIImplementationTest, ControlGetProbsDense) {
 }
 
 TEST_P(QDMIImplementationTest, ControlGetProbsSparse) {
+  if (mode == TEST_SESSION_MODE::READONLY) {
+    GTEST_SKIP() << "Skipping test for read-only session";
+  }
   const auto fomac = FoMaC(device);
   QDMI_Job job = Submit_test_job(device);
 
@@ -459,6 +493,9 @@ TEST_P(QDMIImplementationTest, ControlGetProbsSparse) {
 }
 
 TEST_P(QDMIImplementationTest, ControlGetShotsBufferTooSmall) {
+  if (mode == TEST_SESSION_MODE::READONLY) {
+    GTEST_SKIP() << "Skipping test for read-only session";
+  }
   QDMI_Job job = Submit_test_job(device, 64);
   size_t size = 0;
   ASSERT_EQ(QDMI_job_get_data(job, QDMI_JOB_RESULT_SHOTS, 0, nullptr, &size),
@@ -471,6 +508,9 @@ TEST_P(QDMIImplementationTest, ControlGetShotsBufferTooSmall) {
 }
 
 TEST_P(QDMIImplementationTest, ControlGetHistogramKeysBufferTooSmall) {
+  if (mode == TEST_SESSION_MODE::READONLY) {
+    GTEST_SKIP() << "Skipping test for read-only session";
+  }
   QDMI_Job job = Submit_test_job(device, 64);
   size_t size = 0;
   ASSERT_EQ(
@@ -484,6 +524,9 @@ TEST_P(QDMIImplementationTest, ControlGetHistogramKeysBufferTooSmall) {
 }
 
 TEST_P(QDMIImplementationTest, ControlGetHistogramValuesBufferTooSmall) {
+  if (mode == TEST_SESSION_MODE::READONLY) {
+    GTEST_SKIP() << "Skipping test for read-only session";
+  }
   QDMI_Job job = Submit_test_job(device, 64);
   size_t size = 0;
   ASSERT_EQ(
@@ -497,6 +540,9 @@ TEST_P(QDMIImplementationTest, ControlGetHistogramValuesBufferTooSmall) {
 }
 
 TEST_P(QDMIImplementationTest, ControlGetStateDenseBufferTooSmall) {
+  if (mode == TEST_SESSION_MODE::READONLY) {
+    GTEST_SKIP() << "Skipping test for read-only session";
+  }
   QDMI_Job job = Submit_test_job(device);
   size_t size = 0;
   ASSERT_EQ(QDMI_job_get_data(job, QDMI_JOB_RESULT_STATEVECTOR_DENSE, 0,
@@ -510,6 +556,9 @@ TEST_P(QDMIImplementationTest, ControlGetStateDenseBufferTooSmall) {
 }
 
 TEST_P(QDMIImplementationTest, ControlGetStateSparseKeysBufferTooSmall) {
+  if (mode == TEST_SESSION_MODE::READONLY) {
+    GTEST_SKIP() << "Skipping test for read-only session";
+  }
   QDMI_Job job = Submit_test_job(device);
   size_t size = 0;
   ASSERT_EQ(QDMI_job_get_data(job, QDMI_JOB_RESULT_STATEVECTOR_SPARSE_KEYS, 0,
@@ -523,6 +572,9 @@ TEST_P(QDMIImplementationTest, ControlGetStateSparseKeysBufferTooSmall) {
 }
 
 TEST_P(QDMIImplementationTest, ControlGetStateSparseValuesBufferTooSmall) {
+  if (mode == TEST_SESSION_MODE::READONLY) {
+    GTEST_SKIP() << "Skipping test for read-only session";
+  }
   QDMI_Job job = Submit_test_job(device);
   size_t size = 0;
   ASSERT_EQ(QDMI_job_get_data(job, QDMI_JOB_RESULT_STATEVECTOR_SPARSE_VALUES, 0,
@@ -536,6 +588,9 @@ TEST_P(QDMIImplementationTest, ControlGetStateSparseValuesBufferTooSmall) {
 }
 
 TEST_P(QDMIImplementationTest, ControlGetProbsDenseBufferTooSmall) {
+  if (mode == TEST_SESSION_MODE::READONLY) {
+    GTEST_SKIP() << "Skipping test for read-only session";
+  }
   QDMI_Job job = Submit_test_job(device);
   size_t size = 0;
   ASSERT_EQ(QDMI_job_get_data(job, QDMI_JOB_RESULT_PROBABILITIES_DENSE, 0,
@@ -549,6 +604,9 @@ TEST_P(QDMIImplementationTest, ControlGetProbsDenseBufferTooSmall) {
 }
 
 TEST_P(QDMIImplementationTest, ControlGetProbsSparseKeysBufferTooSmall) {
+  if (mode == TEST_SESSION_MODE::READONLY) {
+    GTEST_SKIP() << "Skipping test for read-only session";
+  }
   QDMI_Job job = Submit_test_job(device);
   size_t size = 0;
   ASSERT_EQ(QDMI_job_get_data(job, QDMI_JOB_RESULT_PROBABILITIES_SPARSE_KEYS, 0,
@@ -562,6 +620,9 @@ TEST_P(QDMIImplementationTest, ControlGetProbsSparseKeysBufferTooSmall) {
 }
 
 TEST_P(QDMIImplementationTest, ControlGetProbsSparseValuesBufferTooSmall) {
+  if (mode == TEST_SESSION_MODE::READONLY) {
+    GTEST_SKIP() << "Skipping test for read-only session";
+  }
   QDMI_Job job = Submit_test_job(device);
   size_t size = 0;
   ASSERT_EQ(QDMI_job_get_data(job, QDMI_JOB_RESULT_PROBABILITIES_SPARSE_VALUES,
@@ -579,7 +640,7 @@ TEST_P(QDMIImplementationTest, SessionSetParameter) {
   ASSERT_EQ(QDMI_session_set_parameter(session, QDMI_SESSION_PARAMETER_TOKEN,
                                        test_token.length() + 1,
                                        test_token.c_str()),
-            QDMI_SUCCESS);
+            QDMI_ERROR_BADSTATE);
 
   ASSERT_EQ(QDMI_session_set_parameter(session, QDMI_SESSION_PARAMETER_USERNAME,
                                        1, ""),

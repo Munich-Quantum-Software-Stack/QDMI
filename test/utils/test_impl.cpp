@@ -32,8 +32,9 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 void QDMIImplementationTest::SetUp() {
   auto params = GetParam();
-  library_name = params.first;
-  prefix = params.second;
+  const std::string &library_name = std::get<0>(params);
+  const std::string &prefix = std::get<1>(params);
+  mode = std::get<2>(params);
 
   // Get the current test info
   const ::testing::TestInfo *test_info =
@@ -46,9 +47,7 @@ void QDMIImplementationTest::SetUp() {
   config_file_name = "qdmi_" + test_name + ".conf";
   std::ofstream conf_file(config_file_name);
   conf_file << library_name << Shared_library_file_extension() << " " << prefix
-            << " read_write\n";
-  conf_file << library_name << Shared_library_file_extension() << " " << prefix
-            << " read_only\n";
+            << "\n";
   conf_file.close();
 
 #ifdef _WIN32
@@ -69,6 +68,20 @@ void QDMIImplementationTest::SetUp() {
          "authentication information, device status is offline, or in "
          "maintenance. To provide credentials, take a look in " __FILE__
       << (__LINE__ - 4);
+
+  if (mode == TEST_SESSION_MODE::READWRITE) {
+    ASSERT_EQ(QDMI_session_set_parameter(session, QDMI_SESSION_PARAMETER_TOKEN,
+                                         1, "token"),
+              QDMI_SUCCESS)
+        << "Failed to set session parameter";
+  } else if (mode == TEST_SESSION_MODE::READONLY) {
+    ASSERT_EQ(QDMI_session_set_parameter(session, QDMI_SESSION_PARAMETER_TOKEN,
+                                         0, nullptr),
+              QDMI_SUCCESS)
+        << "Failed to set session parameter";
+  } else {
+    FAIL() << "Invalid mode";
+  }
 
   ASSERT_EQ(QDMI_session_get_devices(session, 1, &device, nullptr),
             QDMI_SUCCESS)
@@ -100,6 +113,9 @@ TEST_P(QDMIImplementationTest, SetSessionParameterImplemented) {
 }
 
 TEST_P(QDMIImplementationTest, CreateJobImplemented) {
+  if (mode == TEST_SESSION_MODE::READONLY) {
+    GTEST_SKIP() << "Skipping test for read-only session";
+  }
   QDMI_Job job = nullptr;
   ASSERT_NE(QDMI_job_create(device, QDMI_PROGRAM_FORMAT_QASM2,
                             Get_test_circuit().length() + 1,
@@ -109,6 +125,9 @@ TEST_P(QDMIImplementationTest, CreateJobImplemented) {
 }
 
 TEST_P(QDMIImplementationTest, SetJobParameterImplemented) {
+  if (mode == TEST_SESSION_MODE::READONLY) {
+    GTEST_SKIP() << "Skipping test for read-only session";
+  }
   QDMI_Job job = nullptr;
   ASSERT_EQ(QDMI_job_create(device, QDMI_PROGRAM_FORMAT_QASM2,
                             Get_test_circuit().length() + 1,
@@ -120,6 +139,9 @@ TEST_P(QDMIImplementationTest, SetJobParameterImplemented) {
 }
 
 TEST_P(QDMIImplementationTest, SubmitJobImplemented) {
+  if (mode == TEST_SESSION_MODE::READONLY) {
+    GTEST_SKIP() << "Skipping test for read-only session";
+  }
   QDMI_Job job = nullptr;
   ASSERT_EQ(QDMI_job_create(device, QDMI_PROGRAM_FORMAT_QASM2,
                             Get_test_circuit().length() + 1,
@@ -130,6 +152,9 @@ TEST_P(QDMIImplementationTest, SubmitJobImplemented) {
 }
 
 TEST_P(QDMIImplementationTest, CancelJobImplemented) {
+  if (mode == TEST_SESSION_MODE::READONLY) {
+    GTEST_SKIP() << "Skipping test for read-only session";
+  }
   QDMI_Job job = nullptr;
   ASSERT_EQ(QDMI_job_create(device, QDMI_PROGRAM_FORMAT_QASM2,
                             Get_test_circuit().length() + 1,
@@ -140,6 +165,9 @@ TEST_P(QDMIImplementationTest, CancelJobImplemented) {
 }
 
 TEST_P(QDMIImplementationTest, CheckJobStatusImplemented) {
+  if (mode == TEST_SESSION_MODE::READONLY) {
+    GTEST_SKIP() << "Skipping test for read-only session";
+  }
   QDMI_Job job = nullptr;
   QDMI_Job_Status status = QDMI_JOB_STATUS_RUNNING;
   ASSERT_EQ(QDMI_job_create(device, QDMI_PROGRAM_FORMAT_QASM2,
@@ -151,6 +179,9 @@ TEST_P(QDMIImplementationTest, CheckJobStatusImplemented) {
 }
 
 TEST_P(QDMIImplementationTest, WaitOnJobImplemented) {
+  if (mode == TEST_SESSION_MODE::READONLY) {
+    GTEST_SKIP() << "Skipping test for read-only session";
+  }
   QDMI_Job job = nullptr;
   ASSERT_EQ(QDMI_job_create(device, QDMI_PROGRAM_FORMAT_QASM2,
                             Get_test_circuit().length() + 1,
@@ -161,6 +192,9 @@ TEST_P(QDMIImplementationTest, WaitOnJobImplemented) {
 }
 
 TEST_P(QDMIImplementationTest, GetJobDataImplemented) {
+  if (mode == TEST_SESSION_MODE::READONLY) {
+    GTEST_SKIP() << "Skipping test for read-only session";
+  }
   QDMI_Job job = nullptr;
   ASSERT_EQ(QDMI_job_create(device, QDMI_PROGRAM_FORMAT_QASM2,
                             Get_test_circuit().length() + 1,
@@ -172,13 +206,9 @@ TEST_P(QDMIImplementationTest, GetJobDataImplemented) {
 }
 
 TEST_P(QDMIImplementationTest, DeviceModeReadOnly) {
-  // attempt to get the second device in the session, which should be in
-  // read-only mode
-  std::array<QDMI_Device, 2> devices{};
-  ASSERT_EQ(QDMI_session_get_devices(session, 2, devices.data(), nullptr),
-            QDMI_SUCCESS);
-  device = devices[1];
-  ASSERT_NE(device, nullptr) << "Failed to get read-only device";
+  if (mode == TEST_SESSION_MODE::READWRITE) {
+    GTEST_SKIP() << "Skipping test for read-write session";
+  }
   QDMI_Job job{};
   ASSERT_EQ(QDMI_job_create(device, QDMI_PROGRAM_FORMAT_QASM2,
                             Get_test_circuit().length() + 1,

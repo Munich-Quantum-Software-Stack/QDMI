@@ -200,8 +200,11 @@ int C_QDMI_device_session_set_parameter(
     C_QDMI_Device_Session session, const QDMI_Device_Session_Parameter param,
     const size_t size, const void *value) {
   if (session == NULL || param >= QDMI_DEVICE_SESSION_PARAMETER_MAX ||
-      size == 0 || value == NULL || session->status != ALLOCATED) {
+      size == 0 || value == NULL) {
     return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  if (session->status != ALLOCATED) {
+    return QDMI_ERROR_BADSTATE;
   }
   switch (param) {
   case QDMI_DEVICE_SESSION_PARAMETER_TOKEN:
@@ -217,9 +220,11 @@ int C_QDMI_device_job_create(C_QDMI_Device_Session session,
                              const QDMI_Program_Format format,
                              const size_t size, const void *prog,
                              C_QDMI_Device_Job *job) {
-  if ((prog != NULL && (size == 0 || job == NULL)) || session == NULL ||
-      session->status != INITIALIZED) {
+  if ((prog != NULL && (size == 0 || job == NULL)) || session == NULL) {
     return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  if (session->status != INITIALIZED) {
+    return QDMI_ERROR_BADSTATE;
   }
   switch (format) {
   case QDMI_PROGRAM_FORMAT_QASM2:
