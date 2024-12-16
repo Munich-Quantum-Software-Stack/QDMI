@@ -29,6 +29,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include <fstream>
 #include <gtest/gtest.h>
 #include <string>
+#include <vector>
 
 void QDMIImplementationTest::SetUp() {
   auto params = GetParam();
@@ -232,6 +233,23 @@ TEST_P(QDMIImplementationTest, QueryDeviceLibraryVersionImplemented) {
             QDMI_SUCCESS)
       << "Devices must provide a library version";
   ASSERT_FALSE(value.empty()) << "Devices must provide a library version";
+}
+
+TEST_P(QDMIImplementationTest, QuerySiteIDImplemented) {
+  size_t size = 0;
+  ASSERT_EQ(QDMI_query_get_sites(device, 0, nullptr, &size), QDMI_SUCCESS)
+      << "Devices must provide a list of sites";
+  std::vector<QDMI_Site> sites(size);
+  ASSERT_EQ(QDMI_query_get_sites(device, size, sites.data(), nullptr),
+            QDMI_SUCCESS)
+      << "Devices must provide a list of sites";
+  size_t id = 0;
+  for (const auto site : sites) {
+    ASSERT_EQ(QDMI_query_site_property(device, site, QDMI_SITE_PROPERTY_ID,
+                                       sizeof(size_t), &id, nullptr),
+              QDMI_SUCCESS)
+        << "Devices must provide a site id";
+  }
 }
 
 TEST_P(QDMIImplementationTest, ControlDeviceModeReadOnly) {

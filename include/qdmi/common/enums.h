@@ -98,8 +98,20 @@ enum QDMI_DEVICE_STATUS_T {
 
 /// Enum of the site properties that can be queried.
 enum QDMI_SITE_PROPERTY_T {
-  /// `size_t` The id to identify the site in the circuit.
-  /// @details For example, `q[1]` in a QASM code identifies the site with id 1.
+  /**
+   * @brief `size_t` The id to identify the site in the circuit.
+   * @details For example, `$0` in a QASM code identifies the (physical) site
+   * with id 1. Note, those physical qubits in the QASM language should not be
+   * confused with the virtual qubits used more frequently. Those are allocated
+   * via `qreg q[3]`, for example, and then used in the circuit as, e.g.,
+   * `h q[0]`.
+   *
+   * @par
+   * On the QIR side, there is also the distinction between dynamically
+   * allocated and static hardware qubits. Here, only the latter refer to the
+   * physical ids of sites. E.g., `ptr inttoptr (i64 1 to ptr)` refers to the
+   * physical site with id 1.
+   */
   QDMI_SITE_PROPERTY_ID = 0,
   QDMI_SITE_PROPERTY_TIME_T1 = 1, ///< `double` The T1 time of a site in µs.
   QDMI_SITE_PROPERTY_TIME_T2 = 2, ///< `double` The T2 time of a site in µs.
