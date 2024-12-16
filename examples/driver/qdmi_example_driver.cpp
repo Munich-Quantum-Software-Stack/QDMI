@@ -38,6 +38,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <unordered_set>
 #include <vector>
 
 /** @name Definition of the QDMI Device and Session data structures
@@ -106,8 +107,11 @@ struct QDMI_Driver_Library {
   // delete copy constructor, copy assignment, move constructor, move assignment
   // to allow only one instance and proper destruction of the dynamic library
   QDMI_Driver_Library(const QDMI_Device_impl_d &) = delete;
+
   QDMI_Driver_Library &operator=(const QDMI_Device_impl_d &) = delete;
+
   QDMI_Driver_Library(QDMI_Device_impl_d &&) = delete;
+
   QDMI_Driver_Library &operator=(QDMI_Device_impl_d &&) = delete;
 
   // destructor
@@ -175,7 +179,8 @@ namespace {
  * @brief Global list of devices managed by the driver.
  */
 // NOLINTNEXTLINE(cppcoreguidelines-avoid-non-const-global-variables)
-std::vector<std::shared_ptr<QDMI_Device_impl_d>> device_list;
+std::unordered_map<void *, std::shared_ptr<QDMI_Driver_Library>> libraries;
+std::vector<QDMI_Device_impl_d> device_list;
 
 #define LOAD_SYMBOL(device, prefix, symbol)                                    \
   {                                                                            \
@@ -190,12 +195,19 @@ std::vector<std::shared_ptr<QDMI_Device_impl_d>> device_list;
 
 std::shared_ptr<QDMI_Driver_Library>
 QDMI_library_open(const std::string &lib_name, const std::string &prefix) {
-  auto lib_handle = std::make_shared<QDMI_Driver_Library>();
-  auto &library = *lib_handle;
-  library.lib_handle = dlopen(lib_name.c_str(), RTLD_NOW | RTLD_LOCAL);
-  if (library.lib_handle == nullptr) {
+  auto *lib_handle = dlopen(lib_name.c_str(), RTLD_NOW | RTLD_LOCAL);
+  if (lib_handle == nullptr) {
     throw std::runtime_error("Failed to open device library: " + lib_name);
   }
+  if (const auto it = libraries.find(lib_handle); it != libraries.end()) {
+    // dlopen employs reference counting so we need to decrement the reference
+    // count that was increased by dlopen
+    dlclose(lib_handle);
+    return it->second;
+  }
+  auto lib_ptr = std::make_shared<QDMI_Driver_Library>();
+  auto &library = *lib_ptr;
+  library.lib_handle = lib_handle;
 
   try {
     // NOLINTBEGIN(cppcoreguidelines-pro-type-reinterpret-cast)
@@ -229,7 +241,8 @@ QDMI_library_open(const std::string &lib_name, const std::string &prefix) {
   // initialize the device
   library.device_initialize();
 
-  return lib_handle;
+  libraries.emplace(lib_handle, lib_ptr);
+  return lib_ptr;
 }
 
 bool Is_path_allowed(const std::filesystem::path &path) {
