@@ -101,10 +101,19 @@ enum QDMI_SITE_PROPERTY_T {
   /**
    * @brief `size_t` The id to identify the site in the circuit.
    * @details For example, `$0` in a QASM code identifies the (physical) site
-   * with id 1. Note, those physical qubits in the QASM language should not be
+   * with id 0. Note, those physical qubits in the QASM language should not be
    * confused with the virtual qubits used more frequently. Those are allocated
    * via `qreg q[3]`, for example, and then used in the circuit as, e.g.,
    * `h q[0]`.
+   *
+   * @par
+   * Additionally, the qubits in a QASM program that contain exactly one
+   * register with exactly the same number of qubits as the device has sites is
+   * also handled as physical qubits. For example for a device with three qubits
+   * and a QASM program `qreg q[3]; h q[0]; cx q[0], q[1];`, the operations are
+   * indeed performed on the physical sites with ids 0 and 1. Note here, that
+   * this is not the intended use of virtual qubits in QASM, but because of
+   * their wide adoption in the community, this behavior is also supported.
    *
    * @par
    * On the QIR side, there is also the distinction between dynamically
