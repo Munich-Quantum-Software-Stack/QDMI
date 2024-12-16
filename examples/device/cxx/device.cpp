@@ -219,7 +219,7 @@ const static std::unordered_map<
         }                                                                      \
         *static_cast<prop_type *>(value) = prop_value;                         \
       }                                                                        \
-      if (size_ret != nullptr) {                                               \
+      if ((size_ret) != nullptr) {                                             \
         *size_ret = sizeof(prop_type);                                         \
       }                                                                        \
       return QDMI_SUCCESS;                                                     \
@@ -237,7 +237,7 @@ const static std::unordered_map<
         strncpy(static_cast<char *>(value), prop_value, size);                 \
         static_cast<char *>(value)[size - 1] = '\0';                           \
       }                                                                        \
-      if (size_ret != nullptr) {                                               \
+      if ((size_ret) != nullptr) {                                             \
         *size_ret = strlen(prop_value) + 1;                                    \
       }                                                                        \
       return QDMI_SUCCESS;                                                     \
@@ -256,7 +256,7 @@ const static std::unordered_map<
                static_cast<const void *>((prop_values).data()),                \
                (prop_values).size() * sizeof(prop_type));                      \
       }                                                                        \
-      if (size_ret != nullptr) {                                               \
+      if ((size_ret) != nullptr) {                                             \
         *size_ret = (prop_values).size() * sizeof(prop_type);                  \
       }                                                                        \
       return QDMI_SUCCESS;                                                     \
