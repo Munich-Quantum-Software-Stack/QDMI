@@ -200,7 +200,7 @@ TEST_F(QDMIImplementationTest, QuerySiteIDImplemented) {
             QDMI_SUCCESS)
       << "Devices must provide a list of sites";
   size_t id = 0;
-  for (const auto site : sites) {
+  for (auto *site : sites) {
     ASSERT_EQ(MY_QDMI_query_site_property_dev(site, QDMI_SITE_PROPERTY_ID,
                                               sizeof(size_t), &id, nullptr),
               QDMI_SUCCESS)
