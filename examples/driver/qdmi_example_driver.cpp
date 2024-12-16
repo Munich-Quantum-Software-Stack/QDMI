@@ -186,8 +186,7 @@ std::unordered_set<QDMI_Session> sessions;
 
 #define LOAD_SYMBOL(device, prefix, symbol)                                    \
   {                                                                            \
-    const std::string symbol_name =                                            \
-        std::string(prefix) + "_QDMI_" + #symbol + "_dev";                     \
+    const std::string symbol_name = std::string(prefix) + "_QDMI_" + #symbol;  \
     (device).symbol = reinterpret_cast<decltype((device).symbol)>(             \
         dlsym((device).lib_handle, symbol_name.c_str()));                      \
     if ((device).symbol == nullptr) {                                          \

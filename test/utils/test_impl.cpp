@@ -63,15 +63,9 @@ void QDMIImplementationTest::SetUp() {
   ASSERT_EQ(QDMI_session_alloc(&session), QDMI_SUCCESS)
       << "Failed to allocate session";
 
-  ASSERT_EQ(QDMI_session_init(session), QDMI_SUCCESS)
-      << "Failed to initialize session. Potential errors: Wrong or missing "
-         "authentication information, device status is offline, or in "
-         "maintenance. To provide credentials, take a look in " __FILE__
-      << (__LINE__ - 4);
-
   if (mode == TEST_SESSION_MODE::READWRITE) {
     ASSERT_EQ(QDMI_session_set_parameter(session, QDMI_SESSION_PARAMETER_TOKEN,
-                                         1, "token"),
+                                         6, "token"),
               QDMI_SUCCESS)
         << "Failed to set session parameter";
   } else if (mode == TEST_SESSION_MODE::READONLY) {
@@ -82,6 +76,12 @@ void QDMIImplementationTest::SetUp() {
   } else {
     FAIL() << "Invalid mode";
   }
+
+  ASSERT_EQ(QDMI_session_init(session), QDMI_SUCCESS)
+      << "Failed to initialize session. Potential errors: Wrong or missing "
+         "authentication information, device status is offline, or in "
+         "maintenance. To provide credentials, take a look in " __FILE__
+      << (__LINE__ - 4);
 
   ASSERT_EQ(QDMI_session_get_devices(session, 1, &device, nullptr),
             QDMI_SUCCESS)
