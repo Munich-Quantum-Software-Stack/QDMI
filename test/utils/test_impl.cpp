@@ -64,13 +64,15 @@ void QDMIImplementationTest::SetUp() {
       << "Failed to allocate session";
 
   if (mode == TEST_SESSION_MODE::READWRITE) {
+    const char *token = "token";
     ASSERT_EQ(QDMI_session_set_parameter(session, QDMI_SESSION_PARAMETER_TOKEN,
-                                         6, "token"),
+                                         6, token),
               QDMI_SUCCESS)
         << "Failed to set session parameter";
   } else if (mode == TEST_SESSION_MODE::READONLY) {
+    const char *token = "";
     ASSERT_EQ(QDMI_session_set_parameter(session, QDMI_SESSION_PARAMETER_TOKEN,
-                                         0, nullptr),
+                                         1, token),
               QDMI_SUCCESS)
         << "Failed to set session parameter";
   } else {

@@ -324,6 +324,10 @@ int QDMI_session_init(QDMI_Session session) {
     device->library = lib.get();
     device->session = session;
     device->library->device_session_alloc(&device->device_session);
+    device->library->device_session_set_parameter(
+        device->device_session, QDMI_DEVICE_SESSION_PARAMETER_TOKEN,
+        session->token.size() + 1, session->token.c_str());
+    device->library->device_session_init(device->device_session);
   }
   session->status = QDMI_SESSION_STATUS::INITIALIZED;
   return QDMI_SUCCESS;
