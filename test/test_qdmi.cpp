@@ -145,7 +145,7 @@ TEST_P(QDMIImplementationTest, QueryGatePropertiesForEachGate) {
   }
 }
 
-TEST_P(QDMIImplementationTest, ControlJob) {
+TEST_P(QDMIImplementationTest, JobLifecycle) {
   if (mode == TEST_SESSION_MODE::READONLY) {
     GTEST_SKIP() << "Skipping test for read-only session";
   }
@@ -261,7 +261,7 @@ measure q -> c;
 }
 } // namespace
 
-TEST_P(QDMIImplementationTest, ControlGetShots) {
+TEST_P(QDMIImplementationTest, GetShots) {
   if (mode == TEST_SESSION_MODE::READONLY) {
     GTEST_SKIP() << "Skipping test for read-only session";
   }
@@ -286,7 +286,7 @@ TEST_P(QDMIImplementationTest, ControlGetShots) {
   QDMI_job_free(job);
 }
 
-TEST_P(QDMIImplementationTest, ControlGetHistogram) {
+TEST_P(QDMIImplementationTest, GetHistogram) {
   if (mode == TEST_SESSION_MODE::READONLY) {
     GTEST_SKIP() << "Skipping test for read-only session";
   }
@@ -341,7 +341,7 @@ TEST_P(QDMIImplementationTest, ControlGetHistogram) {
   QDMI_job_free(job);
 }
 
-TEST_P(QDMIImplementationTest, ControlGetStateDense) {
+TEST_P(QDMIImplementationTest, GetStateDense) {
   if (mode == TEST_SESSION_MODE::READONLY) {
     GTEST_SKIP() << "Skipping test for read-only session";
   }
@@ -375,7 +375,7 @@ TEST_P(QDMIImplementationTest, ControlGetStateDense) {
   QDMI_job_free(job);
 }
 
-TEST_P(QDMIImplementationTest, ControlGetStateSparse) {
+TEST_P(QDMIImplementationTest, GetStateSparse) {
   if (mode == TEST_SESSION_MODE::READONLY) {
     GTEST_SKIP() << "Skipping test for read-only session";
   }
@@ -422,7 +422,7 @@ TEST_P(QDMIImplementationTest, ControlGetStateSparse) {
   QDMI_job_free(job);
 }
 
-TEST_P(QDMIImplementationTest, ControlGetProbsDense) {
+TEST_P(QDMIImplementationTest, GetProbsDense) {
   if (mode == TEST_SESSION_MODE::READONLY) {
     GTEST_SKIP() << "Skipping test for read-only session";
   }
@@ -444,7 +444,7 @@ TEST_P(QDMIImplementationTest, ControlGetProbsDense) {
   QDMI_job_free(job);
 }
 
-TEST_P(QDMIImplementationTest, ControlGetProbsSparse) {
+TEST_P(QDMIImplementationTest, GetProbsSparse) {
   if (mode == TEST_SESSION_MODE::READONLY) {
     GTEST_SKIP() << "Skipping test for read-only session";
   }
@@ -492,7 +492,7 @@ TEST_P(QDMIImplementationTest, ControlGetProbsSparse) {
   QDMI_job_free(job);
 }
 
-TEST_P(QDMIImplementationTest, ControlGetShotsBufferTooSmall) {
+TEST_P(QDMIImplementationTest, GetShotsBufferTooSmall) {
   if (mode == TEST_SESSION_MODE::READONLY) {
     GTEST_SKIP() << "Skipping test for read-only session";
   }
@@ -507,7 +507,7 @@ TEST_P(QDMIImplementationTest, ControlGetShotsBufferTooSmall) {
   QDMI_job_free(job);
 }
 
-TEST_P(QDMIImplementationTest, ControlGetHistogramKeysBufferTooSmall) {
+TEST_P(QDMIImplementationTest, GetHistogramKeysBufferTooSmall) {
   if (mode == TEST_SESSION_MODE::READONLY) {
     GTEST_SKIP() << "Skipping test for read-only session";
   }
@@ -523,7 +523,7 @@ TEST_P(QDMIImplementationTest, ControlGetHistogramKeysBufferTooSmall) {
   QDMI_job_free(job);
 }
 
-TEST_P(QDMIImplementationTest, ControlGetHistogramValuesBufferTooSmall) {
+TEST_P(QDMIImplementationTest, GetHistogramValuesBufferTooSmall) {
   if (mode == TEST_SESSION_MODE::READONLY) {
     GTEST_SKIP() << "Skipping test for read-only session";
   }
@@ -539,7 +539,7 @@ TEST_P(QDMIImplementationTest, ControlGetHistogramValuesBufferTooSmall) {
   QDMI_job_free(job);
 }
 
-TEST_P(QDMIImplementationTest, ControlGetStateDenseBufferTooSmall) {
+TEST_P(QDMIImplementationTest, GetStateDenseBufferTooSmall) {
   if (mode == TEST_SESSION_MODE::READONLY) {
     GTEST_SKIP() << "Skipping test for read-only session";
   }
@@ -555,7 +555,7 @@ TEST_P(QDMIImplementationTest, ControlGetStateDenseBufferTooSmall) {
   QDMI_job_free(job);
 }
 
-TEST_P(QDMIImplementationTest, ControlGetStateSparseKeysBufferTooSmall) {
+TEST_P(QDMIImplementationTest, GetStateSparseKeysBufferTooSmall) {
   if (mode == TEST_SESSION_MODE::READONLY) {
     GTEST_SKIP() << "Skipping test for read-only session";
   }
@@ -571,7 +571,7 @@ TEST_P(QDMIImplementationTest, ControlGetStateSparseKeysBufferTooSmall) {
   QDMI_job_free(job);
 }
 
-TEST_P(QDMIImplementationTest, ControlGetStateSparseValuesBufferTooSmall) {
+TEST_P(QDMIImplementationTest, GetStateSparseValuesBufferTooSmall) {
   if (mode == TEST_SESSION_MODE::READONLY) {
     GTEST_SKIP() << "Skipping test for read-only session";
   }
@@ -587,7 +587,7 @@ TEST_P(QDMIImplementationTest, ControlGetStateSparseValuesBufferTooSmall) {
   QDMI_job_free(job);
 }
 
-TEST_P(QDMIImplementationTest, ControlGetProbsDenseBufferTooSmall) {
+TEST_P(QDMIImplementationTest, GetProbsDenseBufferTooSmall) {
   if (mode == TEST_SESSION_MODE::READONLY) {
     GTEST_SKIP() << "Skipping test for read-only session";
   }
@@ -603,7 +603,7 @@ TEST_P(QDMIImplementationTest, ControlGetProbsDenseBufferTooSmall) {
   QDMI_job_free(job);
 }
 
-TEST_P(QDMIImplementationTest, ControlGetProbsSparseKeysBufferTooSmall) {
+TEST_P(QDMIImplementationTest, GetProbsSparseKeysBufferTooSmall) {
   if (mode == TEST_SESSION_MODE::READONLY) {
     GTEST_SKIP() << "Skipping test for read-only session";
   }
@@ -619,7 +619,7 @@ TEST_P(QDMIImplementationTest, ControlGetProbsSparseKeysBufferTooSmall) {
   QDMI_job_free(job);
 }
 
-TEST_P(QDMIImplementationTest, ControlGetProbsSparseValuesBufferTooSmall) {
+TEST_P(QDMIImplementationTest, GetProbsSparseValuesBufferTooSmall) {
   if (mode == TEST_SESSION_MODE::READONLY) {
     GTEST_SKIP() << "Skipping test for read-only session";
   }

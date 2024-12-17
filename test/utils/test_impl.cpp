@@ -22,7 +22,6 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include "qdmi_example_driver.h"
 
 #include <algorithm>
-#include <array>
 #include <cstddef>
 #include <cstdlib>
 #include <filesystem>
@@ -114,116 +113,93 @@ TEST_P(QDMIImplementationTest, SetSessionParameterImplemented) {
             QDMI_ERROR_INVALIDARGUMENT);
 }
 
-TEST_P(QDMIImplementationTest, CreateJobImplemented) {
-  if (mode == TEST_SESSION_MODE::READONLY) {
-    GTEST_SKIP() << "Skipping test for read-only session";
-  }
+TEST_P(QDMIImplementationTest, CreateQASM2JobImplemented) {
   QDMI_Job job = nullptr;
-  ASSERT_NE(QDMI_job_create(device, QDMI_PROGRAM_FORMAT_QASM2,
+  EXPECT_EQ(QDMI_job_create(device, QDMI_PROGRAM_FORMAT_QASM2,
                             Get_test_circuit().length() + 1,
                             Get_test_circuit().c_str(), &job),
-            QDMI_ERROR_NOTIMPLEMENTED);
+            mode == TEST_SESSION_MODE::READWRITE ? QDMI_SUCCESS
+                                                 : QDMI_ERROR_PERMISSIONDENIED);
   QDMI_job_free(job);
 }
 
 TEST_P(QDMIImplementationTest, SetJobParameterImplemented) {
-  if (mode == TEST_SESSION_MODE::READONLY) {
-    GTEST_SKIP() << "Skipping test for read-only session";
-  }
   QDMI_Job job = nullptr;
   ASSERT_EQ(QDMI_job_create(device, QDMI_PROGRAM_FORMAT_QASM2,
                             Get_test_circuit().length() + 1,
                             Get_test_circuit().c_str(), &job),
-            QDMI_SUCCESS);
-  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_MAX, 0, nullptr),
-            QDMI_ERROR_INVALIDARGUMENT);
+            mode == TEST_SESSION_MODE::READWRITE ? QDMI_SUCCESS
+                                                 : QDMI_ERROR_PERMISSIONDENIED);
+  EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_MAX, 0, nullptr),
+            mode == TEST_SESSION_MODE::READWRITE ? QDMI_ERROR_INVALIDARGUMENT
+                                                 : QDMI_ERROR_PERMISSIONDENIED);
   QDMI_job_free(job);
 }
 
 TEST_P(QDMIImplementationTest, SubmitJobImplemented) {
-  if (mode == TEST_SESSION_MODE::READONLY) {
-    GTEST_SKIP() << "Skipping test for read-only session";
-  }
   QDMI_Job job = nullptr;
   ASSERT_EQ(QDMI_job_create(device, QDMI_PROGRAM_FORMAT_QASM2,
                             Get_test_circuit().length() + 1,
                             Get_test_circuit().c_str(), &job),
-            QDMI_SUCCESS);
-  ASSERT_NE(QDMI_job_submit(job), QDMI_ERROR_NOTIMPLEMENTED);
+            mode == TEST_SESSION_MODE::READWRITE ? QDMI_SUCCESS
+                                                 : QDMI_ERROR_PERMISSIONDENIED);
+  EXPECT_EQ(QDMI_job_submit(job), mode == TEST_SESSION_MODE::READWRITE
+                                      ? QDMI_SUCCESS
+                                      : QDMI_ERROR_PERMISSIONDENIED);
   QDMI_job_free(job);
 }
 
 TEST_P(QDMIImplementationTest, CancelJobImplemented) {
-  if (mode == TEST_SESSION_MODE::READONLY) {
-    GTEST_SKIP() << "Skipping test for read-only session";
-  }
   QDMI_Job job = nullptr;
   ASSERT_EQ(QDMI_job_create(device, QDMI_PROGRAM_FORMAT_QASM2,
                             Get_test_circuit().length() + 1,
                             Get_test_circuit().c_str(), &job),
-            QDMI_SUCCESS);
-  ASSERT_NE(QDMI_job_cancel(job), QDMI_ERROR_NOTIMPLEMENTED);
+            mode == TEST_SESSION_MODE::READWRITE ? QDMI_SUCCESS
+                                                 : QDMI_ERROR_PERMISSIONDENIED);
+  EXPECT_EQ(QDMI_job_cancel(job), mode == TEST_SESSION_MODE::READWRITE
+                                      ? QDMI_SUCCESS
+                                      : QDMI_ERROR_PERMISSIONDENIED);
   QDMI_job_free(job);
 }
 
 TEST_P(QDMIImplementationTest, CheckJobStatusImplemented) {
-  if (mode == TEST_SESSION_MODE::READONLY) {
-    GTEST_SKIP() << "Skipping test for read-only session";
-  }
   QDMI_Job job = nullptr;
   QDMI_Job_Status status = QDMI_JOB_STATUS_RUNNING;
   ASSERT_EQ(QDMI_job_create(device, QDMI_PROGRAM_FORMAT_QASM2,
                             Get_test_circuit().length() + 1,
                             Get_test_circuit().c_str(), &job),
-            QDMI_SUCCESS);
-  ASSERT_NE(QDMI_job_check(job, &status), QDMI_ERROR_NOTIMPLEMENTED);
+            mode == TEST_SESSION_MODE::READWRITE ? QDMI_SUCCESS
+                                                 : QDMI_ERROR_PERMISSIONDENIED);
+  EXPECT_EQ(QDMI_job_check(job, &status), mode == TEST_SESSION_MODE::READWRITE
+                                              ? QDMI_SUCCESS
+                                              : QDMI_ERROR_PERMISSIONDENIED);
   QDMI_job_free(job);
 }
 
 TEST_P(QDMIImplementationTest, WaitOnJobImplemented) {
-  if (mode == TEST_SESSION_MODE::READONLY) {
-    GTEST_SKIP() << "Skipping test for read-only session";
-  }
   QDMI_Job job = nullptr;
   ASSERT_EQ(QDMI_job_create(device, QDMI_PROGRAM_FORMAT_QASM2,
                             Get_test_circuit().length() + 1,
                             Get_test_circuit().c_str(), &job),
-            QDMI_SUCCESS);
-  ASSERT_NE(QDMI_job_wait(job), QDMI_ERROR_NOTIMPLEMENTED);
+            mode == TEST_SESSION_MODE::READWRITE ? QDMI_SUCCESS
+                                                 : QDMI_ERROR_PERMISSIONDENIED);
+  EXPECT_EQ(QDMI_job_wait(job), mode == TEST_SESSION_MODE::READWRITE
+                                    ? QDMI_SUCCESS
+                                    : QDMI_ERROR_PERMISSIONDENIED);
   QDMI_job_free(job);
 }
 
 TEST_P(QDMIImplementationTest, GetJobDataImplemented) {
-  if (mode == TEST_SESSION_MODE::READONLY) {
-    GTEST_SKIP() << "Skipping test for read-only session";
-  }
   QDMI_Job job = nullptr;
   ASSERT_EQ(QDMI_job_create(device, QDMI_PROGRAM_FORMAT_QASM2,
                             Get_test_circuit().length() + 1,
                             Get_test_circuit().c_str(), &job),
-            QDMI_SUCCESS);
-  ASSERT_EQ(QDMI_job_get_data(job, QDMI_JOB_RESULT_MAX, 0, nullptr, nullptr),
-            QDMI_ERROR_INVALIDARGUMENT);
-  QDMI_job_free(job);
-}
-
-TEST_P(QDMIImplementationTest, DeviceModeReadOnly) {
-  if (mode == TEST_SESSION_MODE::READWRITE) {
-    GTEST_SKIP() << "Skipping test for read-write session";
-  }
-  QDMI_Job job{};
-  ASSERT_EQ(QDMI_job_create(device, QDMI_PROGRAM_FORMAT_QASM2,
-                            Get_test_circuit().length() + 1,
-                            Get_test_circuit().c_str(), &job),
-            QDMI_ERROR_PERMISSIONDENIED);
-  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_MAX, 0, nullptr),
-            QDMI_ERROR_PERMISSIONDENIED);
-  ASSERT_EQ(QDMI_job_submit(job), QDMI_ERROR_PERMISSIONDENIED);
-  EXPECT_EQ(QDMI_job_cancel(job), QDMI_ERROR_PERMISSIONDENIED);
-  EXPECT_EQ(QDMI_job_check(job, nullptr), QDMI_ERROR_PERMISSIONDENIED);
-  EXPECT_EQ(QDMI_job_wait(job), QDMI_ERROR_PERMISSIONDENIED);
+            mode == TEST_SESSION_MODE::READWRITE ? QDMI_SUCCESS
+                                                 : QDMI_ERROR_PERMISSIONDENIED);
   EXPECT_EQ(QDMI_job_get_data(job, QDMI_JOB_RESULT_MAX, 0, nullptr, nullptr),
-            QDMI_ERROR_PERMISSIONDENIED);
+            mode == TEST_SESSION_MODE::READWRITE ? QDMI_ERROR_INVALIDARGUMENT
+                                                 : QDMI_ERROR_PERMISSIONDENIED);
+  QDMI_job_free(job);
 }
 
 TEST_P(QDMIImplementationTest, QueryDevicePropertyImplemented) {
