@@ -474,6 +474,9 @@ int QDMI_job_set_parameter(QDMI_Job job, QDMI_Job_Parameter param,
 }
 
 int QDMI_job_submit(QDMI_Job job) {
+  if (job == nullptr) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
   if ((job->device->session->mode & QDMI_SESSION_MODE_READWRITE) != 0) {
     return job->device->library->device_job_submit(job->device_job);
   }
@@ -481,6 +484,9 @@ int QDMI_job_submit(QDMI_Job job) {
 }
 
 int QDMI_job_cancel(QDMI_Job job) {
+  if (job == nullptr) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
   if ((job->device->session->mode & QDMI_SESSION_MODE_READWRITE) != 0) {
     return job->device->library->device_job_cancel(job->device_job);
   }
@@ -488,6 +494,9 @@ int QDMI_job_cancel(QDMI_Job job) {
 }
 
 int QDMI_job_check(QDMI_Job job, QDMI_Job_Status *status) {
+  if (job == nullptr || status == nullptr) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
   if ((job->device->session->mode & QDMI_SESSION_MODE_READWRITE) != 0) {
     return job->device->library->device_job_check(job->device_job, status);
   }
@@ -495,6 +504,9 @@ int QDMI_job_check(QDMI_Job job, QDMI_Job_Status *status) {
 }
 
 int QDMI_job_wait(QDMI_Job job) {
+  if (job == nullptr) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
   if ((job->device->session->mode & QDMI_SESSION_MODE_READWRITE) != 0) {
     return job->device->library->device_job_wait(job->device_job);
   }
@@ -503,6 +515,14 @@ int QDMI_job_wait(QDMI_Job job) {
 
 int QDMI_job_get_data(QDMI_Job job, QDMI_Job_Result result, const size_t size,
                       void *data, size_t *size_ret) {
+  if (job == nullptr ||
+      (result >= QDMI_JOB_RESULT_MAX && result != QDMI_JOB_RESULT_CUSTOM1 &&
+       result != QDMI_JOB_RESULT_CUSTOM2 && result != QDMI_JOB_RESULT_CUSTOM3 &&
+       result != QDMI_JOB_RESULT_CUSTOM4 &&
+       result != QDMI_JOB_RESULT_CUSTOM5) ||
+      ((size == 0 || data == nullptr) && size_ret == nullptr)) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
   if ((job->device->session->mode & QDMI_SESSION_MODE_READWRITE) != 0) {
     return job->device->library->device_job_get_data(job->device_job, result,
                                                      size, data, size_ret);
