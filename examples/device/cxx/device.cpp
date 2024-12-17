@@ -640,9 +640,11 @@ int CXX_QDMI_device_session_query_property(CXX_QDMI_Device_Session session,
                                            const size_t size, void *value,
                                            size_t *size_ret) {
   if (prop >= QDMI_DEVICE_PROPERTY_MAX ||
-      (value == nullptr && size_ret == nullptr) || session == nullptr ||
-      session->status != CXX_QDMI_DEVICE_SESSION_STATUS::INITIALIZED) {
+      (value == nullptr && size_ret == nullptr) || session == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  if (session->status != CXX_QDMI_DEVICE_SESSION_STATUS::INITIALIZED) {
+    return QDMI_ERROR_BADSTATE;
   }
   ADD_STRING_PROPERTY(QDMI_DEVICE_PROPERTY_NAME, "C++ Device with 5 qubits",
                       prop, size, value, size_ret)
@@ -665,9 +667,11 @@ int CXX_QDMI_device_session_get_sites(CXX_QDMI_Device_Session session,
                                       CXX_QDMI_Device_Site *sites,
                                       size_t *num_sites) {
   if ((sites != nullptr && num_entries == 0) ||
-      (sites == nullptr && num_sites == nullptr) || session == nullptr ||
-      session->status != CXX_QDMI_DEVICE_SESSION_STATUS::INITIALIZED) {
+      (sites == nullptr && num_sites == nullptr) || session == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  if (session->status != CXX_QDMI_DEVICE_SESSION_STATUS::INITIALIZED) {
+    return QDMI_ERROR_BADSTATE;
   }
   if (sites != nullptr) {
     for (size_t i = 0; i < std::min(num_entries, device_sites.size()); ++i) {
@@ -685,9 +689,11 @@ int CXX_QDMI_device_session_get_operations(
     CXX_QDMI_Device_Operation *operations, size_t *num_operations) {
   if ((operations != nullptr && num_entries == 0) ||
       (operations == nullptr && num_operations == nullptr) ||
-      session == nullptr ||
-      session->status != CXX_QDMI_DEVICE_SESSION_STATUS::INITIALIZED) {
+      session == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  if (session->status != CXX_QDMI_DEVICE_SESSION_STATUS::INITIALIZED) {
+    return QDMI_ERROR_BADSTATE;
   }
   if (operations != nullptr) {
     for (size_t i = 0; i < std::min(num_entries, device_operations.size());

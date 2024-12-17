@@ -585,8 +585,11 @@ int C_QDMI_device_session_query_property(C_QDMI_Device_Session session,
                                          size_t size, void *value,
                                          size_t *size_ret) {
   if (prop >= QDMI_DEVICE_PROPERTY_MAX || (value == NULL && size_ret == NULL) ||
-      session == NULL || session->status != INITIALIZED) {
+      session == NULL) {
     return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  if (session->status != INITIALIZED) {
+    return QDMI_ERROR_BADSTATE;
   }
   ADD_STRING_PROPERTY(QDMI_DEVICE_PROPERTY_NAME, "C Device with 5 qubits", prop,
                       size, value, size_ret)
@@ -616,9 +619,11 @@ int C_QDMI_device_session_get_sites(C_QDMI_Device_Session session,
                                     C_QDMI_Device_Site *sites,
                                     size_t *num_sites) {
   if ((sites != NULL && num_entries == 0) ||
-      (sites == NULL && num_sites == NULL) || session == NULL ||
-      session->status != INITIALIZED) {
+      (sites == NULL && num_sites == NULL) || session == NULL) {
     return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  if (session->status != INITIALIZED) {
+    return QDMI_ERROR_BADSTATE;
   }
   const size_t device_sites_size =
       sizeof(DEVICE_SITES) / sizeof(DEVICE_SITES[0]);
@@ -639,9 +644,11 @@ int C_QDMI_device_session_get_operations(C_QDMI_Device_Session session,
                                          C_QDMI_Device_Operation *operations,
                                          size_t *num_operations) {
   if ((operations != NULL && num_entries == 0) ||
-      (operations == NULL && num_operations == NULL) || session == NULL ||
-      session->status != INITIALIZED) {
+      (operations == NULL && num_operations == NULL) || session == NULL) {
     return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  if (session->status != INITIALIZED) {
+    return QDMI_ERROR_BADSTATE;
   }
   const size_t device_operations_size =
       sizeof(DEVICE_OPERATIONS) / sizeof(DEVICE_OPERATIONS[0]);
