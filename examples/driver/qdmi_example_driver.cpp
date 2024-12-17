@@ -425,7 +425,7 @@ int QDMI_job_create(QDMI_Device dev, QDMI_Program_Format format,
 }
 
 void QDMI_job_free(QDMI_Job job) {
-  if ((job->device->session->mode & QDMI_SESSION_MODE_READWRITE) != 0) {
+  if (job != nullptr) {
     job->device->library->device_job_free(job->device_job);
     delete job;
   }
