@@ -582,11 +582,11 @@ int QDMI_device_get_sites(QDMI_Device device, const size_t num_entries,
   if (result != QDMI_SUCCESS) {
     return result;
   }
-  const size_t device_entries = std::min(num_entries, num_device_sites);
   if (num_sites != nullptr) {
-    *num_sites = device_entries;
+    *num_sites = num_device_sites;
   }
   if (sites != nullptr) {
+    const size_t device_entries = std::min(num_entries, num_device_sites);
     std::vector<QDMI_Device_Site> device_sites(device_entries);
     result = device->library->device_session_get_sites(
         device->device_session, device_entries, device_sites.data(), nullptr);
@@ -621,11 +621,11 @@ int QDMI_device_get_operations(QDMI_Device device, const size_t num_entries,
   if (result != QDMI_SUCCESS) {
     return result;
   }
-  const size_t device_entries = std::min(num_entries, num_device_operations);
   if (num_operations != nullptr) {
-    *num_operations = device_entries;
+    *num_operations = num_device_operations;
   }
   if (operations != nullptr) {
+    const size_t device_entries = std::min(num_entries, num_device_operations);
     std::vector<QDMI_Device_Operation> device_operations(device_entries);
     result = device->library->device_session_get_operations(
         device->device_session, device_entries, device_operations.data(),
