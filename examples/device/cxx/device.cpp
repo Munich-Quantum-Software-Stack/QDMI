@@ -364,7 +364,7 @@ int CXX_QDMI_device_job_set_parameter(CXX_QDMI_Device_Job job,
                                       const QDMI_Device_Job_Parameter param,
                                       const size_t size, const void *value) {
   if (job == nullptr || param >= QDMI_DEVICE_JOB_PARAMETER_MAX || size == 0 ||
-      job->status != QDMI_JOB_STATUS_CREATED) {
+      value == nullptr || job->status != QDMI_JOB_STATUS_CREATED) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   switch (param) {

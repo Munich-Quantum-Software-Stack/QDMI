@@ -433,11 +433,13 @@ void QDMI_job_free(QDMI_Job job) {
 
 int QDMI_job_set_parameter(QDMI_Job job, QDMI_Job_Parameter param,
                            const size_t size, const void *value) {
-  if (param >= QDMI_JOB_PARAMETER_MAX && param != QDMI_JOB_PARAMETER_CUSTOM1 &&
-      param != QDMI_JOB_PARAMETER_CUSTOM2 &&
-      param != QDMI_JOB_PARAMETER_CUSTOM3 &&
-      param != QDMI_JOB_PARAMETER_CUSTOM4 &&
-      param != QDMI_JOB_PARAMETER_CUSTOM5) {
+  if (job == nullptr ||
+      param >= QDMI_JOB_PARAMETER_MAX && param != QDMI_JOB_PARAMETER_CUSTOM1 &&
+          param != QDMI_JOB_PARAMETER_CUSTOM2 &&
+          param != QDMI_JOB_PARAMETER_CUSTOM3 &&
+          param != QDMI_JOB_PARAMETER_CUSTOM4 &&
+          param != QDMI_JOB_PARAMETER_CUSTOM5 ||
+      size == 0 || value == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   if ((job->device->session->mode & QDMI_SESSION_MODE_READWRITE) != 0) {
