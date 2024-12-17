@@ -637,12 +637,15 @@ TEST_P(QDMIImplementationTest, GetProbsSparseValuesBufferTooSmall) {
 
 TEST_P(QDMIImplementationTest, SessionSetParameter) {
   const std::string test_token = "test_token";
-  ASSERT_EQ(QDMI_session_set_parameter(session, QDMI_SESSION_PARAMETER_TOKEN,
+  EXPECT_EQ(QDMI_session_set_parameter(session, QDMI_SESSION_PARAMETER_TOKEN,
                                        test_token.length() + 1,
                                        test_token.c_str()),
             QDMI_ERROR_BADSTATE);
 
-  ASSERT_EQ(QDMI_session_set_parameter(session, QDMI_SESSION_PARAMETER_USERNAME,
-                                       1, ""),
+  QDMI_Session session2 = nullptr;
+  ASSERT_EQ(QDMI_session_alloc(&session2), QDMI_SUCCESS);
+  EXPECT_EQ(QDMI_session_set_parameter(session2,
+                                       QDMI_SESSION_PARAMETER_USERNAME, 1, ""),
             QDMI_ERROR_NOTSUPPORTED);
+  QDMI_session_free(session2);
 }
