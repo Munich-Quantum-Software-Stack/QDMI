@@ -434,6 +434,7 @@ int C_QDMI_device_job_get_data(C_QDMI_Device_Job job,
         }
         *data_ptr = '\0';
       }
+      break;
     }
     default: {
       // case QDMI_JOB_RESULT_HIST_VALUES:
@@ -534,6 +535,7 @@ int C_QDMI_device_job_get_data(C_QDMI_Device_Job job,
       if ((size_ret) != NULL) {
         *(size_ret) = req_size;
       }
+      return QDMI_SUCCESS;
     }
     default: {
       // case QDMI_JOB_RESULT_PROBABILITIES_SPARSE_VALUES:
