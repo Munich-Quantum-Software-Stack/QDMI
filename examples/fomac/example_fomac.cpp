@@ -27,8 +27,8 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include "qdmi/client.h"
 
 #include <cstddef>
+#include <cstdint>
 #include <iostream>
-#include <map>
 #include <stdexcept>
 #include <string>
 #include <utility>
@@ -110,45 +110,48 @@ auto FoMaC::get_qubits_num() const -> size_t {
   return num_qubits;
 }
 
-auto FoMaC::get_operation_map() const -> std::map<std::string, QDMI_Operation> {
-  size_t ops_num = 0;
-  int ret = QDMI_device_get_operations(device, 0, nullptr, &ops_num);
+auto FoMaC::get_operations() const -> std::vector<std::string> {
+  size_t ops_size = 0;
+  int ret = QDMI_device_query_property(device, QDMI_DEVICE_PROPERTY_OPERATIONS,
+                                       0, nullptr, &ops_size);
   throw_if_error(ret, "Failed to retrieve operation number.");
-  std::vector<QDMI_Operation> ops(ops_num);
-  ret = QDMI_device_get_operations(device, ops_num, ops.data(), nullptr);
+  std::string ops(ops_size - 1, '\0');
+  ret = QDMI_device_query_property(device, QDMI_DEVICE_PROPERTY_OPERATIONS,
+                                   ops_size, ops.data(), nullptr);
   throw_if_error(ret, "Failed to retrieve operations.");
-  std::map<std::string, QDMI_Operation> ops_map;
-  for (const auto &op : ops) {
-    size_t name_length = 0;
-    ret = QDMI_operation_query_property(
-        op, 0, nullptr, QDMI_OPERATION_PROPERTY_NAME, 0, nullptr, &name_length);
-    throw_if_error(ret, "Failed to retrieve operation name length.");
-    std::string name(name_length, '\0');
-    ret = QDMI_operation_query_property(op, 0, nullptr,
-                                        QDMI_OPERATION_PROPERTY_NAME,
-                                        name_length, name.data(), nullptr);
-    throw_if_error(ret, "Failed to retrieve operation name.");
-    ops_map.emplace(name, op);
+
+  // split the string into a vector of strings by comma
+  // todo: slightly unfortunate that we can't pre allocate here as we don't know
+  //  the number of operations. Might be worth adding a function to query the
+  //  number of operations in addition to the operations themselves. Or we
+  //  really use IDs for operations as well.
+  std::vector<std::string> operations;
+  size_t pos = 0;
+  while ((pos = ops.find(',')) != std::string::npos) {
+    operations.emplace_back(ops.substr(0, pos));
+    ops.erase(0, pos + 1);
   }
-  return ops_map;
+  operations.emplace_back(ops);
+
+  return operations;
 }
 
 auto FoMaC::get_coupling_map() const
-    -> std::vector<std::pair<QDMI_Site, QDMI_Site>> {
+    -> std::vector<std::pair<uint64_t, uint64_t>> {
   size_t size = 0;
   int ret = QDMI_device_query_property(device, QDMI_DEVICE_PROPERTY_COUPLINGMAP,
                                        0, nullptr, &size);
   throw_if_error(ret, "Failed to query the coupling map size.");
 
-  const auto coupling_map_size = size / sizeof(QDMI_Site);
+  const auto coupling_map_size = size / sizeof(uint64_t);
   if (coupling_map_size % 2 != 0) {
     throw std::runtime_error("The coupling map needs to have an even number of "
                              "elements.");
   }
 
   // `std::vector` guarantees that the elements are contiguous in memory.
-  std::vector<std::pair<QDMI_Site, QDMI_Site>> coupling_pairs(
-      coupling_map_size / 2);
+  std::vector<std::pair<uint64_t, uint64_t>> coupling_pairs(coupling_map_size /
+                                                            2);
   ret = QDMI_device_query_property(
       device, QDMI_DEVICE_PROPERTY_COUPLINGMAP, size,
       static_cast<void *>(coupling_pairs.data()), nullptr);
@@ -156,21 +159,23 @@ auto FoMaC::get_coupling_map() const
   return coupling_pairs;
 }
 
-auto FoMaC::get_sites() const -> std::vector<QDMI_Site> {
-  size_t sites_num = 0;
-  int ret = QDMI_device_get_sites(device, 0, nullptr, &sites_num);
+auto FoMaC::get_sites() const -> std::vector<uint64_t> {
+  size_t sites_size = 0;
+  int ret = QDMI_device_query_property(device, QDMI_DEVICE_PROPERTY_SITES, 0,
+                                       nullptr, &sites_size);
   throw_if_error(ret, "Failed to get the sites number.");
-  std::vector<QDMI_Site> sites(sites_num);
-  ret = QDMI_device_get_sites(device, sites_num, sites.data(), nullptr);
+  std::vector<uint64_t> sites(sites_size / sizeof(uint64_t));
+  ret = QDMI_device_query_property(device, QDMI_DEVICE_PROPERTY_SITES,
+                                   sites_size, sites.data(), nullptr);
   throw_if_error(ret, "Failed to get the sites.");
   return sites;
 }
 
-auto FoMaC::get_operands_num(const QDMI_Operation &op) const -> size_t {
+auto FoMaC::get_operands_num(const std::string &op) const -> size_t {
   size_t operands_num = 0;
   const int ret = QDMI_operation_query_property(
-      op, 0, nullptr, QDMI_OPERATION_PROPERTY_QUBITSNUM, sizeof(size_t),
-      &operands_num, nullptr);
+      device, op.c_str(), 0, nullptr, QDMI_OPERATION_PROPERTY_QUBITSNUM,
+      sizeof(size_t), &operands_num, nullptr);
   throw_if_error(ret, "Failed to query the operand number");
   return operands_num;
 }

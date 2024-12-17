@@ -57,14 +57,6 @@ struct CXX_QDMI_Device_Job_impl_d {
   std::vector<std::complex<double>> state_vec;
 };
 
-struct CXX_QDMI_Device_Site_impl_d {
-  size_t id;
-};
-
-struct CXX_QDMI_Device_Operation_impl_d {
-  const char *name;
-};
-
 struct CXX_QDMI_Device_State {
   QDMI_Device_Status status = QDMI_DEVICE_STATUS_OFFLINE;
   std::random_device rd;
@@ -142,41 +134,33 @@ double CXX_QDMI_generate_real() {
 }
 
 // NOLINTBEGIN(cppcoreguidelines-avoid-non-const-global-variables)
-std::array<CXX_QDMI_Device_Operation_impl_d, 4> device_operations = {
-    CXX_QDMI_Device_Operation_impl_d{"rx"},
-    CXX_QDMI_Device_Operation_impl_d{"ry"},
-    CXX_QDMI_Device_Operation_impl_d{"rz"},
-    CXX_QDMI_Device_Operation_impl_d{"cx"}};
+std::array<const char *, 4> device_operations = {"rx", "ry", "rz", "cx"};
 
-std::array<CXX_QDMI_Device_Site_impl_d, 7> device_sites = {
-    CXX_QDMI_Device_Site_impl_d{0}, CXX_QDMI_Device_Site_impl_d{1},
-    CXX_QDMI_Device_Site_impl_d{2}, CXX_QDMI_Device_Site_impl_d{3},
-    CXX_QDMI_Device_Site_impl_d{4}};
+std::array<uint64_t, 5> device_sites = {0, 1, 2, 3, 4};
 // NOLINTEND(cppcoreguidelines-avoid-non-const-global-variables)
 } // namespace
 
-constexpr static std::array<const CXX_QDMI_Device_Site_impl_d *const, 20>
+constexpr static std::array<uint64_t, 20>
     // clang-format off
     DEVICE_COUPLING_MAP = {
-      device_sites.data(), &device_sites[1],
-      &device_sites[1], device_sites.data(),
-      &device_sites[1], &device_sites[2],
-      &device_sites[2], &device_sites[1],
-      &device_sites[2], &device_sites[3],
-      &device_sites[3], &device_sites[2],
-      &device_sites[3], &device_sites[4],
-      &device_sites[4], &device_sites[3],
-      &device_sites[4], device_sites.data(),
-      device_sites.data(), &device_sites[4]};
+  0, 1,
+  1, 0,
+  1, 2,
+  2, 1,
+  2, 3,
+  3, 2,
+  3, 4,
+  4, 3,
+  4, 0,
+  0, 4
+};
 // clang-format on
 
-const static std::unordered_map<const CXX_QDMI_Device_Operation_impl_d *,
-                                double>
-    OPERATION_DURATIONS = {
-        {device_operations.data(), 0.01},
-        {&device_operations[1], 0.01},
-        {&device_operations[2], 0.01},
-        {&device_operations[3], 0.1},
+const static std::unordered_map<const char *, double> OPERATION_DURATIONS = {
+    {device_operations[0], 0.01},
+    {device_operations[1], 0.01},
+    {device_operations[2], 0.01},
+    {device_operations[3], 0.1},
 };
 
 struct CXX_QDMI_Pair_hash {
@@ -189,22 +173,20 @@ struct CXX_QDMI_Pair_hash {
 };
 
 const static std::unordered_map<
-    const CXX_QDMI_Device_Operation_impl_d *,
-    std::unordered_map<std::pair<const CXX_QDMI_Device_Site_impl_d *,
-                                 const CXX_QDMI_Device_Site_impl_d *>,
-                       double, CXX_QDMI_Pair_hash>>
+    const char *, std::unordered_map<std::pair<uint64_t, uint64_t>, double,
+                                     CXX_QDMI_Pair_hash>>
     OPERATION_FIDELITIES = {
-        {&device_operations[3],
-         {{{device_sites.data(), &device_sites[1]}, 0.99},
-          {{&device_sites[1], device_sites.data()}, 0.99},
-          {{&device_sites[1], &device_sites[2]}, 0.98},
-          {{&device_sites[2], &device_sites[1]}, 0.98},
-          {{&device_sites[2], &device_sites[3]}, 0.97},
-          {{&device_sites[3], &device_sites[2]}, 0.97},
-          {{&device_sites[3], &device_sites[4]}, 0.96},
-          {{&device_sites[4], &device_sites[3]}, 0.96},
-          {{&device_sites[4], device_sites.data()}, 0.95},
-          {{device_sites.data(), &device_sites[4]}, 0.95}}},
+        {device_operations[3],
+         {{{device_sites[0], device_sites[1]}, 0.99},
+          {{device_sites[1], device_sites[0]}, 0.99},
+          {{device_sites[1], device_sites[2]}, 0.98},
+          {{device_sites[2], device_sites[1]}, 0.98},
+          {{device_sites[2], device_sites[3]}, 0.97},
+          {{device_sites[3], device_sites[2]}, 0.97},
+          {{device_sites[3], device_sites[4]}, 0.96},
+          {{device_sites[4], device_sites[3]}, 0.96},
+          {{device_sites[4], device_sites[0]}, 0.95},
+          {{device_sites[0], device_sites[4]}, 0.95}}},
         // No need to specify single-qubit fidelities here
 };
 
@@ -660,61 +642,22 @@ int CXX_QDMI_device_session_query_property(CXX_QDMI_Device_Session session,
   ADD_SINGLE_VALUE_PROPERTY(QDMI_DEVICE_PROPERTY_STATUS, QDMI_Device_Status,
                             CXX_QDMI_get_device_status(), prop, size, value,
                             size_ret)
-  ADD_LIST_PROPERTY(QDMI_DEVICE_PROPERTY_COUPLINGMAP, CXX_QDMI_Device_Site,
+  ADD_LIST_PROPERTY(QDMI_DEVICE_PROPERTY_SITES, uint64_t, device_sites, prop,
+                    size, value, size_ret)
+  // TODO: this does not work yet
+  ADD_LIST_PROPERTY(QDMI_DEVICE_PROPERTY_OPERATIONS, const char *,
+                    device_operations, prop, size, value, size_ret)
+  ADD_LIST_PROPERTY(QDMI_DEVICE_PROPERTY_COUPLINGMAP, uint64_t,
                     DEVICE_COUPLING_MAP, prop, size, value, size_ret)
   return QDMI_ERROR_NOTSUPPORTED;
 } /// [DOXYGEN FUNCTION END]
 
-int CXX_QDMI_device_session_get_sites(CXX_QDMI_Device_Session session,
-                                      const size_t num_entries,
-                                      CXX_QDMI_Device_Site *sites,
-                                      size_t *num_sites) {
-  if ((sites != nullptr && num_entries == 0) ||
-      (sites == nullptr && num_sites == nullptr) || session == nullptr) {
-    return QDMI_ERROR_INVALIDARGUMENT;
-  }
-  if (session->status != CXX_QDMI_DEVICE_SESSION_STATUS::INITIALIZED) {
-    return QDMI_ERROR_BADSTATE;
-  }
-  if (sites != nullptr) {
-    for (size_t i = 0; i < std::min(num_entries, device_sites.size()); ++i) {
-      sites[i] = &device_sites[i];
-    }
-  }
-  if (num_sites != nullptr) {
-    *num_sites = device_sites.size();
-  }
-  return QDMI_SUCCESS;
-} /// [DOXYGEN FUNCTION END]
-
-int CXX_QDMI_device_session_get_operations(
-    CXX_QDMI_Device_Session session, const size_t num_entries,
-    CXX_QDMI_Device_Operation *operations, size_t *num_operations) {
-  if ((operations != nullptr && num_entries == 0) ||
-      (operations == nullptr && num_operations == nullptr) ||
-      session == nullptr) {
-    return QDMI_ERROR_INVALIDARGUMENT;
-  }
-  if (session->status != CXX_QDMI_DEVICE_SESSION_STATUS::INITIALIZED) {
-    return QDMI_ERROR_BADSTATE;
-  }
-  if (operations != nullptr) {
-    for (size_t i = 0; i < std::min(num_entries, device_operations.size());
-         ++i) {
-      operations[i] = &device_operations[i];
-    }
-  }
-  if (num_operations != nullptr) {
-    *num_operations = device_operations.size();
-  }
-  return QDMI_SUCCESS;
-} /// [DOXYGEN FUNCTION END]
-
-int CXX_QDMI_device_site_query_property(CXX_QDMI_Device_Site site,
+int CXX_QDMI_device_site_query_property(CXX_QDMI_Device_Session session,
+                                        uint64_t site,
                                         const QDMI_Site_Property prop,
                                         const size_t size, void *value,
                                         size_t *size_ret) {
-  if (site == nullptr || prop >= QDMI_SITE_PROPERTY_MAX ||
+  if (session == nullptr || site >= 5 || prop >= QDMI_SITE_PROPERTY_MAX ||
       (value == nullptr && size_ret == nullptr)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
@@ -726,18 +669,19 @@ int CXX_QDMI_device_site_query_property(CXX_QDMI_Device_Site site,
 } /// [DOXYGEN FUNCTION END]
 
 int CXX_QDMI_device_operation_query_property(
-    CXX_QDMI_Device_Operation operation, size_t num_sites,
-    const CXX_QDMI_Device_Site *sites, QDMI_Operation_Property prop,
-    size_t size, void *value, size_t *size_ret) {
-  if (prop >= QDMI_OPERATION_PROPERTY_MAX || operation == nullptr ||
-      (sites != nullptr && num_sites == 0) ||
+    CXX_QDMI_Device_Session session, const char *operation, size_t num_sites,
+    const uint64_t *sites, QDMI_Operation_Property prop, size_t size,
+    void *value, size_t *size_ret) {
+  if (session == nullptr || prop >= QDMI_OPERATION_PROPERTY_MAX ||
+      operation == nullptr || (sites != nullptr && num_sites == 0) ||
       (value == nullptr && size_ret == nullptr)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   // General properties
-  ADD_STRING_PROPERTY(QDMI_OPERATION_PROPERTY_NAME, operation->name, prop, size,
+  // todo: this feels super redundant.
+  ADD_STRING_PROPERTY(QDMI_OPERATION_PROPERTY_NAME, operation, prop, size,
                       value, size_ret)
-  if (strcmp(operation->name, "cx") == 0) {
+  if (strcmp(operation, "cx") == 0) {
     if (sites != nullptr && num_sites != 2) {
       return QDMI_ERROR_INVALIDARGUMENT;
     }
@@ -763,9 +707,8 @@ int CXX_QDMI_device_operation_query_property(
     }
     ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_FIDELITY, double,
                               fit->second, prop, size, value, size_ret)
-  } else if (strcmp(operation->name, "rx") == 0 ||
-             strcmp(operation->name, "ry") == 0 ||
-             strcmp(operation->name, "rz") == 0) {
+  } else if (strcmp(operation, "rx") == 0 || strcmp(operation, "ry") == 0 ||
+             strcmp(operation, "rz") == 0) {
     if (sites != nullptr && num_sites != 1) {
       return QDMI_ERROR_INVALIDARGUMENT;
     }

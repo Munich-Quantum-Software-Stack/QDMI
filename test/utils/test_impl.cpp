@@ -224,24 +224,14 @@ TEST_P(QDMIImplementationTest, QueryDevicePropertyImplemented) {
             QDMI_ERROR_INVALIDARGUMENT);
 }
 
-TEST_P(QDMIImplementationTest, GetSitesImplemented) {
-  ASSERT_EQ(QDMI_device_get_sites(device, 0, nullptr, nullptr),
-            QDMI_ERROR_INVALIDARGUMENT);
-}
-
-TEST_P(QDMIImplementationTest, GetOperationsImplemented) {
-  ASSERT_EQ(QDMI_device_get_operations(device, 0, nullptr, nullptr),
-            QDMI_ERROR_INVALIDARGUMENT);
-}
-
 TEST_P(QDMIImplementationTest, QuerySitePropertyImplemented) {
-  ASSERT_EQ(QDMI_site_query_property(nullptr, QDMI_SITE_PROPERTY_MAX, 0,
+  ASSERT_EQ(QDMI_site_query_property(nullptr, 0, QDMI_SITE_PROPERTY_MAX, 0,
                                      nullptr, nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
 }
 
 TEST_P(QDMIImplementationTest, QueryOperationPropertyImplemented) {
-  ASSERT_EQ(QDMI_operation_query_property(nullptr, 0, nullptr,
+  ASSERT_EQ(QDMI_operation_query_property(nullptr, nullptr, 0, nullptr,
                                           QDMI_OPERATION_PROPERTY_MAX, 0,
                                           nullptr, nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
