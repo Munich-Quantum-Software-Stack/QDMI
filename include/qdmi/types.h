@@ -82,7 +82,7 @@ typedef struct QDMI_Library_impl_d {
   QDMI_device_operation_query_property_t *device_operation_query_property;
 } QDMI_Library_impl_t;
 
-typedef const struct QDMI_Library_impl_d *QDMI_Library;
+typedef const QDMI_Library_impl_t *QDMI_Library;
 
 typedef struct QDMI_Site_impl_d {
   QDMI_Library library;

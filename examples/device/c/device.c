@@ -21,6 +21,8 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
  * @details This file can be used as a template for implementing a device in C.
  */
 
+// todo: should this still be included? In principle, it is not necessary
+// anymore...
 #include "c_qdmi/device.h"
 
 #include "c_qdmi/types.h"
@@ -601,7 +603,7 @@ int C_QDMI_device_job_get_data(C_QDMI_Device_Job job,
 
 int C_QDMI_device_session_query_property(C_QDMI_Device_Session session,
                                          const QDMI_Device_Property prop,
-                                         size_t size, void *value,
+                                         const size_t size, void *value,
                                          size_t *size_ret) {
   if (prop >= QDMI_DEVICE_PROPERTY_MAX || (value == NULL && size_ret == NULL) ||
       session == NULL) {
@@ -683,7 +685,7 @@ int C_QDMI_device_session_get_operations(C_QDMI_Device_Session session,
   return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]
 
-int C_QDMI_device_site_query_property(QDMI_Site site,
+int C_QDMI_device_site_query_property(const QDMI_Site site,
                                       const QDMI_Site_Property prop,
                                       const size_t size, void *value,
                                       size_t *size_ret) {
@@ -698,7 +700,7 @@ int C_QDMI_device_site_query_property(QDMI_Site site,
   return QDMI_ERROR_NOTSUPPORTED;
 } /// [DOXYGEN FUNCTION END]
 
-int C_QDMI_device_operation_query_property(QDMI_Operation operation,
+int C_QDMI_device_operation_query_property(const QDMI_Operation operation,
                                            const size_t num_sites,
                                            const QDMI_Site *sites,
                                            const QDMI_Operation_Property prop,

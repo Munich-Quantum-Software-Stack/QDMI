@@ -45,7 +45,7 @@ extern "C" {
  * site in the site handle to be able to access the device information when
  * needed.
  */
-typedef struct QDMI_Site_impl_d *QDMI_Site;
+typedef const struct QDMI_Site_impl_d *QDMI_Site;
 
 /**
  * @brief A handle for an operation.
@@ -56,7 +56,7 @@ typedef struct QDMI_Site_impl_d *QDMI_Site;
  * operation in the operation handle to be able to access the device information
  * when needed.
  */
-typedef struct QDMI_Operation_impl_d *QDMI_Operation;
+typedef const struct QDMI_Operation_impl_d *QDMI_Operation;
 
 /**
  * @brief Status codes returned by the API.
