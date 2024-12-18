@@ -649,10 +649,9 @@ int CXX_QDMI_device_session_query_property(CXX_QDMI_Device_Session session,
   for (const auto &op : device_operations) {
     oss << op << ',';
   }
-  auto ops = oss.str();
-  ops.pop_back(); // Remove trailing comma
-  ADD_STRING_PROPERTY(QDMI_DEVICE_PROPERTY_OPERATIONS, ops.c_str(), prop, size,
-                      value, size_ret)
+  oss.seekp(-1, std::ios_base::end); // remove last comma
+  ADD_STRING_PROPERTY(QDMI_DEVICE_PROPERTY_OPERATIONS, oss.str().c_str(), prop,
+                      size, value, size_ret)
   ADD_LIST_PROPERTY(QDMI_DEVICE_PROPERTY_COUPLINGMAP, uint64_t,
                     DEVICE_COUPLING_MAP, prop, size, value, size_ret)
   return QDMI_ERROR_NOTSUPPORTED;
