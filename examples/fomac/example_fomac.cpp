@@ -114,7 +114,7 @@ auto FoMaC::get_operations() const -> std::vector<std::string> {
   size_t ops_size = 0;
   int ret = QDMI_device_query_property(device, QDMI_DEVICE_PROPERTY_OPERATIONS,
                                        0, nullptr, &ops_size);
-  throw_if_error(ret, "Failed to retrieve operation number.");
+  throw_if_error(ret, "Failed to retrieve size of operation list.");
   std::string ops(ops_size - 1, '\0');
   ret = QDMI_device_query_property(device, QDMI_DEVICE_PROPERTY_OPERATIONS,
                                    ops_size, ops.data(), nullptr);
