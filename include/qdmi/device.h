@@ -40,7 +40,7 @@ extern "C" {
 
 // The following clang-tidy warning cannot be addressed because this header is
 // used from both C and C++ code.
-// NOLINTBEGIN(performance-enum-size,modernize-use-using)
+// NOLINTBEGIN(performance-enum-size,modernize-use-using,modernize-redundant-void-arg)
 
 /**
  * @brief Initialize a device.
@@ -51,7 +51,7 @@ extern "C" {
  * @return @ref QDMI_ERROR_FATAL if the initialization failed.
  */
 int QDMI_device_initialize(void);
-typedef int QDMI_device_initialize_t();
+typedef int QDMI_device_initialize_t(void);
 
 /**
  * @brief Finalize a device.
@@ -63,7 +63,7 @@ typedef int QDMI_device_initialize_t();
  * be due to a job that is still running.
  */
 int QDMI_device_finalize(void);
-typedef int QDMI_device_finalize_t();
+typedef int QDMI_device_finalize_t(void);
 
 /** @defgroup device_session QDMI Device Session Interface
  *  The concept of sessions is used to establish a connection between a driver
@@ -621,7 +621,7 @@ typedef int QDMI_device_operation_query_property_t(
 
 /** @} */ // end of device_query
 
-// NOLINTEND(performance-enum-size,modernize-use-using)
+// NOLINTEND(performance-enum-size,modernize-use-using,modernize-redundant-void-arg)
 
 #ifdef __cplusplus
 } // extern "C"

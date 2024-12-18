@@ -711,8 +711,7 @@ int C_QDMI_device_operation_query_property(const QDMI_Operation operation,
       (value == NULL && size_ret == NULL)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
-  switch (operation) {
-  case DEVICE_OPERATIONS[0]:
+  if (operation == DEVICE_OPERATIONS[0]) {
     // Two-qubit operation properties
     ADD_STRING_PROPERTY(QDMI_OPERATION_PROPERTY_NAME, "cx", prop, size, value,
                         size_ret)
@@ -757,16 +756,19 @@ int C_QDMI_device_operation_query_property(const QDMI_Operation operation,
     if (prop == QDMI_OPERATION_PROPERTY_FIDELITY) {
       return QDMI_ERROR_INVALIDARGUMENT;
     }
-    break;
-  case DEVICE_OPERATIONS[1]:
-    ADD_STRING_PROPERTY(QDMI_OPERATION_PROPERTY_NAME, "rx", prop, size, value,
-                        size_ret)
-  case DEVICE_OPERATIONS[2]:
-    ADD_STRING_PROPERTY(QDMI_OPERATION_PROPERTY_NAME, "ry", prop, size, value,
-                        size_ret)
-  case DEVICE_OPERATIONS[3]:
-    ADD_STRING_PROPERTY(QDMI_OPERATION_PROPERTY_NAME, "rz", prop, size, value,
-                        size_ret)
+  } else {
+    if (operation == DEVICE_OPERATIONS[1]) {
+      ADD_STRING_PROPERTY(QDMI_OPERATION_PROPERTY_NAME, "rx", prop, size, value,
+                          size_ret)
+    } else if (operation == DEVICE_OPERATIONS[2]) {
+      ADD_STRING_PROPERTY(QDMI_OPERATION_PROPERTY_NAME, "ry", prop, size, value,
+                          size_ret)
+    } else if (operation == DEVICE_OPERATIONS[3]) {
+      ADD_STRING_PROPERTY(QDMI_OPERATION_PROPERTY_NAME, "rz", prop, size, value,
+                          size_ret)
+    } else {
+      return QDMI_ERROR_INVALIDARGUMENT;
+    }
     // Common properties for all single-qubit operations
     if (sites != NULL && num_sites != 1) {
       return QDMI_ERROR_INVALIDARGUMENT;
@@ -777,9 +779,6 @@ int C_QDMI_device_operation_query_property(const QDMI_Operation operation,
                               prop, size, value, size_ret)
     ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_FIDELITY, double, 0.999,
                               prop, size, value, size_ret)
-    break;
-  default:
-    return QDMI_ERROR_INVALIDARGUMENT;
   }
   return QDMI_ERROR_NOTSUPPORTED;
 } /// [DOXYGEN FUNCTION END]
