@@ -85,22 +85,6 @@ struct QDMI_Job_impl_d {
   QDMI_Device_Job device_job = nullptr;
 };
 
-/**
- * @brief Definition of the QDMI Site.
- */
-struct QDMI_Site_impl_d {
-  QDMI_Device device = nullptr;
-  QDMI_Device_Site device_site = nullptr;
-};
-
-/**
- * @brief Definition of the QDMI Operation.
- */
-struct QDMI_Operation_impl_d {
-  QDMI_Device device = nullptr;
-  QDMI_Device_Operation operation = nullptr;
-};
-
 namespace {
 /**
  * @brief Global list of devices managed by the driver.

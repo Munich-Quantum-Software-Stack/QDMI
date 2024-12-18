@@ -21,7 +21,3 @@ QDMI_Device_Session
 QDMI_Device_Session_impl_d
 QDMI_Device_Job
 QDMI_Device_Job_impl_d
-QDMI_Device_Site
-QDMI_Device_Site_impl_d
-QDMI_Device_Operation
-QDMI_Device_Operation_impl_d
