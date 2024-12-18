@@ -28,6 +28,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #pragma once
 
 #include "qdmi/constants.h" // IWYU pragma: export
+#include "qdmi/types.h"     // IWYU pragma: export
 
 #ifdef __cplusplus
 #include <cstddef>
@@ -254,7 +255,7 @@ typedef struct QDMI_Job_impl_d *QDMI_Job;
  * function can be used to check if the device supports the specified program
  * format without creating a job and without the need to provide a program.
  */
-int QDMI_job_create(QDMI_Device dev, QDMI_Program_Format format, size_t size,
+int QDMI_job_create(QDMI_Device device, QDMI_Program_Format format, size_t size,
                     const void *prog, QDMI_Job *job);
 
 /**
@@ -529,8 +530,9 @@ int QDMI_device_get_operations(QDMI_Device device, size_t num_entries,
  * be used to check if the device supports the specified property without
  * retrieving the property and without the need to provide a buffer for it.
  */
-int QDMI_site_query_property(QDMI_Site site, QDMI_Site_Property prop,
-                             size_t size, void *value, size_t *size_ret);
+int QDMI_site_query_property(QDMI_Device device, QDMI_Site site,
+                             QDMI_Site_Property prop, size_t size, void *value,
+                             size_t *size_ret);
 
 /**
  * @brief Query a device operation property.
@@ -569,8 +571,8 @@ int QDMI_site_query_property(QDMI_Site site, QDMI_Site_Property prop,
  * @p sites. In this case, the device may return the average value of the
  * property for all sites.
  */
-int QDMI_operation_query_property(QDMI_Operation operation, size_t num_sites,
-                                  const QDMI_Site *sites,
+int QDMI_operation_query_property(QDMI_Device device, QDMI_Operation operation,
+                                  size_t num_sites, const QDMI_Site *sites,
                                   QDMI_Operation_Property prop, size_t size,
                                   void *value, size_t *size_ret);
 

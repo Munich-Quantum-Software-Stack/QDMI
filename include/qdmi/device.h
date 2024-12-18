@@ -29,6 +29,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #pragma once
 
 #include "qdmi/constants.h" // IWYU pragma: export
+#include "qdmi/types.h"     // IWYU pragma: export
 
 #ifdef __cplusplus
 #include <cstddef>
@@ -70,124 +71,6 @@ typedef struct QDMI_Device_Session_impl_d *QDMI_Device_Session;
  * QDMI_device_job_free.
  */
 typedef struct QDMI_Device_Job_impl_d *QDMI_Device_Job;
-
-typedef int QDMI_device_initialize_t(void);
-
-typedef int QDMI_device_finalize_t(void);
-
-typedef int QDMI_device_session_alloc_t(QDMI_Device_Session *session);
-
-typedef int QDMI_device_session_init_t(QDMI_Device_Session session);
-
-typedef void QDMI_device_session_free_t(QDMI_Device_Session session);
-
-typedef int
-QDMI_device_session_set_parameter_t(QDMI_Device_Session session,
-                                    QDMI_Device_Session_Parameter param,
-                                    size_t size, const void *value);
-
-typedef int QDMI_device_job_create_t(QDMI_Device_Session session,
-                                     QDMI_Program_Format format, size_t size,
-                                     const void *prog, QDMI_Device_Job *job);
-
-typedef void QDMI_device_job_free_t(QDMI_Device_Job job);
-
-typedef int QDMI_device_job_set_parameter_t(QDMI_Device_Job job,
-                                            QDMI_Device_Job_Parameter param,
-                                            size_t size, const void *value);
-
-typedef int QDMI_device_job_submit_t(QDMI_Device_Job job);
-
-typedef int QDMI_device_job_cancel_t(QDMI_Device_Job job);
-
-typedef int QDMI_device_job_check_t(QDMI_Device_Job job,
-                                    QDMI_Job_Status *status);
-
-typedef int QDMI_device_job_wait_t(QDMI_Device_Job job);
-
-typedef int QDMI_device_job_get_data_t(QDMI_Device_Job job,
-                                       QDMI_Job_Result result, size_t size,
-                                       void *data, size_t *size_ret);
-
-typedef int QDMI_device_session_query_property_t(QDMI_Device_Session session,
-                                                 QDMI_Device_Property prop,
-                                                 size_t size, void *value,
-                                                 size_t *size_ret);
-
-typedef int QDMI_device_session_get_sites_t(QDMI_Device_Session session,
-                                            size_t num_entries,
-                                            QDMI_Site *sites,
-                                            size_t *num_sites);
-
-typedef int QDMI_device_site_query_property_t(QDMI_Site site,
-                                              QDMI_Site_Property prop,
-                                              size_t size, void *value,
-                                              size_t *size_ret);
-
-typedef int QDMI_device_session_get_operations_t(QDMI_Device_Session session,
-                                                 size_t num_entries,
-                                                 QDMI_Operation *operations,
-                                                 size_t *num_operations);
-
-typedef int QDMI_device_operation_query_property_t(
-    QDMI_Operation operation, size_t num_sites, const QDMI_Site *sites,
-    QDMI_Operation_Property prop, size_t size, void *value, size_t *size_ret);
-
-typedef struct QDMI_Library_impl_d {
-  /// Function pointer to @ref QDMI_device_initialize.
-  QDMI_device_initialize_t *device_initialize;
-  /// Function pointer to @ref QDMI_device_finalize.
-  QDMI_device_finalize_t *device_finalize;
-  /// Function pointer to @ref QDMI_device_session_alloc.
-  QDMI_device_session_alloc_t *device_session_alloc;
-  /// Function pointer to @ref QDMI_device_session_init.
-  QDMI_device_session_init_t *device_session_init;
-  /// Function pointer to @ref QDMI_device_session_free.
-  QDMI_device_session_free_t *device_session_free;
-  /// Function pointer to @ref QDMI_device_session_set_parameter.
-  QDMI_device_session_set_parameter_t *device_session_set_parameter;
-  /// Function pointer to @ref QDMI_device_job_create.
-  QDMI_device_job_create_t *device_job_create;
-  /// Function pointer to @ref QDMI_device_job_free.
-  QDMI_device_job_free_t *device_job_free;
-  /// Function pointer to @ref QDMI_device_job_set_parameter.
-  QDMI_device_job_set_parameter_t *device_job_set_parameter;
-  /// Function pointer to @ref QDMI_device_job_submit.
-  QDMI_device_job_submit_t *device_job_submit;
-  /// Function pointer to @ref QDMI_device_job_cancel.
-  QDMI_device_job_cancel_t *device_job_cancel;
-  /// Function pointer to @ref QDMI_device_job_check.
-  QDMI_device_job_check_t *device_job_check;
-  /// Function pointer to @ref QDMI_device_job_wait.
-  QDMI_device_job_wait_t *device_job_wait;
-  /// Function pointer to @ref QDMI_device_job_get_data.
-  QDMI_device_job_get_data_t *device_job_get_data;
-  /// Function pointer to @ref QDMI_device_session_query_property.
-  QDMI_device_session_query_property_t *device_session_query_property;
-  /// Function pointer to @ref QDMI_device_session_get_sites.
-  QDMI_device_session_get_sites_t *device_session_get_sites;
-  /// Function pointer to @ref QDMI_device_session_get_operations.
-  QDMI_device_session_get_operations_t *device_session_get_operations;
-  /// Function pointer to @ref QDMI_device_site_query_property.
-  QDMI_device_site_query_property_t *device_site_query_property;
-  /// Function pointer to @ref QDMI_device_operation_query_property.
-  QDMI_device_operation_query_property_t *device_operation_query_property;
-} QDMI_Library_impl_t;
-
-typedef const QDMI_Library_impl_t *QDMI_Library;
-
-typedef struct QDMI_Site_impl_d {
-  QDMI_Library library;
-} QDMI_Site_impl_t;
-
-typedef struct QDMI_Operation_impl_d {
-  QDMI_Library library;
-} QDMI_Operation_impl_t;
-
-int QDMI_device_get_library(QDMI_Library *library);
-
-// todo: actually, all function below do not need to be contained in the header
-// file, the docstrings could be moved to the typedefs above
 
 /**
  * @brief Initialize a device.

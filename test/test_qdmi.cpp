@@ -83,7 +83,7 @@ TEST_P(QDMIImplementationTest, QueryOperationSet) {
     ASSERT_FALSE(op_name.empty());
     std::string name(op_name.length(), '\0');
     ASSERT_EQ(QDMI_operation_query_property(
-                  op, 0, nullptr, QDMI_OPERATION_PROPERTY_NAME,
+                  device, op, 0, nullptr, QDMI_OPERATION_PROPERTY_NAME,
                   name.length() + 1, name.data(), nullptr),
               QDMI_SUCCESS);
     EXPECT_EQ(op_name, name);
@@ -115,30 +115,34 @@ TEST_P(QDMIImplementationTest, QueryGatePropertiesForEachGate) {
     if (gate_num_qubits == 1) {
       for (const auto &site : sites) {
         auto site_arr = std::array{site};
-        EXPECT_EQ(QDMI_operation_query_property(
-                      op, 1, site_arr.data(), QDMI_OPERATION_PROPERTY_DURATION,
-                      sizeof(double), &duration, nullptr),
-                  QDMI_SUCCESS)
+        EXPECT_EQ(
+            QDMI_operation_query_property(device, op, 1, site_arr.data(),
+                                          QDMI_OPERATION_PROPERTY_DURATION,
+                                          sizeof(double), &duration, nullptr),
+            QDMI_SUCCESS)
             << "Failed to query duration for operation " << name;
-        EXPECT_EQ(QDMI_operation_query_property(
-                      op, 1, site_arr.data(), QDMI_OPERATION_PROPERTY_FIDELITY,
-                      sizeof(double), &fidelity, nullptr),
-                  QDMI_SUCCESS)
+        EXPECT_EQ(
+            QDMI_operation_query_property(device, op, 1, site_arr.data(),
+                                          QDMI_OPERATION_PROPERTY_FIDELITY,
+                                          sizeof(double), &fidelity, nullptr),
+            QDMI_SUCCESS)
             << "Failed to query fidelity for operation " << name;
       }
     }
     if (gate_num_qubits == 2) {
       for (const auto &[control, target] : coupling_map) {
         auto site_arr = std::array{control, target};
-        EXPECT_EQ(QDMI_operation_query_property(
-                      op, 2, site_arr.data(), QDMI_OPERATION_PROPERTY_DURATION,
-                      sizeof(double), &duration, nullptr),
-                  QDMI_SUCCESS)
+        EXPECT_EQ(
+            QDMI_operation_query_property(device, op, 2, site_arr.data(),
+                                          QDMI_OPERATION_PROPERTY_DURATION,
+                                          sizeof(double), &duration, nullptr),
+            QDMI_SUCCESS)
             << "Failed to query duration for gate " << op;
-        EXPECT_EQ(QDMI_operation_query_property(
-                      op, 2, site_arr.data(), QDMI_OPERATION_PROPERTY_FIDELITY,
-                      sizeof(double), &fidelity, nullptr),
-                  QDMI_SUCCESS)
+        EXPECT_EQ(
+            QDMI_operation_query_property(device, op, 2, site_arr.data(),
+                                          QDMI_OPERATION_PROPERTY_FIDELITY,
+                                          sizeof(double), &fidelity, nullptr),
+            QDMI_SUCCESS)
             << "Failed to query fidelity for gate " << op;
       }
     }

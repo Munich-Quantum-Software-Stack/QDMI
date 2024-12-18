@@ -56,6 +56,80 @@ enum QDMI_DEVICE_MODE : uint8_t {
 enum class QDMI_SESSION_STATUS : uint8_t { ALLOCATED, INITIALIZED };
 
 /**
+ * @brief Definition of the QDMI Library.
+ */
+struct QDMI_Library_impl_d {
+  void *lib_handle = nullptr;
+
+  /// Function pointer to @ref QDMI_device_initialize.
+  decltype(QDMI_device_initialize) *device_initialize{};
+  /// Function pointer to @ref QDMI_device_finalize.
+  decltype(QDMI_device_finalize) *device_finalize{};
+  /// Function pointer to @ref QDMI_device_session_alloc.
+  decltype(QDMI_device_session_alloc) *device_session_alloc{};
+  /// Function pointer to @ref QDMI_device_session_init.
+  decltype(QDMI_device_session_init) *device_session_init{};
+  /// Function pointer to @ref QDMI_device_session_free.
+  decltype(QDMI_device_session_free) *device_session_free{};
+  /// Function pointer to @ref QDMI_device_session_set_parameter.
+  decltype(QDMI_device_session_set_parameter) *device_session_set_parameter{};
+  /// Function pointer to @ref QDMI_device_job_create.
+  decltype(QDMI_device_job_create) *device_job_create{};
+  /// Function pointer to @ref QDMI_device_job_free.
+  decltype(QDMI_device_job_free) *device_job_free{};
+  /// Function pointer to @ref QDMI_device_job_set_parameter.
+  decltype(QDMI_device_job_set_parameter) *device_job_set_parameter{};
+  /// Function pointer to @ref QDMI_device_job_submit.
+  decltype(QDMI_device_job_submit) *device_job_submit{};
+  /// Function pointer to @ref QDMI_device_job_cancel.
+  decltype(QDMI_device_job_cancel) *device_job_cancel{};
+  /// Function pointer to @ref QDMI_device_job_check.
+  decltype(QDMI_device_job_check) *device_job_check{};
+  /// Function pointer to @ref QDMI_device_job_wait.
+  decltype(QDMI_device_job_wait) *device_job_wait{};
+  /// Function pointer to @ref QDMI_device_job_get_data.
+  decltype(QDMI_device_job_get_data) *device_job_get_data{};
+  /// Function pointer to @ref QDMI_device_session_query_property.
+  decltype(QDMI_device_session_query_property) *device_session_query_property{};
+  /// Function pointer to @ref QDMI_device_session_get_sites.
+  decltype(QDMI_device_session_get_sites) *device_session_get_sites{};
+  /// Function pointer to @ref QDMI_device_session_get_operations.
+  decltype(QDMI_device_session_get_operations) *device_session_get_operations{};
+  /// Function pointer to @ref QDMI_device_site_query_property.
+  decltype(QDMI_device_site_query_property) *device_site_query_property{};
+  /// Function pointer to @ref QDMI_device_operation_query_property.
+  decltype(QDMI_device_operation_query_property)
+      *device_operation_query_property{};
+
+  // default constructor
+  QDMI_Library_impl_d() = default;
+
+  // delete copy constructor, copy assignment, move constructor, move assignment
+  // to allow only one instance and proper destruction of the dynamic library
+  QDMI_Library_impl_d(const QDMI_Library_impl_d &) = delete;
+
+  QDMI_Library_impl_d &operator=(const QDMI_Library_impl_d &) = delete;
+
+  QDMI_Library_impl_d(QDMI_Library_impl_d &&) = delete;
+
+  QDMI_Library_impl_d &operator=(QDMI_Library_impl_d &&) = delete;
+
+  // destructor
+  ~QDMI_Library_impl_d() {
+    // Check if QDMI_control_finalize is not NULL before calling it
+    if (device_finalize != nullptr) {
+      device_finalize();
+    }
+    // close the dynamic library
+    if (lib_handle != nullptr) {
+      dlclose(lib_handle);
+    }
+  }
+};
+
+using QDMI_Library = QDMI_Library_impl_d *;
+
+/**
  * @brief Definition of the QDMI Device.
  */
 struct QDMI_Device_impl_d {
@@ -83,7 +157,7 @@ struct QDMI_Job_impl_d {
 };
 
 struct QDMI_Driver_State {
-  std::unordered_map<void *, QDMI_Library> libraries;
+  std::unordered_map<void *, std::unique_ptr<QDMI_Library_impl_d>> libraries;
   std::unordered_set<QDMI_Session> sessions;
 };
 
@@ -91,12 +165,20 @@ namespace {
 /**
  * @brief Global list of devices managed by the driver.
  */
-// NOLINTNEXTLINE(cppcoreguidelines-avoid-non-const-global-variables)
-
 QDMI_Driver_State *QDMI_get_driver_state() {
   static QDMI_Driver_State driver_state;
   return &driver_state;
 }
+
+#define LOAD_SYMBOL(device, prefix, symbol)                                    \
+  {                                                                            \
+    const std::string symbol_name = std::string(prefix) + "_QDMI_" + #symbol;  \
+    (device).symbol = reinterpret_cast<decltype((device).symbol)>(             \
+        dlsym((device).lib_handle, symbol_name.c_str()));                      \
+    if ((device).symbol == nullptr) {                                          \
+      throw std::runtime_error("Failed to load symbol: " + symbol_name);       \
+    }                                                                          \
+  }
 
 void QDMI_library_load(const std::string &lib_name, const std::string &prefix) {
   auto *lib_handle = dlopen(lib_name.c_str(), RTLD_NOW | RTLD_LOCAL);
@@ -110,25 +192,44 @@ void QDMI_library_load(const std::string &lib_name, const std::string &prefix) {
     dlclose(lib_handle);
     return;
   }
-  QDMI_Library library = nullptr;
+  auto it = QDMI_get_driver_state()
+                ->libraries
+                .emplace(lib_handle, std::make_unique<QDMI_Library_impl_d>())
+                .first;
+  auto &library = *it->second;
+  library.lib_handle = lib_handle;
+
   try {
+    // NOLINTBEGIN(cppcoreguidelines-pro-type-reinterpret-cast)
+
     // load the function symbols from the dynamic library
-    const std::string symbol_name =
-        std::string(prefix) + "_QDMI_device_get_library";
-    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-    auto *library_getter = reinterpret_cast<int (*)(QDMI_Library *)>(
-        dlsym(lib_handle, symbol_name.c_str()));
-    if (library_getter == nullptr) {
-      throw std::runtime_error("Failed to load symbol: " + symbol_name);
-    }
-    (*library_getter)(&library);
+    LOAD_SYMBOL(library, prefix, device_initialize)
+    LOAD_SYMBOL(library, prefix, device_finalize)
+    LOAD_SYMBOL(library, prefix, device_session_alloc)
+    LOAD_SYMBOL(library, prefix, device_session_init)
+    LOAD_SYMBOL(library, prefix, device_session_free)
+    LOAD_SYMBOL(library, prefix, device_session_set_parameter)
+    LOAD_SYMBOL(library, prefix, device_job_create)
+    LOAD_SYMBOL(library, prefix, device_job_free)
+    LOAD_SYMBOL(library, prefix, device_job_set_parameter)
+    LOAD_SYMBOL(library, prefix, device_job_submit)
+    LOAD_SYMBOL(library, prefix, device_job_cancel)
+    LOAD_SYMBOL(library, prefix, device_job_check)
+    LOAD_SYMBOL(library, prefix, device_job_wait)
+    LOAD_SYMBOL(library, prefix, device_job_get_data)
+    LOAD_SYMBOL(library, prefix, device_session_query_property)
+    LOAD_SYMBOL(library, prefix, device_session_get_sites)
+    LOAD_SYMBOL(library, prefix, device_session_get_operations)
+    LOAD_SYMBOL(library, prefix, device_site_query_property)
+    LOAD_SYMBOL(library, prefix, device_operation_query_property)
+
+    // NOLINTEND(cppcoreguidelines-pro-type-reinterpret-cast)
   } catch (const std::exception &) {
     dlclose(lib_handle);
     throw;
   }
-  QDMI_get_driver_state()->libraries.emplace(lib_handle, library);
   // initialize the device
-  library->device_initialize();
+  library.device_initialize();
 }
 
 bool Is_path_allowed(const std::filesystem::path &path) {
@@ -207,7 +308,7 @@ int QDMI_session_init(QDMI_Session session) {
   for (const auto &[_, lib] : QDMI_get_driver_state()->libraries) {
     auto &device = session->device_list.emplace_back(
         std::make_unique<QDMI_Device_impl_d>());
-    device->library = lib;
+    device->library = lib.get();
     device->session = session;
     device->library->device_session_alloc(&device->device_session);
     device->library->device_session_set_parameter(
@@ -453,8 +554,9 @@ int QDMI_device_get_operations(QDMI_Device device, const size_t num_entries,
       device->device_session, num_entries, operations, num_operations);
 }
 
-int QDMI_site_query_property(QDMI_Site site, QDMI_Site_Property prop,
-                             const size_t size, void *value, size_t *size_ret) {
+int QDMI_site_query_property(QDMI_Device device, QDMI_Site site,
+                             QDMI_Site_Property prop, const size_t size,
+                             void *value, size_t *size_ret) {
   if (prop >= QDMI_SITE_PROPERTY_MAX && prop != QDMI_SITE_PROPERTY_CUSTOM1 &&
       prop != QDMI_SITE_PROPERTY_CUSTOM2 &&
       prop != QDMI_SITE_PROPERTY_CUSTOM3 &&
@@ -462,11 +564,11 @@ int QDMI_site_query_property(QDMI_Site site, QDMI_Site_Property prop,
       prop != QDMI_SITE_PROPERTY_CUSTOM5) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
-  return site->library->device_site_query_property(site, prop, size, value,
-                                                   size_ret);
+  return device->library->device_site_query_property(site, prop, size, value,
+                                                     size_ret);
 }
 
-int QDMI_operation_query_property(QDMI_Operation operation,
+int QDMI_operation_query_property(QDMI_Device device, QDMI_Operation operation,
                                   const size_t num_sites,
                                   const QDMI_Site *sites,
                                   QDMI_Operation_Property prop,
@@ -480,6 +582,6 @@ int QDMI_operation_query_property(QDMI_Operation operation,
       prop != QDMI_OPERATION_PROPERTY_CUSTOM5) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
-  return operation->library->device_operation_query_property(
+  return device->library->device_operation_query_property(
       operation, num_sites, sites, prop, size, value, size_ret);
 }
