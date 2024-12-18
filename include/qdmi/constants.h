@@ -167,12 +167,14 @@ typedef enum QDMI_SITE_PROPERTY_T QDMI_Site_Property;
 
 /// Enum of the operation properties that can be queried.
 enum QDMI_OPERATION_PROPERTY_T {
+  /// `char*` (string) The string identifier of the operation.
+  QDMI_OPERATION_PROPERTY_NAME = 0,
   /// `size_t` The number of qubits in the operation.
-  QDMI_OPERATION_PROPERTY_QUBITSNUM = 0,
+  QDMI_OPERATION_PROPERTY_QUBITSNUM = 1,
   /// `double` The duration of an operation in µs.
-  QDMI_OPERATION_PROPERTY_DURATION = 1,
+  QDMI_OPERATION_PROPERTY_DURATION = 2,
   /// `double` The fidelity of an operation.
-  QDMI_OPERATION_PROPERTY_FIDELITY = 2,
+  QDMI_OPERATION_PROPERTY_FIDELITY = 3,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
@@ -180,7 +182,7 @@ enum QDMI_OPERATION_PROPERTY_T {
    * enum besides the custom members and must be updated when new members are
    * added.
    */
-  QDMI_OPERATION_PROPERTY_MAX = 3,
+  QDMI_OPERATION_PROPERTY_MAX = 4,
   /**
    * @brief This property is reserved for a custom property.
    * @details The meaning and the type of this property are defined by the
