@@ -35,7 +35,6 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include <limits>
 #include <map>
 #include <random>
-#include <sstream>
 #include <string>
 #include <unordered_map>
 #include <utility>
@@ -135,7 +134,7 @@ double CXX_QDMI_generate_real() {
 }
 
 // NOLINTBEGIN(cppcoreguidelines-avoid-non-const-global-variables)
-std::array<std::string, 4> device_operations = {"rx", "ry", "rz", "cx"};
+std::array<const char *, 4> device_operations = {"rx", "ry", "rz", "cx"};
 
 std::array<uint64_t, 5> device_sites = {0, 1, 2, 3, 4};
 // NOLINTEND(cppcoreguidelines-avoid-non-const-global-variables)
@@ -157,7 +156,7 @@ constexpr static std::array<uint64_t, 20>
 };
 // clang-format on
 
-const static std::unordered_map<std::string, double> OPERATION_DURATIONS = {
+const static std::unordered_map<const char *, double> OPERATION_DURATIONS = {
     {device_operations[0], 0.01},
     {device_operations[1], 0.01},
     {device_operations[2], 0.01},
@@ -174,8 +173,8 @@ struct CXX_QDMI_Pair_hash {
 };
 
 const static std::unordered_map<
-    std::string, std::unordered_map<std::pair<uint64_t, uint64_t>, double,
-                                    CXX_QDMI_Pair_hash>>
+    const char *, std::unordered_map<std::pair<uint64_t, uint64_t>, double,
+                                     CXX_QDMI_Pair_hash>>
     OPERATION_FIDELITIES = {
         {device_operations[3],
          {{{device_sites[0], device_sites[1]}, 0.99},
@@ -645,13 +644,9 @@ int CXX_QDMI_device_session_query_property(CXX_QDMI_Device_Session session,
                             size_ret)
   ADD_LIST_PROPERTY(QDMI_DEVICE_PROPERTY_SITES, uint64_t, device_sites, prop,
                     size, value, size_ret)
-  std::ostringstream oss;
-  for (const auto &op : device_operations) {
-    oss << op << ',';
-  }
-  oss.seekp(-1, std::ios_base::end); // remove last comma
-  ADD_STRING_PROPERTY(QDMI_DEVICE_PROPERTY_OPERATIONS, oss.str().c_str(), prop,
-                      size, value, size_ret)
+  // TODO: this does not work yet
+  ADD_LIST_PROPERTY(QDMI_DEVICE_PROPERTY_OPERATIONS, const char *,
+                    device_operations, prop, size, value, size_ret)
   ADD_LIST_PROPERTY(QDMI_DEVICE_PROPERTY_COUPLINGMAP, uint64_t,
                     DEVICE_COUPLING_MAP, prop, size, value, size_ret)
   return QDMI_ERROR_NOTSUPPORTED;
@@ -682,6 +677,10 @@ int CXX_QDMI_device_operation_query_property(
       (value == nullptr && size_ret == nullptr)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
+  // General properties
+  // todo: this feels super redundant.
+  ADD_STRING_PROPERTY(QDMI_OPERATION_PROPERTY_NAME, operation, prop, size,
+                      value, size_ret)
   if (strcmp(operation, "cx") == 0) {
     if (sites != nullptr && num_sites != 2) {
       return QDMI_ERROR_INVALIDARGUMENT;
