@@ -123,7 +123,7 @@ auto FoMaC::get_operation_map() const -> std::map<std::string, QDMI_Operation> {
     ret = QDMI_operation_query_property(
         op, 0, nullptr, QDMI_OPERATION_PROPERTY_NAME, 0, nullptr, &name_length);
     throw_if_error(ret, "Failed to retrieve operation name length.");
-    std::string name(name_length, '\0');
+    std::string name(name_length - 1, '\0');
     ret = QDMI_operation_query_property(op, 0, nullptr,
                                         QDMI_OPERATION_PROPERTY_NAME,
                                         name_length, name.data(), nullptr);

@@ -45,4 +45,4 @@ QDMI_Device_Job_impl_t
 QDMI_Library
 QDMI_Library_impl_d
 QDMI_Library_impl_t
-QDMI_device_library
+QDMI_device_get_library

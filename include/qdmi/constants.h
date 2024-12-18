@@ -77,6 +77,94 @@ enum QDMI_STATUS {
   QDMI_ERROR_BADSTATE = -10,
 };
 
+/**
+ * @brief Enum of the session parameters that can be set.
+ * @details If not noted otherwise, parameters are optional and devices must not
+ * require them to be set.
+ */
+enum QDMI_DEVICE_SESSION_PARAMETER_T {
+  /**
+   * @brief `char*` (string) The token to be used for authentication within the
+   * session.
+   * @details If the device authentication via a token, this parameter must be
+   * set prior to calling @ref QDMI_device_session_init.
+   */
+  QDMI_DEVICE_SESSION_PARAMETER_TOKEN = 0,
+  /**
+   * @brief `char*` (string) The baseURL or API endpoint to be used for
+   * accessing the device within the session.
+   * @details If this parameter is set and the device supports it, the device
+   * must use the specified baseURL or API endpoint for the session. If this
+   * parameter is not set, the device must use a reasonable default value.
+   */
+  QDMI_DEVICE_SESSION_PARAMETER_BASEURL = 0,
+  /**
+   * @brief The maximum value of the enum.
+   * @details It can be used by devices for bounds checking and validation of
+   * function parameters. This value must remain the last regular member of the
+   * enum besides the custom members and must be updated when new members are
+   * added.
+   */
+  QDMI_DEVICE_SESSION_PARAMETER_MAX = 2,
+  /**
+   * @brief This property is reserved for a custom property.
+   * @details The meaning and the type of this property are defined by the
+   * device. To maintain binary compatibility, the value of this enum member
+   * must not be changed.
+   */
+  QDMI_DEVICE_SESSION_PARAMETER_CUSTOM1 = 999999995,
+  /// @see QDMI_DEVICE_SESSION_PARAMETER_CUSTOM1
+  QDMI_DEVICE_SESSION_PARAMETER_CUSTOM2 = 999999996,
+  /// @see QDMI_DEVICE_SESSION_PARAMETER_CUSTOM1
+  QDMI_DEVICE_SESSION_PARAMETER_CUSTOM3 = 999999997,
+  /// @see QDMI_DEVICE_SESSION_PARAMETER_CUSTOM1
+  QDMI_DEVICE_SESSION_PARAMETER_CUSTOM4 = 999999998,
+  /// @see QDMI_DEVICE_SESSION_PARAMETER_CUSTOM1
+  QDMI_DEVICE_SESSION_PARAMETER_CUSTOM5 = 999999999
+};
+
+/// Type of the device session parameter.
+typedef enum QDMI_DEVICE_SESSION_PARAMETER_T QDMI_Device_Session_Parameter;
+
+/**
+ * @brief Enum of the device job parameters that can be set.
+ * @details If not noted otherwise, parameters are optional and drivers must not
+ * require them to be set.
+ */
+enum QDMI_DEVICE_JOB_PARAMETER_T {
+  /**
+   * @brief `size_t` The number of shots to execute for a quantum circuit job.
+   * @details If this parameter is not set, a device-specific default number of
+   * shots is used.
+   */
+  QDMI_DEVICE_JOB_PARAMETER_SHOTS_NUM = 0,
+  /**
+   * @brief The maximum value of the enum.
+   * @details It can be used by devices for bounds checking and validation of
+   * function parameters. This value must remain the last regular member of the
+   * enum besides the custom members and must be updated when new members are
+   * added.
+   */
+  QDMI_DEVICE_JOB_PARAMETER_MAX = 1,
+  /**
+   * @brief This property is reserved for a custom property.
+   * @details The meaning and the type of this property is defined by the
+   * device.
+   */
+  QDMI_DEVICE_JOB_PARAMETER_CUSTOM1 = 999999995,
+  /// @see QDMI_DEVICE_JOB_PARAMETER_CUSTOM1
+  QDMI_DEVICE_JOB_PARAMETER_CUSTOM2 = 999999996,
+  /// @see QDMI_DEVICE_JOB_PARAMETER_CUSTOM1
+  QDMI_DEVICE_JOB_PARAMETER_CUSTOM3 = 999999997,
+  /// @see QDMI_DEVICE_JOB_PARAMETER_CUSTOM1
+  QDMI_DEVICE_JOB_PARAMETER_CUSTOM4 = 999999998,
+  /// @see QDMI_DEVICE_JOB_PARAMETER_CUSTOM1
+  QDMI_DEVICE_JOB_PARAMETER_CUSTOM5 = 999999999
+};
+
+/// Type of the device job parameter.
+typedef enum QDMI_DEVICE_JOB_PARAMETER_T QDMI_Device_Job_Parameter;
+
 /// Enum of the device properties that can be queried.
 enum QDMI_DEVICE_PROPERTY_T {
   QDMI_DEVICE_PROPERTY_NAME = 0, ///< `char*` (string) The name of the device.

@@ -24,8 +24,6 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 #include "cxx_qdmi/device.h"
 
-#include "cxx_qdmi/types.h"
-
 #include <algorithm>
 #include <array>
 #include <cmath>
@@ -42,7 +40,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include <utility>
 #include <vector>
 
-constexpr QDMI_Library_impl_t CXX_QDMI_LIBRARY = {
+constexpr CXX_QDMI_Library_impl_d CXX_QDMI_DEVICE_LIBRARY = {
     .device_initialize = &CXX_QDMI_device_initialize,
     .device_finalize = &CXX_QDMI_device_finalize,
     .device_session_alloc = &CXX_QDMI_device_session_alloc,
@@ -157,39 +155,44 @@ double CXX_QDMI_generate_real() {
   return state->dis_real(state->gen);
 }
 
-constexpr std::array<QDMI_Operation_impl_d, 4> CXX_DEVICE_OPERATIONS = {
-    QDMI_Operation_impl_d{&CXX_QDMI_LIBRARY},
-    QDMI_Operation_impl_d{&CXX_QDMI_LIBRARY},
-    QDMI_Operation_impl_d{&CXX_QDMI_LIBRARY},
-    QDMI_Operation_impl_d{&CXX_QDMI_LIBRARY}};
+constexpr QDMI_Operation_impl_d CX{&CXX_QDMI_DEVICE_LIBRARY};
+constexpr QDMI_Operation_impl_d RX{&CXX_QDMI_DEVICE_LIBRARY};
+constexpr QDMI_Operation_impl_d RY{&CXX_QDMI_DEVICE_LIBRARY};
+constexpr QDMI_Operation_impl_d RZ{&CXX_QDMI_DEVICE_LIBRARY};
 
-constexpr std::array<QDMI_Site_impl_d, 7> CXX_DEVICE_SITES = {
-    QDMI_Site_impl_d{&CXX_QDMI_LIBRARY}, QDMI_Site_impl_d{&CXX_QDMI_LIBRARY},
-    QDMI_Site_impl_d{&CXX_QDMI_LIBRARY}, QDMI_Site_impl_d{&CXX_QDMI_LIBRARY},
-    QDMI_Site_impl_d{&CXX_QDMI_LIBRARY}};
+constexpr std::array<QDMI_Operation, 4> CXX_DEVICE_OPERATIONS = {&CX, &RX, &RY,
+                                                                 &RZ};
 
-constexpr std::array<const QDMI_Site_impl_d *const, 20>
+constexpr QDMI_Site_impl_d SITE0{&CXX_QDMI_DEVICE_LIBRARY};
+constexpr QDMI_Site_impl_d SITE1{&CXX_QDMI_DEVICE_LIBRARY};
+constexpr QDMI_Site_impl_d SITE2{&CXX_QDMI_DEVICE_LIBRARY};
+constexpr QDMI_Site_impl_d SITE3{&CXX_QDMI_DEVICE_LIBRARY};
+constexpr QDMI_Site_impl_d SITE4{&CXX_QDMI_DEVICE_LIBRARY};
+
+constexpr std::array<QDMI_Site, 5> CXX_DEVICE_SITES = {&SITE0, &SITE1, &SITE2,
+                                                       &SITE3, &SITE4};
+
+constexpr std::array<QDMI_Site, 20>
     // clang-format off
     DEVICE_COUPLING_MAP = {
-      CXX_DEVICE_SITES.data(), &CXX_DEVICE_SITES[1],
-      &CXX_DEVICE_SITES[1], CXX_DEVICE_SITES.data(),
-      &CXX_DEVICE_SITES[1], &CXX_DEVICE_SITES[2],
-      &CXX_DEVICE_SITES[2], &CXX_DEVICE_SITES[1],
-      &CXX_DEVICE_SITES[2], &CXX_DEVICE_SITES[3],
-      &CXX_DEVICE_SITES[3], &CXX_DEVICE_SITES[2],
-      &CXX_DEVICE_SITES[3], &CXX_DEVICE_SITES[4],
-      &CXX_DEVICE_SITES[4], &CXX_DEVICE_SITES[3],
-      &CXX_DEVICE_SITES[4], CXX_DEVICE_SITES.data(),
-      CXX_DEVICE_SITES.data(), &CXX_DEVICE_SITES[4]};
+      CXX_DEVICE_SITES[0], CXX_DEVICE_SITES[1],
+      CXX_DEVICE_SITES[1], CXX_DEVICE_SITES[0],
+      CXX_DEVICE_SITES[1], CXX_DEVICE_SITES[2],
+      CXX_DEVICE_SITES[2], CXX_DEVICE_SITES[1],
+      CXX_DEVICE_SITES[2], CXX_DEVICE_SITES[3],
+      CXX_DEVICE_SITES[3], CXX_DEVICE_SITES[2],
+      CXX_DEVICE_SITES[3], CXX_DEVICE_SITES[4],
+      CXX_DEVICE_SITES[4], CXX_DEVICE_SITES[3],
+      CXX_DEVICE_SITES[4], CXX_DEVICE_SITES[0],
+      CXX_DEVICE_SITES[0], CXX_DEVICE_SITES[4]};
 // clang-format on
 
-const std::unordered_map<const QDMI_Operation_impl_d *,
-                         std::pair<std::string, double>>
+const std::unordered_map<QDMI_Operation, std::pair<std::string, double>>
     OPERATION_PROPERTIES = {
-        {CXX_DEVICE_OPERATIONS.data(), {"cx", 0.01}},
-        {&CXX_DEVICE_OPERATIONS[1], {"rx", 0.01}},
-        {&CXX_DEVICE_OPERATIONS[2], {"ry", 0.01}},
-        {&CXX_DEVICE_OPERATIONS[3], {"rz", 0.1}},
+        {CXX_DEVICE_OPERATIONS[0], {"rx", 0.01}},
+        {CXX_DEVICE_OPERATIONS[1], {"ry", 0.01}},
+        {CXX_DEVICE_OPERATIONS[2], {"rz", 0.01}},
+        {CXX_DEVICE_OPERATIONS[3], {"cx", 0.1}},
 };
 
 struct CXX_QDMI_Pair_hash {
@@ -206,17 +209,17 @@ const std::unordered_map<const QDMI_Operation_impl_d *,
                                                       const QDMI_Site_impl_d *>,
                                             double, CXX_QDMI_Pair_hash>>
     OPERATION_FIDELITIES = {
-        {&CXX_DEVICE_OPERATIONS[3],
-         {{{CXX_DEVICE_SITES.data(), &CXX_DEVICE_SITES[1]}, 0.99},
-          {{&CXX_DEVICE_SITES[1], CXX_DEVICE_SITES.data()}, 0.99},
-          {{&CXX_DEVICE_SITES[1], &CXX_DEVICE_SITES[2]}, 0.98},
-          {{&CXX_DEVICE_SITES[2], &CXX_DEVICE_SITES[1]}, 0.98},
-          {{&CXX_DEVICE_SITES[2], &CXX_DEVICE_SITES[3]}, 0.97},
-          {{&CXX_DEVICE_SITES[3], &CXX_DEVICE_SITES[2]}, 0.97},
-          {{&CXX_DEVICE_SITES[3], &CXX_DEVICE_SITES[4]}, 0.96},
-          {{&CXX_DEVICE_SITES[4], &CXX_DEVICE_SITES[3]}, 0.96},
-          {{&CXX_DEVICE_SITES[4], CXX_DEVICE_SITES.data()}, 0.95},
-          {{CXX_DEVICE_SITES.data(), &CXX_DEVICE_SITES[4]}, 0.95}}},
+        {CXX_DEVICE_OPERATIONS[3],
+         {{{CXX_DEVICE_SITES[0], CXX_DEVICE_SITES[1]}, 0.99},
+          {{CXX_DEVICE_SITES[1], CXX_DEVICE_SITES[0]}, 0.99},
+          {{CXX_DEVICE_SITES[1], CXX_DEVICE_SITES[2]}, 0.98},
+          {{CXX_DEVICE_SITES[2], CXX_DEVICE_SITES[1]}, 0.98},
+          {{CXX_DEVICE_SITES[2], CXX_DEVICE_SITES[3]}, 0.97},
+          {{CXX_DEVICE_SITES[3], CXX_DEVICE_SITES[2]}, 0.97},
+          {{CXX_DEVICE_SITES[3], CXX_DEVICE_SITES[4]}, 0.96},
+          {{CXX_DEVICE_SITES[4], CXX_DEVICE_SITES[3]}, 0.96},
+          {{CXX_DEVICE_SITES[4], CXX_DEVICE_SITES[0]}, 0.95},
+          {{CXX_DEVICE_SITES[0], CXX_DEVICE_SITES[4]}, 0.95}}},
         // No need to specify single-qubit fidelities here
 };
 } // namespace
@@ -276,6 +279,11 @@ const std::unordered_map<const QDMI_Operation_impl_d *,
     }                                                                          \
   } /// [DOXYGEN MACRO END]
 // NOLINTEND(bugprone-macro-parentheses)
+
+int CXX_QDMI_device_get_library(CXX_QDMI_Library *library) {
+  *library = &CXX_QDMI_DEVICE_LIBRARY;
+  return QDMI_SUCCESS;
+}
 
 int CXX_QDMI_device_initialize() {
   CXX_QDMI_set_device_status(QDMI_DEVICE_STATUS_IDLE);
@@ -691,7 +699,7 @@ int CXX_QDMI_device_session_get_sites(CXX_QDMI_Device_Session session,
   if (sites != nullptr) {
     for (size_t i = 0; i < std::min(num_entries, CXX_DEVICE_SITES.size());
          ++i) {
-      sites[i] = &CXX_DEVICE_SITES[i];
+      sites[i] = CXX_DEVICE_SITES[i];
     }
   }
   if (num_sites != nullptr) {
@@ -715,7 +723,7 @@ int CXX_QDMI_device_session_get_operations(CXX_QDMI_Device_Session session,
   if (operations != nullptr) {
     for (size_t i = 0; i < std::min(num_entries, CXX_DEVICE_OPERATIONS.size());
          ++i) {
-      operations[i] = &CXX_DEVICE_OPERATIONS[i];
+      operations[i] = CXX_DEVICE_OPERATIONS[i];
     }
   }
   if (num_operations != nullptr) {
@@ -754,7 +762,7 @@ int CXX_QDMI_device_operation_query_property(const QDMI_Operation operation,
   ADD_STRING_PROPERTY(QDMI_OPERATION_PROPERTY_NAME,
                       OPERATION_PROPERTIES.at(operation).first.c_str(), prop,
                       size, value, size_ret)
-  if (operation == CXX_DEVICE_OPERATIONS.data()) {
+  if (operation == CXX_DEVICE_OPERATIONS[3]) {
     if (sites != nullptr && num_sites != 2) {
       return QDMI_ERROR_INVALIDARGUMENT;
     }
@@ -780,9 +788,9 @@ int CXX_QDMI_device_operation_query_property(const QDMI_Operation operation,
     }
     ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_FIDELITY, double,
                               fit->second, prop, size, value, size_ret)
-  } else if (operation == &CXX_DEVICE_OPERATIONS[1] ||
-             operation == &CXX_DEVICE_OPERATIONS[2] ||
-             operation == &CXX_DEVICE_OPERATIONS[3]) {
+  } else if (operation == CXX_DEVICE_OPERATIONS[0] ||
+             operation == CXX_DEVICE_OPERATIONS[1] ||
+             operation == CXX_DEVICE_OPERATIONS[2]) {
     if (sites != nullptr && num_sites != 1) {
       return QDMI_ERROR_INVALIDARGUMENT;
     }

@@ -25,7 +25,6 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 #include "qdmi/client.h"
 #include "qdmi/device.h"
-#include "qdmi/types.h"
 
 #include <algorithm>
 #include <cstdint>
@@ -115,11 +114,14 @@ void QDMI_library_load(const std::string &lib_name, const std::string &prefix) {
   try {
     // load the function symbols from the dynamic library
     const std::string symbol_name =
-        std::string(prefix) + "_QDMI_device_library";
-    library = static_cast<QDMI_Library>(dlsym(lib_handle, symbol_name.c_str()));
-    if (library == nullptr) {
+        std::string(prefix) + "_QDMI_device_get_library";
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
+    auto *library_getter = reinterpret_cast<int (*)(QDMI_Library *)>(
+        dlsym(lib_handle, symbol_name.c_str()));
+    if (library_getter == nullptr) {
       throw std::runtime_error("Failed to load symbol: " + symbol_name);
     }
+    (*library_getter)(&library);
   } catch (const std::exception &) {
     dlclose(lib_handle);
     throw;

@@ -77,7 +77,7 @@ QDMI_Device_Status C_QDMI_read_device_status(void) {
   return *C_QDMI_get_device_status();
 }
 
-const C_QDMI_Library_impl_t C_QDMI_device_library = {
+const C_QDMI_Library_impl_t C_QDMI_DEVICE_LIBRARY = {
     .device_initialize = &C_QDMI_device_initialize,
     .device_finalize = &C_QDMI_device_finalize,
     .device_session_alloc = &C_QDMI_device_session_alloc,
@@ -98,16 +98,17 @@ const C_QDMI_Library_impl_t C_QDMI_device_library = {
     .device_site_query_property = &C_QDMI_device_site_query_property,
     .device_operation_query_property = &C_QDMI_device_operation_query_property};
 
-const QDMI_Site DEVICE_SITES[] = {
-    &(QDMI_Site_impl_t){&C_QDMI_LIBRARY}, &(QDMI_Site_impl_t){&C_QDMI_LIBRARY},
-    &(QDMI_Site_impl_t){&C_QDMI_LIBRARY}, &(QDMI_Site_impl_t){&C_QDMI_LIBRARY},
-    &(QDMI_Site_impl_t){&C_QDMI_LIBRARY}};
+const QDMI_Site DEVICE_SITES[] = {&(QDMI_Site_impl_t){&C_QDMI_DEVICE_LIBRARY},
+                                  &(QDMI_Site_impl_t){&C_QDMI_DEVICE_LIBRARY},
+                                  &(QDMI_Site_impl_t){&C_QDMI_DEVICE_LIBRARY},
+                                  &(QDMI_Site_impl_t){&C_QDMI_DEVICE_LIBRARY},
+                                  &(QDMI_Site_impl_t){&C_QDMI_DEVICE_LIBRARY}};
 
 const QDMI_Operation DEVICE_OPERATIONS[] = {
-    &(QDMI_Operation_impl_t){&C_QDMI_LIBRARY},
-    &(QDMI_Operation_impl_t){&C_QDMI_LIBRARY},
-    &(QDMI_Operation_impl_t){&C_QDMI_LIBRARY},
-    &(QDMI_Operation_impl_t){&C_QDMI_LIBRARY}};
+    &(QDMI_Operation_impl_t){&C_QDMI_DEVICE_LIBRARY},
+    &(QDMI_Operation_impl_t){&C_QDMI_DEVICE_LIBRARY},
+    &(QDMI_Operation_impl_t){&C_QDMI_DEVICE_LIBRARY},
+    &(QDMI_Operation_impl_t){&C_QDMI_DEVICE_LIBRARY}};
 
 #define ADD_SINGLE_VALUE_PROPERTY(prop_name, prop_type, prop_value, prop,      \
                                   size, value, size_ret)                       \
@@ -161,6 +162,11 @@ const QDMI_Operation DEVICE_OPERATIONS[] = {
       return QDMI_SUCCESS;                                                     \
     }                                                                          \
   } /// [DOXYGEN MACRO END]
+
+int C_QDMI_device_get_library(C_QDMI_Library *library) {
+  *library = &C_QDMI_DEVICE_LIBRARY;
+  return QDMI_SUCCESS;
+}
 
 int C_QDMI_device_initialize(void) {
   C_QDMI_set_device_status(QDMI_DEVICE_STATUS_IDLE);
