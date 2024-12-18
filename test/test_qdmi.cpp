@@ -79,18 +79,6 @@ TEST_P(QDMIImplementationTest, QueryOperationSet) {
   const auto fomac = FoMaC(device);
   const auto gates = fomac.get_operations();
   ASSERT_GT(gates.size(), 0);
-  for (const auto &op_name : gates) {
-    ASSERT_FALSE(op_name.empty());
-    std::string name(op_name.length(), '\0');
-    // todo: this kind of feels redundant now that operations are queried by
-    //  name. Should that property be removed if we decide to stick with that?
-    ASSERT_EQ(QDMI_operation_query_property(device, op_name.c_str(), 0, nullptr,
-                                            QDMI_OPERATION_PROPERTY_NAME,
-                                            name.length() + 1, name.data(),
-                                            nullptr),
-              QDMI_SUCCESS);
-    EXPECT_EQ(op_name, name);
-  }
 }
 
 TEST_P(QDMIImplementationTest, QueryCouplingMap) {
