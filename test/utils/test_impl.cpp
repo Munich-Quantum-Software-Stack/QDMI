@@ -82,7 +82,7 @@ void QDMIImplementationTest::SetUp() {
       << "Failed to initialize session. Potential errors: Wrong or missing "
          "authentication information, device status is offline, or in "
          "maintenance. To provide credentials, take a look in " __FILE__
-      << (__LINE__ - 4);
+      << (__LINE__ - 19);
 
   ASSERT_EQ(QDMI_session_get_devices(session, 1, &device, nullptr),
             QDMI_SUCCESS)
