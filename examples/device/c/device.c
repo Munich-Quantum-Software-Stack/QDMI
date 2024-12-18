@@ -21,11 +21,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
  * @details This file can be used as a template for implementing a device in C.
  */
 
-// todo: should this still be included? In principle, it is not necessary
-// anymore...
 #include "c_qdmi/device.h"
-
-#include "c_qdmi/types.h"
 
 #include <math.h>
 #include <stddef.h>
@@ -81,7 +77,7 @@ QDMI_Device_Status C_QDMI_read_device_status(void) {
   return *C_QDMI_get_device_status();
 }
 
-const QDMI_Library_impl_t C_QDMI_LIBRARY = {
+const C_QDMI_Library_impl_t C_QDMI_device_library = {
     .device_initialize = &C_QDMI_device_initialize,
     .device_finalize = &C_QDMI_device_finalize,
     .device_session_alloc = &C_QDMI_device_session_alloc,

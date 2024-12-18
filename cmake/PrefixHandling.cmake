@@ -38,8 +38,8 @@ function(generate_prefixed_qdmi_headers prefix)
     # Replace the include for the device header with the prefixed version.
     string(
       REGEX
-      REPLACE "#include (\"|<)qdmi/device"
-              "#include \\1${QDMI_prefix}_qdmi/device" header_content
+      REPLACE "#include (\"|<)qdmi/types.h(\"|>)"
+              "#include \\1${QDMI_prefix}_qdmi/types.h\\2" header_content
               "${header_content}")
     # Replace the prefix definitions.
     foreach(replacement ${replacements})

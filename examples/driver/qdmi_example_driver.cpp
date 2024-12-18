@@ -114,7 +114,8 @@ void QDMI_library_load(const std::string &lib_name, const std::string &prefix) {
   QDMI_Library library = nullptr;
   try {
     // load the function symbols from the dynamic library
-    const std::string symbol_name = std::string(prefix) + "_QDMI_LIBRARY";
+    const std::string symbol_name =
+        std::string(prefix) + "_QDMI_device_library";
     library = static_cast<QDMI_Library>(dlsym(lib_handle, symbol_name.c_str()));
     if (library == nullptr) {
       throw std::runtime_error("Failed to load symbol: " + symbol_name);
