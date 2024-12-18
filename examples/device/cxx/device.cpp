@@ -57,14 +57,6 @@ struct CXX_QDMI_Device_Job_impl_d {
   std::vector<std::complex<double>> state_vec;
 };
 
-struct CXX_QDMI_Device_Site_impl_d {
-  size_t id;
-};
-
-struct CXX_QDMI_Device_Operation_impl_d {
-  const char *name;
-};
-
 struct CXX_QDMI_Device_State {
   QDMI_Device_Status status = QDMI_DEVICE_STATUS_OFFLINE;
   std::random_device rd;

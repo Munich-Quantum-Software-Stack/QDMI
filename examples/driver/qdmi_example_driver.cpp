@@ -83,20 +83,29 @@ struct QDMI_Job_impl_d {
   QDMI_Device_Job device_job = nullptr;
 };
 
+struct QDMI_Driver_State {
+  std::unordered_map<void *, QDMI_Library> libraries;
+  std::unordered_set<QDMI_Session> sessions;
+};
+
 namespace {
 /**
  * @brief Global list of devices managed by the driver.
  */
 // NOLINTNEXTLINE(cppcoreguidelines-avoid-non-const-global-variables)
-std::unordered_map<void *, QDMI_Library> libraries;
-std::unordered_set<QDMI_Session> sessions;
+
+QDMI_Driver_State *QDMI_get_driver_state() {
+  static QDMI_Driver_State driver_state;
+  return &driver_state;
+}
 
 void QDMI_library_load(const std::string &lib_name, const std::string &prefix) {
   auto *lib_handle = dlopen(lib_name.c_str(), RTLD_NOW | RTLD_LOCAL);
   if (lib_handle == nullptr) {
     throw std::runtime_error("Failed to open device library: " + lib_name);
   }
-  if (const auto it = libraries.find(lib_handle); it != libraries.end()) {
+  if (const auto it = QDMI_get_driver_state()->libraries.find(lib_handle);
+      it != QDMI_get_driver_state()->libraries.end()) {
     // dlopen employs reference counting so we need to decrement the reference
     // count that was increased by dlopen
     dlclose(lib_handle);
@@ -114,7 +123,7 @@ void QDMI_library_load(const std::string &lib_name, const std::string &prefix) {
     dlclose(lib_handle);
     throw;
   }
-  libraries.emplace(lib_handle, library);
+  QDMI_get_driver_state()->libraries.emplace(lib_handle, library);
   // initialize the device
   library->device_initialize();
 }
@@ -182,7 +191,7 @@ int QDMI_driver_init() {
 
 int QDMI_session_alloc(QDMI_Session *session) {
   *session = new QDMI_Session_impl_d();
-  sessions.emplace(*session);
+  QDMI_get_driver_state()->sessions.emplace(*session);
   return QDMI_SUCCESS;
 }
 
@@ -192,7 +201,7 @@ int QDMI_session_init(QDMI_Session session) {
   }
   // in this simple implementation, each session has access to all devices
   // for every library the driver creates a device for the calling client
-  for (const auto &[_, lib] : libraries) {
+  for (const auto &[_, lib] : QDMI_get_driver_state()->libraries) {
     auto &device = session->device_list.emplace_back(
         std::make_unique<QDMI_Device_impl_d>());
     device->library = lib;
@@ -211,7 +220,7 @@ void QDMI_session_free(QDMI_Session session) {
   for (auto &device : session->device_list) {
     device->library->device_session_free(device->device_session);
   }
-  sessions.erase(session);
+  QDMI_get_driver_state()->sessions.erase(session);
   delete session;
 }
 
@@ -264,11 +273,11 @@ int QDMI_session_get_devices(QDMI_Session session, const size_t num_entries,
 
 int QDMI_driver_shutdown() {
   // close all open sessions
-  for (const auto &session : sessions) {
+  for (const auto &session : QDMI_get_driver_state()->sessions) {
     QDMI_session_free(session);
   }
   // Close all libraries
-  libraries.clear();
+  QDMI_get_driver_state()->libraries.clear();
   return QDMI_SUCCESS;
 }
 
