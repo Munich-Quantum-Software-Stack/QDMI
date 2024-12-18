@@ -80,7 +80,7 @@ QDMI_Device_Status C_QDMI_read_device_status(void) {
 
 const uint64_t DEVICE_SITES[] = {0, 1, 2, 3, 4};
 
-const char *const DEVICE_OPERATIONS[] = {"rx", "ry", "rz", "cx"};
+const char *const DEVICE_OPERATIONS = "rx,ry,rz,cx";
 
 #define ADD_SINGLE_VALUE_PROPERTY(prop_name, prop_type, prop_value, prop,      \
                                   size, value, size_ret)                       \
@@ -594,9 +594,8 @@ int C_QDMI_device_session_query_property(C_QDMI_Device_Session session,
                             size_ret)
   ADD_LIST_PROPERTY(QDMI_DEVICE_PROPERTY_SITES, uint64_t, DEVICE_SITES, 5, prop,
                     size, value, size_ret)
-  // TODO: this does not work yet
-  ADD_LIST_PROPERTY(QDMI_DEVICE_PROPERTY_OPERATIONS, const char *,
-                    DEVICE_OPERATIONS, 4, prop, size, value, size_ret)
+  ADD_STRING_PROPERTY(QDMI_DEVICE_PROPERTY_OPERATIONS, DEVICE_OPERATIONS, prop,
+                      size, value, size_ret)
   ADD_LIST_PROPERTY(QDMI_DEVICE_PROPERTY_COUPLINGMAP, uint64_t,
                     ((uint64_t[]){0, 1, 1, 0, 1, 2, 2, 1, 2, 3,
                                   3, 2, 3, 4, 4, 3, 4, 0, 0, 4}),
@@ -632,10 +631,6 @@ int C_QDMI_device_operation_query_property(C_QDMI_Device_Session session,
       (value == NULL && size_ret == NULL)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
-  // General properties
-  // todo: this feels super redundant.
-  ADD_STRING_PROPERTY(QDMI_OPERATION_PROPERTY_NAME, operation, prop, size,
-                      value, size_ret)
   // Two-qubit gates
   if (strcmp(operation, "cx") == 0) {
     if (sites != NULL && num_sites != 2) {
