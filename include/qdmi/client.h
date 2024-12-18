@@ -31,12 +31,10 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 #ifdef __cplusplus
 #include <cstddef>
-#include <cstdint>
 
 extern "C" {
 #else
 #include <stddef.h>
-#include <stdint.h>
 #endif
 
 // The following clang-tidy warning cannot be addressed because this header is
@@ -80,7 +78,6 @@ typedef struct QDMI_Session_impl_d *QDMI_Session;
  */
 int QDMI_session_alloc(QDMI_Session *session);
 
-// TODO: this could probably use some more documentation
 /**
  * @brief Initialize a QDMI session.
  * @details This function initializes the session and prepares it for use. The
@@ -455,13 +452,86 @@ int QDMI_job_get_data(QDMI_Job job, QDMI_Job_Result result, size_t size,
 int QDMI_device_query_property(QDMI_Device device, QDMI_Device_Property prop,
                                size_t size, void *value, size_t *size_ret);
 
-// todo: do we maybe want to typedef uint64_t to QDMI_Site?
+/**
+ * @brief A handle for a site.
+ * @details An opaque pointer to an implementation of the QDMI site concept.
+ * A site is a place that can potentially hold a qubit. In the case of
+ * superconducting qubits, sites can be used synonymously with qubits. In the
+ * case of neutral atoms, sites represent individual traps that can confine
+ * atoms. Those atoms are then used as qubits. To this end, sites are a
+ * generalization of qubits that denote locations where qubits can be placed on
+ * a device.
+ * The actual implementation of the concept is defined by the driver.
+ * Most implementation will want to store the device handle used to create the
+ * site in the site handle to be able to access the device information when
+ * needed.
+ */
+typedef struct QDMI_Site_impl_d *QDMI_Site;
 
-// TODO: probably needs more explicit docs on the site parameter and errors
+/**
+ * @brief Get the sites associated with @p device.
+ * @param[in] device The device to query. Must not be @c NULL.
+ * @param[in] num_entries The number of entries that can be added to @p sites.
+ * Must be greater than zero, except when @p sites is @c NULL, in which case it
+ * is ignored.
+ * @param[out] sites A pointer to a list of handles where the sites available on
+ * the device will be stored. If this is @c NULL, it is ignored. The number of
+ * sites returned is the minimum of the value specified by @p num_entries and
+ * the number of sites found.
+ * @param[out] num_sites The number of sites available. If this is @c NULL, it
+ * is ignored.
+ * @return @ref QDMI_SUCCESS if the function is executed successfully.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p device is @c NULL, if @p
+ * num_entries is zero and @p sites is not @c NULL or if both @p sites and @p
+ * num_sites are @c NULL.
+ * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
+ *
+ * @note By calling this function with @p sites set to @c NULL, the function can
+ * be used to query the number of sites available without retrieving the sites.
+ */
+int QDMI_device_get_sites(QDMI_Device device, size_t num_entries,
+                          QDMI_Site *sites, size_t *num_sites);
+
+/**
+ * @brief A handle for an operation.
+ * @details An opaque pointer to an implementation of the QDMI operation
+ * concept. An operation represents a quantum operation that can be executed on
+ * a device. The actual implementation of the concept is defined by the driver.
+ * Most implementation will want to store the device handle used to create the
+ * operation in the operation handle to be able to access the device information
+ * when needed.
+ */
+typedef struct QDMI_Operation_impl_d *QDMI_Operation;
+
+/**
+ * @brief Get the operations available on @p device.
+ * @param[in] device The device to query. Must not be @c NULL.
+ * @param[in] num_entries The number of entries that can be added to @p
+ * operations. Must be greater than zero, except when @p operations is @c NULL,
+ * in which case it is ignored.
+ * @param[out] operations A pointer to a list of handles where the operations
+ * available on the device will be stored. If this is @c NULL, it is ignored.
+ * The number of operations returned is the minimum of the value specified by
+ * @p num_entries and the number of operations found.
+ * @param[out] num_operations The number of operations available. If this is @c
+ * NULL, it is ignored.
+ * @return @ref QDMI_SUCCESS if the function is executed successfully.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p device is @c NULL, if @p
+ * num_entries is zero and @p operations is not @c NULL or if both @p operations
+ * and @p num_operations are @c NULL.
+ * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
+ *
+ * @note By calling this function with @p operations set to @c NULL, the
+ * function can be used to query the number of operations available without
+ * retrieving the operations.
+ */
+int QDMI_device_get_operations(QDMI_Device device, size_t num_entries,
+                               QDMI_Operation *operations,
+                               size_t *num_operations);
+
 /**
  * @brief Query a site property.
- * @param[in] device The device to query. Must not be @c NULL.
- * @param[in] site The site to query.
+ * @param[in] site The site to query. Must not be @c NULL.
  * @param[in] prop The property to query. Must be one of the values specified
  * for @ref QDMI_Site_Property.
  * @param[in] size The size of the memory pointed to by @p value in bytes. Must
@@ -476,30 +546,26 @@ int QDMI_device_query_property(QDMI_Device device, QDMI_Device_Property prop,
  * when @p value is not @c NULL, the property was successfully retrieved.
  * @return @ref QDMI_ERROR_NOTSUPPORTED if the property is not supported by the
  * device.
- * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p prop is invalid, if the size in
- * bytes specified by @p size is less than the size of the data being queried as
- * specified for the @ref QDMI_Site_Property @p prop and @p value is not @c
- * NULL, or if both @p value and @p size_ret are @c NULL.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p site is @c NULL, if @p prop is
+ * invalid, if the size in bytes specified by @p size is less than the size of
+ * the data being queried as specified for the @ref QDMI_Site_Property @p prop
+ * and @p value is not @c NULL, or if both @p value and @p size_ret are @c NULL.
  * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
  *
  * @note By calling this function with @p value set to @c NULL, the function can
  * be used to check if the device supports the specified property without
  * retrieving the property and without the need to provide a buffer for it.
  */
-int QDMI_site_query_property(QDMI_Device device, uint64_t site,
-                             QDMI_Site_Property prop, size_t size, void *value,
-                             size_t *size_ret);
+int QDMI_site_query_property(QDMI_Site site, QDMI_Site_Property prop,
+                             size_t size, void *value, size_t *size_ret);
 
-// TODO: probably needs more explicit docs on the operation and sites parameter
-//       as well as errors
 /**
  * @brief Query a device operation property.
- * @param[in] device The device to query. Must not be @c NULL.
- * @param[in] operation The name of the operation to query. Must not be @c NULL.
+ * @param[in] operation The operation to query. Must not be @c NULL.
  * @param[in] num_sites The number of sites that the operation is applied to.
- * @param[in] sites A list of sites that the operation is applied to. If this is
- * @c NULL, the property is queried for all sites, e.g., the average value of
- * all sites.
+ * @param[in] sites A pointer to a list of handles where the sites that the
+ * operation is applied to are stored. If this is @c NULL, the property is
+ * queried for all site, e.g., the average value of all sites.
  * @param[in] prop The property to query. Must be one of the values specified
  * for @ref QDMI_Operation_Property.
  * @param[in] size The size of the memory pointed to by @p value in bytes. Must
@@ -530,8 +596,8 @@ int QDMI_site_query_property(QDMI_Device device, uint64_t site,
  * @p sites. In this case, the device may return the average value of the
  * property for all sites.
  */
-int QDMI_operation_query_property(QDMI_Device device, const char *operation,
-                                  size_t num_sites, const uint64_t *sites,
+int QDMI_operation_query_property(QDMI_Operation operation, size_t num_sites,
+                                  const QDMI_Site *sites,
                                   QDMI_Operation_Property prop, size_t size,
                                   void *value, size_t *size_ret);
 

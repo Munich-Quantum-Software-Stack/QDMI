@@ -30,6 +30,8 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 int main() {
   @QDMI_PREFIX@_QDMI_Device_Session session = nullptr;
   @QDMI_PREFIX@_QDMI_Device_Job job = nullptr;
+  @QDMI_PREFIX@_QDMI_Device_Site site = nullptr;
+  @QDMI_PREFIX@_QDMI_Device_Operation operation = nullptr;
   @QDMI_PREFIX@_QDMI_device_initialize();
   @QDMI_PREFIX@_QDMI_device_finalize();
   @QDMI_PREFIX@_QDMI_device_session_alloc(&session);
@@ -45,6 +47,8 @@ int main() {
   @QDMI_PREFIX@_QDMI_device_job_wait(job);
   @QDMI_PREFIX@_QDMI_device_job_get_data(job, QDMI_JOB_RESULT_MAX, 0, nullptr, nullptr);
   @QDMI_PREFIX@_QDMI_device_session_query_property(session, QDMI_DEVICE_PROPERTY_MAX, 0, nullptr, nullptr);
-  @QDMI_PREFIX@_QDMI_device_site_query_property(session, 0, QDMI_SITE_PROPERTY_MAX, 0, nullptr, nullptr);
-  @QDMI_PREFIX@_QDMI_device_operation_query_property(session, nullptr, 0, nullptr, QDMI_OPERATION_PROPERTY_MAX, 0, nullptr, nullptr);
+  @QDMI_PREFIX@_QDMI_device_session_get_sites(session, 0, nullptr, nullptr);
+  @QDMI_PREFIX@_QDMI_device_session_get_operations(session, 0, nullptr, nullptr);
+  @QDMI_PREFIX@_QDMI_device_site_query_property(site, QDMI_SITE_PROPERTY_MAX, 0, nullptr, nullptr);
+  @QDMI_PREFIX@_QDMI_device_operation_query_property(operation, 0, nullptr, QDMI_OPERATION_PROPERTY_MAX, 0, nullptr, nullptr);
 }

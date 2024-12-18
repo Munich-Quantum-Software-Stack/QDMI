@@ -77,17 +77,14 @@ TEST_P(QDMIImplementationTest, QueryNumQubits) {
 
 TEST_P(QDMIImplementationTest, QueryOperationSet) {
   const auto fomac = FoMaC(device);
-  const auto gates = fomac.get_operations();
+  const auto gates = fomac.get_operation_map();
   ASSERT_GT(gates.size(), 0);
-  for (const auto &op_name : gates) {
+  for (const auto &[op_name, op] : gates) {
     ASSERT_FALSE(op_name.empty());
     std::string name(op_name.length(), '\0');
-    // todo: this kind of feels redundant now that operations are queried by
-    //  name. Should that property be removed if we decide to stick with that?
-    ASSERT_EQ(QDMI_operation_query_property(device, op_name.c_str(), 0, nullptr,
-                                            QDMI_OPERATION_PROPERTY_NAME,
-                                            name.length() + 1, name.data(),
-                                            nullptr),
+    ASSERT_EQ(QDMI_operation_query_property(
+                  op, 0, nullptr, QDMI_OPERATION_PROPERTY_NAME,
+                  name.length() + 1, name.data(), nullptr),
               QDMI_SUCCESS);
     EXPECT_EQ(op_name, name);
   }
@@ -107,11 +104,11 @@ TEST_P(QDMIImplementationTest, QueryCouplingMap) {
 TEST_P(QDMIImplementationTest, QueryGatePropertiesForEachGate) {
   // for every gate in the gate set, query the duration of the gate
   const auto fomac = FoMaC(device);
-  const auto ops = fomac.get_operations();
+  const auto ops = fomac.get_operation_map();
   const auto sites = fomac.get_sites();
   const auto coupling_map = fomac.get_coupling_map();
 
-  for (const auto &op : ops) {
+  for (const auto &[name, op] : ops) {
     const auto gate_num_qubits = fomac.get_operands_num(op);
     double duration = 0;
     double fidelity = 0;
@@ -119,32 +116,28 @@ TEST_P(QDMIImplementationTest, QueryGatePropertiesForEachGate) {
       for (const auto &site : sites) {
         auto site_arr = std::array{site};
         EXPECT_EQ(QDMI_operation_query_property(
-                      device, op.c_str(), 1, site_arr.data(),
-                      QDMI_OPERATION_PROPERTY_DURATION, sizeof(double),
-                      &duration, nullptr),
+                      op, 1, site_arr.data(), QDMI_OPERATION_PROPERTY_DURATION,
+                      sizeof(double), &duration, nullptr),
                   QDMI_SUCCESS)
-            << "Failed to query duration for operation " << op;
+            << "Failed to query duration for operation " << name;
         EXPECT_EQ(QDMI_operation_query_property(
-                      device, op.c_str(), 1, site_arr.data(),
-                      QDMI_OPERATION_PROPERTY_FIDELITY, sizeof(double),
-                      &fidelity, nullptr),
+                      op, 1, site_arr.data(), QDMI_OPERATION_PROPERTY_FIDELITY,
+                      sizeof(double), &fidelity, nullptr),
                   QDMI_SUCCESS)
-            << "Failed to query fidelity for operation " << op;
+            << "Failed to query fidelity for operation " << name;
       }
     }
     if (gate_num_qubits == 2) {
       for (const auto &[control, target] : coupling_map) {
         auto site_arr = std::array{control, target};
         EXPECT_EQ(QDMI_operation_query_property(
-                      device, op.c_str(), 2, site_arr.data(),
-                      QDMI_OPERATION_PROPERTY_DURATION, sizeof(double),
-                      &duration, nullptr),
+                      op, 2, site_arr.data(), QDMI_OPERATION_PROPERTY_DURATION,
+                      sizeof(double), &duration, nullptr),
                   QDMI_SUCCESS)
             << "Failed to query duration for gate " << op;
         EXPECT_EQ(QDMI_operation_query_property(
-                      device, op.c_str(), 2, site_arr.data(),
-                      QDMI_OPERATION_PROPERTY_FIDELITY, sizeof(double),
-                      &fidelity, nullptr),
+                      op, 2, site_arr.data(), QDMI_OPERATION_PROPERTY_FIDELITY,
+                      sizeof(double), &fidelity, nullptr),
                   QDMI_SUCCESS)
             << "Failed to query fidelity for gate " << op;
       }

@@ -141,16 +141,26 @@ TEST_F(QDMIImplementationTest, QueryDevicePropertyImplemented) {
             QDMI_ERROR_INVALIDARGUMENT);
 }
 
+TEST_F(QDMIImplementationTest, QueryGetSitesImplemented) {
+  ASSERT_EQ(MY_QDMI_device_session_get_sites(session, 0, nullptr, nullptr),
+            QDMI_ERROR_INVALIDARGUMENT);
+}
+
+TEST_F(QDMIImplementationTest, QueryGetOperationsImplemented) {
+  ASSERT_EQ(MY_QDMI_device_session_get_operations(session, 0, nullptr, nullptr),
+            QDMI_ERROR_INVALIDARGUMENT);
+}
+
 TEST_F(QDMIImplementationTest, QuerySitePropertyImplemented) {
-  ASSERT_EQ(MY_QDMI_device_site_query_property(
-                nullptr, 0, QDMI_SITE_PROPERTY_MAX, 0, nullptr, nullptr),
+  ASSERT_EQ(MY_QDMI_device_site_query_property(nullptr, QDMI_SITE_PROPERTY_MAX,
+                                               0, nullptr, nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
 }
 
 TEST_F(QDMIImplementationTest, QueryOperationPropertyImplemented) {
-  ASSERT_EQ(MY_QDMI_device_operation_query_property(
-                nullptr, nullptr, 0, nullptr, QDMI_OPERATION_PROPERTY_MAX, 0,
-                nullptr, nullptr),
+  ASSERT_EQ(MY_QDMI_device_operation_query_property(nullptr, 0, nullptr,
+                                                    QDMI_OPERATION_PROPERTY_MAX,
+                                                    0, nullptr, nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
 }
 

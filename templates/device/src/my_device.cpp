@@ -27,10 +27,8 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 #ifdef __cplusplus
 #include <cstddef>
-#include <cstdint>
 #else
 #include <stddef.h>
-#include <stdint.h>
 #endif
 
 // The following line ignores the unused parameters in the functions.
@@ -54,6 +52,18 @@ struct MY_QDMI_Device_Session_impl_d {};
  * @details This structure can, e.g., be used to store the job id.
  */
 struct MY_QDMI_Device_Job_impl_d {};
+
+/**
+ * @brief Implementation of the MY_QDMI_Device_Site structure.
+ * @details This structure can, e.g., be used to store the site id.
+ */
+struct MY_QDMI_Device_Site_impl_d {};
+
+/**
+ * @brief Implementation of the MY_QDMI_Device_Operation structure.
+ * @details This structure can, e.g., be used to store the operation id.
+ */
+struct MY_QDMI_Device_Operation_impl_d {};
 
 int MY_QDMI_device_initialize() { return QDMI_ERROR_NOTIMPLEMENTED; }
 
@@ -117,17 +127,32 @@ int MY_QDMI_device_session_query_property(MY_QDMI_Device_Session session,
   return QDMI_ERROR_NOTIMPLEMENTED;
 }
 
-int MY_QDMI_device_site_query_property(MY_QDMI_Device_Session session,
-                                       uint64_t site, QDMI_Site_Property prop,
-                                       size_t size, void *value,
-                                       size_t *size_ret) {
+int MY_QDMI_device_session_get_sites(MY_QDMI_Device_Session session,
+                                     size_t num_entries,
+                                     MY_QDMI_Device_Site *sites,
+                                     size_t *num_sites) {
   return QDMI_ERROR_NOTIMPLEMENTED;
 }
 
-int MY_QDMI_device_operation_query_property(
-    MY_QDMI_Device_Session session, const char *operation, size_t num_sites,
-    const uint64_t *sites, QDMI_Operation_Property prop, size_t size,
-    void *value, size_t *size_ret) {
+int MY_QDMI_device_session_get_operations(MY_QDMI_Device_Session session,
+                                          size_t num_entries,
+                                          MY_QDMI_Device_Operation *operations,
+                                          size_t *num_operations) {
+  return QDMI_ERROR_NOTIMPLEMENTED;
+}
+
+int MY_QDMI_device_site_query_property(MY_QDMI_Device_Site site,
+                                       QDMI_Site_Property prop, size_t size,
+                                       void *value, size_t *size_ret) {
+  return QDMI_ERROR_NOTIMPLEMENTED;
+}
+
+int MY_QDMI_device_operation_query_property(MY_QDMI_Device_Operation operation,
+                                            size_t num_sites,
+                                            const MY_QDMI_Device_Site *sites,
+                                            QDMI_Operation_Property prop,
+                                            size_t size, void *value,
+                                            size_t *size_ret) {
   return QDMI_ERROR_NOTIMPLEMENTED;
 }
 

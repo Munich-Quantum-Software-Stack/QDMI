@@ -92,6 +92,10 @@ struct QDMI_Driver_Library_impl_d {
   decltype(QDMI_device_job_get_data) *device_job_get_data{};
   /// Function pointer to @ref QDMI_device_session_query_property.
   decltype(QDMI_device_session_query_property) *device_session_query_property{};
+  /// Function pointer to @ref QDMI_device_session_get_sites.
+  decltype(QDMI_device_session_get_sites) *device_session_get_sites{};
+  /// Function pointer to @ref QDMI_device_session_get_operations.
+  decltype(QDMI_device_session_get_operations) *device_session_get_operations{};
   /// Function pointer to @ref QDMI_device_site_query_property.
   decltype(QDMI_device_site_query_property) *device_site_query_property{};
   /// Function pointer to @ref QDMI_device_operation_query_property.
@@ -103,11 +107,13 @@ struct QDMI_Driver_Library_impl_d {
 
   // delete copy constructor, copy assignment, move constructor, move assignment
   // to allow only one instance and proper destruction of the dynamic library
-  QDMI_Driver_Library_impl_d(const QDMI_Driver_Library_impl_d &) = delete;
-  QDMI_Driver_Library_impl_d &
-  operator=(const QDMI_Driver_Library_impl_d &) = delete;
-  QDMI_Driver_Library_impl_d(QDMI_Driver_Library_impl_d &&) = delete;
-  QDMI_Driver_Library_impl_d &operator=(QDMI_Driver_Library_impl_d &&) = delete;
+  QDMI_Driver_Library_impl_d(const QDMI_Device_impl_d &) = delete;
+
+  QDMI_Driver_Library_impl_d &operator=(const QDMI_Device_impl_d &) = delete;
+
+  QDMI_Driver_Library_impl_d(QDMI_Device_impl_d &&) = delete;
+
+  QDMI_Driver_Library_impl_d &operator=(QDMI_Device_impl_d &&) = delete;
 
   // destructor
   ~QDMI_Driver_Library_impl_d() {
@@ -131,6 +137,8 @@ struct QDMI_Device_impl_d {
   QDMI_Driver_Library library = nullptr;
   QDMI_Session session = nullptr;
   QDMI_Device_Session device_session = nullptr;
+  std::unordered_map<QDMI_Device_Site, QDMI_Site_impl_d> sites;
+  std::unordered_map<QDMI_Device_Operation, QDMI_Operation_impl_d> operations;
 };
 
 /**
@@ -149,6 +157,22 @@ struct QDMI_Session_impl_d {
 struct QDMI_Job_impl_d {
   QDMI_Device device = nullptr;
   QDMI_Device_Job device_job = nullptr;
+};
+
+/**
+ * @brief Definition of the QDMI Site.
+ */
+struct QDMI_Site_impl_d {
+  QDMI_Device device = nullptr;
+  QDMI_Device_Site device_site = nullptr;
+};
+
+/**
+ * @brief Definition of the QDMI Operation.
+ */
+struct QDMI_Operation_impl_d {
+  QDMI_Device device = nullptr;
+  QDMI_Device_Operation operation = nullptr;
 };
 
 namespace {
@@ -207,6 +231,8 @@ void QDMI_library_load(const std::string &lib_name, const std::string &prefix) {
     LOAD_SYMBOL(library, prefix, device_job_wait)
     LOAD_SYMBOL(library, prefix, device_job_get_data)
     LOAD_SYMBOL(library, prefix, device_session_query_property)
+    LOAD_SYMBOL(library, prefix, device_session_get_sites)
+    LOAD_SYMBOL(library, prefix, device_session_get_operations)
     LOAD_SYMBOL(library, prefix, device_site_query_property)
     LOAD_SYMBOL(library, prefix, device_operation_query_property)
 
@@ -507,23 +533,189 @@ int QDMI_job_get_data(QDMI_Job job, QDMI_Job_Result result, const size_t size,
 int QDMI_device_query_property(QDMI_Device device, QDMI_Device_Property prop,
                                const size_t size, void *value,
                                size_t *size_ret) {
-  return device->library->device_session_query_property(
-      device->device_session, prop, size, value, size_ret);
+  if (prop >= QDMI_DEVICE_PROPERTY_MAX &&
+      prop != QDMI_DEVICE_PROPERTY_CUSTOM1 &&
+      prop != QDMI_DEVICE_PROPERTY_CUSTOM2 &&
+      prop != QDMI_DEVICE_PROPERTY_CUSTOM3 &&
+      prop != QDMI_DEVICE_PROPERTY_CUSTOM4 &&
+      prop != QDMI_DEVICE_PROPERTY_CUSTOM5) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  switch (prop) {
+  case QDMI_DEVICE_PROPERTY_NAME:
+  case QDMI_DEVICE_PROPERTY_VERSION:
+  case QDMI_DEVICE_PROPERTY_STATUS:
+  case QDMI_DEVICE_PROPERTY_LIBRARYVERSION:
+  case QDMI_DEVICE_PROPERTY_QUBITSNUM:
+  case QDMI_DEVICE_PROPERTY_CUSTOM1:
+  case QDMI_DEVICE_PROPERTY_CUSTOM2:
+  case QDMI_DEVICE_PROPERTY_CUSTOM3:
+  case QDMI_DEVICE_PROPERTY_CUSTOM4:
+  case QDMI_DEVICE_PROPERTY_CUSTOM5:
+    return device->library->device_session_query_property(
+        device->device_session, prop, size, value, size_ret);
+  case QDMI_DEVICE_PROPERTY_COUPLINGMAP: {
+    if ((value == nullptr && size_ret == nullptr) || device == nullptr) {
+      return QDMI_ERROR_INVALIDARGUMENT;
+    }
+    size_t num_sites = 0;
+    int result = QDMI_device_get_sites(device, 0, nullptr, &num_sites);
+    if (result != QDMI_SUCCESS) {
+      return QDMI_ERROR_FATAL;
+    }
+    size_t buff_size = 0;
+    result = device->library->device_session_query_property(
+        device->device_session, prop, 0, nullptr, &buff_size);
+    if (result != QDMI_SUCCESS) {
+      return result;
+    }
+    if (size_ret != nullptr) {
+      *size_ret = buff_size / sizeof(QDMI_Device_Site) * sizeof(QDMI_Site);
+    }
+    if (value != nullptr) {
+      if (size < buff_size / sizeof(QDMI_Device_Site) * sizeof(QDMI_Site)) {
+        return QDMI_ERROR_INVALIDARGUMENT;
+      }
+      std::vector<QDMI_Site> sites(num_sites);
+      // call the following function, to populate the sites map in the device
+      // struct; the vector in the line above is actually not needed.
+      result = QDMI_device_get_sites(device, num_sites, sites.data(), nullptr);
+      if (result != QDMI_SUCCESS) {
+        return QDMI_ERROR_FATAL;
+      }
+      std::vector<std::pair<QDMI_Device_Site, QDMI_Device_Site>>
+          device_coupling_map(buff_size / sizeof(QDMI_Device_Site) / 2);
+      result = device->library->device_session_query_property(
+          device->device_session, prop, buff_size,
+          static_cast<void *>(device_coupling_map.data()), nullptr);
+      if (result != QDMI_SUCCESS) {
+        return result;
+      }
+      std::vector<std::pair<QDMI_Site, QDMI_Site>> coupling_map(
+          device_coupling_map.size());
+      for (size_t i = 0; i < device_coupling_map.size(); ++i) {
+        coupling_map[i].first = &device->sites[device_coupling_map[i].first];
+        coupling_map[i].second = &device->sites[device_coupling_map[i].second];
+      }
+      memcpy(value, static_cast<void *>(coupling_map.data()),
+             2 * sizeof(QDMI_Site) * coupling_map.size());
+    }
+    return QDMI_SUCCESS;
+  }
+  default:
+    return QDMI_ERROR_NOTSUPPORTED;
+  }
 }
 
-int QDMI_site_query_property(QDMI_Device device, uint64_t site,
-                             QDMI_Site_Property prop, const size_t size,
-                             void *value, size_t *size_ret) {
-  return device->library->device_site_query_property(
-      device->device_session, site, prop, size, value, size_ret);
+int QDMI_device_get_sites(QDMI_Device device, const size_t num_entries,
+                          QDMI_Site *sites, size_t *num_sites) {
+  if ((sites != nullptr && num_entries == 0) ||
+      (sites == nullptr && num_sites == nullptr) || device == nullptr) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  size_t num_device_sites = 0;
+  int result = device->library->device_session_get_sites(
+      device->device_session, 0, nullptr, &num_device_sites);
+  if (result != QDMI_SUCCESS) {
+    return result;
+  }
+  if (num_sites != nullptr) {
+    *num_sites = num_device_sites;
+  }
+  if (sites != nullptr) {
+    const size_t device_entries = std::min(num_entries, num_device_sites);
+    std::vector<QDMI_Device_Site> device_sites(device_entries);
+    result = device->library->device_session_get_sites(
+        device->device_session, device_entries, device_sites.data(), nullptr);
+    if (result != QDMI_SUCCESS) {
+      return result;
+    }
+    for (size_t i = 0; i < device_entries; ++i) {
+      auto it = device->sites.find(device_sites[i]);
+      if (it == device->sites.end()) {
+        it = device->sites
+                 .emplace(device_sites[i],
+                          QDMI_Site_impl_d{device, device_sites[i]})
+                 .first;
+      }
+      sites[i] = &it->second;
+    }
+  }
+  return QDMI_SUCCESS;
 }
 
-int QDMI_operation_query_property(QDMI_Device device, const char *operation,
-                                  const size_t num_sites, const uint64_t *sites,
+int QDMI_device_get_operations(QDMI_Device device, const size_t num_entries,
+                               QDMI_Operation *operations,
+                               size_t *num_operations) {
+  if ((operations != nullptr && num_entries == 0) ||
+      (operations == nullptr && num_operations == nullptr) ||
+      device == nullptr) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  size_t num_device_operations = 0;
+  int result = device->library->device_session_get_operations(
+      device->device_session, 0, nullptr, &num_device_operations);
+  if (result != QDMI_SUCCESS) {
+    return result;
+  }
+  if (num_operations != nullptr) {
+    *num_operations = num_device_operations;
+  }
+  if (operations != nullptr) {
+    const size_t device_entries = std::min(num_entries, num_device_operations);
+    std::vector<QDMI_Device_Operation> device_operations(device_entries);
+    result = device->library->device_session_get_operations(
+        device->device_session, device_entries, device_operations.data(),
+        nullptr);
+    if (result != QDMI_SUCCESS) {
+      return result;
+    }
+    for (size_t i = 0; i < device_entries; ++i) {
+      auto it = device->operations.find(device_operations[i]);
+      if (it == device->operations.end()) {
+        it = device->operations
+                 .emplace(device_operations[i],
+                          QDMI_Operation_impl_d{device, device_operations[i]})
+                 .first;
+      }
+      operations[i] = &it->second;
+    }
+  }
+  return QDMI_SUCCESS;
+}
+
+int QDMI_site_query_property(QDMI_Site site, QDMI_Site_Property prop,
+                             const size_t size, void *value, size_t *size_ret) {
+  if (prop >= QDMI_SITE_PROPERTY_MAX && prop != QDMI_SITE_PROPERTY_CUSTOM1 &&
+      prop != QDMI_SITE_PROPERTY_CUSTOM2 &&
+      prop != QDMI_SITE_PROPERTY_CUSTOM3 &&
+      prop != QDMI_SITE_PROPERTY_CUSTOM4 &&
+      prop != QDMI_SITE_PROPERTY_CUSTOM5) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  return site->device->library->device_site_query_property(
+      site->device_site, prop, size, value, size_ret);
+}
+
+int QDMI_operation_query_property(QDMI_Operation operation,
+                                  const size_t num_sites,
+                                  const QDMI_Site *sites,
                                   QDMI_Operation_Property prop,
                                   const size_t size, void *value,
                                   size_t *size_ret) {
-  return device->library->device_operation_query_property(
-      device->device_session, operation, num_sites, sites, prop, size, value,
+  if (prop >= QDMI_OPERATION_PROPERTY_MAX &&
+      prop != QDMI_OPERATION_PROPERTY_CUSTOM1 &&
+      prop != QDMI_OPERATION_PROPERTY_CUSTOM2 &&
+      prop != QDMI_OPERATION_PROPERTY_CUSTOM3 &&
+      prop != QDMI_OPERATION_PROPERTY_CUSTOM4 &&
+      prop != QDMI_OPERATION_PROPERTY_CUSTOM5) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  std::vector<QDMI_Device_Site> device_sites(num_sites);
+  for (size_t i = 0; i < num_sites; ++i) {
+    device_sites[i] = sites[i]->device_site;
+  }
+  return operation->device->library->device_operation_query_property(
+      operation->operation, num_sites, device_sites.data(), prop, size, value,
       size_ret);
 }
