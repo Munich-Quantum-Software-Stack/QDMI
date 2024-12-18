@@ -43,44 +43,43 @@ extern "C" {
 
 struct QDMI_Library_impl_d {
   /// Function pointer to @ref QDMI_device_initialize.
-  decltype(QDMI_device_initialize) *device_initialize{};
+  QDMI_device_initialize_t *device_initialize;
   /// Function pointer to @ref QDMI_device_finalize.
-  decltype(QDMI_device_finalize) *device_finalize{};
+  QDMI_device_finalize_t *device_finalize;
   /// Function pointer to @ref QDMI_device_session_alloc.
-  decltype(QDMI_device_session_alloc) *device_session_alloc{};
+  QDMI_device_session_alloc_t *device_session_alloc;
   /// Function pointer to @ref QDMI_device_session_init.
-  decltype(QDMI_device_session_init) *device_session_init{};
+  QDMI_device_session_init_t *device_session_init;
   /// Function pointer to @ref QDMI_device_session_free.
-  decltype(QDMI_device_session_free) *device_session_free{};
+  QDMI_device_session_free_t *device_session_free;
   /// Function pointer to @ref QDMI_device_session_set_parameter.
-  decltype(QDMI_device_session_set_parameter) *device_session_set_parameter{};
+  QDMI_device_session_set_parameter_t *device_session_set_parameter;
   /// Function pointer to @ref QDMI_device_job_create.
-  decltype(QDMI_device_job_create) *device_job_create{};
+  QDMI_device_job_create_t *device_job_create;
   /// Function pointer to @ref QDMI_device_job_free.
-  decltype(QDMI_device_job_free) *device_job_free{};
+  QDMI_device_job_free_t *device_job_free;
   /// Function pointer to @ref QDMI_device_job_set_parameter.
-  decltype(QDMI_device_job_set_parameter) *device_job_set_parameter{};
+  QDMI_device_job_set_parameter_t *device_job_set_parameter;
   /// Function pointer to @ref QDMI_device_job_submit.
-  decltype(QDMI_device_job_submit) *device_job_submit{};
+  QDMI_device_job_submit_t *device_job_submit;
   /// Function pointer to @ref QDMI_device_job_cancel.
-  decltype(QDMI_device_job_cancel) *device_job_cancel{};
+  QDMI_device_job_cancel_t *device_job_cancel;
   /// Function pointer to @ref QDMI_device_job_check.
-  decltype(QDMI_device_job_check) *device_job_check{};
+  QDMI_device_job_check_t *device_job_check;
   /// Function pointer to @ref QDMI_device_job_wait.
-  decltype(QDMI_device_job_wait) *device_job_wait{};
+  QDMI_device_job_wait_t *device_job_wait;
   /// Function pointer to @ref QDMI_device_job_get_data.
-  decltype(QDMI_device_job_get_data) *device_job_get_data{};
+  QDMI_device_job_get_data_t *device_job_get_data;
   /// Function pointer to @ref QDMI_device_session_query_property.
-  decltype(QDMI_device_session_query_property) *device_session_query_property{};
+  QDMI_device_session_query_property_t *device_session_query_property;
   /// Function pointer to @ref QDMI_device_session_get_sites.
-  decltype(QDMI_device_session_get_sites) *device_session_get_sites{};
+  QDMI_device_session_get_sites_t *device_session_get_sites;
   /// Function pointer to @ref QDMI_device_session_get_operations.
-  decltype(QDMI_device_session_get_operations) *device_session_get_operations{};
+  QDMI_device_session_get_operations_t *device_session_get_operations;
   /// Function pointer to @ref QDMI_device_site_query_property.
-  decltype(QDMI_device_site_query_property) *device_site_query_property{};
+  QDMI_device_site_query_property_t *device_site_query_property;
   /// Function pointer to @ref QDMI_device_operation_query_property.
-  decltype(QDMI_device_operation_query_property)
-      *device_operation_query_property{};
+  QDMI_device_operation_query_property_t *device_operation_query_property;
 } QDMI_Library_impl_t;
 
 typedef struct QDMI_Library_impl_d *QDMI_Library;
