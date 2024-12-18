@@ -52,5 +52,6 @@ public:
   [[nodiscard]] auto get_coupling_map() const
       -> std::vector<std::pair<QDMI_Site, QDMI_Site>>;
 
-  [[nodiscard]] auto get_operands_num(const QDMI_Operation &op) const -> size_t;
+  [[nodiscard]] static auto get_operands_num(const QDMI_Operation &op)
+      -> size_t;
 };

@@ -166,7 +166,7 @@ auto FoMaC::get_sites() const -> std::vector<QDMI_Site> {
   return sites;
 }
 
-auto FoMaC::get_operands_num(const QDMI_Operation &op) const -> size_t {
+auto FoMaC::get_operands_num(const QDMI_Operation &op) -> size_t {
   size_t operands_num = 0;
   const int ret = QDMI_operation_query_property(
       op, 0, nullptr, QDMI_OPERATION_PROPERTY_QUBITSNUM, sizeof(size_t),
