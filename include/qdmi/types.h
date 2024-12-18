@@ -41,7 +41,7 @@ extern "C" {
 // used from both C and C++ code.
 // NOLINTBEGIN(modernize-use-using)
 
-struct QDMI_Library_impl_d {
+typedef struct QDMI_Library_impl_d {
   /// Function pointer to @ref QDMI_device_initialize.
   QDMI_device_initialize_t *device_initialize;
   /// Function pointer to @ref QDMI_device_finalize.
@@ -82,15 +82,15 @@ struct QDMI_Library_impl_d {
   QDMI_device_operation_query_property_t *device_operation_query_property;
 } QDMI_Library_impl_t;
 
-typedef struct QDMI_Library_impl_d *QDMI_Library;
+typedef const struct QDMI_Library_impl_d *QDMI_Library;
 
-struct QDMI_Site_impl_d {
+typedef struct QDMI_Site_impl_d {
   QDMI_Library library;
 } QDMI_Site_impl_t;
 
-struct QDMI_Device_impl_d {
+typedef struct QDMI_Operation_impl_d {
   QDMI_Library library;
-} QDMI_Device_impl_t;
+} QDMI_Operation_impl_t;
 
 // NOLINTEND(modernize-use-using)
 
