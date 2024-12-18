@@ -453,22 +453,6 @@ int QDMI_device_query_property(QDMI_Device device, QDMI_Device_Property prop,
                                size_t size, void *value, size_t *size_ret);
 
 /**
- * @brief A handle for a site.
- * @details An opaque pointer to an implementation of the QDMI site concept.
- * A site is a place that can potentially hold a qubit. In the case of
- * superconducting qubits, sites can be used synonymously with qubits. In the
- * case of neutral atoms, sites represent individual traps that can confine
- * atoms. Those atoms are then used as qubits. To this end, sites are a
- * generalization of qubits that denote locations where qubits can be placed on
- * a device.
- * The actual implementation of the concept is defined by the driver.
- * Most implementation will want to store the device handle used to create the
- * site in the site handle to be able to access the device information when
- * needed.
- */
-typedef struct QDMI_Site_impl_d *QDMI_Site;
-
-/**
  * @brief Get the sites associated with @p device.
  * @param[in] device The device to query. Must not be @c NULL.
  * @param[in] num_entries The number of entries that can be added to @p sites.
@@ -491,17 +475,6 @@ typedef struct QDMI_Site_impl_d *QDMI_Site;
  */
 int QDMI_device_get_sites(QDMI_Device device, size_t num_entries,
                           QDMI_Site *sites, size_t *num_sites);
-
-/**
- * @brief A handle for an operation.
- * @details An opaque pointer to an implementation of the QDMI operation
- * concept. An operation represents a quantum operation that can be executed on
- * a device. The actual implementation of the concept is defined by the driver.
- * Most implementation will want to store the device handle used to create the
- * operation in the operation handle to be able to access the device information
- * when needed.
- */
-typedef struct QDMI_Operation_impl_d *QDMI_Operation;
 
 /**
  * @brief Get the operations available on @p device.

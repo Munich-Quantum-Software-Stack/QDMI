@@ -32,6 +32,33 @@ extern "C" {
 // NOLINTBEGIN(performance-enum-size,modernize-use-using)
 
 /**
+ * @brief A handle for a site.
+ * @details An opaque pointer to an implementation of the QDMI site concept.
+ * A site is a place that can potentially hold a qubit. In the case of
+ * superconducting qubits, sites can be used synonymously with qubits. In the
+ * case of neutral atoms, sites represent individual traps that can confine
+ * atoms. Those atoms are then used as qubits. To this end, sites are a
+ * generalization of qubits that denote locations where qubits can be placed on
+ * a device.
+ * The actual implementation of the concept is defined by the driver.
+ * Most implementation will want to store the device handle used to create the
+ * site in the site handle to be able to access the device information when
+ * needed.
+ */
+typedef struct QDMI_Site_impl_d *QDMI_Site;
+
+/**
+ * @brief A handle for an operation.
+ * @details An opaque pointer to an implementation of the QDMI operation
+ * concept. An operation represents a quantum operation that can be executed on
+ * a device. The actual implementation of the concept is defined by the driver.
+ * Most implementation will want to store the device handle used to create the
+ * operation in the operation handle to be able to access the device information
+ * when needed.
+ */
+typedef struct QDMI_Operation_impl_d *QDMI_Operation;
+
+/**
  * @brief Status codes returned by the API.
  */
 enum QDMI_STATUS {
