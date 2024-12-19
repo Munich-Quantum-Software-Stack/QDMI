@@ -230,7 +230,7 @@ typedef struct QDMI_Job_impl_d *QDMI_Job;
 
 /**
  * @brief Create a job with a certain program on a device.
- * @param[in] dev The device to create the job on. Must not be @c NULL.
+ * @param[in] device The device to create the job on. Must not be @c NULL.
  * @param[in] format The format of the program. Must be one of the values
  * specified for @ref QDMI_Program_Format.
  * @param[in] size The size of the program in bytes. Must not be zero, except
@@ -245,7 +245,7 @@ typedef struct QDMI_Job_impl_d *QDMI_Job;
  * @return @ref QDMI_ERROR_NOTSUPPORTED if the device does not support the
  * specified program format @p format.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p session is @c NULL, if @p
- * format is invalid, if @p prog is not @c NULL and @p size is zero or @job is
+ * format is invalid, if @p prog is not @c NULL and @p size is zero or @p job is
  * @c NULL, or if the program @p prog is invalid (e.g., contains a syntax
  * error).
  * @return @ref QDMI_ERROR_FATAL if the job creation failed due to a fatal
@@ -354,8 +354,8 @@ int QDMI_job_submit(QDMI_Job job);
  * status of the job to @ref QDMI_JOB_STATUS_CANCELLED.
  * @param[in] job The job to cancel. Must not be @c NULL.
  * @return @ref QDMI_SUCCESS if the job was successfully cancelled.
- * @return @ref QDMI_ERROR_INVALIDARGUMENT if @job is @c NULL or the job already
- * has the status @ref QDMI_JOB_STATUS_DONE.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p job is @c NULL or the job
+ * already has the status @ref QDMI_JOB_STATUS_DONE.
  * @return @ref QDMI_ERROR_FATAL if the job could not be cancelled.
  */
 int QDMI_job_cancel(QDMI_Job job);
@@ -455,6 +455,7 @@ int QDMI_device_query_property(QDMI_Device device, QDMI_Device_Property prop,
 
 /**
  * @brief Query a site property.
+ * @param[in] device The device to query. Must not be @c NULL.
  * @param[in] site The site to query. Must not be @c NULL.
  * @param[in] prop The property to query. Must be one of the values specified
  * for @ref QDMI_Site_Property.
@@ -486,6 +487,7 @@ int QDMI_site_query_property(QDMI_Device device, QDMI_Site site,
 
 /**
  * @brief Query a device operation property.
+ * @param[in] device The device to query. Must not be @c NULL.
  * @param[in] operation The operation to query. Must not be @c NULL.
  * @param[in] num_sites The number of sites that the operation is applied to.
  * @param[in] sites A pointer to a list of handles where the sites that the

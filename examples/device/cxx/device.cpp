@@ -158,7 +158,7 @@ constexpr CXX_QDMI_Site_impl_d SITE4{4};
 constexpr std::array<const CXX_QDMI_Site_impl_d *, 5> CXX_DEVICE_SITES = {
     &SITE0, &SITE1, &SITE2, &SITE3, &SITE4};
 
-const std::array<const CXX_QDMI_Site_impl_d *, 20>
+constexpr std::array<const CXX_QDMI_Site_impl_d *, 20>
     // clang-format off
     DEVICE_COUPLING_MAP = {
       CXX_DEVICE_SITES[0], CXX_DEVICE_SITES[1],

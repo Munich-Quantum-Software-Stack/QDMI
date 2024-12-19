@@ -317,7 +317,7 @@ typedef enum QDMI_OPERATION_PROPERTY_T QDMI_Operation_Property;
 enum QDMI_JOB_STATUS_T {
   /**
    * @brief The job was created and can be configured via @ref
-   * QDMI_control_set_parameter.
+   * QDMI_job_set_parameter.
    */
   QDMI_JOB_STATUS_CREATED = 0,
   /// The job was submitted and is waiting to be executed

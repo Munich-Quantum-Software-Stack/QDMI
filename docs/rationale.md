@@ -32,9 +32,13 @@ this page is useful for everyone working with QDMI.
 
 QDMI consists of three components, namely:
 
-- the \ref client.h "client",
-- the \ref device.h "device", and
-- the \ref driver.h "driver".
+- the "client",
+- the "device", and
+- the "driver".
+
+These components are connected by two interfaces, the @ref device.h "device interface" that connects
+the device and the driver, and the @ref client.h "client interface" that connects the client and the
+driver.
 
 The device represents the physical quantum computer or also a classical simulator imitating a
 quantum computer. Multiple devices are managed by the driver. For that, the driver maintains a list
@@ -52,13 +56,14 @@ purpose the function invoked on the driver contains a handle to the device such 
 knows the device to forward the request to.
 
 This setup results in the following responsibilities for the components: The device must implement
-all functions defined by the QDMI \ref device/control.h "control" and \ref device/query.h "query"
-interface such that they can be called by the driver. Additionally, the device must implement the
-types for \ref QDMI_Site "sites", \ref QDMI_Operation "operations", and \ref QDMI_Job "jobs".
-Handles to those are passed to the driver and further to the clients to refer to the respective
-object. However, only the device knows the implementation of those; for the other components those
-handles are only opaque pointers. The implementation of those types can be used by the device to
-store information about the sites, operations, and jobs, respectively.
+all functions defined by the QDMI \ref device.h interface such that they can be called by the
+driver. Additionally, the device must implement the types for \ref QDMI_Site "sites", \ref
+QDMI_Operation "operations", \ref QDMI_Device_Job "device jobs", and \ref QDMI_Device_Session
+"device sessions". Handles to those are passed to the driver and, potentially, further to the
+clients to refer to the respective object. However, only the device knows the implementation of
+those; for the other components those handles are only opaque pointers. The implementation of those
+types can be used by the device to store information about the sites, operations, jobs, and
+sessions, respectively.
 
 The driver must implement the \ref client.h "client" interface since it receives the calls by the
 client. Furthermore, the driver is responsible for the management of the devices. The devices for a
@@ -66,7 +71,9 @@ client are managed in \ref QDMI_Session "sessions". Hence, a client must first c
 through the session the client can access the devices. To this end, the driver has to implement the
 type \ref QDMI_Session "session" that can store information about itself. Similar to the device's
 type, the session is just an opaque handle for the client and only the driver knows about its
-implementation.
+implementation. The driver must also implement its own /ref QDMI_Job "job" type that can store
+information about the job that is submitted by the client. The job is then managed by the driver and
+somehow translated to a device job that is executed by the device.
 
 The interplay of the components is illustrated in the following schematic. It also contains the
 various interfaces that are described in the next section.
@@ -78,9 +85,9 @@ various interfaces that are described in the next section.
 As depicted in the schematic above, the components of QDMI communicate through three different
 interfaces, namely:
 
-- the \ref session.h "session interface",
-- the \ref client/control.h "control interface", and
-- the \ref client/query.h "query interface".
+- the "session interface",
+- the "control interface", and
+- the "query interface".
 
 However, those interfaces do not map directly to the components of QDMI. Instead, the session
 interface is exclusively used for the communication between the client and the driver. The client
@@ -131,7 +138,7 @@ implementations of an older interface version might just return \ref QDMI_ERROR_
 the newly added properties but no segmentation fault or similar happens.
 
 In the following, the general usage of functions for data retrieval is explained by the aid of the
-example of \ref QDMI_query_device_property. This function receives a handle to a device that is—in
+example of \ref QDMI_device_query_property. This function receives a handle to a device that is—in
 the view of the client—an opaque pointer to a device. This device handle must first be retrieved
 from the function \ref QDMI_session_get_devices. This function has the signature:
 
@@ -150,11 +157,11 @@ only retrieve the number of devices that are available which will, in this case,
 `num_devices`. Simultaneously, if `num_devices` is `NULL`, it is ignored, and the function only
 writes the number of devices into the memory pointed to by `devices`.
 
-With the device handles at hand, the function \ref QDMI_query_device_property can be called for one
+With the device handles at hand, the function \ref QDMI_device_query_property can be called for one
 device. The signature of the function is:
 
 ```C
-int QDMI_query_device_property(QDMI_Device device, QDMI_Device_Property prop, size_t size, void *value, size_t *size_ret)
+int QDMI_device_query_property(QDMI_Device device, QDMI_Device_Property prop, size_t size, void *value, size_t *size_ret)
 ```
 
 The semantics of this function is actually similar to the one described earlier. The first two

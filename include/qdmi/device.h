@@ -64,10 +64,10 @@ typedef struct QDMI_Device_Session_impl_d *QDMI_Device_Session;
  * creating a job, additional parameters can be set using @ref
  * QDMI_device_job_set_parameter. Then, the job must be submitted for execution
  * using @ref QDMI_device_job_submit. The status of the job can be checked using
- * @ref QDMI_device_job_status. The job can be waited for using @ref
+ * @ref QDMI_device_job_check. The job can be waited for using @ref
  * QDMI_device_job_wait. The job can be canceled using @ref
  * QDMI_device_job_cancel. The results of the job can be retrieved using @ref
- * QDMI_device_job_get_result. Finally, the job must be freed using @ref
+ * QDMI_device_job_get_data. Finally, the job must be freed using @ref
  * QDMI_device_job_free.
  */
 typedef struct QDMI_Device_Job_impl_d *QDMI_Device_Job;
@@ -194,7 +194,7 @@ int QDMI_device_session_set_parameter(QDMI_Device_Session session,
  * @return @ref QDMI_ERROR_NOTSUPPORTED if the device does not support the
  * specified program format @p format.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p session is @c NULL, if @p
- * format is invalid, if @p prog is not @c NULL and @p size is zero or @job is
+ * format is invalid, if @p prog is not @c NULL and @p size is zero or @p job is
  * @c NULL, or if the program @p prog is invalid (e.g., contains a syntax
  * error).
  * @return @ref QDMI_ERROR_FATAL if the job creation failed due to a fatal
@@ -266,8 +266,8 @@ int QDMI_device_job_submit(QDMI_Device_Job job);
  * status of the job to @ref QDMI_JOB_STATUS_CANCELLED.
  * @param[in] job The job to cancel. Must not be @c NULL.
  * @return @ref QDMI_SUCCESS if the job was successfully cancelled.
- * @return @ref QDMI_ERROR_INVALIDARGUMENT if @job is @c NULL or the job already
- * has the status @ref QDMI_JOB_STATUS_DONE.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p job is @c NULL or the job
+ * already has the status @ref QDMI_JOB_STATUS_DONE.
  * @return @ref QDMI_ERROR_FATAL if the job could not be cancelled.
  */
 int QDMI_device_job_cancel(QDMI_Device_Job job);

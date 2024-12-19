@@ -46,21 +46,21 @@ the query interface. The corresponding properties are
 - @ref QDMI_DEVICE_PROPERTY_LIBRARYVERSION
 
 All of those properties are of type `char*` (string). Since they are properties of the device, they
-are returned by the @ref QDMI_query_device_property_dev function. Below you find the respective
+are returned by the @ref QDMI_device_session_query_property function. Below you find the respective
 implementation in C++ and C.
 
 <!-- prettier-ignore-start -->
 <div class="tabbed">
 - <b class="tab-title">C++</b>
   \dontinclude device.cpp
-  \skip QDMI_query_device_property_dev
+  \skip QDMI_device_session_query_property
   \until QDMI_DEVICE_PROPERTY_LIBRARYVERSION
   \until size_ret)
   \skip QDMI_ERROR_NOTSUPPORTED
   \until DOXYGEN FUNCTION END
 - <b class="tab-title">C</b>
   \dontinclude device.c
-  \skip QDMI_query_device_property_dev
+  \skip QDMI_device_session_query_property
   \until QDMI_DEVICE_PROPERTY_LIBRARYVERSION
   \until size_ret)
   \skip QDMI_ERROR_NOTSUPPORTED
@@ -74,7 +74,7 @@ explanation of the macro, see the next section [Auxiliary Macros](#device-macros
 ### Auxiliary Macros {#device-macros}
 
 The following macro is used to add string properties to the device. The macro is used, e.g., in the
-implementation of the @ref QDMI_query_device_property_dev function.
+implementation of the @ref QDMI_device_session_query_property function.
 
 <!-- prettier-ignore-start -->
 <div class="tabbed">
@@ -130,19 +130,19 @@ device.
 <div class="tabbed">
 - <b class="tab-title">C++</b>
   \dontinclude device.cpp
-  \skip QDMI_query_device_property_dev
+  \skip QDMI_device_session_query_property
   \until {
-  \skip QDMI_DEVICE_PROPERTY_QUBITSNUM
-  \until QDMI_DEVICE_PROPERTY_STATUS
+  \skip QDMI_DEVICE_PROPERTY_STATUS
+  \until QDMI_DEVICE_PROPERTY_QUBITSNUM
   \until size_ret)
   \skip QDMI_ERROR_NOTSUPPORTED
   \until DOXYGEN FUNCTION END
 - <b class="tab-title">C</b>
   \dontinclude device.c
-  \skip QDMI_query_device_property_dev
+  \skip QDMI_device_session_query_property
   \until {
-  \skip QDMI_DEVICE_PROPERTY_QUBITSNUM
-  \until QDMI_DEVICE_PROPERTY_STATUS
+  \skip QDMI_DEVICE_PROPERTY_STATUS
+  \until QDMI_DEVICE_PROPERTY_QUBITSNUM
   \until size_ret)
   \skip QDMI_ERROR_NOTSUPPORTED
   \until DOXYGEN FUNCTION END
@@ -159,16 +159,16 @@ flattened into a single list of @ref QDMI_Site's.
 <div class="tabbed">
 - <b class="tab-title">C++</b>
   \dontinclude device.cpp
-  \skipline constexpr static std::array<const CXX_QDMI_Site_impl_d *const, 20>
+  \skipline constexpr std::array<const CXX_QDMI_Site_impl_d *, 20>
   \skip DEVICE_COUPLING_MAP
   \until ;
-  \skip QDMI_query_device_property_dev
+  \skip QDMI_device_session_query_property
   \until {
   \skip ADD_LIST_PROPERTY
   \until DOXYGEN FUNCTION END
 - <b class="tab-title">C</b>
   \dontinclude device.c
-  \skip QDMI_query_device_property_dev
+  \skip QDMI_device_session_query_property
   \until {
   \skip ADD_LIST_PROPERTY
   \until DOXYGEN FUNCTION END
@@ -177,31 +177,11 @@ flattened into a single list of @ref QDMI_Site's.
 
 ### Complex Properties {#device-complex}
 
-The properties that are returned by @ref QDMI_query_operation_property_dev may depend on the actual
+The properties that are returned by @ref QDMI_operation_query_property may depend on the actual
 site. The available @ref QDMI_Operation's and @ref QDMI_Site's, first, need to be retrieved through
-@ref QDMI_query_get_operations_dev and @ref QDMI_query_get_sites_dev, respectively. Following is an
-example of how to implement the @ref QDMI_query_get_sites_dev function.
-
-<!-- prettier-ignore-start -->
-<div class="tabbed">
-- <b class="tab-title">C++</b>
-  \dontinclude device.cpp
-  \skip device_sites
-  \until ;
-  \skip QDMI_query_get_sites_dev
-  \until DOXYGEN FUNCTION END
-- <b class="tab-title">C</b>
-  \dontinclude device.c
-  \skip DEVICE_SITES
-  \until ;
-  \skip QDMI_query_get_sites_dev
-  \until DOXYGEN FUNCTION END
-</div>
-<!-- prettier-ignore-end -->
-
-With the handles for a @ref QDMI_Operation and @ref QDMI_Site, corresponding properties can be
-queried. The following example demonstrates how different properties of operations, e.g., varying
-fidelities of two-qubit gates can be returned.
+@ref QDMI_device_session_query_property. With the handles for a @ref QDMI_Operation and @ref
+QDMI_Site, corresponding properties can be queried. The following example demonstrates how different
+properties of operations, e.g., varying fidelities of two-qubit gates can be returned.
 
 <!-- prettier-ignore-start -->
 <div class="tabbed">
@@ -210,11 +190,11 @@ fidelities of two-qubit gates can be returned.
   \skip QDMI_Pair_hash
   \until OPERATION_FIDELITIES
   \until ;
-  \skip QDMI_query_operation_property_dev
+  \skip QDMI_device_operation_query_property
   \until DOXYGEN FUNCTION END
 - <b class="tab-title">C</b>
   \dontinclude device.c
-  \skip QDMI_query_operation_property_dev
+  \skip QDMI_device_operation_query_property
   \until DOXYGEN FUNCTION END
 </div>
 <!-- prettier-ignore-end -->
@@ -223,49 +203,49 @@ fidelities of two-qubit gates can be returned.
 
 One crucial part of QDMI is, that it allows to submit a job to the device for execution. The
 following example provides a mock implementation of the necessary functions to submit a job. The
-first example shows a mock implementation of @ref QDMI_control_create_job_dev.
+first example shows a mock implementation of @ref QDMI_device_job_create.
 
 <!-- prettier-ignore-start -->
 <div class="tabbed">
 - <b class="tab-title">C++</b>
   \dontinclude device.cpp
-  \skip QDMI_control_create_job_dev
+  \skip QDMI_device_job_create
   \until DOXYGEN FUNCTION END
 - <b class="tab-title">C</b>
   \dontinclude device.c
-  \skip QDMI_control_create_job_dev
+  \skip QDMI_device_job_create
   \until DOXYGEN FUNCTION END
 </div>
 <!-- prettier-ignore-end -->
 
-The function @ref QDMI_control_set_parameter_dev allows to set different parameters for the job,
+The function @ref QDMI_device_job_set_parameter allows to set different parameters for the job,
 e.g., the number of shots (@ref QDMI_JOB_PARAMETER_SHOTS_NUM).
 
 <!-- prettier-ignore-start -->
 <div class="tabbed">
 - <b class="tab-title">C++</b>
   \dontinclude device.cpp
-  \skip QDMI_control_set_parameter_dev
+  \skip QDMI_device_job_set_parameter
   \until DOXYGEN FUNCTION END
 - <b class="tab-title">C</b>
   \dontinclude device.c
-  \skip QDMI_control_set_parameter_dev
+  \skip QDMI_device_job_set_parameter
   \until DOXYGEN FUNCTION END
 </div>
 <!-- prettier-ignore-end -->
 
 After the job is set up, it can be submitted to the device. The following example shows a mock
-implementation of @ref QDMI_control_submit_job_dev.
+implementation of @ref QDMI_device_job_submit.
 
 <!-- prettier-ignore-start -->
 <div class="tabbed">
 - <b class="tab-title">C++</b>
   \dontinclude device.cpp
-  \skip QDMI_control_submit_job_dev
+  \skip QDMI_device_job_submit
   \until DOXYGEN FUNCTION END
 - <b class="tab-title">C</b>
   \dontinclude device.c
-  \skip QDMI_control_submit_job_dev
+  \skip QDMI_device_job_submit
   \until DOXYGEN FUNCTION END
 </div>
 <!-- prettier-ignore-end -->
