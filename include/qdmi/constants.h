@@ -51,24 +51,28 @@ enum QDMI_STATUS {
 };
 
 /**
- * @brief Enum of the session parameters that can be set.
+ * @brief Enum of the device session parameters that can be set.
  * @details If not noted otherwise, parameters are optional and devices must not
  * require them to be set.
  */
 enum QDMI_DEVICE_SESSION_PARAMETER_T {
   /**
-   * @brief `char*` (string) The token to be used for authentication within the
-   * session.
-   * @details If the device authentication via a token, this parameter must be
-   * set prior to calling @ref QDMI_device_session_init.
+   * @brief `char*` (string) A token to be used in the session initialization
+   * for authenticating with the device.
+   * @details A token could be a password, an API key, or any other form of
+   * authentication that the device requires. The device documentation *must*
+   * document what kind of token is required and how it is used. If the device
+   * requires authentication via a token, this parameter must be set before
+   * calling @ref QDMI_device_session_init.
    */
   QDMI_DEVICE_SESSION_PARAMETER_TOKEN = 0,
   /**
    * @brief `char*` (string) The baseURL or API endpoint to be used for
    * accessing the device within the session.
-   * @details If this parameter is set and the device supports it, the device
-   * must use the specified baseURL or API endpoint for the session. If this
-   * parameter is not set, the device must use a reasonable default value.
+   * @details If this parameter is set, and the device supports it, the device
+   * must use the specified baseURL or API endpoint for the session. Devices may
+   * use this parameter to switch between different versions of the API or
+   * different endpoints for testing or production environments.
    */
   QDMI_DEVICE_SESSION_PARAMETER_BASEURL = 0,
   /**
