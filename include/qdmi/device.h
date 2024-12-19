@@ -182,33 +182,15 @@ typedef struct QDMI_Device_Job_impl_d *QDMI_Device_Job;
 /**
  * @brief Create a job with a certain program on a device.
  * @param[in] session The session to create the job on. Must not be @c NULL.
- * @param[in] format The format of the program. Must be one of the values
- * specified for @ref QDMI_Program_Format.
- * @param[in] size The size of the program in bytes. Must not be zero, except
- * when @p prog is @c NULL, in which case it is ignored.
- * @param[in] prog The program to run. If this is @c NULL, it is ignored.
  * @param[out] job A pointer to a handle that will store the created job.
- * Must not be @c NULL, except when @p prog is @c NULL, in which case it is
- * ignored.
- * @return @ref QDMI_SUCCESS if the device supports the specified @ref
- * QDMI_Program_Format @p format and, when @p prog is not @c NULL, the job was
- * successfully created.
- * @return @ref QDMI_ERROR_NOTSUPPORTED if the device does not support the
- * specified program format @p format.
- * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p session is @c NULL, if @p
- * format is invalid, if @p prog is not @c NULL and @p size is zero or @p job is
- * @c NULL, or if the program @p prog is invalid (e.g., contains a syntax
- * error).
- * @return @ref QDMI_ERROR_FATAL if the job creation failed due to a fatal
- * error.
- *
- * @note By calling this function with @p prog and @p job set to @c NULL, the
- * function can be used to check if the device supports the specified program
- * format without creating a job and without the need to provide a program.
+ * Must not be @c NULL.
+ * @return @ref QDMI_SUCCESS if the job was successfully created.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p session or @p job are @c NULL.
+ * @return @ref QDMI_ERROR_BADSTATE if the session is not in a state that allows
+ * creating a job.
+ * @return @ref QDMI_ERROR_FATAL if job creation failed due to a fatal error.
  */
 int QDMI_device_session_create_device_job(QDMI_Device_Session session,
-                                          QDMI_Program_Format format,
-                                          size_t size, const void *prog,
                                           QDMI_Device_Job *job);
 
 /**

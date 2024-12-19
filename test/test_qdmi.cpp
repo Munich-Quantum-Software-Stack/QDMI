@@ -67,6 +67,8 @@ INSTANTIATE_TEST_SUITE_P(
         return filename + "__readonly";
       case TEST_SESSION_MODE::READWRITE:
         return filename + "__readwrite";
+      default:
+        return filename;
       }
     });
 
@@ -173,63 +175,67 @@ TEST_P(QDMIImplementationTest, JobLifecycle) {
                             "qreg q[2];\n"
                             "h q[0];\n"
                             "cx q[0], q[1];\n";
-  EXPECT_EQ(QDMI_device_create_job(device, QDMI_PROGRAM_FORMAT_QASM2,
-                                   input.length() + 1, input.c_str(), nullptr),
+  EXPECT_EQ(QDMI_device_create_job(device, nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_EQ(QDMI_device_create_job(nullptr, &job), QDMI_ERROR_INVALIDARGUMENT);
+  ASSERT_EQ(QDMI_device_create_job(device, &job), QDMI_SUCCESS);
 
   // Test format support
-  EXPECT_EQ(QDMI_device_create_job(device, QDMI_PROGRAM_FORMAT_QASM3, 0,
-                                   nullptr, nullptr),
-            QDMI_ERROR_NOTSUPPORTED);
-  EXPECT_EQ(QDMI_device_create_job(device,
-                                   QDMI_PROGRAM_FORMAT_QIRADAPTIVESTRING, 0,
-                                   nullptr, nullptr),
-            QDMI_ERROR_NOTSUPPORTED);
-  EXPECT_EQ(QDMI_device_create_job(device,
-                                   QDMI_PROGRAM_FORMAT_QIRADAPTIVEMODULE, 0,
-                                   nullptr, nullptr),
-            QDMI_ERROR_NOTSUPPORTED);
-  ASSERT_EQ(QDMI_device_create_job(device, QDMI_PROGRAM_FORMAT_QASM2, 0,
-                                   nullptr, nullptr),
+  EXPECT_EQ(
+      QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT, 0, nullptr),
+      QDMI_SUCCESS);
+  QDMI_Program_Format format = QDMI_PROGRAM_FORMAT_MAX;
+  EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
+                                   sizeof(QDMI_Program_Format), &format),
+            QDMI_ERROR_INVALIDARGUMENT);
+  format = QDMI_PROGRAM_FORMAT_QASM2;
+  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
+                                   sizeof(QDMI_Program_Format), &format),
             QDMI_SUCCESS);
-  ASSERT_EQ(QDMI_device_create_job(device, QDMI_PROGRAM_FORMAT_QIRBASEMODULE, 0,
-                                   nullptr, nullptr),
+  format = QDMI_PROGRAM_FORMAT_QIRBASESTRING;
+  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
+                                   sizeof(QDMI_Program_Format), &format),
             QDMI_SUCCESS);
-  ASSERT_EQ(QDMI_device_create_job(device, QDMI_PROGRAM_FORMAT_QIRBASESTRING, 0,
-                                   nullptr, nullptr),
+  format = QDMI_PROGRAM_FORMAT_QIRBASEMODULE;
+  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
+                                   sizeof(QDMI_Program_Format), &format),
             QDMI_SUCCESS);
+  format = QDMI_PROGRAM_FORMAT_QASM3;
+  EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
+                                   sizeof(QDMI_Program_Format), &format),
+            QDMI_ERROR_NOTSUPPORTED);
+  format = QDMI_PROGRAM_FORMAT_QIRADAPTIVESTRING;
+  EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
+                                   sizeof(QDMI_Program_Format), &format),
+            QDMI_ERROR_NOTSUPPORTED);
+  format = QDMI_PROGRAM_FORMAT_QIRADAPTIVEMODULE;
+  EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
+                                   sizeof(QDMI_Program_Format), &format),
+            QDMI_ERROR_NOTSUPPORTED);
 
-  // Test actual job creation and submission
-  ASSERT_EQ(QDMI_device_create_job(device, QDMI_PROGRAM_FORMAT_QASM2,
-                                   input.length() + 1, input.c_str(), &job),
-            QDMI_SUCCESS);
   size_t shots = 5;
-  EXPECT_EQ(QDMI_job_set_parameter(nullptr, QDMI_JOB_PARAMETER_SHOTS_NUM,
+  EXPECT_EQ(QDMI_job_set_parameter(nullptr, QDMI_JOB_PARAMETER_SHOTSNUM,
                                    sizeof(size_t), &shots),
             QDMI_ERROR_INVALIDARGUMENT);
   EXPECT_EQ(
-      QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_SHOTS_NUM, 0, nullptr),
-      QDMI_ERROR_INVALIDARGUMENT);
+      QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_SHOTSNUM, 0, nullptr),
+      QDMI_SUCCESS);
   EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_MAX, sizeof(size_t),
                                    &shots),
             QDMI_ERROR_INVALIDARGUMENT);
-  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_SHOTS_NUM,
+  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_SHOTSNUM,
                                    sizeof(size_t), &shots),
             QDMI_SUCCESS);
   ASSERT_EQ(QDMI_job_submit(job), QDMI_SUCCESS);
-  QDMI_Job job2 = nullptr;
-  ASSERT_EQ(QDMI_device_create_job(device, QDMI_PROGRAM_FORMAT_QASM2,
-                                   input.length() + 1, input.c_str(), &job2),
-            QDMI_ERROR_FATAL);
   EXPECT_EQ(QDMI_job_submit(job), QDMI_ERROR_INVALIDARGUMENT);
   QDMI_Job_Status status{};
   EXPECT_EQ(QDMI_job_check(job, &status), QDMI_SUCCESS);
   EXPECT_EQ(QDMI_job_wait(job), QDMI_SUCCESS);
   ASSERT_EQ(QDMI_job_check(job, &status), QDMI_SUCCESS);
   EXPECT_EQ(status, QDMI_JOB_STATUS_DONE);
-  EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_SHOTS_NUM,
+  EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_SHOTSNUM,
                                    sizeof(size_t), &shots),
-            QDMI_ERROR_INVALIDARGUMENT);
+            QDMI_ERROR_BADSTATE);
   QDMI_job_free(job);
 }
 
@@ -266,12 +272,17 @@ cx q[0], q[1];
 measure q -> c;
   )";
   QDMI_Job job = nullptr;
-  EXPECT_EQ(QDMI_device_create_job(dev, QDMI_PROGRAM_FORMAT_QASM2,
-                                   TEST_CIRCUIT.length() + 1,
-                                   TEST_CIRCUIT.c_str(), &job),
+  EXPECT_EQ(QDMI_device_create_job(dev, &job), QDMI_SUCCESS);
+  const auto format = QDMI_PROGRAM_FORMAT_QASM2;
+  EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
+                                   sizeof(QDMI_Program_Format), &format),
+            QDMI_SUCCESS);
+  EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAM,
+                                   TEST_CIRCUIT.size() + 1,
+                                   TEST_CIRCUIT.c_str()),
             QDMI_SUCCESS);
   if (num_shots > 0) {
-    EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_SHOTS_NUM,
+    EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_SHOTSNUM,
                                      sizeof(size_t), &num_shots),
               QDMI_SUCCESS);
   }

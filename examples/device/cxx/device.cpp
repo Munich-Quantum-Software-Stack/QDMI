@@ -51,6 +51,8 @@ struct CXX_QDMI_Device_Session_impl_d {
 struct CXX_QDMI_Device_Job_impl_d {
   CXX_QDMI_Device_Session session = nullptr;
   int id = 0;
+  QDMI_Program_Format format = QDMI_PROGRAM_FORMAT_MAX;
+  void *program = nullptr;
   QDMI_Job_Status status = QDMI_JOB_STATUS_SUBMITTED;
   size_t num_shots = 0;
   std::vector<std::string> results;
@@ -331,32 +333,14 @@ int CXX_QDMI_device_session_set_parameter(CXX_QDMI_Device_Session session,
 } /// [DOXYGEN FUNCTION END]
 
 int CXX_QDMI_device_session_create_device_job(CXX_QDMI_Device_Session session,
-                                              const QDMI_Program_Format format,
-                                              const size_t size,
-                                              const void *prog,
                                               CXX_QDMI_Device_Job *job) {
-  if (((prog != nullptr || job != nullptr) &&
-       (prog == nullptr || job == nullptr || size == 0)) ||
-      format >= QDMI_PROGRAM_FORMAT_MAX || session == nullptr) {
+  if (session == nullptr || job == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   if (session->status != CXX_QDMI_DEVICE_SESSION_STATUS::INITIALIZED) {
     return QDMI_ERROR_BADSTATE;
   }
-  switch (format) {
-  case QDMI_PROGRAM_FORMAT_QASM2:
-  case QDMI_PROGRAM_FORMAT_QIRBASESTRING:
-  case QDMI_PROGRAM_FORMAT_QIRBASEMODULE:
-    break;
-  default:
-    return QDMI_ERROR_NOTSUPPORTED;
-  }
-  if (prog == nullptr) {
-    return QDMI_SUCCESS;
-  }
-  if (CXX_QDMI_get_device_status() != QDMI_DEVICE_STATUS_IDLE) {
-    return QDMI_ERROR_FATAL;
-  }
+
   *job = new CXX_QDMI_Device_Job_impl_d;
   (*job)->session = session;
   // set job id to random number for demonstration purposes
@@ -380,7 +364,27 @@ int CXX_QDMI_device_job_set_parameter(CXX_QDMI_Device_Job job,
     return QDMI_ERROR_BADSTATE;
   }
   switch (param) {
-  case QDMI_DEVICE_JOB_PARAMETER_SHOTS_NUM:
+  case QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT:
+    if (value != nullptr) {
+      const auto format = *static_cast<const QDMI_Program_Format *>(value);
+      if (format >= QDMI_PROGRAM_FORMAT_MAX) {
+        return QDMI_ERROR_INVALIDARGUMENT;
+      }
+      if (format != QDMI_PROGRAM_FORMAT_QASM2 &&
+          format != QDMI_PROGRAM_FORMAT_QIRBASESTRING &&
+          format != QDMI_PROGRAM_FORMAT_QIRBASEMODULE) {
+        return QDMI_ERROR_NOTSUPPORTED;
+      }
+      job->format = format;
+    }
+    return QDMI_SUCCESS;
+  case QDMI_DEVICE_JOB_PARAMETER_PROGRAM:
+    if (value != nullptr) {
+      job->program = malloc(size);
+      memcpy(job->program, value, size);
+    }
+    return QDMI_SUCCESS;
+  case QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM:
     if (value != nullptr) {
       job->num_shots = *static_cast<const size_t *>(value);
     }

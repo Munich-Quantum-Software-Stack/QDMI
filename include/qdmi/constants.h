@@ -110,11 +110,29 @@ typedef enum QDMI_DEVICE_SESSION_PARAMETER_T QDMI_Device_Session_Parameter;
  */
 enum QDMI_DEVICE_JOB_PARAMETER_T {
   /**
+   * @brief `@ref QDMI_Program_Format` The format of the program to be executed.
+   * @details This parameter is required. The device must support the specified
+   * program format. If the device does not support the specified program
+   * format, the @ref QDMI_device_job_set_parameter function must return @ref
+   * QDMI_ERROR_NOTSUPPORTED.
+   */
+  QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT = 0,
+  /**
+   * @brief `void*` The program to be executed.
+   * @details This parameter is required. The program must be in the format
+   * specified by the @ref QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT parameter.
+   * If the program is invalid, the @ref QDMI_device_job_set_parameter function
+   * must return @ref QDMI_ERROR_INVALIDARGUMENT. If the program is valid, but
+   * the device cannot execute it, the @ref QDMI_device_job_set_parameter
+   * function must return @ref QDMI_ERROR_NOTSUPPORTED.
+   */
+  QDMI_DEVICE_JOB_PARAMETER_PROGRAM = 1,
+  /**
    * @brief `size_t` The number of shots to execute for a quantum circuit job.
    * @details If this parameter is not set, a device-specific default number of
    * shots is used.
    */
-  QDMI_DEVICE_JOB_PARAMETER_SHOTS_NUM = 0,
+  QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM = 2,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
@@ -122,7 +140,7 @@ enum QDMI_DEVICE_JOB_PARAMETER_T {
    * enum besides the custom members and must be updated when new members are
    * added.
    */
-  QDMI_DEVICE_JOB_PARAMETER_MAX = 1,
+  QDMI_DEVICE_JOB_PARAMETER_MAX = 3,
   /**
    * @brief This property is reserved for a custom property.
    * @details The meaning and the type of this property is defined by the

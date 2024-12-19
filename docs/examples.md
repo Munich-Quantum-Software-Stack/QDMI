@@ -220,7 +220,7 @@ first example shows a mock implementation of @ref QDMI_device_session_create_dev
 <!-- prettier-ignore-end -->
 
 The function @ref QDMI_device_job_set_parameter allows to set different parameters for the job,
-e.g., the number of shots (@ref QDMI_JOB_PARAMETER_SHOTS_NUM).
+e.g., the number of shots (@ref QDMI_JOB_PARAMETER_SHOTSNUM).
 
 <!-- prettier-ignore-start -->
 <div class="tabbed">

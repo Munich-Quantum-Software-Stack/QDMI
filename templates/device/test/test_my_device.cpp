@@ -64,20 +64,14 @@ std::string Get_test_circuit() {
 
 TEST_F(QDMIImplementationTest, ControlCreateJobImplemented) {
   MY_QDMI_Device_Job job = nullptr;
-  ASSERT_NE(MY_QDMI_device_session_create_device_job(
-                session, QDMI_PROGRAM_FORMAT_QASM2,
-                Get_test_circuit().length() + 1, Get_test_circuit().c_str(),
-                &job),
+  ASSERT_NE(MY_QDMI_device_session_create_device_job(session, &job),
             QDMI_ERROR_NOTIMPLEMENTED);
   MY_QDMI_device_job_free(job);
 }
 
 TEST_F(QDMIImplementationTest, ControlSetParameterImplemented) {
   MY_QDMI_Device_Job job = nullptr;
-  ASSERT_EQ(MY_QDMI_device_session_create_device_job(
-                session, QDMI_PROGRAM_FORMAT_QASM2,
-                Get_test_circuit().length() + 1, Get_test_circuit().c_str(),
-                &job),
+  ASSERT_EQ(MY_QDMI_device_session_create_device_job(session, &job),
             QDMI_SUCCESS);
   ASSERT_EQ(MY_QDMI_device_job_set_parameter(job, QDMI_DEVICE_JOB_PARAMETER_MAX,
                                              0, nullptr),
@@ -87,10 +81,7 @@ TEST_F(QDMIImplementationTest, ControlSetParameterImplemented) {
 
 TEST_F(QDMIImplementationTest, ControlSubmitJobImplemented) {
   MY_QDMI_Device_Job job = nullptr;
-  ASSERT_EQ(MY_QDMI_device_session_create_device_job(
-                session, QDMI_PROGRAM_FORMAT_QASM2,
-                Get_test_circuit().length() + 1, Get_test_circuit().c_str(),
-                &job),
+  ASSERT_EQ(MY_QDMI_device_session_create_device_job(session, &job),
             QDMI_SUCCESS);
   ASSERT_NE(MY_QDMI_device_job_submit(job), QDMI_ERROR_NOTIMPLEMENTED);
   MY_QDMI_device_job_free(job);
@@ -98,10 +89,7 @@ TEST_F(QDMIImplementationTest, ControlSubmitJobImplemented) {
 
 TEST_F(QDMIImplementationTest, ControlCancelImplemented) {
   MY_QDMI_Device_Job job = nullptr;
-  ASSERT_EQ(MY_QDMI_device_session_create_device_job(
-                session, QDMI_PROGRAM_FORMAT_QASM2,
-                Get_test_circuit().length() + 1, Get_test_circuit().c_str(),
-                &job),
+  ASSERT_EQ(MY_QDMI_device_session_create_device_job(session, &job),
             QDMI_SUCCESS);
   ASSERT_NE(MY_QDMI_device_job_cancel(job), QDMI_ERROR_NOTIMPLEMENTED);
   MY_QDMI_device_job_free(job);
@@ -110,10 +98,7 @@ TEST_F(QDMIImplementationTest, ControlCancelImplemented) {
 TEST_F(QDMIImplementationTest, ControlCheckImplemented) {
   MY_QDMI_Device_Job job = nullptr;
   QDMI_Job_Status status = QDMI_JOB_STATUS_RUNNING;
-  ASSERT_EQ(MY_QDMI_device_session_create_device_job(
-                session, QDMI_PROGRAM_FORMAT_QASM2,
-                Get_test_circuit().length() + 1, Get_test_circuit().c_str(),
-                &job),
+  ASSERT_EQ(MY_QDMI_device_session_create_device_job(session, &job),
             QDMI_SUCCESS);
   ASSERT_NE(MY_QDMI_device_job_check(job, &status), QDMI_ERROR_NOTIMPLEMENTED);
   MY_QDMI_device_job_free(job);
@@ -121,10 +106,7 @@ TEST_F(QDMIImplementationTest, ControlCheckImplemented) {
 
 TEST_F(QDMIImplementationTest, ControlWaitImplemented) {
   MY_QDMI_Device_Job job = nullptr;
-  ASSERT_EQ(MY_QDMI_device_session_create_device_job(
-                session, QDMI_PROGRAM_FORMAT_QASM2,
-                Get_test_circuit().length() + 1, Get_test_circuit().c_str(),
-                &job),
+  ASSERT_EQ(MY_QDMI_device_session_create_device_job(session, &job),
             QDMI_SUCCESS);
   ASSERT_NE(MY_QDMI_device_job_wait(job), QDMI_ERROR_NOTIMPLEMENTED);
   MY_QDMI_device_job_free(job);
@@ -132,10 +114,7 @@ TEST_F(QDMIImplementationTest, ControlWaitImplemented) {
 
 TEST_F(QDMIImplementationTest, ControlGetDataImplemented) {
   MY_QDMI_Device_Job job = nullptr;
-  ASSERT_EQ(MY_QDMI_device_session_create_device_job(
-                session, QDMI_PROGRAM_FORMAT_QASM2,
-                Get_test_circuit().length() + 1, Get_test_circuit().c_str(),
-                &job),
+  ASSERT_EQ(MY_QDMI_device_session_create_device_job(session, &job),
             QDMI_SUCCESS);
   ASSERT_EQ(MY_QDMI_device_job_get_results(job, QDMI_JOB_RESULT_MAX, 0, nullptr,
                                            nullptr),

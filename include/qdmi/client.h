@@ -233,32 +233,13 @@ typedef struct QDMI_Job_impl_d *QDMI_Job;
 /**
  * @brief Create a job with a certain program on a device.
  * @param[in] device The device to create the job on. Must not be @c NULL.
- * @param[in] format The format of the program. Must be one of the values
- * specified for @ref QDMI_Program_Format.
- * @param[in] size The size of the program in bytes. Must not be zero, except
- * when @p prog is @c NULL, in which case it is ignored.
- * @param[in] prog The program to run. If this is @c NULL, it is ignored.
  * @param[out] job A pointer to a handle that will store the created job.
- * Must not be @c NULL, except when @p prog is @c NULL, in which case it is
- * ignored.
- * @return @ref QDMI_SUCCESS if the device supports the specified @ref
- * QDMI_Program_Format @p format and, when @p prog is not @c NULL, the job was
- * successfully created.
- * @return @ref QDMI_ERROR_NOTSUPPORTED if the device does not support the
- * specified program format @p format.
- * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p session is @c NULL, if @p
- * format is invalid, if @p prog is not @c NULL and @p size is zero or @p job is
- * @c NULL, or if the program @p prog is invalid (e.g., contains a syntax
- * error).
- * @return @ref QDMI_ERROR_FATAL if the job creation failed due to a fatal
- * error.
- *
- * @note By calling this function with @p prog and @p job set to @c NULL, the
- * function can be used to check if the device supports the specified program
- * format without creating a job and without the need to provide a program.
+ * Must not be @c NULL.
+ * @return @ref QDMI_SUCCESS if the job was successfully created.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p device or @p job are @c NULL.
+ * @return @ref QDMI_ERROR_FATAL if job creation failed due to a fatal error.
  */
-int QDMI_device_create_job(QDMI_Device device, QDMI_Program_Format format,
-                           size_t size, const void *prog, QDMI_Job *job);
+int QDMI_device_create_job(QDMI_Device device, QDMI_Job *job);
 
 /**
  * @brief Free a job.
@@ -274,11 +255,29 @@ void QDMI_job_free(QDMI_Job job);
  */
 enum QDMI_JOB_PARAMETER_T {
   /**
+   * @brief `@ref QDMI_Program_Format` The format of the program to be executed.
+   * @details This parameter is required. If the device does not support the
+   * specified program format, it is up to the driver to decide whether to
+   * return @ref QDMI_ERROR_NOTSUPPORTED from the @ref QDMI_job_set_parameter
+   * or to convert the program to a format that the device supports.
+   */
+  QDMI_JOB_PARAMETER_PROGRAMFORMAT = 0,
+  /**
+   * @brief `void*` The program to be executed.
+   * @details This parameter is required. The program must be in the format
+   * specified by the @ref QDMI_JOB_PARAMETER_PROGRAMFORMAT parameter.
+   * If the program is invalid, the @ref QDMI_job_set_parameter function
+   * must return @ref QDMI_ERROR_INVALIDARGUMENT. If the program is valid, but
+   * the device cannot execute it, the @ref QDMI_job_set_parameter function must
+   * return @ref QDMI_ERROR_NOTSUPPORTED.
+   */
+  QDMI_JOB_PARAMETER_PROGRAM = 1,
+  /**
    * @brief `size_t` The number of shots to execute for a quantum circuit job.
    * @details If this parameter is not set, a device-specific default number of
    * shots is used.
    */
-  QDMI_JOB_PARAMETER_SHOTS_NUM = 0,
+  QDMI_JOB_PARAMETER_SHOTSNUM = 2,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by drivers for bounds checking and validation of
@@ -286,7 +285,7 @@ enum QDMI_JOB_PARAMETER_T {
    * enum besides the custom members and must be updated when new members are
    * added.
    */
-  QDMI_JOB_PARAMETER_MAX = 1,
+  QDMI_JOB_PARAMETER_MAX = 3,
   /**
    * @brief This property is reserved for a custom property.
    * @details The meaning and the type of this property is defined by the

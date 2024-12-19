@@ -385,28 +385,15 @@ int QDMI_driver_shutdown() {
   return QDMI_SUCCESS;
 }
 
-int QDMI_device_create_job(QDMI_Device dev, QDMI_Program_Format format,
-                           const size_t size, const void *prog, QDMI_Job *job) {
-  if (((prog != nullptr || job != nullptr) &&
-       (prog == nullptr || job == nullptr || size == 0)) ||
-      (format >= QDMI_PROGRAM_FORMAT_MAX &&
-       format != QDMI_PROGRAM_FORMAT_CUSTOM1 &&
-       format != QDMI_PROGRAM_FORMAT_CUSTOM2 &&
-       format != QDMI_PROGRAM_FORMAT_CUSTOM3 &&
-       format != QDMI_PROGRAM_FORMAT_CUSTOM4 &&
-       format != QDMI_PROGRAM_FORMAT_CUSTOM5) ||
-      dev == nullptr) {
+int QDMI_device_create_job(QDMI_Device dev, QDMI_Job *job) {
+  if (dev == nullptr || job == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   if ((dev->session->mode & QDMI_SESSION_MODE_READWRITE) != 0) {
-    if (job == nullptr) {
-      return dev->library->device_session_create_device_job(
-          dev->device_session, format, 0, nullptr, nullptr);
-    }
     *job = new QDMI_Job_impl_d();
     (*job)->device = dev;
-    return dev->library->device_session_create_device_job(
-        dev->device_session, format, size, prog, &(*job)->device_job);
+    return dev->library->device_session_create_device_job(dev->device_session,
+                                                          &(*job)->device_job);
   }
   return QDMI_ERROR_PERMISSIONDENIED;
 }

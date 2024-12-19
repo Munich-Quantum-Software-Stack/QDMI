@@ -86,9 +86,6 @@ int MY_QDMI_device_session_set_parameter(MY_QDMI_Device_Session session,
 }
 
 int MY_QDMI_device_session_create_device_job(MY_QDMI_Device_Session session,
-                                             const QDMI_Program_Format format,
-                                             const size_t size,
-                                             const void *prog,
                                              MY_QDMI_Device_Job *job) {
   return QDMI_ERROR_NOTIMPLEMENTED;
 }

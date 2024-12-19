@@ -39,6 +39,8 @@ typedef struct C_QDMI_Device_Session_impl_d {
 typedef struct C_QDMI_Device_Job_impl_d {
   C_QDMI_Device_Session session;
   int id;
+  QDMI_Program_Format format;
+  void *program;
   QDMI_Job_Status status;
   size_t num_shots;
   char *results;
@@ -216,31 +218,14 @@ int C_QDMI_device_session_set_parameter(
 } /// [DOXYGEN FUNCTION END]
 
 int C_QDMI_device_session_create_device_job(C_QDMI_Device_Session session,
-                                            const QDMI_Program_Format format,
-                                            const size_t size, const void *prog,
                                             C_QDMI_Device_Job *job) {
-  if (((prog != NULL || job != NULL) &&
-       (prog == NULL || job == NULL || size == 0)) ||
-      format >= QDMI_PROGRAM_FORMAT_MAX || session == NULL) {
+  if (session == NULL || job == NULL) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   if (session->status != INITIALIZED) {
     return QDMI_ERROR_BADSTATE;
   }
-  switch (format) {
-  case QDMI_PROGRAM_FORMAT_QASM2:
-  case QDMI_PROGRAM_FORMAT_QIRBASESTRING:
-  case QDMI_PROGRAM_FORMAT_QIRBASEMODULE:
-    break;
-  default:
-    return QDMI_ERROR_NOTSUPPORTED;
-  }
-  if (prog == NULL) {
-    return QDMI_SUCCESS;
-  }
-  if (C_QDMI_read_device_status() != QDMI_DEVICE_STATUS_IDLE) {
-    return QDMI_ERROR_FATAL;
-  }
+
   *job = (C_QDMI_Device_Job)malloc(sizeof(C_QDMI_Device_Job_impl_t));
   (*job)->session = session;
   // set job id to random number for demonstration purposes
@@ -273,7 +258,27 @@ int C_QDMI_device_job_set_parameter(C_QDMI_Device_Job job,
     return QDMI_ERROR_BADSTATE;
   }
   switch (param) {
-  case QDMI_DEVICE_JOB_PARAMETER_SHOTS_NUM:
+  case QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT:
+    if (value != NULL) {
+      QDMI_Program_Format format = *(const QDMI_Program_Format *)value;
+      if (format >= QDMI_PROGRAM_FORMAT_MAX) {
+        return QDMI_ERROR_INVALIDARGUMENT;
+      }
+      if (format != QDMI_PROGRAM_FORMAT_QASM2 &&
+          format != QDMI_PROGRAM_FORMAT_QIRBASESTRING &&
+          format != QDMI_PROGRAM_FORMAT_QIRBASEMODULE) {
+        return QDMI_ERROR_NOTSUPPORTED;
+      }
+      job->format = format;
+    }
+    return QDMI_SUCCESS;
+  case QDMI_DEVICE_JOB_PARAMETER_PROGRAM:
+    if (value != NULL) {
+      job->program = malloc(size);
+      memcpy(job->program, value, size);
+    }
+    return QDMI_SUCCESS;
+  case QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM:
     if (value != NULL) {
       job->num_shots = *(const size_t *)value;
     }
