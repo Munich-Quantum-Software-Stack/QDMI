@@ -129,19 +129,6 @@ int MY_QDMI_device_session_query_property(MY_QDMI_Device_Session session,
   return QDMI_ERROR_NOTIMPLEMENTED;
 }
 
-int MY_QDMI_device_session_get_sites(MY_QDMI_Device_Session session,
-                                     const size_t num_entries,
-                                     MY_QDMI_Site *sites, size_t *num_sites) {
-  return QDMI_ERROR_NOTIMPLEMENTED;
-}
-
-int MY_QDMI_device_session_get_operations(MY_QDMI_Device_Session session,
-                                          const size_t num_entries,
-                                          MY_QDMI_Operation *operations,
-                                          size_t *num_operations) {
-  return QDMI_ERROR_NOTIMPLEMENTED;
-}
-
 int MY_QDMI_device_site_query_property(MY_QDMI_Device_Session session,
                                        MY_QDMI_Site site,
                                        const QDMI_Site_Property prop,

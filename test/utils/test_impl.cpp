@@ -226,16 +226,6 @@ TEST_P(QDMIImplementationTest, QueryDevicePropertyImplemented) {
             QDMI_ERROR_INVALIDARGUMENT);
 }
 
-TEST_P(QDMIImplementationTest, GetSitesImplemented) {
-  ASSERT_EQ(QDMI_device_get_sites(device, 0, nullptr, nullptr),
-            QDMI_ERROR_INVALIDARGUMENT);
-}
-
-TEST_P(QDMIImplementationTest, GetOperationsImplemented) {
-  ASSERT_EQ(QDMI_device_get_operations(device, 0, nullptr, nullptr),
-            QDMI_ERROR_INVALIDARGUMENT);
-}
-
 TEST_P(QDMIImplementationTest, QuerySitePropertyImplemented) {
   ASSERT_EQ(QDMI_site_query_property(device, nullptr, QDMI_SITE_PROPERTY_MAX, 0,
                                      nullptr, nullptr),
@@ -294,10 +284,14 @@ TEST_P(QDMIImplementationTest, QueryDeviceLibraryVersionImplemented) {
 
 TEST_P(QDMIImplementationTest, QuerySiteIDImplemented) {
   size_t size = 0;
-  ASSERT_EQ(QDMI_device_get_sites(device, 0, nullptr, &size), QDMI_SUCCESS)
+  ASSERT_EQ(QDMI_device_query_property(device, QDMI_DEVICE_PROPERTY_SITES, 0,
+                                       nullptr, &size),
+            QDMI_SUCCESS)
       << "Devices must provide a list of sites";
-  std::vector<QDMI_Site> sites(size);
-  ASSERT_EQ(QDMI_device_get_sites(device, size, sites.data(), nullptr),
+  std::vector<QDMI_Site> sites(size / sizeof(QDMI_Site));
+  ASSERT_EQ(QDMI_device_query_property(device, QDMI_DEVICE_PROPERTY_SITES, size,
+                                       static_cast<void *>(sites.data()),
+                                       nullptr),
             QDMI_SUCCESS)
       << "Failed to get sites";
   uint64_t id = 0;

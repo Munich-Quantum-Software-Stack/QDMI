@@ -598,13 +598,17 @@ int C_QDMI_device_session_query_property(C_QDMI_Device_Session session,
                       size, value, size_ret)
   ADD_STRING_PROPERTY(QDMI_DEVICE_PROPERTY_VERSION, "0.1.0", prop, size, value,
                       size_ret)
+  ADD_SINGLE_VALUE_PROPERTY(QDMI_DEVICE_PROPERTY_STATUS, QDMI_Device_Status,
+                            C_QDMI_read_device_status(), prop, size, value,
+                            size_ret)
   ADD_STRING_PROPERTY(QDMI_DEVICE_PROPERTY_LIBRARYVERSION, "1.0.0", prop, size,
                       value, size_ret)
   ADD_SINGLE_VALUE_PROPERTY(QDMI_DEVICE_PROPERTY_QUBITSNUM, size_t, 5, prop,
                             size, value, size_ret)
-  ADD_SINGLE_VALUE_PROPERTY(QDMI_DEVICE_PROPERTY_STATUS, QDMI_Device_Status,
-                            C_QDMI_read_device_status(), prop, size, value,
-                            size_ret)
+  ADD_LIST_PROPERTY(QDMI_DEVICE_PROPERTY_SITES, C_QDMI_Site, C_DEVICE_SITES, 5,
+                    prop, size, value, size_ret)
+  ADD_LIST_PROPERTY(QDMI_DEVICE_PROPERTY_OPERATIONS, C_QDMI_Operation,
+                    C_DEVICE_OPERATIONS, 4, prop, size, value, size_ret)
   ADD_LIST_PROPERTY(
       QDMI_DEVICE_PROPERTY_COUPLINGMAP, C_QDMI_Site,
       ((C_QDMI_Site[]){C_DEVICE_SITES[0], C_DEVICE_SITES[1], C_DEVICE_SITES[1],
@@ -616,56 +620,6 @@ int C_QDMI_device_session_query_property(C_QDMI_Device_Session session,
                        C_DEVICE_SITES[0], C_DEVICE_SITES[4]}),
       20, prop, size, value, size_ret)
   return QDMI_ERROR_NOTSUPPORTED;
-} /// [DOXYGEN FUNCTION END]
-
-int C_QDMI_device_session_get_sites(C_QDMI_Device_Session session,
-                                    const size_t num_entries,
-                                    C_QDMI_Site *sites, size_t *num_sites) {
-  if ((sites != NULL && num_entries == 0) ||
-      (sites == NULL && num_sites == NULL) || session == NULL) {
-    return QDMI_ERROR_INVALIDARGUMENT;
-  }
-  if (session->status != INITIALIZED) {
-    return QDMI_ERROR_BADSTATE;
-  }
-  const size_t device_sites_size =
-      sizeof(C_DEVICE_SITES) / sizeof(C_DEVICE_SITES[0]);
-  if (sites != NULL) {
-    const size_t copy_size =
-        (num_entries < device_sites_size ? num_entries : device_sites_size);
-    memcpy((void *)sites, (const void *)C_DEVICE_SITES,
-           copy_size * sizeof(C_QDMI_Site));
-  }
-  if (num_sites != NULL) {
-    *num_sites = device_sites_size;
-  }
-  return QDMI_SUCCESS;
-} /// [DOXYGEN FUNCTION END]
-
-int C_QDMI_device_session_get_operations(C_QDMI_Device_Session session,
-                                         const size_t num_entries,
-                                         C_QDMI_Operation *operations,
-                                         size_t *num_operations) {
-  if ((operations != NULL && num_entries == 0) ||
-      (operations == NULL && num_operations == NULL) || session == NULL) {
-    return QDMI_ERROR_INVALIDARGUMENT;
-  }
-  if (session->status != INITIALIZED) {
-    return QDMI_ERROR_BADSTATE;
-  }
-  const size_t device_operations_size =
-      sizeof(C_DEVICE_OPERATIONS) / sizeof(C_DEVICE_OPERATIONS[0]);
-  if (operations != NULL) {
-    const size_t copy_size =
-        (num_entries < device_operations_size ? num_entries
-                                              : device_operations_size);
-    memcpy((void *)operations, (void *)C_DEVICE_OPERATIONS,
-           copy_size * sizeof(C_QDMI_Operation));
-  }
-  if (num_operations != NULL) {
-    *num_operations = device_operations_size;
-  }
-  return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]
 
 int C_QDMI_device_site_query_property(C_QDMI_Device_Session session,

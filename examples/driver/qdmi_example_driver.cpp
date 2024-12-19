@@ -91,10 +91,6 @@ struct QDMI_Library_impl_d {
   decltype(QDMI_device_job_get_data) *device_job_get_data{};
   /// Function pointer to @ref QDMI_device_session_query_property.
   decltype(QDMI_device_session_query_property) *device_session_query_property{};
-  /// Function pointer to @ref QDMI_device_session_get_sites.
-  decltype(QDMI_device_session_get_sites) *device_session_get_sites{};
-  /// Function pointer to @ref QDMI_device_session_get_operations.
-  decltype(QDMI_device_session_get_operations) *device_session_get_operations{};
   /// Function pointer to @ref QDMI_device_site_query_property.
   decltype(QDMI_device_site_query_property) *device_site_query_property{};
   /// Function pointer to @ref QDMI_device_operation_query_property.
@@ -218,8 +214,6 @@ void QDMI_library_load(const std::string &lib_name, const std::string &prefix) {
     LOAD_SYMBOL(library, prefix, device_job_wait)
     LOAD_SYMBOL(library, prefix, device_job_get_data)
     LOAD_SYMBOL(library, prefix, device_session_query_property)
-    LOAD_SYMBOL(library, prefix, device_session_get_sites)
-    LOAD_SYMBOL(library, prefix, device_session_get_operations)
     LOAD_SYMBOL(library, prefix, device_site_query_property)
     LOAD_SYMBOL(library, prefix, device_operation_query_property)
 
@@ -530,28 +524,6 @@ int QDMI_device_query_property(QDMI_Device device, QDMI_Device_Property prop,
   }
   return device->library->device_session_query_property(
       device->device_session, prop, size, value, size_ret);
-}
-
-int QDMI_device_get_sites(QDMI_Device device, const size_t num_entries,
-                          QDMI_Site *sites, size_t *num_sites) {
-  if ((sites != nullptr && num_entries == 0) ||
-      (sites == nullptr && num_sites == nullptr) || device == nullptr) {
-    return QDMI_ERROR_INVALIDARGUMENT;
-  }
-  return device->library->device_session_get_sites(
-      device->device_session, num_entries, sites, num_sites);
-}
-
-int QDMI_device_get_operations(QDMI_Device device, const size_t num_entries,
-                               QDMI_Operation *operations,
-                               size_t *num_operations) {
-  if ((operations != nullptr && num_entries == 0) ||
-      (operations == nullptr && num_operations == nullptr) ||
-      device == nullptr) {
-    return QDMI_ERROR_INVALIDARGUMENT;
-  }
-  return device->library->device_session_get_operations(
-      device->device_session, num_entries, operations, num_operations);
 }
 
 int QDMI_site_query_property(QDMI_Device device, QDMI_Site site,

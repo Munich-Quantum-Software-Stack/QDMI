@@ -657,63 +657,20 @@ int CXX_QDMI_device_session_query_property(CXX_QDMI_Device_Session session,
                       prop, size, value, size_ret)
   ADD_STRING_PROPERTY(QDMI_DEVICE_PROPERTY_VERSION, "0.1.0", prop, size, value,
                       size_ret)
+  ADD_SINGLE_VALUE_PROPERTY(QDMI_DEVICE_PROPERTY_STATUS, QDMI_Device_Status,
+                            CXX_QDMI_get_device_status(), prop, size, value,
+                            size_ret)
   ADD_STRING_PROPERTY(QDMI_DEVICE_PROPERTY_LIBRARYVERSION, "1.0.0", prop, size,
                       value, size_ret)
   ADD_SINGLE_VALUE_PROPERTY(QDMI_DEVICE_PROPERTY_QUBITSNUM, size_t, 5, prop,
                             size, value, size_ret)
-  ADD_SINGLE_VALUE_PROPERTY(QDMI_DEVICE_PROPERTY_STATUS, QDMI_Device_Status,
-                            CXX_QDMI_get_device_status(), prop, size, value,
-                            size_ret)
+  ADD_LIST_PROPERTY(QDMI_DEVICE_PROPERTY_SITES, CXX_QDMI_Site, CXX_DEVICE_SITES,
+                    prop, size, value, size_ret)
+  ADD_LIST_PROPERTY(QDMI_DEVICE_PROPERTY_OPERATIONS, CXX_QDMI_Operation,
+                    CXX_DEVICE_OPERATIONS, prop, size, value, size_ret)
   ADD_LIST_PROPERTY(QDMI_DEVICE_PROPERTY_COUPLINGMAP, CXX_QDMI_Site,
                     DEVICE_COUPLING_MAP, prop, size, value, size_ret)
   return QDMI_ERROR_NOTSUPPORTED;
-} /// [DOXYGEN FUNCTION END]
-
-int CXX_QDMI_device_session_get_sites(CXX_QDMI_Device_Session session,
-                                      const size_t num_entries,
-                                      CXX_QDMI_Site *sites, size_t *num_sites) {
-  if ((sites != nullptr && num_entries == 0) ||
-      (sites == nullptr && num_sites == nullptr) || session == nullptr) {
-    return QDMI_ERROR_INVALIDARGUMENT;
-  }
-  if (session->status != CXX_QDMI_DEVICE_SESSION_STATUS::INITIALIZED) {
-    return QDMI_ERROR_BADSTATE;
-  }
-  if (sites != nullptr) {
-    const size_t copy_size = std::min(num_entries, CXX_DEVICE_SITES.size());
-    memcpy(static_cast<void *>(sites),
-           static_cast<const void *>(CXX_DEVICE_SITES.data()),
-           copy_size * sizeof(CXX_QDMI_Site));
-  }
-  if (num_sites != nullptr) {
-    *num_sites = CXX_DEVICE_SITES.size();
-  }
-  return QDMI_SUCCESS;
-} /// [DOXYGEN FUNCTION END]
-
-int CXX_QDMI_device_session_get_operations(CXX_QDMI_Device_Session session,
-                                           const size_t num_entries,
-                                           CXX_QDMI_Operation *operations,
-                                           size_t *num_operations) {
-  if ((operations != nullptr && num_entries == 0) ||
-      (operations == nullptr && num_operations == nullptr) ||
-      session == nullptr) {
-    return QDMI_ERROR_INVALIDARGUMENT;
-  }
-  if (session->status != CXX_QDMI_DEVICE_SESSION_STATUS::INITIALIZED) {
-    return QDMI_ERROR_BADSTATE;
-  }
-  if (operations != nullptr) {
-    const size_t copy_size =
-        std::min(num_entries, CXX_DEVICE_OPERATIONS.size());
-    memcpy(static_cast<void *>(operations),
-           static_cast<const void *>(CXX_DEVICE_OPERATIONS.data()),
-           copy_size * sizeof(CXX_QDMI_Operation));
-  }
-  if (num_operations != nullptr) {
-    *num_operations = CXX_DEVICE_OPERATIONS.size();
-  }
-  return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]
 
 int CXX_QDMI_device_site_query_property(CXX_QDMI_Device_Session session,

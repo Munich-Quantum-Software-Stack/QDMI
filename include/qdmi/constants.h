@@ -155,6 +155,20 @@ enum QDMI_DEVICE_PROPERTY_T {
   /// `size_t` The number of qubits in the device.
   QDMI_DEVICE_PROPERTY_QUBITSNUM = 4,
   /**
+   * @brief `QDMI_Site*` (@ref QDMI_Site list) The sites of the device.
+   * @details The returned @ref QDMI_Site handles may be used to query site
+   * and operation properties. The list need not be sorted based on the @ref
+   * QDMI_SITE_PROPERTY_ID.
+   */
+  QDMI_DEVICE_PROPERTY_SITES = 5,
+  /**
+   * @brief `QDMI_Operation*` (@ref QDMI_Operation list) The operations
+   * supported by the device.
+   * @details The returned @ref QDMI_Operation handles may be used to query
+   * operation properties.
+   */
+  QDMI_DEVICE_PROPERTY_OPERATIONS = 6,
+  /**
    * @brief `QDMI_Site*` (@ref QDMI_Site list) The coupling map of the device.
    * @details The returned list contains pairs of sites that are coupled. The
    * pairs in the list are flattened such that the first site of the pair is at
@@ -165,7 +179,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * Additionally, assume `site_i` is the handle for the i-th site. Then,
    * `{site_0, site_1, site_1, site_2}` would be returned.
    */
-  QDMI_DEVICE_PROPERTY_COUPLINGMAP = 5,
+  QDMI_DEVICE_PROPERTY_COUPLINGMAP = 7,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
@@ -173,7 +187,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * enum besides the custom members and must be updated when new members are
    * added.
    */
-  QDMI_DEVICE_PROPERTY_MAX = 6,
+  QDMI_DEVICE_PROPERTY_MAX = 8,
   /**
    * @brief This property is reserved for a custom property.
    * @details The meaning and the type of this property are defined by the
