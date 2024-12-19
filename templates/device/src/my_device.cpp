@@ -142,14 +142,16 @@ int MY_QDMI_device_session_get_operations(MY_QDMI_Device_Session session,
   return QDMI_ERROR_NOTIMPLEMENTED;
 }
 
-int MY_QDMI_device_site_query_property(MY_QDMI_Site site,
+int MY_QDMI_device_site_query_property(MY_QDMI_Device_Session session,
+                                       MY_QDMI_Site site,
                                        const QDMI_Site_Property prop,
                                        const size_t size, void *value,
                                        size_t *size_ret) {
   return QDMI_ERROR_NOTIMPLEMENTED;
 }
 
-int MY_QDMI_device_operation_query_property(MY_QDMI_Operation operation,
+int MY_QDMI_device_operation_query_property(MY_QDMI_Device_Session session,
+                                            MY_QDMI_Operation operation,
                                             const size_t num_sites,
                                             const MY_QDMI_Site *sites,
                                             const QDMI_Operation_Property prop,

@@ -564,8 +564,8 @@ int QDMI_site_query_property(QDMI_Device device, QDMI_Site site,
       prop != QDMI_SITE_PROPERTY_CUSTOM5) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
-  return device->library->device_site_query_property(site, prop, size, value,
-                                                     size_ret);
+  return device->library->device_site_query_property(
+      device->device_session, site, prop, size, value, size_ret);
 }
 
 int QDMI_operation_query_property(QDMI_Device device, QDMI_Operation operation,
@@ -583,5 +583,6 @@ int QDMI_operation_query_property(QDMI_Device device, QDMI_Operation operation,
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   return device->library->device_operation_query_property(
-      operation, num_sites, sites, prop, size, value, size_ret);
+      device->device_session, operation, num_sites, sites, prop, size, value,
+      size_ret);
 }

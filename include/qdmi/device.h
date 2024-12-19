@@ -420,6 +420,7 @@ int QDMI_device_session_get_operations(QDMI_Device_Session session,
 
 /**
  * @brief Query a site property.
+ * @param[in] session The session used for the query. Must not be @c NULL.
  * @param[in] site The site to query. Must not be @c NULL.
  * @param[in] prop The property to query. Must be one of the values specified
  * for @ref QDMI_Site_Property.
@@ -435,21 +436,24 @@ int QDMI_device_session_get_operations(QDMI_Device_Session session,
  * when @p value is not @c NULL, the property was successfully retrieved.
  * @return @ref QDMI_ERROR_NOTSUPPORTED if the property is not supported by the
  * device.
- * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p site is @c NULL, if @p prop is
- * invalid, if the size in bytes specified by @p size is less than the size of
- * the data being queried as specified for the @ref QDMI_Site_Property @p prop
- * and @p value is not @c NULL, or if both @p value and @p size_ret are @c NULL.
- * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p session or @p site are @c NULL,
+ * if @p prop is invalid, if the size in bytes specified by @p size is less than
+ * the size of the data being queried as specified for the @ref
+ * QDMI_Site_Property @p prop and @p value is not @c NULL, or if both @p value
+ * and @p size_ret are @c NULL. @return @ref QDMI_ERROR_FATAL if an unexpected
+ * error occurred.
  *
  * @note By calling this function with @p value set to @c NULL, the function can
  * be used to check if the device supports the specified property without
  * retrieving the property and without the need to provide a buffer for it.
  */
-int QDMI_device_site_query_property(QDMI_Site site, QDMI_Site_Property prop,
-                                    size_t size, void *value, size_t *size_ret);
+int QDMI_device_site_query_property(QDMI_Device_Session session, QDMI_Site site,
+                                    QDMI_Site_Property prop, size_t size,
+                                    void *value, size_t *size_ret);
 
 /**
  * @brief Query a device operation property.
+ * @param[in] session The session used for the query. Must not be @c NULL.
  * @param[in] operation The operation to query. Must not be @c NULL.
  * @param[in] num_sites The number of sites that the operation is applied to.
  * @param[in] sites A pointer to a list of handles where the sites that the
@@ -469,9 +473,9 @@ int QDMI_device_site_query_property(QDMI_Site site, QDMI_Site_Property prop,
  * when @p value is not @c NULL, the property was successfully retrieved.
  * @return @ref QDMI_ERROR_NOTSUPPORTED if the property is not supported by the
  * device or if the queried property cannot be provided for the given sites.
- * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p operation is @c NULL, if @p
- * prop is invalid, if the size in bytes specified by @p size is less than the
- * size of the data being queried as specified for the @ref
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p session or @p operation are @c
+ * NULL, if @p prop is invalid, if the size in bytes specified by @p size is
+ * less than the size of the data being queried as specified for the @ref
  * QDMI_Operation_Property @p prop and @p value is not @c NULL, or if both @p
  * value and @p size_ret are @c NULL.
  * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
@@ -486,8 +490,9 @@ int QDMI_device_site_query_property(QDMI_Site site, QDMI_Site_Property prop,
  * property for all sites.
  */
 int QDMI_device_operation_query_property(
-    QDMI_Operation operation, size_t num_sites, const QDMI_Site *sites,
-    QDMI_Operation_Property prop, size_t size, void *value, size_t *size_ret);
+    QDMI_Device_Session session, QDMI_Operation operation, size_t num_sites,
+    const QDMI_Site *sites, QDMI_Operation_Property prop, size_t size,
+    void *value, size_t *size_ret);
 
 /** @} */ // end of device_query
 

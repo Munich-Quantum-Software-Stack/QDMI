@@ -667,11 +667,12 @@ int C_QDMI_device_session_get_operations(C_QDMI_Device_Session session,
   return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]
 
-int C_QDMI_device_site_query_property(const C_QDMI_Site site,
+int C_QDMI_device_site_query_property(C_QDMI_Device_Session session,
+                                      C_QDMI_Site site,
                                       const QDMI_Site_Property prop,
                                       const size_t size, void *value,
                                       size_t *size_ret) {
-  if (site == NULL || prop >= QDMI_SITE_PROPERTY_MAX ||
+  if (session == NULL || site == NULL || prop >= QDMI_SITE_PROPERTY_MAX ||
       (value == NULL && size_ret == NULL)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
@@ -682,14 +683,15 @@ int C_QDMI_device_site_query_property(const C_QDMI_Site site,
   return QDMI_ERROR_NOTSUPPORTED;
 } /// [DOXYGEN FUNCTION END]
 
-int C_QDMI_device_operation_query_property(const C_QDMI_Operation operation,
+int C_QDMI_device_operation_query_property(C_QDMI_Device_Session session,
+                                           C_QDMI_Operation operation,
                                            const size_t num_sites,
                                            const C_QDMI_Site *sites,
                                            const QDMI_Operation_Property prop,
                                            const size_t size, void *value,
                                            size_t *size_ret) {
-  if (prop >= QDMI_OPERATION_PROPERTY_MAX || operation == NULL ||
-      (sites != NULL && num_sites == 0) ||
+  if (session == NULL || prop >= QDMI_OPERATION_PROPERTY_MAX ||
+      operation == NULL || (sites != NULL && num_sites == 0) ||
       (value == NULL && size_ret == NULL)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }

@@ -49,6 +49,6 @@ int main() {
   @QDMI_PREFIX@_QDMI_device_session_query_property(session, QDMI_DEVICE_PROPERTY_MAX, 0, nullptr, nullptr);
   @QDMI_PREFIX@_QDMI_device_session_get_sites(session, 0, nullptr, nullptr);
   @QDMI_PREFIX@_QDMI_device_session_get_operations(session, 0, nullptr, nullptr);
-  @QDMI_PREFIX@_QDMI_device_site_query_property(site, QDMI_SITE_PROPERTY_MAX, 0, nullptr, nullptr);
-  @QDMI_PREFIX@_QDMI_device_operation_query_property(operation, 0, nullptr, QDMI_OPERATION_PROPERTY_MAX, 0, nullptr, nullptr);
+  @QDMI_PREFIX@_QDMI_device_site_query_property(session, site, QDMI_SITE_PROPERTY_MAX, 0, nullptr, nullptr);
+  @QDMI_PREFIX@_QDMI_device_operation_query_property(session, operation, 0, nullptr, QDMI_OPERATION_PROPERTY_MAX, 0, nullptr, nullptr);
 }
