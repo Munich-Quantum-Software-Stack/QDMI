@@ -323,19 +323,108 @@ typedef enum QDMI_JOB_STATUS_T QDMI_Job_Status;
  * @brief Enum of formats that can be submitted to the device.
  */
 enum QDMI_PROGRAM_FORMAT_T {
-  /// `char*`(string) An OpenQASM 2.0 program.
+  /**
+   * @brief `char*` (string) An OpenQASM 2.0 program.
+   * @details A text-based representation of a quantum circuit in the
+   * [OpenQASM 2.0 language](https://arxiv.org/abs/1707.03429). Devices that
+   * claim to support this format must accept programs conforming to the
+   * following rules:
+   * - The program contains exactly one quantum register named `q`.
+   * - The number of qubits in the quantum register `q` matches the number of
+   *   sites in the device.
+   * - The program only contains gate identifiers that are reported by the
+   *   @ref QDMI_OPERATION_PROPERTY_NAME property of the device's operations.
+   *
+   * @par Given a program following these rules, the operations in the program
+   * are expected to be performed on the physical sites of the device as queried
+   * via @ref QDMI_DEVICE_PROPERTY_SITES, i.e., an operation on `q[i]` is
+   * performed on the i-th site in the list of sites returned by the device.
+   *
+   * @note Devices may decide to support more general OpenQASM 2.0 programs that
+   * do not follow these rules, e.g., using multiple qubit registers or
+   * arbitrary gates. However, in that case, no guarantees can be made about the
+   * mapping of qubits in the program to the physical sites of the device.
+   */
   QDMI_PROGRAM_FORMAT_QASM2 = 0,
-  /// `char*`(string) An OpenQASM 3.0 program.
+  /**
+   * @brief `char*` (string) An OpenQASM 3 program.
+   * @details A text-based representation of a quantum circuit in the
+   * [OpenQASM 3 language](https://openqasm.com/). Devices that claim to support
+   * this format must accept programs conforming to the same rules as for @ref
+   * QDMI_PROGRAM_FORMAT_QASM2.
+   *
+   * @par Besides the rules for OpenQASM 2.0 programs, OpenQASM 3 programs may
+   * be written in terms of physical qubits, which are denoted by `$[NUM]`, with
+   * `[NUM]` being a non-negative integer denoting the physical qubit's index.
+   * If a program uses physical qubits, the operations in the program must be
+   * performed on the sites with IDs corresponding to the physical qubits in the
+   * program.
+   *
+   * @note Devices may decide to support more general OpenQASM 3 programs that
+   * do not follow these rules, e.g., using multiple qubit registers or
+   * arbitrary gates. However, in that case, no guarantees can be made about the
+   * mapping of qubits in the program to the physical sites of the device.
+   */
   QDMI_PROGRAM_FORMAT_QASM3 = 1,
-  /// `char*`(string) A text-based QIR program complying to the QIR base
-  /// profile.
+  /**
+   * @brief `char*` (string) A text-based QIR program complying to the QIR base
+   * profile.
+   * @details A text-based representation of a quantum circuit in the Quantum
+   * Intermediate Representation (QIR) format; specifically, the [QIR base
+   * profile](https://github.com/qir-alliance/qir-spec/blob/8b3fd47b7b70122a104e24733ef9de911576f7d6/specification/under_development/profiles/Base_Profile.md).
+   * Devices that claim to support this format must accept programs that follow
+   * the rules for the QIR base profile and that only contain operations that
+   * are reported by the @ref QDMI_OPERATION_PROPERTY_NAME property of the
+   * device's operations (e.g., `@__quantum__qis__[NAME]__body`, where `[NAME]`
+   * is the name of the operation).
+   *
+   * @par QIR has a similar distinction between dynamically allocated and static
+   * hardware qubits as @ref QDMI_PROGRAM_FORMAT_QASM3. The same rules apply for
+   * the mapping of qubits in the program to the physical sites of the device.
+   * Specifically, if the program only allocates a single register named `q`
+   * with as many qubits as there are sites in the device, the operations in the
+   * program are expected to be performed on the physical sites of the device as
+   * queried via @ref QDMI_DEVICE_PROPERTY_SITES. If, on the other hand, the
+   * program uses static qubit addresses (e.g., `ptr inttoptr (i64 1 to ptr)`),
+   * the operations in the program must be performed on the sites with IDs
+   * corresponding to the static qubit addresses in the program.
+   *
+   * @note Devices may decide to support more general QIR programs that do not
+   * follow these rules, e.g., using multiple qubit registers or arbitrary
+   * gates. However, in that case, no guarantees can be made about the mapping
+   * of qubits in the program to the physical sites of the device.
+   */
   QDMI_PROGRAM_FORMAT_QIRBASESTRING = 2,
-  /// `void*` A QIR binary complying to the QIR base profile.
+  /**
+   * @brief `void*` A QIR binary complying to the QIR base profile.
+   * @details A binary representation of a quantum circuit in the Quantum
+   * Intermediate Representation (QIR) format; specifically, the [QIR base
+   * profile](https://github.com/qir-alliance/qir-spec/blob/8b3fd47b7b70122a104e24733ef9de911576f7d6/specification/under_development/profiles/Base_Profile.md).
+   *
+   * @see QDMI_PROGRAM_FORMAT_QIRBASESTRING for more information on the QIR base
+   * profile and the expected behavior of devices supporting this format.
+   */
   QDMI_PROGRAM_FORMAT_QIRBASEMODULE = 3,
-  /// `char*`(string) A text-based QIR program complying to the QIR adaptive
-  /// profile.
+  /**
+   * @brief `char*` (string) A text-based QIR program complying to the QIR
+   * adaptive profile.
+   * @details A text-based representation of a quantum circuit in the Quantum
+   * Intermediate Representation (QIR) format; specifically, the [QIR adaptive
+   * profile](https://github.com/qir-alliance/qir-spec/blob/8b3fd47b7b70122a104e24733ef9de911576f7d6/specification/under_development/profiles/Adaptive_Profile.md).
+   *
+   * @see QDMI_PROGRAM_FORMAT_QIRBASESTRING for more information on the QIR base
+   * profile and the expected behavior of devices supporting this format.
+   */
   QDMI_PROGRAM_FORMAT_QIRADAPTIVESTRING = 4,
-  /// `void*` A QIR binary complying to the QIR adaptive profile.
+  /**
+   * @brief `void*` A QIR binary complying to the QIR adaptive profile.
+   * @details A binary representation of a quantum circuit in the Quantum
+   * Intermediate Representation (QIR) format; specifically, the [QIR adaptive
+   * profile](https://github.com/qir-alliance/qir-spec/blob/8b3fd47b7b70122a104e24733ef9de911576f7d6/specification/under_development/profiles/Adaptive_Profile.md).
+   *
+   * @see QDMI_PROGRAM_FORMAT_QIRBASESTRING for more information on the QIR base
+   * profile and the expected behavior of devices supporting this format.
+   */
   QDMI_PROGRAM_FORMAT_QIRADAPTIVEMODULE = 5,
   /**
    * @brief The maximum value of the enum.
