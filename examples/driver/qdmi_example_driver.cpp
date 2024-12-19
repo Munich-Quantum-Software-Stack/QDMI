@@ -331,7 +331,7 @@ int QDMI_session_set_parameter(QDMI_Session session,
                                QDMI_Session_Parameter param, const size_t size,
                                const void *value) {
   if (session == nullptr || param >= QDMI_SESSION_PARAMETER_MAX ||
-      value == nullptr) {
+      (value != nullptr && size == 0)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   if (session->status != QDMI_SESSION_STATUS::ALLOCATED) {
@@ -339,9 +339,11 @@ int QDMI_session_set_parameter(QDMI_Session session,
   }
   switch (param) {
   case QDMI_SESSION_PARAMETER_TOKEN:
-    session->token = std::string(static_cast<const char *>(value), size - 1);
-    session->mode = session->token.empty() ? QDMI_DEVICE_MODE_READONLY
-                                           : QDMI_SESSION_MODE_READWRITE;
+    if (value != nullptr) {
+      session->token = std::string(static_cast<const char *>(value), size - 1);
+      session->mode = session->token.empty() ? QDMI_DEVICE_MODE_READONLY
+                                             : QDMI_SESSION_MODE_READWRITE;
+    }
     return QDMI_SUCCESS;
   default:
     break;
@@ -424,8 +426,7 @@ int QDMI_job_set_parameter(QDMI_Job job, QDMI_Job_Parameter param,
        param != QDMI_JOB_PARAMETER_CUSTOM2 &&
        param != QDMI_JOB_PARAMETER_CUSTOM3 &&
        param != QDMI_JOB_PARAMETER_CUSTOM4 &&
-       param != QDMI_JOB_PARAMETER_CUSTOM5) ||
-      size == 0 || value == nullptr) {
+       param != QDMI_JOB_PARAMETER_CUSTOM5)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   if ((job->device->session->mode & QDMI_SESSION_MODE_READWRITE) != 0) {

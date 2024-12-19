@@ -313,13 +313,17 @@ int CXX_QDMI_device_session_set_parameter(CXX_QDMI_Device_Session session,
                                           QDMI_Device_Session_Parameter param,
                                           size_t size, const void *value) {
   if (session == nullptr || param >= QDMI_DEVICE_SESSION_PARAMETER_MAX ||
-      size == 0 || value == nullptr ||
-      session->status != CXX_QDMI_DEVICE_SESSION_STATUS::ALLOCATED) {
+      (value != nullptr && size == 0)) {
     return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  if (session->status != CXX_QDMI_DEVICE_SESSION_STATUS::ALLOCATED) {
+    return QDMI_ERROR_BADSTATE;
   }
   switch (param) {
   case QDMI_DEVICE_SESSION_PARAMETER_TOKEN:
-    session->token = std::string(static_cast<const char *>(value), size);
+    if (value != nullptr) {
+      session->token = std::string(static_cast<const char *>(value), size);
+    }
     return QDMI_SUCCESS;
   default:
     return QDMI_ERROR_NOTSUPPORTED;
@@ -368,13 +372,18 @@ void CXX_QDMI_device_job_free(CXX_QDMI_Device_Job job) {
 int CXX_QDMI_device_job_set_parameter(CXX_QDMI_Device_Job job,
                                       const QDMI_Device_Job_Parameter param,
                                       const size_t size, const void *value) {
-  if (job == nullptr || param >= QDMI_DEVICE_JOB_PARAMETER_MAX || size == 0 ||
-      value == nullptr || job->status != QDMI_JOB_STATUS_CREATED) {
+  if (job == nullptr || param >= QDMI_DEVICE_JOB_PARAMETER_MAX ||
+      (value != nullptr && size == 0)) {
     return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  if (job->status != QDMI_JOB_STATUS_CREATED) {
+    return QDMI_ERROR_BADSTATE;
   }
   switch (param) {
   case QDMI_DEVICE_JOB_PARAMETER_SHOTS_NUM:
-    job->num_shots = *static_cast<const size_t *>(value);
+    if (value != nullptr) {
+      job->num_shots = *static_cast<const size_t *>(value);
+    }
     return QDMI_SUCCESS;
   default:
     return QDMI_ERROR_NOTSUPPORTED;

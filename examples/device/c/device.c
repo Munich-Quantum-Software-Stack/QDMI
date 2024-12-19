@@ -199,7 +199,7 @@ int C_QDMI_device_session_set_parameter(
     C_QDMI_Device_Session session, const QDMI_Device_Session_Parameter param,
     const size_t size, const void *value) {
   if (session == NULL || param >= QDMI_DEVICE_SESSION_PARAMETER_MAX ||
-      size == 0 || value == NULL) {
+      (value != NULL && size == 0)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   if (session->status != ALLOCATED) {
@@ -265,13 +265,18 @@ void C_QDMI_device_job_free(C_QDMI_Device_Job job) {
 int C_QDMI_device_job_set_parameter(C_QDMI_Device_Job job,
                                     const QDMI_Device_Job_Parameter param,
                                     const size_t size, const void *value) {
-  if (job == NULL || param >= QDMI_DEVICE_JOB_PARAMETER_MAX || size == 0 ||
-      value == NULL || job->status != QDMI_JOB_STATUS_CREATED) {
+  if (job == NULL || param >= QDMI_DEVICE_JOB_PARAMETER_MAX ||
+      (value != NULL && size == 0)) {
     return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  if (job->status != QDMI_JOB_STATUS_CREATED) {
+    return QDMI_ERROR_BADSTATE;
   }
   switch (param) {
   case QDMI_DEVICE_JOB_PARAMETER_SHOTS_NUM:
-    job->num_shots = *(const size_t *)value;
+    if (value != NULL) {
+      job->num_shots = *(const size_t *)value;
+    }
     return QDMI_SUCCESS;
   default:
     break;
