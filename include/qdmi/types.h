@@ -17,8 +17,8 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 ------------------------------------------------------------------------------*/
 
 /** @file
- * @brief Defines all enums used within QDMI across the client and device
- * interface.
+ * @brief Defines all types used within QDMI that are shared across the client
+ * and device interfaces.
  */
 
 #pragma once
@@ -34,27 +34,22 @@ extern "C" {
 /**
  * @brief A handle for a site.
  * @details An opaque pointer to an implementation of the QDMI site concept.
- * A site is a place that can potentially hold a qubit. In the case of
- * superconducting qubits, sites can be used synonymously with qubits. In the
- * case of neutral atoms, sites represent individual traps that can confine
- * atoms. Those atoms are then used as qubits. To this end, sites are a
- * generalization of qubits that denote locations where qubits can be placed on
- * a device.
- * The actual implementation of the concept is defined by the driver.
- * Most implementation will want to store the device handle used to create the
- * site in the site handle to be able to access the device information when
- * needed.
+ * A site is a place that can potentially hold a qubit. In case of
+ * superconducting qubits, sites can be used synonymously with qubits. In case
+ * of neutral atoms, sites represent individual traps that can confine atoms.
+ * Those atoms are then used as qubits. To this end, sites are a generalization
+ * of qubits that denote locations where qubits can be placed on a device.
+ * The actual implementation of the concept is defined by each device.
  */
 typedef struct QDMI_Site_impl_d *QDMI_Site;
 
 /**
  * @brief A handle for an operation.
  * @details An opaque pointer to an implementation of the QDMI operation
- * concept. An operation represents a quantum operation that can be executed on
- * a device. The actual implementation of the concept is defined by the driver.
- * Most implementation will want to store the device handle used to create the
- * operation in the operation handle to be able to access the device information
- * when needed.
+ * concept. An operation generally represents any instruction that can be
+ * executed on a device. This includes gates, measurements, classical control
+ * flow elements, movement of qubits, pulse-level instructions, etc.
+ * The actual implementation of the concept is defined by each device.
  */
 typedef struct QDMI_Operation_impl_d *QDMI_Operation;
 
