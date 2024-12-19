@@ -105,7 +105,7 @@ typedef enum QDMI_DEVICE_SESSION_PARAMETER_T QDMI_Device_Session_Parameter;
 
 /**
  * @brief Enum of the device job parameters that can be set.
- * @details If not noted otherwise, parameters are optional and drivers must not
+ * @details If not noted otherwise, parameters are optional and devices must not
  * require them to be set.
  */
 enum QDMI_DEVICE_JOB_PARAMETER_T {
