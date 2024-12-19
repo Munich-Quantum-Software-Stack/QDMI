@@ -144,7 +144,8 @@ typedef enum QDMI_DEVICE_JOB_PARAMETER_T QDMI_Device_Job_Parameter;
 
 /// Enum of the device properties that can be queried.
 enum QDMI_DEVICE_PROPERTY_T {
-  QDMI_DEVICE_PROPERTY_NAME = 0, ///< `char*` (string) The name of the device.
+  /// `char*` (string) The name of the device.
+  QDMI_DEVICE_PROPERTY_NAME = 0,
   /// `char*` (string) The version of the device.
   QDMI_DEVICE_PROPERTY_VERSION = 1,
   /// `int` The @ref QDMI_Device_Status of the device.
@@ -159,10 +160,10 @@ enum QDMI_DEVICE_PROPERTY_T {
    * pairs in the list are flattened such that the first site of the pair is at
    * index 2n and the second site is at index 2n+1.
    *
-   * The sites returned in that list are represented as a pointer to the
-   * respective @ref QDMI_Site. For example, consider a 3-site device with a
-   * coupling map (0, 1), (1, 2). Additionally, `site_i` is the pointer to the
-   * i-th site. Then, `{site_0, site_1, site_1, site_2}` would be returned.
+   * The sites returned in that list are represented as @ref QDMI_Site handles.
+   * For example, consider a 3-site device with a coupling map `(0, 1), (1, 2)`.
+   * Additionally, assume `site_i` is the handle for the i-th site. Then,
+   * `{site_0, site_1, site_1, site_2}` would be returned.
    */
   QDMI_DEVICE_PROPERTY_COUPLINGMAP = 5,
   /**
