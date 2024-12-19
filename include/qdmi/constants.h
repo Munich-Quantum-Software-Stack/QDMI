@@ -74,7 +74,7 @@ enum QDMI_DEVICE_SESSION_PARAMETER_T {
    * use this parameter to switch between different versions of the API or
    * different endpoints for testing or production environments.
    */
-  QDMI_DEVICE_SESSION_PARAMETER_BASEURL = 0,
+  QDMI_DEVICE_SESSION_PARAMETER_BASEURL = 1,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
