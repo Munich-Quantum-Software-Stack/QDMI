@@ -44,35 +44,6 @@ extern "C" {
 // NOLINTBEGIN(performance-enum-size,modernize-use-using,modernize-redundant-void-arg)
 
 /**
- * @brief A handle for a QDMI device session.
- * @details An opaque pointer to an implementation of the QDMI device session
- * concept. The actual implementation is defined by the device.
- */
-typedef struct QDMI_Device_Session_impl_d *QDMI_Device_Session;
-
-/**
- * @brief A handle for a QDMI device job.
- * @details An opaque pointer to an implementation of the QDMI device job
- * concept. The actual implementation is defined by the device.
- * Most implementation will want to store the session handle used to create the
- * job in the job handle to be able to access the session information when
- * needed.
- *
- * A job is a program that is executed on a device. The program can be a quantum
- * circuit (in various formats) or some other routine that the device can run.
- * Jobs are created using the @ref QDMI_device_job_create function. After
- * creating a job, additional parameters can be set using @ref
- * QDMI_device_job_set_parameter. Then, the job must be submitted for execution
- * using @ref QDMI_device_job_submit. The status of the job can be checked using
- * @ref QDMI_device_job_check. The job can be waited for using @ref
- * QDMI_device_job_wait. The job can be canceled using @ref
- * QDMI_device_job_cancel. The results of the job can be retrieved using @ref
- * QDMI_device_job_get_data. Finally, the job must be freed using @ref
- * QDMI_device_job_free.
- */
-typedef struct QDMI_Device_Job_impl_d *QDMI_Device_Job;
-
-/**
  * @brief Initialize a device.
  * @details A device can expect that this function is called once in the
  * beginning and has returned before any other functions are invoked on that
@@ -101,6 +72,13 @@ int QDMI_device_finalize(void);
  */
 
 /**
+ * @brief A handle for a QDMI device session.
+ * @details An opaque pointer to an implementation of the QDMI device session
+ * concept. The actual implementation is defined by the device.
+ */
+typedef struct QDMI_Device_Session_impl_d *QDMI_Device_Session;
+
+/**
  * @brief Allocate a new QDMI device session.
  * @details The returned handle can be used in subsequent calls throughout the
  * client interface to refer to the session. However, the session must be
@@ -124,8 +102,8 @@ int QDMI_device_session_alloc(QDMI_Device_Session *session);
  * devices may require authentication prior to using the session. The required
  * authentication information must be set using @ref
  * QDMI_device_session_set_parameter before calling this function. Functions
- * like @ref QDMI_device_query_property or @ref QDMI_job_create must not be
- * called before the session is initialized.
+ * like @ref QDMI_device_query_device_property or @ref QDMI_device_create_job
+ * must not be called before the session is initialized.
  * @param[in] session The session to initialize. Must not be @c NULL.
  * @return @ref QDMI_SUCCESS if the session was initialized successfully.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p session is @c NULL.
@@ -178,6 +156,28 @@ int QDMI_device_session_set_parameter(QDMI_Device_Session session,
  */
 
 /**
+ * @brief A handle for a QDMI device job.
+ * @details An opaque pointer to an implementation of the QDMI device job
+ * concept. The actual implementation is defined by the device.
+ * Most implementation will want to store the session handle used to create the
+ * job in the job handle to be able to access the session information when
+ * needed.
+ *
+ * A job is a program that is executed on a device. The program can be a quantum
+ * circuit (in various formats) or some other routine that the device can run.
+ * Jobs are created using the @ref QDMI_device_create_job function. After
+ * creating a job, additional parameters can be set using @ref
+ * QDMI_device_job_set_parameter. Then, the job must be submitted for execution
+ * using @ref QDMI_device_job_submit. The status of the job can be checked using
+ * @ref QDMI_device_job_check. The job can be waited for using @ref
+ * QDMI_device_job_wait. The job can be canceled using @ref
+ * QDMI_device_job_cancel. The results of the job can be retrieved using @ref
+ * QDMI_device_job_get_results. Finally, the job must be freed using @ref
+ * QDMI_device_job_free.
+ */
+typedef struct QDMI_Device_Job_impl_d *QDMI_Device_Job;
+
+/**
  * @brief Create a job with a certain program on a device.
  * @param[in] session The session to create the job on. Must not be @c NULL.
  * @param[in] format The format of the program. Must be one of the values
@@ -204,9 +204,10 @@ int QDMI_device_session_set_parameter(QDMI_Device_Session session,
  * function can be used to check if the device supports the specified program
  * format without creating a job and without the need to provide a program.
  */
-int QDMI_device_job_create(QDMI_Device_Session session,
-                           QDMI_Program_Format format, size_t size,
-                           const void *prog, QDMI_Device_Job *job);
+int QDMI_device_session_create_device_job(QDMI_Device_Session session,
+                                          QDMI_Program_Format format,
+                                          size_t size, const void *prog,
+                                          QDMI_Device_Job *job);
 
 /**
  * @brief Free a job.
@@ -276,7 +277,7 @@ int QDMI_device_job_cancel(QDMI_Device_Job job);
  * @brief Check the status of a job.
  * @details This function is non-blocking and returns immediately with the job
  * status. It is not necessary to call this function before calling @ref
- * QDMI_device_job_get_data.
+ * QDMI_device_job_get_results.
  * @param[in] job The job to check the status of. Must not be @c NULL.
  * @param[out] status The status of the job. Must not be @c NULL.
  * @return @ref QDMI_SUCCESS if the job status was successfully checked.
@@ -321,8 +322,8 @@ int QDMI_device_job_wait(QDMI_Device_Job job);
  * result. The size of the buffer required to retrieve the result is returned in
  * @p size_ret if @p size_ret is not @c NULL.
  */
-int QDMI_device_job_get_data(QDMI_Device_Job job, QDMI_Job_Result result,
-                             size_t size, void *data, size_t *size_ret);
+int QDMI_device_job_get_results(QDMI_Device_Job job, QDMI_Job_Result result,
+                                size_t size, void *data, size_t *size_ret);
 
 /** @} */ // end of device_job
 
@@ -362,9 +363,10 @@ int QDMI_device_job_get_data(QDMI_Device_Job job, QDMI_Job_Result result,
  * size of the buffer needed to retrieve the property is returned in @p size_ret
  * if @p size_ret is not @c NULL.
  */
-int QDMI_device_session_query_property(QDMI_Device_Session session,
-                                       QDMI_Device_Property prop, size_t size,
-                                       void *value, size_t *size_ret);
+int QDMI_device_session_query_device_property(QDMI_Device_Session session,
+                                              QDMI_Device_Property prop,
+                                              size_t size, void *value,
+                                              size_t *size_ret);
 
 /**
  * @brief Query a site property.
@@ -395,9 +397,11 @@ int QDMI_device_session_query_property(QDMI_Device_Session session,
  * be used to check if the device supports the specified property without
  * retrieving the property and without the need to provide a buffer for it.
  */
-int QDMI_device_site_query_property(QDMI_Device_Session session, QDMI_Site site,
-                                    QDMI_Site_Property prop, size_t size,
-                                    void *value, size_t *size_ret);
+int QDMI_device_session_query_site_property(QDMI_Device_Session session,
+                                            QDMI_Site site,
+                                            QDMI_Site_Property prop,
+                                            size_t size, void *value,
+                                            size_t *size_ret);
 
 /**
  * @brief Query a device operation property.
@@ -437,7 +441,7 @@ int QDMI_device_site_query_property(QDMI_Device_Session session, QDMI_Site site,
  * @p sites. In this case, the device may return the average value of the
  * property for all sites.
  */
-int QDMI_device_operation_query_property(
+int QDMI_device_session_query_operation_property(
     QDMI_Device_Session session, QDMI_Operation operation, size_t num_sites,
     const QDMI_Site *sites, QDMI_Operation_Property prop, size_t size,
     void *value, size_t *size_ret);

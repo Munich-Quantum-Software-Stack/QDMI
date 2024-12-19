@@ -85,10 +85,11 @@ int MY_QDMI_device_session_set_parameter(MY_QDMI_Device_Session session,
   return QDMI_ERROR_NOTIMPLEMENTED;
 }
 
-int MY_QDMI_device_job_create(MY_QDMI_Device_Session session,
-                              const QDMI_Program_Format format,
-                              const size_t size, const void *prog,
-                              MY_QDMI_Device_Job *job) {
+int MY_QDMI_device_session_create_device_job(MY_QDMI_Device_Session session,
+                                             const QDMI_Program_Format format,
+                                             const size_t size,
+                                             const void *prog,
+                                             MY_QDMI_Device_Job *job) {
   return QDMI_ERROR_NOTIMPLEMENTED;
 }
 
@@ -116,34 +117,31 @@ int MY_QDMI_device_job_wait(MY_QDMI_Device_Job job) {
   return QDMI_ERROR_NOTIMPLEMENTED;
 }
 
-int MY_QDMI_device_job_get_data(MY_QDMI_Device_Job job, QDMI_Job_Result result,
-                                const size_t size, void *data,
-                                size_t *size_ret) {
+int MY_QDMI_device_job_get_results(MY_QDMI_Device_Job job,
+                                   QDMI_Job_Result result, const size_t size,
+                                   void *data, size_t *size_ret) {
   return QDMI_ERROR_NOTIMPLEMENTED;
 }
 
-int MY_QDMI_device_session_query_property(MY_QDMI_Device_Session session,
-                                          const QDMI_Device_Property prop,
-                                          const size_t size, void *value,
-                                          size_t *size_ret) {
+int MY_QDMI_device_session_query_device_property(
+    MY_QDMI_Device_Session session, const QDMI_Device_Property prop,
+    const size_t size, void *value, size_t *size_ret) {
   return QDMI_ERROR_NOTIMPLEMENTED;
 }
 
-int MY_QDMI_device_site_query_property(MY_QDMI_Device_Session session,
-                                       MY_QDMI_Site site,
-                                       const QDMI_Site_Property prop,
-                                       const size_t size, void *value,
-                                       size_t *size_ret) {
+int MY_QDMI_device_session_query_site_property(MY_QDMI_Device_Session session,
+                                               MY_QDMI_Site site,
+                                               const QDMI_Site_Property prop,
+                                               const size_t size, void *value,
+                                               size_t *size_ret) {
   return QDMI_ERROR_NOTIMPLEMENTED;
 }
 
-int MY_QDMI_device_operation_query_property(MY_QDMI_Device_Session session,
-                                            MY_QDMI_Operation operation,
-                                            const size_t num_sites,
-                                            const MY_QDMI_Site *sites,
-                                            const QDMI_Operation_Property prop,
-                                            const size_t size, void *value,
-                                            size_t *size_ret) {
+int MY_QDMI_device_session_query_operation_property(
+    MY_QDMI_Device_Session session, MY_QDMI_Operation operation,
+    const size_t num_sites, const MY_QDMI_Site *sites,
+    const QDMI_Operation_Property prop, const size_t size, void *value,
+    size_t *size_ret) {
   return QDMI_ERROR_NOTIMPLEMENTED;
 }
 

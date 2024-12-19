@@ -255,8 +255,8 @@ typedef struct QDMI_Job_impl_d *QDMI_Job;
  * function can be used to check if the device supports the specified program
  * format without creating a job and without the need to provide a program.
  */
-int QDMI_job_create(QDMI_Device device, QDMI_Program_Format format, size_t size,
-                    const void *prog, QDMI_Job *job);
+int QDMI_device_create_job(QDMI_Device device, QDMI_Program_Format format,
+                           size_t size, const void *prog, QDMI_Job *job);
 
 /**
  * @brief Free a job.
@@ -364,7 +364,7 @@ int QDMI_job_cancel(QDMI_Job job);
  * @brief Check the status of a job.
  * @details This function is non-blocking and returns immediately with the job
  * status. It is not necessary to call this function before calling @ref
- * QDMI_job_get_data.
+ * QDMI_job_get_results.
  * @param[in] job The job to check the status of. Must not be @c NULL.
  * @param[out] status The status of the job. Must not be @c NULL.
  * @return @ref QDMI_SUCCESS if the job status was successfully checked.
@@ -409,8 +409,8 @@ int QDMI_job_wait(QDMI_Job job);
  * result. The size of the buffer needed to retrieve the result is returned in
  * @p size_ret if @p size_ret is not @c NULL.
  */
-int QDMI_job_get_data(QDMI_Job job, QDMI_Job_Result result, size_t size,
-                      void *data, size_t *size_ret);
+int QDMI_job_get_results(QDMI_Job job, QDMI_Job_Result result, size_t size,
+                         void *data, size_t *size_ret);
 
 /** @} */ // end of client_job
 
@@ -450,8 +450,9 @@ int QDMI_job_get_data(QDMI_Job job, QDMI_Job_Result result, size_t size,
  * size of the buffer needed to retrieve the property is returned in @p size_ret
  * if @p size_ret is not @c NULL.
  */
-int QDMI_device_query_property(QDMI_Device device, QDMI_Device_Property prop,
-                               size_t size, void *value, size_t *size_ret);
+int QDMI_device_query_device_property(QDMI_Device device,
+                                      QDMI_Device_Property prop, size_t size,
+                                      void *value, size_t *size_ret);
 
 /**
  * @brief Query a site property.
@@ -481,9 +482,9 @@ int QDMI_device_query_property(QDMI_Device device, QDMI_Device_Property prop,
  * be used to check if the device supports the specified property without
  * retrieving the property and without the need to provide a buffer for it.
  */
-int QDMI_site_query_property(QDMI_Device device, QDMI_Site site,
-                             QDMI_Site_Property prop, size_t size, void *value,
-                             size_t *size_ret);
+int QDMI_device_query_site_property(QDMI_Device device, QDMI_Site site,
+                                    QDMI_Site_Property prop, size_t size,
+                                    void *value, size_t *size_ret);
 
 /**
  * @brief Query a device operation property.
@@ -523,10 +524,10 @@ int QDMI_site_query_property(QDMI_Device device, QDMI_Site site,
  * @p sites. In this case, the device may return the average value of the
  * property for all sites.
  */
-int QDMI_operation_query_property(QDMI_Device device, QDMI_Operation operation,
-                                  size_t num_sites, const QDMI_Site *sites,
-                                  QDMI_Operation_Property prop, size_t size,
-                                  void *value, size_t *size_ret);
+int QDMI_device_query_operation_property(
+    QDMI_Device device, QDMI_Operation operation, size_t num_sites,
+    const QDMI_Site *sites, QDMI_Operation_Property prop, size_t size,
+    void *value, size_t *size_ret);
 
 /** @} */ // end of client_query
 

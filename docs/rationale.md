@@ -138,9 +138,9 @@ implementations of an older interface version might just return \ref QDMI_ERROR_
 the newly added properties but no segmentation fault or similar happens.
 
 In the following, the general usage of functions for data retrieval is explained by the aid of the
-example of \ref QDMI_device_query_property. This function receives a handle to a device that is—in
-the view of the client—an opaque pointer to a device. This device handle must first be retrieved
-from the function \ref QDMI_session_get_devices. This function has the signature:
+example of \ref QDMI_device_query_device_property. This function receives a handle to a device that
+is—in the view of the client—an opaque pointer to a device. This device handle must first be
+retrieved from the function \ref QDMI_session_get_devices. This function has the signature:
 
 ```C
 int QDMI_session_get_devices(QDMI_Session session, size_t num_entries, QDMI_Device *devices, size_t *num_devices)
@@ -157,11 +157,11 @@ only retrieve the number of devices that are available which will, in this case,
 `num_devices`. Simultaneously, if `num_devices` is `NULL`, it is ignored, and the function only
 writes the number of devices into the memory pointed to by `devices`.
 
-With the device handles at hand, the function \ref QDMI_device_query_property can be called for one
-device. The signature of the function is:
+With the device handles at hand, the function \ref QDMI_device_query_device_property can be called
+for one device. The signature of the function is:
 
 ```C
-int QDMI_device_query_property(QDMI_Device device, QDMI_Device_Property prop, size_t size, void *value, size_t *size_ret)
+int QDMI_device_query_device_property(QDMI_Device device, QDMI_Device_Property prop, size_t size, void *value, size_t *size_ret)
 ```
 
 The semantics of this function is actually similar to the one described earlier. The first two
