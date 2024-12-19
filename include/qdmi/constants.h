@@ -217,8 +217,19 @@ typedef enum QDMI_DEVICE_STATUS_T QDMI_Device_Status;
 
 /// Enum of the site properties that can be queried.
 enum QDMI_SITE_PROPERTY_T {
-  QDMI_SITE_PROPERTY_TIME_T1 = 0, ///< `double` The T1 time of a site in µs.
-  QDMI_SITE_PROPERTY_TIME_T2 = 1, ///< `double` The T2 time of a site in µs.
+  /**
+   * @brief `size_t` The unique ID to identify the site in a program.
+   * @details The ID of a site is used to link the qubits used in a quantum
+   * program to the physical sites of the device that can be queried via this
+   * interface. IDs may be non-consecutive and need not start at 0.
+   * See @ref QDMI_Program_Format for more information on how the site IDs map
+   * to the qubits in a program.
+   */
+  QDMI_SITE_PROPERTY_ID = 0,
+  /// `double` The T1 time of a site in µs.
+  QDMI_SITE_PROPERTY_TIME_T1 = 1,
+  /// `double` The T2 time of a site in µs.
+  QDMI_SITE_PROPERTY_TIME_T2 = 2,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
@@ -226,7 +237,7 @@ enum QDMI_SITE_PROPERTY_T {
    * enum besides the custom members and must be updated when new members are
    * added.
    */
-  QDMI_SITE_PROPERTY_MAX = 2,
+  QDMI_SITE_PROPERTY_MAX = 3,
   /**
    * @brief This property is reserved for a custom property.
    * @details The meaning and the type of this property are defined by the
