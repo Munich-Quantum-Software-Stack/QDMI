@@ -149,6 +149,20 @@ TEST_P(QDMIImplementationTest, QueryGatePropertiesForEachGate) {
   }
 }
 
+TEST_P(QDMIImplementationTest, QuerySiteProperties) {
+  // Check whether there are equally many sites as reported qubits
+  const auto fomac = FoMaC(device);
+  const auto sites = fomac.get_sites();
+  const auto qubits_num = fomac.get_qubits_num();
+  EXPECT_EQ(sites.size(), qubits_num);
+  // For every site check that the site ID is less than the number of qubits.
+  // Note that this assumption is only true for the provided example devices.
+  for (const auto &site : sites) {
+    const auto site_id = fomac.get_site_id(site);
+    EXPECT_LT(site_id, qubits_num);
+  }
+}
+
 TEST_P(QDMIImplementationTest, JobLifecycle) {
   if (mode == TEST_SESSION_MODE::READONLY) {
     GTEST_SKIP() << "Skipping test for read-only session";

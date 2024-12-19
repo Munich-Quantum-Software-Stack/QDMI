@@ -28,6 +28,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 #include <cassert>
 #include <cstddef>
+#include <cstdint>
 #include <map>
 #include <string>
 #include <utility>
@@ -51,6 +52,8 @@ public:
 
   [[nodiscard]] auto get_coupling_map() const
       -> std::vector<std::pair<QDMI_Site, QDMI_Site>>;
+
+  [[nodiscard]] auto get_site_id(QDMI_Site site) const -> uint64_t;
 
   [[nodiscard]] auto get_operands_num(const QDMI_Operation &op) const -> size_t;
 };
