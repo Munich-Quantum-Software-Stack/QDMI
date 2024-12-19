@@ -133,11 +133,13 @@ void QDMI_device_session_free(QDMI_Device_Session session);
  * QDMI_Device_Session_Parameter and, when @p value is not @c NULL, the value of
  * the parameter was set successfully.
  * @return @ref QDMI_ERROR_NOTSUPPORTED if the device does not support the
- * parameter.
+ * parameter or the value of the parameter.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p session is @c NULL, if @p param
  * is invalid, if @p value is not @c NULL and @p size is
  * zero or not the expected size for the parameter (if specified by the @ref
  * QDMI_Device_Session_Parameter documentation).
+ * @return @ref QDMI_ERROR_BADSTATE if the parameter cannot be set in the
+ * current state of the session.
  * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
  *
  * @note By calling this function with @p value set to @c NULL, the function can
@@ -231,11 +233,13 @@ void QDMI_device_job_free(QDMI_Device_Job job);
  * QDMI_Device_Job_Parameter @p param and, when @p value is not @c NULL, the
  * parameter was successfully set.
  * @return @ref QDMI_ERROR_NOTSUPPORTED if the device does not support the
- * parameter.
+ * parameter or the value of the parameter.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p job is @c NULL, if @p param is
  * invalid, if @p value is not @c NULL and @p size is zero or not the expected
  * size for the parameter (if specified by the @ref QDMI_Device_Job_Parameter
  * documentation).
+ * @return @ref QDMI_ERROR_BADSTATE if the parameter cannot be set in the
+ * current state of the job.
  * @return @ref QDMI_ERROR_FATAL if setting the parameter failed due to a fatal
  * error.
  *
