@@ -346,9 +346,8 @@ int QDMI_session_set_parameter(QDMI_Session session,
     }
     return QDMI_SUCCESS;
   default:
-    break;
+    return QDMI_ERROR_NOTSUPPORTED;
   }
-  return QDMI_ERROR_NOTSUPPORTED;
 }
 
 int QDMI_session_get_devices(QDMI_Session session, const size_t num_entries,

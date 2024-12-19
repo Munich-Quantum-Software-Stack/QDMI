@@ -279,9 +279,8 @@ int C_QDMI_device_job_set_parameter(C_QDMI_Device_Job job,
     }
     return QDMI_SUCCESS;
   default:
-    break;
+    return QDMI_ERROR_NOTSUPPORTED;
   }
-  return QDMI_ERROR_NOTSUPPORTED;
 } /// [DOXYGEN FUNCTION END]
 
 int C_QDMI_device_job_submit(C_QDMI_Device_Job job) {
