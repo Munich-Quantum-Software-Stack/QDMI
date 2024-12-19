@@ -27,7 +27,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 extern "C" {
 #endif
 
-// The following clang-tidy warning cannot be addressed because this header is
+// The following clang-tidy warnings cannot be addressed because this header is
 // used from both C and C++ code.
 // NOLINTBEGIN(performance-enum-size,modernize-use-using)
 
