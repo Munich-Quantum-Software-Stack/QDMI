@@ -80,29 +80,6 @@ typedef struct QDMI_Session_impl_d *QDMI_Session;
 int QDMI_session_alloc(QDMI_Session *session);
 
 /**
- * @brief Initialize a QDMI session.
- * @details This function initializes the session and prepares it for use. The
- * session must be initialized before it can be used in @ref
- * QDMI_session_get_devices. Some devices may require authentication prior to
- * initializing the session. The required authentication information must be set
- * using @ref QDMI_session_set_parameter before calling this function.
- * @param[in] session the session to initialize.
- * @return @ref QDMI_SUCCESS if the session was initialized successfully.
- * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p session is @c NULL.
- * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
- */
-int QDMI_session_init(QDMI_Session session);
-
-/**
- * @brief Free a QDMI session.
- * @details This function frees the memory that was allocated for the session.
- * Accessing a (dangling) handle to a device that was attached to the session
- * after the session was freed is undefined behavior.
- * @param[in] session the session to free.
- */
-void QDMI_session_free(QDMI_Session session);
-
-/**
  * @brief Enum of the session parameters that can be set.
  * @details If not noted otherwise, parameters are optional and drivers must not
  * require them to be set.
@@ -187,6 +164,21 @@ typedef enum QDMI_SESSION_PARAMETER_T QDMI_Session_Parameter;
 int QDMI_session_set_parameter(QDMI_Session session,
                                QDMI_Session_Parameter param, size_t size,
                                const void *value);
+
+/**
+ * @brief Initialize a QDMI session.
+ * @details This function initializes the session and prepares it for use. The
+ * session must be initialized before it can be used in @ref
+ * QDMI_session_get_devices. Some devices may require authentication prior to
+ * initializing the session. The required authentication information must be set
+ * using @ref QDMI_session_set_parameter before calling this function.
+ * @param[in] session the session to initialize.
+ * @return @ref QDMI_SUCCESS if the session was initialized successfully.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p session is @c NULL.
+ * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
+ */
+int QDMI_session_init(QDMI_Session session);
+
 /**
  * @brief Query the devices associated with @p session.
  * @param[in] session The session to query. Must not be @c NULL.
@@ -211,6 +203,15 @@ int QDMI_session_set_parameter(QDMI_Session session,
  */
 int QDMI_session_get_devices(QDMI_Session session, size_t num_entries,
                              QDMI_Device *devices, size_t *num_devices);
+
+/**
+ * @brief Free a QDMI session.
+ * @details This function frees the memory that was allocated for the session.
+ * Accessing a (dangling) handle to a device that was attached to the session
+ * after the session was freed is undefined behavior.
+ * @param[in] session the session to free.
+ */
+void QDMI_session_free(QDMI_Session session);
 
 /** @} */ // end of client_session
 
@@ -240,13 +241,6 @@ typedef struct QDMI_Job_impl_d *QDMI_Job;
  * @return @ref QDMI_ERROR_FATAL if job creation failed due to a fatal error.
  */
 int QDMI_device_create_job(QDMI_Device device, QDMI_Job *job);
-
-/**
- * @brief Free a job.
- * @details Free the resources associated with a job.
- * @param[in] job The job to free.
- */
-void QDMI_job_free(QDMI_Job job);
 
 /**
  * @brief Enum of the job parameters that can be set.
@@ -414,6 +408,13 @@ int QDMI_job_wait(QDMI_Job job);
  */
 int QDMI_job_get_results(QDMI_Job job, QDMI_Job_Result result, size_t size,
                          void *data, size_t *size_ret);
+
+/**
+ * @brief Free a job.
+ * @details Free the resources associated with a job.
+ * @param[in] job The job to free.
+ */
+void QDMI_job_free(QDMI_Job job);
 
 /** @} */ // end of client_job
 

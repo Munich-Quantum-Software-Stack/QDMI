@@ -96,30 +96,6 @@ typedef struct QDMI_Device_Session_impl_d *QDMI_Device_Session;
 int QDMI_device_session_alloc(QDMI_Device_Session *session);
 
 /**
- * @brief Initialize a QDMI device session.
- * @details This function initializes the session with the device. The session
- * must be initialized before it can be used to interact with the device. Some
- * devices may require authentication prior to using the session. The required
- * authentication information must be set using @ref
- * QDMI_device_session_set_parameter before calling this function. Functions
- * like @ref QDMI_device_query_device_property or @ref QDMI_device_create_job
- * must not be called before the session is initialized.
- * @param[in] session The session to initialize. Must not be @c NULL.
- * @return @ref QDMI_SUCCESS if the session was initialized successfully.
- * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p session is @c NULL.
- * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
- */
-int QDMI_device_session_init(QDMI_Device_Session session);
-
-/**
- * @brief Free a QDMI device session.
- * @details This function frees the memory that was allocated for the session.
- * Using a session handle after it was freed is undefined behavior.
- * @param[in] session The session to free.
- */
-void QDMI_device_session_free(QDMI_Device_Session session);
-
-/**
  * @brief Set a parameter for a device session.
  * @param[in] session A handle to the session to set the parameter for. Must not
  * be @c NULL.
@@ -149,6 +125,30 @@ void QDMI_device_session_free(QDMI_Device_Session session);
 int QDMI_device_session_set_parameter(QDMI_Device_Session session,
                                       QDMI_Device_Session_Parameter param,
                                       size_t size, const void *value);
+
+/**
+ * @brief Initialize a QDMI device session.
+ * @details This function initializes the session with the device. The session
+ * must be initialized before it can be used to interact with the device. Some
+ * devices may require authentication prior to using the session. The required
+ * authentication information must be set using @ref
+ * QDMI_device_session_set_parameter before calling this function. Functions
+ * like @ref QDMI_device_query_device_property or @ref QDMI_device_create_job
+ * must not be called before the session is initialized.
+ * @param[in] session The session to initialize. Must not be @c NULL.
+ * @return @ref QDMI_SUCCESS if the session was initialized successfully.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p session is @c NULL.
+ * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
+ */
+int QDMI_device_session_init(QDMI_Device_Session session);
+
+/**
+ * @brief Free a QDMI device session.
+ * @details This function frees the memory that was allocated for the session.
+ * Using a session handle after it was freed is undefined behavior.
+ * @param[in] session The session to free.
+ */
+void QDMI_device_session_free(QDMI_Device_Session session);
 
 /** @} */ // end of device_session
 
@@ -192,13 +192,6 @@ typedef struct QDMI_Device_Job_impl_d *QDMI_Device_Job;
  */
 int QDMI_device_session_create_device_job(QDMI_Device_Session session,
                                           QDMI_Device_Job *job);
-
-/**
- * @brief Free a job.
- * @details Free the resources associated with a job.
- * @param[in] job The job to free.
- */
-void QDMI_device_job_free(QDMI_Device_Job job);
 
 /**
  * @brief Set a parameter for a job.
@@ -310,6 +303,13 @@ int QDMI_device_job_wait(QDMI_Device_Job job);
  */
 int QDMI_device_job_get_results(QDMI_Device_Job job, QDMI_Job_Result result,
                                 size_t size, void *data, size_t *size_ret);
+
+/**
+ * @brief Free a job.
+ * @details Free the resources associated with a job.
+ * @param[in] job The job to free.
+ */
+void QDMI_device_job_free(QDMI_Device_Job job);
 
 /** @} */ // end of device_job
 
