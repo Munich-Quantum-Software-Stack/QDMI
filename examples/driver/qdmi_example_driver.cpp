@@ -34,6 +34,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include <fstream>
 #include <iostream>
 #include <memory>
+#include <optional>
 #include <sstream>
 #include <stdexcept>
 #include <string>
@@ -138,7 +139,7 @@ struct QDMI_Device_impl_d {
 struct QDMI_Session_impl_d {
   QDMI_SESSION_STATUS status = QDMI_SESSION_STATUS::ALLOCATED;
   std::vector<std::unique_ptr<QDMI_Device_impl_d>> device_list;
-  std::string token;
+  std::optional<std::string> token;
   QDMI_DEVICE_MODE mode = QDMI_DEVICE_MODE::QDMI_DEVICE_MODE_READONLY;
 };
 
@@ -297,6 +298,19 @@ int QDMI_session_init(QDMI_Session session) {
   if (session == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
+
+  // Do not allow initialization of an already initialized session.
+  if (session->status != QDMI_SESSION_STATUS::ALLOCATED) {
+    return QDMI_ERROR_BADSTATE;
+  }
+
+  // Control access permissions based on the presence of a token.
+  if (!session->token.has_value()) {
+    return QDMI_ERROR_PERMISSIONDENIED;
+  }
+  session->mode = session->token->empty() ? QDMI_DEVICE_MODE_READONLY
+                                          : QDMI_SESSION_MODE_READWRITE;
+
   // Create a session for every device and initialize it.
   for (const auto &[_, lib] : QDMI_get_driver_state()->libraries) {
     auto &device = session->device_list.emplace_back(
@@ -308,7 +322,7 @@ int QDMI_session_init(QDMI_Session session) {
     // Forward the stored token to the device session
     device->library->device_session_set_parameter(
         device->device_session, QDMI_DEVICE_SESSION_PARAMETER_TOKEN,
-        session->token.size() + 1, session->token.c_str());
+        session->token->size() + 1, session->token->c_str());
     // Initialize the device session
     device->library->device_session_init(device->device_session);
   }
@@ -339,8 +353,6 @@ int QDMI_session_set_parameter(QDMI_Session session,
   case QDMI_SESSION_PARAMETER_TOKEN:
     if (value != nullptr) {
       session->token = std::string(static_cast<const char *>(value), size - 1);
-      session->mode = session->token.empty() ? QDMI_DEVICE_MODE_READONLY
-                                             : QDMI_SESSION_MODE_READWRITE;
     }
     return QDMI_SUCCESS;
   default:
