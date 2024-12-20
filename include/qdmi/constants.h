@@ -29,7 +29,7 @@ extern "C" {
 
 // The following clang-tidy warnings cannot be addressed because this header is
 // used from both C and C++ code.
-// NOLINTBEGIN(performance-enum-size,modernize-use-using)
+// NOLINTBEGIN(performance-enum-size, modernize-use-using)
 
 /**
  * @brief Status codes returned by the API.
@@ -129,8 +129,7 @@ enum QDMI_DEVICE_JOB_PARAMETER_T {
   QDMI_DEVICE_JOB_PARAMETER_PROGRAM = 1,
   /**
    * @brief `size_t` The number of shots to execute for a quantum circuit job.
-   * @details If this parameter is not set, a device-specific default number of
-   * shots is used.
+   * @details If this parameter is not set, a device-specific default is used.
    */
   QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM = 2,
   /**
@@ -190,7 +189,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @brief `QDMI_Site*` (@ref QDMI_Site list) The coupling map of the device.
    * @details The returned list contains pairs of sites that are coupled. The
    * pairs in the list are flattened such that the first site of the pair is at
-   * index 2n and the second site is at index 2n+1.
+   * index `2n` and the second site is at index `2n+1`.
    *
    * The sites returned in that list are represented as @ref QDMI_Site handles.
    * For example, consider a 3-site device with a coupling map `(0, 1), (1, 2)`.
@@ -208,9 +207,9 @@ enum QDMI_DEVICE_PROPERTY_T {
   QDMI_DEVICE_PROPERTY_MAX = 8,
   /**
    * @brief This property is reserved for a custom property.
-   * @details The meaning and the type of this property are defined by the
-   * device. To maintain binary compatibility, the value of this enum member
-   * must not be changed.
+   * @details The device defines the meaning and the type of this property.
+   * To maintain binary compatibility, the value of this enum member must not be
+   * changed.
    */
   QDMI_DEVICE_PROPERTY_CUSTOM1 = 999999995,
   /// @see QDMI_DEVICE_PROPERTY_CUSTOM1
@@ -272,9 +271,9 @@ enum QDMI_SITE_PROPERTY_T {
   QDMI_SITE_PROPERTY_MAX = 3,
   /**
    * @brief This property is reserved for a custom property.
-   * @details The meaning and the type of this property are defined by the
-   * device. To maintain binary compatibility, the value of this enum member
-   * must not be changed.
+   * @details The device defines the meaning and the type of this property.
+   * To maintain binary compatibility, the value of this enum member must not be
+   * changed.
    */
   QDMI_SITE_PROPERTY_CUSTOM1 = 999999995,
   /// @see QDMI_SITE_PROPERTY_CUSTOM1
@@ -294,7 +293,7 @@ typedef enum QDMI_SITE_PROPERTY_T QDMI_Site_Property;
 enum QDMI_OPERATION_PROPERTY_T {
   /// `char*` (string) The string identifier of the operation.
   QDMI_OPERATION_PROPERTY_NAME = 0,
-  /// `size_t` The number of qubits in the operation.
+  /// `size_t` The number of qubits involved in the operation.
   QDMI_OPERATION_PROPERTY_QUBITSNUM = 1,
   /// `double` The duration of an operation in µs.
   QDMI_OPERATION_PROPERTY_DURATION = 2,
@@ -310,9 +309,9 @@ enum QDMI_OPERATION_PROPERTY_T {
   QDMI_OPERATION_PROPERTY_MAX = 4,
   /**
    * @brief This property is reserved for a custom property.
-   * @details The meaning and the type of this property are defined by the
-   * device. To maintain binary compatibility, the value of this enum member
-   * must not be changed.
+   * @details The device defines the meaning and the type of this property.
+   * To maintain binary compatibility, the value of this enum member must not be
+   * changed.
    */
   QDMI_OPERATION_PROPERTY_CUSTOM1 = 999999995,
   /// @see QDMI_OPERATION_PROPERTY_CUSTOM1
@@ -367,13 +366,16 @@ enum QDMI_PROGRAM_FORMAT_T {
    * - The program only contains gate identifiers that are reported by the
    *   @ref QDMI_OPERATION_PROPERTY_NAME property of the device's operations.
    *
-   * @par Given a program following these rules, the operations in the program
+   * @par
+   * Given a program following these rules, the operations in the program
    * are expected to be performed on the physical sites of the device as queried
-   * via @ref QDMI_DEVICE_PROPERTY_SITES, i.e., an operation on `q[i]` is
-   * performed on the i-th site in the list of sites returned by the device.
+   * via @ref QDMI_DEVICE_PROPERTY_SITES.
+   * Specifically, an operation on `q[i]` is performed on the i-th site in the
+   * list of sites returned by the device.
    *
-   * @note Devices may decide to support more general OpenQASM 2.0 programs that
-   * do not follow these rules, e.g., using multiple qubit registers or
+   * @note
+   * Devices may decide to support more general OpenQASM 2.0 programs that
+   * do not follow these rules, for example, using multiple qubit registers or
    * arbitrary gates. However, in that case, no guarantees can be made about the
    * mapping of qubits in the program to the physical sites of the device.
    */
@@ -385,15 +387,17 @@ enum QDMI_PROGRAM_FORMAT_T {
    * this format must accept programs conforming to the same rules as for @ref
    * QDMI_PROGRAM_FORMAT_QASM2.
    *
-   * @par Besides the rules for OpenQASM 2.0 programs, OpenQASM 3 programs may
-   * be written in terms of physical qubits, which are denoted by `$[NUM]`, with
+   * @par
+   * Besides the rules for OpenQASM 2.0 programs, OpenQASM 3 programs may
+   * be written using physical qubits, which are denoted by `$[NUM]`, with
    * `[NUM]` being a non-negative integer denoting the physical qubit's index.
    * If a program uses physical qubits, the operations in the program must be
    * performed on the sites with IDs corresponding to the physical qubits in the
    * program.
    *
-   * @note Devices may decide to support more general OpenQASM 3 programs that
-   * do not follow these rules, e.g., using multiple qubit registers or
+   * @note
+   * Devices may decide to support more general OpenQASM 3 programs that
+   * do not follow these rules, for example, using multiple qubit registers or
    * arbitrary gates. However, in that case, no guarantees can be made about the
    * mapping of qubits in the program to the physical sites of the device.
    */
@@ -407,24 +411,25 @@ enum QDMI_PROGRAM_FORMAT_T {
    * Devices that claim to support this format must accept programs that follow
    * the rules for the QIR base profile and that only contain operations that
    * are reported by the @ref QDMI_OPERATION_PROPERTY_NAME property of the
-   * device's operations (e.g., `@__quantum__qis__[NAME]__body`, where `[NAME]`
-   * is the name of the operation).
+   * device's operations (for example, `@__quantum__qis__[NAME]__body`, where
+   * `[NAME]` is the name of the operation).
    *
-   * @par QIR has a similar distinction between dynamically allocated and static
+   * @par
+   * QIR has a similar distinction between dynamically allocated and static
    * hardware qubits as @ref QDMI_PROGRAM_FORMAT_QASM3. The same rules apply for
    * the mapping of qubits in the program to the physical sites of the device.
    * Specifically, if the program only allocates a single register named `q`
    * with as many qubits as there are sites in the device, the operations in the
    * program are expected to be performed on the physical sites of the device as
-   * queried via @ref QDMI_DEVICE_PROPERTY_SITES. If, on the other hand, the
-   * program uses static qubit addresses (e.g., `ptr inttoptr (i64 1 to ptr)`),
-   * the operations in the program must be performed on the sites with IDs
+   * queried via @ref QDMI_DEVICE_PROPERTY_SITES. If the program uses static
+   * qubit addresses (for example, `ptr inttoptr (i64 1 to ptr)`), the
+   * operations in the program must be performed on the sites with IDs
    * corresponding to the static qubit addresses in the program.
    *
    * @note Devices may decide to support more general QIR programs that do not
-   * follow these rules, e.g., using multiple qubit registers or arbitrary
-   * gates. However, in that case, no guarantees can be made about the mapping
-   * of qubits in the program to the physical sites of the device.
+   * follow these rules, for example, using multiple qubit registers or
+   * arbitrary gates. However, in that case, no guarantees can be made about the
+   * mapping of qubits in the program to the physical sites of the device.
    */
   QDMI_PROGRAM_FORMAT_QIRBASESTRING = 2,
   /**
@@ -433,7 +438,8 @@ enum QDMI_PROGRAM_FORMAT_T {
    * Intermediate Representation (QIR) format; specifically, the [QIR base
    * profile](https://github.com/qir-alliance/qir-spec/blob/8b3fd47b7b70122a104e24733ef9de911576f7d6/specification/under_development/profiles/Base_Profile.md).
    *
-   * @see QDMI_PROGRAM_FORMAT_QIRBASESTRING for more information on the QIR base
+   * @see
+   * QDMI_PROGRAM_FORMAT_QIRBASESTRING for more information on the QIR base
    * profile and the expected behavior of devices supporting this format.
    */
   QDMI_PROGRAM_FORMAT_QIRBASEMODULE = 3,
@@ -468,9 +474,9 @@ enum QDMI_PROGRAM_FORMAT_T {
   QDMI_PROGRAM_FORMAT_MAX = 6,
   /**
    * @brief This property is reserved for a custom property.
-   * @details The meaning and the type of this property are defined by the
-   * device. To maintain binary compatibility, the value of this enum member
-   * must not be changed.
+   * @details The device defines the meaning and the type of this property.
+   * To maintain binary compatibility, the value of this enum member must not be
+   * changed.
    */
   QDMI_PROGRAM_FORMAT_CUSTOM1 = 999999995,
   /// @see QDMI_PROGRAM_FORMAT_CUSTOM1
@@ -491,13 +497,13 @@ typedef enum QDMI_PROGRAM_FORMAT_T QDMI_Program_Format;
  */
 enum QDMI_JOB_RESULT_T {
   /**
-   * @brief `char*`(string) The results of the individual shots as a
-   * comma-separated list, e.g., "0010,1101,0101,1100,1001,1100" for four qubits
-   * and six shots.
+   * @brief `char*` (string) The results of the individual shots as a
+   * comma-separated list, for example, "0010,1101,0101,1100,1001,1100" for four
+   * qubits and six shots.
    */
   QDMI_JOB_RESULT_SHOTS = 0,
   /**
-   * @brief `char*`(string) The keys for the histogram of the results.
+   * @brief `char*` (string) The keys for the histogram of the results.
    * @details The histogram of the measurement results is represented as a
    * key-value mapping. This mapping is returned as a list of keys and an
    * equal-length list of values. The corresponding partners of keys and values
@@ -508,29 +514,30 @@ enum QDMI_JOB_RESULT_T {
    */
   QDMI_JOB_RESULT_HIST_KEYS = 1,
   /**
-   * @brief `size_t*` (int list) The values for the histogram of the results.
+   * @brief `size_t*` (`size_t` list) The values for the histogram of the
+   * results.
    * @see QDMI_JOB_RESULT_HIST_KEY
    */
   QDMI_JOB_RESULT_HIST_VALUES = 2,
   /**
-   * @brief `double*` (double list) The state vector of the result.
+   * @brief `double*` (`double` list) The state vector of the result.
    * @details The complex amplitudes are stored as a list of real and imaginary
-   * parts. The real part of the amplitude is at index 2n and the imaginary part
-   * is at index 2n+1. For example, the state vector of a 2-qubit system with
-   * amplitudes (0.5, 0.5), (0.5, -0.5), (-0.5, 0.5), (-0.5, -0.5) would be
-   * represented as `{0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5}`.
+   * parts. The real part of the amplitude is at index `2n` and the imaginary
+   * part is at index `2n+1`. For example, the state vector of a 2-qubit system
+   * with amplitudes `(0.5, 0.5), (0.5, -0.5), (-0.5, 0.5), (-0.5, -0.5)` would
+   * be represented as `{0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5}`.
    */
   QDMI_JOB_RESULT_STATEVECTOR_DENSE = 3,
   /**
-   * @brief `double*` (double list) The probabilities of the result.
+   * @brief `double*` (`double` list) The probabilities of the result.
    * @details The probabilities are stored as a list of real numbers. The
-   * probability of the state with index n is at index n in the list. For
-   * example, the probabilities of a 2-qubit system with states 00, 01, 10, 11
+   * probability of the state with index `n` is at index `n` in the list. For
+   * example, the probabilities of a 2-qubit system with states `00, 01, 10, 11`
    * would be represented as `{0.25, 0.25, 0.25, 0.25}`.
    */
   QDMI_JOB_RESULT_PROBABILITIES_DENSE = 4,
   /**
-   * @brief `char*`(string) The keys for the sparse state vector of the result.
+   * @brief `char*` (string) The keys for the sparse state vector of the result.
    * @details The sparse state vector is represented as a key-value mapping.
    * This mapping is returned as a list of keys and an equal-length list of
    * values. The corresponding partners of keys and values can be found at the
@@ -538,17 +545,17 @@ enum QDMI_JOB_RESULT_T {
    */
   QDMI_JOB_RESULT_STATEVECTOR_SPARSE_KEYS = 5,
   /**
-   * @brief `double*` (double list) The values for the sparse state vector of
+   * @brief `double*` (`double `list) The values for the sparse state vector of
    * the result.
    * @details The complex amplitudes are stored in the same way as the dense
-   * state vector only that the values are only stored for the non-zero
-   * amplitudes.
+   * state vector, but only for the non-zero amplitudes.
    * @see QDMI_JOB_RESULT_STATEVECTOR_DENSE
    * @see QDMI_JOB_RESULT_STATEVECTOR_SPARSE_KEYS
    */
   QDMI_JOB_RESULT_STATEVECTOR_SPARSE_VALUES = 6,
   /**
-   * @brief `char*`(string) The keys for the sparse probabilities of the result.
+   * @brief `char*` (string) The keys for the sparse probabilities of the
+   * result.
    * @details The sparse probabilities are represented as a key-value mapping.
    * This mapping is returned as a list of keys and an equal-length list of
    * values. The corresponding partners of keys and values can be found at the
@@ -556,11 +563,10 @@ enum QDMI_JOB_RESULT_T {
    */
   QDMI_JOB_RESULT_PROBABILITIES_SPARSE_KEYS = 7,
   /**
-   * @brief `double*` (double list) The values for the sparse probabilities of
+   * @brief `double*` (`double` list) The values for the sparse probabilities of
    * the result.
    * @details The probabilities are stored in the same way as the dense
-   * probabilities only that the values are only stored for the non-zero
-   * probabilities.
+   * probabilities, but only for the non-zero probabilities.
    * @see QDMI_JOB_RESULT_PROBABILITIES_DENSE
    * @see QDMI_JOB_RESULT_PROBABILITIES_SPARSE_KEYS
    */
@@ -575,9 +581,9 @@ enum QDMI_JOB_RESULT_T {
   QDMI_JOB_RESULT_MAX = 9,
   /**
    * @brief This property is reserved for a custom property.
-   * @details The meaning and the type of this property are defined by the
-   * device. To maintain binary compatibility, the value of this enum member
-   * must not be changed.
+   * @details The device defines the meaning and the type of this property.
+   * To maintain binary compatibility, the value of this enum member must not be
+   * changed.
    */
   QDMI_JOB_RESULT_CUSTOM1 = 999999995,
   /// @see QDMI_JOB_RESULT_CUSTOM1
@@ -593,7 +599,7 @@ enum QDMI_JOB_RESULT_T {
 /// Type of the job result.
 typedef enum QDMI_JOB_RESULT_T QDMI_Job_Result;
 
-// NOLINTEND(performance-enum-size,modernize-use-using)
+// NOLINTEND(performance-enum-size, modernize-use-using)
 
 #ifdef __cplusplus
 } // extern "C"
