@@ -84,10 +84,10 @@ enum QDMI_DEVICE_SESSION_PARAMETER_T {
    */
   QDMI_DEVICE_SESSION_PARAMETER_MAX = 2,
   /**
-   * @brief This property is reserved for a custom property.
-   * @details The meaning and the type of this property are defined by the
-   * device. To maintain binary compatibility, the value of this enum member
-   * must not be changed.
+   * @brief This enum value is reserved for a custom parameter.
+   * @details The device defines the meaning and the type of this parameter.
+   * To maintain binary compatibility, the value of this enum member must not be
+   * changed.
    */
   QDMI_DEVICE_SESSION_PARAMETER_CUSTOM1 = 999999995,
   /// @see QDMI_DEVICE_SESSION_PARAMETER_CUSTOM1
@@ -141,9 +141,10 @@ enum QDMI_DEVICE_JOB_PARAMETER_T {
    */
   QDMI_DEVICE_JOB_PARAMETER_MAX = 3,
   /**
-   * @brief This property is reserved for a custom property.
-   * @details The meaning and the type of this property is defined by the
-   * device.
+   * @brief This enum value is reserved for a custom parameter.
+   * @details The device defines the meaning and the type of this parameter.
+   * To maintain binary compatibility, the value of this enum member must not be
+   * changed.
    */
   QDMI_DEVICE_JOB_PARAMETER_CUSTOM1 = 999999995,
   /// @see QDMI_DEVICE_JOB_PARAMETER_CUSTOM1
@@ -206,7 +207,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    */
   QDMI_DEVICE_PROPERTY_MAX = 8,
   /**
-   * @brief This property is reserved for a custom property.
+   * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.
    * To maintain binary compatibility, the value of this enum member must not be
    * changed.
@@ -270,7 +271,7 @@ enum QDMI_SITE_PROPERTY_T {
    */
   QDMI_SITE_PROPERTY_MAX = 3,
   /**
-   * @brief This property is reserved for a custom property.
+   * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.
    * To maintain binary compatibility, the value of this enum member must not be
    * changed.
@@ -308,7 +309,7 @@ enum QDMI_OPERATION_PROPERTY_T {
    */
   QDMI_OPERATION_PROPERTY_MAX = 4,
   /**
-   * @brief This property is reserved for a custom property.
+   * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.
    * To maintain binary compatibility, the value of this enum member must not be
    * changed.
@@ -473,8 +474,8 @@ enum QDMI_PROGRAM_FORMAT_T {
    */
   QDMI_PROGRAM_FORMAT_MAX = 6,
   /**
-   * @brief This property is reserved for a custom property.
-   * @details The device defines the meaning and the type of this property.
+   * @brief This enum value is reserved for a custom program format.
+   * @details The device defines the meaning and the type of this value.
    * To maintain binary compatibility, the value of this enum member must not be
    * changed.
    */
@@ -580,8 +581,8 @@ enum QDMI_JOB_RESULT_T {
    */
   QDMI_JOB_RESULT_MAX = 9,
   /**
-   * @brief This property is reserved for a custom property.
-   * @details The device defines the meaning and the type of this property.
+   * @brief This enum value is reserved for a custom result.
+   * @details The device defines the meaning and the type of this result.
    * To maintain binary compatibility, the value of this enum member must not be
    * changed.
    */
