@@ -202,7 +202,7 @@ TEST_P(QDMIImplementationTest, GetJobDataImplemented) {
 }
 
 TEST_P(QDMIImplementationTest, QueryDevicePropertyImplemented) {
-  ASSERT_EQ(QDMI_device_query_device_property(device, QDMI_DEVICE_PROPERTY_NAME,
+  ASSERT_EQ(QDMI_device_query_device_property(device, QDMI_DEVICE_PROPERTY_MAX,
                                               0, nullptr, nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
 }

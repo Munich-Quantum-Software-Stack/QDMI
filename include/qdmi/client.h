@@ -166,8 +166,9 @@ typedef enum QDMI_SESSION_PARAMETER_T QDMI_Session_Parameter;
  * for @ref QDMI_Session_Parameter.
  * @param[in] size The size of the data pointed to by @p value in bytes. Must
  * not be zero, except when @p value is @c NULL, in which case it is ignored.
- * @param[in] value The value to set the parameter to. If this is @c NULL, it is
- * ignored.
+ * @param[in] value A pointer to the memory location that contains the value of
+ * the parameter to be set. The data pointed to by @p value is copied and can be
+ * safely reused after this function returns. If this is @c NULL, it is ignored.
  * @return @ref QDMI_SUCCESS if the driver supports the specified @p param and,
  * when @p value is not @c NULL, the value of the parameter was set
  * successfully.

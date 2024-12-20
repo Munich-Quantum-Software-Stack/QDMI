@@ -659,8 +659,7 @@ int CXX_QDMI_device_job_get_results(CXX_QDMI_Device_Job job,
 int CXX_QDMI_device_session_query_device_property(
     CXX_QDMI_Device_Session session, const QDMI_Device_Property prop,
     const size_t size, void *value, size_t *size_ret) {
-  if (prop >= QDMI_DEVICE_PROPERTY_MAX ||
-      (value == nullptr && size_ret == nullptr) || session == nullptr) {
+  if (session == nullptr || prop >= QDMI_DEVICE_PROPERTY_MAX) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   if (session->status != CXX_QDMI_DEVICE_SESSION_STATUS::INITIALIZED) {
@@ -691,8 +690,7 @@ int CXX_QDMI_device_session_query_site_property(CXX_QDMI_Device_Session session,
                                                 const QDMI_Site_Property prop,
                                                 const size_t size, void *value,
                                                 size_t *size_ret) {
-  if (session == nullptr || site == nullptr || prop >= QDMI_SITE_PROPERTY_MAX ||
-      (value == nullptr && size_ret == nullptr)) {
+  if (session == nullptr || site == nullptr || prop >= QDMI_SITE_PROPERTY_MAX) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   ADD_SINGLE_VALUE_PROPERTY(QDMI_SITE_PROPERTY_ID, uint64_t, site->id, prop,
@@ -709,9 +707,9 @@ int CXX_QDMI_device_session_query_operation_property(
     const size_t num_sites, const CXX_QDMI_Site *sites,
     QDMI_Operation_Property prop, const size_t size, void *value,
     size_t *size_ret) {
-  if (session == nullptr || prop >= QDMI_OPERATION_PROPERTY_MAX ||
-      operation == nullptr || (sites != nullptr && num_sites == 0) ||
-      (value == nullptr && size_ret == nullptr)) {
+  if (session == nullptr || operation == nullptr ||
+      (sites != nullptr && num_sites == 0) ||
+      prop >= QDMI_OPERATION_PROPERTY_MAX) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   // General properties
