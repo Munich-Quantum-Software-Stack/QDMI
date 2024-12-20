@@ -64,13 +64,14 @@ typedef struct QDMI_Session_impl_d *QDMI_Session;
 
 /**
  * @brief Allocate a new QDMI session.
- * @details The returned handle can be used in subsequent calls to @ref
- * QDMI_session_get_devices to get the devices available to the client.
- * Prior to using the session, it must be initialized using @ref
- * QDMI_session_init.
+ * @details The returned handle can be used throughout the client interface to
+ * refer to the session. The session must first be initialized with parameters
+ * in calls to @ref QDMI_session_set_parameter before calling @ref
+ * QDMI_session_init. The session can then be used in calls to @ref
+ * QDMI_session_query_session_property to get the properties of the session.
  * @param[out] session A handle to the session that is allocated. Must not be
  * @c NULL. The session must be freed by calling @ref QDMI_session_free
- * when it is no longer needed.
+ * when it is no longer used.
  * @return @ref QDMI_SUCCESS if the session was allocated successfully.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p session is @c NULL.
  * @return @ref QDMI_ERROR_OUTOFMEM if memory space ran out.
@@ -115,8 +116,8 @@ enum QDMI_SESSION_PARAMETER_T {
    */
   QDMI_SESSION_PARAMETER_MAX = 3,
   /**
-   * @brief This property is reserved for a custom property.
-   * @details The meaning and the type of this property are defined by the
+   * @brief This property is reserved for a custom parameter.
+   * @details The meaning and the type of this parameter are defined by the
    * driver. To maintain binary compatibility, the value of this enum member
    * must not be changed.
    */
@@ -291,7 +292,8 @@ typedef struct QDMI_Job_impl_d *QDMI_Job;
  * @brief Create a job with a certain program on a device.
  * @param[in] device The device to create the job on. Must not be @c NULL.
  * @param[out] job A pointer to a handle that will store the created job.
- * Must not be @c NULL.
+ * Must not be @c NULL. The job must be freed by calling @ref QDMI_job_free
+ * when it is no longer used.
  * @return @ref QDMI_SUCCESS if the job was successfully created.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p device or @p job are @c NULL.
  * @return @ref QDMI_ERROR_FATAL if job creation failed due to a fatal error.

@@ -80,10 +80,10 @@ typedef struct QDMI_Device_Session_impl_d *QDMI_Device_Session;
 
 /**
  * @brief Allocate a new QDMI device session.
- * @details The returned handle can be used in subsequent calls throughout the
- * client interface to refer to the session. However, the session must be
- * initialized with @ref QDMI_device_session_init before it can be used to
- * interact with the device.
+ * @details The returned handle can be used in calls throughout the device
+ * interface to refer to the session. The session must first be initialized with
+ * parameters in calls to @ref QDMI_device_session_set_parameter before calling
+ * @ref QDMI_device_session_init.
  * @param[out] session A handle to the session that is allocated. Must not be
  * @c NULL. The session must be freed by calling @ref QDMI_device_session_free
  * when it is no longer needed.
@@ -189,7 +189,8 @@ typedef struct QDMI_Device_Job_impl_d *QDMI_Device_Job;
  * @brief Create a job with a certain program on a device.
  * @param[in] session The session to create the job on. Must not be @c NULL.
  * @param[out] job A pointer to a handle that will store the created job.
- * Must not be @c NULL.
+ * Must not be @c NULL. The job must be freed by calling @ref
+ * QDMI_device_job_free when it is no longer used.
  * @return @ref QDMI_SUCCESS if the job was successfully created.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p session or @p job are @c NULL.
  * @return @ref QDMI_ERROR_BADSTATE if the session is not in a state that allows
