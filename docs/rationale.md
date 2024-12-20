@@ -140,22 +140,21 @@ the newly added properties but no segmentation fault or similar happens.
 In the following, the general usage of functions for data retrieval is explained by the aid of the
 example of \ref QDMI_device_query_device_property. This function receives a handle to a device that
 is—in the view of the client—an opaque pointer to a device. This device handle must first be
-retrieved from the function \ref QDMI_session_get_devices. This function has the signature:
+retrieved from the function \ref QDMI_session_query_session_property. This function has the
+signature:
 
 ```C
-int QDMI_session_get_devices(QDMI_Session session, size_t num_entries, QDMI_Device *devices, size_t *num_devices)
+int QDMI_session_query_session_property(QDMI_Session session, QDMI_Session_Property prop, size_t size, void *value, size_t *size_ret)
 ```
 
 To retrieve handles to the device, the client must allocate some memory region where it wants to
-store the handles. This memory region is passed in the parameter `devices`. The parameter
-`num_entries` specifies the number of devices that fit into the allocated memory. The client can
-come to know the size of a single device handle by calling the function `sizeof(QDMI_Device)` and
-use that to allocate a properly sized memory region. The parameter `num_devices` is a pointer to a
-variable that will store the number of devices that were actually written into the allocated memory
-after calling the function. The function can also be called with a `NULL` pointer for `devices` to
+store the handles. This memory region is passed in the parameter `value`. The parameter `size`
+specifies the size of the memory region pointed to by `value` in bytes. The parameter `size_ret` is
+a pointer to a variable that will store the number of bytes that were actually written into the
+memory region pointed to by `value`. The function can be called with a `NULL` pointer for `value` to
 only retrieve the number of devices that are available which will, in this case, be returned in
-`num_devices`. Simultaneously, if `num_devices` is `NULL`, it is ignored, and the function only
-writes the number of devices into the memory pointed to by `devices`.
+`size_ret`. Simultaneously, if `size_ret` is `NULL`, it is ignored, and the function only writes the
+number of devices into the memory pointed to by `value`.
 
 With the device handles at hand, the function \ref QDMI_device_query_device_property can be called
 for one device. The signature of the function is:

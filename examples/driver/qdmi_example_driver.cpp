@@ -348,29 +348,37 @@ int QDMI_session_set_parameter(QDMI_Session session,
   }
 }
 
-int QDMI_session_get_devices(QDMI_Session session, const size_t num_entries,
-                             QDMI_Device *devices, size_t *num_devices) {
-  if ((num_entries == 0 && devices != nullptr) ||
-      (devices == nullptr && num_devices == nullptr) || session == nullptr ||
-      session->status != QDMI_SESSION_STATUS::INITIALIZED) {
+int QDMI_session_query_session_property(QDMI_Session session,
+                                        QDMI_Session_Property prop, size_t size,
+                                        void *value, size_t *size_ret) {
+  if (session == nullptr || prop >= QDMI_SESSION_PROPERTY_MAX ||
+      (value == nullptr && size_ret == nullptr)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
 
-  const auto num_devices_in_session = session->device_list.size();
-  if (devices == nullptr) {
-    *num_devices = num_devices_in_session;
-    return QDMI_SUCCESS;
+  if (session->status != QDMI_SESSION_STATUS::INITIALIZED) {
+    return QDMI_ERROR_BADSTATE;
   }
 
-  const auto num_devices_to_copy =
-      std::min(num_entries, num_devices_in_session);
-  for (size_t i = 0; i < num_devices_to_copy; ++i) {
-    devices[i] = session->device_list[i].get();
+  switch (prop) {
+  case QDMI_SESSION_PROPERTY_DEVICES:
+    if (value != nullptr) {
+      const auto num_devices = session->device_list.size();
+      if (size < num_devices * sizeof(QDMI_Device)) {
+        return QDMI_ERROR_INVALIDARGUMENT;
+      }
+      auto *devices = static_cast<QDMI_Device *>(value);
+      for (size_t i = 0; i < num_devices; ++i) {
+        devices[i] = session->device_list[i].get();
+      }
+    }
+    if (size_ret != nullptr) {
+      *size_ret = session->device_list.size() * sizeof(QDMI_Device);
+    }
+    return QDMI_SUCCESS;
+  default:
+    return QDMI_ERROR_NOTSUPPORTED;
   }
-  if (num_devices != nullptr) {
-    *num_devices = num_devices_to_copy;
-  }
-  return QDMI_SUCCESS;
 }
 
 int QDMI_driver_shutdown() {

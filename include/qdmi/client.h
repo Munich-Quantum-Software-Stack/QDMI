@@ -180,29 +180,79 @@ int QDMI_session_set_parameter(QDMI_Session session,
 int QDMI_session_init(QDMI_Session session);
 
 /**
- * @brief Query the devices associated with @p session.
+ * @brief Enum of the session properties that can be queried.
+ * @details If not noted otherwise, properties are optional and drivers must not
+ * require them to be set.
+ */
+enum QDMI_SESSION_PROPERTY_T {
+  /**
+   * @brief `QDMI_Device*` (@ref QDMI_Device list) The devices the client has
+   * access to.
+   */
+  QDMI_SESSION_PROPERTY_DEVICES = 0,
+  /**
+   * @brief The maximum value of the enum.
+   * @details It can be used by drivers for bounds checking and validation of
+   * function parameters. This value must remain the last regular member of the
+   * enum besides the custom members and must be updated when new members are
+   * added.
+   */
+  QDMI_SESSION_PROPERTY_MAX = 1,
+  /**
+   * @brief This property is reserved for a custom property.
+   * @details The driver defines the meaning and the type of this property. To
+   * maintain binary compatibility, the value of this enum member must not be
+   * changed.
+   */
+  QDMI_SESSION_PROPERTY_CUSTOM1 = 999999995,
+  /// @see QDMI_SESSION_PROPERTY_CUSTOM1
+  QDMI_SESSION_PROPERTY_CUSTOM2 = 999999996,
+  /// @see QDMI_SESSION_PROPERTY_CUSTOM1
+  QDMI_SESSION_PROPERTY_CUSTOM3 = 999999997,
+  /// @see QDMI_SESSION_PROPERTY_CUSTOM1
+  QDMI_SESSION_PROPERTY_CUSTOM4 = 999999998,
+  /// @see QDMI_SESSION_PROPERTY_CUSTOM1
+  QDMI_SESSION_PROPERTY_CUSTOM5 = 999999999
+};
+
+/// Type of the session property.
+typedef enum QDMI_SESSION_PROPERTY_T QDMI_Session_Property;
+
+/**
+ * @brief Query a session property.
  * @param[in] session The session to query. Must not be @c NULL.
- * @param[in] num_entries The number of entries that can be added to @p devices.
- * Must be greater than zero, except when @p devices is @c NULL, in which case
+ * @param[in] prop The property to query. Must be one of the values specified
+ * for @ref QDMI_Session_Property.
+ * @param[in] size The size of the memory pointed to by @p value in bytes. Must
+ * be greater or equal to the size of the return type specified for the @ref
+ * QDMI_Session_Property @p prop, except when @p value is @c NULL, in which case
  * it is ignored.
- * @param[out] devices A pointer to a list of handles where the devices
- * available to the client will be stored. If this is @c NULL, it is ignored.
- * The number of devices returned is the minimum of the value specified by
- * @p num_entries and the number of devices found.
- * @param[out] num_devices The number of devices available. If this is @c NULL,
- * it is ignored.
- * @return @ref QDMI_SUCCESS if the function is executed successfully.
- * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p session is @c NULL, if @p
- * num_entries is zero and @p devices is not @c NULL or if both @p devices and
- * @p num_devices are @c NULL.
+ * @param[out] value A pointer to the memory location where the value of the
+ * property will be stored. If this is @c NULL, it is ignored.
+ * @param[out] size_ret The actual size of the data being queried in bytes. If
+ * this is @c NULL, it is ignored.
+ * @return @ref QDMI_SUCCESS if the driver supports the specified property and,
+ * when @p value is not @c NULL, the property was successfully retrieved.
+ * @return @ref QDMI_ERROR_NOTSUPPORTED if the driver does not support the
+ * property.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p session is @c NULL, if @p prop
+ * is invalid, if the size in bytes specified by @p size is less than the size
+ * of the data being queried as specified for the @ref QDMI_Session_Property @p
+ * prop and @p value is not @c NULL, or if both @p value and @p size_ret are @c
+ * NULL.
+ * @return @ref QDMI_ERROR_BADSTATE if the property cannot be queried in the
+ * current state of the session.
  * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
  *
- * @note By calling this function with @p devices set to @c NULL, the function
- * can be used to query the number of devices available without retrieving the
- * devices.
+ * @note By calling this function with @p value set to @c NULL, the function can
+ * be used to check if the driver supports the specified property without
+ * retrieving the property and without the need to provide a buffer for it. The
+ * size of the buffer needed to retrieve the property is returned in @p size_ret
+ * if @p size_ret is not @c NULL.
  */
-int QDMI_session_get_devices(QDMI_Session session, size_t num_entries,
-                             QDMI_Device *devices, size_t *num_devices);
+int QDMI_session_query_session_property(QDMI_Session session,
+                                        QDMI_Session_Property prop, size_t size,
+                                        void *value, size_t *size_ret);
 
 /**
  * @brief Free a QDMI session.

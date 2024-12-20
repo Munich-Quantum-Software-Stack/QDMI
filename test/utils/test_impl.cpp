@@ -86,7 +86,9 @@ void QDMIImplementationTest::SetUp() {
          "maintenance. To provide credentials, take a look in " __FILE__
       << (__LINE__ - 4);
 
-  ASSERT_EQ(QDMI_session_get_devices(session, 1, &device, nullptr),
+  ASSERT_EQ(QDMI_session_query_session_property(
+                session, QDMI_SESSION_PROPERTY_DEVICES, sizeof(QDMI_Device),
+                static_cast<void *>(&device), nullptr),
             QDMI_SUCCESS)
       << "Failed to get device";
 }
