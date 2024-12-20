@@ -25,7 +25,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
     <tab type="usergroup" title="User Guide" url="[none]">
       <tab type="pages" visible="yes" title="" intro=""/>
     </tab>
-    <tab type="topics" visible="yes" title="" intro=""/>
+    <tab type="topics" visible="yes" title="Interfaces" intro="Here is a list of all interfaces with brief descriptions"/>
     <tab type="modules" visible="no" title="" intro="">
       <tab type="modulelist" visible="yes" title="" intro=""/>
       <tab type="modulemembers" visible="yes" title="" intro=""/>
@@ -210,7 +210,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
     <briefdescription visible="yes"/>
     <groupgraph visible="yes"/>
     <memberdecl>
-      <nestedgroups visible="yes" title=""/>
+      <nestedgroups visible="yes" title="Interfaces"/>
       <modules visible="yes" title=""/>
       <dirs visible="yes" title=""/>
       <files visible="yes" title=""/>
