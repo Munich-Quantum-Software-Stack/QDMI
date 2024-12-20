@@ -168,13 +168,19 @@ int QDMI_session_set_parameter(QDMI_Session session,
 /**
  * @brief Initialize a QDMI session.
  * @details This function initializes the session and prepares it for use. The
- * session must be initialized before it can be used in @ref
- * QDMI_session_get_devices. Some devices may require authentication prior to
- * initializing the session. The required authentication information must be set
- * using @ref QDMI_session_set_parameter before calling this function.
+ * session must be initialized before properties can be queried using @ref
+ * QDMI_session_query_session_property. Some devices may require authentication
+ * information to be set using @ref QDMI_session_set_parameter *before* calling
+ * this function.
  * @param[in] session the session to initialize.
  * @return @ref QDMI_SUCCESS if the session was initialized successfully.
+ * @return @ref QDMI_ERROR_PERMISSIONDENIED if the session could not be
+ * initialized due to missing permissions. This could be due to missing
+ * authentication information that should be set using @ref
+ * QDMI_session_set_parameter.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p session is @c NULL.
+ * @return @ref QDMI_ERROR_BADSTATE if the session is not in a state allowing
+ * initialization.
  * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
  */
 int QDMI_session_init(QDMI_Session session);

@@ -137,7 +137,13 @@ int QDMI_device_session_set_parameter(QDMI_Device_Session session,
  * must not be called before the session is initialized.
  * @param[in] session The session to initialize. Must not be @c NULL.
  * @return @ref QDMI_SUCCESS if the session was initialized successfully.
+ * @return @ref QDMI_ERROR_PERMISSIONDENIED if the session could not be
+ * initialized due to missing permissions. This could be due to missing
+ * authentication information that should be set using @ref
+ * QDMI_device_session_set_parameter.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p session is @c NULL.
+ * @return @ref QDMI_ERROR_BADSTATE if the session is not in a state allowing
+ * initialization.
  * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
  */
 int QDMI_device_session_init(QDMI_Device_Session session);
