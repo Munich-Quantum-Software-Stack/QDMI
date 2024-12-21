@@ -174,10 +174,12 @@ typedef enum QDMI_SESSION_PARAMETER_T QDMI_Session_Parameter;
  * successfully.
  * @return @ref QDMI_ERROR_NOTSUPPORTED if the driver does not support the
  * parameter or the value of the parameter.
- * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p session is @c NULL, if @p param
- * is invalid, if @p value is not @c NULL and @p size is
- * zero or not the expected size for the parameter (if specified by the @ref
- * QDMI_Session_Parameter documentation).
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if
+ *  - @p session is @c NULL,
+ *  - @p param is invalid, or
+ *  - @p value is not @c NULL and @p size is zero or not the expected size for
+ *    the parameter (if specified by the @ref QDMI_Session_Parameter
+ *    documentation).
  * @return @ref QDMI_ERROR_BADSTATE if the parameter cannot be set in the
  * current state of the session, for example, because the session is already
  * initialized.
@@ -286,9 +288,11 @@ typedef enum QDMI_SESSION_PROPERTY_T QDMI_Session_Property;
  * when @p value is not @c NULL, the property was successfully retrieved.
  * @return @ref QDMI_ERROR_NOTSUPPORTED if the driver does not support the
  * property.
- * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p session is @c NULL, @p prop is
- * invalid, or @p value is not @c NULL and @p size is less than the size of the
- * data being queried.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if
+ *  - @p session is @c NULL,
+ *  - @p prop is invalid, or
+ *  - @p value is not @c NULL and @p size is less than the size of the data
+ *    being queried.
  * @return @ref QDMI_ERROR_BADSTATE if the property cannot be queried in the
  * current state of the session, for example, because the session is not
  * initialized.
@@ -361,9 +365,11 @@ void QDMI_session_free(QDMI_Session session);
  * when @p value is not @c NULL, the property was successfully retrieved.
  * @return @ref QDMI_ERROR_NOTSUPPORTED if the device does not support the
  * property.
- * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p device is @c NULL, @p prop is
- * invalid, or @p value is not @c NULL and @p size is less than the size of the
- * data being queried.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if
+ *  - @p device is @c NULL,
+ *  - @p prop is invalid, or
+ *  - @p value is not @c NULL and @p size is less than the size of the data
+ *    being queried.
  * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
  *
  * @note By calling this function with @p value set to @c NULL, the function can
@@ -409,9 +415,11 @@ int QDMI_device_query_device_property(QDMI_Device device,
  * when @p value is not @c NULL, the property was successfully retrieved.
  * @return @ref QDMI_ERROR_NOTSUPPORTED if the device does not support the
  * property.
- * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p device or @p site is @c NULL,
- * @p prop is invalid, or @p value is not @c NULL and @p size is less than the
- * size of the data being queried.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if
+ *  - @p device or @p site is @c NULL,
+ *  - @p prop is invalid, or
+ *  - @p value is not @c NULL and @p size is less than the size of the data
+ *    being queried.
  * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
  *
  * @note By calling this function with @p value set to @c NULL, the function can
@@ -467,8 +475,9 @@ int QDMI_device_query_site_property(QDMI_Device device, QDMI_Site site,
  * @return @ref QDMI_SUCCESS if the device supports the specified property and,
  * when @p value is not @c NULL, the property was successfully retrieved.
  * @return @ref QDMI_ERROR_NOTSUPPORTED if
- *  - the property is not supported by the device, or
- *  - the queried property cannot be provided for the given sites.
+ *  - the device does not support the property,
+ *  - the queried property cannot be provided for the given sites, or
+ *  - the queried property cannot be provided for the given parameters.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if
  *  - @p device or @p operation are @c NULL,
  *  - @p prop is invalid,
@@ -650,10 +659,11 @@ typedef enum QDMI_JOB_PARAMETER_T QDMI_Job_Parameter;
  * parameter was successfully set.
  * @return @ref QDMI_ERROR_NOTSUPPORTED if the driver does not support the
  * parameter or the value of the parameter.
- * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p job is @c NULL, @p param is
- * invalid, or @p value is not @c NULL and @p size is zero or not the expected
- * size for the parameter (if specified by the @ref QDMI_Job_Parameter
- * documentation).
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if
+ *  - @p job is @c NULL,
+ *  - @p param is invalid, or
+ *  - @p value is not @c NULL and @p size is zero or not the expected size for
+ *  the parameter (if specified by the @ref QDMI_Job_Parameter documentation).
  * @return @ref QDMI_ERROR_BADSTATE if the parameter cannot be set in the
  * current state of the job, for example, because the job is already submitted.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the driver does not allow using
@@ -764,9 +774,13 @@ int QDMI_job_wait(QDMI_Job job);
  * this is @c NULL, it is ignored.
  * @return @ref QDMI_SUCCESS if the device supports the specified result and,
  * when @p data is not @c NULL, the results were successfully retrieved.
- * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p job is @c NULL, has not
- * finished, or was canceled, @p result is invalid, or @p data is not @c NULL
- * and @p size is smaller than the size of the data being queried.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if
+ *  - @p job is @c NULL,
+ *  - @p job has not finished,
+ *  - @p job was canceled,
+ *  - @p result is invalid, or
+ *  - @p data is not @c NULL and @p size is smaller than the size of the data
+ *    being queried.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the driver does not allow using
  * the @ref client_job "client job interface" for the device in the current
  * session.
