@@ -99,18 +99,6 @@ void QDMIImplementationTest::TearDown() {
   std::filesystem::remove(config_file_name);
 }
 
-namespace {
-std::string Get_test_circuit() {
-  return "OPENQASM 2.0;\n"
-         "include \"qelib1.inc\";\n"
-         "qreg q[2];\n"
-         "creg c[2];\n"
-         "h q[0];\n"
-         "cx q[0], q[1];\n"
-         "measure q -> c;\n";
-}
-} // namespace
-
 TEST_P(QDMIImplementationTest, SetSessionParameterImplemented) {
   ASSERT_EQ(QDMI_session_set_parameter(session, QDMI_SESSION_PARAMETER_MAX, 0,
                                        nullptr),
@@ -214,9 +202,9 @@ TEST_P(QDMIImplementationTest, QuerySitePropertyImplemented) {
 }
 
 TEST_P(QDMIImplementationTest, QueryOperationPropertyImplemented) {
-  ASSERT_EQ(QDMI_device_query_operation_property(device, nullptr, 0, nullptr,
-                                                 QDMI_OPERATION_PROPERTY_MAX, 0,
-                                                 nullptr, nullptr),
+  ASSERT_EQ(QDMI_device_query_operation_property(
+                device, nullptr, 0, nullptr, 0, nullptr,
+                QDMI_OPERATION_PROPERTY_MAX, 0, nullptr, nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
 }
 

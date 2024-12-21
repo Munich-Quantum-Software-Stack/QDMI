@@ -298,6 +298,9 @@ int QDMI_device_session_query_site_property(QDMI_Device_Session session,
  * @param[in] num_sites The number of sites that the operation is applied to.
  * @param[in] sites A pointer to a list of handles where the sites that the
  * operation is applied to are stored. If this is @c NULL, it is ignored.
+ * @param[in] num_params The number of parameters that the operation takes.
+ * @param[in] params A pointer to a list of parameters the operation takes. If
+ * this is @c NULL, it is ignored.
  * @param[in] prop The property to query. Must be one of the values specified
  * for @ref QDMI_Operation_Property.
  * @param[in] size The size of the memory pointed to by @p value in bytes. Must
@@ -311,7 +314,8 @@ int QDMI_device_session_query_site_property(QDMI_Device_Session session,
  * @return @ref QDMI_SUCCESS if the device supports the specified property and,
  * when @p value is not @c NULL, the property was successfully retrieved.
  * @return @ref QDMI_ERROR_NOTSUPPORTED if the property is not supported by the
- * device or if the queried property cannot be provided for the given sites.
+ * device or if the queried property cannot be provided for the given sites or
+ * parameters.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p session or @p operation are @c
  * NULL, if @p prop is invalid, or if @p value is not @c NULL and @p size is
  * less than the size of the data being queried.
@@ -324,6 +328,11 @@ int QDMI_device_session_query_site_property(QDMI_Device_Session session,
  * allow querying properties of the device that are independent of the sites.
  * A device will return @ref QDMI_ERROR_NOTSUPPORTED if the queried property is
  * site-dependent and @p sites is @c NULL.
+ *
+ * @remark Calling this function with @p params set to @c NULL is expected to
+ * allow querying properties of the device that are independent of the values
+ * of the parameters. A device will return @ref QDMI_ERROR_NOTSUPPORTED if the
+ * queried property is parameter-dependent and @p params is @c NULL.
  *
  * @remark Calling this function with @p value set to @c NULL is expected to
  * allow checking if the device supports the specified property without
@@ -338,8 +347,8 @@ int QDMI_device_session_query_site_property(QDMI_Device_Session session,
  */
 int QDMI_device_session_query_operation_property(
     QDMI_Device_Session session, QDMI_Operation operation, size_t num_sites,
-    const QDMI_Site *sites, QDMI_Operation_Property prop, size_t size,
-    void *value, size_t *size_ret);
+    const QDMI_Site *sites, size_t num_params, const double *params,
+    QDMI_Operation_Property prop, size_t size, void *value, size_t *size_ret);
 
 /** @} */ // end of device_query
 

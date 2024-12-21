@@ -85,8 +85,9 @@ TEST_P(QDMIImplementationTest, QueryOperationSet) {
     ASSERT_FALSE(op_name.empty());
     std::string name(op_name.length(), '\0');
     ASSERT_EQ(QDMI_device_query_operation_property(
-                  device, op, 0, nullptr, QDMI_OPERATION_PROPERTY_NAME,
-                  name.length() + 1, name.data(), nullptr),
+                  device, op, 0, nullptr, 0, nullptr,
+                  QDMI_OPERATION_PROPERTY_NAME, name.length() + 1, name.data(),
+                  nullptr),
               QDMI_SUCCESS);
     EXPECT_EQ(op_name, name);
   }
@@ -118,13 +119,13 @@ TEST_P(QDMIImplementationTest, QueryGatePropertiesForEachGate) {
       for (const auto &site : sites) {
         auto site_arr = std::array{site};
         EXPECT_EQ(QDMI_device_query_operation_property(
-                      device, op, 1, site_arr.data(),
+                      device, op, 1, site_arr.data(), 0, nullptr,
                       QDMI_OPERATION_PROPERTY_DURATION, sizeof(double),
                       &duration, nullptr),
                   QDMI_SUCCESS)
             << "Failed to query duration for operation " << name;
         EXPECT_EQ(QDMI_device_query_operation_property(
-                      device, op, 1, site_arr.data(),
+                      device, op, 1, site_arr.data(), 0, nullptr,
                       QDMI_OPERATION_PROPERTY_FIDELITY, sizeof(double),
                       &fidelity, nullptr),
                   QDMI_SUCCESS)
@@ -135,13 +136,13 @@ TEST_P(QDMIImplementationTest, QueryGatePropertiesForEachGate) {
       for (const auto &[control, target] : coupling_map) {
         auto site_arr = std::array{control, target};
         EXPECT_EQ(QDMI_device_query_operation_property(
-                      device, op, 2, site_arr.data(),
+                      device, op, 2, site_arr.data(), 0, nullptr,
                       QDMI_OPERATION_PROPERTY_DURATION, sizeof(double),
                       &duration, nullptr),
                   QDMI_SUCCESS)
             << "Failed to query duration for gate " << op;
         EXPECT_EQ(QDMI_device_query_operation_property(
-                      device, op, 2, site_arr.data(),
+                      device, op, 2, site_arr.data(), 0, nullptr,
                       QDMI_OPERATION_PROPERTY_FIDELITY, sizeof(double),
                       &fidelity, nullptr),
                   QDMI_SUCCESS)
@@ -170,11 +171,6 @@ TEST_P(QDMIImplementationTest, JobLifecycle) {
     GTEST_SKIP() << "Skipping test for read-only session";
   }
   QDMI_Job job{};
-  const std::string input = "OPENQASM 2.0;\n"
-                            "include \"qelib1.inc\";\n"
-                            "qreg q[2];\n"
-                            "h q[0];\n"
-                            "cx q[0], q[1];\n";
   EXPECT_EQ(QDMI_device_create_job(device, nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
   EXPECT_EQ(QDMI_device_create_job(nullptr, &job), QDMI_ERROR_INVALIDARGUMENT);

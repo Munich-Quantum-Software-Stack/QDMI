@@ -546,8 +546,9 @@ int QDMI_device_query_site_property(QDMI_Device device, QDMI_Site site,
 
 int QDMI_device_query_operation_property(
     QDMI_Device device, QDMI_Operation operation, const size_t num_sites,
-    const QDMI_Site *sites, QDMI_Operation_Property prop, const size_t size,
-    void *value, size_t *size_ret) {
+    const QDMI_Site *sites, const size_t num_params, const double *params,
+    QDMI_Operation_Property prop, const size_t size, void *value,
+    size_t *size_ret) {
   if (device == nullptr || (prop >= QDMI_OPERATION_PROPERTY_MAX &&
                             prop != QDMI_OPERATION_PROPERTY_CUSTOM1 &&
                             prop != QDMI_OPERATION_PROPERTY_CUSTOM2 &&
@@ -557,6 +558,6 @@ int QDMI_device_query_operation_property(
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   return device->library->device_session_query_operation_property(
-      device->device_session, operation, num_sites, sites, prop, size, value,
-      size_ret);
+      device->device_session, operation, num_sites, sites, num_params, params,
+      prop, size, value, size_ret);
 }

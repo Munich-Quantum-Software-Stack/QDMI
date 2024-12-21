@@ -136,8 +136,8 @@ TEST_F(QDMIImplementationTest, QuerySitePropertyImplemented) {
 
 TEST_F(QDMIImplementationTest, QueryOperationPropertyImplemented) {
   ASSERT_EQ(MY_QDMI_device_session_query_operation_property(
-                nullptr, nullptr, 0, nullptr, QDMI_OPERATION_PROPERTY_MAX, 0,
-                nullptr, nullptr),
+                nullptr, nullptr, 0, nullptr, 0, nullptr,
+                QDMI_OPERATION_PROPERTY_MAX, 0, nullptr, nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
 }
 

@@ -136,9 +136,9 @@ int MY_QDMI_device_session_query_site_property(MY_QDMI_Device_Session session,
 
 int MY_QDMI_device_session_query_operation_property(
     MY_QDMI_Device_Session session, MY_QDMI_Operation operation,
-    const size_t num_sites, const MY_QDMI_Site *sites,
-    const QDMI_Operation_Property prop, const size_t size, void *value,
-    size_t *size_ret) {
+    const size_t num_sites, const MY_QDMI_Site *sites, const size_t num_params,
+    const double *params, const QDMI_Operation_Property prop, const size_t size,
+    void *value, size_t *size_ret) {
   return QDMI_ERROR_NOTIMPLEMENTED;
 }
 

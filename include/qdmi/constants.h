@@ -296,10 +296,12 @@ enum QDMI_OPERATION_PROPERTY_T {
   QDMI_OPERATION_PROPERTY_NAME = 0,
   /// `size_t` The number of qubits involved in the operation.
   QDMI_OPERATION_PROPERTY_QUBITSNUM = 1,
+  /// `size_t` The number of floating point parameters the operation takes.
+  QDMI_OPERATION_PROPERTY_PARAMETERSNUM = 2,
   /// `double` The duration of an operation in µs.
-  QDMI_OPERATION_PROPERTY_DURATION = 2,
+  QDMI_OPERATION_PROPERTY_DURATION = 3,
   /// `double` The fidelity of an operation.
-  QDMI_OPERATION_PROPERTY_FIDELITY = 3,
+  QDMI_OPERATION_PROPERTY_FIDELITY = 4,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
@@ -307,7 +309,7 @@ enum QDMI_OPERATION_PROPERTY_T {
    * enum besides the custom members and must be updated when new members are
    * added.
    */
-  QDMI_OPERATION_PROPERTY_MAX = 4,
+  QDMI_OPERATION_PROPERTY_MAX = 5,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.

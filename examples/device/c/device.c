@@ -650,11 +650,12 @@ int C_QDMI_device_session_query_site_property(C_QDMI_Device_Session session,
 
 int C_QDMI_device_session_query_operation_property(
     C_QDMI_Device_Session session, C_QDMI_Operation operation,
-    const size_t num_sites, const C_QDMI_Site *sites,
-    const QDMI_Operation_Property prop, const size_t size, void *value,
-    size_t *size_ret) {
+    const size_t num_sites, const C_QDMI_Site *sites, const size_t num_params,
+    const double *params, const QDMI_Operation_Property prop, const size_t size,
+    void *value, size_t *size_ret) {
   if (session == NULL || operation == NULL ||
       (sites != NULL && num_sites == 0) ||
+      (params != NULL && num_params == 0) ||
       prop >= QDMI_OPERATION_PROPERTY_MAX) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
@@ -665,6 +666,8 @@ int C_QDMI_device_session_query_operation_property(
     if (sites != NULL && num_sites != 2) {
       return QDMI_ERROR_INVALIDARGUMENT;
     }
+    ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_PARAMETERSNUM, size_t, 0,
+                              prop, size, value, size_ret)
     ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_DURATION, double, 0.01,
                               prop, size, value, size_ret)
     if (sites == NULL) {
@@ -717,12 +720,15 @@ int C_QDMI_device_session_query_operation_property(
       return QDMI_ERROR_INVALIDARGUMENT;
     }
     // Common properties for all single-qubit operations
-    if (sites != NULL && num_sites != 1) {
+    if ((sites != NULL && num_sites != 1) ||
+        (params != NULL && num_params != 1)) {
       return QDMI_ERROR_INVALIDARGUMENT;
     }
     ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_DURATION, double, 0.01,
                               prop, size, value, size_ret)
     ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_QUBITSNUM, size_t, 1,
+                              prop, size, value, size_ret)
+    ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_PARAMETERSNUM, size_t, 1,
                               prop, size, value, size_ret)
     ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_FIDELITY, double, 0.999,
                               prop, size, value, size_ret)

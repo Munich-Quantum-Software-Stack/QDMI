@@ -704,11 +704,12 @@ int CXX_QDMI_device_session_query_site_property(CXX_QDMI_Device_Session session,
 
 int CXX_QDMI_device_session_query_operation_property(
     CXX_QDMI_Device_Session session, CXX_QDMI_Operation operation,
-    const size_t num_sites, const CXX_QDMI_Site *sites,
-    QDMI_Operation_Property prop, const size_t size, void *value,
-    size_t *size_ret) {
+    const size_t num_sites, const CXX_QDMI_Site *sites, const size_t num_params,
+    const double *params, QDMI_Operation_Property prop, const size_t size,
+    void *value, size_t *size_ret) {
   if (session == nullptr || operation == nullptr ||
       (sites != nullptr && num_sites == 0) ||
+      (params != nullptr && num_params == 0) ||
       prop >= QDMI_OPERATION_PROPERTY_MAX) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
@@ -720,6 +721,9 @@ int CXX_QDMI_device_session_query_operation_property(
     if (sites != nullptr && num_sites != 2) {
       return QDMI_ERROR_INVALIDARGUMENT;
     }
+    ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_PARAMETERSNUM, size_t, 0,
+                              prop, size, value, size_ret)
+
     ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_DURATION, double,
                               OPERATION_PROPERTIES.at(operation).second, prop,
                               size, value, size_ret)
@@ -728,6 +732,7 @@ int CXX_QDMI_device_session_query_operation_property(
                                 prop, size, value, size_ret)
       return QDMI_ERROR_NOTSUPPORTED;
     }
+
     const std::pair site_pair = {sites[0], sites[1]};
     if (site_pair.first == site_pair.second) {
       return QDMI_ERROR_INVALIDARGUMENT;
@@ -745,12 +750,15 @@ int CXX_QDMI_device_session_query_operation_property(
   } else if (operation == CXX_DEVICE_OPERATIONS[0] ||
              operation == CXX_DEVICE_OPERATIONS[1] ||
              operation == CXX_DEVICE_OPERATIONS[2]) {
-    if (sites != nullptr && num_sites != 1) {
+    if ((sites != nullptr && num_sites != 1) ||
+        (params != nullptr && num_params != 1)) {
       return QDMI_ERROR_INVALIDARGUMENT;
     }
     ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_DURATION, double, 0.01,
                               prop, size, value, size_ret)
     ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_QUBITSNUM, size_t, 1,
+                              prop, size, value, size_ret)
+    ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_PARAMETERSNUM, size_t, 1,
                               prop, size, value, size_ret)
     ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_FIDELITY, double, 0.999,
                               prop, size, value, size_ret)

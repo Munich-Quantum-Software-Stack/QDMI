@@ -451,6 +451,9 @@ int QDMI_device_query_site_property(QDMI_Device device, QDMI_Site site,
  * @param[in] num_sites The number of sites that the operation is applied to.
  * @param[in] sites A pointer to a list of handles where the sites that the
  * operation is applied to are stored. If this is @c NULL, it is ignored.
+ * @param[in] num_params The number of parameters that the operation takes.
+ * @param[in] params A pointer to a list of parameters that the operation takes.
+ * If this is @c NULL, it is ignored.
  * @param[in] prop The property to query. Must be one of the values specified
  * for @ref QDMI_Operation_Property.
  * @param[in] size The size of the memory pointed to by @p value in bytes. Must
@@ -463,11 +466,16 @@ int QDMI_device_query_site_property(QDMI_Device device, QDMI_Site site,
  * this is @c NULL, it is ignored.
  * @return @ref QDMI_SUCCESS if the device supports the specified property and,
  * when @p value is not @c NULL, the property was successfully retrieved.
- * @return @ref QDMI_ERROR_NOTSUPPORTED if the property is not supported by the
- * device or if the queried property cannot be provided for the given sites.
- * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p device or @p operation are @c
- * NULL, if @p prop is invalid, or if @p value is not @c NULL and @p size is
- * less than the size of the data being queried.
+ * @return @ref QDMI_ERROR_NOTSUPPORTED if
+ *  - the property is not supported by the device, or
+ *  - the queried property cannot be provided for the given sites.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if
+ *  - @p device or @p operation are @c NULL,
+ *  - @p prop is invalid,
+ *  - @p num_sites is zero and @p sites is not @c NULL,
+ *  - @p num_params is zero and @p params is not @c NULL, or
+ *  - @p value is not @c NULL and @p size is less than the size of the data
+ *    being queried.
  * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
  *
  * @note By calling this function with @p sites set to @c NULL, the function can
@@ -475,18 +483,23 @@ int QDMI_device_query_site_property(QDMI_Device device, QDMI_Site site,
  * A device will return @ref QDMI_ERROR_NOTSUPPORTED if the queried property is
  * site-dependent and @p sites is @c NULL.
  *
+ * @note By calling this function with @p params set to @c NULL, the function
+ * can be used to query properties of the device that are independent of the
+ * values of the parameters. A device will return @ref QDMI_ERROR_NOTSUPPORTED
+ * if the queried property is parameter-dependent and @p params is @c NULL.
+ *
  * @note By calling this function with @p value set to @c NULL, the function can
  * be used to check if the device supports the specified property without
  * retrieving the property and without the need to provide a buffer for it.
  * Additionally, the size of the buffer needed to retrieve the property is
  * returned in @p size_ret if @p size_ret is not @c NULL.
  *
- * @note For example, to query the site-independent fidelity of an operation,
- * the following code snippet can be used:
+ * @note For example, to query the site-independent fidelity of an operation
+ * without parameters, the following code snippet can be used:
  * ```
  * // Check if the device supports the property.
  * auto ret = QDMI_device_query_operation_property(
- *   device, operation, 0, nullptr,
+ *   device, operation, 0, nullptr, 0, nullptr,
  *   QDMI_OPERATION_PROPERTY_FIDELITY, 0, nullptr, nullptr);
  * if (ret == QDMI_ERROR_NOTSUPPORTED) {
  *   // The device does not support the site-independent property.
@@ -497,7 +510,7 @@ int QDMI_device_query_site_property(QDMI_Device device, QDMI_Site site,
  * // Query the property.
  * double fidelity;
  * QDMI_device_query_operation_property(
- *   device, operation, 0, nullptr,
+ *   device, operation, 0, nullptr, 0, nullptr,
  *   QDMI_OPERATION_PROPERTY_FIDELITY, sizeof(double), &fidelity, nullptr);
  * ```
  *
@@ -505,11 +518,16 @@ int QDMI_device_query_site_property(QDMI_Device device, QDMI_Site site,
  * @ref QDMI_device_query_device_property with @ref
  * QDMI_DEVICE_PROPERTY_OPERATIONS and @ref QDMI_DEVICE_PROPERTY_SITES,
  * respectively.
+ *
+ * @remark The number of operands and parameters of an operation can be queried
+ * via @ref QDMI_device_query_operation_property with @ref
+ * QDMI_OPERATION_PROPERTY_QUBITSNUM and @ref
+ * QDMI_OPERATION_PROPERTY_PARAMETERSNUM, respectively.
  */
 int QDMI_device_query_operation_property(
     QDMI_Device device, QDMI_Operation operation, size_t num_sites,
-    const QDMI_Site *sites, QDMI_Operation_Property prop, size_t size,
-    void *value, size_t *size_ret);
+    const QDMI_Site *sites, size_t num_params, const double *params,
+    QDMI_Operation_Property prop, size_t size, void *value, size_t *size_ret);
 
 /** @} */ // end of client_query
 
