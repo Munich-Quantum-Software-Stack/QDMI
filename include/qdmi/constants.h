@@ -346,8 +346,8 @@ enum QDMI_JOB_STATUS_T {
   QDMI_JOB_STATUS_DONE = 2,
   /// The job is running, and the result is not yet available.
   QDMI_JOB_STATUS_RUNNING = 3,
-  /// The job was cancelled and the result is not available.
-  QDMI_JOB_STATUS_CANCELLED = 4
+  /// The job was canceled, and the result is not available.
+  QDMI_JOB_STATUS_CANCELED = 4
 };
 
 /// Type of the device status.

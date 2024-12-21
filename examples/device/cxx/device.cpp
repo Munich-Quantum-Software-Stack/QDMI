@@ -443,7 +443,7 @@ int CXX_QDMI_device_job_cancel(CXX_QDMI_Device_Job job) {
     break;
   }
 
-  job->status = QDMI_JOB_STATUS_CANCELLED;
+  job->status = QDMI_JOB_STATUS_CANCELED;
   CXX_QDMI_set_device_status(QDMI_DEVICE_STATUS_IDLE);
   return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]

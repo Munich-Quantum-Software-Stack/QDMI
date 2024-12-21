@@ -466,7 +466,7 @@ int QDMI_device_job_submit(QDMI_Device_Job job);
 /**
  * @brief Cancel an already submitted job.
  * @details Remove the job from the queue of waiting jobs. This changes the
- * status of the job to @ref QDMI_JOB_STATUS_CANCELLED.
+ * status of the job to @ref QDMI_JOB_STATUS_CANCELED.
  * @param[in] job The job to cancel. Must not be @c NULL.
  * @return @ref QDMI_SUCCESS if the job was successfully canceled.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p job is @c NULL or the job
