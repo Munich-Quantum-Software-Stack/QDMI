@@ -37,18 +37,19 @@ extern "C" {
 // used from both C and C++ code.
 // NOLINTBEGIN(performance-enum-size, modernize-use-using)
 
-/** @defgroup client QDMI Client Interface
+/** @defgroup client_interface QDMI Client Interface
  *  @brief Describes the functions accessible to clients or users of QDMI.
  *  @details This is an interface between the QDMI driver and the client.
  *  It includes functions to establish sessions between a QDMI driver and a
  *  client, as well as to interact with the devices managed by the driver.
  *
  *  The client interface is split into three parts:
- *  - The @ref client_session "client session interface" for managing sessions
- *    between a QDMI driver and a client.
- *  - The @ref client_query "client query interface" for querying properties of
- *    devices.
- *  - The @ref client_job "client job interface" for submitting jobs to devices.
+ *  - The @ref client_session_interface "client session interface" for managing
+ * sessions between a QDMI driver and a client.
+ *  - The @ref client_query_interface "client query interface" for querying
+ * properties of devices.
+ *  - The @ref client_job_interface "client job interface" for submitting jobs
+ * to devices.
  *
  * @{
  */
@@ -61,7 +62,7 @@ extern "C" {
  */
 typedef struct QDMI_Device_impl_d *QDMI_Device;
 
-/** @defgroup client_session QDMI Client Session Interface
+/** @defgroup client_session_interface QDMI Client Session Interface
  *  @brief Provides functions to manage sessions between the client and driver.
  *  @details A session is a connection between a client and a QDMI driver that
  *  allows the client to interact with the driver and the devices it manages.
@@ -72,8 +73,8 @@ typedef struct QDMI_Device_impl_d *QDMI_Device;
  *  - Initialize the session with @ref QDMI_session_init.
  *  - Query the available devices with @ref QDMI_session_query_session_property.
  *  - Run client code to interact with the retrieved @ref QDMI_Device handles
- *    using the @ref client_query "client query interface" and the @ref
- *    client_job "client job interface".
+ *    using the @ref client_query_interface "client query interface" and the
+ * @ref client_job_interface "client job interface".
  *  - Free the session with @ref QDMI_session_free when it is no longer needed.
  *
  *  @{
@@ -90,7 +91,8 @@ typedef struct QDMI_Session_impl_d *QDMI_Session;
  * @brief Allocate a new session.
  * @details This is the main entry point for a client to establish a session
  * with a QDMI driver. The returned handle can be used throughout the
- * @ref client_session "client session interface" to refer to the session.
+ * @ref client_session_interface "client session interface" to refer to the
+ * session.
  * @param[out] session A handle to the session that is allocated. Must not be
  * @c NULL. The session must be freed by calling @ref QDMI_session_free
  * when it is no longer used.
@@ -337,9 +339,9 @@ int QDMI_session_query_session_property(QDMI_Session session,
  */
 void QDMI_session_free(QDMI_Session session);
 
-/** @} */ // end of client_session
+/** @} */ // end of client_session_interface
 
-/** @defgroup client_query QDMI Client Query Interface
+/** @defgroup client_query_interface QDMI Client Query Interface
  *  @brief Provides functions to query properties of devices.
  *  @details The query interface enables to query static and dynamic properties
  *  of devices and their constituents in a unified fashion. It operates on @ref
@@ -538,9 +540,9 @@ int QDMI_device_query_operation_property(
     const QDMI_Site *sites, size_t num_params, const double *params,
     QDMI_Operation_Property prop, size_t size, void *value, size_t *size_ret);
 
-/** @} */ // end of client_query
+/** @} */ // end of client_query_interface
 
-/** @defgroup client_job QDMI Client Job Interface
+/** @defgroup client_job_interface QDMI Client Job Interface
  *  @brief Provides functions to manage client-side jobs.
  *  @details The job interface enables clients to submit jobs to devices and to
  *  manage them.
@@ -571,8 +573,8 @@ typedef struct QDMI_Job_impl_d *QDMI_Job;
 /**
  * @brief Create a job.
  * @details This is the main entry point for a client to submit a job to a
- * device. The returned handle can be used throughout the @ref client_job
- * "client job interface" to refer to the job.
+ * device. The returned handle can be used throughout the @ref
+ * client_job_interface "client job interface" to refer to the job.
  * @param[in] device The device to create the job on. Must not be @c NULL.
  * @param[out] job A pointer to a handle that will store the created job.
  * Must not be @c NULL. The job must be freed by calling @ref QDMI_job_free
@@ -580,8 +582,8 @@ typedef struct QDMI_Job_impl_d *QDMI_Job;
  * @return @ref QDMI_SUCCESS if the job was successfully created.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p device or @p job are @c NULL.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the driver does not allow using
- * the @ref client_job "client job interface" for the device in the current
- * session.
+ * the @ref client_job_interface "client job interface" for the device in the
+ * current session.
  * @return @ref QDMI_ERROR_FATAL if job creation failed due to a fatal error.
  */
 int QDMI_device_create_job(QDMI_Device device, QDMI_Job *job);
@@ -667,8 +669,8 @@ typedef enum QDMI_JOB_PARAMETER_T QDMI_Job_Parameter;
  * @return @ref QDMI_ERROR_BADSTATE if the parameter cannot be set in the
  * current state of the job, for example, because the job is already submitted.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the driver does not allow using
- * the @ref client_job "client job interface" for the device in the current
- * session.
+ * the @ref client_job_interface "client job interface" for the device in the
+ * current session.
  * @return @ref QDMI_ERROR_FATAL if setting the parameter failed due to a fatal
  * error.
  *
@@ -707,8 +709,8 @@ int QDMI_job_set_parameter(QDMI_Job job, QDMI_Job_Parameter param, size_t size,
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p job is @c NULL.
  * @return @ref QDMI_ERROR_BADSTATE if the job is in an invalid state.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the driver does not allow using
- * the @ref client_job "client job interface" for the device in the current
- * session.
+ * the @ref client_job_interface "client job interface" for the device in the
+ * current session.
  * @return @ref QDMI_ERROR_FATAL if the job submission failed.
  */
 int QDMI_job_submit(QDMI_Job job);
@@ -722,8 +724,8 @@ int QDMI_job_submit(QDMI_Job job);
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p job is @c NULL or the job
  * already has the status @ref QDMI_JOB_STATUS_DONE.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the driver does not allow using
- * the @ref client_job "client job interface" for the device in the current
- * session.
+ * the @ref client_job_interface "client job interface" for the device in the
+ * current session.
  * @return @ref QDMI_ERROR_FATAL if the job could not be canceled.
  */
 int QDMI_job_cancel(QDMI_Job job);
@@ -738,8 +740,8 @@ int QDMI_job_cancel(QDMI_Job job);
  * @return @ref QDMI_SUCCESS if the job status was successfully checked.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p job or @p status is @c NULL.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the driver does not allow using
- * the @ref client_job "client job interface" for the device in the current
- * session.
+ * the @ref client_job_interface "client job interface" for the device in the
+ * current session.
  * @return @ref QDMI_ERROR_FATAL if the job status could not be checked.
  */
 int QDMI_job_check(QDMI_Job job, QDMI_Job_Status *status);
@@ -752,8 +754,8 @@ int QDMI_job_check(QDMI_Job job, QDMI_Job_Status *status);
  * @return @ref QDMI_SUCCESS if the job is finished or canceled.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p job is @c NULL.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the driver does not allow using
- * the @ref client_job "client job interface" for the device in the current
- * session.
+ * the @ref client_job_interface "client job interface" for the device in the
+ * current session.
  * @return @ref QDMI_ERROR_FATAL if the job could not be waited for and this
  * function returns before the job has finished or has been canceled.
  */
@@ -782,8 +784,8 @@ int QDMI_job_wait(QDMI_Job job);
  *  - @p data is not @c NULL and @p size is smaller than the size of the data
  *    being queried.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the driver does not allow using
- * the @ref client_job "client job interface" for the device in the current
- * session.
+ * the @ref client_job_interface "client job interface" for the device in the
+ * current session.
  * @return @ref QDMI_ERROR_FATAL if an error occurred during the retrieval.
  *
  * @note By calling this function with @p data set to @c NULL, the function can
@@ -819,9 +821,9 @@ int QDMI_job_get_results(QDMI_Job job, QDMI_Job_Result result, size_t size,
  */
 void QDMI_job_free(QDMI_Job job);
 
-/** @} */ // end of client_job
+/** @} */ // end of client_job_interface
 
-/** @} */ // end of client
+/** @} */ // end of client_interface
 
 // NOLINTEND(performance-enum-size, modernize-use-using)
 

@@ -36,9 +36,9 @@ QDMI consists of three components, namely:
 - the "device", and
 - the "driver".
 
-These components are connected by two interfaces, the @ref device.h "device interface" that connects
-the device and the driver, and the @ref client.h "client interface" that connects the client and the
-driver.
+These components are connected by two interfaces, the @ref device_interface "device interface" that
+connects the device and the driver, and the @ref client_interface "client interface" that connects
+the client and the driver.
 
 The device represents the physical quantum computer or also a classical simulator imitating a
 quantum computer. Multiple devices are managed by the driver. For that, the driver maintains a list

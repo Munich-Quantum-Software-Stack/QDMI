@@ -52,12 +52,12 @@ extern "C" {
  *  device, and submit jobs to the device.
  *
  *  The device interface is split into three parts:
- *  - The @ref device_session "device session interface" for managing sessions
- *    between a QDMI driver and a device.
- *  - The @ref device_query "device query interface" for querying properties of
- *    the device.
- *  - The @ref device_job "device job interface" for submitting jobs to the
- *    device.
+ *  - The @ref device_session_interface "device session interface" for managing
+ * sessions between a QDMI driver and a device.
+ *  - The @ref device_query_interface "device query interface" for querying
+ * properties of the device.
+ *  - The @ref device_job_interface "device job interface" for submitting jobs
+ * to the device.
  *
  * @{
  */
@@ -76,14 +76,14 @@ int QDMI_device_initialize(void);
  * @brief Finalize a device.
  * @details A device can expect that this function is called exactly once at the
  * end of using the device, and no other functions are invoked on that device
- * afterwards.
+ * afterward.
  * @return @ref QDMI_SUCCESS if the device was finalized successfully.
  * @return @ref QDMI_ERROR_FATAL if the finalization failed, this could, for
  * example, be due to a job that is still running.
  */
 int QDMI_device_finalize(void);
 
-/** @defgroup device_session QDMI Device Session Interface
+/** @defgroup device_session_interface QDMI Device Session Interface
  *  @brief Provides functions to manage sessions between the driver and device.
  *  @details A device session is a connection between a driver and a device that
  *  allows the driver to interact with the device.
@@ -95,8 +95,9 @@ int QDMI_device_finalize(void);
  *  - Set parameters for the session with @ref
  * QDMI_device_session_set_parameter.
  *  - Initialize the session with @ref QDMI_device_session_init.
- *  - Run code to interact with the device using the @ref device_query
- *    "device query interface" and the @ref device_job "device job interface".
+ *  - Run code to interact with the device using the @ref device_query_interface
+ *    "device query interface" and the @ref device_job_interface "device job
+ * interface".
  *  - Free the session with @ref QDMI_device_session_free when it is no longer
  *    needed.
  *
@@ -114,7 +115,7 @@ typedef struct QDMI_Device_Session_impl_d *QDMI_Device_Session;
  * @brief Allocate a new device session.
  * @details This is the main entry point for a driver to establish a session
  * with a device. The returned handle can be used throughout the @ref
- * device_session "device session interface" to refer to the session.
+ * device_session_interface "device session interface" to refer to the session.
  * @param[out] session A handle to the session that is allocated. Must not be
  * @c NULL. The session must be freed by calling @ref QDMI_device_session_free
  * when it is no longer used.
@@ -169,12 +170,11 @@ int QDMI_device_session_set_parameter(QDMI_Device_Session session,
  * @details This function initializes the device session and prepares it for
  * use.
  * The session must be initialized before it can be used as part of the @ref
- * device_query "device query interface" or the @ref device_job
- * "device job interface".
- * If a device requires authentication, the required authentication information
- * must be set using @ref QDMI_device_session_set_parameter before calling this
- * function.
- * A session may only be successfully initialized once.
+ * device_query_interface "device query interface" or the @ref
+ * device_job_interface "device job interface". If a device requires
+ * authentication, the required authentication information must be set using
+ * @ref QDMI_device_session_set_parameter before calling this function. A
+ * session may only be successfully initialized once.
  * @param[in] session The session to initialize. Must not be @c NULL.
  * @return @ref QDMI_SUCCESS if the session was initialized successfully.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the session could not be
@@ -201,13 +201,13 @@ int QDMI_device_session_init(QDMI_Device_Session session);
  */
 void QDMI_device_session_free(QDMI_Device_Session session);
 
-/** @} */ // end of device_session
+/** @} */ // end of device_session_interface
 
-/** @defgroup device_query QDMI Device Query Interface
+/** @defgroup device_query_interface QDMI Device Query Interface
  *  @brief Provides functions to query properties of a device.
  *  @brief The query interface enables to query static and dynamic properties of
  *  a device and its constituents in a unified fashion. It operates on @ref
- *  QDMI_Device_Session handles created via the @ref device_session
+ *  QDMI_Device_Session handles created via the @ref device_session_interface
  *  "device session interface".
  *
  *  @{
@@ -358,9 +358,9 @@ int QDMI_device_session_query_operation_property(
     const QDMI_Site *sites, size_t num_params, const double *params,
     QDMI_Operation_Property prop, size_t size, void *value, size_t *size_ret);
 
-/** @} */ // end of device_query
+/** @} */ // end of device_query_interface
 
-/** @defgroup device_job QDMI Device Job Interface
+/** @defgroup device_job_interface QDMI Device Job Interface
  *  @brief Provides functions to manage jobs on a device.
  *  @details The job interface enables managing jobs on a device.
  *
@@ -390,8 +390,8 @@ typedef struct QDMI_Device_Job_impl_d *QDMI_Device_Job;
 /**
  * @brief Create a job.
  * @details This is the main entry point for a driver to create a job for a
- * device. The returned handle can be used throughout the @ref device_job
- * "device job interface" to refer to the job.
+ * device. The returned handle can be used throughout the @ref
+ * device_job_interface "device job interface" to refer to the job.
  * @param[in] session The session to create the job on. Must not be @c NULL.
  * @param[out] job A pointer to a handle that will store the created job.
  * Must not be @c NULL. The job must be freed by calling @ref
@@ -401,7 +401,7 @@ typedef struct QDMI_Device_Job_impl_d *QDMI_Device_Job;
  * @return @ref QDMI_ERROR_BADSTATE if the session is not in a state allowing
  * the creation of a job, for example, because the session is not initialized.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the device does not allow using
- * the @ref device_job "device job interface" for the current session.
+ * the @ref device_job_interface "device job interface" for the current session.
  * @return @ref QDMI_ERROR_FATAL if job creation failed due to a fatal error.
  *
  * @attention May only be called after the session has been initialized with
@@ -435,7 +435,7 @@ int QDMI_device_session_create_device_job(QDMI_Device_Session session,
  * @return @ref QDMI_ERROR_BADSTATE if the parameter cannot be set in the
  * current state of the job, for example, because the job is already submitted.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the device does not allow using
- * the @ref device_job "device job interface" for the current session.
+ * the @ref device_job_interface "device job interface" for the current session.
  * @return @ref QDMI_ERROR_FATAL if setting the parameter failed due to a fatal
  * error.
  *
@@ -458,7 +458,7 @@ int QDMI_device_job_set_parameter(QDMI_Device_Job job,
  * @return @ref QDMI_SUCCESS if the job was successfully submitted.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p job is @c NULL.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the device does not allow using
- * the @ref device_job "device job interface" for the current session.
+ * the @ref device_job_interface "device job interface" for the current session.
  * @return @ref QDMI_ERROR_FATAL if the job submission failed.
  */
 int QDMI_device_job_submit(QDMI_Device_Job job);
@@ -472,7 +472,7 @@ int QDMI_device_job_submit(QDMI_Device_Job job);
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p job is @c NULL or the job
  * already has the status @ref QDMI_JOB_STATUS_DONE.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the device does not allow using
- * the @ref device_job "device job interface" for the current session.
+ * the @ref device_job_interface "device job interface" for the current session.
  * @return @ref QDMI_ERROR_FATAL if the job could not be canceled.
  */
 int QDMI_device_job_cancel(QDMI_Device_Job job);
@@ -487,7 +487,7 @@ int QDMI_device_job_cancel(QDMI_Device_Job job);
  * @return @ref QDMI_SUCCESS if the job status was successfully checked.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p job or @p status is @c NULL.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the device does not allow using
- * the @ref device_job "device job interface" for the current session.
+ * the @ref device_job_interface "device job interface" for the current session.
  * @return @ref QDMI_ERROR_FATAL if the job status could not be checked.
  */
 int QDMI_device_job_check(QDMI_Device_Job job, QDMI_Job_Status *status);
@@ -500,7 +500,7 @@ int QDMI_device_job_check(QDMI_Device_Job job, QDMI_Job_Status *status);
  * @return @ref QDMI_SUCCESS if the job is finished or canceled.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p job is @c NULL.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the device does not allow using
- * the @ref device_job "device job interface" for the current session.
+ * the @ref device_job_interface "device job interface" for the current session.
  * @return @ref QDMI_ERROR_FATAL if the job could not be waited for and this
  * function returns before the job has finished or has been canceled.
  */
@@ -529,7 +529,7 @@ int QDMI_device_job_wait(QDMI_Device_Job job);
  *  - @p data is not @c NULL and @p size is smaller than the size of the data
  *    being queried.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the device does not allow using
- * the @ref device_job "device job interface" for the current session.
+ * the @ref device_job_interface "device job interface" for the current session.
  * @return @ref QDMI_ERROR_FATAL if an error occurred during the retrieval.
  *
  * @remark Calling this function with @p data set to @c NULL is expected to
@@ -550,7 +550,7 @@ int QDMI_device_job_get_results(QDMI_Device_Job job, QDMI_Job_Result result,
  */
 void QDMI_device_job_free(QDMI_Device_Job job);
 
-/** @} */ // end of device_job
+/** @} */ // end of device_job_interface
 
 /** @} */ // end of device_interface
 
