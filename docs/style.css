@@ -55,3 +55,28 @@ html.dark-mode .qdmi-schematic {
 html.dark-mode .qdmi {
   content: url("qdmi_dark.svg");
 }
+
+table.memberdecls tr[class^="memitem"]:has(qdmi_interface) {
+  font-family: unset;
+  font-size: unset;
+}
+
+table.memberdecls .memItemLeft:has(.qdmi_interface),
+table.memberdecls .memItemRight:has(.qdmi_interface),
+table.memberdecls .memTemplItemLeft:has(.qdmi_interface),
+table.memberdecls .memTemplItemRight:has(.qdmi_interface),
+table.memberdecls .memTemplParams:has(.qdmi_interface) {
+  padding-top: unset;
+  padding-bottom: unset;
+  border-top: unset;
+  border-bottom: unset;
+  background-color: unset;
+}
+
+table.memberdecls .memItemLeft:has(qdmi_interface) {
+  border-left: unset;
+}
+
+table.memberdecls .memItemRight:has(qdmi_interface) {
+  border-right: unset;
+}
