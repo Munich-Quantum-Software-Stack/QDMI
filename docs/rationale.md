@@ -80,30 +80,39 @@ various interfaces that are described in the next section.
 
 <img class="qdmi-schematic" alt="QDMI Components and Interfaces" src="qdmi_schematic.svg"/>
 
-## Session, Control and Query Interface {#rationale-interfaces}
+## Session, Job and Query Interface {#rationale-interfaces}
 
 As depicted in the schematic above, the components of QDMI communicate through three different
 interfaces, namely:
 
 - the "session interface",
-- the "control interface", and
+- the "job interface", and
 - the "query interface".
 
-However, those interfaces do not map directly to the components of QDMI. Instead, the session
-interface is exclusively used for the communication between the client and the driver. The client
-calls functions of the session interface that is implemented by the driver.
+Those interfaces do not map directly to the components of QDMI. Rather, every of the above three
+interfaces has two instantiations: In the client interface between the clients and the drivers and
+in the device interface between the driver and the devices. Hence, the client calls functions of the
+respective interface implementation of the driver and the driver either handles the calls itself or
+forwards them to the device.
 
-The control and query interfaces facilitate the communication between the client and the device.
+To this end, the client's session interface establishes a session between a client and a driver.
+Through this session, the driver grants the client access to the connected devices. The driver
+itself also creates a session, a device session between itself and the device. In the usual case,
+the driver will create a device session on one device for every client that has access to it. Find
+more details on the usage of the device session below under \ref device-session.
+
+The job and query interfaces facilitate the communication between the client and the device.
 Nevertheless, the communication does not take place directly between those components and always
-goes through the driver. To this end, the control and query interface have two sides, the client and
-device side. The device side of the control and query interface are implemented by the device and
-consumed by the driver. In turn, the client side is implemented by the driver and consumed by the
-client.
+goes through the driver. To this end, the job and query interface have two sides, the client and
+device side. In particular, the driver may cache or modify any information returned by the device.
 
-The split of this part of QDMI into the control and query interface is motivated by the fact that
-the control interface is used to control job execution and everything connected to it. The
-information flow here is bidirectional. On the other hand, the information flow through the query
-interface is purely unidirectional from the device to the client.
+The split of QDMI into the session, job and query interface is motivated by the fact that the
+session interface describes communication only between two adjacent components. The control and
+query interface on the other hand define communication between clients and devices that goes through
+the driver but the driver is here no end-point of the communication. The job interface is used to
+control job execution and everything connected to it and hence the information flow here is
+bidirectional. On the other hand, the information flow through the query interface is purely
+unidirectional from the device to the client.
 
 ## Prefixing Device Implementations {#rationale-prefix}
 
@@ -152,9 +161,10 @@ store the handles. This memory region is passed in the parameter `value`. The pa
 specifies the size of the memory region pointed to by `value` in bytes. The parameter `size_ret` is
 a pointer to a variable that will store the number of bytes that were actually written into the
 memory region pointed to by `value`. The function can be called with a `NULL` pointer for `value` to
-only retrieve the number of devices that are available which will, in this case, be returned in
-`size_ret`. Simultaneously, if `size_ret` is `NULL`, it is ignored, and the function only writes the
-number of devices into the memory pointed to by `value`.
+only retrieve the size of the buffer that is required to retrieve all available device handles, in
+this case, be returned in `size_ret`. From that, the number of devices can be calculated as
+`size_ret / sizeof(QDMI_Device)`. Simultaneously, if `size_ret` is `NULL`, it is ignored, and the
+function only writes the number of devices into the memory pointed to by `value`.
 
 With the device handles at hand, the function \ref QDMI_device_query_device_property can be called
 for one device. The signature of the function is:
@@ -164,14 +174,59 @@ int QDMI_device_query_device_property(QDMI_Device device, QDMI_Device_Property p
 ```
 
 The semantics of this function is actually similar to the one described earlier. The first two
-parameters denote the device and the property to query. This time `value` is a pointer to a memory
-region of type `void*`. The parameter `size` specifies the size of the memory region pointed to by
-`value` in the number of bytes, i.e., _not_ the number of times the type of the property fits into
-the memory region. The parameter `size_ret` is a pointer to a variable that will store the number of
-bytes that were actually written into the memory region pointed to by `value`. To retrieve the
-actual returned value of the property, the client must cast the pointer `value` to the type of the
-property. The type it must be casted to is defined by the property and can be taken from the
-documentation of the property.
+parameters denote the device and the property to query. The parameter `value` is a pointer to a
+memory region of type `void*`. The parameter `size` specifies the size of the memory region pointed
+to by `value` in the number of bytes. The parameter `size_ret` is a pointer to a variable that will
+store the number of bytes that were actually written into the memory region pointed to by `value`.
+To retrieve the actual returned value of the property, the client must cast the pointer `value` to
+the type of the property. The type it must be casted to is defined by the property and can be taken
+from the documentation of the property.
 
-[//]: # "todo: read everything above again an check"
-[//]: # "todo: non-encapsulation, non-ids (type-safety), device session"
+## Purpose of Device Sessions {#device-session}
+
+The devices handled by QDMI may have very individual access modes that depend on, for example, on
+the provided token used for authentication. However, in the first place, the device does not know,
+who is calling one of its functions, or to be more precise, on behalf of which client the driver is
+calling one of its function. To distinguish different clients on the device level, the \ref
+QDMI_Device_Session was introduced. To open a connection to a device, the driver must first create a
+session between itself and the device. The driver can create a session on a client basis. Hence, the
+driver can set up this device session specific for the corresponding client, e.g., the driver can
+set the adequate tokens as parameters for the device session via \ref
+QDMI_device_session_set_parameter using \ref QDMI_DEVICE_SESSION_PARAMETER_TOKEN. As a result, the
+client is identified by the respective device session on the device level and the client gets the
+correct access mode for the device.
+
+## Use of Opaque Pointers {#opaque-pointers}
+
+Throughout QDMI, we make use of opaque pointers, i.e., \ref QDMI_Site, \ref QDMI_Job, \ref
+QDMI_Device, ... Those are defined as pointer to an undeclared struct, e.g., for \ref QDMI_Site
+
+```C
+typedef struct QDMI_Site_impl_d *QDMI_Site;
+```
+
+Here, this undeclared struct is only defined in the implementation of the device and the definition
+cannot be included via a header in any other component. Other types, such as \ref QDMI_Job, \ref
+QDMI_Device are defined in the driver. Hence, only the entity defining the struct behind the opaque
+pointer knows its structure and can access the data stored behind the pointer. To this end, opaque
+pointers serve as kind of a firewall because, e.g., the client only sees the pointer address of,
+e.g., a site and cannot even dereference the pointer. On the other hand, the device can freely
+choose what information it wants to store in the underlying struct, e.g., an id, its location, ...
+
+Other possibilities to address object in the context of QDMI would be the use of (publicly) defined
+structs or (integer) IDs. One special case of IDs would be the use of Universally Unique Identifiers
+(UUIDs). The former would require that the struct of a site would need to be defined in a header
+included by the respective components of QDMI. One disadvantage is that—whether intended or
+not—every entity can include this definition and knows the structure of the struct behind a site,
+and hence is able to access the data stored in it. It is not possible to hide information for the
+client, for example. Additionally, the device can no longer define the struct representing a site by
+its own and must store information related to a site somehow else than easily incorporating this
+into the struct representing a site. On a high level, the use of IDs (UUIDs or not) is similar to
+the use of opaque pointers. In some way, the pointers are also just IDs. However, those opaque
+pointers have a type associated to them and the interface becomes easier to read and more type-safe
+as the types of opaque pointers are checked statically whereas IDs will always be integers that are
+in principle interchangeable.
+
+However, opaque pointers come not only with advantages: Their use requires an additional level of
+indirection and many pointer dereferences. Those result in an execution time overhead compared to
+direct implementations of the types.
