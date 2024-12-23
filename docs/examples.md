@@ -49,20 +49,18 @@ All of those properties are of type `char*` (string). Since they are properties 
 are returned by the @ref QDMI_device_session_query_device_property function. Below you find the
 respective implementation in C++ and C.
 
-[//]: # "todo: check example (too long)"
-
 <!-- prettier-ignore-start -->
 <div class="tabbed">
 - <b class="tab-title">C++</b>
   \dontinclude device.cpp
-  \skip QDMI_device_session_query_device_property
+  \skip int CXX_QDMI_device_session_query_device_property
   \until QDMI_DEVICE_PROPERTY_LIBRARYVERSION
   \until size_ret)
   \skip QDMI_ERROR_NOTSUPPORTED
   \until DOXYGEN FUNCTION END
 - <b class="tab-title">C</b>
   \dontinclude device.c
-  \skip QDMI_device_session_query_device_property
+  \skip int C_QDMI_device_session_query_device_property
   \until QDMI_DEVICE_PROPERTY_LIBRARYVERSION
   \until size_ret)
   \skip QDMI_ERROR_NOTSUPPORTED
@@ -132,7 +130,7 @@ device.
 <div class="tabbed">
 - <b class="tab-title">C++</b>
   \dontinclude device.cpp
-  \skip QDMI_device_session_query_device_property
+  \skip int CXX_QDMI_device_session_query_device_property
   \until {
   \skip QDMI_DEVICE_PROPERTY_STATUS
   \until QDMI_DEVICE_PROPERTY_QUBITSNUM
@@ -141,7 +139,7 @@ device.
   \until DOXYGEN FUNCTION END
 - <b class="tab-title">C</b>
   \dontinclude device.c
-  \skip QDMI_device_session_query_device_property
+  \skip int C_QDMI_device_session_query_device_property
   \until {
   \skip QDMI_DEVICE_PROPERTY_STATUS
   \until QDMI_DEVICE_PROPERTY_QUBITSNUM
@@ -164,13 +162,13 @@ flattened into a single list of @ref QDMI_Site's.
   \skipline constexpr std::array<const CXX_QDMI_Site_impl_d *, 20>
   \skip DEVICE_COUPLING_MAP
   \until ;
-  \skip QDMI_device_session_query_device_property
+  \skip int CXX_QDMI_device_session_query_device_property
   \until {
   \skip ADD_LIST_PROPERTY
   \until DOXYGEN FUNCTION END
 - <b class="tab-title">C</b>
   \dontinclude device.c
-  \skip QDMI_device_session_query_device_property
+  \skip int C_QDMI_device_session_query_device_property
   \until {
   \skip ADD_LIST_PROPERTY
   \until DOXYGEN FUNCTION END
