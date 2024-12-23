@@ -49,6 +49,8 @@ All of those properties are of type `char*` (string). Since they are properties 
 are returned by the @ref QDMI_device_session_query_device_property function. Below you find the
 respective implementation in C++ and C.
 
+[//]: # "todo: check example (too long)"
+
 <!-- prettier-ignore-start -->
 <div class="tabbed">
 - <b class="tab-title">C++</b>

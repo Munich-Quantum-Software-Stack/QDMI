@@ -172,3 +172,6 @@ bytes that were actually written into the memory region pointed to by `value`. T
 actual returned value of the property, the client must cast the pointer `value` to the type of the
 property. The type it must be casted to is defined by the property and can be taken from the
 documentation of the property.
+
+[//]: # "todo: read everything above again an check"
+[//]: # "todo: non-encapsulation, non-ids (type-safety), device session"
