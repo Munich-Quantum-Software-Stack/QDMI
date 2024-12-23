@@ -71,7 +71,7 @@ client are managed in \ref QDMI_Session "sessions". Hence, a client must first c
 through the session the client can access the devices. To this end, the driver has to implement the
 type \ref QDMI_Session "session" that can store information about itself. Similar to the device's
 type, the session is just an opaque handle for the client and only the driver knows about its
-implementation. The driver must also implement its own /ref QDMI_Job "job" type that can store
+implementation. The driver must also implement its own \ref QDMI_Job "job" type that can store
 information about the job that is submitted by the client. The job is then managed by the driver and
 somehow translated to a device job that is executed by the device.
 
