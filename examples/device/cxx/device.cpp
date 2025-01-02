@@ -350,6 +350,7 @@ int CXX_QDMI_device_session_create_device_job(CXX_QDMI_Device_Session session,
 } /// [DOXYGEN FUNCTION END]
 
 void CXX_QDMI_device_job_free(CXX_QDMI_Device_Job job) {
+  delete[] static_cast<char *>(job->program);
   delete job;
 } /// [DOXYGEN FUNCTION END]
 
@@ -381,7 +382,7 @@ int CXX_QDMI_device_job_set_parameter(CXX_QDMI_Device_Job job,
     return QDMI_SUCCESS;
   case QDMI_DEVICE_JOB_PARAMETER_PROGRAM:
     if (value != nullptr) {
-      job->program = malloc(size);
+      job->program = new char[size];
       memcpy(job->program, value, size);
     }
     return QDMI_SUCCESS;
