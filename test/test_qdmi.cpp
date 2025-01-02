@@ -696,6 +696,26 @@ TEST_P(QDMIImplementationTest, SessionSetParameter) {
   QDMI_session_free(session2);
 }
 
+TEST_P(QDMIImplementationTest, SessionInit) {
+  // `session == nullptr` is not a valid argument
+  EXPECT_EQ(QDMI_session_init(nullptr), QDMI_ERROR_INVALIDARGUMENT);
+
+  // Initializing a session again is not allowed
+  ASSERT_EQ(QDMI_session_init(session), QDMI_ERROR_BADSTATE);
+
+  // Driver requires token for initialization
+  QDMI_Session session2 = nullptr;
+  ASSERT_EQ(QDMI_session_alloc(&session2), QDMI_SUCCESS);
+  EXPECT_EQ(QDMI_session_init(session2), QDMI_ERROR_PERMISSIONDENIED);
+
+  const std::string test_token = "test_token";
+  EXPECT_EQ(QDMI_session_set_parameter(session2, QDMI_SESSION_PARAMETER_TOKEN,
+                                       test_token.length() + 1,
+                                       test_token.c_str()),
+            QDMI_SUCCESS);
+  EXPECT_EQ(QDMI_session_init(session2), QDMI_SUCCESS);
+}
+
 TEST_P(QDMIImplementationTest, SessionQuerySessionProperty) {
   // `session == nullptr` is not a valid argument
   EXPECT_EQ(QDMI_session_query_session_property(
