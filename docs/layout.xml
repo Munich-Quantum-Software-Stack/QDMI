@@ -167,7 +167,8 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
   <!-- Layout definition for a file page -->
   <file>
-    <briefdescription visible="yes"/>
+    <briefdescription visible="no"/>
+    <detaileddescription title="Description"/>
     <includes visible="$SHOW_INCLUDE_FILES"/>
     <includegraph visible="yes"/>
     <includedbygraph visible="yes"/>
@@ -190,7 +191,6 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
       <properties title=""/>
       <membergroups visible="yes"/>
     </memberdecl>
-    <detaileddescription title=""/>
     <memberdef>
       <inlineclasses title=""/>
       <defines title=""/>
@@ -207,7 +207,8 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
   <!-- Layout definition for a group page -->
   <group>
-    <briefdescription visible="yes"/>
+    <briefdescription visible="no"/>
+    <detaileddescription title="Description"/>
     <groupgraph visible="yes"/>
     <memberdecl>
       <nestedgroups visible="yes" title="Interfaces"/>
@@ -234,7 +235,6 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
       <friends title=""/>
       <membergroups visible="yes"/>
     </memberdecl>
-    <detaileddescription title=""/>
     <memberdef>
       <pagedocs/>
       <inlineclasses title=""/>
