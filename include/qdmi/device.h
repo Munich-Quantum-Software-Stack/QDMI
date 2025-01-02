@@ -90,8 +90,8 @@ int QDMI_device_finalize(void);
  * QDMI_device_session_set_parameter.
  *  - Initialize the session with @ref QDMI_device_session_init.
  *  - Run code to interact with the device using the @ref device_query_interface
- *    "device query interface" and the @ref device_job_interface "device job
- * interface".
+ *    "device query interface" and the @ref device_job_interface
+ *    "device job interface".
  *  - Free the session with @ref QDMI_device_session_free when it is no longer
  *    needed.
  *
@@ -356,9 +356,7 @@ int QDMI_device_session_query_operation_property(
 
 /** @defgroup device_job_interface QDMI Device Job Interface
  *  @brief Provides functions to manage jobs on a device.
- *  @details The job interface enables managing jobs on a device.
- *
- *  The typical workflow for a device job is as follows:
+ *  @details The typical workflow for a device job is as follows:
  *  - Create a job with @ref QDMI_device_session_create_device_job.
  *  - Set parameters for the job with @ref QDMI_device_job_set_parameter.
  *  - Submit the job with @ref QDMI_device_job_submit.
@@ -436,7 +434,7 @@ int QDMI_device_session_create_device_job(QDMI_Device_Session session,
  * @remark Calling this function with @p value set to @c NULL is expected to
  * allow checking if the device supports the specified parameter without setting
  * the parameter and without the need to provide a value.
- * See the @ref QDMI_device_job_set_parameter documentation for an example.
+ * See the @ref QDMI_job_set_parameter documentation for an example.
  */
 int QDMI_device_job_set_parameter(QDMI_Device_Job job,
                                   QDMI_Device_Job_Parameter param, size_t size,
@@ -532,14 +530,15 @@ int QDMI_device_job_wait(QDMI_Device_Job job);
  * result.
  * Additionally, the size of the buffer required to retrieve the result is
  * returned in @p size_ret if @p size_ret is not @c NULL.
- * See the @ref QDMI_device_job_get_results documentation for an example.
+ * See the @ref QDMI_job_get_results documentation for an example.
  */
 int QDMI_device_job_get_results(QDMI_Device_Job job, QDMI_Job_Result result,
                                 size_t size, void *data, size_t *size_ret);
 
 /**
  * @brief Free a job.
- * @details Free the resources associated with a job.
+ * @details Free the resources associated with a job. Using a job handle after
+ * it was freed is undefined behavior.
  * @param[in] job The job to free.
  */
 void QDMI_device_job_free(QDMI_Device_Job job);
