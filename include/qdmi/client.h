@@ -106,7 +106,8 @@ typedef struct QDMI_Session_impl_d *QDMI_Session;
 int QDMI_session_alloc(QDMI_Session *session);
 
 /**
- * @brief Enum of the session parameters that can be set.
+ * @brief Enum of the session parameters that can be set via @ref
+ * QDMI_session_set_parameter.
  * @details If not noted otherwise, parameters are optional and drivers must not
  * require them to be set.
  */
@@ -135,16 +136,17 @@ enum QDMI_SESSION_PARAMETER_T {
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by drivers for bounds checking and validation of
-   * function parameters. This value must remain the last regular member of the
-   * enum besides the custom members and must be updated when new members are
-   * added.
+   * function parameters.
+   *
+   * @attention This value must remain the last regular member of the enum
+   * besides the custom members and must be updated when new members are added.
    */
   QDMI_SESSION_PARAMETER_MAX = 3,
   /**
    * @brief This enum value is reserved for a custom parameter.
    * @details The driver defines the meaning and the type of this parameter.
-   * To maintain binary compatibility, the value of this enum member must not be
-   * changed.
+   * @attention The value of this enum member must not be changed to maintain
+   * binary compatibility.
    */
   QDMI_SESSION_PARAMETER_CUSTOM1 = 999999995,
   /// @see QDMI_SESSION_PARAMETER_CUSTOM1
@@ -157,7 +159,7 @@ enum QDMI_SESSION_PARAMETER_T {
   QDMI_SESSION_PARAMETER_CUSTOM5 = 999999999
 };
 
-/// Type of the session parameter.
+/// Session parameter type.
 typedef enum QDMI_SESSION_PARAMETER_T QDMI_Session_Parameter;
 
 /**
@@ -235,7 +237,8 @@ int QDMI_session_set_parameter(QDMI_Session session,
 int QDMI_session_init(QDMI_Session session);
 
 /**
- * @brief Enum of the session properties that can be queried.
+ * @brief Enum of the session properties that can be queried via @ref
+ * QDMI_session_query_session_property.
  * @details If not noted otherwise, properties are optional and drivers must not
  * require them to be set.
  */
@@ -248,16 +251,16 @@ enum QDMI_SESSION_PROPERTY_T {
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by drivers for bounds checking and validation of
-   * function parameters. This value must remain the last regular member of the
-   * enum besides the custom members and must be updated when new members are
-   * added.
+   * function parameters.
+   * @attention This value must remain the last regular member of the enum
+   * besides the custom members and must be updated when new members are added.
    */
   QDMI_SESSION_PROPERTY_MAX = 1,
   /**
    * @brief This enum value is reserved for a custom property.
-   * @details The driver defines the meaning and the type of this property. To
-   * maintain binary compatibility, the value of this enum member must not be
-   * changed.
+   * @details The driver defines the meaning and the type of this property.
+   * @attention The value of this enum member must not be changed to maintain
+   * binary compatibility.
    */
   QDMI_SESSION_PROPERTY_CUSTOM1 = 999999995,
   /// @see QDMI_SESSION_PROPERTY_CUSTOM1
@@ -270,7 +273,7 @@ enum QDMI_SESSION_PROPERTY_T {
   QDMI_SESSION_PROPERTY_CUSTOM5 = 999999999
 };
 
-/// Type of the session property.
+/// Session property type.
 typedef enum QDMI_SESSION_PROPERTY_T QDMI_Session_Property;
 
 /**
@@ -544,10 +547,7 @@ int QDMI_device_query_operation_property(
 
 /** @defgroup client_job_interface QDMI Client Job Interface
  *  @brief Provides functions to manage client-side jobs.
- *  @details The job interface enables clients to submit jobs to devices and to
- *  manage them.
- *
- *  The typical workflow for a client job is as follows:
+ *  @details The typical workflow for a client job is as follows:
  *  - Create a job with @ref QDMI_device_create_job.
  *  - Set parameters for the job with @ref QDMI_job_set_parameter.
  *  - Submit the job to the device with @ref QDMI_job_submit.
@@ -595,7 +595,7 @@ int QDMI_device_create_job(QDMI_Device device, QDMI_Job *job);
  */
 enum QDMI_JOB_PARAMETER_T {
   /**
-   * @brief `@ref QDMI_Program_Format` The format of the program to be executed.
+   * @brief @ref QDMI_Program_Format The format of the program to be executed.
    * @details This parameter is required. If the device does not support the
    * specified program format, it is up to the driver to decide whether to
    * return @ref QDMI_ERROR_NOTSUPPORTED from @ref QDMI_job_set_parameter or to
@@ -620,16 +620,16 @@ enum QDMI_JOB_PARAMETER_T {
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by drivers for bounds checking and validation of
-   * function parameters. This value must remain the last regular member of the
-   * enum besides the custom members and must be updated when new members are
-   * added.
+   * function parameters.
+   * @attention This value must remain the last regular member of the enum
+   * besides the custom members and must be updated when new members are added.
    */
   QDMI_JOB_PARAMETER_MAX = 3,
   /**
    * @brief This enum value is reserved for a custom parameter.
    * @details The driver defines the meaning and the type of this parameter.
-   * To maintain binary compatibility, the value of this enum member must not be
-   * changed.
+   * @attention The value of this enum member must not be changed to maintain
+   * binary compatibility.
    */
   QDMI_JOB_PARAMETER_CUSTOM1 = 999999995,
   /// @see QDMI_JOB_PARAMETER_CUSTOM1
@@ -642,7 +642,7 @@ enum QDMI_JOB_PARAMETER_T {
   QDMI_JOB_PARAMETER_CUSTOM5 = 999999999
 };
 
-/// Type of the job parameter.
+/// Job parameter type.
 typedef enum QDMI_JOB_PARAMETER_T QDMI_Job_Parameter;
 
 /**
@@ -816,7 +816,8 @@ int QDMI_job_get_results(QDMI_Job job, QDMI_Job_Result result, size_t size,
 
 /**
  * @brief Free a job.
- * @details Free the resources associated with a job.
+ * @details Free the resources associated with a job. Using a job handle after
+ * it has been freed is undefined behavior.
  * @param[in] job The job to free.
  */
 void QDMI_job_free(QDMI_Job job);
