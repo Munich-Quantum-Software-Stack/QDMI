@@ -69,6 +69,9 @@ set(DOXYGEN_CONFIG_FILE_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
 # also see the occurrences of @AWESOME_CSS_DIR@ in the Doxyfile.in.
 FetchContent_GetProperties(doxygen-awesome-css SOURCE_DIR AWESOME_CSS_DIR)
 
+# Ensure the output directory exists
+file(MAKE_DIRECTORY ${DOXYGEN_OUTPUT_DIR}/html)
+
 # Copy over the dark mode logos as they are not automatically copied by Doxygen.
 # `configure_file` is used here because `file(COPY ...)` does not detect changes
 # and copies the files again after they have changed.
