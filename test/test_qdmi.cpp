@@ -696,6 +696,45 @@ TEST_P(QDMIImplementationTest, SessionSetParameter) {
   QDMI_session_free(session2);
 }
 
+TEST_P(QDMIImplementationTest, SessionQuerySessionProperty) {
+  // `session == nullptr` is not a valid argument
+  EXPECT_EQ(QDMI_session_query_session_property(
+                nullptr, QDMI_SESSION_PROPERTY_DEVICES, 0, nullptr, nullptr),
+            QDMI_ERROR_INVALIDARGUMENT);
+
+  // `prop >= QDMI_SESSION_PROPERTY_MAX` is not a valid argument
+  EXPECT_EQ(QDMI_session_query_session_property(
+                session, QDMI_SESSION_PROPERTY_MAX, 0, nullptr, nullptr),
+            QDMI_ERROR_INVALIDARGUMENT);
+
+  // Must not query on an uninitialized session
+  QDMI_Session session2 = nullptr;
+  ASSERT_EQ(QDMI_session_alloc(&session2), QDMI_SUCCESS);
+  EXPECT_EQ(QDMI_session_query_session_property(
+                session2, QDMI_SESSION_PROPERTY_DEVICES, 0, nullptr, nullptr),
+            QDMI_ERROR_BADSTATE);
+
+  // Buffer too small
+  constexpr size_t size = sizeof(QDMI_Device) - 1;
+  std::array<char, size> devices{};
+  EXPECT_EQ(QDMI_session_query_session_property(
+                session, QDMI_SESSION_PROPERTY_DEVICES, size,
+                static_cast<void *>(devices.data()), nullptr),
+            QDMI_ERROR_INVALIDARGUMENT);
+
+  // Successful query
+  size_t devices_size = 0;
+  EXPECT_EQ(QDMI_session_query_session_property(session,
+                                                QDMI_SESSION_PROPERTY_DEVICES,
+                                                0, nullptr, &devices_size),
+            QDMI_SUCCESS);
+  std::vector<QDMI_Device> devices_vec(devices_size / sizeof(QDMI_Device));
+  EXPECT_EQ(QDMI_session_query_session_property(
+                session, QDMI_SESSION_PROPERTY_DEVICES, devices_size,
+                static_cast<void *>(devices_vec.data()), nullptr),
+            QDMI_SUCCESS);
+}
+
 TEST_P(QDMIImplementationTest, SupportsCalibration) {
   if (mode == TEST_SESSION_MODE::READONLY) {
     GTEST_SKIP() << "Skipping test for read-only session";
