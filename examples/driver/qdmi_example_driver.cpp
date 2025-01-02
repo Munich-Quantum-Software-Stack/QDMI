@@ -395,8 +395,8 @@ int QDMI_driver_shutdown() {
   auto *driver_state = QDMI_get_driver_state();
 
   // Close all open sessions
-  for (const auto &session : driver_state->sessions) {
-    QDMI_session_free(session);
+  while (!driver_state->sessions.empty()) {
+    QDMI_session_free(*driver_state->sessions.begin());
   }
   // Close all libraries
   driver_state->libraries.clear();
