@@ -17,8 +17,8 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 ------------------------------------------------------------------------------*/
 
 /** @file
- * @brief Defines all enums used within QDMI across the client and device
- * interface.
+ * @brief Defines all enums used within QDMI across the @ref client_interface
+ * "client" and @ref device_interface "device" interfaces.
  */
 
 #pragma once
@@ -51,7 +51,8 @@ enum QDMI_STATUS {
 };
 
 /**
- * @brief Enum of the device session parameters that can be set.
+ * @brief Enum of the device session parameters that can be set via @ref
+ * QDMI_device_session_set_parameter.
  * @details If not noted otherwise, parameters are optional and devices must not
  * require them to be set.
  */
@@ -78,16 +79,17 @@ enum QDMI_DEVICE_SESSION_PARAMETER_T {
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
-   * function parameters. This value must remain the last regular member of the
-   * enum besides the custom members and must be updated when new members are
-   * added.
+   * function parameters.
+   *
+   * @attention This value must remain the last regular member of the enum
+   * besides the custom members and must be updated when new members are added.
    */
   QDMI_DEVICE_SESSION_PARAMETER_MAX = 2,
   /**
    * @brief This enum value is reserved for a custom parameter.
    * @details The device defines the meaning and the type of this parameter.
-   * To maintain binary compatibility, the value of this enum member must not be
-   * changed.
+   * @attention The value of this enum member must not be changed to maintain
+   * binary compatibility.
    */
   QDMI_DEVICE_SESSION_PARAMETER_CUSTOM1 = 999999995,
   /// @see QDMI_DEVICE_SESSION_PARAMETER_CUSTOM1
@@ -100,17 +102,18 @@ enum QDMI_DEVICE_SESSION_PARAMETER_T {
   QDMI_DEVICE_SESSION_PARAMETER_CUSTOM5 = 999999999
 };
 
-/// Type of the device session parameter.
+/// Device session parameter type.
 typedef enum QDMI_DEVICE_SESSION_PARAMETER_T QDMI_Device_Session_Parameter;
 
 /**
- * @brief Enum of the device job parameters that can be set.
+ * @brief Enum of the device job parameters that can be set via @ref
+ * QDMI_device_job_set_parameter.
  * @details If not noted otherwise, parameters are optional and devices must not
  * require them to be set.
  */
 enum QDMI_DEVICE_JOB_PARAMETER_T {
   /**
-   * @brief `@ref QDMI_Program_Format` The format of the program to be executed.
+   * @brief @ref QDMI_Program_Format The format of the program to be executed.
    * @details This parameter is required. The device must support the specified
    * program format. If the device does not support the specified program
    * format, the @ref QDMI_device_job_set_parameter function must return @ref
@@ -135,16 +138,17 @@ enum QDMI_DEVICE_JOB_PARAMETER_T {
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
-   * function parameters. This value must remain the last regular member of the
-   * enum besides the custom members and must be updated when new members are
-   * added.
+   * function parameters.
+   *
+   * @attention This value must remain the last regular member of the enum
+   * besides the custom members and must be updated when new members are added.
    */
   QDMI_DEVICE_JOB_PARAMETER_MAX = 3,
   /**
    * @brief This enum value is reserved for a custom parameter.
    * @details The device defines the meaning and the type of this parameter.
-   * To maintain binary compatibility, the value of this enum member must not be
-   * changed.
+   * @attention The value of this enum member must not be changed to maintain
+   * binary compatibility.
    */
   QDMI_DEVICE_JOB_PARAMETER_CUSTOM1 = 999999995,
   /// @see QDMI_DEVICE_JOB_PARAMETER_CUSTOM1
@@ -157,16 +161,20 @@ enum QDMI_DEVICE_JOB_PARAMETER_T {
   QDMI_DEVICE_JOB_PARAMETER_CUSTOM5 = 999999999
 };
 
-/// Type of the device job parameter.
+/// Device job parameter type.
 typedef enum QDMI_DEVICE_JOB_PARAMETER_T QDMI_Device_Job_Parameter;
 
-/// Enum of the device properties that can be queried.
+/// Enum of the device properties that can be queried via @ref
+/// QDMI_device_session_query_device_property as part of the @ref
+/// device_interface "device interface" and via @ref
+/// QDMI_device_query_device_property as part of the @ref client_interface
+/// "client interface".
 enum QDMI_DEVICE_PROPERTY_T {
   /// `char*` (string) The name of the device.
   QDMI_DEVICE_PROPERTY_NAME = 0,
   /// `char*` (string) The version of the device.
   QDMI_DEVICE_PROPERTY_VERSION = 1,
-  /// `int` The @ref QDMI_Device_Status of the device.
+  /// @ref QDMI_Device_Status The status of the device.
   QDMI_DEVICE_PROPERTY_STATUS = 2,
   /// `char*` (string) The implemented version of QDMI.
   QDMI_DEVICE_PROPERTY_LIBRARYVERSION = 3,
@@ -201,16 +209,17 @@ enum QDMI_DEVICE_PROPERTY_T {
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
-   * function parameters. This value must remain the last regular member of the
-   * enum besides the custom members and must be updated when new members are
-   * added.
+   * function parameters.
+   *
+   * @attention This value must remain the last regular member of the enum
+   * besides the custom members and must be updated when new members are added.
    */
   QDMI_DEVICE_PROPERTY_MAX = 8,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.
-   * To maintain binary compatibility, the value of this enum member must not be
-   * changed.
+   * @attention The value of this enum member must not be changed to maintain
+   * binary compatibility.
    */
   QDMI_DEVICE_PROPERTY_CUSTOM1 = 999999995,
   /// @see QDMI_DEVICE_PROPERTY_CUSTOM1
@@ -223,7 +232,7 @@ enum QDMI_DEVICE_PROPERTY_T {
   QDMI_DEVICE_PROPERTY_CUSTOM5 = 999999999
 };
 
-/// Type of the device properties.
+/// Device property type.
 typedef enum QDMI_DEVICE_PROPERTY_T QDMI_Device_Property;
 
 /// Enum of different status the device can be in.
@@ -237,17 +246,21 @@ enum QDMI_DEVICE_STATUS_T {
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
-   * function parameters. This value must remain the last regular member of the
-   * enum besides the custom members and must be updated when new members are
-   * added.
+   * function parameters.
+   *
+   * @attention This value must remain the last regular member of the enum
+   * besides the custom members and must be updated when new members are added.
    */
   QDMI_DEVICE_STATUS_MAX = 6
 };
 
-/// Type of the device status.
+/// Device status type.
 typedef enum QDMI_DEVICE_STATUS_T QDMI_Device_Status;
 
-/// Enum of the site properties that can be queried.
+/// Enum of the site properties that can be queried via @ref
+/// QDMI_device_session_query_site_property as part of the @ref device_interface
+/// "device interface" and via @ref QDMI_device_query_site_property as part of
+/// the @ref client_interface "client interface".
 enum QDMI_SITE_PROPERTY_T {
   /**
    * @brief `size_t` The unique ID to identify the site in a program.
@@ -265,16 +278,17 @@ enum QDMI_SITE_PROPERTY_T {
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
-   * function parameters. This value must remain the last regular member of the
-   * enum besides the custom members and must be updated when new members are
-   * added.
+   * function parameters.
+   *
+   * @attention This value must remain the last regular member of the enum
+   * besides the custom members and must be updated when new members are added.
    */
   QDMI_SITE_PROPERTY_MAX = 3,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.
-   * To maintain binary compatibility, the value of this enum member must not be
-   * changed.
+   * @attention The value of this enum member must not be changed to maintain
+   * binary compatibility.
    */
   QDMI_SITE_PROPERTY_CUSTOM1 = 999999995,
   /// @see QDMI_SITE_PROPERTY_CUSTOM1
@@ -287,10 +301,14 @@ enum QDMI_SITE_PROPERTY_T {
   QDMI_SITE_PROPERTY_CUSTOM5 = 999999999
 };
 
-/// Type of the site properties.
+/// Site property type.
 typedef enum QDMI_SITE_PROPERTY_T QDMI_Site_Property;
 
-/// Enum of the operation properties that can be queried.
+/// Enum of the operation properties that can be queried via @ref
+/// QDMI_device_session_query_operation_property as part of the @ref
+/// device_interface "device interface" and via @ref
+/// QDMI_device_query_operation_property as part of the @ref client_interface
+/// "client interface".
 enum QDMI_OPERATION_PROPERTY_T {
   /// `char*` (string) The string identifier of the operation.
   QDMI_OPERATION_PROPERTY_NAME = 0,
@@ -305,16 +323,17 @@ enum QDMI_OPERATION_PROPERTY_T {
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
-   * function parameters. This value must remain the last regular member of the
-   * enum besides the custom members and must be updated when new members are
-   * added.
+   * function parameters.
+   *
+   * @attention This value must remain the last regular member of the enum
+   * besides the custom members and must be updated when new members are added.
    */
   QDMI_OPERATION_PROPERTY_MAX = 5,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.
-   * To maintain binary compatibility, the value of this enum member must not be
-   * changed.
+   * @attention The value of this enum member must not be changed to maintain
+   * binary compatibility.
    */
   QDMI_OPERATION_PROPERTY_CUSTOM1 = 999999995,
   /// @see QDMI_OPERATION_PROPERTY_CUSTOM1
@@ -327,12 +346,13 @@ enum QDMI_OPERATION_PROPERTY_T {
   QDMI_OPERATION_PROPERTY_CUSTOM5 = 999999999
 };
 
-/// Type of the operation properties.
+/// Operation property type.
 typedef enum QDMI_OPERATION_PROPERTY_T QDMI_Operation_Property;
 
 /**
  * @brief Enum of the status a job can have.
- * @details See also @ref rationale.md for a description of the job's lifecycle.
+ * @details See also @ref client_job_interface for a description of the job's
+ * lifecycle.
  */
 enum QDMI_JOB_STATUS_T {
   /**
@@ -340,7 +360,7 @@ enum QDMI_JOB_STATUS_T {
    * QDMI_job_set_parameter.
    */
   QDMI_JOB_STATUS_CREATED = 0,
-  /// The job was submitted and is waiting to be executed
+  /// The job was submitted and is waiting to be executed.
   QDMI_JOB_STATUS_SUBMITTED = 1,
   /// The job is done, and the result can be retrieved.
   QDMI_JOB_STATUS_DONE = 2,
@@ -350,7 +370,7 @@ enum QDMI_JOB_STATUS_T {
   QDMI_JOB_STATUS_CANCELED = 4
 };
 
-/// Type of the device status.
+/// Job status type.
 typedef enum QDMI_JOB_STATUS_T QDMI_Job_Status;
 
 /**
@@ -470,16 +490,17 @@ enum QDMI_PROGRAM_FORMAT_T {
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
-   * function parameters. This value must remain the last regular member of the
-   * enum besides the custom members and must be updated when new members are
-   * added.
+   * function parameters.
+   *
+   * @attention This value must remain the last regular member of the enum
+   * besides the custom members and must be updated when new members are added.
    */
   QDMI_PROGRAM_FORMAT_MAX = 6,
   /**
    * @brief This enum value is reserved for a custom program format.
    * @details The device defines the meaning and the type of this value.
-   * To maintain binary compatibility, the value of this enum member must not be
-   * changed.
+   * @attention The value of this enum member must not be changed to maintain
+   * binary compatibility.
    */
   QDMI_PROGRAM_FORMAT_CUSTOM1 = 999999995,
   /// @see QDMI_PROGRAM_FORMAT_CUSTOM1
@@ -492,7 +513,7 @@ enum QDMI_PROGRAM_FORMAT_T {
   QDMI_PROGRAM_FORMAT_CUSTOM5 = 999999999
 };
 
-/// Type of the program format.
+/// Program format type.
 typedef enum QDMI_PROGRAM_FORMAT_T QDMI_Program_Format;
 
 /**
@@ -548,7 +569,7 @@ enum QDMI_JOB_RESULT_T {
    */
   QDMI_JOB_RESULT_STATEVECTOR_SPARSE_KEYS = 5,
   /**
-   * @brief `double*` (`double `list) The values for the sparse state vector of
+   * @brief `double*` (`double` list) The values for the sparse state vector of
    * the result.
    * @details The complex amplitudes are stored in the same way as the dense
    * state vector, but only for the non-zero amplitudes.
@@ -577,16 +598,17 @@ enum QDMI_JOB_RESULT_T {
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
-   * function parameters. This value must remain the last regular member of the
-   * enum besides the custom members and must be updated when new members are
-   * added.
+   * function parameters.
+   *
+   * @attention This value must remain the last regular member of the enum
+   * besides the custom members and must be updated when new members are added.
    */
   QDMI_JOB_RESULT_MAX = 9,
   /**
    * @brief This enum value is reserved for a custom result.
    * @details The device defines the meaning and the type of this result.
-   * To maintain binary compatibility, the value of this enum member must not be
-   * changed.
+   * @attention The value of this enum member must not be changed to maintain
+   * binary compatibility.
    */
   QDMI_JOB_RESULT_CUSTOM1 = 999999995,
   /// @see QDMI_JOB_RESULT_CUSTOM1
@@ -599,7 +621,7 @@ enum QDMI_JOB_RESULT_T {
   QDMI_JOB_RESULT_CUSTOM5 = 999999999
 };
 
-/// Type of the job result.
+/// Job result type.
 typedef enum QDMI_JOB_RESULT_T QDMI_Job_Result;
 
 // NOLINTEND(performance-enum-size, modernize-use-using)
