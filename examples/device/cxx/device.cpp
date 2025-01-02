@@ -321,15 +321,13 @@ int CXX_QDMI_device_session_set_parameter(CXX_QDMI_Device_Session session,
   if (session->status != CXX_QDMI_DEVICE_SESSION_STATUS::ALLOCATED) {
     return QDMI_ERROR_BADSTATE;
   }
-  switch (param) {
-  case QDMI_DEVICE_SESSION_PARAMETER_TOKEN:
-    if (value != nullptr) {
-      session->token = std::string(static_cast<const char *>(value), size);
-    }
-    return QDMI_SUCCESS;
-  default:
+  if (param != QDMI_DEVICE_SESSION_PARAMETER_TOKEN) {
     return QDMI_ERROR_NOTSUPPORTED;
   }
+  if (value != nullptr) {
+    session->token = std::string(static_cast<const char *>(value), size);
+  }
+  return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]
 
 int CXX_QDMI_device_session_create_device_job(CXX_QDMI_Device_Session session,
@@ -445,11 +443,8 @@ int CXX_QDMI_device_job_submit(CXX_QDMI_Device_Job job) {
 } /// [DOXYGEN FUNCTION END]
 
 int CXX_QDMI_device_job_cancel(CXX_QDMI_Device_Job job) {
-  switch (job->status) {
-  case QDMI_JOB_STATUS_DONE:
+  if (job == nullptr || job->status == QDMI_JOB_STATUS_DONE) {
     return QDMI_ERROR_INVALIDARGUMENT;
-  default:
-    break;
   }
 
   job->status = QDMI_JOB_STATUS_CANCELED;
@@ -512,8 +507,7 @@ int CXX_QDMI_device_job_get_results(CXX_QDMI_Device_Job job,
     for (const auto &shot : job->results) {
       hist[shot]++;
     }
-    switch (result) {
-    case QDMI_JOB_RESULT_HIST_KEYS: {
+    if (result == QDMI_JOB_RESULT_HIST_KEYS) {
       const size_t bitstring_size =
           job->results.empty() ? 0 : job->results.front().length();
       const size_t req_size = hist.size() * (bitstring_size + 1);
@@ -532,9 +526,7 @@ int CXX_QDMI_device_job_get_results(CXX_QDMI_Device_Job job,
         }
         *(data_ptr - 1) = '\0'; // Replace last comma with null terminator
       }
-      break;
-    }
-    default: {
+    } else {
       // case QDMI_JOB_RESULT_HIST_VALUES:
       const size_t req_size = hist.size() * sizeof(size_t);
       if (size_ret != nullptr) {
@@ -549,7 +541,6 @@ int CXX_QDMI_device_job_get_results(CXX_QDMI_Device_Job job,
           *data_ptr++ = count;
         }
       }
-    }
     }
     return QDMI_SUCCESS;
   }

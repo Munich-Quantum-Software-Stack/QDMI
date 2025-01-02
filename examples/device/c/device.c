@@ -207,16 +207,15 @@ int C_QDMI_device_session_set_parameter(
   if (session->status != ALLOCATED) {
     return QDMI_ERROR_BADSTATE;
   }
-  switch (param) {
-  case QDMI_DEVICE_SESSION_PARAMETER_TOKEN:
-    if (value != NULL) {
-      session->token = (char *)malloc(size);
-      strncpy(session->token, (const char *)value, size);
-    }
-    return QDMI_SUCCESS;
-  default:
+  if (param != QDMI_DEVICE_SESSION_PARAMETER_TOKEN) {
     return QDMI_ERROR_NOTSUPPORTED;
   }
+
+  if (value != NULL) {
+    session->token = (char *)malloc(size);
+    strncpy(session->token, (const char *)value, size);
+  }
+  return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]
 
 int C_QDMI_device_session_create_device_job(C_QDMI_Device_Session session,
@@ -349,11 +348,8 @@ int C_QDMI_device_job_submit(C_QDMI_Device_Job job) {
 
 int C_QDMI_device_job_cancel(C_QDMI_Device_Job job) {
   // cannot cancel a job that is already done
-  switch (job->status) {
-  case QDMI_JOB_STATUS_DONE:
+  if (job == NULL || job->status == QDMI_JOB_STATUS_DONE) {
     return QDMI_ERROR_INVALIDARGUMENT;
-  default:
-    break;
   }
 
   job->status = QDMI_JOB_STATUS_CANCELED;
@@ -429,8 +425,7 @@ int C_QDMI_device_job_get_results(C_QDMI_Device_Job job,
         count++;
       }
     }
-    switch (result) {
-    case QDMI_JOB_RESULT_HIST_KEYS: {
+    if (result == QDMI_JOB_RESULT_HIST_KEYS) {
       const size_t req_size = count * (num_qubits + 1);
       if (size_ret != NULL) {
         *size_ret = req_size;
@@ -455,9 +450,7 @@ int C_QDMI_device_job_get_results(C_QDMI_Device_Job job,
         }
         *data_ptr = '\0';
       }
-      break;
-    }
-    default: {
+    } else {
       // case QDMI_JOB_RESULT_HIST_VALUES:
       const size_t req_size = count * sizeof(size_t);
       if (size_ret != NULL) {
@@ -482,7 +475,6 @@ int C_QDMI_device_job_get_results(C_QDMI_Device_Job job,
         }
         *data_ptr = n;
       }
-    }
     }
     free((void *)raw_data_split);
     free(raw_data);

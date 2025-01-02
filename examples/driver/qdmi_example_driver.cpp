@@ -371,25 +371,24 @@ int QDMI_session_query_session_property(QDMI_Session session,
     return QDMI_ERROR_BADSTATE;
   }
 
-  switch (prop) {
-  case QDMI_SESSION_PROPERTY_DEVICES:
-    if (value != nullptr) {
-      const auto num_devices = session->device_list.size();
-      if (size < num_devices * sizeof(QDMI_Device)) {
-        return QDMI_ERROR_INVALIDARGUMENT;
-      }
-      auto *devices = static_cast<QDMI_Device *>(value);
-      for (size_t i = 0; i < num_devices; ++i) {
-        devices[i] = session->device_list[i].get();
-      }
-    }
-    if (size_ret != nullptr) {
-      *size_ret = session->device_list.size() * sizeof(QDMI_Device);
-    }
-    return QDMI_SUCCESS;
-  default:
+  if (prop != QDMI_SESSION_PROPERTY_DEVICES) {
     return QDMI_ERROR_NOTSUPPORTED;
   }
+
+  if (value != nullptr) {
+    const auto num_devices = session->device_list.size();
+    if (size < num_devices * sizeof(QDMI_Device)) {
+      return QDMI_ERROR_INVALIDARGUMENT;
+    }
+    auto *devices = static_cast<QDMI_Device *>(value);
+    for (size_t i = 0; i < num_devices; ++i) {
+      devices[i] = session->device_list[i].get();
+    }
+  }
+  if (size_ret != nullptr) {
+    *size_ret = session->device_list.size() * sizeof(QDMI_Device);
+  }
+  return QDMI_SUCCESS;
 }
 
 int QDMI_driver_shutdown() {
