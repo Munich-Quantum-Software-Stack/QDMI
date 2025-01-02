@@ -17,13 +17,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 ------------------------------------------------------------------------------*/
 
 /** @file
- * @brief The QDMI device interface.
- * @details The purpose of the device interface is to provide a set of functions
- * that allow one to represent a physical quantum computer or classical quantum
- * simulator with a unified interface. The device interface provides functions
- * to establish sessions between a QDMI driver and a device, as well as to
- * interact with the device by querying its properties and submitting jobs to
- * the device.
+ * @brief Defines the @ref device_interface.
  */
 
 #pragma once

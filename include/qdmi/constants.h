@@ -18,7 +18,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 /** @file
  * @brief Defines all enums used within QDMI across the @ref client_interface
- * "client" and @ref device_interface "device" interfaces.
+ * and the @ref device_interface.
  */
 
 #pragma once

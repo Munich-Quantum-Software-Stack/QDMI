@@ -17,7 +17,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 ------------------------------------------------------------------------------*/
 
 /** @file
- * @brief Defines the QDMI client interface.
+ * @brief Defines the @ref client_interface.
  */
 
 #pragma once
