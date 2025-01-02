@@ -234,16 +234,18 @@ int C_QDMI_device_session_create_device_job(C_QDMI_Device_Session session,
   (*job)->num_shots = 0;
   (*job)->results = NULL;
   (*job)->state_vec = NULL;
+  (*job)->program = NULL;
   return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]
 
 void C_QDMI_device_job_free(C_QDMI_Device_Job job) {
   // this method should free all resources associated with the job
-  if (job->results != NULL) {
-    free(job->results);
-    free(job->state_vec);
-    job->results = NULL;
-  }
+  free(job->results);
+  job->results = NULL;
+  free(job->state_vec);
+  job->state_vec = NULL;
+  free(job->program);
+  job->program = NULL;
   free(job);
 } /// [DOXYGEN FUNCTION END]
 
