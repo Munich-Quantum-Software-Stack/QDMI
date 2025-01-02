@@ -89,7 +89,7 @@ implementation of the @ref QDMI_device_session_query_device_property function.
 </div>
 <!-- prettier-ignore-end -->
 
-A similar macro is defined for other (fixed length) data types, e.g., `int`, `double`.
+A similar macro is defined for other (fixed length) data types, for example, `int`, `double`.
 
 <!-- prettier-ignore-start -->
 <div class="tabbed">
@@ -152,8 +152,8 @@ device.
 ### List Properties {#device-list}
 
 Some properties are returned as a list of various data types. The following example shows how to
-return the coupling map of the device as a list of pairs of @ref QDMI_Site's. The pairs are
-flattened into a single list of @ref QDMI_Site's.
+return the coupling map of the device as a list of @ref QDMI_Site pairs. The pairs are flattened
+into a single list of @ref QDMI_Site's.
 
 <!-- prettier-ignore-start -->
 <div class="tabbed">
@@ -181,8 +181,8 @@ The properties that are returned by @ref QDMI_device_session_query_operation_pro
 the actual site. The available @ref QDMI_Operation's and @ref QDMI_Site's, first, need to be
 retrieved through @ref QDMI_device_session_query_device_property. With the handles for a @ref
 QDMI_Operation and @ref QDMI_Site, corresponding properties can be queried. The following example
-demonstrates how different properties of operations, e.g., varying fidelities of two-qubit gates can
-be returned.
+demonstrates how different properties of operations, for example, varying fidelities of two-qubit
+gates can be returned.
 
 <!-- prettier-ignore-start -->
 <div class="tabbed">
@@ -202,7 +202,7 @@ be returned.
 
 ### Submitting a Job {#device-submit}
 
-One crucial part of QDMI is, that it allows to submit a job to the device for execution. The
+One crucial part of QDMI is that it allows submitting a job to the device for execution. The
 following example provides a mock implementation of the necessary functions to submit a job. The
 first example shows a mock implementation of @ref QDMI_device_session_create_device_job.
 
@@ -219,8 +219,8 @@ first example shows a mock implementation of @ref QDMI_device_session_create_dev
 </div>
 <!-- prettier-ignore-end -->
 
-The function @ref QDMI_device_job_set_parameter allows to set different parameters for the job,
-e.g., the number of shots (@ref QDMI_JOB_PARAMETER_SHOTSNUM).
+The function @ref QDMI_device_job_set_parameter allows setting different parameters for the job, for
+example, the number of shots (@ref QDMI_JOB_PARAMETER_SHOTSNUM).
 
 <!-- prettier-ignore-start -->
 <div class="tabbed">
@@ -252,7 +252,7 @@ implementation of @ref QDMI_device_job_submit.
 <!-- prettier-ignore-end -->
 
 For the full implementation of the example devices we refer to the respective source files in the
-QDMI repository, i.e.,
+QDMI repository, that is,
 [`device.cpp`](https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/develop/examples/device/cxx/device.cpp)
 for the C++ implementation and
 [`device.c`](https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/develop/examples/device/c/device.c)
