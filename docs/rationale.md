@@ -21,212 +21,193 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 <!-- This file is a static page and included in the ./CMakeLists.txt file. -->
 
-During the development of QDMI, we had to make several design decision, which we want to outline in
-the following. This page is supposed to serve as a reference for why things are as they are in QDMI.
+During the development of QDMI, we had to make several design decisions, which we want to outline in
+the following. This page is supposed to serve as a reference to why things are as they are in QDMI.
 Simultaneously, it should help to get a better understanding of the principles of QDMI. To this end,
 this page is useful for everyone working with QDMI.
 
 \tableofcontents
 
-## Components of the Interface {#rationale-components}
-
-QDMI consists of three components, namely:
-
-- the "client",
-- the "device", and
-- the "driver".
-
-These components are connected by two interfaces, the @ref device_interface "device interface" that
-connects the device and the driver, and the @ref client_interface "client interface" that connects
-the client and the driver.
-
-The device represents the physical quantum computer or also a classical simulator imitating a
-quantum computer. Multiple devices are managed by the driver. For that, the driver maintains a list
-of devices that are currently available. A driver can decide for itself how it implements the
-connection to the devices. For example, the implementation of a driver contained in the examples
-directory loads the devices as dynamic libraries. For that the device implementations must be
-compiled to dynamic libraries and the location of those libraries must be made known to the driver.
-A different approach would be to link the device implementations statically into the driver.
-
-The client is the user of the QDMI library. The driver provides access to various devices for the
-client. The client can use the different functions defined by the interface to gather information
-about the devices or to submit jobs for execution. To this end, the client calls the respective
-functions of the driver that in turn forwards the requests to the respective device. For that
-purpose the function invoked on the driver contains a handle to the device such that the driver
-knows the device to forward the request to.
-
-This setup results in the following responsibilities for the components: The device must implement
-all functions defined by the QDMI \ref device.h interface such that they can be called by the
-driver. Additionally, the device must implement the types for \ref QDMI_Site "sites", \ref
-QDMI_Operation "operations", \ref QDMI_Device_Job "device jobs", and \ref QDMI_Device_Session
-"device sessions". Handles to those are passed to the driver and, potentially, further to the
-clients to refer to the respective object. However, only the device knows the implementation of
-those; for the other components those handles are only opaque pointers. The implementation of those
-types can be used by the device to store information about the sites, operations, jobs, and
-sessions, respectively.
-
-The driver must implement the \ref client.h "client" interface since it receives the calls by the
-client. Furthermore, the driver is responsible for the management of the devices. The devices for a
-client are managed in \ref QDMI_Session "sessions". Hence, a client must first create a session and
-through the session the client can access the devices. To this end, the driver has to implement the
-type \ref QDMI_Session "session" that can store information about itself. Similar to the device's
-type, the session is just an opaque handle for the client and only the driver knows about its
-implementation. The driver must also implement its own \ref QDMI_Job "job" type that can store
-information about the job that is submitted by the client. The job is then managed by the driver and
-somehow translated to a device job that is executed by the device.
-
-The interplay of the components is illustrated in the following schematic. It also contains the
-various interfaces that are described in the next section.
+## The structure of QDMI {#rationale-structure}
 
 <img class="qdmi-schematic" alt="QDMI Components and Interfaces" src="qdmi_schematic.svg"/>
 
-## Session, Job and Query Interface {#rationale-interfaces}
+QDMI interfaces three different entities, namely:
 
-As depicted in the schematic above, the components of QDMI communicate through three different
-interfaces, namely:
+- "devices",
+- "clients", and
+- a "driver".
+
+These entities are connected via two interfaces that allow the communication between the entities.
+We call those interfaces the @ref device_interface and the @ref client_interface. In the following,
+we will explain the responsibilities of the entities and the interfaces.
+
+_Devices_ (also commonly called _"backends"_) represent actual quantum devices or simulators. Each
+device provides an implementation of the structs and functions defined by the @ref device_interface.
+In particular, this includes implementations of types for \ref QDMI_Site "sites", \ref
+QDMI_Operation "operations", \ref QDMI_Device_Job "device jobs", and \ref QDMI_Device_Session
+"device sessions". Handles to these types are passed across the interface as opaque pointers, which
+means that only the device knows the actual implementation of those types.
+
+_Clients_ are the users of the QDMI library that want to interact with the devices. They use the
+functions defined by the @ref client_interface "client interface" to interact with the devices. The
+clients do not have direct access to the devices but must go through what we refer to as a "driver".
+This is to ensure that the devices are used in a controlled manner and that the clients do not
+interfere with each other. The clients can create \ref QDMI_Session "sessions" with the driver to
+gain access to the devices.
+
+The _driver_ is the component that manages all available devices and provides access to them for the
+clients. It implements the structs and functions defined by the @ref client_interface. In
+particular, this includes implementations of types for \ref QDMI_Session "sessions" and \ref
+QDMI_Job "jobs". Handles to these types are passed across the interface to clients as opaque
+pointers, which means that only the driver knows the actual implementation of those types. It is up
+to the driver how it exposes the @ref device_interface implementation provided by the devices as
+part of the @ref client_interface. For example, the driver could load the devices as dynamic
+libraries and translate the calls from the client to the devices or statically link the devices into
+the driver. An example implementation using dynamic libraries is provided in the `examples`
+directory of the QDMI repository.
+
+As depicted in the schematic above, device and client interfaces each have three parts, namely:
 
 - the "session interface",
-- the "job interface", and
-- the "query interface".
+- the "query interface", and
+- the "job interface".
 
-Those interfaces do not map directly to the components of QDMI. Rather, every of the above three
-interfaces has two instantiations: In the client interface between the clients and the drivers and
-in the device interface between the driver and the devices. Hence, the client calls functions of the
-respective interface implementation of the driver and the driver either handles the calls itself or
-forwards them to the device.
+The session interface is used to establish a connection between two entities. The client creates a
+session with the driver, and the driver creates sessions with the devices it manages. The main
+purpose of the session interface is to handle the authentication and authorization of the clients at
+the driver and the driver at the devices.
 
-To this end, the client's session interface establishes a session between a client and a driver.
-Through this session, the driver grants the client access to the connected devices. The driver
-itself also creates a session, a device session between itself and the device. In the usual case,
-the driver will create a device session on one device for every client that has access to it. Find
-more details on the usage of the device session below under \ref device-session.
+The query interface is used to retrieve information from the devices. The client can query the
+devices for information about the device itself, its sites, or its operations. Most importantly,
+this allows clients to discover the capabilities as well as constraints of the devices and to make
+informed decisions about how to use them. The information flow in the query interface is always from
+the device to the client via the driver. The driver may cache or modify any information returned by
+the device before passing it to the client.
 
-The job and query interfaces facilitate the communication between the client and the device.
-Nevertheless, the communication does not take place directly between those components and always
-goes through the driver. To this end, the job and query interface have two sides, the client and
-device side. In particular, the driver may cache or modify any information returned by the device.
+The job interface is used to control the execution of jobs on the devices. Most jobs will be quantum
+circuits that the client wants to execute on the device. However, the job interface is not limited
+to quantum circuits and can be used to control any kind of computation on the device, such as
+calibrations. The client creates a job with the driver, and the driver delegates the job to the
+device. The device executes the job and reports the results back to the client via the driver. The
+information flow in the job interface is bidirectional. The client can control the job execution and
+retrieve the results of the job. The driver may cache or modify any information returned by the
+device before passing it to the client.
 
-The split of QDMI into the session, job and query interface is motivated by the fact that the
-session interface describes communication only between two adjacent components. The control and
-query interface on the other hand define communication between clients and devices that goes through
-the driver but the driver is here no end-point of the communication. The job interface is used to
-control job execution and everything connected to it and hence the information flow here is
-bidirectional. On the other hand, the information flow through the query interface is purely
-unidirectional from the device to the client.
+## Why does QDMI use opaque pointers? {#rationale-opaque-pointers}
 
-## Prefixing Device Implementations {#rationale-prefix}
+Throughout QDMI, we frequently use opaque pointers to represent objects such as sessions, jobs,
+devices, sites, and operations. Opaque pointers are pointers to a data structure that is not defined
+in the header file. The actual implementation is only known to the entity that defines the object.
+Opaque pointers have several advantages: They allow changing the internal representation of the
+object without breaking the client code, which makes the interface more stable and easier to
+maintain. Opaque pointers also prevent the client from accessing or modifying the internal
+representation of the object, which can help to prevent bugs and security vulnerabilities. Finally,
+opaque pointers are strongly typed, which can help to catch type errors at compile time. Opaque
+pointers also come with some disadvantages: They require an additional level of indirection in the
+implementation, which can lead to a performance overhead compared to direct implementations of the
+types.
 
-All symbols and types defined by each device must be prefixed with a unique prefix. Besides the
-branding aspect for hardware vendors, this eases debugging and maintenance of the code. When an
-error occurs, the error message will contain the function name where the error occurred. By having a
-unique prefix, it is clear in which device the error occurred.
+Publicly defining the internal representation of the objects would be an alternative to using opaque
+pointers. However, this would expose the internal details of the objects to the client and would
+limit the flexibility of the implementation as well as the ability to change the internal
+representation of the objects while maintaining binary compatibility.
 
-Moreover, a unique prefix is necessary to facilitate static linking of the device implementations.
-When the device implementations are linked statically into the driver, the symbols must be unique
-otherwise the linker will report name conflicts.
+Yet another alternative would be to use integer IDs to represent the objects, for example, by using
+Universally Unique Identifiers (UUIDs). However, this would require additional bookkeeping in
+implementations to map the IDs to the actual objects. It would also make the interface less
+type-safe. In contrast, opaque pointers effectively serve as type-safe IDs that are checked
+statically by the compiler.
 
-## Data Retrieval Management {#rationale-retrieval}
+## Why does QDMI not define individual functions for each property? {#rationale-properties}
 
-The interface contains a couple of functions to retrieve information in various formats. The
-functions are designed in a generic fashion such that almost arbitrary data can be transferred.
-Before we explain the usage of the function, we shortly highlight the advantages of this design.
-Another alternative to the chosen one, would be to introduce a new function for each type that can
-be retrieved. Since the type of data is very individual to the property whose value should be
-retrieved, this would require a specific function for almost every property. Even though some
-properties of the same type could be put into one function, this design would make the interface
-very rigid. For every new property that should be added that brings a new type, a new function would
-have to be added to the interface, which introduces a breaking change. Hence, devices not
-implementing this newly added property could not be used with the updated interface. An extreme
-variant of the above would be to have a dedicated function for each individual property, which is
-not desirable for the same reasons.
+The design of the function signatures and semantics in QDMI is heavily inspired by the design of the
+[OpenCL](https://www.khronos.org/opencl/) API for parallel programming of heterogeneous systems. As
+such, QDMI heavily relies on enumerations to define properties of devices, sessions, jobs, sites,
+and operations. For each type of property, a corresponding enumeration is defined. The value of a
+property is retrieved by calling a function with the property enumeration as an argument.
 
-The chosen design allows for a better compatibility with future versions of the interface. When a
-new property is added, this can simply be added to the list of properties. The retrieval of its
-value can be implemented via the same functions and the interface does not break. Device
-implementations of an older interface version might just return \ref QDMI_ERROR_INVALIDARGUMENT for
-the newly added properties but no segmentation fault or similar happens.
-
-In the following, the general usage of functions for data retrieval is explained by the aid of the
-example of \ref QDMI_device_query_device_property. This function receives a handle to a device that
-is—in the view of the client—an opaque pointer to a device. This device handle must first be
-retrieved from the function \ref QDMI_session_query_session_property. This function has the
-signature:
+A generic function signature for querying the value of a property type `<prop>` from an object
+`<obj>` looks like this:
 
 ```C
-int QDMI_session_query_session_property(QDMI_Session session, QDMI_Session_Property prop, size_t size, void *value, size_t *size_ret)
+int QDMI_<obj>_query_<prop>(
+  QDMI_<obj> handle,
+  QDMI_<prop> prop,
+  size_t size,
+  void *value,
+  size_t *size_ret
+);
 ```
 
-To retrieve handles to the device, the client must allocate some memory region where it wants to
-store the handles. This memory region is passed in the parameter `value`. The parameter `size`
-specifies the size of the memory region pointed to by `value` in bytes. The parameter `size_ret` is
-a pointer to a variable that will store the number of bytes that were actually written into the
-memory region pointed to by `value`. The function can be called with a `NULL` pointer for `value` to
-only retrieve the size of the buffer that is required to retrieve all available device handles, in
-this case, be returned in `size_ret`. From that, the number of devices can be calculated as
-`size_ret / sizeof(QDMI_Device)`. Simultaneously, if `size_ret` is `NULL`, it is ignored, and the
-function only writes the number of devices into the memory pointed to by `value`.
+Here, `QDMI_<obj>` is the opaque pointer type of the object (for example, `QDMI_Device`,
+`QDMI_Session`, `QDMI_Job`, `QDMI_Site`, or `QDMI_Operation`). `QDMI_<prop>` is the enumeration type
+of the property (for example, `QDMI_Session_Property`, `QDMI_Device_Property`, `QDMI_Site_Property`,
+or `QDMI_Operation_Property`). The function retrieves the value of the property `<prop>` from the
+object `<obj>` identified by the handle `handle`. The value of the property is stored in the memory
+region pointed to by `value`, which has a size of `size` bytes. The actual size of the value written
+to the memory region is stored in the variable pointed to by `size_ret`. The function returns an
+error code indicating success or failure. The `value` is purposely passed as a `void *` to allow the
+function to return values of different types. The type of the value is determined by the property
+enumeration.
 
-With the device handles at hand, the function \ref QDMI_device_query_device_property can be called
-for one device. The signature of the function is:
+This design has several advantages:
 
-```C
-int QDMI_device_query_device_property(QDMI_Device device, QDMI_Device_Property prop, size_t size, void *value, size_t *size_ret)
-```
+- It allows keeping the interface compact. Instead of defining a separate function for each
+  property, the value of a property is retrieved by calling a single function with the property
+  enumeration as an argument. This reduces the number of functions in the interface and makes the
+  interface easier to use.
+- It makes it easier to maintain consistent semantics across different properties, making the
+  interface more predictable and easier to learn.
+- It allows adding new properties without breaking the interface. If a new property is added, the
+  corresponding enumeration can be added to the interface without changing the existing functions.
+  This makes the interface more extensible and easier to maintain.
 
-The semantics of this function is actually similar to the one described earlier. The first two
-parameters denote the device and the property to query. The parameter `value` is a pointer to a
-memory region of type `void*`. The parameter `size` specifies the size of the memory region pointed
-to by `value` in the number of bytes. The parameter `size_ret` is a pointer to a variable that will
-store the number of bytes that were actually written into the memory region pointed to by `value`.
-To retrieve the actual returned value of the property, the client must cast the pointer `value` to
-the type of the property. The type it must be casted to is defined by the property and can be taken
-from the documentation of the property.
+Similar design principles are applied to the functions for setting parameters and retrieving results
+of jobs.
 
-## Purpose of Device Sessions {#device-session}
+## Why do device implementations use a prefix? {#rationale-prefix}
 
-The devices handled by QDMI may have very individual access modes that depend on, for example, on
-the provided token used for authentication. However, in the first place, the device does not know,
-who is calling one of its functions, or to be more precise, on behalf of which client the driver is
-calling one of its function. To distinguish different clients on the device level, the \ref
-QDMI_Device_Session was introduced. To open a connection to a device, the driver must first create a
-session between itself and the device. The driver can create a session on a client basis. Hence, the
-driver can set up this device session specific for the corresponding client, e.g., the driver can
-set the adequate tokens as parameters for the device session via \ref
-QDMI_device_session_set_parameter using \ref QDMI_DEVICE_SESSION_PARAMETER_TOKEN. As a result, the
-client is identified by the respective device session on the device level and the client gets the
-correct access mode for the device.
+Each device must add a unique prefix to all symbols and types defined within its implementation.
+This is necessary to facilitate static linking of multiple device implementations as part of one
+driver. It also helps to identify the source of an error when debugging because the name of the
+symbol will contain the prefix of the device that defined it. The prefix is also used to avoid
+naming conflicts between different devices. Lastly, it allows hardware vendors to brand their device
+implementations. Prefixes must be unique across all devices. They should be short and descriptive of
+the device.
 
-## Use of Opaque Pointers {#opaque-pointers}
+## Why do devices have sessions? {#device-session}
 
-Throughout QDMI, we make use of opaque pointers, i.e., \ref QDMI_Site, \ref QDMI_Job, \ref
-QDMI_Device, ... Those are defined as pointer to an undeclared struct, e.g., for \ref QDMI_Site
+Per default, devices do not know which client is calling one of their functions. This is intentional
+to keep the devices as simple as possible and to avoid the need for complex authentication and
+authorization mechanisms on the device level. However, the device implementations may want to expose
+different capabilities or access modes depending on the client that is calling them. To this end,
+the \ref QDMI_Device_Session was introduced. The driver creates a session with the device for the
+client. The driver can set parameters on the session to identify the client to the device and unlock
+specific features.
 
-```C
-typedef struct QDMI_Site_impl_d *QDMI_Site;
-```
+This allows device implementers to switch API tokens or endpoints on the fly, without having to
+recompile and redistribute the respective implementation. It also allows them to limit the access of
+certain clients to specific features of the device. For example, a device implementation could
+provide a read-only mode for clients that are not authorized to run jobs on the device.
 
-Here, this undeclared struct is only defined in the implementation of the device and the definition
-cannot be included via a header in any other component. Other types, such as \ref QDMI_Job, \ref
-QDMI_Device are defined in the driver. Hence, only the entity defining the struct behind the opaque
-pointer knows its structure and can access the data stored behind the pointer. To this end, opaque
-pointers serve as kind of a firewall because, e.g., the client only sees the pointer address of,
-e.g., a site and cannot even dereference the pointer. On the other hand, the device can freely
-choose what information it wants to store in the underlying struct, e.g., an id, its location, ...
+## Why do sessions need to be initialized after allocation? {#rationale-session-init}
 
-Other possibilities to address object in the context of QDMI would be the use of (publicly) defined
-structs or (integer) IDs. One special case of IDs would be the use of Universally Unique Identifiers
-(UUIDs). The former would require that the struct of a site would need to be defined in a header
-included by the respective components of QDMI. One disadvantage is that—whether intended or
-not—every entity can include this definition and knows the structure of the struct behind a site,
-and hence is able to access the data stored in it. It is not possible to hide information for the
-client, for example. Additionally, the device can no longer define the struct representing a site by
-its own and must store information related to a site somehow else than easily incorporating this
-into the struct representing a site. On a high level, the use of IDs (UUIDs or not) is similar to
-the use of opaque pointers. In some way, the pointers are also just IDs. However, those opaque
-pointers have a type associated to them and the interface becomes easier to read and more type-safe
-as the types of opaque pointers are checked statically whereas IDs will always be integers that are
-in principle interchangeable.
+QDMI defines two kinds of sessions, namely \ref QDMI_Session and \ref QDMI_Device_Session. The
+typical workflow for working with both kinds of sessions involves allocating a session, optionally
+setting parameters on the session, and then initializing the session. This three-step process was
+chosen to allow for more flexibility in authentication and authorization mechanisms, similar to how
+we designed the query interface to be compact and extensible.
 
-However, opaque pointers come not only with advantages: Their use requires an additional level of
-indirection and many pointer dereferences. Those result in an execution time overhead compared to
-direct implementations of the types.
+## Why are there separate kinds of jobs for devices and clients? {#rationale-job-structs}
+
+QDMI defines two kinds of jobs, namely \ref QDMI_Device_Job and \ref QDMI_Job. A QDMI client will
+only ever get access to a \ref QDMI_Job that it can request via @ref QDMI_device_create_job from a
+@ref QDMI_Device handle that it received from the driver. Internally, the driver will use the \ref
+device_job_interface to create a corresponding \ref QDMI_Device_Job. In this sense, the \ref
+QDMI_Job is a request to the driver to execute a job on the device. The driver will then translate
+this request into a \ref QDMI_Device_Job and execute it on the device. As part of that translation,
+the driver may decide to modify the job or add additional information to it. The client will only
+ever see the \ref QDMI_Job and not the \ref QDMI_Device_Job. Thus, the client cannot interfere with
+the execution of the job on the device. This would not be possible if there were only one kind of
+job.
