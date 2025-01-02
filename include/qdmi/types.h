@@ -37,9 +37,18 @@ extern "C" {
  * A site is a place that can potentially hold a qubit. In case of
  * superconducting qubits, sites can be used synonymously with qubits. In case
  * of neutral atoms, sites represent individual traps that can confine atoms.
- * Those atoms are then used as qubits. To this end, sites are a generalization
+ * Those atoms are then used as qubits. To this end, sites are generalizations
  * of qubits that denote locations where qubits can be placed on a device.
- * The actual implementation of the concept is defined by each device.
+ * Each implementation of the @ref device_interface "QDMI Device Interface"
+ * defines the actual implementation of the concept.
+ *
+ * A simple example of an implementation is a struct that merely contains the
+ * site ID, which can be used to identify the site.
+ * ```
+ * struct QDMI_Site_impl_d {
+ *   size_t id;
+ * };
+ * ```
  */
 typedef struct QDMI_Site_impl_d *QDMI_Site;
 
@@ -49,7 +58,16 @@ typedef struct QDMI_Site_impl_d *QDMI_Site;
  * concept. An operation generally represents any instruction that can be
  * executed on a device. This includes gates, measurements, classical control
  * flow elements, movement of qubits, pulse-level instructions, etc.
- * The actual implementation of the concept is defined by each device.
+ * Each implementation of the @ref device_interface "QDMI Device Interface"
+ * defines the actual implementation of the concept.
+ *
+ * A simple example of an implementation is a struct that merely contains the
+ * name of the operation, which can be used to identify the operation.
+ * ```
+ * struct QDMI_Operation_impl_d {
+ *   std::string name;
+ * };
+ * ```
  */
 typedef struct QDMI_Operation_impl_d *QDMI_Operation;
 
