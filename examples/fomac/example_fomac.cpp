@@ -48,59 +48,40 @@ auto FoMaC::throw_if_error(int status, const std::string &message) -> void {
     std::cerr << message << '\n';
     return;
   }
-  if (status == QDMI_ERROR_FATAL) {
-    if (message.empty()) {
-      throw std::runtime_error("A fatal error.");
+
+  if (!message.empty()) {
+    if (status == QDMI_ERROR_INVALIDARGUMENT) {
+      throw std::invalid_argument(message);
     }
     throw std::runtime_error(message);
+  }
+
+  if (status == QDMI_ERROR_FATAL) {
+    throw std::runtime_error("A fatal error.");
   }
   if (status == QDMI_ERROR_OUTOFMEM) {
-    if (message.empty()) {
-      throw std::bad_alloc();
-    }
-    throw std::runtime_error(message);
+    throw std::bad_alloc();
   }
   if (status == QDMI_ERROR_NOTIMPLEMENTED) {
-    if (message.empty()) {
-      throw std::runtime_error("Not implemented.");
-    }
-    throw std::runtime_error(message);
+    throw std::runtime_error("Not implemented.");
   }
   if (status == QDMI_ERROR_LIBNOTFOUND) {
-    if (message.empty()) {
-      throw std::runtime_error("Library not found.");
-    }
-    throw std::runtime_error(message);
+    throw std::runtime_error("Library not found.");
   }
   if (status == QDMI_ERROR_NOTFOUND) {
-    if (message.empty()) {
-      throw std::runtime_error("Element not found.");
-    }
-    throw std::runtime_error(message);
+    throw std::runtime_error("Element not found.");
   }
   if (status == QDMI_ERROR_OUTOFRANGE) {
-    if (message.empty()) {
-      throw std::out_of_range("Out of range.");
-    }
-    throw std::out_of_range(message);
+    throw std::out_of_range("Out of range.");
   }
   if (status == QDMI_ERROR_INVALIDARGUMENT) {
-    if (message.empty()) {
-      throw std::invalid_argument("Invalid argument.");
-    }
-    throw std::invalid_argument(message);
+    throw std::invalid_argument("Invalid argument.");
   }
   if (status == QDMI_ERROR_PERMISSIONDENIED) {
-    if (message.empty()) {
-      throw std::runtime_error("Permission denied.");
-    }
-    throw std::runtime_error(message);
+    throw std::runtime_error("Permission denied.");
   }
   if (status == QDMI_ERROR_NOTSUPPORTED) {
-    if (message.empty()) {
-      throw std::runtime_error("Operation is not supported.");
-    }
-    throw std::runtime_error(message);
+    throw std::runtime_error("Operation is not supported.");
   }
 }
 
