@@ -104,19 +104,18 @@ cmake --build build --config Release
 
 We use the [GoogleTest](https://google.github.io/googletest/primer.html) framework for unit testing
 of the QDMI interface. All tests are contained in the `test` directory. After building the project
-(as described above), the C++ unit tests can be conveniently executed by running
+(as described above), the C++ unit tests can be conveniently executed by running the following
+command from the main project directory:
 
 ```shell
 ctest -C Release --test-dir build
 ```
 
-from the main project directory.
-
 ### Code Formatting and Linting
 
 This project mostly follows the [LLVM Coding Standard](https://llvm.org/docs/CodingStandards.html),
-which is a set of guidelines for writing C/C++ code. To ensure the quality of the code and that it
-conforms to these guidelines, we use
+a set of guidelines for writing C/C++ code. To ensure the quality of the code and that it conforms
+to these guidelines, we use
 
 - [clang-tidy](https://clang.llvm.org/extra/clang-tidy/) -- a static analysis tool that checks for
   common mistakes in C/C++ code, and
@@ -142,22 +141,23 @@ and `<PATH_TO_INCLUDE_DIRECTORY>` is the path to the `include` directory of the 
 
 ### Format for Comments
 
-For the information to be displayed correctly in the documentation, it is essential that the
-comments follow the format required by Doxygen. Below you find some tags, that are commonly used
-within the documentation of a function:
+For the information to be displayed correctly in the documentation, it the comments need to follow
+the format required by Doxygen. Below you find some tags that are commonly used within the
+documentation of a function:
 
 - `@brief` For a brief, one-line description of the function. Should always be provided.
 - `@details` For a longer, detailed description of the function.
 - `@param` To explain the usage of a parameter. Should be provided for each parameter.
 - `@return` To explain the return value. Should be provided if the function returns a value.
+- `@ref` To cross-reference another part of the documentation.
 
 \note In the current setting, the long description is always prepended with the brief description.
 So there is no need to repeat the brief description in the details.
 
 ## Working on the Documentation
 
-The documentation is generated using [Doxygen](https://www.doxygen.nl/index.html), which is
-seamlessly integrated into the CMake build system.
+The documentation is generated using [Doxygen](https://www.doxygen.nl/index.html) and its
+configuration is seamlessly integrated into the CMake build system.
 
 ### Building the Documentation
 
@@ -168,28 +168,28 @@ cmake -S . -B build
 cmake --build build --target qdmi_docs
 ```
 
-The generated webpage can be inspected by opening the file in `docs/html/index.html` in the CMake
+The generated web page can be inspected by opening the file in `docs/html/index.html` in the CMake
 build directory.
 
 ### Static Content
 
-The generated webpage also contains four static sites, namely the main page, the support page, the
-FAQ page, and this development guide. The respective markdown files that serve as the source for
-those sites are contained in `docs/` where `index.md` contains the content of the main page.
+The generated web page also contains a couple of static sites, including the main page, the support
+page, the FAQ page, and this development guide. The respective Markdown files that serve as the
+source for those sites are contained in `docs/` where `index.md` contains the content of the main
+page.
 
 ### Dynamic Content
 
-In order to include source files to be listed among the menu item `API Reference/Files`, these files
-must be marked as documented. This is accomplished by adding a comment like the following to the top
-of the file. Right now, this is done for all files in the include directory.
+To include source files to be listed among the menu item `API Reference/Files`, these files must be
+marked as documented by adding a comment like the following to the top of the file. Right now, this
+is done for all files in the include directory.
 
 <!-- prettier-ignore-start -->
 \verbatim
 
 /** @file
- * @brief Include all public headers for the QDMI client.
- * @details The detailed description of the interface is provided in
- * @ref client/control.h and @ref client/query.h.
+ * @brief A brief description of the file.
+ * @details Some details about the file.
  */
 
 \endverbatim
