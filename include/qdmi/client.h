@@ -547,7 +547,11 @@ int QDMI_device_query_operation_property(
 
 /** @defgroup client_job_interface QDMI Client Job Interface
  *  @brief Provides functions to manage client-side jobs.
- *  @details The typical workflow for a client job is as follows:
+ *  @details A job is a task submitted by a client to a device for execution.
+ *  Most jobs are quantum circuits to be executed on a quantum device.
+ *  However, jobs can also be a different type of task, such as calibration.
+ *
+ *  The typical workflow for a client job is as follows:
  *  - Create a job with @ref QDMI_device_create_job.
  *  - Set parameters for the job with @ref QDMI_job_set_parameter.
  *  - Submit the job to the device with @ref QDMI_job_submit.

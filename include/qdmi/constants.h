@@ -207,6 +207,18 @@ enum QDMI_DEVICE_PROPERTY_T {
    */
   QDMI_DEVICE_PROPERTY_COUPLINGMAP = 7,
   /**
+   * @brief `size_t` Whether the device needs calibration.
+   * @details This flag indicates whether the device needs calibration.
+   * A value of zero indicates that the device needs calibration, while any
+   * non-zero value indicates that the device needs calibration. It is up to the
+   * device to assign a specific meaning to the non-zero value.
+   *
+   * If a device reports that it needs calibration, a calibration run can be
+   * triggered by submitting a job with the @ref QDMI_Program_Format set to @ref
+   * QDMI_PROGRAM_FORMAT_CALIBRATION.
+   */
+  QDMI_DEVICE_PROPERTY_NEEDSCALIBRATION = 8,
+  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -214,7 +226,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_DEVICE_PROPERTY_MAX = 8,
+  QDMI_DEVICE_PROPERTY_MAX = 9,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.
@@ -488,6 +500,13 @@ enum QDMI_PROGRAM_FORMAT_T {
    */
   QDMI_PROGRAM_FORMAT_QIRADAPTIVEMODULE = 5,
   /**
+   * @brief `void*` A calibration program.
+   * @details This program format is used to request the device to perform a
+   * calibration run. Triggering a calibration run does not require a program to
+   * be set via @ref QDMI_DEVICE_JOB_PARAMETER_PROGRAM.
+   */
+  QDMI_PROGRAM_FORMAT_CALIBRATION = 6,
+  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -495,7 +514,7 @@ enum QDMI_PROGRAM_FORMAT_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_PROGRAM_FORMAT_MAX = 6,
+  QDMI_PROGRAM_FORMAT_MAX = 7,
   /**
    * @brief This enum value is reserved for a custom program format.
    * @details The device defines the meaning and the type of this value.

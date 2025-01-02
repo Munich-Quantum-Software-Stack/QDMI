@@ -680,3 +680,24 @@ TEST_P(QDMIImplementationTest, SessionSetParameter) {
             QDMI_ERROR_NOTSUPPORTED);
   QDMI_session_free(session2);
 }
+
+TEST_P(QDMIImplementationTest, SupportsCalibration) {
+  if (mode == TEST_SESSION_MODE::READONLY) {
+    GTEST_SKIP() << "Skipping test for read-only session";
+  }
+  QDMI_Job job = nullptr;
+  QDMI_Program_Format format = QDMI_PROGRAM_FORMAT_CALIBRATION;
+  QDMI_device_create_job(device, &job);
+  const auto ret = QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
+                                          sizeof(QDMI_Program_Format), &format);
+  EXPECT_EQ(ret, QDMI_SUCCESS);
+}
+
+TEST_P(QDMIImplementationTest, NeedsCalibration) {
+  size_t needs_calibration = 0;
+  const auto ret = QDMI_device_query_device_property(
+      device, QDMI_DEVICE_PROPERTY_NEEDSCALIBRATION, sizeof(size_t),
+      &needs_calibration, nullptr);
+  EXPECT_EQ(ret, QDMI_SUCCESS);
+  EXPECT_EQ(needs_calibration, 0);
+}

@@ -356,7 +356,11 @@ int QDMI_device_session_query_operation_property(
 
 /** @defgroup device_job_interface QDMI Device Job Interface
  *  @brief Provides functions to manage jobs on a device.
- *  @details The typical workflow for a device job is as follows:
+ *  @details A job is a task submitted to a device for execution.
+ *  Most jobs are quantum circuits to be executed on a quantum device.
+ *  However, jobs can also be a different type of task, such as calibration.
+ *
+ *  The typical workflow for a device job is as follows:
  *  - Create a job with @ref QDMI_device_session_create_device_job.
  *  - Set parameters for the job with @ref QDMI_device_job_set_parameter.
  *  - Submit the job with @ref QDMI_device_job_submit.

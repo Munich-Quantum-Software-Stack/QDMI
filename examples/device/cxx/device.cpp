@@ -372,7 +372,8 @@ int CXX_QDMI_device_job_set_parameter(CXX_QDMI_Device_Job job,
       }
       if (format != QDMI_PROGRAM_FORMAT_QASM2 &&
           format != QDMI_PROGRAM_FORMAT_QIRBASESTRING &&
-          format != QDMI_PROGRAM_FORMAT_QIRBASEMODULE) {
+          format != QDMI_PROGRAM_FORMAT_QIRBASEMODULE &&
+          format != QDMI_PROGRAM_FORMAT_CALIBRATION) {
         return QDMI_ERROR_NOTSUPPORTED;
       }
       job->format = format;
@@ -398,6 +399,13 @@ int CXX_QDMI_device_job_submit(CXX_QDMI_Device_Job job) {
   if (job == nullptr || job->status != QDMI_JOB_STATUS_CREATED) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
+
+  // Calibration jobs complete immediately
+  if (job->format == QDMI_PROGRAM_FORMAT_CALIBRATION) {
+    job->status = QDMI_JOB_STATUS_DONE;
+    return QDMI_SUCCESS;
+  }
+
   CXX_QDMI_set_device_status(QDMI_DEVICE_STATUS_BUSY);
   job->status = QDMI_JOB_STATUS_SUBMITTED;
   // here, the actual submission of the problem to the device would happen
@@ -682,6 +690,11 @@ int CXX_QDMI_device_session_query_device_property(
                     CXX_DEVICE_OPERATIONS, prop, size, value, size_ret)
   ADD_LIST_PROPERTY(QDMI_DEVICE_PROPERTY_COUPLINGMAP, CXX_QDMI_Site,
                     DEVICE_COUPLING_MAP, prop, size, value, size_ret)
+
+  // The example device never requires calibration
+  ADD_SINGLE_VALUE_PROPERTY(QDMI_DEVICE_PROPERTY_NEEDSCALIBRATION, size_t, 0,
+                            prop, size, value, size_ret)
+
   return QDMI_ERROR_NOTSUPPORTED;
 } /// [DOXYGEN FUNCTION END]
 
