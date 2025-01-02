@@ -25,6 +25,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include <complex>
 #include <cstddef>
 #include <gtest/gtest.h>
+#include <random>
 #include <sstream>
 #include <string>
 #include <tuple>
@@ -113,19 +114,31 @@ TEST_P(QDMIImplementationTest, QueryGatePropertiesForEachGate) {
 
   for (const auto &[name, op] : ops) {
     const auto gate_num_qubits = fomac.get_operands_num(op);
+    const auto gate_num_params = fomac.get_parameters_num(op);
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<double> dis(0.0, 1.0);
+    std::vector<double> params(gate_num_params);
+    for (auto &param : params) {
+      param = dis(gen);
+    }
+
     double duration = 0;
     double fidelity = 0;
     if (gate_num_qubits == 1) {
       for (const auto &site : sites) {
         auto site_arr = std::array{site};
         EXPECT_EQ(QDMI_device_query_operation_property(
-                      device, op, 1, site_arr.data(), 0, nullptr,
+                      device, op, gate_num_qubits, site_arr.data(),
+                      gate_num_params, params.data(),
                       QDMI_OPERATION_PROPERTY_DURATION, sizeof(double),
                       &duration, nullptr),
                   QDMI_SUCCESS)
             << "Failed to query duration for operation " << name;
         EXPECT_EQ(QDMI_device_query_operation_property(
-                      device, op, 1, site_arr.data(), 0, nullptr,
+                      device, op, gate_num_qubits, site_arr.data(),
+                      gate_num_params, params.data(),
                       QDMI_OPERATION_PROPERTY_FIDELITY, sizeof(double),
                       &fidelity, nullptr),
                   QDMI_SUCCESS)
@@ -136,13 +149,15 @@ TEST_P(QDMIImplementationTest, QueryGatePropertiesForEachGate) {
       for (const auto &[control, target] : coupling_map) {
         auto site_arr = std::array{control, target};
         EXPECT_EQ(QDMI_device_query_operation_property(
-                      device, op, 2, site_arr.data(), 0, nullptr,
+                      device, op, gate_num_qubits, site_arr.data(),
+                      gate_num_params, params.data(),
                       QDMI_OPERATION_PROPERTY_DURATION, sizeof(double),
                       &duration, nullptr),
                   QDMI_SUCCESS)
             << "Failed to query duration for gate " << op;
         EXPECT_EQ(QDMI_device_query_operation_property(
-                      device, op, 2, site_arr.data(), 0, nullptr,
+                      device, op, gate_num_qubits, site_arr.data(),
+                      gate_num_params, params.data(),
                       QDMI_OPERATION_PROPERTY_FIDELITY, sizeof(double),
                       &fidelity, nullptr),
                   QDMI_SUCCESS)
