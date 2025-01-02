@@ -209,8 +209,10 @@ int C_QDMI_device_session_set_parameter(
   }
   switch (param) {
   case QDMI_DEVICE_SESSION_PARAMETER_TOKEN:
-    session->token = (char *)malloc(size);
-    strncpy(session->token, (const char *)value, size);
+    if (value != NULL) {
+      session->token = (char *)malloc(size);
+      strncpy(session->token, (const char *)value, size);
+    }
     return QDMI_SUCCESS;
   default:
     return QDMI_ERROR_NOTSUPPORTED;
