@@ -141,7 +141,7 @@ and `<PATH_TO_INCLUDE_DIRECTORY>` is the path to the `include` directory of the 
 
 ### Format for Comments
 
-For the information to be displayed correctly in the documentation, it the comments need to follow
+For the information to be displayed correctly in the documentation, the comments need to follow
 the format required by Doxygen. Below you find some tags that are commonly used within the
 documentation of a function:
 

@@ -56,13 +56,13 @@ The default template is set up as a C++ project with the specified prefix. You c
 project to a purely C project by setting the `CXX_DEVICE` option to `OFF` in the `CMakeLists.txt`
 file in the root directory of the template.
 
-For stability, we recommend pining the version of QDMI that you are using for your implementation.
+For stability, we recommend pinning the version of QDMI that you are using for your implementation.
 You can use any valid git tag, branch, or commit hash for that. To this end, adjust the `QDMI_REV`
 variable in `cmake/ExternalDependecies.cmake` as follows:
 
 ```diff
 -   set(QDMI_REV "develop"
-+   set(QDMI_REV "v1.0.0"
++   set(QDMI_REV "v1.1.0"
 ```
 
 When you want to change the prefix after the creation of the template, you need to change the prefix
