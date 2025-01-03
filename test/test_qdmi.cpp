@@ -164,6 +164,28 @@ TEST_P(QDMIImplementationTest, QueryGatePropertiesForEachGate) {
             << "Failed to query fidelity for gate " << op;
       }
     }
+
+    // Custom properties are not supported by the example devices.
+    EXPECT_EQ(QDMI_device_query_operation_property(
+                  device, op, 0, nullptr, 0, nullptr,
+                  QDMI_OPERATION_PROPERTY_CUSTOM1, 0, nullptr, nullptr),
+              QDMI_ERROR_NOTSUPPORTED);
+    EXPECT_EQ(QDMI_device_query_operation_property(
+                  device, op, 0, nullptr, 0, nullptr,
+                  QDMI_OPERATION_PROPERTY_CUSTOM2, 0, nullptr, nullptr),
+              QDMI_ERROR_NOTSUPPORTED);
+    EXPECT_EQ(QDMI_device_query_operation_property(
+                  device, op, 0, nullptr, 0, nullptr,
+                  QDMI_OPERATION_PROPERTY_CUSTOM3, 0, nullptr, nullptr),
+              QDMI_ERROR_NOTSUPPORTED);
+    EXPECT_EQ(QDMI_device_query_operation_property(
+                  device, op, 0, nullptr, 0, nullptr,
+                  QDMI_OPERATION_PROPERTY_CUSTOM4, 0, nullptr, nullptr),
+              QDMI_ERROR_NOTSUPPORTED);
+    EXPECT_EQ(QDMI_device_query_operation_property(
+                  device, op, 0, nullptr, 0, nullptr,
+                  QDMI_OPERATION_PROPERTY_CUSTOM5, 0, nullptr, nullptr),
+              QDMI_ERROR_NOTSUPPORTED);
   }
 }
 
@@ -182,7 +204,59 @@ TEST_P(QDMIImplementationTest, QuerySiteProperties) {
     EXPECT_GT(t1, 0);
     const auto t2 = fomac.get_site_t2(site);
     EXPECT_GT(t2, 0);
+
+    // Custom properties are not supported by the example devices.
+    EXPECT_EQ(QDMI_device_query_site_property(device, site,
+                                              QDMI_SITE_PROPERTY_CUSTOM1, 0,
+                                              nullptr, nullptr),
+              QDMI_ERROR_NOTSUPPORTED);
+    EXPECT_EQ(QDMI_device_query_site_property(device, site,
+                                              QDMI_SITE_PROPERTY_CUSTOM2, 0,
+                                              nullptr, nullptr),
+              QDMI_ERROR_NOTSUPPORTED);
+    EXPECT_EQ(QDMI_device_query_site_property(device, site,
+                                              QDMI_SITE_PROPERTY_CUSTOM3, 0,
+                                              nullptr, nullptr),
+              QDMI_ERROR_NOTSUPPORTED);
+    EXPECT_EQ(QDMI_device_query_site_property(device, site,
+                                              QDMI_SITE_PROPERTY_CUSTOM4, 0,
+                                              nullptr, nullptr),
+              QDMI_ERROR_NOTSUPPORTED);
+    EXPECT_EQ(QDMI_device_query_site_property(device, site,
+                                              QDMI_SITE_PROPERTY_CUSTOM5, 0,
+                                              nullptr, nullptr),
+              QDMI_ERROR_NOTSUPPORTED);
   }
+}
+
+TEST_P(QDMIImplementationTest, QueryDeviceProperties) {
+  // Query the name of the device
+  size_t size = 0;
+  EXPECT_EQ(QDMI_device_query_device_property(device, QDMI_DEVICE_PROPERTY_NAME,
+                                              0, nullptr, &size),
+            QDMI_SUCCESS);
+  std::string name(size - 1, '\0');
+  EXPECT_EQ(QDMI_device_query_device_property(device, QDMI_DEVICE_PROPERTY_NAME,
+                                              name.size() + 1, name.data(),
+                                              nullptr),
+            QDMI_SUCCESS);
+
+  // Example devices do not support custom properties
+  EXPECT_EQ(QDMI_device_query_device_property(
+                device, QDMI_DEVICE_PROPERTY_CUSTOM1, 0, nullptr, nullptr),
+            QDMI_ERROR_NOTSUPPORTED);
+  EXPECT_EQ(QDMI_device_query_device_property(
+                device, QDMI_DEVICE_PROPERTY_CUSTOM2, 0, nullptr, nullptr),
+            QDMI_ERROR_NOTSUPPORTED);
+  EXPECT_EQ(QDMI_device_query_device_property(
+                device, QDMI_DEVICE_PROPERTY_CUSTOM3, 0, nullptr, nullptr),
+            QDMI_ERROR_NOTSUPPORTED);
+  EXPECT_EQ(QDMI_device_query_device_property(
+                device, QDMI_DEVICE_PROPERTY_CUSTOM4, 0, nullptr, nullptr),
+            QDMI_ERROR_NOTSUPPORTED);
+  EXPECT_EQ(QDMI_device_query_device_property(
+                device, QDMI_DEVICE_PROPERTY_CUSTOM5, 0, nullptr, nullptr),
+            QDMI_ERROR_NOTSUPPORTED);
 }
 
 TEST_P(QDMIImplementationTest, JobLifecycle) {
@@ -203,30 +277,33 @@ TEST_P(QDMIImplementationTest, JobLifecycle) {
   EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
                                    sizeof(QDMI_Program_Format), &format),
             QDMI_ERROR_INVALIDARGUMENT);
-  format = QDMI_PROGRAM_FORMAT_QASM2;
-  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
-                                   sizeof(QDMI_Program_Format), &format),
-            QDMI_SUCCESS);
-  format = QDMI_PROGRAM_FORMAT_QIRBASESTRING;
-  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
-                                   sizeof(QDMI_Program_Format), &format),
-            QDMI_SUCCESS);
-  format = QDMI_PROGRAM_FORMAT_QIRBASEMODULE;
-  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
-                                   sizeof(QDMI_Program_Format), &format),
-            QDMI_SUCCESS);
-  format = QDMI_PROGRAM_FORMAT_QASM3;
-  EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
-                                   sizeof(QDMI_Program_Format), &format),
-            QDMI_ERROR_NOTSUPPORTED);
-  format = QDMI_PROGRAM_FORMAT_QIRADAPTIVESTRING;
-  EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
-                                   sizeof(QDMI_Program_Format), &format),
-            QDMI_ERROR_NOTSUPPORTED);
-  format = QDMI_PROGRAM_FORMAT_QIRADAPTIVEMODULE;
-  EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
-                                   sizeof(QDMI_Program_Format), &format),
-            QDMI_ERROR_NOTSUPPORTED);
+
+  constexpr std::array supported_formats = {
+      QDMI_PROGRAM_FORMAT_QASM2, QDMI_PROGRAM_FORMAT_QIRBASESTRING,
+      QDMI_PROGRAM_FORMAT_QIRBASEMODULE, QDMI_PROGRAM_FORMAT_CALIBRATION};
+
+  for (const auto &supported_format : supported_formats) {
+    ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
+                                     sizeof(QDMI_Program_Format),
+                                     &supported_format),
+              QDMI_SUCCESS);
+  }
+  constexpr std::array unsupported_formats = {
+      QDMI_PROGRAM_FORMAT_QASM3,
+      QDMI_PROGRAM_FORMAT_QIRADAPTIVESTRING,
+      QDMI_PROGRAM_FORMAT_QIRADAPTIVEMODULE,
+      QDMI_PROGRAM_FORMAT_CUSTOM1,
+      QDMI_PROGRAM_FORMAT_CUSTOM2,
+      QDMI_PROGRAM_FORMAT_CUSTOM3,
+      QDMI_PROGRAM_FORMAT_CUSTOM4,
+      QDMI_PROGRAM_FORMAT_CUSTOM5};
+
+  for (const auto &unsupported_format : unsupported_formats) {
+    EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
+                                     sizeof(QDMI_Program_Format),
+                                     &unsupported_format),
+              QDMI_ERROR_NOTSUPPORTED);
+  }
 
   size_t shots = 5;
   EXPECT_EQ(QDMI_job_set_parameter(nullptr, QDMI_JOB_PARAMETER_SHOTSNUM,
@@ -243,11 +320,21 @@ TEST_P(QDMIImplementationTest, JobLifecycle) {
             QDMI_SUCCESS);
   ASSERT_EQ(QDMI_job_submit(job), QDMI_SUCCESS);
   EXPECT_EQ(QDMI_job_submit(job), QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_EQ(QDMI_job_submit(nullptr), QDMI_ERROR_INVALIDARGUMENT);
+  // Cannot get results from a job that is not done yet.
+  EXPECT_EQ(
+      QDMI_job_get_results(job, QDMI_JOB_RESULT_SHOTS, 0, nullptr, nullptr),
+      QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_EQ(QDMI_job_check(job, nullptr), QDMI_ERROR_INVALIDARGUMENT);
   QDMI_Job_Status status{};
+  EXPECT_EQ(QDMI_job_check(nullptr, &status), QDMI_ERROR_INVALIDARGUMENT);
   EXPECT_EQ(QDMI_job_check(job, &status), QDMI_SUCCESS);
   EXPECT_EQ(QDMI_job_wait(job), QDMI_SUCCESS);
+  EXPECT_EQ(QDMI_job_wait(nullptr), QDMI_ERROR_INVALIDARGUMENT);
   ASSERT_EQ(QDMI_job_check(job, &status), QDMI_SUCCESS);
   EXPECT_EQ(status, QDMI_JOB_STATUS_DONE);
+  EXPECT_EQ(QDMI_job_cancel(job), QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_EQ(QDMI_job_cancel(nullptr), QDMI_ERROR_INVALIDARGUMENT);
   EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_SHOTSNUM,
                                    sizeof(size_t), &shots),
             QDMI_ERROR_BADSTATE);
@@ -730,6 +817,23 @@ TEST_P(QDMIImplementationTest, SessionQuerySessionProperty) {
   EXPECT_EQ(QDMI_session_query_session_property(
                 session, QDMI_SESSION_PROPERTY_MAX, 0, nullptr, nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
+
+  // The example driver does not support custom properties
+  EXPECT_EQ(QDMI_session_query_session_property(
+                session, QDMI_SESSION_PROPERTY_CUSTOM1, 0, nullptr, nullptr),
+            QDMI_ERROR_NOTSUPPORTED);
+  EXPECT_EQ(QDMI_session_query_session_property(
+                session, QDMI_SESSION_PROPERTY_CUSTOM2, 0, nullptr, nullptr),
+            QDMI_ERROR_NOTSUPPORTED);
+  EXPECT_EQ(QDMI_session_query_session_property(
+                session, QDMI_SESSION_PROPERTY_CUSTOM3, 0, nullptr, nullptr),
+            QDMI_ERROR_NOTSUPPORTED);
+  EXPECT_EQ(QDMI_session_query_session_property(
+                session, QDMI_SESSION_PROPERTY_CUSTOM4, 0, nullptr, nullptr),
+            QDMI_ERROR_NOTSUPPORTED);
+  EXPECT_EQ(QDMI_session_query_session_property(
+                session, QDMI_SESSION_PROPERTY_CUSTOM5, 0, nullptr, nullptr),
+            QDMI_ERROR_NOTSUPPORTED);
 
   // Must not query on an uninitialized session
   QDMI_Session session2 = nullptr;
