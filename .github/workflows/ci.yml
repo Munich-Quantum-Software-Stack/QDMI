@@ -4,6 +4,11 @@ on:
     branches:
       - develop
   pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - closed
   merge_group:
   workflow_dispatch:
 
@@ -19,7 +24,7 @@ jobs:
   tests:
     name: 🇨‌ Test
     needs: change-detection
-    if: fromJSON(needs.change-detection.outputs.run-tests)
+    if: fromJSON(needs.change-detection.outputs.run-tests) && github.event.action != 'closed'
     uses: ./.github/workflows/reusable-cpp-ci.yml
     with:
       # do not try to build docs in test builds
@@ -28,7 +33,7 @@ jobs:
   linter:
     name: 🇨‌ Lint
     needs: change-detection
-    if: fromJSON(needs.change-detection.outputs.run-linter)
+    if: fromJSON(needs.change-detection.outputs.run-linter) && github.event.action != 'closed'
     uses: cda-tum/mqt-workflows/.github/workflows/reusable-cpp-linter.yml@v1.4
     with:
       clang-version: 19
@@ -39,7 +44,7 @@ jobs:
   code-ql:
     name: 📝 CodeQL
     needs: change-detection
-    if: fromJSON(needs.change-detection.outputs.run-code-ql)
+    if: fromJSON(needs.change-detection.outputs.run-code-ql) && github.event.action != 'closed'
     uses: cda-tum/mqt-workflows/.github/workflows/reusable-code-ql-cpp.yml@v1.4
     with:
       # do not try to build docs in CodeQL builds
@@ -52,6 +57,7 @@ jobs:
     uses: ./.github/workflows/reusable-docs.yml
     permissions:
       contents: write
+      pull-requests: write
 
   required-checks-pass: # This job does nothing and is only used for branch protection
     name: 🚦 Check
