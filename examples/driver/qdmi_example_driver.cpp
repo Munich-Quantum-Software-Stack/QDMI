@@ -363,7 +363,12 @@ int QDMI_session_set_parameter(QDMI_Session session,
 int QDMI_session_query_session_property(QDMI_Session session,
                                         QDMI_Session_Property prop, size_t size,
                                         void *value, size_t *size_ret) {
-  if (session == nullptr || prop >= QDMI_SESSION_PROPERTY_MAX) {
+  if (session == nullptr || (prop >= QDMI_SESSION_PROPERTY_MAX &&
+                             prop != QDMI_SESSION_PROPERTY_CUSTOM1 &&
+                             prop != QDMI_SESSION_PROPERTY_CUSTOM2 &&
+                             prop != QDMI_SESSION_PROPERTY_CUSTOM3 &&
+                             prop != QDMI_SESSION_PROPERTY_CUSTOM4 &&
+                             prop != QDMI_SESSION_PROPERTY_CUSTOM5)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
 
