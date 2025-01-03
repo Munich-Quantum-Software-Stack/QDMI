@@ -165,6 +165,22 @@ auto FoMaC::get_site_id(QDMI_Site site) const -> uint64_t {
   return site_id;
 }
 
+auto FoMaC::get_site_t1(QDMI_Site site) const -> double {
+  double t1 = 0;
+  const int ret = QDMI_device_query_site_property(
+      device, site, QDMI_SITE_PROPERTY_T1, sizeof(double), &t1, nullptr);
+  throw_if_error(ret, "Failed to query the T1 time");
+  return t1;
+}
+
+auto FoMaC::get_site_t2(QDMI_Site site) const -> double {
+  double t2 = 0;
+  const int ret = QDMI_device_query_site_property(
+      device, site, QDMI_SITE_PROPERTY_T2, sizeof(double), &t2, nullptr);
+  throw_if_error(ret, "Failed to query the T2 time");
+  return t2;
+}
+
 auto FoMaC::get_operands_num(const QDMI_Operation &op) const -> size_t {
   size_t operands_num = 0;
   const int ret = QDMI_device_query_operation_property(

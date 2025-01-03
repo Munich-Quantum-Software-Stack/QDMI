@@ -178,6 +178,10 @@ TEST_P(QDMIImplementationTest, QuerySiteProperties) {
   for (const auto &site : sites) {
     const auto site_id = fomac.get_site_id(site);
     EXPECT_LT(site_id, qubits_num);
+    const auto t1 = fomac.get_site_t1(site);
+    EXPECT_GT(t1, 0);
+    const auto t2 = fomac.get_site_t2(site);
+    EXPECT_GT(t2, 0);
   }
 }
 

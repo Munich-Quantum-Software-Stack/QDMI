@@ -55,6 +55,10 @@ public:
 
   [[nodiscard]] auto get_site_id(QDMI_Site site) const -> uint64_t;
 
+  [[nodiscard]] auto get_site_t1(QDMI_Site site) const -> double;
+
+  [[nodiscard]] auto get_site_t2(QDMI_Site site) const -> double;
+
   [[nodiscard]] auto get_operands_num(const QDMI_Operation &op) const -> size_t;
 
   [[nodiscard]] auto get_parameters_num(const QDMI_Operation &op) const
