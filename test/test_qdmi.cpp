@@ -765,6 +765,7 @@ TEST_P(QDMIImplementationTest, SupportsCalibration) {
   const auto ret = QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
                                           sizeof(QDMI_Program_Format), &format);
   EXPECT_EQ(ret, QDMI_SUCCESS);
+  EXPECT_EQ(QDMI_job_submit(job), QDMI_SUCCESS);
 }
 
 TEST_P(QDMIImplementationTest, NeedsCalibration) {
