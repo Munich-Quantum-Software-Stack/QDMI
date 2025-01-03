@@ -284,9 +284,9 @@ enum QDMI_SITE_PROPERTY_T {
    */
   QDMI_SITE_PROPERTY_ID = 0,
   /// `double` The T1 time of a site in µs.
-  QDMI_SITE_PROPERTY_TIME_T1 = 1,
+  QDMI_SITE_PROPERTY_T1 = 1,
   /// `double` The T2 time of a site in µs.
-  QDMI_SITE_PROPERTY_TIME_T2 = 2,
+  QDMI_SITE_PROPERTY_T2 = 2,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
