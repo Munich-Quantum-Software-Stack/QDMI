@@ -165,7 +165,13 @@ TEST_P(QDMIImplementationTest, QueryGatePropertiesForEachGate) {
       }
     }
 
-    // Custom properties are not supported by the example devices.
+    // The MAX property is not a valid value for any device
+    EXPECT_EQ(QDMI_device_query_operation_property(
+                  device, op, 0, nullptr, 0, nullptr,
+                  QDMI_OPERATION_PROPERTY_MAX, 0, nullptr, nullptr),
+              QDMI_ERROR_INVALIDARGUMENT);
+
+    // The example devices do not support custom properties
     EXPECT_EQ(QDMI_device_query_operation_property(
                   device, op, 0, nullptr, 0, nullptr,
                   QDMI_OPERATION_PROPERTY_CUSTOM1, 0, nullptr, nullptr),
@@ -205,7 +211,12 @@ TEST_P(QDMIImplementationTest, QuerySiteProperties) {
     const auto t2 = fomac.get_site_t2(site);
     EXPECT_GT(t2, 0);
 
-    // Custom properties are not supported by the example devices.
+    // The MAX property is not a valid value for any device.
+    EXPECT_EQ(QDMI_device_query_site_property(
+                  device, site, QDMI_SITE_PROPERTY_MAX, 0, nullptr, nullptr),
+              QDMI_ERROR_INVALIDARGUMENT);
+
+    // The example devices do not support custom properties
     EXPECT_EQ(QDMI_device_query_site_property(device, site,
                                               QDMI_SITE_PROPERTY_CUSTOM1, 0,
                                               nullptr, nullptr),
@@ -241,7 +252,12 @@ TEST_P(QDMIImplementationTest, QueryDeviceProperties) {
                                               nullptr),
             QDMI_SUCCESS);
 
-  // Example devices do not support custom properties
+  // The MAX property is not a valid value for any device.
+  EXPECT_EQ(QDMI_device_query_device_property(device, QDMI_DEVICE_PROPERTY_MAX,
+                                              0, nullptr, nullptr),
+            QDMI_ERROR_INVALIDARGUMENT);
+
+  // The example devices do not support custom properties
   EXPECT_EQ(QDMI_device_query_device_property(
                 device, QDMI_DEVICE_PROPERTY_CUSTOM1, 0, nullptr, nullptr),
             QDMI_ERROR_NOTSUPPORTED);
@@ -305,6 +321,30 @@ TEST_P(QDMIImplementationTest, JobLifecycle) {
               QDMI_ERROR_NOTSUPPORTED);
   }
 
+  // No device may support the MAX parameter
+  EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_MAX, 0, nullptr),
+            QDMI_ERROR_INVALIDARGUMENT);
+
+  // The MAX parameter is not a valid value for any device
+  EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_MAX, 0, nullptr),
+            QDMI_ERROR_INVALIDARGUMENT);
+
+  // The example devices do not support custom parameters
+  EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_CUSTOM1, 0, nullptr),
+            QDMI_ERROR_NOTSUPPORTED);
+  EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_CUSTOM2, 0, nullptr),
+            QDMI_ERROR_NOTSUPPORTED);
+  EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_CUSTOM3, 0, nullptr),
+            QDMI_ERROR_NOTSUPPORTED);
+  EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_CUSTOM4, 0, nullptr),
+            QDMI_ERROR_NOTSUPPORTED);
+  EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_CUSTOM5, 0, nullptr),
+            QDMI_ERROR_NOTSUPPORTED);
+
+  format = QDMI_PROGRAM_FORMAT_QASM2;
+  EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
+                                   sizeof(QDMI_Program_Format), &format),
+            QDMI_SUCCESS);
   size_t shots = 5;
   EXPECT_EQ(QDMI_job_set_parameter(nullptr, QDMI_JOB_PARAMETER_SHOTSNUM,
                                    sizeof(size_t), &shots),
@@ -393,6 +433,34 @@ measure q -> c;
   return job;
 }
 } // namespace
+
+TEST_P(QDMIImplementationTest, GetResultsCornerCases) {
+  if (mode == TEST_SESSION_MODE::READONLY) {
+    GTEST_SKIP() << "Skipping test for read-only session";
+  }
+  QDMI_Job job = Submit_test_job(device);
+
+  // The MAX parameter is not a valid value for any device
+  EXPECT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_MAX, 0, nullptr, nullptr),
+            QDMI_ERROR_INVALIDARGUMENT);
+
+  // The example devices do not support custom results
+  EXPECT_EQ(
+      QDMI_job_get_results(job, QDMI_JOB_RESULT_CUSTOM1, 0, nullptr, nullptr),
+      QDMI_ERROR_NOTSUPPORTED);
+  EXPECT_EQ(
+      QDMI_job_get_results(job, QDMI_JOB_RESULT_CUSTOM2, 0, nullptr, nullptr),
+      QDMI_ERROR_NOTSUPPORTED);
+  EXPECT_EQ(
+      QDMI_job_get_results(job, QDMI_JOB_RESULT_CUSTOM3, 0, nullptr, nullptr),
+      QDMI_ERROR_NOTSUPPORTED);
+  EXPECT_EQ(
+      QDMI_job_get_results(job, QDMI_JOB_RESULT_CUSTOM4, 0, nullptr, nullptr),
+      QDMI_ERROR_NOTSUPPORTED);
+  EXPECT_EQ(
+      QDMI_job_get_results(job, QDMI_JOB_RESULT_CUSTOM5, 0, nullptr, nullptr),
+      QDMI_ERROR_NOTSUPPORTED);
+}
 
 TEST_P(QDMIImplementationTest, GetShots) {
   if (mode == TEST_SESSION_MODE::READONLY) {
