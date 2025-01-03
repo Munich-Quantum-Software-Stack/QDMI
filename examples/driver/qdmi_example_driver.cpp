@@ -342,33 +342,38 @@ void QDMI_session_free(QDMI_Session session) {
 int QDMI_session_set_parameter(QDMI_Session session,
                                QDMI_Session_Parameter param, const size_t size,
                                const void *value) {
-  if (session == nullptr || param >= QDMI_SESSION_PARAMETER_MAX ||
-      (value != nullptr && size == 0)) {
+  if (session == nullptr || (value != nullptr && size == 0) ||
+      (param >= QDMI_SESSION_PARAMETER_MAX &&
+       param != QDMI_SESSION_PARAMETER_CUSTOM1 &&
+       param != QDMI_SESSION_PARAMETER_CUSTOM2 &&
+       param != QDMI_SESSION_PARAMETER_CUSTOM3 &&
+       param != QDMI_SESSION_PARAMETER_CUSTOM4 &&
+       param != QDMI_SESSION_PARAMETER_CUSTOM5)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   if (session->status != QDMI_SESSION_STATUS::ALLOCATED) {
     return QDMI_ERROR_BADSTATE;
   }
-  switch (param) {
-  case QDMI_SESSION_PARAMETER_TOKEN:
-    if (value != nullptr) {
-      session->token = std::string(static_cast<const char *>(value), size - 1);
-    }
-    return QDMI_SUCCESS;
-  default:
+  if (param != QDMI_SESSION_PARAMETER_TOKEN) {
     return QDMI_ERROR_NOTSUPPORTED;
   }
+
+  if (value != nullptr) {
+    session->token = std::string(static_cast<const char *>(value), size - 1);
+  }
+  return QDMI_SUCCESS;
 }
 
 int QDMI_session_query_session_property(QDMI_Session session,
                                         QDMI_Session_Property prop, size_t size,
                                         void *value, size_t *size_ret) {
-  if (session == nullptr || (prop >= QDMI_SESSION_PROPERTY_MAX &&
-                             prop != QDMI_SESSION_PROPERTY_CUSTOM1 &&
-                             prop != QDMI_SESSION_PROPERTY_CUSTOM2 &&
-                             prop != QDMI_SESSION_PROPERTY_CUSTOM3 &&
-                             prop != QDMI_SESSION_PROPERTY_CUSTOM4 &&
-                             prop != QDMI_SESSION_PROPERTY_CUSTOM5)) {
+  if (session == nullptr || (value != nullptr && size == 0) ||
+      (prop >= QDMI_SESSION_PROPERTY_MAX &&
+       prop != QDMI_SESSION_PROPERTY_CUSTOM1 &&
+       prop != QDMI_SESSION_PROPERTY_CUSTOM2 &&
+       prop != QDMI_SESSION_PROPERTY_CUSTOM3 &&
+       prop != QDMI_SESSION_PROPERTY_CUSTOM4 &&
+       prop != QDMI_SESSION_PROPERTY_CUSTOM5)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
 
@@ -432,12 +437,7 @@ void QDMI_job_free(QDMI_Job job) {
 
 int QDMI_job_set_parameter(QDMI_Job job, QDMI_Job_Parameter param,
                            const size_t size, const void *value) {
-  if (job == nullptr ||
-      (param >= QDMI_JOB_PARAMETER_MAX && param != QDMI_JOB_PARAMETER_CUSTOM1 &&
-       param != QDMI_JOB_PARAMETER_CUSTOM2 &&
-       param != QDMI_JOB_PARAMETER_CUSTOM3 &&
-       param != QDMI_JOB_PARAMETER_CUSTOM4 &&
-       param != QDMI_JOB_PARAMETER_CUSTOM5)) {
+  if (job == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   return job->device->library->device_job_set_parameter(
@@ -475,12 +475,7 @@ int QDMI_job_wait(QDMI_Job job) {
 
 int QDMI_job_get_results(QDMI_Job job, QDMI_Job_Result result,
                          const size_t size, void *data, size_t *size_ret) {
-  if (job == nullptr ||
-      (result >= QDMI_JOB_RESULT_MAX && result != QDMI_JOB_RESULT_CUSTOM1 &&
-       result != QDMI_JOB_RESULT_CUSTOM2 && result != QDMI_JOB_RESULT_CUSTOM3 &&
-       result != QDMI_JOB_RESULT_CUSTOM4 &&
-       result != QDMI_JOB_RESULT_CUSTOM5) ||
-      ((size == 0 || data == nullptr) && size_ret == nullptr)) {
+  if (job == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   return job->device->library->device_job_get_results(job->device_job, result,
@@ -491,12 +486,7 @@ int QDMI_device_query_device_property(QDMI_Device device,
                                       QDMI_Device_Property prop,
                                       const size_t size, void *value,
                                       size_t *size_ret) {
-  if (device == nullptr || (prop >= QDMI_DEVICE_PROPERTY_MAX &&
-                            prop != QDMI_DEVICE_PROPERTY_CUSTOM1 &&
-                            prop != QDMI_DEVICE_PROPERTY_CUSTOM2 &&
-                            prop != QDMI_DEVICE_PROPERTY_CUSTOM3 &&
-                            prop != QDMI_DEVICE_PROPERTY_CUSTOM4 &&
-                            prop != QDMI_DEVICE_PROPERTY_CUSTOM5)) {
+  if (device == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   return device->library->device_session_query_device_property(
@@ -506,12 +496,7 @@ int QDMI_device_query_device_property(QDMI_Device device,
 int QDMI_device_query_site_property(QDMI_Device device, QDMI_Site site,
                                     QDMI_Site_Property prop, const size_t size,
                                     void *value, size_t *size_ret) {
-  if (device == nullptr ||
-      (prop >= QDMI_SITE_PROPERTY_MAX && prop != QDMI_SITE_PROPERTY_CUSTOM1 &&
-       prop != QDMI_SITE_PROPERTY_CUSTOM2 &&
-       prop != QDMI_SITE_PROPERTY_CUSTOM3 &&
-       prop != QDMI_SITE_PROPERTY_CUSTOM4 &&
-       prop != QDMI_SITE_PROPERTY_CUSTOM5)) {
+  if (device == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   return device->library->device_session_query_site_property(
@@ -523,12 +508,7 @@ int QDMI_device_query_operation_property(
     const QDMI_Site *sites, const size_t num_params, const double *params,
     QDMI_Operation_Property prop, const size_t size, void *value,
     size_t *size_ret) {
-  if (device == nullptr || (prop >= QDMI_OPERATION_PROPERTY_MAX &&
-                            prop != QDMI_OPERATION_PROPERTY_CUSTOM1 &&
-                            prop != QDMI_OPERATION_PROPERTY_CUSTOM2 &&
-                            prop != QDMI_OPERATION_PROPERTY_CUSTOM3 &&
-                            prop != QDMI_OPERATION_PROPERTY_CUSTOM4 &&
-                            prop != QDMI_OPERATION_PROPERTY_CUSTOM5)) {
+  if (device == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   return device->library->device_session_query_operation_property(
