@@ -225,6 +225,7 @@ var NAVTREEINDEX0 =
 "md_docs_2guide.html":[0,5],
 "md_docs_2rationale.html":[0,2],
 "md_docs_2rationale.html#device-session":[0,2,4],
+"md_docs_2rationale.html#rationale-enum-definitions":[0,2,7],
 "md_docs_2rationale.html#rationale-job-structs":[0,2,6],
 "md_docs_2rationale.html#rationale-opaque-pointers":[0,2,1],
 "md_docs_2rationale.html#rationale-prefix":[0,2,3],

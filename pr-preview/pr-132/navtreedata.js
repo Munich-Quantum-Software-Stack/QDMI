@@ -35,7 +35,8 @@ var NAVTREE =
         [ "Why do device implementations use a prefix?", "md_docs_2rationale.html#rationale-prefix", null ],
         [ "Why do devices have sessions?", "md_docs_2rationale.html#device-session", null ],
         [ "Why do sessions need to be initialized after allocation?", "md_docs_2rationale.html#rationale-session-init", null ],
-        [ "Why are there separate kinds of jobs for devices and clients?", "md_docs_2rationale.html#rationale-job-structs", null ]
+        [ "Why are there separate kinds of jobs for devices and clients?", "md_docs_2rationale.html#rationale-job-structs", null ],
+        [ "Why are some enum definitions placed in the constants.h header and some are not?", "md_docs_2rationale.html#rationale-enum-definitions", null ]
       ] ],
       [ "Examples", "md_docs_2examples.html", [
         [ "Implementing a Device", "md_docs_2examples.html#device", [
