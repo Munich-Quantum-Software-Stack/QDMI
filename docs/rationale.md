@@ -207,7 +207,9 @@ only ever get access to a \ref QDMI_Job that it can request via @ref QDMI_device
 device_job_interface to create a corresponding \ref QDMI_Device_Job. In this sense, the \ref
 QDMI_Job is a request to the driver to execute a job on the device. The driver will then translate
 this request into a \ref QDMI_Device_Job and execute it on the device. As part of that translation,
-the driver may decide to modify the job or add additional information to it. The client will only
-ever see the \ref QDMI_Job and not the \ref QDMI_Device_Job. Thus, the client cannot interfere with
-the execution of the job on the device. This would not be possible if there were only one kind of
-job.
+the driver may decide to modify the job or add additional information to it. This is also why two
+kinds of job parameters exist, namely \ref QDMI_Job_Parameter and \ref QDMI_Device_Job_Parameter. A
+device may allow the driver to configure more parameters than the client is allowed to set. The
+client will only ever see the \ref QDMI_Job and not the \ref QDMI_Device_Job. Thus, the client
+cannot interfere with the execution of the job on the device. This would not be possible if there
+were only one kind of job.
