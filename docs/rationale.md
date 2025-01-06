@@ -213,3 +213,15 @@ device may allow the driver to configure more parameters than the client is allo
 client will only ever see the \ref QDMI_Job and not the \ref QDMI_Device_Job. Thus, the client
 cannot interfere with the execution of the job on the device. This would not be possible if there
 were only one kind of job.
+
+## Why are some enum definitions placed in the `constants.h` header and some are not? {#rationale-enum-definitions}
+
+Generally, enum definitions are placed in the header file where they are used. For example, if an
+enum is only used in the \ref client_interface, such as \ref QDMI_Job_Parameter, it is defined in
+the `client.h` header. Enumerations that are used across both the \ref client_interface and the \ref
+device_interface, such as \ref QDMI_Device_Property, are defined in the `constants.h` header, which
+both interfaces include. There is one exception to the above rule: Enumerations that are only used
+in the \ref device_interface, such as \ref QDMI_Device_Job_Parameter, are also centrally defined in
+the `constants.h` header. If this were not the case, each device implementation would have to define
+the same enumeration, each with a different prefix. It would also not be possible for the driver to
+know about all the different values of the enumeration.
