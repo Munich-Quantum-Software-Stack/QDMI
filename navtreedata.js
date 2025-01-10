@@ -29,10 +29,14 @@ var NAVTREE =
       [ "FAQ", "md_docs_2faq.html", null ],
       [ "Support", "md_docs_2support.html", null ],
       [ "Rationale", "md_docs_2rationale.html", [
-        [ "Components of the Interface", "md_docs_2rationale.html#rationale-components", null ],
-        [ "Session, Control and Query Interface", "md_docs_2rationale.html#rationale-interfaces", null ],
-        [ "Prefixing Device Implementations", "md_docs_2rationale.html#rationale-prefix", null ],
-        [ "Data Retrieval Management", "md_docs_2rationale.html#rationale-retrieval", null ]
+        [ "The structure of QDMI", "md_docs_2rationale.html#rationale-structure", null ],
+        [ "Why does QDMI use opaque pointers?", "md_docs_2rationale.html#rationale-opaque-pointers", null ],
+        [ "Why does QDMI not define individual functions for each property?", "md_docs_2rationale.html#rationale-properties", null ],
+        [ "Why do device implementations use a prefix?", "md_docs_2rationale.html#rationale-prefix", null ],
+        [ "Why do devices have sessions?", "md_docs_2rationale.html#device-session", null ],
+        [ "Why do sessions need to be initialized after allocation?", "md_docs_2rationale.html#rationale-session-init", null ],
+        [ "Why are there separate kinds of jobs for devices and clients?", "md_docs_2rationale.html#rationale-job-structs", null ],
+        [ "Why are some enum definitions placed in the constants.h header and some are not?", "md_docs_2rationale.html#rationale-enum-definitions", null ]
       ] ],
       [ "Examples", "md_docs_2examples.html", [
         [ "Implementing a Device", "md_docs_2examples.html#device", [
@@ -52,6 +56,7 @@ var NAVTREE =
       ] ],
       [ "Development Guide", "md_docs_2guide.html", null ]
     ] ],
+    [ "Interfaces", "topics.html", "topics" ],
     [ "API Reference", "files.html", [
       [ "Files", "files.html", "files_dup" ],
       [ "Index", "globals.html", [
@@ -67,7 +72,7 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"client_2control_8h.html"
+"client_8h.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

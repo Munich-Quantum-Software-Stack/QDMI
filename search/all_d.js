@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['prefixing_20device_20implementations_0',['Prefixing Device Implementations',['../md_docs_2rationale.html#rationale-prefix',1,'']]],
-  ['project_1',['Creating a new Project',['../md_docs_2templates.html#template-create',1,'']]],
-  ['properties_2',['Properties',['../md_docs_2examples.html#device-string',1,'Basic String Properties'],['../md_docs_2examples.html#device-complex',1,'Complex Properties'],['../md_docs_2examples.html#device-int-enumeration',1,'Integer or Enumeration Properties'],['../md_docs_2examples.html#device-list',1,'List Properties']]]
+  ['need_20to_20be_20initialized_20after_20allocation_0',['Why do sessions need to be initialized after allocation?',['../md_docs_2rationale.html#rationale-session-init',1,'']]],
+  ['new_20project_1',['Creating a new Project',['../md_docs_2templates.html#template-create',1,'']]],
+  ['not_2',['Why are some enum definitions placed in the &lt;tt&gt;constants.h&lt;/tt&gt; header and some are not?',['../md_docs_2rationale.html#rationale-enum-definitions',1,'']]],
+  ['not_20define_20individual_20functions_20for_20each_20property_3',['Why does QDMI not define individual functions for each property?',['../md_docs_2rationale.html#rationale-properties',1,'']]]
 ];

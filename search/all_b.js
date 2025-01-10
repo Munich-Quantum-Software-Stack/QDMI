@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['new_20project_0',['Creating a new Project',['../md_docs_2templates.html#template-create',1,'']]]
+  ['list_20properties_0',['List Properties',['../md_docs_2examples.html#device-list',1,'']]]
 ];

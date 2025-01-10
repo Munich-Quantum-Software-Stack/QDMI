@@ -26,22 +26,21 @@ var menudata={children:[
 {text:"Main Page",url:"index.html"},
 {text:"User Guide",url:"",children:[
 {text:"Related Pages",url:"pages.html"}]},
+{text:"Interfaces",url:"topics.html"},
 {text:"API Reference",url:"files.html",children:[
 {text:"Files",url:"files.html"},
 {text:"Index",url:"globals.html",children:[
 {text:"All",url:"globals.html",children:[
-{text:"c",url:"globals.html#index_c"},
 {text:"d",url:"globals.html#index_d"},
 {text:"e",url:"globals.html#index_e"},
 {text:"j",url:"globals.html#index_j"},
 {text:"o",url:"globals.html#index_o"},
 {text:"p",url:"globals.html#index_p"},
-{text:"q",url:"globals.html#index_q"},
 {text:"s",url:"globals.html#index_s"},
 {text:"w",url:"globals.html#index_w"}]},
 {text:"Functions",url:"globals_func.html",children:[
-{text:"c",url:"globals_func.html#index_c"},
-{text:"q",url:"globals_func.html#index_q"},
+{text:"d",url:"globals_func.html#index_d"},
+{text:"j",url:"globals_func.html#index_j"},
 {text:"s",url:"globals_func.html#index_s"}]},
 {text:"Typedefs",url:"globals_type.html"},
 {text:"Enumerations",url:"globals_enum.html"},

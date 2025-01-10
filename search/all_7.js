@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['implementations_0',['Prefixing Device Implementations',['../md_docs_2rationale.html#rationale-prefix',1,'']]],
-  ['implementing_20a_20device_1',['Implementing a Device',['../md_docs_2examples.html#device',1,'']]],
-  ['integer_20or_20enumeration_20properties_2',['Integer or Enumeration Properties',['../md_docs_2examples.html#device-int-enumeration',1,'']]],
-  ['interface_3',['Interface',['../md_docs_2rationale.html#rationale-components',1,'Components of the Interface'],['../md_docs_2rationale.html#rationale-interfaces',1,'Session, Control and Query Interface']]]
+  ['h_20tt_20header_20and_20some_20are_20not_0',['Why are some enum definitions placed in the &lt;tt&gt;constants.h&lt;/tt&gt; header and some are not?',['../md_docs_2rationale.html#rationale-enum-definitions',1,'']]],
+  ['have_20sessions_1',['Why do devices have sessions?',['../md_docs_2rationale.html#device-session',1,'']]],
+  ['header_20and_20some_20are_20not_2',['Why are some enum definitions placed in the &lt;tt&gt;constants.h&lt;/tt&gt; header and some are not?',['../md_docs_2rationale.html#rationale-enum-definitions',1,'']]]
 ];

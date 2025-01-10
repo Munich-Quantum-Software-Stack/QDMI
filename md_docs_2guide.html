@@ -131,7 +131,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
                 <td id="projectalign">
                   <div id="projectname">
                     QDMI<span id="projectnumber"
-                      >&#160;v1.0.0</span
+                      >&#160;v1.1.0</span
                     >
                   </div>
                   <div id="projectbrief">Quantum Device Management Interface</div>
@@ -248,11 +248,10 @@ $(function(){initNavTree('md_docs_2guide.html',''); initResizable(true); });
 <p>After the configuration, the project can be <em>built</em> by calling</p>
 <div class="fragment"><div class="line">cmake --build build --config Release</div>
 </div><!-- fragment --><h2>Running Tests</h2>
-<p>We use the <a href="https://google.github.io/googletest/primer.html">GoogleTest</a> framework for unit testing of the QDMI interface. All tests are contained in the <code>test</code> directory. After building the project (as described above), the C++ unit tests can be conveniently executed by running</p>
+<p>We use the <a href="https://google.github.io/googletest/primer.html">GoogleTest</a> framework for unit testing of the QDMI interface. All tests are contained in the <code>test</code> directory. After building the project (as described above), the C++ unit tests can be conveniently executed by running the following command from the main project directory:</p>
 <div class="fragment"><div class="line">ctest -C Release --test-dir build</div>
-</div><!-- fragment --><p>from the main project directory.</p>
-<h2>Code Formatting and Linting</h2>
-<p>This project mostly follows the <a href="https://llvm.org/docs/CodingStandards.html">LLVM Coding Standard</a>, which is a set of guidelines for writing C/C++ code. To ensure the quality of the code and that it conforms to these guidelines, we use</p>
+</div><!-- fragment --><h2>Code Formatting and Linting</h2>
+<p>This project mostly follows the <a href="https://llvm.org/docs/CodingStandards.html">LLVM Coding Standard</a>, a set of guidelines for writing C/C++ code. To ensure the quality of the code and that it conforms to these guidelines, we use</p>
 <ul>
 <li><a href="https://clang.llvm.org/extra/clang-tidy/">clang-tidy</a> &ndash; a static analysis tool that checks for common mistakes in C/C++ code, and</li>
 <li><a href="https://clang.llvm.org/docs/ClangFormat.html">clang-format</a> &ndash; a tool that automatically formats C/C++ code according to a given style guide.</li>
@@ -265,29 +264,29 @@ $(function(){initNavTree('md_docs_2guide.html',''); initResizable(true); });
 <p>They will automatically execute clang-tidy on your code and highlight any issues. In many cases, they also provide quick-fixes for these issues. Furthermore, they provide a command to automatically format your code according to the given style.</p>
 <dl class="section note"><dt>Note</dt><dd>After configuring CMake, you can run clang-tidy on a file by calling <code>clang-tidy &lt;FILE&gt; -- -I &lt;PATH_TO_INCLUDE_DIRECTORY&gt;</code> where <code>&lt;FILE&gt;</code> is the file you want to analyze and <code>&lt;PATH_TO_INCLUDE_DIRECTORY&gt;</code> is the path to the <code>include</code> directory of the project.</dd></dl>
 <h2>Format for Comments</h2>
-<p>For the information to be displayed correctly in the documentation, it is essential that the comments follow the format required by Doxygen. Below you find some tags, that are commonly used within the documentation of a function:</p>
+<p>For the information to be displayed correctly in the documentation, the comments need to follow the format required by Doxygen. Below you find some tags that are commonly used within the documentation of a function:</p>
 <ul>
 <li><code>@brief</code> For a brief, one-line description of the function. Should always be provided.</li>
 <li><code>@details</code> For a longer, detailed description of the function.</li>
 <li><code>@param</code> To explain the usage of a parameter. Should be provided for each parameter.</li>
 <li><code>@return</code> To explain the return value. Should be provided if the function returns a value.</li>
+<li><code>@ref</code> To cross-reference another part of the documentation.</li>
 </ul>
 <dl class="section note"><dt>Note</dt><dd>In the current setting, the long description is always prepended with the brief description. So there is no need to repeat the brief description in the details.</dd></dl>
 <h1>Working on the Documentation</h1>
-<p>The documentation is generated using <a href="https://www.doxygen.nl/index.html">Doxygen</a>, which is seamlessly integrated into the CMake build system.</p>
+<p>The documentation is generated using <a href="https://www.doxygen.nl/index.html">Doxygen</a> and its configuration is seamlessly integrated into the CMake build system.</p>
 <h2>Building the Documentation</h2>
 <p>The documentation can be built with the CMake target <code>qdmi_docs</code> via</p>
 <div class="fragment"><div class="line">cmake -S . -B build</div>
 <div class="line">cmake --build build --target qdmi_docs</div>
-</div><!-- fragment --><p>The generated webpage can be inspected by opening the file in <code>docs/html/index.html</code> in the CMake build directory.</p>
+</div><!-- fragment --><p>The generated web page can be inspected by opening the file in <code>docs/html/index.html</code> in the CMake build directory.</p>
 <h2>Static Content</h2>
-<p>The generated webpage also contains four static sites, namely the main page, the support page, the FAQ page, and this development guide. The respective markdown files that serve as the source for those sites are contained in <code>docs/</code> where <code>index.md</code> contains the content of the main page.</p>
+<p>The generated web page also contains a couple of static sites, including the main page, the support page, the FAQ page, and this development guide. The respective Markdown files that serve as the source for those sites are contained in <code>docs/</code> where <code>index.md</code> contains the content of the main page.</p>
 <h2>Dynamic Content</h2>
-<p>In order to include source files to be listed among the menu item <code>API Reference/Files</code>, these files must be marked as documented. This is accomplished by adding a comment like the following to the top of the file. Right now, this is done for all files in the include directory.</p>
+<p>To include source files to be listed among the menu item <code>API Reference/Files</code>, these files must be marked as documented by adding a comment like the following to the top of the file. Right now, this is done for all files in the include directory.</p>
 <pre class="fragment">/** @file
- * @brief Include all public headers for the QDMI client.
- * @details The detailed description of the interface is provided in
- * @ref client/control.h and @ref client/query.h.
+ * @brief A brief description of the file.
+ * @details Some details about the file.
  */</pre><h2>Further Links</h2>
 <ul>
 <li>For more details, see the official documentation of Doxygen that can be found here: <a href="https://www.doxygen.nl/manual/docblocks.html">https://www.doxygen.nl/manual/docblocks.html</a>.</li>
