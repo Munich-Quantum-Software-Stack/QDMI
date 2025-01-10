@@ -27,7 +27,7 @@ set(DOXYGEN_INPUT_DIRS ${PROJECT_SOURCE_DIR}/include)
 # This variable is only needed to setup the dependency tracking of CMake
 # correctly and is not passed to Doxygen. Whenever such a file is modified,
 # CMake detects that change and will rerun the Doxygen command instead of using
-# the cached result when the target `qdmi_docs`is built.
+# the cached result when the target `qdmi_docs` is built.
 file(GLOB_RECURSE DOXYGEN_INPUT_FILES ${PROJECT_SOURCE_DIR}/include/*.h
      ${CMAKE_CURRENT_SOURCE_DIR}/*.md)
 # After the variable above is correctly initialized, we can add the additional
@@ -69,9 +69,16 @@ set(DOXYGEN_CONFIG_FILE_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
 # also see the occurrences of @AWESOME_CSS_DIR@ in the Doxyfile.in.
 FetchContent_GetProperties(doxygen-awesome-css SOURCE_DIR AWESOME_CSS_DIR)
 
+# Ensure the output directory exists
+file(MAKE_DIRECTORY ${DOXYGEN_OUTPUT_DIR}/html)
+
 # Copy over the dark mode logos as they are not automatically copied by Doxygen.
-file(COPY _static/mqss_logo_dark.svg _static/qdmi_schematic_dark.svg
-          _static/qdmi_dark.svg DESTINATION ${DOXYGEN_OUTPUT_DIR}/html)
+# `configure_file` is used here because `file(COPY ...)` does not detect changes
+# and copies the files again after they have changed.
+configure_file(_static/mqss_logo_dark.svg ${DOXYGEN_OUTPUT_DIR}/html COPYONLY)
+configure_file(_static/qdmi_schematic_dark.svg ${DOXYGEN_OUTPUT_DIR}/html
+               COPYONLY)
+configure_file(_static/qdmi_dark.svg ${DOXYGEN_OUTPUT_DIR}/html COPYONLY)
 # Set the logo for the project.
 set(PROJECT_LOGO "mqss_logo.svg")
 

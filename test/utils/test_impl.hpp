@@ -27,11 +27,12 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 #pragma once
 
-#include "qdmi/driver/types.h"
+#include "qdmi/client.h"
 
+#include <cstdint>
 #include <gtest/gtest.h>
 #include <string>
-#include <utility>
+#include <tuple>
 
 constexpr const char *Shared_library_file_extension() {
 #if defined(_WIN32)
@@ -43,16 +44,18 @@ constexpr const char *Shared_library_file_extension() {
 #endif
 }
 
+enum class TEST_SESSION_MODE : uint8_t { READONLY, READWRITE };
+
 class QDMIImplementationTest
-    : public ::testing::TestWithParam<std::pair<std::string, std::string>> {
+    : public ::testing::TestWithParam<
+          std::tuple<std::string, std::string, TEST_SESSION_MODE>> {
 protected:
+  QDMI_Session session = nullptr;
+  QDMI_Device device = nullptr;
+  TEST_SESSION_MODE mode = TEST_SESSION_MODE::READONLY;
+  std::string config_file_name;
+
   void SetUp() override;
 
   void TearDown() override;
-
-  QDMI_Session session = nullptr;
-  QDMI_Device device = nullptr;
-  std::string library_name;
-  std::string prefix;
-  std::string config_file_name;
 };

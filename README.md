@@ -32,16 +32,16 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 </p>
 <!-- [DOXYGEN MAIN] -->
 
-The Quantum Device Management Interface (QDMI) is the central part of the Munich Quantum Software
-Stack (MQSS)—a sophisticated software stack to connect end users to the wide range of possible
-quantum devices. It enables the submission to and the control of gate-based quantum systems and
-enables software tools to automatically retrieve and adapt to changing physical characteristics and
-constraints of different platforms. QDMI strives to connect the software and hardware developers,
-mediating between their competing interests, bridging between technologies, and eventually providing
-corresponding figures of merits and constraints to be considered. QDMI is therefore the method of
-choice for integrating new platforms into the MQSS and for software tools to query information from
-these platforms. QDMI is provided as a collection of C header files to allow fast integration into
-an HPC environment.
+The Quantum Device Management Interface (QDMI) is one of the core components of the Munich Quantum
+Software Stack (MQSS)—a sophisticated software stack to connect end users to the wide range of
+possible quantum devices. It enables the submission to and the control of gate-based quantum systems
+and enables software tools to automatically retrieve and adapt to changing physical characteristics
+and constraints of different platforms. QDMI strives to connect the software and hardware
+developers, mediating between their competing interests, bridging between technologies, and
+eventually providing corresponding figures of merits and constraints to be considered. QDMI is
+therefore the method of choice for integrating new platforms into the MQSS and for software tools to
+query information from these platforms. QDMI is provided as a collection of C header files to allow
+fast integration into an HPC environment.
 
 <!-- [DOXYGEN MAIN] -->
 
@@ -65,27 +65,26 @@ an HPC environment.
 
 ### What is MQSS?
 
-**MQSS** stands for _Munich Quantum Software Stack_, which is a project of the _Munich Quantum
-Valley (MQV)_ initiative and is jointly developed by the _Leibniz Supercomputing Centre (LRZ)_ and
-the Chairs for _Design Automation (CDA)_, and for _Computer Architecture and Parallel Systems
-(CAPS)_ at TUM. It provides a comprehensive compilation and runtime infrastructure for on-premise
-and remote quantum devices, support for modern compilation and optimization techniques, and enables
-both current and future high-level abstractions for quantum programming. This stack is designed to
-be capable of deployment in a variety of scenarios via flexible configuration options, including
-stand-alone scenarios for individual systems, cloud access to a variety of devices as well as tight
+**MQSS** stands for _Munich Quantum Software Stack_ and is a project of the _Munich Quantum Valley
+(MQV)_ initiative. It is jointly developed by the _Leibniz Supercomputing Centre (LRZ)_, the _Chair
+for Design Automation (CDA)_, and the _Chair of Computer Architecture and Parallel Systems (CAPS)_
+at TUM. It provides a comprehensive compilation and runtime infrastructure for on-premise and remote
+quantum devices, support for modern compilation and optimization techniques, and enables both
+current and future high-level abstractions for quantum programming. This stack is designed to be
+capable of deployment in a variety of scenarios via flexible configuration options. This includes
+stand-alone scenarios for individual systems, cloud access to a variety of devices, as well as tight
 integration into HPC environments supporting quantum acceleration. Within the MQV, a concrete
-instance of the MQSS is deployed at the LRZ for the MQV, serving as a single access point to all of
-its quantum devices via multiple compatible access paths, including a web portal, command line
-access via web credentials as well as the option for hybrid access with tight integration with LRZ's
-HPC systems. It facilitates the connection between end-users and quantum computing platforms by its
+instance of the MQSS is deployed at the LRZ, serving as a single access point to all of its quantum
+devices via multiple compatible access paths. This includes a web portal, command line access via
+web credentials, as well as the option for hybrid access with tight integration with LRZ's HPC
+systems. It facilitates the connection between end-users and quantum computing platforms by its
 integration within HPC infrastructures, such as those found at the LRZ.
 
 ### What is QDMI?
 
 **QDMI**, or _Quantum Device Management Interface_, serves as the communication interface between
 software within the MQSS and the quantum hardware connected to the MQSS. The aim is to provide a
-standard way to communicate with quantum resources that can be widely used by the whole quantum
-community.
+standard way to communicate with quantum resources that can be widely used by the quantum community.
 
 ### Who is using QDMI?
 
@@ -117,7 +116,7 @@ software stacks, including those for HPC.
 Python natively allows calling C APIs. So while it might not be as straightforward as the usage from
 C/C++, it is definitely possible. However, we generally do expect Python-based programming
 approaches to be used as front-ends, feeding into a natively implemented compiler infrastructure,
-which then relies on QDMI. This is very similar to how Python is used in many other parts of
+which then relies on QDMI. This is similar to how Python is used in many other parts of
 high-performance computing.
 
 ### How do I cite QDMI?

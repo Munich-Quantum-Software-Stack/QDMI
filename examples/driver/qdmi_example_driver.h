@@ -17,7 +17,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 ------------------------------------------------------------------------------*/
 
 /** @file
- * @brief A drive implementation for QDMI.
+ * @brief An example driver implementation in C++.
  */
 
 #pragma once
@@ -28,25 +28,24 @@ extern "C" {
 
 /**
  * @brief Initialize the QDMI driver.
- * @details This function should be called before any other QDMI function. It
- * performs any necessary initialization of the driver so that a client can
- * allocate sessions (@ref QDMI_Session) and access devices (@ref QDMI_Device).
- * @note This function should be called only once.
+ * @details This function must be called exactly once before any other QDMI
+ * function. It performs any necessary initialization of the driver so that a
+ * client can allocate sessions (@ref QDMI_Session) and access devices (@ref
+ * QDMI_Device).
  * @return @ref QDMI_SUCCESS if the driver was initialized successfully.
  * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
  */
-int QDMI_Driver_init();
+int QDMI_driver_init();
 
 /**
  * @brief Shutdown the QDMI driver.
- * @details This function should be called to perform any necessary cleanup of
- * the driver. It should be called after all sessions have been freed and no
- * more QDMI functions will be called.
- * @note This function should be called only once.
+ * @details This function must be called exactly once to cleanly shut down the
+ * driver. It should be called after all sessions have been freed and no more
+ * QDMI functions will be called.
  * @return @ref QDMI_SUCCESS if the driver was shut down successfully.
  * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
  */
-int QDMI_Driver_shutdown();
+int QDMI_driver_shutdown();
 
 #ifdef __cplusplus
 } // extern "C"

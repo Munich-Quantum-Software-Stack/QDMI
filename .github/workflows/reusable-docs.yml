@@ -3,6 +3,7 @@ on:
   workflow_call:
 permissions:
   contents: write
+  pull-requests: write
 jobs:
   build-and-deploy:
     concurrency: ci-${{ github.ref }}
@@ -11,16 +12,24 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
       - name: Install Doxygen
+        if: github.event.action != 'closed'
         uses: ssciwr/doxygen-install@v1
         with:
           version: "1.12.0"
       - name: Install and Build 🔧
+        if: github.event.action != 'closed'
         run: |
           cmake -S . -B build
           cmake --build build --target qdmi_docs
           mv build/docs/html/ static
+      - name: Deploy preview 🚀 (for PRs)
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          source-dir: ./static/
       - name: Deploy 🚀
         if: github.ref == 'refs/heads/develop'
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: static
+          clean-exclude: pr-preview/
+          force: false

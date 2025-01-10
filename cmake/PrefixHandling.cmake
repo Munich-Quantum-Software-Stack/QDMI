@@ -22,7 +22,7 @@ function(generate_prefixed_qdmi_headers prefix)
   string(TOLOWER ${prefix} QDMI_prefix)
   # Get the list of all QDMI device headers.
   file(GLOB_RECURSE QDMI_DEVICE_HEADERS ${QDMI_INCLUDE_BUILD_DIR}/qdmi/device.h
-       ${QDMI_INCLUDE_BUILD_DIR}/qdmi/device/**.h)
+       ${QDMI_INCLUDE_BUILD_DIR}/qdmi/types.h)
   # Read the prefix definitions.
   file(READ ${QDMI_CMAKE_DIR}/prefix_defs.txt replacements)
   string(REPLACE "\n" ";" replacements "${replacements}")
@@ -38,8 +38,8 @@ function(generate_prefixed_qdmi_headers prefix)
     # Replace the include for the device header with the prefixed version.
     string(
       REGEX
-      REPLACE "#include (\"|<)qdmi/device"
-              "#include \\1${QDMI_prefix}_qdmi/device" header_content
+      REPLACE "#include (\"|<)qdmi/(device|types).h(\"|>)"
+              "#include \\1${QDMI_prefix}_qdmi/\\2.h\\3" header_content
               "${header_content}")
     # Replace the prefix definitions.
     foreach(replacement ${replacements})

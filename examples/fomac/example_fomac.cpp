@@ -27,6 +27,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include "qdmi/client.h"
 
 #include <cstddef>
+#include <cstdint>
 #include <iostream>
 #include <map>
 #include <stdexcept>
@@ -35,99 +36,85 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include <vector>
 
 auto FoMaC::throw_if_error(int status, const std::string &message) -> void {
-  if (status != QDMI_SUCCESS) {
-    if (status == QDMI_WARN_GENERAL) {
-      if (message.empty()) {
-        std::cerr << "A general warning." << '\n';
-        return;
-      }
-      std::cerr << message << '\n';
+  if (status == QDMI_SUCCESS) {
+    return;
+  }
+
+  if (status == QDMI_WARN_GENERAL) {
+    if (message.empty()) {
+      std::cerr << "A general warning.\n";
       return;
     }
-    if (status == QDMI_ERROR_FATAL) {
-      if (message.empty()) {
-        throw std::runtime_error("A fatal error.");
-      }
-      throw std::runtime_error(message);
-    }
-    if (status == QDMI_ERROR_OUTOFMEM) {
-      if (message.empty()) {
-        throw std::bad_alloc();
-      }
-      throw std::runtime_error(message);
-    }
-    if (status == QDMI_ERROR_NOTIMPLEMENTED) {
-      if (message.empty()) {
-        throw std::runtime_error("Not implemented.");
-      }
-      throw std::runtime_error(message);
-    }
-    if (status == QDMI_ERROR_LIBNOTFOUND) {
-      if (message.empty()) {
-        throw std::runtime_error("Library not found.");
-      }
-      throw std::runtime_error(message);
-    }
-    if (status == QDMI_ERROR_NOTFOUND) {
-      if (message.empty()) {
-        throw std::runtime_error("Element not found.");
-      }
-      throw std::runtime_error(message);
-    }
-    if (status == QDMI_ERROR_OUTOFRANGE) {
-      if (message.empty()) {
-        throw std::out_of_range("Out of range.");
-      }
-      throw std::out_of_range(message);
-    }
+    std::cerr << message << '\n';
+    return;
+  }
+
+  if (!message.empty()) {
     if (status == QDMI_ERROR_INVALIDARGUMENT) {
-      if (message.empty()) {
-        throw std::invalid_argument("Invalid argument.");
-      }
       throw std::invalid_argument(message);
     }
-    if (status == QDMI_ERROR_PERMISSIONDENIED) {
-      if (message.empty()) {
-        throw std::runtime_error("Permission denied.");
-      }
-      throw std::runtime_error(message);
-    }
-    if (status == QDMI_ERROR_NOTSUPPORTED) {
-      if (message.empty()) {
-        throw std::runtime_error("Operation is not supported.");
-      }
-      throw std::runtime_error(message);
-    }
+    throw std::runtime_error(message);
+  }
+
+  if (status == QDMI_ERROR_FATAL) {
+    throw std::runtime_error("A fatal error.");
+  }
+  if (status == QDMI_ERROR_OUTOFMEM) {
+    throw std::bad_alloc();
+  }
+  if (status == QDMI_ERROR_NOTIMPLEMENTED) {
+    throw std::runtime_error("Not implemented.");
+  }
+  if (status == QDMI_ERROR_LIBNOTFOUND) {
+    throw std::runtime_error("Library not found.");
+  }
+  if (status == QDMI_ERROR_NOTFOUND) {
+    throw std::runtime_error("Element not found.");
+  }
+  if (status == QDMI_ERROR_OUTOFRANGE) {
+    throw std::out_of_range("Out of range.");
+  }
+  if (status == QDMI_ERROR_INVALIDARGUMENT) {
+    throw std::invalid_argument("Invalid argument.");
+  }
+  if (status == QDMI_ERROR_PERMISSIONDENIED) {
+    throw std::runtime_error("Permission denied.");
+  }
+  if (status == QDMI_ERROR_NOTSUPPORTED) {
+    throw std::runtime_error("Operation is not supported.");
   }
 }
 
 auto FoMaC::get_qubits_num() const -> size_t {
   size_t num_qubits = 0;
   const int ret =
-      QDMI_query_device_property(device, QDMI_DEVICE_PROPERTY_QUBITSNUM,
-                                 sizeof(size_t), &num_qubits, nullptr);
+      QDMI_device_query_device_property(device, QDMI_DEVICE_PROPERTY_QUBITSNUM,
+                                        sizeof(size_t), &num_qubits, nullptr);
   throw_if_error(ret, "Failed to query the number of qubits.");
   return num_qubits;
 }
 
 auto FoMaC::get_operation_map() const -> std::map<std::string, QDMI_Operation> {
-  size_t ops_num = 0;
-  int ret = QDMI_query_get_operations(device, 0, nullptr, &ops_num);
-  throw_if_error(ret, "Failed to retrieve operation number.");
-  std::vector<QDMI_Operation> ops(ops_num);
-  ret = QDMI_query_get_operations(device, ops_num, ops.data(), nullptr);
+  size_t ops_size = 0;
+  int ret = QDMI_device_query_device_property(
+      device, QDMI_DEVICE_PROPERTY_OPERATIONS, 0, nullptr, &ops_size);
+  throw_if_error(ret, "Failed to get the operations list size.");
+  std::vector<QDMI_Operation> ops(ops_size / sizeof(QDMI_Operation));
+  ret = QDMI_device_query_device_property(
+      device, QDMI_DEVICE_PROPERTY_OPERATIONS, ops_size,
+      static_cast<void *>(ops.data()), nullptr);
   throw_if_error(ret, "Failed to retrieve operations.");
   std::map<std::string, QDMI_Operation> ops_map;
   for (const auto &op : ops) {
     size_t name_length = 0;
-    ret = QDMI_query_operation_property(device, op, 0, nullptr,
-                                        QDMI_OPERATION_PROPERTY_NAME, 0,
-                                        nullptr, &name_length);
+    ret = QDMI_device_query_operation_property(
+        device, op, 0, nullptr, 0, nullptr, QDMI_OPERATION_PROPERTY_NAME, 0,
+        nullptr, &name_length);
     throw_if_error(ret, "Failed to retrieve operation name length.");
-    std::string name(name_length, '\0');
-    ret = QDMI_query_operation_property(device, op, 0, nullptr,
-                                        QDMI_OPERATION_PROPERTY_NAME,
-                                        name_length, name.data(), nullptr);
+    std::string name(name_length - 1, '\0');
+    ret = QDMI_device_query_operation_property(
+        device, op, 0, nullptr, 0, nullptr, QDMI_OPERATION_PROPERTY_NAME,
+        name_length, name.data(), nullptr);
     throw_if_error(ret, "Failed to retrieve operation name.");
     ops_map.emplace(name, op);
   }
@@ -137,8 +124,8 @@ auto FoMaC::get_operation_map() const -> std::map<std::string, QDMI_Operation> {
 auto FoMaC::get_coupling_map() const
     -> std::vector<std::pair<QDMI_Site, QDMI_Site>> {
   size_t size = 0;
-  int ret = QDMI_query_device_property(device, QDMI_DEVICE_PROPERTY_COUPLINGMAP,
-                                       0, nullptr, &size);
+  int ret = QDMI_device_query_device_property(
+      device, QDMI_DEVICE_PROPERTY_COUPLINGMAP, 0, nullptr, &size);
   throw_if_error(ret, "Failed to query the coupling map size.");
 
   const auto coupling_map_size = size / sizeof(QDMI_Site);
@@ -150,7 +137,7 @@ auto FoMaC::get_coupling_map() const
   // `std::vector` guarantees that the elements are contiguous in memory.
   std::vector<std::pair<QDMI_Site, QDMI_Site>> coupling_pairs(
       coupling_map_size / 2);
-  ret = QDMI_query_device_property(
+  ret = QDMI_device_query_device_property(
       device, QDMI_DEVICE_PROPERTY_COUPLINGMAP, size,
       static_cast<void *>(coupling_pairs.data()), nullptr);
   throw_if_error(ret, "Failed to query the coupling map.");
@@ -158,20 +145,56 @@ auto FoMaC::get_coupling_map() const
 }
 
 auto FoMaC::get_sites() const -> std::vector<QDMI_Site> {
-  size_t sites_num = 0;
-  int ret = QDMI_query_get_sites(device, 0, nullptr, &sites_num);
-  throw_if_error(ret, "Failed to get the sites number.");
-  std::vector<QDMI_Site> sites(sites_num);
-  ret = QDMI_query_get_sites(device, sites_num, sites.data(), nullptr);
+  size_t sites_size = 0;
+  int ret = QDMI_device_query_device_property(
+      device, QDMI_DEVICE_PROPERTY_SITES, 0, nullptr, &sites_size);
+  throw_if_error(ret, "Failed to get the sites list size.");
+  std::vector<QDMI_Site> sites(sites_size / sizeof(QDMI_Site));
+  ret = QDMI_device_query_device_property(
+      device, QDMI_DEVICE_PROPERTY_SITES, sites_size,
+      static_cast<void *>(sites.data()), nullptr);
   throw_if_error(ret, "Failed to get the sites.");
   return sites;
 }
 
+auto FoMaC::get_site_id(QDMI_Site site) const -> uint64_t {
+  uint64_t site_id = 0;
+  const int ret = QDMI_device_query_site_property(
+      device, site, QDMI_SITE_PROPERTY_ID, sizeof(uint64_t), &site_id, nullptr);
+  throw_if_error(ret, "Failed to query the site ID");
+  return site_id;
+}
+
+auto FoMaC::get_site_t1(QDMI_Site site) const -> double {
+  double t1 = 0;
+  const int ret = QDMI_device_query_site_property(
+      device, site, QDMI_SITE_PROPERTY_T1, sizeof(double), &t1, nullptr);
+  throw_if_error(ret, "Failed to query the T1 time");
+  return t1;
+}
+
+auto FoMaC::get_site_t2(QDMI_Site site) const -> double {
+  double t2 = 0;
+  const int ret = QDMI_device_query_site_property(
+      device, site, QDMI_SITE_PROPERTY_T2, sizeof(double), &t2, nullptr);
+  throw_if_error(ret, "Failed to query the T2 time");
+  return t2;
+}
+
 auto FoMaC::get_operands_num(const QDMI_Operation &op) const -> size_t {
   size_t operands_num = 0;
-  const int ret = QDMI_query_operation_property(
-      device, op, 0, nullptr, QDMI_OPERATION_PROPERTY_QUBITSNUM, sizeof(size_t),
-      &operands_num, nullptr);
+  const int ret = QDMI_device_query_operation_property(
+      device, op, 0, nullptr, 0, nullptr, QDMI_OPERATION_PROPERTY_QUBITSNUM,
+      sizeof(size_t), &operands_num, nullptr);
   throw_if_error(ret, "Failed to query the operand number");
   return operands_num;
+}
+
+auto FoMaC::get_parameters_num(const QDMI_Operation &op) const -> size_t {
+  size_t parameters_num = 0;
+  const int ret = QDMI_device_query_operation_property(
+      device, op, 0, nullptr, 0, nullptr, QDMI_OPERATION_PROPERTY_PARAMETERSNUM,
+      sizeof(size_t), &parameters_num, nullptr);
+  throw_if_error(ret, "Failed to query the parameter number");
+  return parameters_num;
 }
