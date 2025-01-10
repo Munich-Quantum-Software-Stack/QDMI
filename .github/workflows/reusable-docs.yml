@@ -27,7 +27,7 @@ jobs:
         with:
           source-dir: ./static/
       - name: Deploy 🚀
-        if: github.ref == 'refs/heads/develop'
+        if: github.ref == 'refs/heads/develop' && github.event.action != 'closed'
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: static
