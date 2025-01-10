@@ -32,16 +32,16 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 </p>
 <!-- [DOXYGEN MAIN] -->
 
-The Quantum Device Management Interface (QDMI) is the central part of the Munich Quantum Software
-Stack (MQSS)—a sophisticated software stack to connect end users to the wide range of possible
-quantum devices. It enables the submission to and the control of gate-based quantum systems and
-enables software tools to automatically retrieve and adapt to changing physical characteristics and
-constraints of different platforms. QDMI strives to connect the software and hardware developers,
-mediating between their competing interests, bridging between technologies, and eventually providing
-corresponding figures of merits and constraints to be considered. QDMI is therefore the method of
-choice for integrating new platforms into the MQSS and for software tools to query information from
-these platforms. QDMI is provided as a collection of C header files to allow fast integration into
-an HPC environment.
+The Quantum Device Management Interface (QDMI) is one of the core components of the Munich Quantum
+Software Stack (MQSS)—a sophisticated software stack to connect end users to the wide range of
+possible quantum devices. It enables the submission to and the control of gate-based quantum systems
+and enables software tools to automatically retrieve and adapt to changing physical characteristics
+and constraints of different platforms. QDMI strives to connect the software and hardware
+developers, mediating between their competing interests, bridging between technologies, and
+eventually providing corresponding figures of merits and constraints to be considered. QDMI is
+therefore the method of choice for integrating new platforms into the MQSS and for software tools to
+query information from these platforms. QDMI is provided as a collection of C header files to allow
+fast integration into an HPC environment.
 
 <!-- [DOXYGEN MAIN] -->
 
