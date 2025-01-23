@@ -209,9 +209,9 @@ enum QDMI_DEVICE_PROPERTY_T {
   /**
    * @brief `size_t` Whether the device needs calibration.
    * @details This flag indicates whether the device needs calibration.
-   * A value of zero indicates that the device needs calibration, while any
-   * non-zero value indicates that the device needs calibration. It is up to the
-   * device to assign a specific meaning to the non-zero value.
+   * A value of zero indicates that the device does not need calibration, while
+   * any non-zero value indicates that the device needs calibration. It is up
+   * to the device to assign a specific meaning to the non-zero value.
    *
    * If a device reports that it needs calibration, a calibration run can be
    * triggered by submitting a job with the @ref QDMI_Program_Format set to @ref
