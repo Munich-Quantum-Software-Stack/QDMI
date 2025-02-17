@@ -46,7 +46,7 @@ repos:
 
   # Check for spelling
   - repo: https://github.com/crate-ci/typos
-    rev: typos-dict-v0.12.4
+    rev: typos-dict-v0.12.5
     hooks:
       - id: typos
 
@@ -68,7 +68,7 @@ repos:
 
   # Format configuration files with prettier
   - repo: https://github.com/rbubley/mirrors-prettier
-    rev: v3.5.0
+    rev: v3.5.1
     hooks:
       - id: prettier
         types_or: [yaml, markdown, html, css, scss, javascript, json]
