@@ -8,4 +8,4 @@ target_include_directories(qdmi_test_impl PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 add_library(qdmi::test_impl ALIAS qdmi_test_impl)
 
 # build gtest as position independent code to link it with the shared library
-set_property(TARGET gtest PROPERTY POSITION_INDEPENDENT_CODE ON)
+set_target_properties(gtest PROPERTIES POSITION_INDEPENDENT_CODE ON)
