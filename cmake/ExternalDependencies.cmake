@@ -21,29 +21,35 @@ include(CMakeDependentOption)
 set(FETCH_PACKAGES "")
 
 if(BUILD_QDMI_DOCS)
-  set(DOXYGEN_VERSION
-      1.12.0
-      CACHE STRING "Doxygen version")
-  set(DOXYGEN_REV
-      "64dfee0a4b65a4dc3687dfc6b31535a844681ffa"
-      CACHE STRING "Doxygen identifier (tag, branch or commit hash)")
-  if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.24)
-    FetchContent_Declare(
-      Doxygen
-      GIT_REPOSITORY https://github.com/doxygen/doxygen.git
-      GIT_TAG ${DOXYGEN_REV}
-      FIND_PACKAGE_ARGS ${DOXYGEN_VERSION})
-    list(APPEND FETCH_PACKAGES Doxygen)
-  else()
-    find_package(Doxygen ${DOXYGEN_VERSION} QUIET)
-    if(NOT Doxygen_FOUND)
-      FetchContent_Declare(
-        Doxygen
-        GIT_REPOSITORY https://github.com/doxygen/doxygen.git
-        GIT_TAG ${DOXYGEN_REV})
-      list(APPEND FETCH_PACKAGES Doxygen)
-    endif()
-  endif()
+  # Not using FetchContent here, as the source build of doxygen is currently
+  # broken. See https://github.com/doxygen/doxygen/issues/11416 for further
+  # details.
+  find_package(Doxygen 1.12.0 REQUIRED)
+  # cmake-format: off
+  #  set(DOXYGEN_VERSION
+  #      1.12.0
+  #      CACHE STRING "Doxygen version")
+  #  set(DOXYGEN_REV
+  #      "64dfee0a4b65a4dc3687dfc6b31535a844681ffa"
+  #      CACHE STRING "Doxygen identifier (tag, branch or commit hash)")
+  #  if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.24)
+  #    FetchContent_Declare(
+  #      Doxygen
+  #      GIT_REPOSITORY https://github.com/doxygen/doxygen.git
+  #      GIT_TAG ${DOXYGEN_REV}
+  #      FIND_PACKAGE_ARGS ${DOXYGEN_VERSION})
+  #    list(APPEND FETCH_PACKAGES Doxygen)
+  #  else()
+  #    find_package(Doxygen ${DOXYGEN_VERSION} QUIET)
+  #    if(NOT Doxygen_FOUND)
+  #      FetchContent_Declare(
+  #        Doxygen
+  #        GIT_REPOSITORY https://github.com/doxygen/doxygen.git
+  #        GIT_TAG ${DOXYGEN_REV})
+  #      list(APPEND FETCH_PACKAGES Doxygen)
+  #    endif()
+  #  endif()
+  # cmake-format: on
 
   set(DOXYGEN_AWESOME_VERSION
       1.12.0
