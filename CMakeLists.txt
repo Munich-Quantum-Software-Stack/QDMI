@@ -90,14 +90,15 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS
     ON
     CACHE BOOL "Export compile commands" FORCE)
 
-# Require C standard
-set(CMAKE_C_STANDARD 11)
-set(CMAKE_C_STANDARD_REQUIRED True)
-set(CMAKE_C_EXTENSIONS False)
-
 include(cmake/ExternalDependencies.cmake)
 include(cmake/PrefixHandling.cmake)
 include(GNUInstallDirs)
+# Require C standard only after doxygen has been fetched. Doxygen requires -std
+# be set to cpp17
+target_compile_features(doxygen PUBLIC cxx_std_17)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED True)
+set(CMAKE_C_EXTENSIONS False)
 
 # add warnings target
 if(NOT TARGET qdmi::project_warnings)
@@ -147,6 +148,10 @@ endif()
 
 # add documentation
 if(BUILD_QDMI_DOCS)
+  # target_compile_features(doxygen PUBLIC cxx_std_17)
+  # target_compile_features(doxymain PUBLIC cxx_std_17)
+  # target_compile_features(doxycfg PUBLIC cxx_std_17) set_property(TARGET
+  # doxygen PROPERTY C_STANDARD 17)
   add_subdirectory(docs)
 endif()
 
