@@ -351,6 +351,13 @@ int QDMI_device_session_query_operation_property(
     QDMI_Device_Session session, QDMI_Operation operation, size_t num_sites,
     const QDMI_Site *sites, size_t num_params, const double *params,
     QDMI_Operation_Property prop, size_t size, void *value, size_t *size_ret);
+/*
+ * TODO
+ */
+
+int QDMI_device_session_query_enviroment_property(
+    QDMI_Device_Session session, QDMI_Environment environment,
+    QDMI_Environment_Property prop, size_t size, void *value, size_t *size_ret);
 
 /** @} */ // end of device_query_interface
 
@@ -549,6 +556,25 @@ void QDMI_device_job_free(QDMI_Device_Job job);
 
 /** @} */ // end of device_job_interface
 
+/*
+ * TODO Documentation
+ *
+ */
+typedef struct QDMI_Enviroment_Query_impl_d *QDMI_Enviroment_Query;
+
+int QDMI_device_session_create_enviroment_query(QDMI_Device_Session session,
+                                                QDMI_Enviroment_Query *query);
+
+int QDMI_enviroment_query_set_parameter(QDMI_Enviroment_Query query,
+                                        QDMI_Environment_Query_Parameter param,
+                                        size_t size, const void *value);
+
+int QDMI_enviroment_query_submit(QDMI_Enviroment_Query query);
+
+int QDMI_enviroment_query_get_results(QDMI_Enviroment_Query query,
+                                      QDMI_Environment_Query_Result result,
+                                      size_t size, void *data,
+                                      size_t *size_ret);
 /** @} */ // end of device_interface
 
 // NOLINTEND(performance-enum-size,modernize-use-using,modernize-redundant-void-arg)

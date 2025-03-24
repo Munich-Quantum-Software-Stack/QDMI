@@ -23,3 +23,5 @@ QDMI_Site
 QDMI_Site_impl_d
 QDMI_Operation
 QDMI_Operation_impl_d
+QDMI_Environment
+QDMI_Environment_impl_d
