@@ -94,7 +94,7 @@ void C_QDMI_set_device_status(QDMI_Device_Status status) {
 QDMI_Device_Status C_QDMI_read_device_status(void) {
   return *C_QDMI_get_device_status();
 }
-const C_QDMI_Environment DEVICE_ENVIROMENT_PROPERTY[] = {
+const C_QDMI_Environment DEVICE_ENVIRONMENT_PROPERTY[] = {
     &(C_QDMI_Environment_impl_t){"t4k", 100, "K", 60},
 };
 
@@ -132,8 +132,8 @@ const C_QDMI_Operation C_DEVICE_OPERATIONS[] = {
         if ((size) < strlen(prop_value) + 1) {                                 \
           return QDMI_ERROR_INVALIDARGUMENT;                                   \
         }                                                                      \
-        strncpy((char *)(value), prop_value, (size)-1);                        \
-        ((char *)(value))[(size)-1] = '\0';                                    \
+        strncpy((char *)(value), prop_value, (size) - 1);                      \
+        ((char *)(value))[(size) - 1] = '\0';                                  \
       }                                                                        \
       if ((size_ret) != NULL) {                                                \
         *(size_ret) = strlen(prop_value) + 1;                                  \

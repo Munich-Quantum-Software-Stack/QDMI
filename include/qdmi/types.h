@@ -72,8 +72,8 @@ typedef struct QDMI_Site_impl_d *QDMI_Site;
 typedef struct QDMI_Operation_impl_d *QDMI_Operation;
 
 /*
-* TODO
-*/
+ * TODO
+ */
 typedef struct QDMI_Environment_impl_d *QDMI_Environment;
 
 // NOLINTEND(modernize-use-using)

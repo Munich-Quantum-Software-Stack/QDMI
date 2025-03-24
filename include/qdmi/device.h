@@ -355,7 +355,7 @@ int QDMI_device_session_query_operation_property(
  * TODO
  */
 
-int QDMI_device_session_query_enviroment_property(
+int QDMI_device_session_query_environment_property(
     QDMI_Device_Session session, QDMI_Environment environment,
     QDMI_Environment_Property prop, size_t size, void *value, size_t *size_ret);
 
@@ -560,21 +560,21 @@ void QDMI_device_job_free(QDMI_Device_Job job);
  * TODO Documentation
  *
  */
-typedef struct QDMI_Enviroment_Query_impl_d *QDMI_Enviroment_Query;
+typedef struct QDMI_Environment_Query_impl_d *QDMI_Environment_Query;
 
-int QDMI_device_session_create_enviroment_query(QDMI_Device_Session session,
-                                                QDMI_Enviroment_Query *query);
+int QDMI_device_session_create_environment_query(QDMI_Device_Session session,
+                                                 QDMI_Environment_Query *query);
 
-int QDMI_enviroment_query_set_parameter(QDMI_Enviroment_Query query,
-                                        QDMI_Environment_Query_Parameter param,
-                                        size_t size, const void *value);
+int QDMI_environment_query_set_parameter(QDMI_Environment_Query query,
+                                         QDMI_Environment_Query_Parameter param,
+                                         size_t size, const void *value);
 
-int QDMI_enviroment_query_submit(QDMI_Enviroment_Query query);
+int QDMI_environment_query_submit(QDMI_Environment_Query query);
 
-int QDMI_enviroment_query_get_results(QDMI_Enviroment_Query query,
-                                      QDMI_Environment_Query_Result result,
-                                      size_t size, void *data,
-                                      size_t *size_ret);
+int QDMI_environment_query_get_results(QDMI_Environment_Query query,
+                                       QDMI_Environment_Query_Result result,
+                                       size_t size, void *data,
+                                       size_t *size_ret);
 /** @} */ // end of device_interface
 
 // NOLINTEND(performance-enum-size,modernize-use-using,modernize-redundant-void-arg)
