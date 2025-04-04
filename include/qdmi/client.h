@@ -543,6 +543,13 @@ int QDMI_device_query_operation_property(
     const QDMI_Site *sites, size_t num_params, const double *params,
     QDMI_Operation_Property prop, size_t size, void *value, size_t *size_ret);
 
+
+int QDMI_device_query_environment_property(QDMI_Device device,
+                                           QDMI_Environment enviroment,
+                                           QDMI_Environment_Property prop,
+                                           const size_t size, void *value,
+                                           size_t *size_ret);
+
 /** @} */ // end of client_query_interface
 
 /** @defgroup client_job_interface QDMI Client Job Interface
@@ -827,6 +834,44 @@ int QDMI_job_get_results(QDMI_Job job, QDMI_Job_Result result, size_t size,
 void QDMI_job_free(QDMI_Job job);
 
 /** @} */ // end of client_job_interface
+enum QDMI_ENVIRONMENT_QUERY_PARAMETER_T {
+
+  QDMI_ENVIRONMENT_QUERY_PARAMETER_START_TIME = 0,
+
+  QDMI_ENVIRONMENT_QUERY_PARAMETER_END_TIME = 1,
+
+  QDMI_ENVIRONMENT_QUERY_PARAMETER_ENVIRONMENT = 2,
+
+  QDMI_ENVIRONMENT_QUERY_PARAMETER_MAX = 3,
+
+  QDMI_ENVIRONMENT_QUERY_PARAMETER_CUSTOM1 = 999999995,
+
+  QDMI_ENVIRONMENT_QUERY_PARAMETER_CUSTOM2 = 999999996,
+
+  QDMI_ENVIRONMENT_QUERY_PARAMETER_CUSTOM3 = 999999997,
+
+  QDMI_ENVIRONMENT_QUERY_PARAMETER_CUSTOM4 = 999999998,
+
+  QDMI_ENVIRONMENT_QUERY_PARAMETER_CUSTOM5 = 999999999
+};
+
+typedef enum QDMI_ENVIRONMENT_QUERY_PARAMETER_T
+    QDMI_Environment_Query_Parameter;
+
+typedef struct QDMI_Environment_Query_impl_d *QDMI_Environment_Query;
+
+int QDMI_device_create_environment_query(QDMI_Device dev, QDMI_Environment_Query *query);
+
+int QDMI_environment_query_set_parameter(QDMI_Environment_Query query,
+                                         QDMI_Environment_Query_Parameter param,
+                                         size_t size, const void *value);
+
+int QDMI_environment_query_submit(QDMI_Environment_Query query);
+
+int QDMI_environment_query_get_results(QDMI_Environment_Query query,
+                                       QDMI_Environment_Query_Result result,
+                                       size_t size, void *data,
+                                       size_t *size_ret);
 
 /** @} */ // end of client_interface
 

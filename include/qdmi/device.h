@@ -560,18 +560,20 @@ void QDMI_device_job_free(QDMI_Device_Job job);
  * TODO Documentation
  *
  */
-typedef struct QDMI_Environment_Query_impl_d *QDMI_Environment_Query;
 
-int QDMI_device_session_create_environment_query(QDMI_Device_Session session,
-                                                 QDMI_Environment_Query *query);
+typedef struct QDMI_Device_Environment_Query_impl_d
+    *QDMI_Device_Environment_Query;
 
-int QDMI_environment_query_set_parameter(QDMI_Environment_Query query,
-                                         QDMI_Environment_Query_Parameter param,
+int QDMI_device_session_create_environment_query(
+    QDMI_Device_Session session, QDMI_Device_Environment_Query *query);
+
+int QDMI_device_environment_query_set_parameter(QDMI_Device_Environment_Query query,
+                                         QDMI_Device_Environment_Query_Parameter param,
                                          size_t size, const void *value);
 
-int QDMI_environment_query_submit(QDMI_Environment_Query query);
+int QDMI_device_environment_query_submit(QDMI_Device_Environment_Query query);
 
-int QDMI_environment_query_get_results(QDMI_Environment_Query query,
+int QDMI_device_environment_query_get_results(QDMI_Device_Environment_Query query,
                                        QDMI_Environment_Query_Result result,
                                        size_t size, void *data,
                                        size_t *size_ret);
