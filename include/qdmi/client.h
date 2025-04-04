@@ -543,9 +543,8 @@ int QDMI_device_query_operation_property(
     const QDMI_Site *sites, size_t num_params, const double *params,
     QDMI_Operation_Property prop, size_t size, void *value, size_t *size_ret);
 
-
 int QDMI_device_query_environment_property(QDMI_Device device,
-                                           QDMI_Environment enviroment,
+                                           QDMI_Environment environment,
                                            QDMI_Environment_Property prop,
                                            const size_t size, void *value,
                                            size_t *size_ret);
@@ -860,7 +859,8 @@ typedef enum QDMI_ENVIRONMENT_QUERY_PARAMETER_T
 
 typedef struct QDMI_Environment_Query_impl_d *QDMI_Environment_Query;
 
-int QDMI_device_create_environment_query(QDMI_Device dev, QDMI_Environment_Query *query);
+int QDMI_device_create_environment_query(QDMI_Device dev,
+                                         QDMI_Environment_Query *query);
 
 int QDMI_environment_query_set_parameter(QDMI_Environment_Query query,
                                          QDMI_Environment_Query_Parameter param,
