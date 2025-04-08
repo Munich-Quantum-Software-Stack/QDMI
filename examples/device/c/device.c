@@ -915,7 +915,7 @@ int C_QDMI_device_environment_query_submit(
     return QDMI_ERROR_INVALIDARGUMENT;
   }
 
-  // here, the actual submittion.
+  // here, the actual submission.
 
   // for demonstration purposes
   long time_difference = query->end_time - query->start_time;
