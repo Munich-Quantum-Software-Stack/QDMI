@@ -67,7 +67,7 @@ typedef struct C_QDMI_Environment_impl_d {
 typedef struct C_QDMI_Device_Environment_Query_impl_d {
   time_t start_time;
   time_t end_time;
-  C_QDMI_Environment enviroment;
+  C_QDMI_Environment environment;
   time_t *result_timestamps;
   float *result_values;
   size_t result_length;
@@ -715,8 +715,9 @@ int C_QDMI_device_session_query_device_property(C_QDMI_Device_Session session,
   // The example device never requires calibration
   ADD_SINGLE_VALUE_PROPERTY(QDMI_DEVICE_PROPERTY_NEEDSCALIBRATION, size_t, 0,
                             prop, size, value, size_ret)
-  ADD_LIST_PROPERTY(QDMI_DEVICE_PROPERTY_ENVIRONMENTVARIABLES, C_QDMI_Environment,
-                    C_DEVICE_ENVIRONMENTS, 1, prop, size, value, size_ret)
+  ADD_LIST_PROPERTY(QDMI_DEVICE_PROPERTY_ENVIRONMENTVARIABLES,
+                    C_QDMI_Environment, C_DEVICE_ENVIRONMENTS, 1, prop, size,
+                    value, size_ret)
 
   return QDMI_ERROR_NOTSUPPORTED;
 } /// [DOXYGEN FUNCTION END]
@@ -870,7 +871,7 @@ int C_QDMI_device_session_create_environment_query(
     return QDMI_ERROR_BADSTATE;
   }
   *query = malloc(sizeof(C_QDMI_Device_Environment_Query_impl_t));
-  (*query)->enviroment = malloc(sizeof(C_QDMI_Environment));
+  (*query)->environment = malloc(sizeof(C_QDMI_Environment));
   (*query)->start_time = time(NULL);
   (*query)->end_time = time(NULL);
 
@@ -900,7 +901,7 @@ int C_QDMI_device_environment_query_set_parameter(
     query->end_time = *(time_t *)(value);
     return QDMI_SUCCESS;
   case QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_ENVIRONMENTVARIABLES:
-    query->enviroment = *(C_QDMI_Environment *)(value);
+    query->environment = *(C_QDMI_Environment *)(value);
     return QDMI_SUCCESS;
   default:
     return QDMI_ERROR_NOTSUPPORTED;
@@ -910,7 +911,7 @@ int C_QDMI_device_environment_query_set_parameter(
 int C_QDMI_device_environment_query_submit(
     C_QDMI_Device_Environment_Query query) {
 
-  if (query == NULL || query->enviroment == NULL) {
+  if (query == NULL || query->environment == NULL) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
 
@@ -918,7 +919,7 @@ int C_QDMI_device_environment_query_submit(
 
   // for demonstration purposes
   long time_difference = query->end_time - query->start_time;
-  int sampling_rate = query->enviroment->sampling_rate;
+  int sampling_rate = query->environment->sampling_rate;
 
   size_t result_length = (size_t)(time_difference / sampling_rate);
 
