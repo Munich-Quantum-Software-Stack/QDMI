@@ -988,6 +988,7 @@ TEST_P(QDMIImplementationTest, EnvironmentQuery) {
 
   for (const auto &environment : environments) {
     QDMI_Environment_Query query = nullptr;
+    QDMI_Environment_Query_Status status;
     time_t start_time = time(&start_time);
     time_t end_time = time(&end_time) + 600;
 
@@ -1011,27 +1012,40 @@ TEST_P(QDMIImplementationTest, EnvironmentQuery) {
 
     EXPECT_EQ(QDMI_environment_query_submit(query), QDMI_SUCCESS);
 
+    EXPECT_EQ(QDMI_environment_query_wait(query), QDMI_SUCCESS);
+
+    EXPECT_EQ(QDMI_environment_query_check_status(query, &status),
+              QDMI_SUCCESS);
+
     size_t timestamps_size = 0;
-    QDMI_environment_query_get_results(query,
-                                       QDMI_ENVIRONMENT_QUERY_RESULT_TIMESTAMPS,
-                                       0, nullptr, &timestamps_size);
+    EXPECT_EQ(QDMI_environment_query_get_results(
+                  query, QDMI_ENVIRONMENT_QUERY_RESULT_TIMESTAMPS, 0, nullptr,
+                  &timestamps_size),
+              QDMI_SUCCESS);
 
     std::vector<time_t> timestamps;
     timestamps.reserve(timestamps_size);
 
-    QDMI_environment_query_get_results(
-        query, QDMI_ENVIRONMENT_QUERY_RESULT_TIMESTAMPS, timestamps_size,
-        timestamps.data(), nullptr);
+    EXPECT_EQ(QDMI_environment_query_get_results(
+                  query, QDMI_ENVIRONMENT_QUERY_RESULT_TIMESTAMPS,
+                  timestamps_size, timestamps.data(), nullptr),
+              QDMI_SUCCESS);
 
     size_t size_values = 0;
-    QDMI_environment_query_get_results(
-        query, QDMI_ENVIRONMENT_QUERY_RESULT_VALUES, 0, nullptr, &size_values);
+    EXPECT_EQ(QDMI_environment_query_get_results(
+                  query, QDMI_ENVIRONMENT_QUERY_RESULT_VALUES, 0, nullptr,
+                  &size_values),
+              QDMI_SUCCESS);
 
     std::vector<float> values;
     values.reserve(size_values);
 
-    QDMI_environment_query_get_results(query,
-                                       QDMI_ENVIRONMENT_QUERY_RESULT_VALUES,
-                                       size_values, values.data(), nullptr);
+    EXPECT_EQ(QDMI_environment_query_get_results(
+                  query, QDMI_ENVIRONMENT_QUERY_RESULT_VALUES, size_values,
+                  values.data(), nullptr),
+              QDMI_SUCCESS);
+
+
+    QDMI_environment_query_free(query);
   }
 }

@@ -1030,13 +1030,12 @@ int C_QDMI_device_environment_query_cancel(
 
 void C_QDMI_device_environment_query_free(
     C_QDMI_Device_Environment_Query query) {
-
   free(query->result_timestamps);
   query->result_timestamps = NULL;
 
   free(query->result_values);
   query->result_values = NULL;
 
-  free(query->environment);
-  query->environment = NULL;
+  free(query);
+  
 }
