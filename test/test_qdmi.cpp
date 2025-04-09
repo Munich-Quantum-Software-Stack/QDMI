@@ -1045,7 +1045,6 @@ TEST_P(QDMIImplementationTest, EnvironmentQuery) {
                   values.data(), nullptr),
               QDMI_SUCCESS);
 
-
     QDMI_environment_query_free(query);
   }
 }

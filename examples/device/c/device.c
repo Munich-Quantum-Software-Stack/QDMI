@@ -1037,5 +1037,4 @@ void C_QDMI_device_environment_query_free(
   query->result_values = NULL;
 
   free(query);
-  
 }
