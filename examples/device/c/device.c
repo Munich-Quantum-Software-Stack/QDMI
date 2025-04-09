@@ -71,6 +71,7 @@ typedef struct C_QDMI_Device_Environment_Query_impl_d {
   time_t *result_timestamps;
   float *result_values;
   size_t result_length;
+  QDMI_Environment_Query_Status status;
 } C_QDMI_Device_Environment_Query_impl_t;
 
 /**
@@ -915,16 +916,19 @@ int C_QDMI_device_environment_query_submit(
     return QDMI_ERROR_INVALIDARGUMENT;
   }
 
+  long time_difference = query->end_time - query->start_time;
+  if (time_difference <= 0) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
   // here, the actual submission.
 
   // for demonstration purposes
-  long time_difference = query->end_time - query->start_time;
   int sampling_rate = query->environment->sampling_rate;
 
   size_t result_length = (size_t)(time_difference / sampling_rate);
 
   query->result_timestamps = malloc(sizeof(time_t) * result_length);
-  query->result_values = malloc(sizeof(time_t) * result_length);
+  query->result_values = malloc(sizeof(float) * result_length);
   query->result_length = result_length;
 
   for (size_t i = 0; i < result_length; i++) {
@@ -982,4 +986,57 @@ int C_QDMI_device_environment_query_get_results(
   }
 
   return QDMI_SUCCESS;
+}
+
+int C_QDMI_device_environment_query_check_status(
+    C_QDMI_Device_Environment_Query query,
+    QDMI_Environment_Query_Status *status) {
+  if (query == NULL || status == NULL) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+
+  // randomly decide whether job is done or not
+  if (query->status == QDMI_ENVIRONMENT_QUERY_STATUS_RUNNING &&
+      rand() % 2 == 0) {
+    query->status = QDMI_ENVIRONMENT_QUERY_STATUS_DONE;
+  }
+
+  *status = query->status;
+  return QDMI_SUCCESS;
+}
+
+int C_QDMI_device_environment_query_wait(
+    C_QDMI_Device_Environment_Query query) {
+
+  if (query == NULL) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+
+  query->status = QDMI_ENVIRONMENT_QUERY_STATUS_DONE;
+  return QDMI_SUCCESS;
+}
+
+int C_QDMI_device_environment_query_cancel(
+    C_QDMI_Device_Environment_Query query) {
+
+  if (query == NULL || query->status == QDMI_ENVIRONMENT_QUERY_STATUS_DONE) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+
+  query->status = QDMI_ENVIRONMENT_QUERY_STATUS_CANCELED;
+
+  return QDMI_SUCCESS;
+}
+
+void C_QDMI_device_environment_query_free(
+    C_QDMI_Device_Environment_Query query) {
+
+  free(query->result_timestamps);
+  query->result_timestamps = NULL;
+
+  free(query->result_values);
+  query->result_values = NULL;
+
+  free(query->environment);
+  query->environment = NULL;
 }

@@ -577,6 +577,15 @@ int QDMI_device_environment_query_submit(QDMI_Device_Environment_Query query);
 int QDMI_device_environment_query_get_results(
     QDMI_Device_Environment_Query query, QDMI_Environment_Query_Result result,
     size_t size, void *data, size_t *size_ret);
+
+int QDMI_device_environment_query_check_status(QDMI_Device_Environment_Query query, QDMI_Environment_Query_Status *status);
+
+int QDMI_device_environment_query_wait(QDMI_Device_Environment_Query query);
+
+int QDMI_device_environment_query_cancel(QDMI_Device_Environment_Query query);
+
+void QDMI_device_environment_query_free(QDMI_Device_Environment_Query query);
+
 /** @} */ // end of device_interface
 
 // NOLINTEND(performance-enum-size,modernize-use-using,modernize-redundant-void-arg)

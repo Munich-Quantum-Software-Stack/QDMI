@@ -720,6 +720,25 @@ enum QDMI_ENVIRONMENT_QUERY_RESULT_T {
 /// Job result type.
 typedef enum QDMI_ENVIRONMENT_QUERY_RESULT_T QDMI_Environment_Query_Result;
 
+enum QDMI_ENVIRONMENT_QUERY_STATUS_T {
+  /**
+   * @brief The job was created and can be configured via @ref
+   * QDMI_job_set_parameter.
+   */
+  QDMI_ENVIRONMENT_QUERY_STATUS_CREATED = 0,
+  /// The job was submitted and is waiting to be executed.
+  QDMI_ENVIRONMENT_QUERY_STATUS_SUBMITTED = 1,
+  /// The job is done, and the result can be retrieved.
+  QDMI_ENVIRONMENT_QUERY_STATUS_DONE = 2,
+  /// The job is running, and the result is not yet available.
+  QDMI_ENVIRONMENT_QUERY_STATUS_RUNNING = 3,
+  /// The job was canceled, and the result is not available.
+  QDMI_ENVIRONMENT_QUERY_STATUS_CANCELED = 4
+};
+
+/// Job status type.
+typedef enum QDMI_ENVIRONMENT_QUERY_STATUS_T QDMI_Environment_Query_Status;
+
 // NOLINTEND(performance-enum-size, modernize-use-using)
 
 #ifdef __cplusplus
