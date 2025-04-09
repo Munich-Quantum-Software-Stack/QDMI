@@ -215,7 +215,8 @@ auto FoMaC::get_environment_variables() const -> std::vector<QDMI_Environment> {
   return environments;
 }
 
-auto FoMaC::get_environment_id(QDMI_Environment environment) const -> std::string {
+auto FoMaC::get_environment_id(QDMI_Environment environment) const
+    -> std::string {
   size_t environment_id_size = 0;
 
   int ret = QDMI_device_query_environment_property(
@@ -231,7 +232,8 @@ auto FoMaC::get_environment_id(QDMI_Environment environment) const -> std::strin
   return environment_id;
 }
 
-auto FoMaC::get_environment_unit(QDMI_Environment environment) const -> std::string {
+auto FoMaC::get_environment_unit(QDMI_Environment environment) const
+    -> std::string {
   size_t environment_unit_size = 0;
 
   int ret = QDMI_device_query_environment_property(
@@ -248,11 +250,12 @@ auto FoMaC::get_environment_unit(QDMI_Environment environment) const -> std::str
   return environment_unit;
 }
 
-auto FoMaC::get_environment_sampling_rate(QDMI_Environment environment) const -> int {
+auto FoMaC::get_environment_sampling_rate(QDMI_Environment environment) const
+    -> int {
   int sampling_rate = 0;
   const int ret = QDMI_device_query_environment_property(
-      device, environment, QDMI_ENVIRONMENT_PROPERTY_SAMPLING_RATE,
-      sizeof(int), &sampling_rate, nullptr);
+      device, environment, QDMI_ENVIRONMENT_PROPERTY_SAMPLING_RATE, sizeof(int),
+      &sampling_rate, nullptr);
   throw_if_error(ret, "Failed to query the sampling rate");
 
   return sampling_rate;

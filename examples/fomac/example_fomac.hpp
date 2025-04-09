@@ -75,5 +75,4 @@ public:
 
   [[nodiscard]] auto
   get_environment_sampling_rate(QDMI_Environment environment) const -> int;
-
 };

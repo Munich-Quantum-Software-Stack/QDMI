@@ -954,7 +954,7 @@ TEST_P(QDMIImplementationTest, NeedsCalibration) {
   EXPECT_EQ(needs_calibration, 0);
 }
 
-TEST_P(QDMIImplementationTest, QueryEveryEnviromentProperties) {
+TEST_P(QDMIImplementationTest, QueryEveryEnvironmentProperties) {
 
   const auto fomac = FoMaC(device);
 
@@ -975,7 +975,7 @@ TEST_P(QDMIImplementationTest, QueryEveryEnviromentProperties) {
   }
 }
 
-TEST_P(QDMIImplementationTest, EnviromentQuery) {
+TEST_P(QDMIImplementationTest, EnvironmentQuery) {
   if (mode == TEST_SESSION_MODE::READONLY) {
     GTEST_SKIP() << "Skipping test for read-only session";
   }
