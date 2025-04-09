@@ -873,8 +873,8 @@ int QDMI_environment_query_get_results(QDMI_Environment_Query query,
                                        size_t size, void *data,
                                        size_t *size_ret);
 
-int QDMI_environment_query_check_status(
-    QDMI_Environment_Query query, QDMI_Environment_Query_Status *status);
+int QDMI_environment_query_check_status(QDMI_Environment_Query query,
+                                        QDMI_Environment_Query_Status *status);
 
 int QDMI_environment_query_wait(QDMI_Environment_Query query);
 
