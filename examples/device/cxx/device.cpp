@@ -26,10 +26,12 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 #include <algorithm>
 #include <array>
+#include <chrono>
 #include <cmath>
 #include <complex>
 #include <cstdint>
 #include <cstring>
+#include <ctime>
 #include <functional>
 #include <iterator>
 #include <limits>
@@ -76,6 +78,23 @@ struct CXX_QDMI_Site_impl_d {
 
 struct CXX_QDMI_Operation_impl_d {
   std::string name;
+};
+
+struct CXX_QDMI_Environment_impl_d {
+  std::string id;
+  std::string unit;
+  std::chrono::duration<int> sampling_rate{}; // in seconds
+};
+
+struct CXX_QDMI_Device_Environment_Query_impl_d {
+  std::chrono::time_point<std::chrono::system_clock> start_time{};
+  std::chrono::time_point<std::chrono::system_clock> end_time{};
+  CXX_QDMI_Environment enviroment{};
+  std::vector<std::chrono::time_point<std::chrono::system_clock>>
+      result_timestamps;
+  std::vector<float> result_values;
+  size_t result_length{};
+  QDMI_Environment_Query_Status status{};
 };
 
 namespace {
@@ -159,6 +178,12 @@ constexpr CXX_QDMI_Site_impl_d SITE4{4};
 
 constexpr std::array<const CXX_QDMI_Site_impl_d *, 5> CXX_DEVICE_SITES = {
     &SITE0, &SITE1, &SITE2, &SITE3, &SITE4};
+
+const CXX_QDMI_Environment_impl_d ENV0{"t4k", "K",
+                                       std::chrono::duration<int>{60}};
+
+constexpr std::array<const CXX_QDMI_Environment_impl_d *, 1>
+    CXX_DEVICE_ENVIRONMENTS{&ENV0};
 
 constexpr std::array<const CXX_QDMI_Site_impl_d *, 20>
     // clang-format off
@@ -749,6 +774,10 @@ int CXX_QDMI_device_session_query_device_property(
   ADD_SINGLE_VALUE_PROPERTY(QDMI_DEVICE_PROPERTY_NEEDSCALIBRATION, size_t, 0,
                             prop, size, value, size_ret)
 
+  ADD_LIST_PROPERTY(QDMI_DEVICE_PROPERTY_ENVIRONMENTVARIABLES,
+                    CXX_QDMI_Environment, CXX_DEVICE_ENVIRONMENTS, prop, size,
+                    value, size_ret)
+
   return QDMI_ERROR_NOTSUPPORTED;
 } /// [DOXYGEN FUNCTION END]
 
@@ -844,3 +873,222 @@ int CXX_QDMI_device_session_query_operation_property(
   }
   return QDMI_ERROR_NOTSUPPORTED;
 } /// [DOXYGEN FUNCTION END]
+
+int CXX_QDMI_device_session_query_environment_property(
+    CXX_QDMI_Device_Session session, CXX_QDMI_Environment environment,
+    QDMI_Environment_Property prop, size_t size, void *value,
+    size_t *size_ret) {
+  if (session == nullptr || environment == nullptr ||
+      (value != nullptr && size == 0) ||
+      (prop >= QDMI_ENVIRONMENT_PROPERTY_MAX &&
+       prop != QDMI_ENVIRONMENT_PROPERTY_CUSTOM1 &&
+       prop != QDMI_ENVIRONMENT_PROPERTY_CUSTOM2 &&
+       prop != QDMI_ENVIRONMENT_PROPERTY_CUSTOM3 &&
+       prop != QDMI_ENVIRONMENT_PROPERTY_CUSTOM4 &&
+       prop != QDMI_ENVIRONMENT_PROPERTY_CUSTOM5)) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  ADD_STRING_PROPERTY(QDMI_ENVIRONMENT_PROPERTY_ID, environment->id.c_str(),
+                      prop, size, value, size_ret)
+  ADD_STRING_PROPERTY(QDMI_ENVIRONMENT_PROPERTY_UNIT, environment->unit.c_str(),
+                      prop, size, value, size_ret)
+  ADD_SINGLE_VALUE_PROPERTY(QDMI_ENVIRONMENT_PROPERTY_SAMPLING_RATE, int,
+                            environment->sampling_rate.count(), prop, size,
+                            value, size_ret)
+  return QDMI_ERROR_NOTSUPPORTED;
+}
+
+int CXX_QDMI_device_session_create_environment_query(
+    CXX_QDMI_Device_Session session, CXX_QDMI_Device_Environment_Query *query) {
+
+  if (session == nullptr || query == nullptr) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  if (session->status != CXX_QDMI_DEVICE_SESSION_STATUS::INITIALIZED) {
+    return QDMI_ERROR_BADSTATE;
+  }
+  *query = new CXX_QDMI_Device_Environment_Query_impl_d();
+  (*query)->enviroment = new CXX_QDMI_Environment_impl_d();
+  (*query)->start_time = std::chrono::system_clock::now();
+  (*query)->end_time = std::chrono::system_clock::now();
+
+  return QDMI_SUCCESS;
+}
+
+int CXX_QDMI_device_environment_query_set_parameter(
+    CXX_QDMI_Device_Environment_Query query,
+    QDMI_Device_Environment_Query_Parameter param, size_t size,
+    const void *value) {
+
+  if (query == nullptr || (value != nullptr && size == 0) ||
+      (param >= QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_MAX &&
+       param != QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_CUSTOM1 &&
+       param != QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_CUSTOM2 &&
+       param != QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_CUSTOM3 &&
+       param != QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_CUSTOM4 &&
+       param != QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_CUSTOM5)) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  switch (param) {
+
+  case QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_START_TIME: {
+    const auto *c_start_time_ptr = static_cast<const time_t *>(value);
+    query->start_time =
+        std::chrono::system_clock::from_time_t(*c_start_time_ptr);
+    return QDMI_SUCCESS;
+  }
+  case QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_END_TIME: {
+
+    const auto *c_end_time_ptr = static_cast<const time_t *>(value);
+    query->end_time = std::chrono::system_clock::from_time_t(*c_end_time_ptr);
+    return QDMI_SUCCESS;
+  }
+
+  case QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_ENVIRONMENTVARIABLES: {
+    const auto *enviroment_ptr =
+        static_cast<const CXX_QDMI_Environment *>(value);
+    query->enviroment = *enviroment_ptr;
+    return QDMI_SUCCESS;
+  }
+  default:
+    return QDMI_ERROR_NOTSUPPORTED;
+  }
+}
+
+int CXX_QDMI_device_environment_query_submit(
+    CXX_QDMI_Device_Environment_Query query) {
+
+  if (query == nullptr || query->enviroment == nullptr) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+
+  // here, the actual submission.
+
+  // for demonstration purposes
+  auto time_difference = std::chrono::round<std::chrono::seconds>(
+      query->end_time - query->start_time);
+
+  auto sampling_rate = query->enviroment->sampling_rate;
+
+  auto result_length =
+      static_cast<size_t>(time_difference.count() / sampling_rate.count());
+
+  query->result_timestamps.clear();
+  query->result_timestamps.reserve(result_length);
+
+  query->result_values.clear();
+  query->result_values.reserve(result_length);
+
+  query->result_length = result_length;
+
+  for (unsigned int i = 0; i < result_length; i++) {
+    auto duration_to_add =
+        std::chrono::duration_cast<std::chrono::system_clock::duration>(
+            query->enviroment->sampling_rate * i);
+    auto next_time = query->start_time + duration_to_add;
+    query->result_timestamps.emplace_back(next_time);
+    query->result_values[i] =
+        static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / 100));
+  }
+
+  return QDMI_SUCCESS;
+}
+
+int CXX_QDMI_device_environment_query_get_results(
+    CXX_QDMI_Device_Environment_Query query,
+    QDMI_Environment_Query_Result result, size_t size, void *data,
+    size_t *size_ret) {
+
+  if (query == nullptr || (data != nullptr && size == 0) ||
+      (result >= QDMI_ENVIRONMENT_QUERY_RESULT_MAX &&
+       result != QDMI_ENVIRONMENT_QUERY_RESULT_CUSTOM1 &&
+       result != QDMI_ENVIRONMENT_QUERY_RESULT_CUSTOM2 &&
+       result != QDMI_ENVIRONMENT_QUERY_RESULT_CUSTOM3 &&
+       result != QDMI_ENVIRONMENT_QUERY_RESULT_CUSTOM4 &&
+       result != QDMI_ENVIRONMENT_QUERY_RESULT_CUSTOM5)) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  size_t req_size = query->result_length;
+  switch (result) {
+  case QDMI_ENVIRONMENT_QUERY_RESULT_TIMESTAMPS:
+    req_size *= sizeof(time_t);
+    if (data != nullptr) {
+      if (size < req_size) {
+        return QDMI_ERROR_INVALIDARGUMENT;
+      }
+      auto *data_ptr = static_cast<time_t *>(data);
+      for (size_t i = 0; i < query->result_length; i++) {
+        data_ptr[i] =
+            std::chrono::system_clock::to_time_t(query->result_timestamps[i]);
+      }
+    }
+
+    if ((size_ret) != nullptr) {
+      *(size_ret) = req_size;
+    }
+    return QDMI_SUCCESS;
+  case QDMI_ENVIRONMENT_QUERY_RESULT_VALUES:
+
+    req_size *= sizeof(float);
+    if (data != nullptr) {
+      if (size < req_size) {
+        return QDMI_ERROR_INVALIDARGUMENT;
+      }
+      memcpy(data, query->result_values.data(), req_size);
+    }
+    if ((size_ret) != nullptr) {
+      *(size_ret) = req_size;
+    }
+    return QDMI_SUCCESS;
+
+  default:
+    return QDMI_ERROR_NOTSUPPORTED;
+  }
+
+  return QDMI_SUCCESS;
+}
+
+int CXX_QDMI_device_environment_query_check_status(
+    CXX_QDMI_Device_Environment_Query query,
+    QDMI_Environment_Query_Status *status) {
+  if (query == nullptr || status == nullptr) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+
+  // randomly decide whether job is done or not
+  if (query->status == QDMI_ENVIRONMENT_QUERY_STATUS_RUNNING &&
+      CXX_QDMI_generate_bit()) {
+    query->status = QDMI_ENVIRONMENT_QUERY_STATUS_DONE;
+  }
+
+  *status = query->status;
+  return QDMI_SUCCESS;
+}
+
+int CXX_QDMI_device_environment_query_wait(
+    CXX_QDMI_Device_Environment_Query query) {
+
+  if (query == nullptr) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+
+  query->status = QDMI_ENVIRONMENT_QUERY_STATUS_DONE;
+  return QDMI_SUCCESS;
+}
+
+int CXX_QDMI_device_environment_query_cancel(
+    CXX_QDMI_Device_Environment_Query query) {
+
+  if (query == nullptr || query->status == QDMI_ENVIRONMENT_QUERY_STATUS_DONE) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+
+  query->status = QDMI_ENVIRONMENT_QUERY_STATUS_CANCELED;
+
+  return QDMI_SUCCESS;
+}
+
+void CXX_QDMI_device_environment_query_free(
+    CXX_QDMI_Device_Environment_Query query) {
+  delete query;
+}
