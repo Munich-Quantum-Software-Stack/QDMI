@@ -28,6 +28,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include <random>
 #include <sstream>
 #include <string>
+#include <time.h>
 #include <tuple>
 #include <unordered_map>
 #include <utility>
@@ -951,4 +952,86 @@ TEST_P(QDMIImplementationTest, NeedsCalibration) {
       &needs_calibration, nullptr);
   EXPECT_EQ(ret, QDMI_SUCCESS);
   EXPECT_EQ(needs_calibration, 0);
+}
+
+TEST_P(QDMIImplementationTest, QueryEveryEnviromentProperties) {
+
+  const auto fomac = FoMaC(device);
+
+  auto environments = fomac.get_environment_variables();
+
+  ASSERT_GT(environments.size(), 0);
+
+  for (const auto &environment : environments) {
+
+    auto environment_id = fomac.get_environment_id(environment);
+    EXPECT_STRNE(environment_id.c_str(), "");
+
+    auto environment_unit = fomac.get_environment_unit(environment);
+    EXPECT_STRNE(environment_unit.c_str(), "");
+
+    auto sampling_rate = fomac.get_environment_sampling_rate(environment);
+    EXPECT_GT(sampling_rate, 0);
+  }
+}
+
+TEST_P(QDMIImplementationTest, EnviromentQuery) {
+  if (mode == TEST_SESSION_MODE::READONLY) {
+    GTEST_SKIP() << "Skipping test for read-only session";
+  }
+
+  const auto fomac = FoMaC(device);
+
+  auto environments = fomac.get_environment_variables();
+
+  ASSERT_GT(environments.size(), 0);
+
+  for (const auto &environment : environments) {
+    QDMI_Environment_Query query = nullptr;
+    time_t start_time = time(&start_time);
+    time_t end_time = time(&end_time) + 600;
+
+    EXPECT_EQ(QDMI_device_create_environment_query(device, &query),
+              QDMI_SUCCESS);
+
+    EXPECT_EQ(QDMI_environment_query_set_parameter(
+                  query, QDMI_ENVIRONMENT_QUERY_PARAMETER_ENVIRONMENT,
+                  sizeof(QDMI_Environment), &environment),
+              QDMI_SUCCESS);
+
+    EXPECT_EQ(QDMI_environment_query_set_parameter(
+                  query, QDMI_ENVIRONMENT_QUERY_PARAMETER_START_TIME,
+                  sizeof(time_t), &start_time),
+              QDMI_SUCCESS);
+
+    EXPECT_EQ(QDMI_environment_query_set_parameter(
+                  query, QDMI_ENVIRONMENT_QUERY_PARAMETER_END_TIME,
+                  sizeof(time_t), &end_time),
+              QDMI_SUCCESS);
+
+    EXPECT_EQ(QDMI_environment_query_submit(query), QDMI_SUCCESS);
+
+    size_t timestamps_size = 0;
+    QDMI_environment_query_get_results(query,
+                                       QDMI_ENVIRONMENT_QUERY_RESULT_TIMESTAMPS,
+                                       0, nullptr, &timestamps_size);
+
+    std::vector<time_t> timestamps;
+    timestamps.reserve(timestamps_size);
+
+    QDMI_environment_query_get_results(
+        query, QDMI_ENVIRONMENT_QUERY_RESULT_TIMESTAMPS, timestamps_size,
+        timestamps.data(), nullptr);
+
+    size_t size_values = 0;
+    QDMI_environment_query_get_results(
+        query, QDMI_ENVIRONMENT_QUERY_RESULT_VALUES, 0, nullptr, &size_values);
+
+    std::vector<float> values;
+    values.reserve(size_values);
+
+    QDMI_environment_query_get_results(query,
+                                       QDMI_ENVIRONMENT_QUERY_RESULT_VALUES,
+                                       size_values, values.data(), nullptr);
+  }
 }

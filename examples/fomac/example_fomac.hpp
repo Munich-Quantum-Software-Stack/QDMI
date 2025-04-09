@@ -63,4 +63,17 @@ public:
 
   [[nodiscard]] auto get_parameters_num(const QDMI_Operation &op) const
       -> size_t;
+
+  [[nodiscard]] auto get_environment_variables() const
+      -> std::vector<QDMI_Environment>;
+
+  [[nodiscard]] auto get_environment_id(QDMI_Environment environment) const
+      -> std::string;
+
+  [[nodiscard]] auto get_environment_unit(QDMI_Environment environment) const
+      -> std::string;
+
+  [[nodiscard]] auto
+  get_environment_sampling_rate(QDMI_Environment environment) const -> int;
+
 };

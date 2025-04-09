@@ -25,6 +25,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include "example_fomac.hpp"
 
 #include "qdmi/client.h"
+#include "qdmi/constants.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -197,4 +198,62 @@ auto FoMaC::get_parameters_num(const QDMI_Operation &op) const -> size_t {
       sizeof(size_t), &parameters_num, nullptr);
   throw_if_error(ret, "Failed to query the parameter number");
   return parameters_num;
+}
+
+auto FoMaC::get_environment_variables() const -> std::vector<QDMI_Environment> {
+  size_t environments_size = 0;
+  int ret = QDMI_device_query_device_property(
+      device, QDMI_DEVICE_PROPERTY_ENVIRONMENTVARIABLES, 0, nullptr,
+      &environments_size);
+  throw_if_error(ret, "Failed to get the environment variable list size.");
+  std::vector<QDMI_Environment> environments(environments_size /
+                                             sizeof(QDMI_Site));
+  ret = QDMI_device_query_device_property(
+      device, QDMI_DEVICE_PROPERTY_ENVIRONMENTVARIABLES, environments_size,
+      static_cast<void *>(environments.data()), nullptr);
+  throw_if_error(ret, "Failed to get the environment variables.");
+  return environments;
+}
+
+auto FoMaC::get_environment_id(QDMI_Environment environment) const -> std::string {
+  size_t environment_id_size = 0;
+
+  int ret = QDMI_device_query_environment_property(
+      device, environment, QDMI_ENVIRONMENT_PROPERTY_ID, 0, nullptr,
+      &environment_id_size);
+  throw_if_error(ret, "Failed to query the size for environment ID");
+  std::string environment_id(environment_id_size - 1, '\0');
+  ret = QDMI_device_query_environment_property(
+      device, environment, QDMI_ENVIRONMENT_PROPERTY_ID,
+      environment_id.size() + 1, environment_id.data(), nullptr);
+  throw_if_error(ret, "Failed to query the environment ID");
+
+  return environment_id;
+}
+
+auto FoMaC::get_environment_unit(QDMI_Environment environment) const -> std::string {
+  size_t environment_unit_size = 0;
+
+  int ret = QDMI_device_query_environment_property(
+      device, environment, QDMI_ENVIRONMENT_PROPERTY_UNIT, 0, nullptr,
+      &environment_unit_size);
+  throw_if_error(ret, "Failed to query the size for environment unit");
+
+  std::string environment_unit(environment_unit_size - 1, '\0');
+  ret = QDMI_device_query_environment_property(
+      device, environment, QDMI_ENVIRONMENT_PROPERTY_UNIT,
+      environment_unit.size() + 1, environment_unit.data(), nullptr);
+  throw_if_error(ret, "Failed to query the environment unit");
+
+  return environment_unit;
+}
+
+auto FoMaC::get_environment_sampling_rate(QDMI_Environment environment) const -> int {
+  int sampling_rate = 0;
+  const int ret = QDMI_device_query_environment_property(
+      device, environment, QDMI_ENVIRONMENT_PROPERTY_SAMPLING_RATE,
+      sizeof(int), &sampling_rate, nullptr);
+  throw_if_error(ret, "Failed to query the sampling rate");
+
+  return sampling_rate;
 }
