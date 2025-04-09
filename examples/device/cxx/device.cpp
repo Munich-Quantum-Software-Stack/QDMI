@@ -89,7 +89,7 @@ struct CXX_QDMI_Environment_impl_d {
 struct CXX_QDMI_Device_Environment_Query_impl_d {
   std::chrono::time_point<std::chrono::system_clock> start_time{};
   std::chrono::time_point<std::chrono::system_clock> end_time{};
-  CXX_QDMI_Environment enviroment{};
+  CXX_QDMI_Environment environment{};
   std::vector<std::chrono::time_point<std::chrono::system_clock>>
       result_timestamps;
   std::vector<float> result_values;
@@ -908,7 +908,7 @@ int CXX_QDMI_device_session_create_environment_query(
     return QDMI_ERROR_BADSTATE;
   }
   *query = new CXX_QDMI_Device_Environment_Query_impl_d();
-  (*query)->enviroment = new CXX_QDMI_Environment_impl_d();
+  (*query)->environment = new CXX_QDMI_Environment_impl_d();
   (*query)->start_time = std::chrono::system_clock::now();
   (*query)->end_time = std::chrono::system_clock::now();
 
@@ -945,9 +945,9 @@ int CXX_QDMI_device_environment_query_set_parameter(
   }
 
   case QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_ENVIRONMENTVARIABLES: {
-    const auto *enviroment_ptr =
+    const auto *environment_ptr =
         static_cast<const CXX_QDMI_Environment *>(value);
-    query->enviroment = *enviroment_ptr;
+    query->environment = *environment_ptr;
     return QDMI_SUCCESS;
   }
   default:
@@ -958,7 +958,7 @@ int CXX_QDMI_device_environment_query_set_parameter(
 int CXX_QDMI_device_environment_query_submit(
     CXX_QDMI_Device_Environment_Query query) {
 
-  if (query == nullptr || query->enviroment == nullptr) {
+  if (query == nullptr || query->environment == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
 
@@ -968,7 +968,7 @@ int CXX_QDMI_device_environment_query_submit(
   auto time_difference = std::chrono::round<std::chrono::seconds>(
       query->end_time - query->start_time);
 
-  auto sampling_rate = query->enviroment->sampling_rate;
+  auto sampling_rate = query->environment->sampling_rate;
 
   auto result_length =
       static_cast<size_t>(time_difference.count() / sampling_rate.count());
@@ -984,7 +984,7 @@ int CXX_QDMI_device_environment_query_submit(
   for (unsigned int i = 0; i < result_length; i++) {
     auto duration_to_add =
         std::chrono::duration_cast<std::chrono::system_clock::duration>(
-            query->enviroment->sampling_rate * i);
+            query->environment->sampling_rate * i);
     auto next_time = query->start_time + duration_to_add;
     query->result_timestamps.emplace_back(next_time);
     query->result_values[i] =
