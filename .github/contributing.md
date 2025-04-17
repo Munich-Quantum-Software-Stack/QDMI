@@ -97,7 +97,7 @@ smooth.
 
 This document was inspired by and partially adapted from
 
-- <https://github.com/cda-tum/mqt-core/blob/main/.github/contributing.md>
+- <https://github.com/munich-quantum-toolkit/core/blob/main/.github/contributing.md>
 - <https://matplotlib.org/stable/devel/coding_guide.html>
 - <https://opensource.creativecommons.org/contributing-code/pr-guidelines/>
 - <https://yeoman.io/contributing/pull-request.html>

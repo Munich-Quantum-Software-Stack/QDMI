@@ -22,14 +22,14 @@ jobs:
       matrix:
         config: [Debug, Release]
       fail-fast: false
-    uses: cda-tum/mqt-workflows/.github/workflows/reusable-cpp-tests-ubuntu.yml@v1.7
+    uses: munich-quantum-toolkit/workflows/.github/workflows/reusable-cpp-tests-ubuntu.yml@v1.8
     with:
       config: ${{ matrix.config }}
       cmake-args: ${{ inputs.cmake-args }} ${{ inputs.cmake-args-ubuntu }}
 
   cpp-tests-macos:
     name: 🍎
-    uses: cda-tum/mqt-workflows/.github/workflows/reusable-cpp-tests-macos.yml@v1.7
+    uses: munich-quantum-toolkit/workflows/.github/workflows/reusable-cpp-tests-macos.yml@v1.8
     with:
       cmake-args: ${{ inputs.cmake-args }} ${{ inputs.cmake-args-macos }}
 
@@ -41,7 +41,7 @@ jobs:
 
   coverage:
     name: 📈
-    uses: cda-tum/mqt-workflows/.github/workflows/reusable-cpp-coverage.yml@v1.7
+    uses: munich-quantum-toolkit/workflows/.github/workflows/reusable-cpp-coverage.yml@v1.8
     with:
       cmake-args: ${{ inputs.cmake-args }} ${{ inputs.cmake-args-ubuntu }}
     permissions:
