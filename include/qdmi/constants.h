@@ -372,14 +372,19 @@ enum QDMI_JOB_STATUS_T {
    * QDMI_job_set_parameter.
    */
   QDMI_JOB_STATUS_CREATED = 0,
-  /// The job was submitted and is waiting to be executed.
+  /// The job was submitted.
   QDMI_JOB_STATUS_SUBMITTED = 1,
+  /// The job was received is waiting to be executed.
+  QDMI_JOB_STATUS_QUEUED = 2,
   /// The job is done, and the result can be retrieved.
-  QDMI_JOB_STATUS_DONE = 2,
+  QDMI_JOB_STATUS_DONE = 3,
   /// The job is running, and the result is not yet available.
-  QDMI_JOB_STATUS_RUNNING = 3,
+  QDMI_JOB_STATUS_RUNNING = 4,
   /// The job was canceled, and the result is not available.
-  QDMI_JOB_STATUS_CANCELED = 4
+  QDMI_JOB_STATUS_CANCELLED = 5,
+  /// During the job's execution, an error occurred, and the result is not
+  /// available.
+  QDMI_JOB_STATUS_FAILED = 6
 };
 
 /// Job status type.
