@@ -38,10 +38,6 @@ version-resolver:
     labels:
       - "patch"
   default: patch
-autolabeler:
-  - label: "pre-commit"
-    title:
-      - "/update pre-commit hooks/i"
 
 template: |
   ## 👀 What Changed
