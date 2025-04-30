@@ -48,6 +48,7 @@ enum QDMI_STATUS {
   QDMI_ERROR_NOTSUPPORTED = -9,     ///< Operation is not supported.
   /// Resource is in the wrong state for the operation.
   QDMI_ERROR_BADSTATE = -10,
+  QDMI_ERROR_TIMEOUT = -11, ///< Operation timed out.
 };
 
 /**
@@ -183,6 +184,18 @@ enum QDMI_DEVICE_JOB_PARAMETER_T {
    */
   QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM = 2,
   /**
+   * @brief `size_t` A timeout in milliseconds for the @ref QDMI_device_job_wait
+   * function.
+   * @details The function @ref QDMI_device_job_wait will at most wait for this
+   * amount of time before returning. If the job is not finished after this
+   * timeout, the function will return @ref QDMI_ERROR_TIMEOUT. If the timeout
+   * is set to zero, the function will wait indefinitely until the job is
+   * finished.
+   *
+   * @par If this parameter is not set, a device-specific default is used.
+   */
+  QDMI_DEVICE_JOB_PARAMETER_TIMEOUT = 2,
+  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -190,7 +203,7 @@ enum QDMI_DEVICE_JOB_PARAMETER_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_DEVICE_JOB_PARAMETER_MAX = 3,
+  QDMI_DEVICE_JOB_PARAMETER_MAX = 4,
   /**
    * @brief This enum value is reserved for a custom parameter.
    * @details The device defines the meaning and the type of this parameter.
