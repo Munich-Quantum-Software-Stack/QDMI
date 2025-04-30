@@ -345,12 +345,19 @@ enum QDMI_SITE_PROPERTY_T {
    * interface. IDs may be non-consecutive and need not start at 0.
    * See @ref QDMI_Program_Format for more information on how the site IDs map
    * to the qubits in a program.
+   * @note This property must be available for all sites since it is used to
+   * address the sites in a program.
    */
   QDMI_SITE_PROPERTY_ID = 0,
   /// `double` The T1 time of a site in µs.
   QDMI_SITE_PROPERTY_T1 = 1,
   /// `double` The T2 time of a site in µs.
   QDMI_SITE_PROPERTY_T2 = 2,
+  /**
+   * `char*` (string) The name of a site, e.g., another identifier of the site
+   * given by the device.
+   */
+  QDMI_SITE_PROPERTY_NAME = 3,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
@@ -359,7 +366,7 @@ enum QDMI_SITE_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_SITE_PROPERTY_MAX = 3,
+  QDMI_SITE_PROPERTY_MAX = 4,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.
