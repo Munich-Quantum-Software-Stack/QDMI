@@ -60,8 +60,7 @@ enum QDMI_DEVICE_SESSION_PARAMETER_T {
   /**
    * @brief `char*` (string) A token to be used in the session initialization
    * for authenticating with the device.
-   * @details A token could be a password, an API key, or any other form of
-   * authentication that the device requires. The device documentation *must*
+   * @details A token could be an API key. The device documentation *must*
    * document what kind of token is required and how it is used. If the device
    * requires authentication via a token, this parameter must be set before
    * calling @ref QDMI_device_session_init.
@@ -70,12 +69,60 @@ enum QDMI_DEVICE_SESSION_PARAMETER_T {
   /**
    * @brief `char*` (string) The baseURL or API endpoint to be used for
    * accessing the device within the session.
-   * @details If this parameter is set, and the device supports it, the device
+   * @details If this parameter is set and the device supports it, the device
    * must use the specified baseURL or API endpoint for the session. Devices may
    * use this parameter to switch between different versions of the API or
    * different endpoints for testing or production environments.
    */
   QDMI_DEVICE_SESSION_PARAMETER_BASEURL = 1,
+  /**
+   * @brief `char*` (string) A path to a text file that contains the token to be
+   * used in the session initialization for authenticating with the device.
+   * @details A token could be an API key. The device documentation *must*
+   * document what kind of token is required and how it is used. If the device
+   * requires authentication via a token, this parameter must be set before
+   * calling @ref QDMI_device_session_init.
+   */
+  QDMI_DEVICE_SESSION_PARAMETER_TOKENFILE = 2,
+  /**
+   * @brief `char*` (string) A URL to an authentication server that is used for
+   * the authentication via username and password.
+   * @details For authentication via username and password, all three following
+   * parameters must be set:
+   * - @ref QDMI_DEVICE_SESSION_PARAMETER_AUTHURL
+   * - @ref QDMI_DEVICE_SESSION_PARAMETER_USERNAME
+   * - @ref QDMI_DEVICE_SESSION_PARAMETER_PASSWORD
+   *
+   * @par The URL is used to retrieve a token afterward used for every request
+   * to the device. The username and password are used to authenticate the user
+   * at the authentication server.
+   *
+   * @par If the device requires authentication via a username and a password,
+   * this parameter must be set before calling @ref QDMI_device_session_init.
+   */
+  QDMI_DEVICE_SESSION_PARAMETER_AUTHURL = 3,
+  /**
+   * @brief `char*` (string) A username to identify the user at an
+   * authentication server that is used in combination with a password.
+   * @details For more information on authentication via username and password,
+   * see @ref QDMI_DEVICE_SESSION_PARAMETER_AUTHURL.
+   *
+   * @par If the device requires authentication via a username and a password,
+   * this parameter must be set before calling @ref QDMI_device_session_init.
+   * @see QDMI_DEVICE_SESSION_PARAMETER_AUTHURL
+   */
+  QDMI_DEVICE_SESSION_PARAMETER_USERNAME = 4,
+  /**
+   * @brief `char*` (string) A password to identify the user at an
+   * authentication server that is used in combination with a username.
+   * @details For more information on authentication via username and password,
+   * see @ref QDMI_DEVICE_SESSION_PARAMETER_AUTHURL.
+   *
+   * @par If the device  requires authentication via a username and a password,
+   * this parameter must be set before calling @ref QDMI_device_session_init.
+   * @see QDMI_DEVICE_SESSION_PARAMETER_AUTHURL
+   */
+  QDMI_DEVICE_SESSION_PARAMETER_PASSWORD = 5,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
@@ -84,7 +131,7 @@ enum QDMI_DEVICE_SESSION_PARAMETER_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_DEVICE_SESSION_PARAMETER_MAX = 2,
+  QDMI_DEVICE_SESSION_PARAMETER_MAX = 6,
   /**
    * @brief This enum value is reserved for a custom parameter.
    * @details The device defines the meaning and the type of this parameter.
