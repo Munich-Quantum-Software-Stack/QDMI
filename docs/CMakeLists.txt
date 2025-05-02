@@ -42,6 +42,7 @@ set(DOXYGEN_INPUT_DIRS
     ${CMAKE_CURRENT_SOURCE_DIR}/rationale.md
     ${CMAKE_CURRENT_SOURCE_DIR}/examples.md
     ${CMAKE_CURRENT_SOURCE_DIR}/templates.md
+    ${CMAKE_CURRENT_SOURCE_DIR}/changelog.md
     ${CMAKE_CURRENT_SOURCE_DIR}/guide.md)
 # By default the files are separated by a semicolon. This is not what Doxygen
 # wants, so we replace it with a space.
@@ -52,7 +53,7 @@ string(REPLACE ";" " " DOXYGEN_INPUT_DIRS "${DOXYGEN_INPUT_DIRS}")
 # directories where these files are located.
 set(DOXYGEN_EXAMPLE_DIRS
     ${PROJECT_SOURCE_DIR}/examples ${PROJECT_SOURCE_DIR}/.github
-    ${PROJECT_SOURCE_DIR}/README.md)
+    ${PROJECT_SOURCE_DIR}/CHANGELOG.md ${PROJECT_SOURCE_DIR}/README.md)
 # Again, replace the semicolon with a space such that Doxygen can handle it.
 string(REPLACE ";" " " DOXYGEN_EXAMPLE_DIRS "${DOXYGEN_EXAMPLE_DIRS}")
 
@@ -96,6 +97,7 @@ add_custom_command(
           ${CMAKE_CURRENT_SOURCE_DIR}/layout.xml
           ${CMAKE_CURRENT_SOURCE_DIR}/style.css
           ${CMAKE_SOURCE_DIR}/README.md
+          ${CMAKE_SOURCE_DIR}/CHANGELOG.md
           ${CMAKE_SOURCE_DIR}/.github/support.md
   COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_CONFIG_FILE_OUT}
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}

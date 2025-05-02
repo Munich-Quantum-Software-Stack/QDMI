@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 The format is based on a mixture of [Keep a Changelog] and [Common Changelog]. This project adheres
 to [Semantic Versioning], with the exception that minor releases may include breaking changes.
 
+<!-- [DOXYGEN] -->
+
 ## [Unreleased]
 
 ### Added
@@ -48,3 +50,5 @@ changelogs._
 [Common Changelog]: https://common-changelog.org
 [Semantic Versioning]: https://semver.org/spec/v2.0.0.html
 [GitHub Release Notes]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases
+
+<!-- [DOXYGEN] -->
