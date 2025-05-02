@@ -125,6 +125,18 @@ TEST_P(QDMIImplementationTest, SetJobParameterImplemented) {
   QDMI_job_free(job);
 }
 
+TEST_P(QDMIImplementationTest, QueryJobPropertyImplemented) {
+  QDMI_Job job = nullptr;
+  const auto expected_value = mode == TEST_SESSION_MODE::READWRITE
+                                  ? QDMI_SUCCESS
+                                  : QDMI_ERROR_PERMISSIONDENIED;
+  EXPECT_EQ(QDMI_device_create_job(device, &job), expected_value);
+  EXPECT_EQ(QDMI_job_query_job_property(job, QDMI_JOB_PROPERTY_MAX, 0, nullptr,
+                                        nullptr),
+            QDMI_ERROR_INVALIDARGUMENT);
+  QDMI_job_free(job);
+}
+
 TEST_P(QDMIImplementationTest, SubmitJobImplemented) {
   QDMI_Job job = nullptr;
   auto expected_value = mode == TEST_SESSION_MODE::READWRITE
