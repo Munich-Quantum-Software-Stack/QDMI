@@ -307,7 +307,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @brief `QDMI_Site*` (@ref QDMI_Site list) The sites of the device.
    * @details The returned @ref QDMI_Site handles may be used to query site
    * and operation properties. The list need not be sorted based on the @ref
-   * QDMI_SITE_PROPERTY_ID.
+   * QDMI_SITE_PROPERTY_INDEX.
    */
   QDMI_DEVICE_PROPERTY_SITES = 5,
   /**

@@ -11,18 +11,18 @@ to [Semantic Versioning], with the exception that minor releases may include bre
 
 ### Added
 
-- 📝 Changelog ([#160]) ([**@ystade**])
-- 🚸 Querying of job properties incl. previously set parameters values ([#160]) ([**@ystade**])
+- 📝 Changelog ([#160]) ([**\@ystade**])
+- 🚸 Querying of job properties incl. previously set parameters values ([#160]) ([**\@ystade**])
 
 ### Fixed
 
 ### Changed
 
 - 🚸 `QDMI_SESSION_PARAMETER` enum values while adding new authentication options ([#160])
-  ([**@ystade**])
+  ([**\@ystade**])
 - 🚸 `QDMI_DEVICE_SESSION_PARAMETER` enum values while adding new authentication options ([#160])
-  ([**@ystade**])
-- 🚸 `QDMI_JOB_STATUS` enum values while extending them ([#160]) ([**@ystade**])
+  ([**\@ystade**])
+- 🚸 `QDMI_JOB_STATUS` enum values while extending them ([#160]) ([**\@ystade**])
 
 ## [1.1.0] - 2025-01-10
 
@@ -41,8 +41,8 @@ changelogs._
 
 <!-- Contributor -->
 
-[**@burgholzer**]: https://github.com/burgholzer
-[**@ystade**]: https://github.com/ystade
+[**\@burgholzer**]: https://github.com/burgholzer
+[**\@ystade**]: https://github.com/ystade
 
 <!-- General links -->
 
