@@ -413,7 +413,7 @@ int CXX_QDMI_device_job_query_job_property(CXX_QDMI_Device_Job job,
                                            const QDMI_Device_Job_Property prop,
                                            const size_t size, void *value,
                                            size_t *size_ret) {
-  if (job == NULL || (value != NULL && size == 0) ||
+  if (job == nullptr || (value != nullptr && size == 0) ||
       (prop >= QDMI_DEVICE_JOB_PROPERTY_MAX &&
        prop != QDMI_DEVICE_JOB_PROPERTY_CUSTOM1 &&
        prop != QDMI_DEVICE_JOB_PROPERTY_CUSTOM2 &&
