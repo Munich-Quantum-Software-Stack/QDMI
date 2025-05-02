@@ -647,13 +647,23 @@ enum QDMI_JOB_PARAMETER_T {
    */
   QDMI_JOB_PARAMETER_SHOTSNUM = 2,
   /**
+   * @brief `size_t` A timeout in seconds for the @ref QDMI_job_wait function.
+   * @details The function @ref QDMI_job_wait will at most wait for this amount
+   * of time before returning. If the job is not finished after this timeout,
+   * the function will return @ref QDMI_ERROR_TIMEOUT. If the timeout is set to
+   * zero, the function will wait indefinitely until the job is finished.
+   *
+   * @par If this parameter is not set, a default is used.
+   */
+  QDMI_JOB_PARAMETER_TIMEOUT = 3,
+  /**
    * @brief The maximum value of the enum.
    * @details It can be used by drivers for bounds checking and validation of
    * function parameters.
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_JOB_PARAMETER_MAX = 3,
+  QDMI_JOB_PARAMETER_MAX = 4,
   /**
    * @brief This enum value is reserved for a custom parameter.
    * @details The driver defines the meaning and the type of this parameter.
@@ -763,6 +773,12 @@ enum QDMI_JOB_PROPERTY_T {
    */
   QDMI_JOB_PROPERTY_SHOTSNUM = 3,
   /**
+   * @brief `size_t` A timeout in seconds for the @ref QDMI_job_wait function.
+   * @details This property returns the value of the @ref
+   * QDMI_JOB_PARAMETER_TIMEOUT parameter.
+   */
+  QDMI_JOB_PROPERTY_TIMEOUT = 4,
+  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -770,7 +786,7 @@ enum QDMI_JOB_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_JOB_PROPERTY_MAX = 4,
+  QDMI_JOB_PROPERTY_MAX = 5,
   /**
    * @brief This enum value is reserved for a custom parameter.
    * @details The device defines the meaning and the type of this parameter.

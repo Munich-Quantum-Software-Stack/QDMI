@@ -255,7 +255,7 @@ enum QDMI_DEVICE_JOB_PROPERTY_T {
    * @details This property returns the value of the @ref
    * QDMI_DEVICE_JOB_PARAMETER_TIMEOUT parameter.
    */
-  QDMI_DEVICE_JOB_PARAMETER_TIMEOUT = 4,
+  QDMI_DEVICE_JOB_PROPERTY_TIMEOUT = 4,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
