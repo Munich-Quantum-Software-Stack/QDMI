@@ -99,13 +99,13 @@ void QDMIImplementationTest::TearDown() {
   std::filesystem::remove(config_file_name);
 }
 
-TEST_P(QDMIImplementationTest, SetSessionParameterImplemented) {
+TEST_P(QDMIImplementationTest, SessionSetParameterImplemented) {
   ASSERT_EQ(QDMI_session_set_parameter(session, QDMI_SESSION_PARAMETER_MAX, 0,
                                        nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
 }
 
-TEST_P(QDMIImplementationTest, CreateJobImplemented) {
+TEST_P(QDMIImplementationTest, JobCreateImplemented) {
   QDMI_Job job = nullptr;
   const auto expected_value = mode == TEST_SESSION_MODE::READWRITE
                                   ? QDMI_SUCCESS
@@ -114,7 +114,7 @@ TEST_P(QDMIImplementationTest, CreateJobImplemented) {
   QDMI_job_free(job);
 }
 
-TEST_P(QDMIImplementationTest, SetJobParameterImplemented) {
+TEST_P(QDMIImplementationTest, JobSetParameterImplemented) {
   QDMI_Job job = nullptr;
   const auto expected_value = mode == TEST_SESSION_MODE::READWRITE
                                   ? QDMI_SUCCESS
@@ -125,7 +125,7 @@ TEST_P(QDMIImplementationTest, SetJobParameterImplemented) {
   QDMI_job_free(job);
 }
 
-TEST_P(QDMIImplementationTest, QueryJobPropertyImplemented) {
+TEST_P(QDMIImplementationTest, JobQueryJobPropertyImplemented) {
   QDMI_Job job = nullptr;
   const auto expected_value = mode == TEST_SESSION_MODE::READWRITE
                                   ? QDMI_SUCCESS
@@ -137,7 +137,7 @@ TEST_P(QDMIImplementationTest, QueryJobPropertyImplemented) {
   QDMI_job_free(job);
 }
 
-TEST_P(QDMIImplementationTest, SubmitJobImplemented) {
+TEST_P(QDMIImplementationTest, JobSubmitImplemented) {
   QDMI_Job job = nullptr;
   auto expected_value = mode == TEST_SESSION_MODE::READWRITE
                             ? QDMI_SUCCESS
@@ -150,7 +150,7 @@ TEST_P(QDMIImplementationTest, SubmitJobImplemented) {
   QDMI_job_free(job);
 }
 
-TEST_P(QDMIImplementationTest, CancelJobImplemented) {
+TEST_P(QDMIImplementationTest, JobCancelImplemented) {
   QDMI_Job job = nullptr;
   auto expected_value = mode == TEST_SESSION_MODE::READWRITE
                             ? QDMI_SUCCESS
@@ -163,7 +163,7 @@ TEST_P(QDMIImplementationTest, CancelJobImplemented) {
   QDMI_job_free(job);
 }
 
-TEST_P(QDMIImplementationTest, CheckJobStatusImplemented) {
+TEST_P(QDMIImplementationTest, JobCheckImplemented) {
   QDMI_Job job = nullptr;
   QDMI_Job_Status status = QDMI_JOB_STATUS_RUNNING;
   auto expected_value = mode == TEST_SESSION_MODE::READWRITE
@@ -177,7 +177,7 @@ TEST_P(QDMIImplementationTest, CheckJobStatusImplemented) {
   QDMI_job_free(job);
 }
 
-TEST_P(QDMIImplementationTest, WaitOnJobImplemented) {
+TEST_P(QDMIImplementationTest, JobWaitImplemented) {
   QDMI_Job job = nullptr;
   auto expected_value = mode == TEST_SESSION_MODE::READWRITE
                             ? QDMI_SUCCESS
@@ -190,7 +190,7 @@ TEST_P(QDMIImplementationTest, WaitOnJobImplemented) {
   QDMI_job_free(job);
 }
 
-TEST_P(QDMIImplementationTest, GetJobDataImplemented) {
+TEST_P(QDMIImplementationTest, JobGetResultsImplemented) {
   QDMI_Job job = nullptr;
   const auto expected_value = mode == TEST_SESSION_MODE::READWRITE
                                   ? QDMI_SUCCESS
@@ -264,7 +264,7 @@ TEST_P(QDMIImplementationTest, QueryDeviceLibraryVersionImplemented) {
   ASSERT_FALSE(value.empty()) << "Devices must provide a library version";
 }
 
-TEST_P(QDMIImplementationTest, QuerySiteIDImplemented) {
+TEST_P(QDMIImplementationTest, QuerySiteIndexImplemented) {
   size_t size = 0;
   ASSERT_EQ(QDMI_device_query_device_property(
                 device, QDMI_DEVICE_PROPERTY_SITES, 0, nullptr, &size),
@@ -279,7 +279,7 @@ TEST_P(QDMIImplementationTest, QuerySiteIDImplemented) {
   uint64_t id = 0;
   for (auto *site : sites) {
     ASSERT_EQ(QDMI_device_query_site_property(device, site,
-                                              QDMI_SITE_PROPERTY_ID,
+                                              QDMI_SITE_PROPERTY_INDEX,
                                               sizeof(uint64_t), &id, nullptr),
               QDMI_SUCCESS)
         << "Devices must provide a site id";

@@ -321,10 +321,6 @@ TEST_P(QDMIImplementationTest, JobLifecycle) {
               QDMI_ERROR_NOTSUPPORTED);
   }
 
-  // No device may support the MAX parameter
-  EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_MAX, 0, nullptr),
-            QDMI_ERROR_INVALIDARGUMENT);
-
   // The MAX parameter is not a valid value for any device
   EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_MAX, 0, nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
@@ -345,6 +341,16 @@ TEST_P(QDMIImplementationTest, JobLifecycle) {
   EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
                                    sizeof(QDMI_Program_Format), &format),
             QDMI_SUCCESS);
+  // The set parameter value must coincide with the value returned for the
+  // respective property
+  size_t size = 0;
+  EXPECT_EQ(QDMI_job_query_job_property(job, QDMI_JOB_PROPERTY_PROGRAMFORMAT,
+                                        sizeof(QDMI_Program_Format), &format,
+                                        &size),
+            QDMI_SUCCESS);
+  EXPECT_EQ(size, sizeof(QDMI_Program_Format));
+  EXPECT_EQ(format, QDMI_PROGRAM_FORMAT_QASM2);
+
   size_t shots = 5;
   EXPECT_EQ(QDMI_job_set_parameter(nullptr, QDMI_JOB_PARAMETER_SHOTSNUM,
                                    sizeof(size_t), &shots),
@@ -358,6 +364,12 @@ TEST_P(QDMIImplementationTest, JobLifecycle) {
   ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_SHOTSNUM,
                                    sizeof(size_t), &shots),
             QDMI_SUCCESS);
+  // The set parameter value must coincide with the value returned for the
+  // respective property
+  EXPECT_EQ(QDMI_job_query_job_property(job, QDMI_JOB_PROPERTY_SHOTSNUM,
+                                        sizeof(size_t), &shots, nullptr),
+            QDMI_SUCCESS);
+  EXPECT_EQ(shots, 5);
   ASSERT_EQ(QDMI_job_submit(job), QDMI_SUCCESS);
   EXPECT_EQ(QDMI_job_submit(job), QDMI_ERROR_INVALIDARGUMENT);
   EXPECT_EQ(QDMI_job_submit(nullptr), QDMI_ERROR_INVALIDARGUMENT);
