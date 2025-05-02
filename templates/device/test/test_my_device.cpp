@@ -62,14 +62,14 @@ std::string Get_test_circuit() {
 }
 } // namespace
 
-TEST_F(QDMIImplementationTest, ControlCreateJobImplemented) {
+TEST_F(QDMIImplementationTest, JobCreateImplemented) {
   MY_QDMI_Device_Job job = nullptr;
   ASSERT_NE(MY_QDMI_device_session_create_device_job(session, &job),
             QDMI_ERROR_NOTIMPLEMENTED);
   MY_QDMI_device_job_free(job);
 }
 
-TEST_F(QDMIImplementationTest, ControlSetParameterImplemented) {
+TEST_F(QDMIImplementationTest, JobSetParameterImplemented) {
   MY_QDMI_Device_Job job = nullptr;
   ASSERT_EQ(MY_QDMI_device_session_create_device_job(session, &job),
             QDMI_SUCCESS);
@@ -79,7 +79,17 @@ TEST_F(QDMIImplementationTest, ControlSetParameterImplemented) {
   MY_QDMI_device_job_free(job);
 }
 
-TEST_F(QDMIImplementationTest, ControlSubmitJobImplemented) {
+TEST_F(QDMIImplementationTest, JobQueryPropertyImplemented) {
+  MY_QDMI_Device_Job job = nullptr;
+  ASSERT_EQ(MY_QDMI_device_session_create_device_job(session, &job),
+            QDMI_SUCCESS);
+  ASSERT_EQ(MY_QDMI_device_job_query_job_property(
+                job, QDMI_DEVICE_JOB_PROPERTY_MAX, 0, nullptr, nullptr),
+            QDMI_ERROR_INVALIDARGUMENT);
+  MY_QDMI_device_job_free(job);
+}
+
+TEST_F(QDMIImplementationTest, JobSubmitImplemented) {
   MY_QDMI_Device_Job job = nullptr;
   ASSERT_EQ(MY_QDMI_device_session_create_device_job(session, &job),
             QDMI_SUCCESS);
@@ -87,7 +97,7 @@ TEST_F(QDMIImplementationTest, ControlSubmitJobImplemented) {
   MY_QDMI_device_job_free(job);
 }
 
-TEST_F(QDMIImplementationTest, ControlCancelImplemented) {
+TEST_F(QDMIImplementationTest, JobCancelImplemented) {
   MY_QDMI_Device_Job job = nullptr;
   ASSERT_EQ(MY_QDMI_device_session_create_device_job(session, &job),
             QDMI_SUCCESS);
@@ -95,7 +105,7 @@ TEST_F(QDMIImplementationTest, ControlCancelImplemented) {
   MY_QDMI_device_job_free(job);
 }
 
-TEST_F(QDMIImplementationTest, ControlCheckImplemented) {
+TEST_F(QDMIImplementationTest, JobCheckImplemented) {
   MY_QDMI_Device_Job job = nullptr;
   QDMI_Job_Status status = QDMI_JOB_STATUS_RUNNING;
   ASSERT_EQ(MY_QDMI_device_session_create_device_job(session, &job),
@@ -104,7 +114,7 @@ TEST_F(QDMIImplementationTest, ControlCheckImplemented) {
   MY_QDMI_device_job_free(job);
 }
 
-TEST_F(QDMIImplementationTest, ControlWaitImplemented) {
+TEST_F(QDMIImplementationTest, JobWaitImplemented) {
   MY_QDMI_Device_Job job = nullptr;
   ASSERT_EQ(MY_QDMI_device_session_create_device_job(session, &job),
             QDMI_SUCCESS);
@@ -112,7 +122,7 @@ TEST_F(QDMIImplementationTest, ControlWaitImplemented) {
   MY_QDMI_device_job_free(job);
 }
 
-TEST_F(QDMIImplementationTest, ControlGetDataImplemented) {
+TEST_F(QDMIImplementationTest, JobGetResultsImplemented) {
   MY_QDMI_Device_Job job = nullptr;
   ASSERT_EQ(MY_QDMI_device_session_create_device_job(session, &job),
             QDMI_SUCCESS);
@@ -187,7 +197,7 @@ TEST_F(QDMIImplementationTest, QueryDeviceLibraryVersionImplemented) {
   ASSERT_FALSE(value.empty()) << "Devices must provide a library version";
 }
 
-TEST_F(QDMIImplementationTest, QuerySiteIDImplemented) {
+TEST_F(QDMIImplementationTest, QuerySiteIndexImplemented) {
   size_t size = 0;
   ASSERT_EQ(MY_QDMI_device_session_query_device_property(
                 session, QDMI_DEVICE_PROPERTY_SITES, 0, nullptr, &size),
@@ -201,15 +211,15 @@ TEST_F(QDMIImplementationTest, QuerySiteIDImplemented) {
       << "Devices must provide a list of sites";
   size_t id = 0;
   for (auto *site : sites) {
-    ASSERT_EQ(
-        MY_QDMI_device_session_query_site_property(
-            session, site, QDMI_SITE_PROPERTY_ID, sizeof(size_t), &id, nullptr),
-        QDMI_SUCCESS)
+    ASSERT_EQ(MY_QDMI_device_session_query_site_property(
+                  session, site, QDMI_SITE_PROPERTY_INDEX, sizeof(size_t), &id,
+                  nullptr),
+              QDMI_SUCCESS)
         << "Devices must provide a site id";
   }
 }
 
-TEST_F(QDMIImplementationTest, QubitNum) {
+TEST_F(QDMIImplementationTest, QueryDeviceQubitNum) {
   size_t num_qubits = 0;
   EXPECT_EQ(MY_QDMI_device_session_query_device_property(
                 session, QDMI_DEVICE_PROPERTY_QUBITSNUM, sizeof(size_t),
