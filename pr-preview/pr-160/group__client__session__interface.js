@@ -5,7 +5,9 @@ var group__client__session__interface =
     [ "QDMI_Session_Property", "group__client__session__interface.html#gacf251f306f595e62f34afbf2977115fe", null ],
     [ "QDMI_SESSION_PARAMETER_T", "group__client__session__interface.html#gaac5ae9f0bf8046987569c6f4e75611d3", [
       [ "QDMI_SESSION_PARAMETER_TOKEN", "group__client__session__interface.html#ggaac5ae9f0bf8046987569c6f4e75611d3af68e93d8a13dacb31e6bbdf43c9c5283", null ],
+      [ "QDMI_SESSION_PARAMETER_AUTHURL", "group__client__session__interface.html#ggaac5ae9f0bf8046987569c6f4e75611d3a4098392531f944fc8377049f66b84ecd", null ],
       [ "QDMI_SESSION_PARAMETER_USERNAME", "group__client__session__interface.html#ggaac5ae9f0bf8046987569c6f4e75611d3adb403a811d93b17a8e8d685148e171c4", null ],
+      [ "QDMI_SESSION_PARAMETER_PASSWORD", "group__client__session__interface.html#ggaac5ae9f0bf8046987569c6f4e75611d3a6477f599b4a7355474fc9b1d90b1bb14", null ],
       [ "QDMI_SESSION_PARAMETER_PROJECTID", "group__client__session__interface.html#ggaac5ae9f0bf8046987569c6f4e75611d3afddfcf1fbf02114af0f96e9f20d08590", null ],
       [ "QDMI_SESSION_PARAMETER_MAX", "group__client__session__interface.html#ggaac5ae9f0bf8046987569c6f4e75611d3a687f1bf96e2c4467d483c196c8b56292", null ],
       [ "QDMI_SESSION_PARAMETER_CUSTOM1", "group__client__session__interface.html#ggaac5ae9f0bf8046987569c6f4e75611d3a3e125af4fb52d626a4ff73d81f22cf46", null ],

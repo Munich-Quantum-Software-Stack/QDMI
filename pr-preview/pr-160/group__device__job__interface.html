@@ -556,7 +556,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Wait for a job to finish. </p>
-<p>This function blocks until the job has either finished, has been canceled, or the timeout has been reached. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>This function blocks until the job has either finished, has been canceled, or the timeout has been reached. Hence, starting with the call to this function, it returns latest after the number of seconds specified by the <a class="el" href="constants_8h.html#a40dd25c531ebf99fb4b46469083b609ea871d0b7b92d493213113b57264785c31">QDMI_DEVICE_JOB_PARAMETER_TIMEOUT</a> parameter. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">job</td><td>The job to wait for. Must not be <code>NULL</code>. </td></tr>
   </table>

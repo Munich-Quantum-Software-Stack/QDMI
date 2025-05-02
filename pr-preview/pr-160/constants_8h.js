@@ -26,9 +26,8 @@ var constants_8h =
       [ "QDMI_ERROR_TIMEOUT", "constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8acf9abde59858a1087762ba3e287e9fdd", null ]
     ] ],
     [ "QDMI_DEVICE_SESSION_PARAMETER_T", "constants_8h.html#a9f1e467b2b3870263b0e9d7e5d36cea4", [
-      [ "QDMI_DEVICE_SESSION_PARAMETER_TOKEN", "constants_8h.html#a9f1e467b2b3870263b0e9d7e5d36cea4a497c89c2b59737d70086a54e1958c292", null ],
       [ "QDMI_DEVICE_SESSION_PARAMETER_BASEURL", "constants_8h.html#a9f1e467b2b3870263b0e9d7e5d36cea4a8f7ec33012b7a91ce8e7311dfa51f724", null ],
-      [ "QDMI_DEVICE_SESSION_PARAMETER_TOKENFILE", "constants_8h.html#a9f1e467b2b3870263b0e9d7e5d36cea4abed5059e4eaca7baea7b02c059ccb279", null ],
+      [ "QDMI_DEVICE_SESSION_PARAMETER_TOKEN", "constants_8h.html#a9f1e467b2b3870263b0e9d7e5d36cea4a497c89c2b59737d70086a54e1958c292", null ],
       [ "QDMI_DEVICE_SESSION_PARAMETER_AUTHURL", "constants_8h.html#a9f1e467b2b3870263b0e9d7e5d36cea4ae114dae6d45e69beda502dec6f54019c", null ],
       [ "QDMI_DEVICE_SESSION_PARAMETER_USERNAME", "constants_8h.html#a9f1e467b2b3870263b0e9d7e5d36cea4a5588159e3e38ae5186eebc2b9fc2cac7", null ],
       [ "QDMI_DEVICE_SESSION_PARAMETER_PASSWORD", "constants_8h.html#a9f1e467b2b3870263b0e9d7e5d36cea4a29fd3a0ea9c9f2e06ea50c032cd78ea0", null ],
@@ -56,6 +55,7 @@ var constants_8h =
       [ "QDMI_DEVICE_JOB_PROPERTY_PROGRAMFORMAT", "constants_8h.html#a6e4d18c7fa5d383bbcc1498abe090d4fa5ed68ab8ce50f4b2362a0c6ba4c92c93", null ],
       [ "QDMI_DEVICE_JOB_PROPERTY_PROGRAM", "constants_8h.html#a6e4d18c7fa5d383bbcc1498abe090d4fa1215ae3034ffc3c9e6207253b81fa649", null ],
       [ "QDMI_DEVICE_JOB_PROPERTY_SHOTSNUM", "constants_8h.html#a6e4d18c7fa5d383bbcc1498abe090d4faad5344a33a120865b1c6f987b9fe023c", null ],
+      [ "QDMI_DEVICE_JOB_PROPERTY_TIMEOUT", "constants_8h.html#a6e4d18c7fa5d383bbcc1498abe090d4fa51bb4150ff7e18ef03c57e71815f31fe", null ],
       [ "QDMI_DEVICE_JOB_PROPERTY_MAX", "constants_8h.html#a6e4d18c7fa5d383bbcc1498abe090d4fac476c098fa8050146b00c2857a151303", null ],
       [ "QDMI_DEVICE_JOB_PROPERTY_CUSTOM1", "constants_8h.html#a6e4d18c7fa5d383bbcc1498abe090d4fa19282bf485e4af273b4cfff5290540d6", null ],
       [ "QDMI_DEVICE_JOB_PROPERTY_CUSTOM2", "constants_8h.html#a6e4d18c7fa5d383bbcc1498abe090d4fad86d4edb36e54ab09f6c3a424d5bc8e4", null ],
@@ -90,7 +90,7 @@ var constants_8h =
       [ "QDMI_DEVICE_STATUS_MAX", "constants_8h.html#aa13ac5e1c93a4b358d84bb9fd1f5fd99a974d09c52e8a39e509639b2ceb7f96ee", null ]
     ] ],
     [ "QDMI_SITE_PROPERTY_T", "constants_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2", [
-      [ "QDMI_SITE_PROPERTY_ID", "constants_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2a7bea2b521064f18ecea86fd20f698477", null ],
+      [ "QDMI_SITE_PROPERTY_INDEX", "constants_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2a02a5ff9f7dfc10bb579e93d95bef06cf", null ],
       [ "QDMI_SITE_PROPERTY_T1", "constants_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2a60262ea30467ff3d36cbe4730c4a23f3", null ],
       [ "QDMI_SITE_PROPERTY_T2", "constants_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2a65eccdb8bdeed5294d48fa80621ac9d9", null ],
       [ "QDMI_SITE_PROPERTY_NAME", "constants_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2adcf75512f18098e344687f86fb574ff3", null ],
@@ -118,8 +118,8 @@ var constants_8h =
       [ "QDMI_JOB_STATUS_CREATED", "constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6a2d985c815c2e1024b9eb5605e8825df5", null ],
       [ "QDMI_JOB_STATUS_SUBMITTED", "constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6a3c531c6a92164cfb31a6c4c1a6cc5dfe", null ],
       [ "QDMI_JOB_STATUS_QUEUED", "constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6a8af19691cae44fb6816555b1c087e6e8", null ],
-      [ "QDMI_JOB_STATUS_DONE", "constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6ad3dad6dd89491e223f42ff9cd9bdade2", null ],
       [ "QDMI_JOB_STATUS_RUNNING", "constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6ac1203df2c0360fafd873b42cdcbe9cc5", null ],
+      [ "QDMI_JOB_STATUS_DONE", "constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6ad3dad6dd89491e223f42ff9cd9bdade2", null ],
       [ "QDMI_JOB_STATUS_CANCELED", "constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6a05163481e57725e91bb22ff798394f33", null ],
       [ "QDMI_JOB_STATUS_FAILED", "constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6ab9b201ad1770dc23b9c1d4753e238d4f", null ]
     ] ],

@@ -54,6 +54,7 @@ var NAVTREE =
         [ "Working with the Template", "md_docs_2templates.html#template-working", null ],
         [ "Building the Template and Running the Tests", "md_docs_2templates.html#template-building", null ]
       ] ],
+      [ "Changelog", "md_docs_2doc__changelog.html", null ],
       [ "Development Guide", "md_docs_2guide.html", null ]
     ] ],
     [ "Interfaces", "topics.html", "topics" ],
@@ -73,7 +74,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "client_8h.html",
-"group__device__session__interface.html#ga37fbde9aae43a9462e57ec8234201c91"
+"group__device__query__interface.html#ga953bf947b1efcfaa3fb63dcce61127d5"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

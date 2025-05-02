@@ -246,16 +246,18 @@ typedef enum <a class="el" href="group__client__job__interface.html#ga8f2f468604
 Enumerations</h2></td></tr>
 <tr class="memitem:gaac5ae9f0bf8046987569c6f4e75611d3" id="r_gaac5ae9f0bf8046987569c6f4e75611d3"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__client__session__interface.html#gaac5ae9f0bf8046987569c6f4e75611d3">QDMI_SESSION_PARAMETER_T</a> { <br />
 &#160;&#160;<a class="el" href="group__client__session__interface.html#ggaac5ae9f0bf8046987569c6f4e75611d3af68e93d8a13dacb31e6bbdf43c9c5283">QDMI_SESSION_PARAMETER_TOKEN</a> = 0
-, <a class="el" href="group__client__session__interface.html#ggaac5ae9f0bf8046987569c6f4e75611d3adb403a811d93b17a8e8d685148e171c4">QDMI_SESSION_PARAMETER_USERNAME</a> = 1
-, <a class="el" href="group__client__session__interface.html#ggaac5ae9f0bf8046987569c6f4e75611d3afddfcf1fbf02114af0f96e9f20d08590">QDMI_SESSION_PARAMETER_PROJECTID</a> = 2
-, <a class="el" href="group__client__session__interface.html#ggaac5ae9f0bf8046987569c6f4e75611d3a687f1bf96e2c4467d483c196c8b56292">QDMI_SESSION_PARAMETER_MAX</a> = 3
+, <a class="el" href="group__client__session__interface.html#ggaac5ae9f0bf8046987569c6f4e75611d3a4098392531f944fc8377049f66b84ecd">QDMI_SESSION_PARAMETER_AUTHURL</a> = 1
+, <a class="el" href="group__client__session__interface.html#ggaac5ae9f0bf8046987569c6f4e75611d3adb403a811d93b17a8e8d685148e171c4">QDMI_SESSION_PARAMETER_USERNAME</a> = 2
+, <a class="el" href="group__client__session__interface.html#ggaac5ae9f0bf8046987569c6f4e75611d3a6477f599b4a7355474fc9b1d90b1bb14">QDMI_SESSION_PARAMETER_PASSWORD</a> = 3
 , <br />
-&#160;&#160;<a class="el" href="group__client__session__interface.html#ggaac5ae9f0bf8046987569c6f4e75611d3a3e125af4fb52d626a4ff73d81f22cf46">QDMI_SESSION_PARAMETER_CUSTOM1</a> = 999999995
+&#160;&#160;<a class="el" href="group__client__session__interface.html#ggaac5ae9f0bf8046987569c6f4e75611d3afddfcf1fbf02114af0f96e9f20d08590">QDMI_SESSION_PARAMETER_PROJECTID</a> = 4
+, <a class="el" href="group__client__session__interface.html#ggaac5ae9f0bf8046987569c6f4e75611d3a687f1bf96e2c4467d483c196c8b56292">QDMI_SESSION_PARAMETER_MAX</a> = 5
+, <a class="el" href="group__client__session__interface.html#ggaac5ae9f0bf8046987569c6f4e75611d3a3e125af4fb52d626a4ff73d81f22cf46">QDMI_SESSION_PARAMETER_CUSTOM1</a> = 999999995
 , <a class="el" href="group__client__session__interface.html#ggaac5ae9f0bf8046987569c6f4e75611d3ac0c579e30bd180a00d5e398b03c987f6">QDMI_SESSION_PARAMETER_CUSTOM2</a> = 999999996
-, <a class="el" href="group__client__session__interface.html#ggaac5ae9f0bf8046987569c6f4e75611d3a4f9b44b3b04b77d2b560cedcee3cfa08">QDMI_SESSION_PARAMETER_CUSTOM3</a> = 999999997
-, <a class="el" href="group__client__session__interface.html#ggaac5ae9f0bf8046987569c6f4e75611d3acc5c97b9d346e291b730956970561124">QDMI_SESSION_PARAMETER_CUSTOM4</a> = 999999998
 , <br />
-&#160;&#160;<a class="el" href="group__client__session__interface.html#ggaac5ae9f0bf8046987569c6f4e75611d3aaafd9df4e1090164a7cc087faaa8557a">QDMI_SESSION_PARAMETER_CUSTOM5</a> = 999999999
+&#160;&#160;<a class="el" href="group__client__session__interface.html#ggaac5ae9f0bf8046987569c6f4e75611d3a4f9b44b3b04b77d2b560cedcee3cfa08">QDMI_SESSION_PARAMETER_CUSTOM3</a> = 999999997
+, <a class="el" href="group__client__session__interface.html#ggaac5ae9f0bf8046987569c6f4e75611d3acc5c97b9d346e291b730956970561124">QDMI_SESSION_PARAMETER_CUSTOM4</a> = 999999998
+, <a class="el" href="group__client__session__interface.html#ggaac5ae9f0bf8046987569c6f4e75611d3aaafd9df4e1090164a7cc087faaa8557a">QDMI_SESSION_PARAMETER_CUSTOM5</a> = 999999999
 <br />
  }</td></tr>
 <tr class="memdesc:gaac5ae9f0bf8046987569c6f4e75611d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum of the session parameters that can be set via <a class="el" href="group__client__session__interface.html#ga39d34b2a95cd9e2b8d9d6ab551bff078">QDMI_session_set_parameter</a>.  <a href="group__client__session__interface.html#gaac5ae9f0bf8046987569c6f4e75611d3">More...</a><br /></td></tr>
@@ -277,14 +279,15 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5ad0b4fad39ff9935e76bcd888cfca908b">QDMI_JOB_PARAMETER_PROGRAMFORMAT</a> = 0
 , <a class="el" href="group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5ac44c5d28aada4f1a1628c45805747998">QDMI_JOB_PARAMETER_PROGRAM</a> = 1
 , <a class="el" href="group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5a21a7c498f22ef05c9a72f354f6f89a81">QDMI_JOB_PARAMETER_SHOTSNUM</a> = 2
-, <a class="el" href="group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5aa94ff18351f57072ad1e9223583ff978">QDMI_JOB_PARAMETER_MAX</a> = 3
+, <a class="el" href="group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5a1920310b76fe87426eab1c65770c48be">QDMI_JOB_PARAMETER_TIMEOUT</a> = 3
 , <br />
-&#160;&#160;<a class="el" href="group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5a06fddbae216743659f3268c0e31554c8">QDMI_JOB_PARAMETER_CUSTOM1</a> = 999999995
+&#160;&#160;<a class="el" href="group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5aa94ff18351f57072ad1e9223583ff978">QDMI_JOB_PARAMETER_MAX</a> = 4
+, <a class="el" href="group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5a06fddbae216743659f3268c0e31554c8">QDMI_JOB_PARAMETER_CUSTOM1</a> = 999999995
 , <a class="el" href="group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5aa6438cc893fc43e5124f0ee5a969de2b">QDMI_JOB_PARAMETER_CUSTOM2</a> = 999999996
 , <a class="el" href="group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5a40cc64aa3dfe3a837a3d9b86024cb8ef">QDMI_JOB_PARAMETER_CUSTOM3</a> = 999999997
-, <a class="el" href="group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5a1afd4ae62865f54f0e16584b50b940e3">QDMI_JOB_PARAMETER_CUSTOM4</a> = 999999998
 , <br />
-&#160;&#160;<a class="el" href="group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5a88cae1a3c7f8af76fa83ceaaaa5f7998">QDMI_JOB_PARAMETER_CUSTOM5</a> = 999999999
+&#160;&#160;<a class="el" href="group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5a1afd4ae62865f54f0e16584b50b940e3">QDMI_JOB_PARAMETER_CUSTOM4</a> = 999999998
+, <a class="el" href="group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5a88cae1a3c7f8af76fa83ceaaaa5f7998">QDMI_JOB_PARAMETER_CUSTOM5</a> = 999999999
 <br />
  }</td></tr>
 <tr class="memdesc:ga1e7131664b094eb409d0f44d731f51f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum of the job parameters that can be set.  <a href="group__client__job__interface.html#ga1e7131664b094eb409d0f44d731f51f5">More...</a><br /></td></tr>
@@ -295,12 +298,13 @@ Enumerations</h2></td></tr>
 , <a class="el" href="group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba461ddd5f5f9b393f955fc05540d91f2c">QDMI_JOB_PROPERTY_PROGRAM</a> = 2
 , <a class="el" href="group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba63b4303048a3617aa06ac9ccb1795f23">QDMI_JOB_PROPERTY_SHOTSNUM</a> = 3
 , <br />
-&#160;&#160;<a class="el" href="group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba14db954932a0e76a751f89e75eda5351">QDMI_JOB_PROPERTY_MAX</a> = 4
+&#160;&#160;<a class="el" href="group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba242dfa7e1c30b363fbf6c931ea3a0ca9">QDMI_JOB_PROPERTY_TIMEOUT</a> = 4
+, <a class="el" href="group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba14db954932a0e76a751f89e75eda5351">QDMI_JOB_PROPERTY_MAX</a> = 5
 , <a class="el" href="group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba016257118753c19a5a86da3310be27cc">QDMI_JOB_PROPERTY_CUSTOM1</a> = 999999995
 , <a class="el" href="group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba95c21c814e579b6ac1d736ba57d69287">QDMI_JOB_PROPERTY_CUSTOM2</a> = 999999996
-, <a class="el" href="group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bbaae52e78d7f9944bde33147b9bef474ac">QDMI_JOB_PROPERTY_CUSTOM3</a> = 999999997
 , <br />
-&#160;&#160;<a class="el" href="group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bbac3fe7fca8db9bb213282e5adebf5ff2c">QDMI_JOB_PROPERTY_CUSTOM4</a> = 999999998
+&#160;&#160;<a class="el" href="group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bbaae52e78d7f9944bde33147b9bef474ac">QDMI_JOB_PROPERTY_CUSTOM3</a> = 999999997
+, <a class="el" href="group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bbac3fe7fca8db9bb213282e5adebf5ff2c">QDMI_JOB_PROPERTY_CUSTOM4</a> = 999999998
 , <a class="el" href="group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba0108668f46b41020ad1b9b78cb39f0ba">QDMI_JOB_PROPERTY_CUSTOM5</a> = 999999999
 <br />
  }</td></tr>
