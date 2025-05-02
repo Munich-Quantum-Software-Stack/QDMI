@@ -77,14 +77,6 @@ enum QDMI_DEVICE_SESSION_PARAMETER_T {
    */
   QDMI_DEVICE_SESSION_PARAMETER_TOKEN = 1,
   /**
-   * @brief `char*` (string) A path to a text file that contains the token to be
-   * used in the session initialization for authenticating with the device.
-   * @details If the device requires authentication via a token, this parameter
-   * must be set before calling @ref QDMI_device_session_init.
-   * @see QDMI_DEVICE_SESSION_PARAMETER_TOKEN
-   */
-  QDMI_DEVICE_SESSION_PARAMETER_TOKENFILE = 2,
-  /**
    * @brief `char*` (string) A URL to an authentication server that is used for
    * the authentication via username and password.
    * @details For authentication via username and password, the device
@@ -101,7 +93,7 @@ enum QDMI_DEVICE_SESSION_PARAMETER_T {
    * @par If the device requires authentication via a username and a password,
    * this parameter must be set before calling @ref QDMI_device_session_init.
    */
-  QDMI_DEVICE_SESSION_PARAMETER_AUTHURL = 3,
+  QDMI_DEVICE_SESSION_PARAMETER_AUTHURL = 2,
   /**
    * @brief `char*` (string) A username to identify the user that is used in
    * combination with a password.
@@ -112,7 +104,7 @@ enum QDMI_DEVICE_SESSION_PARAMETER_T {
    * this parameter must be set before calling @ref QDMI_device_session_init.
    * @see QDMI_DEVICE_SESSION_PARAMETER_AUTHURL
    */
-  QDMI_DEVICE_SESSION_PARAMETER_USERNAME = 4,
+  QDMI_DEVICE_SESSION_PARAMETER_USERNAME = 3,
   /**
    * @brief `char*` (string) A password to identify the user that is used in
    * combination with a username.
@@ -123,7 +115,7 @@ enum QDMI_DEVICE_SESSION_PARAMETER_T {
    * this parameter must be set before calling @ref QDMI_device_session_init.
    * @see QDMI_DEVICE_SESSION_PARAMETER_AUTHURL
    */
-  QDMI_DEVICE_SESSION_PARAMETER_PASSWORD = 5,
+  QDMI_DEVICE_SESSION_PARAMETER_PASSWORD = 4,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
@@ -132,7 +124,7 @@ enum QDMI_DEVICE_SESSION_PARAMETER_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_DEVICE_SESSION_PARAMETER_MAX = 6,
+  QDMI_DEVICE_SESSION_PARAMETER_MAX = 5,
   /**
    * @brief This enum value is reserved for a custom parameter.
    * @details The device defines the meaning and the type of this parameter.

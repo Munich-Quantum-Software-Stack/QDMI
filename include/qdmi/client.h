@@ -120,19 +120,44 @@ enum QDMI_SESSION_PARAMETER_T {
    */
   QDMI_SESSION_PARAMETER_TOKEN = 0,
   /**
+   * @brief `char*` (string) The URL to an authentication server that is used
+   * for the authentication via username and password.
+   * @details For authentication via username and password, the device
+   * documentation *must* document which of the three following parameters must
+   * be set:
+   * - @ref QDMI_SESSION_PARAMETER_AUTHURL
+   * - @ref QDMI_SESSION_PARAMETER_USERNAME
+   * - @ref QDMI_SESSION_PARAMETER_PASSWORD
+   *
+   * @par The URL is used to retrieve a token afterward used for every request
+   * to the device. The username and password are used to authenticate the user
+   * at the authentication server.
+   *
+   * @par The driver documentation *must* document if the implementation
+   * requires this parameter to be set.
+   */
+  QDMI_SESSION_PARAMETER_AUTHURL = 1,
+  /**
    * @brief `char*` (string) The username to use for the session.
    * @details The username is used for authentication within the session. The
    * driver documentation *must* document if the implementation requires this
    * parameter to be set.
    */
-  QDMI_SESSION_PARAMETER_USERNAME = 1,
+  QDMI_SESSION_PARAMETER_USERNAME = 2,
+  /**
+   * @brief `char*` (string) The password to use for the session.
+   * @details The password is used for authentication within the session. The
+   * driver documentation *must* document if the implementation requires this
+   * parameter to be set.
+   */
+  QDMI_SESSION_PARAMETER_PASSWORD = 3,
   /**
    * @brief `char*` (string) The project ID to use for the session.
    * @details Can be used to associate the session with a certain project, for
    * example, for accounting purposes. The driver documentation *must* document
    * if the implementation requires this parameter to be set.
    */
-  QDMI_SESSION_PARAMETER_PROJECTID = 2,
+  QDMI_SESSION_PARAMETER_PROJECTID = 4,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by drivers for bounds checking and validation of
@@ -141,7 +166,7 @@ enum QDMI_SESSION_PARAMETER_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_SESSION_PARAMETER_MAX = 3,
+  QDMI_SESSION_PARAMETER_MAX = 5,
   /**
    * @brief This enum value is reserved for a custom parameter.
    * @details The driver defines the meaning and the type of this parameter.
