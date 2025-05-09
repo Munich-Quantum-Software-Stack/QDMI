@@ -901,7 +901,7 @@ int C_QDMI_device_environment_query_set_parameter(
   case QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_END_TIME:
     query->end_time = *(time_t *)(value);
     return QDMI_SUCCESS;
-  case QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_ENVIRONMENTVARIABLES:
+  case QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_ENVIRONMENT:
     query->environment = *(C_QDMI_Environment *)(value);
     return QDMI_SUCCESS;
   default:

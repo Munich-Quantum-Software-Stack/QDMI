@@ -351,8 +351,44 @@ int QDMI_device_session_query_operation_property(
     QDMI_Device_Session session, QDMI_Operation operation, size_t num_sites,
     const QDMI_Site *sites, size_t num_params, const double *params,
     QDMI_Operation_Property prop, size_t size, void *value, size_t *size_ret);
-/*
- * TODO
+
+/**
+ * @brief Query an environment property.
+ * @param[in] session The session used for the query. Must not be @c NULL.
+ * @param[in] environment The environment to query. Must not be @c NULL.
+ * @param[in] prop The property to query. Must be one of the values specified
+ * for @ref QDMI_Environment_Property.
+ * @param[in] size The size of the memory pointed to by @p value in bytes. Must
+ * be greater or equal to the size of the return type specified for @p prop,
+ * except when @p value is @c NULL, in which case it is ignored.
+ * @param[out] value A pointer to the memory location where the value of the
+ * property will be stored. If this is @c NULL, it is ignored.
+ * @param[out] size_ret The actual size of the data being queried in bytes. If
+ * this is @c NULL, it is ignored.
+ * @return @ref QDMI_SUCCESS if the device supports the specified property and,
+ * when @p value is not @c NULL, the property was successfully retrieved.
+ * @return @ref QDMI_ERROR_NOTSUPPORTED if the device does not support the
+ * property.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if
+ *  - @p session or @p query is @c NULL,
+ *  - @p prop is invalid, or
+ *  - @p value is not @c NULL and @p size is less than the size of the data
+ *  being queried.
+ * @return @ref QDMI_ERROR_BADSTATE if the property cannot be queried in the
+ * current state of the session, for example, because the session is not
+ * initialized.
+ * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
+ *
+ * @remark Calling this function with @p value set to @c NULL is expected to
+ * allow checking if the device supports the specified property without
+ * retrieving the property and without the need to provide a buffer for it.
+ * Additionally, the size of the buffer needed to retrieve the property is
+ * returned in @p size_ret if @p size_ret is not @c NULL.
+ * See the @ref QDMI_device_query_environment_property documentation for an
+ * example.
+ *
+ * @attention May only be called after the session has been initialized with
+ * @ref QDMI_device_session_init.
  */
 
 int QDMI_device_session_query_environment_property(
@@ -556,36 +592,229 @@ void QDMI_device_job_free(QDMI_Device_Job job);
 
 /** @} */ // end of device_job_interface
 
-/*
- * TODO Documentation
+/** @defgroup device_environment_query_interface QDMI Device Environment Query
+ * Interface
+ *  @brief Provides functions to manage environment queries on a device.
+ *  @details An environment query is a task submitted to a device for querying
+ * environmental variables, i.e. temperature or power.
  *
+ *  The typical workflow for a device environment query is as follows:
+ *  - Create an environment query with @ref
+ * QDMI_device_session_create_environment_query.
+ *  - Set parameters for the environment query with @ref
+ * QDMI_device_environment_query_set_parameter
+ *  - Submit the environment query to the device with @ref
+ * QDMI_device_environment_query_submit.
+ *  - Check the status of the environment query with @ref
+ * QDMI_device_environment_query_check_status.
+ *  - Wait for the environment query to finish with @ref
+ * QDMI_device_environment_query_wait.
+ *  - Retrieve the results of the environment query with @ref
+ * QDMI_environment_query_get_results.
+ *  - Free the environment query with @ref QDMI_device_environment_query_free
+ * when it is no longer used.
+ *
+ *  @{
  */
 
+/**
+ * @brief A handle for a device environment query.
+ * @details An opaque pointer to a type defined by the device that encapsulates
+ * all information about an environment query on a device.
+ * @remark Implementations of the underlying type will want to store the session
+ * handle used to create the environment query in the environment query handle
+ * to be able to access the session information when needed.
+ * @see QDMI_Environment_Query for the client-side job handle.
+ */
 typedef struct QDMI_Device_Environment_Query_impl_d
     *QDMI_Device_Environment_Query;
-
+/**
+ * @brief Create an environment query.
+ * @details This is the main entry point for a driver to create an environment
+ * query for a device. The returned handle can be used throughout the @ref
+ * device_environment_query_interface "device environment query interface" to
+ * refer to the environment query.
+ * @param[in] session The session to create the environment query on. Must not
+ * be @c NULL.
+ * @param[out] query A pointer to a handle that will store the created
+ * environment query. Must not be @c NULL. The environment query must be freed
+ * by calling
+ * @ref QDMI_device_environment_query_free when it is no longer used.
+ * @return @ref QDMI_SUCCESS if the environment query was successfully created.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p session or @p query are @c
+ * NULL.
+ * @return @ref QDMI_ERROR_BADSTATE if the session is not in a state allowing
+ * the creation of an environment query, for example, because the session is not
+ * initialized.
+ * @return @ref QDMI_ERROR_PERMISSIONDENIED if the device does not allow using
+ * the @ref device_environment_query_interface "device environment query
+ * interface" for the current session.
+ * @return @ref QDMI_ERROR_FATAL if environment query creation failed due to a
+ * fatal error.
+ *
+ * @attention May only be called after the session has been initialized with
+ * @ref QDMI_device_session_init.
+ */
 int QDMI_device_session_create_environment_query(
     QDMI_Device_Session session, QDMI_Device_Environment_Query *query);
-
+/**
+ * @brief Set a parameter for an environment query.
+ * @param[in] query A handle to an environment query for which to set @p param.
+ * Must not be @c NULL.
+ * @param[in] param The parameter whose value will be set. Must be one of the
+ * values specified for @ref QDMI_Device_Environment_Query_Parameter.
+ * @param[in] size The size of the data pointed to by @p value in bytes. Must
+ * not be zero, except when @p value is @c NULL, in which case it is ignored.
+ * @param[in] value A pointer to the memory location that contains the value of
+ * the parameter to be set. The data pointed to by @p value is copied and can be
+ * safely reused after this function returns. If this is @c NULL, it is ignored.
+ * @return @ref QDMI_SUCCESS if the device supports the specified @ref
+ * QDMI_Device_Environment_Query_Parameter @p param and, when @p value is not @c
+ * NULL, the parameter was successfully set.
+ * @return @ref QDMI_ERROR_NOTSUPPORTED if the device does not support the
+ * parameter or the value of the parameter.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if
+ *  - @p query is @c NULL,
+ *  - @p param is invalid, or
+ *  - @p value is not @c NULL and @p size is zero or not the expected size for
+ *    the parameter (if specified by the @ref
+ * QDMI_Device_Environment_Query_Parameter documentation).
+ * @return @ref QDMI_ERROR_BADSTATE if the parameter cannot be set in the
+ * current state of the environment query, for example, because the environment
+ * query is already submitted.
+ * @return @ref QDMI_ERROR_PERMISSIONDENIED if the device does not allow using
+ * the @ref device_environment_query_interface "device environment query
+ * interface" for the current session.
+ * @return @ref QDMI_ERROR_FATAL if setting the parameter failed due to a fatal
+ * error.
+ *
+ * @remark Calling this function with @p value set to @c NULL is expected to
+ * allow checking if the device supports the specified parameter without setting
+ * the parameter and without the need to provide a value.
+ * See the @ref QDMI_environment_query_set_parameter documentation for an
+ * example.
+ */
 int QDMI_device_environment_query_set_parameter(
     QDMI_Device_Environment_Query query,
     QDMI_Device_Environment_Query_Parameter param, size_t size,
     const void *value);
-
+/**
+ * @brief Submit an environment query to the device.
+ * @details This function can either be blocking until the job is finished or
+ * non-blocking and return while the job is running. In the latter case, the
+ * functions @ref QDMI_device_environment_query_check_status and @ref
+ * QDMI_device_environment_query_wait can be used to check the status and wait
+ * for the environment query to finish.
+ * @param[in] query The environment query to submit. Must not be @c NULL.
+ * @return @ref QDMI_SUCCESS if the job was successfully submitted.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p job is @c NULL.
+ * @return @ref QDMI_ERROR_BADSTATE if the job is in an invalid state.
+ * @return @ref QDMI_ERROR_PERMISSIONDENIED if the device does not allow using
+ * the @ref device_environment_query_interface "device environment query
+ * interface" for the current session.
+ * @return @ref QDMI_ERROR_FATAL if the job submission failed.
+ */
 int QDMI_device_environment_query_submit(QDMI_Device_Environment_Query query);
 
+/**
+ * @brief Cancel an already submitted environment query.
+ * @details Remove the environment query from the queue of waiting environment
+ * query. This changes the status of the environment query to @ref
+ * QDMI_ENVIRONMENT_QUERY_STATUS_CANCELED.
+ * @param[in] query The environment query to cancel. Must not be @c NULL.
+ * @return @ref QDMI_SUCCESS if the environment query was successfully canceled.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p query is @c NULL or the job
+ * already has the status @ref QDMI_ENVIRONMENT_QUERY_STATUS_DONE.
+ * @return @ref QDMI_ERROR_PERMISSIONDENIED if the device does not allow using
+ * the @ref device_environment_query_interface "device environment query
+ * interface" for the current session.
+ * @return @ref QDMI_ERROR_FATAL if the environment query could not be canceled.
+ */
+int QDMI_device_environment_query_cancel(QDMI_Device_Environment_Query query);
+
+/**
+ * @brief Check the status of an environment query.
+ * @details This function is non-blocking and returns immediately with the
+ * environment query status. It is not required to call this function before
+ * calling @ref QDMI_environment_query_get_results.
+ * @param[in] query The environment query to check the status of. Must not be @c
+ * NULL.
+ * @param[out] status The status of the environment query. Must not be @c NULL.
+ * @return @ref QDMI_SUCCESS if the environment query status was successfully
+ * checked.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p query or @p status is @c NULL.
+ * @return @ref QDMI_ERROR_PERMISSIONDENIED if the device does not allow using
+ * the @ref device_environment_query_interface "client environment query
+ * interface" for the device in the current session.
+ * @return @ref QDMI_ERROR_FATAL if the environment query status could not be
+ * checked.
+ */
+int QDMI_device_environment_query_check_status(
+    QDMI_Device_Environment_Query query, QDMI_Environment_Query_Status *status);
+/**
+ * @brief Wait for an environment query to finish.
+ * @details This function blocks until the environment query has either finished
+ * or has been canceled.
+ * @param[in] query The environment query to wait for. Must not be @c NULL.
+ * @return @ref QDMI_SUCCESS if the environment query is finished or canceled.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p query is @c NULL.
+ * @return @ref QDMI_ERROR_PERMISSIONDENIED if the device does not allow using
+ * the @ref device_environment_query_interface "device environment query
+ * interface" for the current session.
+ * @return @ref QDMI_ERROR_FATAL if the environment query could not be waited
+ * for and this function returns before the environment query has finished or
+ * has been canceled.
+ */
+int QDMI_device_environment_query_wait(QDMI_Device_Environment_Query query);
+
+/**
+ * @brief Retrieve the results of an environment query.
+ * @param[in] query The environment query to retrieve the results from. Must not
+ * be @c NULL.
+ * @param[in] result The result to retrieve. Must be one of the values specified
+ * for @ref QDMI_Environment_Query_Result.
+ * @param[in] size The size of the buffer pointed to by @p data in bytes. Must
+ * be greater or equal to the size of the return type specified for the @ref
+ * QDMI_Environment_Query_Result @p result, except when @p data is @c NULL, in
+ * which case it is ignored.
+ * @param[out] data A pointer to the memory location where the results will be
+ * stored. If this is @c NULL, it is ignored.
+ * @param[out] size_ret The actual size of the data being queried in bytes. If
+ * this is @c NULL, it is ignored.
+ * @return @ref QDMI_SUCCESS if the device supports the specified result and,
+ * when @p data is not @c NULL, the results were successfully retrieved.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if
+ *  - @p query is @c NULL,
+ *  - @p query has not finished,
+ *  - @p query was canceled,
+ *  - @p result is invalid, or
+ *  - @p data is not @c NULL and @p size is smaller than the size of the data
+ *    being queried.
+ * @return @ref QDMI_ERROR_PERMISSIONDENIED if the device does not allow using
+ * the @ref device_environment_query_interface "device environment query
+ * interface" for the current session.
+ * @return @ref QDMI_ERROR_FATAL if an error occurred during the retrieval.
+ *
+ * @remark Calling this function with @p data set to @c NULL is expected to
+ * allow checking if the device supports the specified result without
+ * retrieving the result and without the need to provide a buffer for the
+ * result.
+ * Additionally, the size of the buffer required to retrieve the result is
+ * returned in @p size_ret if @p size_ret is not @c NULL.
+ * See the @ref QDMI_environment_query_get_results documentation for an example.
+ */
 int QDMI_device_environment_query_get_results(
     QDMI_Device_Environment_Query query, QDMI_Environment_Query_Result result,
     size_t size, void *data, size_t *size_ret);
-
-int QDMI_device_environment_query_check_status(
-    QDMI_Device_Environment_Query query, QDMI_Environment_Query_Status *status);
-
-int QDMI_device_environment_query_wait(QDMI_Device_Environment_Query query);
-
-int QDMI_device_environment_query_cancel(QDMI_Device_Environment_Query query);
-
+/**
+ * @brief Free an environment query.
+ * @details Free the resources associated with a environment query. Using a
+ * environment query handle after it has been freed is undefined behavior.
+ * @param[in] query The environment query to free.
+ */
 void QDMI_device_environment_query_free(QDMI_Device_Environment_Query query);
+
+/** @} */ // end of device_environment_query_interface
 
 /** @} */ // end of device_interface
 

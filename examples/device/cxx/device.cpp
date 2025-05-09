@@ -944,7 +944,7 @@ int CXX_QDMI_device_environment_query_set_parameter(
     return QDMI_SUCCESS;
   }
 
-  case QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_ENVIRONMENTVARIABLES: {
+  case QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_ENVIRONMENT: {
     const auto *environment_ptr =
         static_cast<const CXX_QDMI_Environment *>(value);
     query->environment = *environment_ptr;

@@ -218,7 +218,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * QDMI_PROGRAM_FORMAT_CALIBRATION.
    */
   QDMI_DEVICE_PROPERTY_NEEDSCALIBRATION = 8,
-  /*
+  /**
    * TODO
    */
   QDMI_DEVICE_PROPERTY_ENVIRONMENTVARIABLES = 9,
@@ -647,96 +647,151 @@ enum QDMI_JOB_RESULT_T {
 /// Job result type.
 typedef enum QDMI_JOB_RESULT_T QDMI_Job_Result;
 
-/*
- *
- * TODO
- */
+/// Enum of the enviroment properties that can be queried via @ref
+/// QDMI_device_session_query_environment_property as part of the @ref
+/// device_interface "device interface" and via @ref
+/// QDMI_device_query_environment_property as part of the @ref client_interface
+/// "client interface".
 enum QDMI_ENVIRONMENT_PROPERTY_T {
-
+  /// `char*` The ID of a environment.
   QDMI_ENVIRONMENT_PROPERTY_ID = 0,
-
+  /// `char*` The unit of an environment, i.e., Kelvin.
   QDMI_ENVIRONMENT_PROPERTY_UNIT = 1,
-
+  /// `unsigned int` The sampiling rate of an environment in seconds.
   QDMI_ENVIRONMENT_PROPERTY_SAMPLING_RATE = 2,
-
+  /**
+   * @brief The maximum value of the enum.
+   * @details It can be used by devices for bounds checking and validation of
+   * function parameters.
+   *
+   * @attention This value must remain the last regular member of the enum
+   * besides the custom members and must be updated when new members are added.
+   */
   QDMI_ENVIRONMENT_PROPERTY_MAX = 3,
-
+  /**
+   * @brief This enum value is reserved for a custom property.
+   * @details The device defines the meaning and the type of this property.
+   * @attention The value of this enum member must not be changed to maintain
+   * binary compatibility.
+   */
   QDMI_ENVIRONMENT_PROPERTY_CUSTOM1 = 999999995,
-
+  /// @see QDMI_ENVIRONMENT_PROPERTY_CUSTOM1
   QDMI_ENVIRONMENT_PROPERTY_CUSTOM2 = 999999996,
-
+  /// @see QDMI_ENVIRONMENT_PROPERTY_CUSTOM1
   QDMI_ENVIRONMENT_PROPERTY_CUSTOM3 = 999999997,
-
+  /// @see QDMI_ENVIRONMENT_PROPERTY_CUSTOM1
   QDMI_ENVIRONMENT_PROPERTY_CUSTOM4 = 999999998,
-
+  /// @see QDMI_ENVIRONMENT_PROPERTY_CUSTOM1
   QDMI_ENVIRONMENT_PROPERTY_CUSTOM5 = 999999999
 };
 
+/// Environment property type.
 typedef enum QDMI_ENVIRONMENT_PROPERTY_T QDMI_Environment_Property;
 
+/**
+ * @brief Enum of the device environment query parameters that can be set via
+ * @ref QDMI_device_environment_query_set_parameter.
+ * @details If not noted otherwise, parameters are mandatory and devices must
+ * require them to be set.
+ */
 enum QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_T {
-
+  /// The start time of the environment query interval.
   QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_START_TIME = 0,
-
+  /// The end time of the environment query interval.
   QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_END_TIME = 1,
-
-  QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_ENVIRONMENTVARIABLES = 2,
-
+  /// The environment for the environment query.
+  QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_ENVIRONMENT = 2,
+  /// The maximum value of the enum.
   QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_MAX = 3,
-
+  /**
+   * @brief This enum value is reserved for a custom parameter.
+   * @details The devices defines the meaning and the type of this parameter.
+   * @attention The value of this enum member must not be changed to maintain
+   * binary compatibility.
+   */
   QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_CUSTOM1 = 999999995,
-
+  /// @see QDMI_DEVICE_JOB_PARAMETER_CUSTOM1
   QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_CUSTOM2 = 999999996,
-
+  /// @see QDMI_DEVICE_JOB_PARAMETER_CUSTOM1
   QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_CUSTOM3 = 999999997,
-
+  /// @see QDMI_DEVICE_JOB_PARAMETER_CUSTOM1
   QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_CUSTOM4 = 999999998,
-
+  /// @see QDMI_DEVICE_JOB_PARAMETER_CUSTOM1
   QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_CUSTOM5 = 999999999
 };
 
+/// Device environment query parameter type.
 typedef enum QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_T
     QDMI_Device_Environment_Query_Parameter;
 
+/**
+ * @brief Enum of the formats the environment query results can be returned in.
+ */
 enum QDMI_ENVIRONMENT_QUERY_RESULT_T {
-
+  /**
+   * @brief `uint64_t*` (`unsigned 64 bit integer` list) The timestamps of the
+   * result
+   * @details The result of an environment query is represented as a key-value
+   * mapping. This mapping is returned as a list of keys and an equal-length
+   * list of values. The corresponding partners of the keys and values can be
+   * found at the same index in the lists
+   */
   QDMI_ENVIRONMENT_QUERY_RESULT_TIMESTAMPS = 0,
-
+  /**
+   * @brief `float*` (`float` list) The values of the result.
+   * @see QDMI_ENVIRONMENT_QUERY_RESULT_TIMESTAMPS
+   */
   QDMI_ENVIRONMENT_QUERY_RESULT_VALUES = 1,
-
+  /**
+   * @brief The maximum value of the enum.
+   * @details It can be used by devices for bounds checking and validation of
+   * function parameters.
+   *
+   * @attention This value must remain the last regular member of the enum
+   * besides the custom members and must be updated when new members are added.
+   */
   QDMI_ENVIRONMENT_QUERY_RESULT_MAX = 2,
-
+  /**
+   * @brief This enum value is reserved for a custom result.
+   * @details The device defines the meaning and the type of this result.
+   * @attention The value of this enum member must not be changed to maintain
+   * binary compatibility.
+   */
   QDMI_ENVIRONMENT_QUERY_RESULT_CUSTOM1 = 999999995,
-
+  /// @see QDMI_JOB_RESULT_CUSTOM1
   QDMI_ENVIRONMENT_QUERY_RESULT_CUSTOM2 = 999999996,
-
+  /// @see QDMI_JOB_RESULT_CUSTOM1
   QDMI_ENVIRONMENT_QUERY_RESULT_CUSTOM3 = 999999997,
-
+  /// @see QDMI_JOB_RESULT_CUSTOM1
   QDMI_ENVIRONMENT_QUERY_RESULT_CUSTOM4 = 999999998,
-
+  /// @see QDMI_JOB_RESULT_CUSTOM1
   QDMI_ENVIRONMENT_QUERY_RESULT_CUSTOM5 = 999999999
 };
-
-/// Job result type.
+/// Environment query result type.
 typedef enum QDMI_ENVIRONMENT_QUERY_RESULT_T QDMI_Environment_Query_Result;
+
+/**
+ * @brief Enum of the status Environment query can have.
+ * @details See also @ref client_environment_query_interface for a description
+ * of the environment query's lifecycle.
+ */
 
 enum QDMI_ENVIRONMENT_QUERY_STATUS_T {
   /**
-   * @brief The job was created and can be configured via @ref
-   * QDMI_job_set_parameter.
+   * @brief The environment query was created and can be configured via @ref
+   * QDMI_environment_query_set_parameter.
    */
   QDMI_ENVIRONMENT_QUERY_STATUS_CREATED = 0,
-  /// The job was submitted and is waiting to be executed.
+  /// The environment query was submitted and is waiting to be executed.
   QDMI_ENVIRONMENT_QUERY_STATUS_SUBMITTED = 1,
-  /// The job is done, and the result can be retrieved.
+  /// The environment query is done, and the result can be retrieved.
   QDMI_ENVIRONMENT_QUERY_STATUS_DONE = 2,
-  /// The job is running, and the result is not yet available.
+  /// The environment query is running, and the result is not yet available.
   QDMI_ENVIRONMENT_QUERY_STATUS_RUNNING = 3,
-  /// The job was canceled, and the result is not available.
+  /// The environment query was canceled, and the result is not available.
   QDMI_ENVIRONMENT_QUERY_STATUS_CANCELED = 4
 };
-
-/// Job status type.
+/// Environment query status type.
 typedef enum QDMI_ENVIRONMENT_QUERY_STATUS_T QDMI_Environment_Query_Status;
 
 // NOLINTEND(performance-enum-size, modernize-use-using)
