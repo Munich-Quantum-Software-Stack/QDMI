@@ -647,7 +647,7 @@ enum QDMI_JOB_RESULT_T {
 /// Job result type.
 typedef enum QDMI_JOB_RESULT_T QDMI_Job_Result;
 
-/// Enum of the enviroment properties that can be queried via @ref
+/// Enum of the environment properties that can be queried via @ref
 /// QDMI_device_session_query_environment_property as part of the @ref
 /// device_interface "device interface" and via @ref
 /// QDMI_device_query_environment_property as part of the @ref client_interface

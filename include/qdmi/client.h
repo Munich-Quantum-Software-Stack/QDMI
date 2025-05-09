@@ -593,7 +593,7 @@ int QDMI_device_query_operation_property(
  *     device, environment, QDMI_ENVIRONMENT_PROPERTY_UNIT, 0, nullptr,
  *     &environment_unit_size);
  * if (ret != QDMI_SUCCESS) {
- *   // An error occured.
+ *   // An error occurred.
  *   ...
  * }
  * std::string environment_unit(environment_unit_size - 1, '\0');

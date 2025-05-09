@@ -77,9 +77,9 @@ typedef struct QDMI_Operation_impl_d *QDMI_Operation;
  * concept. The environmental factors of the laboratories can affect the
  * operations and measurement results of quantum devices. Therefore, they are
  * closely monitored. An environment generally represents any sensors that can
- * be queried. They might be sensors for tempature, noise, etc. Each
- * implementation of the @ref device_interface "QDMI Device Interface" defines the actual
- * implementation of the concept.
+ * be queried. They might be sensors for temperature, noise, etc. Each
+ * implementation of the @ref device_interface "QDMI Device Interface" defines
+ * the actual implementation of the concept.
  *
  * A simple example of an implementation is a struct that merely contains the
  * environment ID, which can be used to identify the site.
