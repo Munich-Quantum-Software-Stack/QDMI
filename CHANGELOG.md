@@ -19,7 +19,7 @@ clients compiled against a different minor or major version.
   enums ([#160]) ([\@ystade], [\@burgholzer])
 - 🚸 Add additional `QDMI_JOB_STATUS` enum values for better job cycle management ([#160])
   ([\@ystade])
-- 💥 Add required `timeout` parameter for the `QDMI_device_job_wait` and `QDMI__job_wait` functions
+- ✨ Add required `timeout` parameter for the `QDMI_device_job_wait` and `QDMI__job_wait` functions
   ([#160]) ([\@burgholzer])
 
 ### Changed
@@ -27,6 +27,7 @@ clients compiled against a different minor or major version.
 - 🚸 Change order of `QDMI_SESSION_PARAMETER` and `QDMI_DEVICE_SESSION` enum values due to new
   authentication options ([#160]) ([\@ystade], [\@burgholzer])
 - 🚸 Change order of `QDMI_JOB_STATUS` enum values to better reflect job cycle ([#160]) ([\@ystade])
+- 🚚 Rename `QDMI_SITE_PROPERTY_ID` to `QDMI_SITE_PROPERTY_INDEX` ([#160]) ([\@ystade])
 
 ## [1.1.0] - 2025-01-10
 
