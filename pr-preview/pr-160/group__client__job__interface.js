@@ -28,7 +28,7 @@ var group__client__job__interface =
     ] ],
     [ "QDMI_device_create_job", "group__client__job__interface.html#ga9fbb6ebc06162e99c15c230cec9491c8", null ],
     [ "QDMI_job_set_parameter", "group__client__job__interface.html#ga94b84ea6efa5e7f2ad1ee65bff04381c", null ],
-    [ "QDMI_job_query_job_property", "group__client__job__interface.html#ga8dffb76602c82ad6c1e1a9ea701af848", null ],
+    [ "QDMI_job_query_property", "group__client__job__interface.html#gaf254976bef932563756897db98cecf8c", null ],
     [ "QDMI_job_submit", "group__client__job__interface.html#ga184d0d0fc0d4edc3a447b91991f9abd1", null ],
     [ "QDMI_job_cancel", "group__client__job__interface.html#gae5c530accc67d1ac8f5fada1ad914cfc", null ],
     [ "QDMI_job_check", "group__client__job__interface.html#gae9a7cba893885c8fcfe4bec030071d2f", null ],
