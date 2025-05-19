@@ -12,15 +12,19 @@ to [Semantic Versioning], with the exception that minor releases may include bre
 ### Added
 
 - 📝 Add changelog ([#160]) ([**\@ystade**])
-- 🚸 Support querying of job properties incl. previously set parameters values ([#160]) ([**\@ystade**])
-- 🚸 Add new authentication options to `QDMI_SESSION_PARAMETER` and `QDMI_DEVICE_SESSION_PARAMETER` enums ([#160]) ([**\@ystade**])
-- 🚸 Add additional `QDMI_JOB_STATUS` enum values for better job cycle management ([#160]) ([**\@ystade**])
+- 🚸 Support querying of job properties incl. previously set parameters values ([#160])
+  ([**\@ystade**])
+- 🚸 Add new authentication options to `QDMI_SESSION_PARAMETER` and `QDMI_DEVICE_SESSION_PARAMETER`
+  enums ([#160]) ([**\@ystade**])
+- 🚸 Add additional `QDMI_JOB_STATUS` enum values for better job cycle management ([#160])
+  ([**\@ystade**])
 
 ### Changed
 
-- 🚸 Change order of `QDMI_SESSION_PARAMETER` and `QDMI_DEVICE_SESSION` enum values due to new authentication options ([#160])
+- 🚸 Change order of `QDMI_SESSION_PARAMETER` and `QDMI_DEVICE_SESSION` enum values due to new
+  authentication options ([#160]) ([**\@ystade**])
+- 🚸 Change order of `QDMI_JOB_STATUS` enum values to better reflect job cycle ([#160])
   ([**\@ystade**])
-- 🚸 Change order of `QDMI_JOB_STATUS` enum values to better reflect job cycle ([#160]) ([**\@ystade**])
 
 ## [1.1.0] - 2025-01-10
 

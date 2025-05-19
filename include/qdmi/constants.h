@@ -172,7 +172,8 @@ enum QDMI_DEVICE_JOB_PARAMETER_T {
    * is set to zero, the function will wait indefinitely until the job is
    * finished.
    *
-   * @par If this parameter is not set, a device-specific default is used, which may be zero.
+   * @par If this parameter is not set, a device-specific default is used, which
+   * may be zero.
    */
   QDMI_DEVICE_JOB_PARAMETER_TIMEOUT = 3,
   /**

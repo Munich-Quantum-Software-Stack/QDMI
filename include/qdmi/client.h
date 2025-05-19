@@ -125,8 +125,8 @@ enum QDMI_SESSION_PARAMETER_T {
    * @details This parameter might be used as part of an authentication scheme
    * where an API token is received from an authentication server. This may,
    * additionally, require a username and a password, which can be set via the
-   * @ref QDMI_SESSION_PARAMETER_USERNAME and @ref QDMI_SESSION_PARAMETER_PASSWORD
-   * parameters.
+   * @ref QDMI_SESSION_PARAMETER_USERNAME and @ref
+   * QDMI_SESSION_PARAMETER_PASSWORD parameters.
    *
    * @par The driver documentation *must* document when the implementation
    * requires this parameter to be set and which additional parameters need to
@@ -649,7 +649,8 @@ enum QDMI_JOB_PARAMETER_T {
    * the function will return @ref QDMI_ERROR_TIMEOUT. If the timeout is set to
    * zero, the function will wait indefinitely until the job is finished.
    *
-   * @par If this parameter is not set, a driver-specific default is used, which may be zero.
+   * @par If this parameter is not set, a driver-specific default is used, which
+   * may be zero.
    */
   QDMI_JOB_PARAMETER_TIMEOUT = 3,
   /**
