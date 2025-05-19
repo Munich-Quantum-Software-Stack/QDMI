@@ -350,7 +350,7 @@ Functions</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="gga1e7131664b094eb409d0f44d731f51f5a1920310b76fe87426eab1c65770c48be" name="gga1e7131664b094eb409d0f44d731f51f5a1920310b76fe87426eab1c65770c48be"></a>QDMI_JOB_PARAMETER_TIMEOUT&#160;</td><td class="fieldinit">3&#160;</td><td class="fielddoc"><p><code>size_t</code> A timeout in seconds for the <a class="el" href="#gaccec1a322efab7a18cf7fbc43af2019f">QDMI_job_wait</a> function. </p>
 <p>The function <a class="el" href="#gaccec1a322efab7a18cf7fbc43af2019f">QDMI_job_wait</a> will at most wait for this amount of time before returning. If the job is not finished after this timeout, the function will return <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8acf9abde59858a1087762ba3e287e9fdd">QDMI_ERROR_TIMEOUT</a>. If the timeout is set to zero, the function will wait indefinitely until the job is finished.</p>
-<dl class="section user"><dt>If this parameter is not set, a driver-specific default is used, which may be zero.</dt><dd></dd></dl>
+<dl class="section user"><dt>If this parameter is not set, a driver-specific default is used, which</dt><dd>may be zero. </dd></dl>
 </td></tr>
 <tr><td class="fieldname"><a id="gga1e7131664b094eb409d0f44d731f51f5aa94ff18351f57072ad1e9223583ff978" name="gga1e7131664b094eb409d0f44d731f51f5aa94ff18351f57072ad1e9223583ff978"></a>QDMI_JOB_PARAMETER_MAX&#160;</td><td class="fieldinit">4&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
 <p>It can be used by drivers for bounds checking and validation of function parameters. </p><dl class="section attention"><dt>Attention</dt><dd>This value must remain the last regular member of the enum besides the custom members and must be updated when new members are added. </dd></dl>
@@ -606,7 +606,7 @@ For example, to query the id of a job, the following code pattern can be used: <
 <div class="line"><a class="code hl_function" href="#ga8dffb76602c82ad6c1e1a9ea701af848">QDMI_job_query_job_property</a>(</div>
 <div class="line">  job, QDMI_JOB_PROPERTY_NAME, size, name.data(), <span class="keyword">nullptr</span>);</div>
 <div class="ttc" id="agroup__client__job__interface_html_ga8dffb76602c82ad6c1e1a9ea701af848"><div class="ttname"><a href="#ga8dffb76602c82ad6c1e1a9ea701af848">QDMI_job_query_job_property</a></div><div class="ttdeci">int QDMI_job_query_job_property(QDMI_Job job, QDMI_Job_Property prop, size_t size, void *value, size_t *size_ret)</div><div class="ttdoc">Query a job property.</div></div>
-<div class="ttc" id="agroup__client__job__interface_html_gga8f2f468604e24bab4c86cdb781b879bba8b29485092d51f7573929a5579521d34"><div class="ttname"><a href="#gga8f2f468604e24bab4c86cdb781b879bba8b29485092d51f7573929a5579521d34">QDMI_JOB_PROPERTY_ID</a></div><div class="ttdeci">@ QDMI_JOB_PROPERTY_ID</div><div class="ttdoc">char* (string) The job&#39;s ID.</div><div class="ttdef"><b>Definition</b> client.h:752</div></div>
+<div class="ttc" id="agroup__client__job__interface_html_gga8f2f468604e24bab4c86cdb781b879bba8b29485092d51f7573929a5579521d34"><div class="ttname"><a href="#gga8f2f468604e24bab4c86cdb781b879bba8b29485092d51f7573929a5579521d34">QDMI_JOB_PROPERTY_ID</a></div><div class="ttdeci">@ QDMI_JOB_PROPERTY_ID</div><div class="ttdoc">char* (string) The job&#39;s ID.</div><div class="ttdef"><b>Definition</b> client.h:753</div></div>
 </div><!-- fragment --> </dd></dl>
 
 </div>
@@ -820,7 +820,7 @@ For example, to query the measurement results of a quantum circuit job, the foll
 <div class="line"><span class="comment">// Query the result.</span></div>
 <div class="line"><a class="code hl_function" href="#gaba583321332e0753f5de1764edbd8b7f">QDMI_job_get_results</a>(</div>
 <div class="line">  job, <a class="code hl_enumvalue" href="constants_8h.html#aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97">QDMI_JOB_RESULT_SHOTS</a>, size, shots.data(), <span class="keyword">nullptr</span>);</div>
-<div class="ttc" id="aconstants_8h_html_aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97"><div class="ttname"><a href="constants_8h.html#aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97">QDMI_JOB_RESULT_SHOTS</a></div><div class="ttdeci">@ QDMI_JOB_RESULT_SHOTS</div><div class="ttdoc">char* (string) The results of the individual shots as a comma-separated list, for example,...</div><div class="ttdef"><b>Definition</b> constants.h:671</div></div>
+<div class="ttc" id="aconstants_8h_html_aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97"><div class="ttname"><a href="constants_8h.html#aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97">QDMI_JOB_RESULT_SHOTS</a></div><div class="ttdeci">@ QDMI_JOB_RESULT_SHOTS</div><div class="ttdoc">char* (string) The results of the individual shots as a comma-separated list, for example,...</div><div class="ttdef"><b>Definition</b> constants.h:672</div></div>
 <div class="ttc" id="agroup__client__job__interface_html_gaba583321332e0753f5de1764edbd8b7f"><div class="ttname"><a href="#gaba583321332e0753f5de1764edbd8b7f">QDMI_job_get_results</a></div><div class="ttdeci">int QDMI_job_get_results(QDMI_Job job, QDMI_Job_Result result, size_t size, void *data, size_t *size_ret)</div><div class="ttdoc">Retrieve the results of a job.</div></div>
 </div><!-- fragment --> </dd></dl>
 
