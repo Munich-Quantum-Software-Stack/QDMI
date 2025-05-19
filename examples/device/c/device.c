@@ -40,6 +40,7 @@ typedef struct C_QDMI_Device_Session_impl_d {
 typedef struct C_QDMI_Device_Job_impl_d {
   C_QDMI_Device_Session session;
   int id;
+  size_t timeout;
   QDMI_Program_Format format;
   void *program;
   QDMI_Job_Status status;
@@ -417,6 +418,7 @@ int C_QDMI_device_job_wait(C_QDMI_Device_Job job, const size_t timeout) {
   }
   // in a real implementation, this would wait for the job to finish
   job->status = QDMI_JOB_STATUS_DONE;
+  job->timeout = timeout;
   C_QDMI_set_device_status(QDMI_DEVICE_STATUS_IDLE);
   return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]
