@@ -380,12 +380,12 @@ typedef enum QDMI_DEVICE_STATUS_T QDMI_Device_Status;
 /// the @ref client_interface "client interface".
 enum QDMI_SITE_PROPERTY_T {
   /**
-   * @brief `size_t` The unique ID to identify the site in a program.
-   * @details The ID of a site is used to link the qubits used in a quantum
+   * @brief `size_t` The unique index (or ID) to identify the site in a program.
+   * @details The index of a site is used to link the qubits used in a quantum
    * program to the physical sites of the device that can be queried via this
-   * interface. IDs may be non-consecutive and need not start at 0.
-   * See @ref QDMI_Program_Format for more information on how the site IDs map
-   * to the qubits in a program.
+   * interface. Indices may be non-consecutive and need not start at 0.
+   * See @ref QDMI_Program_Format for more information on how the site indices
+   * map to the qubits in a program.
    *
    * @par This property must be available for all sites since it is used to
    * address the sites in a program.
@@ -545,8 +545,8 @@ enum QDMI_PROGRAM_FORMAT_T {
    * be written using physical qubits, which are denoted by `$[NUM]`, with
    * `[NUM]` being a non-negative integer denoting the physical qubit's index.
    * If a program uses physical qubits, the operations in the program must be
-   * performed on the sites with IDs corresponding to the physical qubits in the
-   * program.
+   * performed on the sites with indices corresponding to the physical qubits in
+   * the program.
    *
    * @note
    * Devices may decide to support more general OpenQASM 3 programs that
@@ -576,7 +576,7 @@ enum QDMI_PROGRAM_FORMAT_T {
    * program are expected to be performed on the physical sites of the device as
    * queried via @ref QDMI_DEVICE_PROPERTY_SITES. If the program uses static
    * qubit addresses (for example, `ptr inttoptr (i64 1 to ptr)`), the
-   * operations in the program must be performed on the sites with IDs
+   * operations in the program must be performed on the sites with indices
    * corresponding to the static qubit addresses in the program.
    *
    * @note Devices may decide to support more general QIR programs that do not
