@@ -495,8 +495,7 @@ enum QDMI_JOB_STATUS_T {
   QDMI_JOB_STATUS_DONE = 4,
   /// The job was canceled, and the result is not available.
   QDMI_JOB_STATUS_CANCELED = 5,
-  /// During the job's execution, an error occurred, and the result is not
-  /// available.
+  /// An error occurred in the job's lifecycle.
   QDMI_JOB_STATUS_FAILED = 6
 };
 
