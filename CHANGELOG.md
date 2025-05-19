@@ -1,7 +1,5 @@
 # Changelog
 
-<!-- [DOXYGEN] -->
-
 All notable changes to this project will be described in this document. The format is based on a
 mixture of [Keep a Changelog] and [Common Changelog].
 
@@ -15,7 +13,7 @@ clients compiled against a different minor or major version.
 
 ### Added
 
-- 📝 Add changelog ([#160]) ([\@ystade])
+- 📝 Add changelog and upgrade guide ([#160]) ([\@ystade], [\@burgholzer])
 - 🚸 Support querying of job properties incl. previously set parameters values ([#160]) ([\@ystade])
 - 🚸 Add new authentication options to `QDMI_SESSION_PARAMETER` and `QDMI_DEVICE_SESSION_PARAMETER`
   enums ([#160]) ([\@ystade], [\@burgholzer])
@@ -56,5 +54,3 @@ changelogs._
 [Common Changelog]: https://common-changelog.org
 [Semantic Versioning]: https://semver.org/spec/v2.0.0.html
 [GitHub Release Notes]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases
-
-<!-- [DOXYGEN] -->
