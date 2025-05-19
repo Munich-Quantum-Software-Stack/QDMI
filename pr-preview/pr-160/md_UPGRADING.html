@@ -210,16 +210,39 @@ $(function(){initNavTree('md_UPGRADING.html',''); initResizable(true); });
 <h2>General Changes</h2>
 <p>The enum value <code>QDMI_SITE_PROPERTY_ID</code> has been renamed to <code>QDMI_SITE_PROPERTY_INDEX</code>.</p>
 <h2>Device-side Changes</h2>
-<p>Devices now also need to implement the function <code>QDMI_device_job_query_job_property</code> for querying properties of jobs.</p>
-<p>The <code>QDMI_device_job_wait</code> function now has a new parameter <code>timeout</code> that specifies how long (in seconds) the function must wait for a result before returning with a <code>QDMI_ERROR_TIMEOUT</code> error. A timeout of <code>0</code> means that the function will wait indefinitely.</p>
+<ul>
+<li>Devices now also need to implement the function <code>QDMI_device_job_query_job_property</code> for querying properties of jobs.</li>
+<li>The <code>QDMI_device_job_wait</code> function now has a new parameter <code>timeout</code> that specifies how long (in seconds) the function must wait for a result before returning with a <code>QDMI_ERROR_TIMEOUT</code> error. A timeout of <code>0</code> means that the function will wait indefinitely.</li>
+<li><p class="startli">New authentication options have been added to the <code>QDMI_DEVICE_SESSION_PARAMETER</code> enum. Specifically, besides the existing <code>QDMI_DEVICE_SESSION_PARAMETER_BASEURL</code> and <code>QDMI_DEVICE_SESSION_PARAMETER_TOKEN</code>, the following authentication options are now available:</p><ul>
+<li><code>QDMI_DEVICE_SESSION_PARAMETER_AUTHFILE</code>, which allows the use of a file containing authentication information.</li>
+<li><code>QDMI_DEVICE_SESSION_PARAMETER_AUTHURL</code>, which allows the use of a URL for authentication.</li>
+<li><code>QDMI_DEVICE_SESSION_PARAMETER_USERNAME</code>, which allows the use of a username for authentication.</li>
+<li><code>QDMI_DEVICE_SESSION_PARAMETER_PASSWORD</code>, which allows the use of a password for authentication.</li>
+</ul>
+<p class="startli">As part of this change, the order of the enum values in <code>QDMI_DEVICE_SESSION_PARAMETER</code> has been changed to accommodate the new authentication options. It is the responsibility of the device to document the authentication options it supports.</p>
+</li>
+</ul>
 <p>For full compatibility with this QDMI version, the device needs to be recompiled with the latest header file versions.</p>
-<h2>Driver-side Changes</h2>
-<p>Drivers now also need to implement the function <code>QDMI_job_query_job_property</code> for querying properties of jobs.</p>
-<p>The function <code>QDMI_device_job_wait</code> may now also return after a timeout resulting in a new status <code>QDMI_JOB_STATUS_TIMEOUT</code> that must be handled.</p>
-<p>The <code>QDMI_job_wait</code> function now has a new parameter <code>timeout</code> that specifies how long (in seconds) the function must wait for a result before returning with a <code>QDMI_ERROR_TIMEOUT</code> error. A timeout of <code>0</code> means that the function will wait indefinitely. The function <code>QDMI_device_job_wait</code> may now also return after a timeout resulting in a new status <code>QDMI_JOB_STATUS_TIMEOUT</code> that must be handled.</p>
+<h2>Driver-internal Changes</h2>
+<ul>
+<li>Drivers now also need to implement the function <code>QDMI_job_query_job_property</code> for querying properties of jobs.</li>
+<li>The function <code>QDMI_device_job_wait</code> may now also return after a timeout resulting in a new status <code>QDMI_JOB_STATUS_TIMEOUT</code> that must be handled. Additionally, the <code>QDMI_job_wait</code> function now has a new parameter <code>timeout</code> that must be handled.</li>
+<li><p class="startli">New authentication options have been added to the <code>QDMI_SESSION_PARAMETER</code> enum. Specifically, besides the existing <code>QDMI_SESSION_PARAMETER_TOKEN</code> and <code>QDMI_SESSION_PARAMETER_PROJECTID</code>, the following authentication options are now available:</p><ul>
+<li><code>QDMI_SESSION_PARAMETER_AUTHFILE</code>, which allows the use of a file containing authentication information.</li>
+<li><code>QDMI_SESSION_PARAMETER_AUTHURL</code>, which allows the use of a URL for authentication.</li>
+<li><code>QDMI_SESSION_PARAMETER_USERNAME</code>, which allows the use of a username for authentication.</li>
+<li><code>QDMI_SESSION_PARAMETER_PASSWORD</code>, which allows the use of a password for authentication.</li>
+</ul>
+<p class="startli">As part of this change, the order of the enum values in <code>QDMI_SESSION_PARAMETER</code> has been changed to accommodate the new authentication options. It is the responsibility of the driver to document the authentication options it supports.</p>
+</li>
+</ul>
 <p>For full compatibility with this QDMI version, the driver needs to be recompiled with the latest header file versions.</p>
 <h2>Client-side Changes</h2>
-<p>A new <code>timeout</code> parameter has been added to the <code>QDMI_job_wait</code> function that influences how long (in seconds) the function will wait before eventually returning with <code>QDMI_ERROR_TIMEOUT</code>. A timeout of <code>0</code> means that the function will wait indefinitely. The function <code>QDMI_job_wait</code> may now also return after a timeout resulting in a new status <code>QDMI_JOB_STATUS_TIMEOUT</code> that must be handled.</p>
+<ul>
+<li>A new <code>timeout</code> parameter has been added to the <code>QDMI_job_wait</code> function that influences how long (in seconds) the function will wait before eventually returning with <code>QDMI_ERROR_TIMEOUT</code>. A timeout of <code>0</code> means that the function will wait indefinitely. The function <code>QDMI_job_wait</code> may now also return after a timeout resulting in a new status <code>QDMI_JOB_STATUS_TIMEOUT</code> that must be handled.</li>
+<li>The function <code>QDMI_job_query_job_property</code> has been added to query properties of jobs.</li>
+<li>New authentication options may be provided by drivers and devices. This includes authentication options such as <code>QDMI_SESSION_PARAMETER_AUTHFILE</code>, <code>QDMI_SESSION_PARAMETER_AUTHURL</code>, <code>QDMI_SESSION_PARAMETER_USERNAME</code>, and <code>QDMI_SESSION_PARAMETER_PASSWORD</code>. The order of the enum values in <code>QDMI_SESSION_PARAMETER</code> has been changed to accommodate the new authentication options.</li>
+</ul>
 <p>For full compatibility with this QDMI version, the client needs to be recompiled with the latest header file versions. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
