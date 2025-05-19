@@ -216,7 +216,7 @@ $(function(){initNavTree('group__device__job__interface.html',''); initResizable
 <li>Set parameters for the job with <a class="el" href="#ga1ff5eda213c2bd60599efeac2166654d">QDMI_device_job_set_parameter</a>.</li>
 <li>Submit the job with <a class="el" href="#gaaa70ea915b442e15907106911e0e5a0a">QDMI_device_job_submit</a>.</li>
 <li>Check the status of the job with <a class="el" href="#ga9170cd3f690b2ed7df4c2e0b24734138">QDMI_device_job_check</a>.</li>
-<li>Wait for the job to finish with <a class="el" href="#ga245e14549e05c09ce4de32b38a75f4ed">QDMI_device_job_wait</a>.</li>
+<li>Wait for the job to finish with <a class="el" href="#gaa4f4c5bd68a6116353470de6d9284175">QDMI_device_job_wait</a>.</li>
 <li>Retrieve the results of the job with <a class="el" href="#ga1b4384e53a1d8fb2d782cd6179664d3b">QDMI_device_job_get_results</a>.</li>
 <li>Free the job with <a class="el" href="#gafe9253bc113ae8ce95dda8942a9f983f">QDMI_device_job_free</a> when it is no longer used. </li>
 </ul>
@@ -247,9 +247,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga9170cd3f690b2ed7df4c2e0b24734138" id="r_ga9170cd3f690b2ed7df4c2e0b24734138"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga9170cd3f690b2ed7df4c2e0b24734138">QDMI_device_job_check</a> (<a class="el" href="#gaa9f37f29bc40f719b440a277654789a4">QDMI_Device_Job</a> job, <a class="el" href="constants_8h.html#a28c071c6750e755deb9f375fdf4c5bfc">QDMI_Job_Status</a> *status)</td></tr>
 <tr class="memdesc:ga9170cd3f690b2ed7df4c2e0b24734138"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check the status of a job.  <br /></td></tr>
 <tr class="separator:ga9170cd3f690b2ed7df4c2e0b24734138"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga245e14549e05c09ce4de32b38a75f4ed" id="r_ga245e14549e05c09ce4de32b38a75f4ed"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga245e14549e05c09ce4de32b38a75f4ed">QDMI_device_job_wait</a> (<a class="el" href="#gaa9f37f29bc40f719b440a277654789a4">QDMI_Device_Job</a> job)</td></tr>
-<tr class="memdesc:ga245e14549e05c09ce4de32b38a75f4ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait for a job to finish.  <br /></td></tr>
-<tr class="separator:ga245e14549e05c09ce4de32b38a75f4ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa4f4c5bd68a6116353470de6d9284175" id="r_gaa4f4c5bd68a6116353470de6d9284175"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaa4f4c5bd68a6116353470de6d9284175">QDMI_device_job_wait</a> (<a class="el" href="#gaa9f37f29bc40f719b440a277654789a4">QDMI_Device_Job</a> job, size_t timeout)</td></tr>
+<tr class="memdesc:gaa4f4c5bd68a6116353470de6d9284175"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait for a job to finish.  <br /></td></tr>
+<tr class="separator:gaa4f4c5bd68a6116353470de6d9284175"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1b4384e53a1d8fb2d782cd6179664d3b" id="r_ga1b4384e53a1d8fb2d782cd6179664d3b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga1b4384e53a1d8fb2d782cd6179664d3b">QDMI_device_job_get_results</a> (<a class="el" href="#gaa9f37f29bc40f719b440a277654789a4">QDMI_Device_Job</a> job, <a class="el" href="constants_8h.html#a52254cd217f8627659a19c8e0c2feed6">QDMI_Job_Result</a> result, size_t size, void *data, size_t *size_ret)</td></tr>
 <tr class="memdesc:ga1b4384e53a1d8fb2d782cd6179664d3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the results of a job.  <br /></td></tr>
 <tr class="separator:ga1b4384e53a1d8fb2d782cd6179664d3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -455,7 +455,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Submit a job to the device. </p>
-<p>This function can either be blocking until the job is finished or non-blocking and return while the job is running. In the latter case, the functions <a class="el" href="#ga9170cd3f690b2ed7df4c2e0b24734138">QDMI_device_job_check</a> and <a class="el" href="#ga245e14549e05c09ce4de32b38a75f4ed">QDMI_device_job_wait</a> can be used to check the status and wait for the job to finish. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>This function can either be blocking until the job is finished or non-blocking and return while the job is running. In the latter case, the functions <a class="el" href="#ga9170cd3f690b2ed7df4c2e0b24734138">QDMI_device_job_check</a> and <a class="el" href="#gaa4f4c5bd68a6116353470de6d9284175">QDMI_device_job_wait</a> can be used to check the status and wait for the job to finish. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">job</td><td>The job to submit. Must not be <code>NULL</code>. </td></tr>
   </table>
@@ -540,8 +540,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ga245e14549e05c09ce4de32b38a75f4ed" name="ga245e14549e05c09ce4de32b38a75f4ed"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga245e14549e05c09ce4de32b38a75f4ed">&#9670;&#160;</a></span>QDMI_device_job_wait()</h2>
+<a id="gaa4f4c5bd68a6116353470de6d9284175" name="gaa4f4c5bd68a6116353470de6d9284175"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa4f4c5bd68a6116353470de6d9284175">&#9670;&#160;</a></span>QDMI_device_job_wait()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -549,16 +549,21 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">int QDMI_device_job_wait </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="#gaa9f37f29bc40f719b440a277654789a4">QDMI_Device_Job</a></td>          <td class="paramname"><span class="paramname"><em>job</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="#gaa9f37f29bc40f719b440a277654789a4">QDMI_Device_Job</a></td>          <td class="paramname"><span class="paramname"><em>job</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>timeout</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Wait for a job to finish. </p>
-<p>This function blocks until the job has either finished, has been canceled, or the timeout has been reached. Hence, starting with the call to this function, it returns latest after the number of seconds specified by the <a class="el" href="constants_8h.html#a40dd25c531ebf99fb4b46469083b609ea871d0b7b92d493213113b57264785c31">QDMI_DEVICE_JOB_PARAMETER_TIMEOUT</a> parameter. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>This function blocks until the job has either finished, has been canceled, or the timeout has been reached. If <code class="param">timeout</code> is not zero, this function returns latest after the specified number of seconds. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">job</td><td>The job to wait for. Must not be <code>NULL</code>. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">timeout</td><td>The timeout in seconds. If this is zero, the function waits indefinitely until the job has finished. </td></tr>
   </table>
   </dd>
 </dl>
@@ -568,7 +573,7 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8ab875f28072043ad44f7ee5290bba8d01">QDMI_ERROR_PERMISSIONDENIED</a> if the device does not allow using the <a class="el" href="group__device__job__interface.html">device job interface</a> for the current session. </dd>
 <dd>
-<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8acf9abde59858a1087762ba3e287e9fdd">QDMI_ERROR_TIMEOUT</a> if the job did not finish within the timeout set via <a class="el" href="constants_8h.html#a40dd25c531ebf99fb4b46469083b609ea871d0b7b92d493213113b57264785c31">QDMI_DEVICE_JOB_PARAMETER_TIMEOUT</a>. </dd>
+<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8acf9abde59858a1087762ba3e287e9fdd">QDMI_ERROR_TIMEOUT</a> if <code class="param">timeout</code> is not zero and the job did not finish within the specified time. </dd>
 <dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3">QDMI_ERROR_FATAL</a> if the job could not be waited for and this function returns before the job has finished or has been canceled. </dd></dl>
 

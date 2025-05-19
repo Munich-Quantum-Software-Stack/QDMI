@@ -217,7 +217,7 @@ $(function(){initNavTree('group__client__job__interface.html',''); initResizable
 <li>Set parameters for the job with <a class="el" href="#ga94b84ea6efa5e7f2ad1ee65bff04381c">QDMI_job_set_parameter</a>.</li>
 <li>Submit the job to the device with <a class="el" href="#ga184d0d0fc0d4edc3a447b91991f9abd1">QDMI_job_submit</a>.</li>
 <li>Check the status of the job with <a class="el" href="#gae9a7cba893885c8fcfe4bec030071d2f">QDMI_job_check</a>.</li>
-<li>Wait for the job to finish with <a class="el" href="#gaccec1a322efab7a18cf7fbc43af2019f">QDMI_job_wait</a>.</li>
+<li>Wait for the job to finish with <a class="el" href="#ga709a8817f2cda4673175e43fe596ead9">QDMI_job_wait</a>.</li>
 <li>Retrieve the results of the job with <a class="el" href="#gaba583321332e0753f5de1764edbd8b7f">QDMI_job_get_results</a>.</li>
 <li>Free the job with <a class="el" href="#ga9e9de68a558361018974e954ddead940">QDMI_job_free</a> when it is no longer used. </li>
 </ul>
@@ -242,15 +242,14 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="#gga1e7131664b094eb409d0f44d731f51f5ad0b4fad39ff9935e76bcd888cfca908b">QDMI_JOB_PARAMETER_PROGRAMFORMAT</a> = 0
 , <a class="el" href="#gga1e7131664b094eb409d0f44d731f51f5ac44c5d28aada4f1a1628c45805747998">QDMI_JOB_PARAMETER_PROGRAM</a> = 1
 , <a class="el" href="#gga1e7131664b094eb409d0f44d731f51f5a21a7c498f22ef05c9a72f354f6f89a81">QDMI_JOB_PARAMETER_SHOTSNUM</a> = 2
-, <a class="el" href="#gga1e7131664b094eb409d0f44d731f51f5a1920310b76fe87426eab1c65770c48be">QDMI_JOB_PARAMETER_TIMEOUT</a> = 3
+, <a class="el" href="#gga1e7131664b094eb409d0f44d731f51f5aa94ff18351f57072ad1e9223583ff978">QDMI_JOB_PARAMETER_MAX</a> = 3
 , <br />
-&#160;&#160;<a class="el" href="#gga1e7131664b094eb409d0f44d731f51f5aa94ff18351f57072ad1e9223583ff978">QDMI_JOB_PARAMETER_MAX</a> = 4
-, <a class="el" href="#gga1e7131664b094eb409d0f44d731f51f5a06fddbae216743659f3268c0e31554c8">QDMI_JOB_PARAMETER_CUSTOM1</a> = 999999995
+&#160;&#160;<a class="el" href="#gga1e7131664b094eb409d0f44d731f51f5a06fddbae216743659f3268c0e31554c8">QDMI_JOB_PARAMETER_CUSTOM1</a> = 999999995
 , <a class="el" href="#gga1e7131664b094eb409d0f44d731f51f5aa6438cc893fc43e5124f0ee5a969de2b">QDMI_JOB_PARAMETER_CUSTOM2</a> = 999999996
 , <a class="el" href="#gga1e7131664b094eb409d0f44d731f51f5a40cc64aa3dfe3a837a3d9b86024cb8ef">QDMI_JOB_PARAMETER_CUSTOM3</a> = 999999997
+, <a class="el" href="#gga1e7131664b094eb409d0f44d731f51f5a1afd4ae62865f54f0e16584b50b940e3">QDMI_JOB_PARAMETER_CUSTOM4</a> = 999999998
 , <br />
-&#160;&#160;<a class="el" href="#gga1e7131664b094eb409d0f44d731f51f5a1afd4ae62865f54f0e16584b50b940e3">QDMI_JOB_PARAMETER_CUSTOM4</a> = 999999998
-, <a class="el" href="#gga1e7131664b094eb409d0f44d731f51f5a88cae1a3c7f8af76fa83ceaaaa5f7998">QDMI_JOB_PARAMETER_CUSTOM5</a> = 999999999
+&#160;&#160;<a class="el" href="#gga1e7131664b094eb409d0f44d731f51f5a88cae1a3c7f8af76fa83ceaaaa5f7998">QDMI_JOB_PARAMETER_CUSTOM5</a> = 999999999
 <br />
  }</td></tr>
 <tr class="memdesc:ga1e7131664b094eb409d0f44d731f51f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum of the job parameters that can be set.  <a href="#ga1e7131664b094eb409d0f44d731f51f5">More...</a><br /></td></tr>
@@ -261,13 +260,12 @@ Enumerations</h2></td></tr>
 , <a class="el" href="#gga8f2f468604e24bab4c86cdb781b879bba461ddd5f5f9b393f955fc05540d91f2c">QDMI_JOB_PROPERTY_PROGRAM</a> = 2
 , <a class="el" href="#gga8f2f468604e24bab4c86cdb781b879bba63b4303048a3617aa06ac9ccb1795f23">QDMI_JOB_PROPERTY_SHOTSNUM</a> = 3
 , <br />
-&#160;&#160;<a class="el" href="#gga8f2f468604e24bab4c86cdb781b879bba242dfa7e1c30b363fbf6c931ea3a0ca9">QDMI_JOB_PROPERTY_TIMEOUT</a> = 4
-, <a class="el" href="#gga8f2f468604e24bab4c86cdb781b879bba14db954932a0e76a751f89e75eda5351">QDMI_JOB_PROPERTY_MAX</a> = 5
+&#160;&#160;<a class="el" href="#gga8f2f468604e24bab4c86cdb781b879bba14db954932a0e76a751f89e75eda5351">QDMI_JOB_PROPERTY_MAX</a> = 4
 , <a class="el" href="#gga8f2f468604e24bab4c86cdb781b879bba016257118753c19a5a86da3310be27cc">QDMI_JOB_PROPERTY_CUSTOM1</a> = 999999995
 , <a class="el" href="#gga8f2f468604e24bab4c86cdb781b879bba95c21c814e579b6ac1d736ba57d69287">QDMI_JOB_PROPERTY_CUSTOM2</a> = 999999996
+, <a class="el" href="#gga8f2f468604e24bab4c86cdb781b879bbaae52e78d7f9944bde33147b9bef474ac">QDMI_JOB_PROPERTY_CUSTOM3</a> = 999999997
 , <br />
-&#160;&#160;<a class="el" href="#gga8f2f468604e24bab4c86cdb781b879bbaae52e78d7f9944bde33147b9bef474ac">QDMI_JOB_PROPERTY_CUSTOM3</a> = 999999997
-, <a class="el" href="#gga8f2f468604e24bab4c86cdb781b879bbac3fe7fca8db9bb213282e5adebf5ff2c">QDMI_JOB_PROPERTY_CUSTOM4</a> = 999999998
+&#160;&#160;<a class="el" href="#gga8f2f468604e24bab4c86cdb781b879bbac3fe7fca8db9bb213282e5adebf5ff2c">QDMI_JOB_PROPERTY_CUSTOM4</a> = 999999998
 , <a class="el" href="#gga8f2f468604e24bab4c86cdb781b879bba0108668f46b41020ad1b9b78cb39f0ba">QDMI_JOB_PROPERTY_CUSTOM5</a> = 999999999
 <br />
  }</td></tr>
@@ -294,9 +292,9 @@ Functions</h2></td></tr>
 <tr class="memitem:gae9a7cba893885c8fcfe4bec030071d2f" id="r_gae9a7cba893885c8fcfe4bec030071d2f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gae9a7cba893885c8fcfe4bec030071d2f">QDMI_job_check</a> (<a class="el" href="#gab63357cf9e4546c7ee86b7378c620981">QDMI_Job</a> job, <a class="el" href="constants_8h.html#a28c071c6750e755deb9f375fdf4c5bfc">QDMI_Job_Status</a> *status)</td></tr>
 <tr class="memdesc:gae9a7cba893885c8fcfe4bec030071d2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check the status of a job.  <br /></td></tr>
 <tr class="separator:gae9a7cba893885c8fcfe4bec030071d2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaccec1a322efab7a18cf7fbc43af2019f" id="r_gaccec1a322efab7a18cf7fbc43af2019f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaccec1a322efab7a18cf7fbc43af2019f">QDMI_job_wait</a> (<a class="el" href="#gab63357cf9e4546c7ee86b7378c620981">QDMI_Job</a> job)</td></tr>
-<tr class="memdesc:gaccec1a322efab7a18cf7fbc43af2019f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait for a job to finish.  <br /></td></tr>
-<tr class="separator:gaccec1a322efab7a18cf7fbc43af2019f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga709a8817f2cda4673175e43fe596ead9" id="r_ga709a8817f2cda4673175e43fe596ead9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga709a8817f2cda4673175e43fe596ead9">QDMI_job_wait</a> (<a class="el" href="#gab63357cf9e4546c7ee86b7378c620981">QDMI_Job</a> job, size_t timeout)</td></tr>
+<tr class="memdesc:ga709a8817f2cda4673175e43fe596ead9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait for a job to finish.  <br /></td></tr>
+<tr class="separator:ga709a8817f2cda4673175e43fe596ead9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaba583321332e0753f5de1764edbd8b7f" id="r_gaba583321332e0753f5de1764edbd8b7f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaba583321332e0753f5de1764edbd8b7f">QDMI_job_get_results</a> (<a class="el" href="#gab63357cf9e4546c7ee86b7378c620981">QDMI_Job</a> job, <a class="el" href="constants_8h.html#a52254cd217f8627659a19c8e0c2feed6">QDMI_Job_Result</a> result, size_t size, void *data, size_t *size_ret)</td></tr>
 <tr class="memdesc:gaba583321332e0753f5de1764edbd8b7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the results of a job.  <br /></td></tr>
 <tr class="separator:gaba583321332e0753f5de1764edbd8b7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -348,11 +346,7 @@ Functions</h2></td></tr>
 <tr><td class="fieldname"><a id="gga1e7131664b094eb409d0f44d731f51f5a21a7c498f22ef05c9a72f354f6f89a81" name="gga1e7131664b094eb409d0f44d731f51f5a21a7c498f22ef05c9a72f354f6f89a81"></a>QDMI_JOB_PARAMETER_SHOTSNUM&#160;</td><td class="fieldinit">2&#160;</td><td class="fielddoc"><p><code>size_t</code> The number of shots to execute for a quantum circuit job. </p>
 <p>If this parameter is not set, a device-specific default is used. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga1e7131664b094eb409d0f44d731f51f5a1920310b76fe87426eab1c65770c48be" name="gga1e7131664b094eb409d0f44d731f51f5a1920310b76fe87426eab1c65770c48be"></a>QDMI_JOB_PARAMETER_TIMEOUT&#160;</td><td class="fieldinit">3&#160;</td><td class="fielddoc"><p><code>size_t</code> A timeout in seconds for the <a class="el" href="#gaccec1a322efab7a18cf7fbc43af2019f">QDMI_job_wait</a> function. </p>
-<p>The function <a class="el" href="#gaccec1a322efab7a18cf7fbc43af2019f">QDMI_job_wait</a> will at most wait for this amount of time before returning. If the job is not finished after this timeout, the function will return <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8acf9abde59858a1087762ba3e287e9fdd">QDMI_ERROR_TIMEOUT</a>. If the timeout is set to zero, the function will wait indefinitely until the job is finished.</p>
-<dl class="section user"><dt>If this parameter is not set, a driver-specific default is used, which</dt><dd>may be zero. </dd></dl>
-</td></tr>
-<tr><td class="fieldname"><a id="gga1e7131664b094eb409d0f44d731f51f5aa94ff18351f57072ad1e9223583ff978" name="gga1e7131664b094eb409d0f44d731f51f5aa94ff18351f57072ad1e9223583ff978"></a>QDMI_JOB_PARAMETER_MAX&#160;</td><td class="fieldinit">4&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
+<tr><td class="fieldname"><a id="gga1e7131664b094eb409d0f44d731f51f5aa94ff18351f57072ad1e9223583ff978" name="gga1e7131664b094eb409d0f44d731f51f5aa94ff18351f57072ad1e9223583ff978"></a>QDMI_JOB_PARAMETER_MAX&#160;</td><td class="fieldinit">3&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
 <p>It can be used by drivers for bounds checking and validation of function parameters. </p><dl class="section attention"><dt>Attention</dt><dd>This value must remain the last regular member of the enum besides the custom members and must be updated when new members are added. </dd></dl>
 </td></tr>
 <tr><td class="fieldname"><a id="gga1e7131664b094eb409d0f44d731f51f5a06fddbae216743659f3268c0e31554c8" name="gga1e7131664b094eb409d0f44d731f51f5a06fddbae216743659f3268c0e31554c8"></a>QDMI_JOB_PARAMETER_CUSTOM1&#160;</td><td class="fieldinit">999999995&#160;</td><td class="fielddoc"><p>This enum value is reserved for a custom parameter. </p>
@@ -397,10 +391,7 @@ Functions</h2></td></tr>
 <tr><td class="fieldname"><a id="gga8f2f468604e24bab4c86cdb781b879bba63b4303048a3617aa06ac9ccb1795f23" name="gga8f2f468604e24bab4c86cdb781b879bba63b4303048a3617aa06ac9ccb1795f23"></a>QDMI_JOB_PROPERTY_SHOTSNUM&#160;</td><td class="fieldinit">3&#160;</td><td class="fielddoc"><p><code>size_t</code> The number of shots to execute for a quantum circuit job. </p>
 <dl class="section note"><dt>Note</dt><dd>This property returns the value of the <a class="el" href="#gga1e7131664b094eb409d0f44d731f51f5a21a7c498f22ef05c9a72f354f6f89a81">QDMI_JOB_PARAMETER_SHOTSNUM</a> parameter. </dd></dl>
 </td></tr>
-<tr><td class="fieldname"><a id="gga8f2f468604e24bab4c86cdb781b879bba242dfa7e1c30b363fbf6c931ea3a0ca9" name="gga8f2f468604e24bab4c86cdb781b879bba242dfa7e1c30b363fbf6c931ea3a0ca9"></a>QDMI_JOB_PROPERTY_TIMEOUT&#160;</td><td class="fieldinit">4&#160;</td><td class="fielddoc"><p><code>size_t</code> A timeout in seconds for the <a class="el" href="#gaccec1a322efab7a18cf7fbc43af2019f">QDMI_job_wait</a> function. </p>
-<p>This property returns the value of the <a class="el" href="#gga1e7131664b094eb409d0f44d731f51f5a1920310b76fe87426eab1c65770c48be">QDMI_JOB_PARAMETER_TIMEOUT</a> parameter. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga8f2f468604e24bab4c86cdb781b879bba14db954932a0e76a751f89e75eda5351" name="gga8f2f468604e24bab4c86cdb781b879bba14db954932a0e76a751f89e75eda5351"></a>QDMI_JOB_PROPERTY_MAX&#160;</td><td class="fieldinit">5&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
+<tr><td class="fieldname"><a id="gga8f2f468604e24bab4c86cdb781b879bba14db954932a0e76a751f89e75eda5351" name="gga8f2f468604e24bab4c86cdb781b879bba14db954932a0e76a751f89e75eda5351"></a>QDMI_JOB_PROPERTY_MAX&#160;</td><td class="fieldinit">4&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
 <p>It can be used by devices for bounds checking and validation of function parameters.</p>
 <dl class="section attention"><dt>Attention</dt><dd>This value must remain the last regular member of the enum besides the custom members and must be updated when new members are added. </dd></dl>
 </td></tr>
@@ -606,7 +597,7 @@ For example, to query the id of a job, the following code pattern can be used: <
 <div class="line"><a class="code hl_function" href="#ga8dffb76602c82ad6c1e1a9ea701af848">QDMI_job_query_job_property</a>(</div>
 <div class="line">  job, QDMI_JOB_PROPERTY_NAME, size, name.data(), <span class="keyword">nullptr</span>);</div>
 <div class="ttc" id="agroup__client__job__interface_html_ga8dffb76602c82ad6c1e1a9ea701af848"><div class="ttname"><a href="#ga8dffb76602c82ad6c1e1a9ea701af848">QDMI_job_query_job_property</a></div><div class="ttdeci">int QDMI_job_query_job_property(QDMI_Job job, QDMI_Job_Property prop, size_t size, void *value, size_t *size_ret)</div><div class="ttdoc">Query a job property.</div></div>
-<div class="ttc" id="agroup__client__job__interface_html_gga8f2f468604e24bab4c86cdb781b879bba8b29485092d51f7573929a5579521d34"><div class="ttname"><a href="#gga8f2f468604e24bab4c86cdb781b879bba8b29485092d51f7573929a5579521d34">QDMI_JOB_PROPERTY_ID</a></div><div class="ttdeci">@ QDMI_JOB_PROPERTY_ID</div><div class="ttdoc">char* (string) The job&#39;s ID.</div><div class="ttdef"><b>Definition</b> client.h:763</div></div>
+<div class="ttc" id="agroup__client__job__interface_html_gga8f2f468604e24bab4c86cdb781b879bba8b29485092d51f7573929a5579521d34"><div class="ttname"><a href="#gga8f2f468604e24bab4c86cdb781b879bba8b29485092d51f7573929a5579521d34">QDMI_JOB_PROPERTY_ID</a></div><div class="ttdeci">@ QDMI_JOB_PROPERTY_ID</div><div class="ttdoc">char* (string) The job&#39;s ID.</div><div class="ttdef"><b>Definition</b> client.h:752</div></div>
 </div><!-- fragment --> </dd></dl>
 
 </div>
@@ -627,7 +618,7 @@ For example, to query the id of a job, the following code pattern can be used: <
 </div><div class="memdoc">
 
 <p>Submit a job to the device. </p>
-<p>This function can either be blocking until the job is finished or non-blocking and return while the job is running. In the latter case, the functions <a class="el" href="#gae9a7cba893885c8fcfe4bec030071d2f">QDMI_job_check</a> and <a class="el" href="#gaccec1a322efab7a18cf7fbc43af2019f">QDMI_job_wait</a> can be used to check the status and wait for the job to finish. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>This function can either be blocking until the job is finished or non-blocking and return while the job is running. In the latter case, the functions <a class="el" href="#gae9a7cba893885c8fcfe4bec030071d2f">QDMI_job_check</a> and <a class="el" href="#ga709a8817f2cda4673175e43fe596ead9">QDMI_job_wait</a> can be used to check the status and wait for the job to finish. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">job</td><td>The job to submit. Must not be <code>NULL</code>. </td></tr>
   </table>
@@ -714,8 +705,8 @@ For example, to query the id of a job, the following code pattern can be used: <
 
 </div>
 </div>
-<a id="gaccec1a322efab7a18cf7fbc43af2019f" name="gaccec1a322efab7a18cf7fbc43af2019f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaccec1a322efab7a18cf7fbc43af2019f">&#9670;&#160;</a></span>QDMI_job_wait()</h2>
+<a id="ga709a8817f2cda4673175e43fe596ead9" name="ga709a8817f2cda4673175e43fe596ead9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga709a8817f2cda4673175e43fe596ead9">&#9670;&#160;</a></span>QDMI_job_wait()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -723,16 +714,21 @@ For example, to query the id of a job, the following code pattern can be used: <
         <tr>
           <td class="memname">int QDMI_job_wait </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="#gab63357cf9e4546c7ee86b7378c620981">QDMI_Job</a></td>          <td class="paramname"><span class="paramname"><em>job</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="#gab63357cf9e4546c7ee86b7378c620981">QDMI_Job</a></td>          <td class="paramname"><span class="paramname"><em>job</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>timeout</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Wait for a job to finish. </p>
-<p>This function blocks until the job has either finished or has been canceled, or the timeout has been reached. Hence, starting with the call to this function, it returns latest after the number of seconds specified by the <a class="el" href="constants_8h.html#a40dd25c531ebf99fb4b46469083b609ea871d0b7b92d493213113b57264785c31">QDMI_DEVICE_JOB_PARAMETER_TIMEOUT</a> parameter. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>This function blocks until the job has either finished, has been canceled, or the timeout has been reached. If <code class="param">timeout</code> is not zero, this function returns latest after the specified number of seconds. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">job</td><td>The job to wait for. Must not be <code>NULL</code>. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">timeout</td><td>The timeout in seconds. If this is zero, the function waits indefinitely until the job has finished. </td></tr>
   </table>
   </dd>
 </dl>
@@ -742,7 +738,7 @@ For example, to query the id of a job, the following code pattern can be used: <
 <dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8ab875f28072043ad44f7ee5290bba8d01">QDMI_ERROR_PERMISSIONDENIED</a> if the driver does not allow using the <a class="el" href="group__client__job__interface.html">client job interface</a> for the device in the current session. </dd>
 <dd>
-<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8acf9abde59858a1087762ba3e287e9fdd">QDMI_ERROR_TIMEOUT</a> if the job did not finish within the timeout set via <a class="el" href="#gga1e7131664b094eb409d0f44d731f51f5a1920310b76fe87426eab1c65770c48be">QDMI_JOB_PARAMETER_TIMEOUT</a>. </dd>
+<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8acf9abde59858a1087762ba3e287e9fdd">QDMI_ERROR_TIMEOUT</a> if <code class="param">timeout</code> is not zero and the job did not finish within the specified time. </dd>
 <dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3">QDMI_ERROR_FATAL</a> if the job could not be waited for and this function returns before the job has finished or has been canceled. </dd></dl>
 
@@ -820,7 +816,7 @@ For example, to query the measurement results of a quantum circuit job, the foll
 <div class="line"><span class="comment">// Query the result.</span></div>
 <div class="line"><a class="code hl_function" href="#gaba583321332e0753f5de1764edbd8b7f">QDMI_job_get_results</a>(</div>
 <div class="line">  job, <a class="code hl_enumvalue" href="constants_8h.html#aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97">QDMI_JOB_RESULT_SHOTS</a>, size, shots.data(), <span class="keyword">nullptr</span>);</div>
-<div class="ttc" id="aconstants_8h_html_aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97"><div class="ttname"><a href="constants_8h.html#aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97">QDMI_JOB_RESULT_SHOTS</a></div><div class="ttdeci">@ QDMI_JOB_RESULT_SHOTS</div><div class="ttdoc">char* (string) The results of the individual shots as a comma-separated list, for example,...</div><div class="ttdef"><b>Definition</b> constants.h:685</div></div>
+<div class="ttc" id="aconstants_8h_html_aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97"><div class="ttname"><a href="constants_8h.html#aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97">QDMI_JOB_RESULT_SHOTS</a></div><div class="ttdeci">@ QDMI_JOB_RESULT_SHOTS</div><div class="ttdoc">char* (string) The results of the individual shots as a comma-separated list, for example,...</div><div class="ttdef"><b>Definition</b> constants.h:665</div></div>
 <div class="ttc" id="agroup__client__job__interface_html_gaba583321332e0753f5de1764edbd8b7f"><div class="ttname"><a href="#gaba583321332e0753f5de1764edbd8b7f">QDMI_job_get_results</a></div><div class="ttdeci">int QDMI_job_get_results(QDMI_Job job, QDMI_Job_Result result, size_t size, void *data, size_t *size_ret)</div><div class="ttdoc">Retrieve the results of a job.</div></div>
 </div><!-- fragment --> </dd></dl>
 

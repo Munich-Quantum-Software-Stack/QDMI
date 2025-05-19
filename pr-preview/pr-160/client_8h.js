@@ -34,7 +34,6 @@ var client_8h =
       [ "QDMI_JOB_PARAMETER_PROGRAMFORMAT", "group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5ad0b4fad39ff9935e76bcd888cfca908b", null ],
       [ "QDMI_JOB_PARAMETER_PROGRAM", "group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5ac44c5d28aada4f1a1628c45805747998", null ],
       [ "QDMI_JOB_PARAMETER_SHOTSNUM", "group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5a21a7c498f22ef05c9a72f354f6f89a81", null ],
-      [ "QDMI_JOB_PARAMETER_TIMEOUT", "group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5a1920310b76fe87426eab1c65770c48be", null ],
       [ "QDMI_JOB_PARAMETER_MAX", "group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5aa94ff18351f57072ad1e9223583ff978", null ],
       [ "QDMI_JOB_PARAMETER_CUSTOM1", "group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5a06fddbae216743659f3268c0e31554c8", null ],
       [ "QDMI_JOB_PARAMETER_CUSTOM2", "group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5aa6438cc893fc43e5124f0ee5a969de2b", null ],
@@ -47,7 +46,6 @@ var client_8h =
       [ "QDMI_JOB_PROPERTY_PROGRAMFORMAT", "group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba8e604c9e0271a5fb9a0e94a190d6fe8a", null ],
       [ "QDMI_JOB_PROPERTY_PROGRAM", "group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba461ddd5f5f9b393f955fc05540d91f2c", null ],
       [ "QDMI_JOB_PROPERTY_SHOTSNUM", "group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba63b4303048a3617aa06ac9ccb1795f23", null ],
-      [ "QDMI_JOB_PROPERTY_TIMEOUT", "group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba242dfa7e1c30b363fbf6c931ea3a0ca9", null ],
       [ "QDMI_JOB_PROPERTY_MAX", "group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba14db954932a0e76a751f89e75eda5351", null ],
       [ "QDMI_JOB_PROPERTY_CUSTOM1", "group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba016257118753c19a5a86da3310be27cc", null ],
       [ "QDMI_JOB_PROPERTY_CUSTOM2", "group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba95c21c814e579b6ac1d736ba57d69287", null ],
@@ -69,7 +67,7 @@ var client_8h =
     [ "QDMI_job_submit", "group__client__job__interface.html#ga184d0d0fc0d4edc3a447b91991f9abd1", null ],
     [ "QDMI_job_cancel", "group__client__job__interface.html#gae5c530accc67d1ac8f5fada1ad914cfc", null ],
     [ "QDMI_job_check", "group__client__job__interface.html#gae9a7cba893885c8fcfe4bec030071d2f", null ],
-    [ "QDMI_job_wait", "group__client__job__interface.html#gaccec1a322efab7a18cf7fbc43af2019f", null ],
+    [ "QDMI_job_wait", "group__client__job__interface.html#ga709a8817f2cda4673175e43fe596ead9", null ],
     [ "QDMI_job_get_results", "group__client__job__interface.html#gaba583321332e0753f5de1764edbd8b7f", null ],
     [ "QDMI_job_free", "group__client__job__interface.html#ga9e9de68a558361018974e954ddead940", null ]
 ];
