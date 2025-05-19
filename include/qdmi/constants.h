@@ -77,6 +77,15 @@ enum QDMI_DEVICE_SESSION_PARAMETER_T {
    */
   QDMI_DEVICE_SESSION_PARAMETER_TOKEN = 1,
   /**
+   * @brief `char*` (string) A file path to a file containing authentication
+   * information.
+   * @details The file may contain a token or other authentication information
+   * required for the session. The device documentation *must* document
+   * whether the implementation requires this parameter to be set and what
+   * kind of authentication information is expected in the file.
+   */
+  QDMI_DEVICE_SESSION_PARAMETER_AUTHFILE = 2,
+  /**
    * @brief `char*` (string) The URL to an authentication server used as part of
    * the authentication procedure.
    * @details This parameter might be used as part of an authentication scheme
@@ -89,21 +98,21 @@ enum QDMI_DEVICE_SESSION_PARAMETER_T {
    * requires this parameter to be set and which additional parameters need to
    * be set in case this authentication method is used.
    */
-  QDMI_DEVICE_SESSION_PARAMETER_AUTHURL = 2,
+  QDMI_DEVICE_SESSION_PARAMETER_AUTHURL = 3,
   /**
    * @brief `char*` (string) The username to use for the device session.
    * @details The username is used for authentication within the session. The
    * device documentation *must* document when the implementation requires this
    * parameter to be set.
    */
-  QDMI_DEVICE_SESSION_PARAMETER_USERNAME = 3,
+  QDMI_DEVICE_SESSION_PARAMETER_USERNAME = 4,
   /**
    * @brief `char*` (string) The password to use for the session.
    * @details The password is used for authentication within the session. The
    * device documentation *must* document if the implementation requires this
    * parameter to be set.
    */
-  QDMI_DEVICE_SESSION_PARAMETER_PASSWORD = 4,
+  QDMI_DEVICE_SESSION_PARAMETER_PASSWORD = 5,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
@@ -112,7 +121,7 @@ enum QDMI_DEVICE_SESSION_PARAMETER_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_DEVICE_SESSION_PARAMETER_MAX = 5,
+  QDMI_DEVICE_SESSION_PARAMETER_MAX = 6,
   /**
    * @brief This enum value is reserved for a custom parameter.
    * @details The device defines the meaning and the type of this parameter.
