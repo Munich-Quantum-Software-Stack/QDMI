@@ -487,7 +487,7 @@ enum QDMI_JOB_STATUS_T {
   QDMI_JOB_STATUS_CREATED = 0,
   /// The job was submitted.
   QDMI_JOB_STATUS_SUBMITTED = 1,
-  /// The job was received is waiting to be executed.
+  /// The job was received, and is waiting to be executed.
   QDMI_JOB_STATUS_QUEUED = 2,
   /// The job is running, and the result is not yet available.
   QDMI_JOB_STATUS_RUNNING = 3,
