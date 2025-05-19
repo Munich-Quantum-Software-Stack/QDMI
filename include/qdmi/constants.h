@@ -203,7 +203,7 @@ typedef enum QDMI_DEVICE_JOB_PARAMETER_T QDMI_Device_Job_Parameter;
 
 /**
  * @brief Enum of the device job properties that can be queried via @ref
- * QDMI_device_job_query_job_property as part of the @ref
+ * QDMI_device_job_query_property as part of the @ref
  * device_interface "device interface".
  * @details In particular, every parameter's value that can be set via @ref
  * QDMI_device_job_set_parameter can be queried.

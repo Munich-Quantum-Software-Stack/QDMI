@@ -409,10 +409,10 @@ int CXX_QDMI_device_job_set_parameter(CXX_QDMI_Device_Job job,
   }
 } /// [DOXYGEN FUNCTION END]
 
-int CXX_QDMI_device_job_query_job_property(CXX_QDMI_Device_Job job,
-                                           const QDMI_Device_Job_Property prop,
-                                           const size_t size, void *value,
-                                           size_t *size_ret) {
+int CXX_QDMI_device_job_query_property(CXX_QDMI_Device_Job job,
+                                       const QDMI_Device_Job_Property prop,
+                                       const size_t size, void *value,
+                                       size_t *size_ret) {
   if (job == nullptr || (value != nullptr && size == 0) ||
       (prop >= QDMI_DEVICE_JOB_PROPERTY_MAX &&
        prop != QDMI_DEVICE_JOB_PROPERTY_CUSTOM1 &&

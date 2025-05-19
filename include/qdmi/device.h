@@ -477,10 +477,9 @@ int QDMI_device_job_set_parameter(QDMI_Device_Job job,
  * returned in @p size_ret if @p size_ret is not @c NULL.
  * See the @ref QDMI_device_query_device_property documentation for an example.
  */
-int QDMI_device_job_query_job_property(QDMI_Device_Job job,
-                                       QDMI_Device_Job_Property prop,
-                                       size_t size, void *value,
-                                       size_t *size_ret);
+int QDMI_device_job_query_property(QDMI_Device_Job job,
+                                   QDMI_Device_Job_Property prop, size_t size,
+                                   void *value, size_t *size_ret);
 
 /**
  * @brief Submit a job to the device.

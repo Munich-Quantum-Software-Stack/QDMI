@@ -98,10 +98,10 @@ int MY_QDMI_device_job_set_parameter(MY_QDMI_Device_Job job,
   return QDMI_ERROR_NOTIMPLEMENTED;
 }
 
-int MY_QDMI_device_job_query_job_property(MY_QDMI_Device_Job job,
-                                          const QDMI_Device_Job_Property prop,
-                                          const size_t size, void *value,
-                                          size_t *size_ret) {
+int MY_QDMI_device_job_query_property(MY_QDMI_Device_Job job,
+                                      const QDMI_Device_Job_Property prop,
+                                      const size_t size, void *value,
+                                      size_t *size_ret) {
   return QDMI_ERROR_NOTIMPLEMENTED;
 }
 

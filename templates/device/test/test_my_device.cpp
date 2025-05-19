@@ -83,8 +83,8 @@ TEST_F(QDMIImplementationTest, JobQueryPropertyImplemented) {
   MY_QDMI_Device_Job job = nullptr;
   ASSERT_EQ(MY_QDMI_device_session_create_device_job(session, &job),
             QDMI_SUCCESS);
-  ASSERT_EQ(MY_QDMI_device_job_query_job_property(
-                job, QDMI_DEVICE_JOB_PROPERTY_MAX, 0, nullptr, nullptr),
+  ASSERT_EQ(MY_QDMI_device_job_query_property(job, QDMI_DEVICE_JOB_PROPERTY_MAX,
+                                              0, nullptr, nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
   MY_QDMI_device_job_free(job);
 }

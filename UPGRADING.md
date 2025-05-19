@@ -11,7 +11,7 @@ The enum value `QDMI_SITE_PROPERTY_ID` has been renamed to `QDMI_SITE_PROPERTY_I
 
 ### Device-side Changes
 
-- Devices now also need to implement the function `QDMI_device_job_query_job_property` for querying
+- Devices now also need to implement the function `QDMI_device_job_query_property` for querying
   properties of jobs.
 
 - The `QDMI_device_job_wait` function now has a new parameter `timeout` that specifies how long (in
@@ -37,8 +37,8 @@ header file versions.
 
 ### Driver-internal Changes
 
-- Drivers now also need to implement the function `QDMI_job_query_job_property` for querying
-  properties of jobs.
+- Drivers now also need to implement the function `QDMI_job_query_property` for querying properties
+  of jobs.
 
 - The function `QDMI_device_job_wait` may now also return after a timeout resulting in a new status
   `QDMI_JOB_STATUS_TIMEOUT` that must be handled. Additionally, the `QDMI_job_wait` function now has
@@ -69,7 +69,7 @@ header file versions.
   now also return after a timeout resulting in a new status `QDMI_JOB_STATUS_TIMEOUT` that must be
   handled.
 
-- The function `QDMI_job_query_job_property` has been added to query properties of jobs.
+- The function `QDMI_job_query_property` has been added to query properties of jobs.
 
 - New authentication options may be provided by drivers and devices. This includes authentication
   options such as `QDMI_SESSION_PARAMETER_AUTHFILE`, `QDMI_SESSION_PARAMETER_AUTHURL`,
