@@ -72,7 +72,7 @@ typedef struct QDMI_Site_impl_d *QDMI_Site;
 typedef struct QDMI_Operation_impl_d *QDMI_Operation;
 
 /**
- * @brief A handle for an environment.
+ * @brief A handle for an environment variable.
  * @details An opaque pointer to an implementation of the QDMI environment
  * concept. The environmental factors of the laboratories can affect the
  * operations and measurement results of quantum devices. Therefore, they are

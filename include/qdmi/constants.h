@@ -653,26 +653,34 @@ typedef enum QDMI_JOB_RESULT_T QDMI_Job_Result;
 /// QDMI_device_query_environment_property as part of the @ref client_interface
 /// "client interface".
 enum QDMI_ENVIRONMENT_PROPERTY_T {
-  /// `char*` The ID of a environment.
+  /**
+   * @brief `char*` (string) The unique ID to identify the environment.
+   * @details TThe ID of an environment is used to identify the sensors. The
+   * sensors collect environmental data in the HPCQC Labs, i.e., temperature and
+   * pressure.
+   */
   QDMI_ENVIRONMENT_PROPERTY_ID = 0,
-  /// `char*` The unit of an environment, i.e., Kelvin.
+  /// `char*` (string) The unit of an environment variable, e.g., Kelvin for
+  /// temperature.
   QDMI_ENVIRONMENT_PROPERTY_UNIT = 1,
-  /// `unsigned int` The sampiling rate of an environment in seconds.
+  /// `float` The samples per second of an environment.
   QDMI_ENVIRONMENT_PROPERTY_SAMPLING_RATE = 2,
   /**
    * @brief The maximum value of the enum.
-   * @details It can be used by devices for bounds checking and validation of
-   * function parameters.
+   * @details It can be used by devices for bounds checking and
+   * validation of function parameters.
    *
-   * @attention This value must remain the last regular member of the enum
-   * besides the custom members and must be updated when new members are added.
+   * @attention This value must remain the last regular member of the
+   * enum besides the custom members and must be updated when new
+   * members are added.
    */
   QDMI_ENVIRONMENT_PROPERTY_MAX = 3,
   /**
    * @brief This enum value is reserved for a custom property.
-   * @details The device defines the meaning and the type of this property.
-   * @attention The value of this enum member must not be changed to maintain
-   * binary compatibility.
+   * @details The device defines the meaning and the type of this
+   * property.
+   * @attention The value of this enum member must not be changed to
+   * maintain binary compatibility.
    */
   QDMI_ENVIRONMENT_PROPERTY_CUSTOM1 = 999999995,
   /// @see QDMI_ENVIRONMENT_PROPERTY_CUSTOM1
@@ -729,8 +737,8 @@ typedef enum QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_T
  */
 enum QDMI_ENVIRONMENT_QUERY_RESULT_T {
   /**
-   * @brief `uint64_t*` (`unsigned 64 bit integer` list) The timestamps of the
-   * result
+   * @brief `uint64_t*` (`unsigned 64 bit integer` list) The timestamps at which
+   * the corresponding values in the results were recorded by a sensor.
    * @details The result of an environment query is represented as a key-value
    * mapping. This mapping is returned as a list of keys and an equal-length
    * list of values. The corresponding partners of the keys and values can be
@@ -782,14 +790,18 @@ enum QDMI_ENVIRONMENT_QUERY_STATUS_T {
    * QDMI_environment_query_set_parameter.
    */
   QDMI_ENVIRONMENT_QUERY_STATUS_CREATED = 0,
-  /// The environment query was submitted and is waiting to be executed.
+  /// The environment query was submitted.
   QDMI_ENVIRONMENT_QUERY_STATUS_SUBMITTED = 1,
-  /// The environment query is done, and the result can be retrieved.
-  QDMI_ENVIRONMENT_QUERY_STATUS_DONE = 2,
+  /// The environment query was received is waiting to be executed.
+  QDMI_ENVIRONMENT_QUERY_STATUS_QUEUED = 2,
   /// The environment query is running, and the result is not yet available.
   QDMI_ENVIRONMENT_QUERY_STATUS_RUNNING = 3,
+  /// The environment query is done, and the result can be retrieved.
+  QDMI_ENVIRONMENT_QUERY_STATUS_DONE = 4,
   /// The environment query was canceled, and the result is not available.
-  QDMI_ENVIRONMENT_QUERY_STATUS_CANCELED = 4
+  QDMI_ENVIRONMENT_QUERY_STATUS_CANCELED = 5,
+  /// An error occurred in the environment query's lifecycle.
+  QDMI_ENVIRONMENT_QUERY_STATUS_FAILED = 6
 };
 /// Environment query status type.
 typedef enum QDMI_ENVIRONMENT_QUERY_STATUS_T QDMI_Environment_Query_Status;
