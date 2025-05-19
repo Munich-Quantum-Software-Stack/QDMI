@@ -480,11 +480,11 @@ int QDMI_job_check(QDMI_Job job, QDMI_Job_Status *status) {
   return job->device->library->device_job_check(job->device_job, status);
 }
 
-int QDMI_job_wait(QDMI_Job job) {
+int QDMI_job_wait(QDMI_Job job, const size_t timeout) {
   if (job == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
-  return job->device->library->device_job_wait(job->device_job);
+  return job->device->library->device_job_wait(job->device_job, timeout);
 }
 
 int QDMI_job_get_results(QDMI_Job job, QDMI_Job_Result result,

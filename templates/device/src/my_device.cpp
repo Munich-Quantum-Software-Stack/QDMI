@@ -117,7 +117,7 @@ int MY_QDMI_device_job_check(MY_QDMI_Device_Job job, QDMI_Job_Status *status) {
   return QDMI_ERROR_NOTIMPLEMENTED;
 }
 
-int MY_QDMI_device_job_wait(MY_QDMI_Device_Job job) {
+int MY_QDMI_device_job_wait(MY_QDMI_Device_Job job, const size_t timeout) {
   return QDMI_ERROR_NOTIMPLEMENTED;
 }
 

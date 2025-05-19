@@ -529,20 +529,22 @@ int QDMI_device_job_check(QDMI_Device_Job job, QDMI_Job_Status *status);
 /**
  * @brief Wait for a job to finish.
  * @details This function blocks until the job has either finished, has been
- * canceled, or the timeout has been reached. Hence, starting with the call to
- * this function, it returns latest after the number of seconds specified by the
- * @ref QDMI_DEVICE_JOB_PARAMETER_TIMEOUT parameter.
+ * canceled, or the timeout has been reached.
+ * If @p timeout is not zero, this function returns latest after the specified
+ * number of seconds.
  * @param[in] job The job to wait for. Must not be @c NULL.
+ * @param[in] timeout The timeout in seconds.
+ * If this is zero, the function waits indefinitely until the job has finished.
  * @return @ref QDMI_SUCCESS if the job is finished or canceled.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p job is @c NULL.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the device does not allow using
  * the @ref device_job_interface "device job interface" for the current session.
- * @return @ref QDMI_ERROR_TIMEOUT if the job did not finish within the timeout
- * set via @ref QDMI_DEVICE_JOB_PARAMETER_TIMEOUT.
+ * @return @ref QDMI_ERROR_TIMEOUT if @p timeout is not zero and the job did not
+ * finish within the specified time.
  * @return @ref QDMI_ERROR_FATAL if the job could not be waited for and this
  * function returns before the job has finished or has been canceled.
  */
-int QDMI_device_job_wait(QDMI_Device_Job job);
+int QDMI_device_job_wait(QDMI_Device_Job job, size_t timeout);
 
 /**
  * @brief Retrieve the results of a job.

@@ -505,7 +505,8 @@ int CXX_QDMI_device_job_check(CXX_QDMI_Device_Job job,
   return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]
 
-int CXX_QDMI_device_job_wait(CXX_QDMI_Device_Job job) {
+int CXX_QDMI_device_job_wait(CXX_QDMI_Device_Job job,
+                             [[maybe_unused]] const size_t timeout) {
   if (job == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }

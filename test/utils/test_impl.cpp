@@ -186,7 +186,7 @@ TEST_P(QDMIImplementationTest, JobWaitImplemented) {
   expected_value = mode == TEST_SESSION_MODE::READWRITE
                        ? QDMI_SUCCESS
                        : QDMI_ERROR_INVALIDARGUMENT;
-  EXPECT_EQ(QDMI_job_wait(job), expected_value);
+  EXPECT_EQ(QDMI_job_wait(job, 0), expected_value);
   QDMI_job_free(job);
 }
 

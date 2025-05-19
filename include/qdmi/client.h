@@ -653,24 +653,13 @@ enum QDMI_JOB_PARAMETER_T {
    */
   QDMI_JOB_PARAMETER_SHOTSNUM = 2,
   /**
-   * @brief `size_t` A timeout in seconds for the @ref QDMI_job_wait function.
-   * @details The function @ref QDMI_job_wait will at most wait for this amount
-   * of time before returning. If the job is not finished after this timeout,
-   * the function will return @ref QDMI_ERROR_TIMEOUT. If the timeout is set to
-   * zero, the function will wait indefinitely until the job is finished.
-   *
-   * @par If this parameter is not set, a driver-specific default is used, which
-   * may be zero.
-   */
-  QDMI_JOB_PARAMETER_TIMEOUT = 3,
-  /**
    * @brief The maximum value of the enum.
    * @details It can be used by drivers for bounds checking and validation of
    * function parameters.
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_JOB_PARAMETER_MAX = 4,
+  QDMI_JOB_PARAMETER_MAX = 3,
   /**
    * @brief This enum value is reserved for a custom parameter.
    * @details The driver defines the meaning and the type of this parameter.
@@ -780,12 +769,6 @@ enum QDMI_JOB_PROPERTY_T {
    */
   QDMI_JOB_PROPERTY_SHOTSNUM = 3,
   /**
-   * @brief `size_t` A timeout in seconds for the @ref QDMI_job_wait function.
-   * @details This property returns the value of the @ref
-   * QDMI_JOB_PARAMETER_TIMEOUT parameter.
-   */
-  QDMI_JOB_PROPERTY_TIMEOUT = 4,
-  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -793,7 +776,7 @@ enum QDMI_JOB_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_JOB_PROPERTY_MAX = 5,
+  QDMI_JOB_PROPERTY_MAX = 4,
   /**
    * @brief This enum value is reserved for a custom parameter.
    * @details The driver defines the meaning and the type of this parameter.
@@ -915,22 +898,24 @@ int QDMI_job_check(QDMI_Job job, QDMI_Job_Status *status);
 
 /**
  * @brief Wait for a job to finish.
- * @details This function blocks until the job has either finished or has been
- * canceled, or the timeout has been reached. Hence, starting with the call to
- * this function, it returns latest after the number of seconds specified by the
- * @ref QDMI_DEVICE_JOB_PARAMETER_TIMEOUT parameter.
+ * @details This function blocks until the job has either finished, has been
+ * canceled, or the timeout has been reached.
+ * If @p timeout is not zero, this function returns latest after the specified
+ * number of seconds.
  * @param[in] job The job to wait for. Must not be @c NULL.
+ * @param[in] timeout The timeout in seconds.
+ * If this is zero, the function waits indefinitely until the job has finished.
  * @return @ref QDMI_SUCCESS if the job is finished or canceled.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p job is @c NULL.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the driver does not allow using
  * the @ref client_job_interface "client job interface" for the device in the
  * current session.
- * @return @ref QDMI_ERROR_TIMEOUT if the job did not finish within the timeout
- * set via @ref QDMI_JOB_PARAMETER_TIMEOUT.
+ * @return @ref QDMI_ERROR_TIMEOUT if @p timeout is not zero and the job did not
+ *   finish within the specified time.
  * @return @ref QDMI_ERROR_FATAL if the job could not be waited for and this
  * function returns before the job has finished or has been canceled.
  */
-int QDMI_job_wait(QDMI_Job job);
+int QDMI_job_wait(QDMI_Job job, size_t timeout);
 
 /**
  * @brief Retrieve the results of a job.

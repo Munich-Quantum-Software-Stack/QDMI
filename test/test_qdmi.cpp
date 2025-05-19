@@ -381,8 +381,8 @@ TEST_P(QDMIImplementationTest, JobLifecycle) {
   QDMI_Job_Status status{};
   EXPECT_EQ(QDMI_job_check(nullptr, &status), QDMI_ERROR_INVALIDARGUMENT);
   EXPECT_EQ(QDMI_job_check(job, &status), QDMI_SUCCESS);
-  EXPECT_EQ(QDMI_job_wait(job), QDMI_SUCCESS);
-  EXPECT_EQ(QDMI_job_wait(nullptr), QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_EQ(QDMI_job_wait(job, 0), QDMI_SUCCESS);
+  EXPECT_EQ(QDMI_job_wait(nullptr, 0), QDMI_ERROR_INVALIDARGUMENT);
   ASSERT_EQ(QDMI_job_check(job, &status), QDMI_SUCCESS);
   EXPECT_EQ(status, QDMI_JOB_STATUS_DONE);
   EXPECT_EQ(QDMI_job_cancel(job), QDMI_ERROR_INVALIDARGUMENT);
@@ -441,7 +441,7 @@ measure q -> c;
               QDMI_SUCCESS);
   }
   EXPECT_EQ(QDMI_job_submit(job), QDMI_SUCCESS);
-  EXPECT_EQ(QDMI_job_wait(job), QDMI_SUCCESS);
+  EXPECT_EQ(QDMI_job_wait(job, 0), QDMI_SUCCESS);
   return job;
 }
 } // namespace

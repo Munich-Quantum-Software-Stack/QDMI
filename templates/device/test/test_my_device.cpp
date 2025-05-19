@@ -118,7 +118,7 @@ TEST_F(QDMIImplementationTest, JobWaitImplemented) {
   MY_QDMI_Device_Job job = nullptr;
   ASSERT_EQ(MY_QDMI_device_session_create_device_job(session, &job),
             QDMI_SUCCESS);
-  ASSERT_NE(MY_QDMI_device_job_wait(job), QDMI_ERROR_NOTIMPLEMENTED);
+  ASSERT_NE(MY_QDMI_device_job_wait(job, 0), QDMI_ERROR_NOTIMPLEMENTED);
   MY_QDMI_device_job_free(job);
 }
 
