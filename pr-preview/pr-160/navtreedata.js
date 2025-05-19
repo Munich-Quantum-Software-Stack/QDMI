@@ -54,7 +54,8 @@ var NAVTREE =
         [ "Working with the Template", "md_docs_2templates.html#template-working", null ],
         [ "Building the Template and Running the Tests", "md_docs_2templates.html#template-building", null ]
       ] ],
-      [ "Changelog", "md_docs_2doc__changelog.html", null ],
+      [ "Changelog", "md_CHANGELOG.html", null ],
+      [ "Upgrade Guide", "md_UPGRADING.html", null ],
       [ "Development Guide", "md_docs_2guide.html", null ]
     ] ],
     [ "Interfaces", "topics.html", "topics" ],
