@@ -77,43 +77,31 @@ enum QDMI_DEVICE_SESSION_PARAMETER_T {
    */
   QDMI_DEVICE_SESSION_PARAMETER_TOKEN = 1,
   /**
-   * @brief `char*` (string) A URL to an authentication server that is used for
-   * the authentication via username and password.
-   * @details For authentication via username and password, the device
-   * documentation *must* document which of the three following parameters must
-   * be set:
-   * - @ref QDMI_DEVICE_SESSION_PARAMETER_AUTHURL
-   * - @ref QDMI_DEVICE_SESSION_PARAMETER_USERNAME
-   * - @ref QDMI_DEVICE_SESSION_PARAMETER_PASSWORD
+   * @brief `char*` (string) The URL to an authentication server used as part of
+   * the authentication procedure.
+   * @details This parameter might be used as part of an authentication scheme
+   * where an API token is received from an authentication server. This may,
+   * additionally, require a username and a password, which can be set via the
+   * @ref QDMI_DEVICE_SESSION_PARAMETER_USERNAME and @ref
+   * QDMI_DEVICE_SESSION_PARAMETER_PASSWORD parameters.
    *
-   * @par The URL is used to retrieve a token afterward used for every request
-   * to the device. The username and password are used to authenticate the user
-   * at the authentication server.
-   *
-   * @par If the device requires authentication via a username and a password,
-   * this parameter must be set before calling @ref QDMI_device_session_init.
+   * @par The device documentation *must* document if the implementation
+   * requires this parameter to be set and which additional parameters need to
+   * be set in case this authentication method is used.
    */
   QDMI_DEVICE_SESSION_PARAMETER_AUTHURL = 2,
   /**
-   * @brief `char*` (string) A username to identify the user that is used in
-   * combination with a password.
-   * @details For more information on authentication via username and password,
-   * see @ref QDMI_DEVICE_SESSION_PARAMETER_AUTHURL.
-   *
-   * @par If the device requires authentication via a username and a password,
-   * this parameter must be set before calling @ref QDMI_device_session_init.
-   * @see QDMI_DEVICE_SESSION_PARAMETER_AUTHURL
+   * @brief `char*` (string) The username to use for the device session.
+   * @details The username is used for authentication within the session. The
+   * device documentation *must* document when the implementation requires this
+   * parameter to be set.
    */
   QDMI_DEVICE_SESSION_PARAMETER_USERNAME = 3,
   /**
-   * @brief `char*` (string) A password to identify the user that is used in
-   * combination with a username.
-   * @details For more information on authentication via username and password,
-   * see @ref QDMI_DEVICE_SESSION_PARAMETER_AUTHURL.
-   *
-   * @par If the device  requires authentication via a username and a password,
-   * this parameter must be set before calling @ref QDMI_device_session_init.
-   * @see QDMI_DEVICE_SESSION_PARAMETER_AUTHURL
+   * @brief `char*` (string) The password to use for the session.
+   * @details The password is used for authentication within the session. The
+   * device documentation *must* document if the implementation requires this
+   * parameter to be set.
    */
   QDMI_DEVICE_SESSION_PARAMETER_PASSWORD = 4,
   /**
@@ -184,7 +172,7 @@ enum QDMI_DEVICE_JOB_PARAMETER_T {
    * is set to zero, the function will wait indefinitely until the job is
    * finished.
    *
-   * @par If this parameter is not set, a device-specific default is used.
+   * @par If this parameter is not set, a device-specific default is used, which may be zero.
    */
   QDMI_DEVICE_JOB_PARAMETER_TIMEOUT = 3,
   /**

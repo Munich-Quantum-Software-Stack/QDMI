@@ -120,34 +120,30 @@ enum QDMI_SESSION_PARAMETER_T {
    */
   QDMI_SESSION_PARAMETER_TOKEN = 0,
   /**
-   * @brief `char*` (string) The URL to an authentication server that is used
-   * for the authentication via username and password.
-   * @details For authentication via username and password, the device
-   * documentation *must* document which of the three following parameters must
-   * be set:
-   * - @ref QDMI_SESSION_PARAMETER_AUTHURL
-   * - @ref QDMI_SESSION_PARAMETER_USERNAME
-   * - @ref QDMI_SESSION_PARAMETER_PASSWORD
+   * @brief `char*` (string) The URL to an authentication server used as part of
+   * the authentication procedure.
+   * @details This parameter might be used as part of an authentication scheme
+   * where an API token is received from an authentication server. This may,
+   * additionally, require a username and a password, which can be set via the
+   * @ref QDMI_SESSION_PARAMETER_USERNAME and @ref QDMI_SESSION_PARAMETER_PASSWORD
+   * parameters.
    *
-   * @par The URL is used to retrieve a token afterward used for every request
-   * to the device. The username and password are used to authenticate the user
-   * at the authentication server.
-   *
-   * @par The driver documentation *must* document if the implementation
-   * requires this parameter to be set.
+   * @par The driver documentation *must* document when the implementation
+   * requires this parameter to be set and which additional parameters need to
+   * be set in case this authentication method is used.
    */
   QDMI_SESSION_PARAMETER_AUTHURL = 1,
   /**
    * @brief `char*` (string) The username to use for the session.
    * @details The username is used for authentication within the session. The
-   * driver documentation *must* document if the implementation requires this
+   * driver documentation *must* document when the implementation requires this
    * parameter to be set.
    */
   QDMI_SESSION_PARAMETER_USERNAME = 2,
   /**
    * @brief `char*` (string) The password to use for the session.
    * @details The password is used for authentication within the session. The
-   * driver documentation *must* document if the implementation requires this
+   * driver documentation *must* document when the implementation requires this
    * parameter to be set.
    */
   QDMI_SESSION_PARAMETER_PASSWORD = 3,
@@ -155,7 +151,7 @@ enum QDMI_SESSION_PARAMETER_T {
    * @brief `char*` (string) The project ID to use for the session.
    * @details Can be used to associate the session with a certain project, for
    * example, for accounting purposes. The driver documentation *must* document
-   * if the implementation requires this parameter to be set.
+   * when the implementation requires this parameter to be set.
    */
   QDMI_SESSION_PARAMETER_PROJECTID = 4,
   /**
@@ -653,7 +649,7 @@ enum QDMI_JOB_PARAMETER_T {
    * the function will return @ref QDMI_ERROR_TIMEOUT. If the timeout is set to
    * zero, the function will wait indefinitely until the job is finished.
    *
-   * @par If this parameter is not set, a default is used.
+   * @par If this parameter is not set, a driver-specific default is used, which may be zero.
    */
   QDMI_JOB_PARAMETER_TIMEOUT = 3,
   /**
@@ -789,7 +785,7 @@ enum QDMI_JOB_PROPERTY_T {
   QDMI_JOB_PROPERTY_MAX = 5,
   /**
    * @brief This enum value is reserved for a custom parameter.
-   * @details The device defines the meaning and the type of this parameter.
+   * @details The driver defines the meaning and the type of this parameter.
    * @attention The value of this enum member must not be changed to maintain
    * binary compatibility.
    */
