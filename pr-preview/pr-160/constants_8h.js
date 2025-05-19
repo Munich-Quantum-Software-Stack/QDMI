@@ -28,6 +28,7 @@ var constants_8h =
     [ "QDMI_DEVICE_SESSION_PARAMETER_T", "constants_8h.html#a9f1e467b2b3870263b0e9d7e5d36cea4", [
       [ "QDMI_DEVICE_SESSION_PARAMETER_BASEURL", "constants_8h.html#a9f1e467b2b3870263b0e9d7e5d36cea4a8f7ec33012b7a91ce8e7311dfa51f724", null ],
       [ "QDMI_DEVICE_SESSION_PARAMETER_TOKEN", "constants_8h.html#a9f1e467b2b3870263b0e9d7e5d36cea4a497c89c2b59737d70086a54e1958c292", null ],
+      [ "QDMI_DEVICE_SESSION_PARAMETER_AUTHFILE", "constants_8h.html#a9f1e467b2b3870263b0e9d7e5d36cea4ae1c235ca2c51428c830906d123668123", null ],
       [ "QDMI_DEVICE_SESSION_PARAMETER_AUTHURL", "constants_8h.html#a9f1e467b2b3870263b0e9d7e5d36cea4ae114dae6d45e69beda502dec6f54019c", null ],
       [ "QDMI_DEVICE_SESSION_PARAMETER_USERNAME", "constants_8h.html#a9f1e467b2b3870263b0e9d7e5d36cea4a5588159e3e38ae5186eebc2b9fc2cac7", null ],
       [ "QDMI_DEVICE_SESSION_PARAMETER_PASSWORD", "constants_8h.html#a9f1e467b2b3870263b0e9d7e5d36cea4a29fd3a0ea9c9f2e06ea50c032cd78ea0", null ],

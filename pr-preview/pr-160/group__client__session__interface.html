@@ -239,16 +239,17 @@ typedef enum <a class="el" href="#ga737948251bac10b8cabf745afe82bd09">QDMI_SESSI
 Enumerations</h2></td></tr>
 <tr class="memitem:gaac5ae9f0bf8046987569c6f4e75611d3" id="r_gaac5ae9f0bf8046987569c6f4e75611d3"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaac5ae9f0bf8046987569c6f4e75611d3">QDMI_SESSION_PARAMETER_T</a> { <br />
 &#160;&#160;<a class="el" href="#ggaac5ae9f0bf8046987569c6f4e75611d3af68e93d8a13dacb31e6bbdf43c9c5283">QDMI_SESSION_PARAMETER_TOKEN</a> = 0
-, <a class="el" href="#ggaac5ae9f0bf8046987569c6f4e75611d3a4098392531f944fc8377049f66b84ecd">QDMI_SESSION_PARAMETER_AUTHURL</a> = 1
-, <a class="el" href="#ggaac5ae9f0bf8046987569c6f4e75611d3adb403a811d93b17a8e8d685148e171c4">QDMI_SESSION_PARAMETER_USERNAME</a> = 2
-, <a class="el" href="#ggaac5ae9f0bf8046987569c6f4e75611d3a6477f599b4a7355474fc9b1d90b1bb14">QDMI_SESSION_PARAMETER_PASSWORD</a> = 3
+, <a class="el" href="#ggaac5ae9f0bf8046987569c6f4e75611d3afdeb0334ac02c9c052c5a2fbb0176fa7">QDMI_SESSION_PARAMETER_AUTHFILE</a> = 1
+, <a class="el" href="#ggaac5ae9f0bf8046987569c6f4e75611d3a4098392531f944fc8377049f66b84ecd">QDMI_SESSION_PARAMETER_AUTHURL</a> = 2
+, <a class="el" href="#ggaac5ae9f0bf8046987569c6f4e75611d3adb403a811d93b17a8e8d685148e171c4">QDMI_SESSION_PARAMETER_USERNAME</a> = 3
 , <br />
-&#160;&#160;<a class="el" href="#ggaac5ae9f0bf8046987569c6f4e75611d3afddfcf1fbf02114af0f96e9f20d08590">QDMI_SESSION_PARAMETER_PROJECTID</a> = 4
-, <a class="el" href="#ggaac5ae9f0bf8046987569c6f4e75611d3a687f1bf96e2c4467d483c196c8b56292">QDMI_SESSION_PARAMETER_MAX</a> = 5
+&#160;&#160;<a class="el" href="#ggaac5ae9f0bf8046987569c6f4e75611d3a6477f599b4a7355474fc9b1d90b1bb14">QDMI_SESSION_PARAMETER_PASSWORD</a> = 4
+, <a class="el" href="#ggaac5ae9f0bf8046987569c6f4e75611d3afddfcf1fbf02114af0f96e9f20d08590">QDMI_SESSION_PARAMETER_PROJECTID</a> = 5
+, <a class="el" href="#ggaac5ae9f0bf8046987569c6f4e75611d3a687f1bf96e2c4467d483c196c8b56292">QDMI_SESSION_PARAMETER_MAX</a> = 6
 , <a class="el" href="#ggaac5ae9f0bf8046987569c6f4e75611d3a3e125af4fb52d626a4ff73d81f22cf46">QDMI_SESSION_PARAMETER_CUSTOM1</a> = 999999995
-, <a class="el" href="#ggaac5ae9f0bf8046987569c6f4e75611d3ac0c579e30bd180a00d5e398b03c987f6">QDMI_SESSION_PARAMETER_CUSTOM2</a> = 999999996
 , <br />
-&#160;&#160;<a class="el" href="#ggaac5ae9f0bf8046987569c6f4e75611d3a4f9b44b3b04b77d2b560cedcee3cfa08">QDMI_SESSION_PARAMETER_CUSTOM3</a> = 999999997
+&#160;&#160;<a class="el" href="#ggaac5ae9f0bf8046987569c6f4e75611d3ac0c579e30bd180a00d5e398b03c987f6">QDMI_SESSION_PARAMETER_CUSTOM2</a> = 999999996
+, <a class="el" href="#ggaac5ae9f0bf8046987569c6f4e75611d3a4f9b44b3b04b77d2b560cedcee3cfa08">QDMI_SESSION_PARAMETER_CUSTOM3</a> = 999999997
 , <a class="el" href="#ggaac5ae9f0bf8046987569c6f4e75611d3acc5c97b9d346e291b730956970561124">QDMI_SESSION_PARAMETER_CUSTOM4</a> = 999999998
 , <a class="el" href="#ggaac5ae9f0bf8046987569c6f4e75611d3aaafd9df4e1090164a7cc087faaa8557a">QDMI_SESSION_PARAMETER_CUSTOM5</a> = 999999999
 <br />
@@ -324,20 +325,23 @@ Functions</h2></td></tr>
 <tr><th colspan="3">Enumerator</th></tr><tr><td class="fieldname"><a id="ggaac5ae9f0bf8046987569c6f4e75611d3af68e93d8a13dacb31e6bbdf43c9c5283" name="ggaac5ae9f0bf8046987569c6f4e75611d3af68e93d8a13dacb31e6bbdf43c9c5283"></a>QDMI_SESSION_PARAMETER_TOKEN&#160;</td><td class="fieldinit">0&#160;</td><td class="fielddoc"><p><code>char*</code> (string) The token to use for the session. </p>
 <p>The token is used for authentication within the session. The driver documentation <em>must</em> document if the implementation requires this parameter to be set. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ggaac5ae9f0bf8046987569c6f4e75611d3a4098392531f944fc8377049f66b84ecd" name="ggaac5ae9f0bf8046987569c6f4e75611d3a4098392531f944fc8377049f66b84ecd"></a>QDMI_SESSION_PARAMETER_AUTHURL&#160;</td><td class="fieldinit">1&#160;</td><td class="fielddoc"><p><code>char*</code> (string) The URL to an authentication server used as part of the authentication procedure. </p>
+<tr><td class="fieldname"><a id="ggaac5ae9f0bf8046987569c6f4e75611d3afdeb0334ac02c9c052c5a2fbb0176fa7" name="ggaac5ae9f0bf8046987569c6f4e75611d3afdeb0334ac02c9c052c5a2fbb0176fa7"></a>QDMI_SESSION_PARAMETER_AUTHFILE&#160;</td><td class="fieldinit">1&#160;</td><td class="fielddoc"><p><code>char*</code> (string) A file path to a file containing authentication information. </p>
+<p>The file may contain a token or other authentication information required for the session. The driver documentation <em>must</em> document whether the implementation requires this parameter to be set and what kind of authentication information is expected in the file. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ggaac5ae9f0bf8046987569c6f4e75611d3a4098392531f944fc8377049f66b84ecd" name="ggaac5ae9f0bf8046987569c6f4e75611d3a4098392531f944fc8377049f66b84ecd"></a>QDMI_SESSION_PARAMETER_AUTHURL&#160;</td><td class="fieldinit">2&#160;</td><td class="fielddoc"><p><code>char*</code> (string) The URL to an authentication server used as part of the authentication procedure. </p>
 <p>This parameter might be used as part of an authentication scheme where an API token is received from an authentication server. This may, additionally, require a username and a password, which can be set via the <a class="el" href="#ggaac5ae9f0bf8046987569c6f4e75611d3adb403a811d93b17a8e8d685148e171c4">QDMI_SESSION_PARAMETER_USERNAME</a> and <a class="el" href="#ggaac5ae9f0bf8046987569c6f4e75611d3a6477f599b4a7355474fc9b1d90b1bb14">QDMI_SESSION_PARAMETER_PASSWORD</a> parameters.</p>
 <dl class="section user"><dt>The driver documentation <em>must</em> document when the implementation</dt><dd>requires this parameter to be set and which additional parameters need to be set in case this authentication method is used. </dd></dl>
 </td></tr>
-<tr><td class="fieldname"><a id="ggaac5ae9f0bf8046987569c6f4e75611d3adb403a811d93b17a8e8d685148e171c4" name="ggaac5ae9f0bf8046987569c6f4e75611d3adb403a811d93b17a8e8d685148e171c4"></a>QDMI_SESSION_PARAMETER_USERNAME&#160;</td><td class="fieldinit">2&#160;</td><td class="fielddoc"><p><code>char*</code> (string) The username to use for the session. </p>
+<tr><td class="fieldname"><a id="ggaac5ae9f0bf8046987569c6f4e75611d3adb403a811d93b17a8e8d685148e171c4" name="ggaac5ae9f0bf8046987569c6f4e75611d3adb403a811d93b17a8e8d685148e171c4"></a>QDMI_SESSION_PARAMETER_USERNAME&#160;</td><td class="fieldinit">3&#160;</td><td class="fielddoc"><p><code>char*</code> (string) The username to use for the session. </p>
 <p>The username is used for authentication within the session. The driver documentation <em>must</em> document when the implementation requires this parameter to be set. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ggaac5ae9f0bf8046987569c6f4e75611d3a6477f599b4a7355474fc9b1d90b1bb14" name="ggaac5ae9f0bf8046987569c6f4e75611d3a6477f599b4a7355474fc9b1d90b1bb14"></a>QDMI_SESSION_PARAMETER_PASSWORD&#160;</td><td class="fieldinit">3&#160;</td><td class="fielddoc"><p><code>char*</code> (string) The password to use for the session. </p>
+<tr><td class="fieldname"><a id="ggaac5ae9f0bf8046987569c6f4e75611d3a6477f599b4a7355474fc9b1d90b1bb14" name="ggaac5ae9f0bf8046987569c6f4e75611d3a6477f599b4a7355474fc9b1d90b1bb14"></a>QDMI_SESSION_PARAMETER_PASSWORD&#160;</td><td class="fieldinit">4&#160;</td><td class="fielddoc"><p><code>char*</code> (string) The password to use for the session. </p>
 <p>The password is used for authentication within the session. The driver documentation <em>must</em> document when the implementation requires this parameter to be set. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ggaac5ae9f0bf8046987569c6f4e75611d3afddfcf1fbf02114af0f96e9f20d08590" name="ggaac5ae9f0bf8046987569c6f4e75611d3afddfcf1fbf02114af0f96e9f20d08590"></a>QDMI_SESSION_PARAMETER_PROJECTID&#160;</td><td class="fieldinit">4&#160;</td><td class="fielddoc"><p><code>char*</code> (string) The project ID to use for the session. </p>
+<tr><td class="fieldname"><a id="ggaac5ae9f0bf8046987569c6f4e75611d3afddfcf1fbf02114af0f96e9f20d08590" name="ggaac5ae9f0bf8046987569c6f4e75611d3afddfcf1fbf02114af0f96e9f20d08590"></a>QDMI_SESSION_PARAMETER_PROJECTID&#160;</td><td class="fieldinit">5&#160;</td><td class="fielddoc"><p><code>char*</code> (string) The project ID to use for the session. </p>
 <p>Can be used to associate the session with a certain project, for example, for accounting purposes. The driver documentation <em>must</em> document when the implementation requires this parameter to be set. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ggaac5ae9f0bf8046987569c6f4e75611d3a687f1bf96e2c4467d483c196c8b56292" name="ggaac5ae9f0bf8046987569c6f4e75611d3a687f1bf96e2c4467d483c196c8b56292"></a>QDMI_SESSION_PARAMETER_MAX&#160;</td><td class="fieldinit">5&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
+<tr><td class="fieldname"><a id="ggaac5ae9f0bf8046987569c6f4e75611d3a687f1bf96e2c4467d483c196c8b56292" name="ggaac5ae9f0bf8046987569c6f4e75611d3a687f1bf96e2c4467d483c196c8b56292"></a>QDMI_SESSION_PARAMETER_MAX&#160;</td><td class="fieldinit">6&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
 <p>It can be used by drivers for bounds checking and validation of function parameters.</p>
 <dl class="section attention"><dt>Attention</dt><dd>This value must remain the last regular member of the enum besides the custom members and must be updated when new members are added. </dd></dl>
 </td></tr>
@@ -612,7 +616,7 @@ For example, to query the devices available in a session, the following code pat
 <div class="line">  session, prop, size, <span class="keyword">static_cast&lt;</span><span class="keywordtype">void</span>*<span class="keyword">&gt;</span>(devices.data()), <span class="keyword">nullptr</span>);</div>
 <div class="ttc" id="agroup__client__interface_html_ga2772c94ab19957ce5aaef652b626baec"><div class="ttname"><a href="group__client__interface.html#ga2772c94ab19957ce5aaef652b626baec">QDMI_Device</a></div><div class="ttdeci">struct QDMI_Device_impl_d * QDMI_Device</div><div class="ttdoc">A handle for a device implementing the QDMI Device Interface.</div><div class="ttdef"><b>Definition</b> client.h:63</div></div>
 <div class="ttc" id="agroup__client__session__interface_html_ga53bf25dd42852f40468b30a47996d1a0"><div class="ttname"><a href="#ga53bf25dd42852f40468b30a47996d1a0">QDMI_session_query_session_property</a></div><div class="ttdeci">int QDMI_session_query_session_property(QDMI_Session session, QDMI_Session_Property prop, size_t size, void *value, size_t *size_ret)</div><div class="ttdoc">Query a property of a session.</div></div>
-<div class="ttc" id="agroup__client__session__interface_html_gga737948251bac10b8cabf745afe82bd09ad18bc8e3c5b4f5ebcef0c81dd09eafe5"><div class="ttname"><a href="#gga737948251bac10b8cabf745afe82bd09ad18bc8e3c5b4f5ebcef0c81dd09eafe5">QDMI_SESSION_PROPERTY_DEVICES</a></div><div class="ttdeci">@ QDMI_SESSION_PROPERTY_DEVICES</div><div class="ttdoc">QDMI_Device* (QDMI_Device list) The devices the client has access to.</div><div class="ttdef"><b>Definition</b> client.h:271</div></div>
+<div class="ttc" id="agroup__client__session__interface_html_gga737948251bac10b8cabf745afe82bd09ad18bc8e3c5b4f5ebcef0c81dd09eafe5"><div class="ttname"><a href="#gga737948251bac10b8cabf745afe82bd09ad18bc8e3c5b4f5ebcef0c81dd09eafe5">QDMI_SESSION_PROPERTY_DEVICES</a></div><div class="ttdeci">@ QDMI_SESSION_PROPERTY_DEVICES</div><div class="ttdoc">QDMI_Device* (QDMI_Device list) The devices the client has access to.</div><div class="ttdef"><b>Definition</b> client.h:281</div></div>
 </div><!-- fragment --></dd></dl>
 <dl class="section attention"><dt>Attention</dt><dd>May only be called after the session has been successfully initialized with <a class="el" href="#gafbc8c6031ee98c87d58515eb35b4202b">QDMI_session_init</a>. </dd></dl>
 
