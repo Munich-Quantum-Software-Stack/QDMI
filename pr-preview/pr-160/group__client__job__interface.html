@@ -580,7 +580,7 @@ For example, to check whether the device supports setting the number of shots fo
 </ul>
 </dd>
 <dd>
-<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a916e0810bf915e2ad67f2c1430c54fec">QDMI_ERROR_BADSTATE</a> if the property cannot be queried in the current state of the job, for example, because the job failed. </dd>
+<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a916e0810bf915e2ad67f2c1430c54fec">QDMI_ERROR_BADSTATE</a> if the property cannot be queried in the current state of the job, for example, because the job failed or the property is not initialized because it has no default value and was not set. </dd>
 <dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3">QDMI_ERROR_FATAL</a> if an unexpected error occurred.</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>By calling this function with <code class="param">value</code> set to <code>NULL</code>, the function can be used to check if the job supports the specified property without retrieving the property and without the need to provide a buffer for it. Additionally, the size of the buffer needed to retrieve the property is returned in <code class="param">size_ret</code> if <code class="param">size_ret</code> is not <code>NULL</code>.</dd>
