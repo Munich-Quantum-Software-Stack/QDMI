@@ -40,9 +40,9 @@ header file versions.
 - Drivers now also need to implement the function `QDMI_job_query_property` for querying properties
   of jobs.
 
-- The function `QDMI_device_job_wait` may now also return after a timeout resulting in a new status
-  `QDMI_JOB_STATUS_TIMEOUT` that must be handled. Additionally, the `QDMI_job_wait` function now has
-  a new parameter `timeout` that must be handled.
+- The function `QDMI_device_job_wait` may now also return after a timeout resulting in a new
+  `QDMI_Status` code `QDMI_ERROR_TIMEOUT` that must be handled. Additionally, the `QDMI_job_wait`
+  function now has a new parameter `timeout` that must be handled.
 
 - New authentication options have been added to the `QDMI_SESSION_PARAMETER` enum. Specifically,
   besides the existing `QDMI_SESSION_PARAMETER_TOKEN` and `QDMI_SESSION_PARAMETER_PROJECTID`, the
@@ -65,9 +65,7 @@ header file versions.
 
 - A new `timeout` parameter has been added to the `QDMI_job_wait` function that influences how long
   (in seconds) the function will wait before eventually returning with `QDMI_ERROR_TIMEOUT`. A
-  timeout of `0` means that the function will wait indefinitely. The function `QDMI_job_wait` may
-  now also return after a timeout resulting in a new status `QDMI_JOB_STATUS_TIMEOUT` that must be
-  handled.
+  timeout of `0` means that the function will wait indefinitely.
 
 - The function `QDMI_job_query_property` has been added to query properties of jobs.
 
