@@ -226,7 +226,7 @@ $(function(){initNavTree('md_UPGRADING.html',''); initResizable(true); });
 <h2>Driver-internal Changes</h2>
 <ul>
 <li>Drivers now also need to implement the function <code>QDMI_job_query_property</code> for querying properties of jobs.</li>
-<li>The function <code>QDMI_device_job_wait</code> may now also return after a timeout resulting in a new status <code>QDMI_JOB_STATUS_TIMEOUT</code> that must be handled. Additionally, the <code>QDMI_job_wait</code> function now has a new parameter <code>timeout</code> that must be handled.</li>
+<li>The function <code>QDMI_device_job_wait</code> may now also return after a timeout resulting in a new <code>QDMI_Status</code> code <code>QDMI_ERROR_TIMEOUT</code> that must be handled. Additionally, the <code>QDMI_job_wait</code> function now has a new parameter <code>timeout</code> that must be handled.</li>
 <li><p class="startli">New authentication options have been added to the <code>QDMI_SESSION_PARAMETER</code> enum. Specifically, besides the existing <code>QDMI_SESSION_PARAMETER_TOKEN</code> and <code>QDMI_SESSION_PARAMETER_PROJECTID</code>, the following authentication options are now available:</p><ul>
 <li><code>QDMI_SESSION_PARAMETER_AUTHFILE</code>, which allows the use of a file containing authentication information.</li>
 <li><code>QDMI_SESSION_PARAMETER_AUTHURL</code>, which allows the use of a URL for authentication.</li>
@@ -239,7 +239,7 @@ $(function(){initNavTree('md_UPGRADING.html',''); initResizable(true); });
 <p>For full compatibility with this QDMI version, the driver needs to be recompiled with the latest header file versions.</p>
 <h2>Client-side Changes</h2>
 <ul>
-<li>A new <code>timeout</code> parameter has been added to the <code>QDMI_job_wait</code> function that influences how long (in seconds) the function will wait before eventually returning with <code>QDMI_ERROR_TIMEOUT</code>. A timeout of <code>0</code> means that the function will wait indefinitely. The function <code>QDMI_job_wait</code> may now also return after a timeout resulting in a new status <code>QDMI_JOB_STATUS_TIMEOUT</code> that must be handled.</li>
+<li>A new <code>timeout</code> parameter has been added to the <code>QDMI_job_wait</code> function that influences how long (in seconds) the function will wait before eventually returning with <code>QDMI_ERROR_TIMEOUT</code>. A timeout of <code>0</code> means that the function will wait indefinitely.</li>
 <li>The function <code>QDMI_job_query_property</code> has been added to query properties of jobs.</li>
 <li>New authentication options may be provided by drivers and devices. This includes authentication options such as <code>QDMI_SESSION_PARAMETER_AUTHFILE</code>, <code>QDMI_SESSION_PARAMETER_AUTHURL</code>, <code>QDMI_SESSION_PARAMETER_USERNAME</code>, and <code>QDMI_SESSION_PARAMETER_PASSWORD</code>. The order of the enum values in <code>QDMI_SESSION_PARAMETER</code> has been changed to accommodate the new authentication options.</li>
 </ul>
