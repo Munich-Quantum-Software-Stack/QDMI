@@ -467,7 +467,8 @@ int QDMI_device_job_set_parameter(QDMI_Device_Job job,
  *  - @p value is not @c NULL and @p size is less than the size of the data
  *    being queried.
  * @return @ref QDMI_ERROR_BADSTATE if the property cannot be queried in the
- * current state of the job, for example, because the job failed.
+ * current state of the job, for example, because the job failed or the property
+ * is not initialized because it has no default value and was not set.
  * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
  *
  * @remark Calling this function with @p value set to @c NULL is expected to
