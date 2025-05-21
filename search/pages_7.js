@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['template_0',['Template',['../md_docs_2templates.html',1,'']]]
+  ['support_0',['Support',['../md_docs_2support.html',1,'']]]
 ];

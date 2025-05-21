@@ -131,7 +131,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
                 <td id="projectalign">
                   <div id="projectname">
                     QDMI<span id="projectnumber"
-                      >&#160;v1.1.0</span
+                      >&#160;v1.2.0</span
                     >
                   </div>
                   <div id="projectbrief">Quantum Device Management Interface</div>
@@ -223,6 +223,10 @@ typedef enum <a class="el" href="#a9f1e467b2b3870263b0e9d7e5d36cea4">QDMI_DEVICE
 typedef enum <a class="el" href="#a40dd25c531ebf99fb4b46469083b609e">QDMI_DEVICE_JOB_PARAMETER_T</a>&#160;</td><td class="memItemRight" valign="bottom"><b>QDMI_Device_Job_Parameter</b></td></tr>
 <tr class="memdesc:a65db59774d7c61601159d00d505d835c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Device job parameter type. <br /></td></tr>
 <tr class="separator:a65db59774d7c61601159d00d505d835c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9962b2d3a2ebb0791c8c6196069e499e" id="r_a9962b2d3a2ebb0791c8c6196069e499e"><td class="memItemLeft" align="right" valign="top"><a id="a9962b2d3a2ebb0791c8c6196069e499e" name="a9962b2d3a2ebb0791c8c6196069e499e"></a>
+typedef enum <a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4f">QDMI_DEVICE_JOB_PROPERTY_T</a>&#160;</td><td class="memItemRight" valign="bottom"><b>QDMI_Device_Job_Property</b></td></tr>
+<tr class="memdesc:a9962b2d3a2ebb0791c8c6196069e499e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Device job property type. <br /></td></tr>
+<tr class="separator:a9962b2d3a2ebb0791c8c6196069e499e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afeaad074a7321ebb8fb87e06598fc055" id="r_afeaad074a7321ebb8fb87e06598fc055"><td class="memItemLeft" align="right" valign="top"><a id="afeaad074a7321ebb8fb87e06598fc055" name="afeaad074a7321ebb8fb87e06598fc055"></a>
 typedef enum <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526">QDMI_DEVICE_PROPERTY_T</a>&#160;</td><td class="memItemRight" valign="bottom"><b>QDMI_Device_Property</b></td></tr>
 <tr class="memdesc:afeaad074a7321ebb8fb87e06598fc055"><td class="mdescLeft">&#160;</td><td class="mdescRight">Device property type. <br /></td></tr>
@@ -269,14 +273,21 @@ Enumerations</h2></td></tr>
 , <a class="el" href="#a450b1adf81abc6f0accbf0ce4abe92f8ab875f28072043ad44f7ee5290bba8d01">QDMI_ERROR_PERMISSIONDENIED</a> = -8
 , <a class="el" href="#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a> = -9
 , <a class="el" href="#a450b1adf81abc6f0accbf0ce4abe92f8a916e0810bf915e2ad67f2c1430c54fec">QDMI_ERROR_BADSTATE</a> = -10
+, <br />
+&#160;&#160;<a class="el" href="#a450b1adf81abc6f0accbf0ce4abe92f8acf9abde59858a1087762ba3e287e9fdd">QDMI_ERROR_TIMEOUT</a> = -11
 <br />
  }</td></tr>
 <tr class="memdesc:a450b1adf81abc6f0accbf0ce4abe92f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Status codes returned by the API.  <a href="#a450b1adf81abc6f0accbf0ce4abe92f8">More...</a><br /></td></tr>
 <tr class="separator:a450b1adf81abc6f0accbf0ce4abe92f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f1e467b2b3870263b0e9d7e5d36cea4" id="r_a9f1e467b2b3870263b0e9d7e5d36cea4"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9f1e467b2b3870263b0e9d7e5d36cea4">QDMI_DEVICE_SESSION_PARAMETER_T</a> { <br />
-&#160;&#160;<a class="el" href="#a9f1e467b2b3870263b0e9d7e5d36cea4a497c89c2b59737d70086a54e1958c292">QDMI_DEVICE_SESSION_PARAMETER_TOKEN</a> = 0
-, <a class="el" href="#a9f1e467b2b3870263b0e9d7e5d36cea4a8f7ec33012b7a91ce8e7311dfa51f724">QDMI_DEVICE_SESSION_PARAMETER_BASEURL</a> = 1
-, <a class="el" href="#a9f1e467b2b3870263b0e9d7e5d36cea4a08c16fae1a1083cf6aae5b0131b0c6e1">QDMI_DEVICE_SESSION_PARAMETER_MAX</a> = 2
+&#160;&#160;<a class="el" href="#a9f1e467b2b3870263b0e9d7e5d36cea4a8f7ec33012b7a91ce8e7311dfa51f724">QDMI_DEVICE_SESSION_PARAMETER_BASEURL</a> = 0
+, <a class="el" href="#a9f1e467b2b3870263b0e9d7e5d36cea4a497c89c2b59737d70086a54e1958c292">QDMI_DEVICE_SESSION_PARAMETER_TOKEN</a> = 1
+, <a class="el" href="#a9f1e467b2b3870263b0e9d7e5d36cea4ae1c235ca2c51428c830906d123668123">QDMI_DEVICE_SESSION_PARAMETER_AUTHFILE</a> = 2
+, <a class="el" href="#a9f1e467b2b3870263b0e9d7e5d36cea4ae114dae6d45e69beda502dec6f54019c">QDMI_DEVICE_SESSION_PARAMETER_AUTHURL</a> = 3
+, <br />
+&#160;&#160;<a class="el" href="#a9f1e467b2b3870263b0e9d7e5d36cea4a5588159e3e38ae5186eebc2b9fc2cac7">QDMI_DEVICE_SESSION_PARAMETER_USERNAME</a> = 4
+, <a class="el" href="#a9f1e467b2b3870263b0e9d7e5d36cea4a29fd3a0ea9c9f2e06ea50c032cd78ea0">QDMI_DEVICE_SESSION_PARAMETER_PASSWORD</a> = 5
+, <a class="el" href="#a9f1e467b2b3870263b0e9d7e5d36cea4a08c16fae1a1083cf6aae5b0131b0c6e1">QDMI_DEVICE_SESSION_PARAMETER_MAX</a> = 6
 , <a class="el" href="#a9f1e467b2b3870263b0e9d7e5d36cea4a90b1f07e865a147dfba3d1531b4f8275">QDMI_DEVICE_SESSION_PARAMETER_CUSTOM1</a> = 999999995
 , <br />
 &#160;&#160;<a class="el" href="#a9f1e467b2b3870263b0e9d7e5d36cea4a741c03ce313a4b09a4ef26721e544140">QDMI_DEVICE_SESSION_PARAMETER_CUSTOM2</a> = 999999996
@@ -303,6 +314,23 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a40dd25c531ebf99fb4b46469083b609e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum of the device job parameters that can be set via <a class="el" href="group__device__job__interface.html#ga1ff5eda213c2bd60599efeac2166654d">QDMI_device_job_set_parameter</a>.  <a href="#a40dd25c531ebf99fb4b46469083b609e">More...</a><br /></td></tr>
 <tr class="separator:a40dd25c531ebf99fb4b46469083b609e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e4d18c7fa5d383bbcc1498abe090d4f" id="r_a6e4d18c7fa5d383bbcc1498abe090d4f"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4f">QDMI_DEVICE_JOB_PROPERTY_T</a> { <br />
+&#160;&#160;<a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4fad991a6a3b0a17e58b59f9180463855ec">QDMI_DEVICE_JOB_PROPERTY_ID</a> = 0
+, <a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4fa5ed68ab8ce50f4b2362a0c6ba4c92c93">QDMI_DEVICE_JOB_PROPERTY_PROGRAMFORMAT</a> = 1
+, <a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4fa1215ae3034ffc3c9e6207253b81fa649">QDMI_DEVICE_JOB_PROPERTY_PROGRAM</a> = 2
+, <a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4faad5344a33a120865b1c6f987b9fe023c">QDMI_DEVICE_JOB_PROPERTY_SHOTSNUM</a> = 3
+, <br />
+&#160;&#160;<a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4fac476c098fa8050146b00c2857a151303">QDMI_DEVICE_JOB_PROPERTY_MAX</a> = 4
+, <a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4fa19282bf485e4af273b4cfff5290540d6">QDMI_DEVICE_JOB_PROPERTY_CUSTOM1</a> = 999999995
+, <a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4fad86d4edb36e54ab09f6c3a424d5bc8e4">QDMI_DEVICE_JOB_PROPERTY_CUSTOM2</a> = 999999996
+, <a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4faa7144a601ca05f6f3e0d4155dbc6a08e">QDMI_DEVICE_JOB_PROPERTY_CUSTOM3</a> = 999999997
+, <br />
+&#160;&#160;<a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4fa7f324d6c1468d7c14608e1ffad230c3c">QDMI_DEVICE_JOB_PROPERTY_CUSTOM4</a> = 999999998
+, <a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4fa08224f2da22d71f598bf27aa85ac9bd4">QDMI_DEVICE_JOB_PROPERTY_CUSTOM5</a> = 999999999
+<br />
+ }</td></tr>
+<tr class="memdesc:a6e4d18c7fa5d383bbcc1498abe090d4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum of the device job properties that can be queried via <a class="el" href="group__device__job__interface.html#ga42686f735d112236118b5e033a6c8194">QDMI_device_job_query_property</a> as part of the <a class="el" href="group__device__interface.html">device interface</a>.  <a href="#a6e4d18c7fa5d383bbcc1498abe090d4f">More...</a><br /></td></tr>
+<tr class="separator:a6e4d18c7fa5d383bbcc1498abe090d4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad251d8ae8fbbe9a5c7a10d66b243d526" id="r_ad251d8ae8fbbe9a5c7a10d66b243d526"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526">QDMI_DEVICE_PROPERTY_T</a> { <br />
 &#160;&#160;<a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a18d3f183afc4d65c9e368f7cedf2d741">QDMI_DEVICE_PROPERTY_NAME</a> = 0
 , <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a58520573bb0cdefb7498675a1baf890d">QDMI_DEVICE_PROPERTY_VERSION</a> = 1
@@ -339,17 +367,18 @@ Enumerations</h2></td></tr>
 <tr class="memdesc:aa13ac5e1c93a4b358d84bb9fd1f5fd99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum of different status the device can be in.  <a href="#aa13ac5e1c93a4b358d84bb9fd1f5fd99">More...</a><br /></td></tr>
 <tr class="separator:aa13ac5e1c93a4b358d84bb9fd1f5fd99"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69ef10d452cc6f03cac8a917ba48d6e2" id="r_a69ef10d452cc6f03cac8a917ba48d6e2"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a69ef10d452cc6f03cac8a917ba48d6e2">QDMI_SITE_PROPERTY_T</a> { <br />
-&#160;&#160;<a class="el" href="#a69ef10d452cc6f03cac8a917ba48d6e2a7bea2b521064f18ecea86fd20f698477">QDMI_SITE_PROPERTY_ID</a> = 0
+&#160;&#160;<a class="el" href="#a69ef10d452cc6f03cac8a917ba48d6e2a02a5ff9f7dfc10bb579e93d95bef06cf">QDMI_SITE_PROPERTY_INDEX</a> = 0
 , <a class="el" href="#a69ef10d452cc6f03cac8a917ba48d6e2a60262ea30467ff3d36cbe4730c4a23f3">QDMI_SITE_PROPERTY_T1</a> = 1
 , <a class="el" href="#a69ef10d452cc6f03cac8a917ba48d6e2a65eccdb8bdeed5294d48fa80621ac9d9">QDMI_SITE_PROPERTY_T2</a> = 2
-, <a class="el" href="#a69ef10d452cc6f03cac8a917ba48d6e2ade44c67aa77a26645d41d7529cdbff8e">QDMI_SITE_PROPERTY_MAX</a> = 3
+, <a class="el" href="#a69ef10d452cc6f03cac8a917ba48d6e2adcf75512f18098e344687f86fb574ff3">QDMI_SITE_PROPERTY_NAME</a> = 3
 , <br />
-&#160;&#160;<a class="el" href="#a69ef10d452cc6f03cac8a917ba48d6e2a1ad5483fe6bcbedf073cd6ae41031e3a">QDMI_SITE_PROPERTY_CUSTOM1</a> = 999999995
+&#160;&#160;<a class="el" href="#a69ef10d452cc6f03cac8a917ba48d6e2ade44c67aa77a26645d41d7529cdbff8e">QDMI_SITE_PROPERTY_MAX</a> = 4
+, <a class="el" href="#a69ef10d452cc6f03cac8a917ba48d6e2a1ad5483fe6bcbedf073cd6ae41031e3a">QDMI_SITE_PROPERTY_CUSTOM1</a> = 999999995
 , <a class="el" href="#a69ef10d452cc6f03cac8a917ba48d6e2a4be19ea36b28202b31f21816f968d977">QDMI_SITE_PROPERTY_CUSTOM2</a> = 999999996
 , <a class="el" href="#a69ef10d452cc6f03cac8a917ba48d6e2a522b513285959f510e03e12e9ba21c5a">QDMI_SITE_PROPERTY_CUSTOM3</a> = 999999997
-, <a class="el" href="#a69ef10d452cc6f03cac8a917ba48d6e2a27cdae762dcc09f9df6ba78d91fa3063">QDMI_SITE_PROPERTY_CUSTOM4</a> = 999999998
 , <br />
-&#160;&#160;<a class="el" href="#a69ef10d452cc6f03cac8a917ba48d6e2ae75701dbdb3fd96feb949fa37b405455">QDMI_SITE_PROPERTY_CUSTOM5</a> = 999999999
+&#160;&#160;<a class="el" href="#a69ef10d452cc6f03cac8a917ba48d6e2a27cdae762dcc09f9df6ba78d91fa3063">QDMI_SITE_PROPERTY_CUSTOM4</a> = 999999998
+, <a class="el" href="#a69ef10d452cc6f03cac8a917ba48d6e2ae75701dbdb3fd96feb949fa37b405455">QDMI_SITE_PROPERTY_CUSTOM5</a> = 999999999
 <br />
  }</td></tr>
 <tr class="separator:a69ef10d452cc6f03cac8a917ba48d6e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -373,10 +402,12 @@ Enumerations</h2></td></tr>
 <tr class="memitem:a04e5c793bcbe8b354a9223bb60f828a6" id="r_a04e5c793bcbe8b354a9223bb60f828a6"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a04e5c793bcbe8b354a9223bb60f828a6">QDMI_JOB_STATUS_T</a> { <br />
 &#160;&#160;<a class="el" href="#a04e5c793bcbe8b354a9223bb60f828a6a2d985c815c2e1024b9eb5605e8825df5">QDMI_JOB_STATUS_CREATED</a> = 0
 , <a class="el" href="#a04e5c793bcbe8b354a9223bb60f828a6a3c531c6a92164cfb31a6c4c1a6cc5dfe">QDMI_JOB_STATUS_SUBMITTED</a> = 1
-, <a class="el" href="#a04e5c793bcbe8b354a9223bb60f828a6ad3dad6dd89491e223f42ff9cd9bdade2">QDMI_JOB_STATUS_DONE</a> = 2
+, <a class="el" href="#a04e5c793bcbe8b354a9223bb60f828a6a8af19691cae44fb6816555b1c087e6e8">QDMI_JOB_STATUS_QUEUED</a> = 2
 , <a class="el" href="#a04e5c793bcbe8b354a9223bb60f828a6ac1203df2c0360fafd873b42cdcbe9cc5">QDMI_JOB_STATUS_RUNNING</a> = 3
 , <br />
-&#160;&#160;<a class="el" href="#a04e5c793bcbe8b354a9223bb60f828a6a05163481e57725e91bb22ff798394f33">QDMI_JOB_STATUS_CANCELED</a> = 4
+&#160;&#160;<a class="el" href="#a04e5c793bcbe8b354a9223bb60f828a6ad3dad6dd89491e223f42ff9cd9bdade2">QDMI_JOB_STATUS_DONE</a> = 4
+, <a class="el" href="#a04e5c793bcbe8b354a9223bb60f828a6a05163481e57725e91bb22ff798394f33">QDMI_JOB_STATUS_CANCELED</a> = 5
+, <a class="el" href="#a04e5c793bcbe8b354a9223bb60f828a6ab9b201ad1770dc23b9c1d4753e238d4f">QDMI_JOB_STATUS_FAILED</a> = 6
 <br />
  }</td></tr>
 <tr class="memdesc:a04e5c793bcbe8b354a9223bb60f828a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum of the status a job can have.  <a href="#a04e5c793bcbe8b354a9223bb60f828a6">More...</a><br /></td></tr>
@@ -465,6 +496,8 @@ Enumerations</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="a450b1adf81abc6f0accbf0ce4abe92f8a916e0810bf915e2ad67f2c1430c54fec" name="a450b1adf81abc6f0accbf0ce4abe92f8a916e0810bf915e2ad67f2c1430c54fec"></a>QDMI_ERROR_BADSTATE&#160;</td><td class="fieldinit">-10&#160;</td><td class="fielddoc"><p>Resource is in the wrong state for the operation. </p>
 </td></tr>
+<tr><td class="fieldname"><a id="a450b1adf81abc6f0accbf0ce4abe92f8acf9abde59858a1087762ba3e287e9fdd" name="a450b1adf81abc6f0accbf0ce4abe92f8acf9abde59858a1087762ba3e287e9fdd"></a>QDMI_ERROR_TIMEOUT&#160;</td><td class="fieldinit">-11&#160;</td><td class="fielddoc"><p>Operation timed out. </p>
+</td></tr>
 </table>
 
 </div>
@@ -484,13 +517,26 @@ Enumerations</h2></td></tr>
 <p>Enum of the device session parameters that can be set via <a class="el" href="group__device__session__interface.html#gaaf2fd0617860189cdbb2cc5c43d77c54">QDMI_device_session_set_parameter</a>. </p>
 <p>If not noted otherwise, parameters are optional and devices must not require them to be set. </p>
 <table class="fieldtable">
-<tr><th colspan="3">Enumerator</th></tr><tr><td class="fieldname"><a id="a9f1e467b2b3870263b0e9d7e5d36cea4a497c89c2b59737d70086a54e1958c292" name="a9f1e467b2b3870263b0e9d7e5d36cea4a497c89c2b59737d70086a54e1958c292"></a>QDMI_DEVICE_SESSION_PARAMETER_TOKEN&#160;</td><td class="fieldinit">0&#160;</td><td class="fielddoc"><p><code>char*</code> (string) A token to be used in the session initialization for authenticating with the device. </p>
-<p>A token could be a password, an API key, or any other form of authentication that the device requires. The device documentation <em>must</em> document what kind of token is required and how it is used. If the device requires authentication via a token, this parameter must be set before calling <a class="el" href="group__device__session__interface.html#ga37ea0856259fc946fb45ac0c1dd748f4">QDMI_device_session_init</a>. </p>
+<tr><th colspan="3">Enumerator</th></tr><tr><td class="fieldname"><a id="a9f1e467b2b3870263b0e9d7e5d36cea4a8f7ec33012b7a91ce8e7311dfa51f724" name="a9f1e467b2b3870263b0e9d7e5d36cea4a8f7ec33012b7a91ce8e7311dfa51f724"></a>QDMI_DEVICE_SESSION_PARAMETER_BASEURL&#160;</td><td class="fieldinit">0&#160;</td><td class="fielddoc"><p><code>char*</code> (string) The baseURL or API endpoint to be used for accessing the device within the session. </p>
+<p>If this parameter is set and the device supports it, the device must use the specified baseURL or API endpoint for the session. Devices may use this parameter to switch between different versions of the API or different endpoints for testing or production environments. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a9f1e467b2b3870263b0e9d7e5d36cea4a8f7ec33012b7a91ce8e7311dfa51f724" name="a9f1e467b2b3870263b0e9d7e5d36cea4a8f7ec33012b7a91ce8e7311dfa51f724"></a>QDMI_DEVICE_SESSION_PARAMETER_BASEURL&#160;</td><td class="fieldinit">1&#160;</td><td class="fielddoc"><p><code>char*</code> (string) The baseURL or API endpoint to be used for accessing the device within the session. </p>
-<p>If this parameter is set, and the device supports it, the device must use the specified baseURL or API endpoint for the session. Devices may use this parameter to switch between different versions of the API or different endpoints for testing or production environments. </p>
+<tr><td class="fieldname"><a id="a9f1e467b2b3870263b0e9d7e5d36cea4a497c89c2b59737d70086a54e1958c292" name="a9f1e467b2b3870263b0e9d7e5d36cea4a497c89c2b59737d70086a54e1958c292"></a>QDMI_DEVICE_SESSION_PARAMETER_TOKEN&#160;</td><td class="fieldinit">1&#160;</td><td class="fielddoc"><p><code>char*</code> (string) A token to be used in the session initialization for authenticating with the device. </p>
+<p>A token could be an API key. The device documentation <em>must</em> document what kind of token is required and how it is used. If the device requires authentication via a token, this parameter must be set before calling <a class="el" href="group__device__session__interface.html#ga37ea0856259fc946fb45ac0c1dd748f4">QDMI_device_session_init</a>. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a9f1e467b2b3870263b0e9d7e5d36cea4a08c16fae1a1083cf6aae5b0131b0c6e1" name="a9f1e467b2b3870263b0e9d7e5d36cea4a08c16fae1a1083cf6aae5b0131b0c6e1"></a>QDMI_DEVICE_SESSION_PARAMETER_MAX&#160;</td><td class="fieldinit">2&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
+<tr><td class="fieldname"><a id="a9f1e467b2b3870263b0e9d7e5d36cea4ae1c235ca2c51428c830906d123668123" name="a9f1e467b2b3870263b0e9d7e5d36cea4ae1c235ca2c51428c830906d123668123"></a>QDMI_DEVICE_SESSION_PARAMETER_AUTHFILE&#160;</td><td class="fieldinit">2&#160;</td><td class="fielddoc"><p><code>char*</code> (string) A file path to a file containing authentication information. </p>
+<p>The file may contain a token or other authentication information required for the session. The device documentation <em>must</em> document whether the implementation requires this parameter to be set and what kind of authentication information is expected in the file. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a9f1e467b2b3870263b0e9d7e5d36cea4ae114dae6d45e69beda502dec6f54019c" name="a9f1e467b2b3870263b0e9d7e5d36cea4ae114dae6d45e69beda502dec6f54019c"></a>QDMI_DEVICE_SESSION_PARAMETER_AUTHURL&#160;</td><td class="fieldinit">3&#160;</td><td class="fielddoc"><p><code>char*</code> (string) The URL to an authentication server used as part of the authentication procedure. </p>
+<p>This parameter might be used as part of an authentication scheme where an API token is received from an authentication server. This may, additionally, require a username and a password, which can be set via the <a class="el" href="#a9f1e467b2b3870263b0e9d7e5d36cea4a5588159e3e38ae5186eebc2b9fc2cac7">QDMI_DEVICE_SESSION_PARAMETER_USERNAME</a> and <a class="el" href="#a9f1e467b2b3870263b0e9d7e5d36cea4a29fd3a0ea9c9f2e06ea50c032cd78ea0">QDMI_DEVICE_SESSION_PARAMETER_PASSWORD</a> parameters.</p>
+<dl class="section user"><dt>The device documentation <em>must</em> document if the implementation</dt><dd>requires this parameter to be set and which additional parameters need to be set in case this authentication method is used. </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="a9f1e467b2b3870263b0e9d7e5d36cea4a5588159e3e38ae5186eebc2b9fc2cac7" name="a9f1e467b2b3870263b0e9d7e5d36cea4a5588159e3e38ae5186eebc2b9fc2cac7"></a>QDMI_DEVICE_SESSION_PARAMETER_USERNAME&#160;</td><td class="fieldinit">4&#160;</td><td class="fielddoc"><p><code>char*</code> (string) The username to use for the device session. </p>
+<p>The username is used for authentication within the session. The device documentation <em>must</em> document when the implementation requires this parameter to be set. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a9f1e467b2b3870263b0e9d7e5d36cea4a29fd3a0ea9c9f2e06ea50c032cd78ea0" name="a9f1e467b2b3870263b0e9d7e5d36cea4a29fd3a0ea9c9f2e06ea50c032cd78ea0"></a>QDMI_DEVICE_SESSION_PARAMETER_PASSWORD&#160;</td><td class="fieldinit">5&#160;</td><td class="fielddoc"><p><code>char*</code> (string) The password to use for the session. </p>
+<p>The password is used for authentication within the session. The device documentation <em>must</em> document if the implementation requires this parameter to be set. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a9f1e467b2b3870263b0e9d7e5d36cea4a08c16fae1a1083cf6aae5b0131b0c6e1" name="a9f1e467b2b3870263b0e9d7e5d36cea4a08c16fae1a1083cf6aae5b0131b0c6e1"></a>QDMI_DEVICE_SESSION_PARAMETER_MAX&#160;</td><td class="fieldinit">6&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
 <p>It can be used by devices for bounds checking and validation of function parameters.</p>
 <dl class="section attention"><dt>Attention</dt><dd>This value must remain the last regular member of the enum besides the custom members and must be updated when new members are added. </dd></dl>
 </td></tr>
@@ -552,6 +598,52 @@ Enumerations</h2></td></tr>
 
 </div>
 </div>
+<a id="a6e4d18c7fa5d383bbcc1498abe090d4f" name="a6e4d18c7fa5d383bbcc1498abe090d4f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e4d18c7fa5d383bbcc1498abe090d4f">&#9670;&#160;</a></span>QDMI_DEVICE_JOB_PROPERTY_T</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4f">QDMI_DEVICE_JOB_PROPERTY_T</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Enum of the device job properties that can be queried via <a class="el" href="group__device__job__interface.html#ga42686f735d112236118b5e033a6c8194">QDMI_device_job_query_property</a> as part of the <a class="el" href="group__device__interface.html">device interface</a>. </p>
+<p>In particular, every parameter's value that can be set via <a class="el" href="group__device__job__interface.html#ga1ff5eda213c2bd60599efeac2166654d">QDMI_device_job_set_parameter</a> can be queried. </p>
+<table class="fieldtable">
+<tr><th colspan="3">Enumerator</th></tr><tr><td class="fieldname"><a id="a6e4d18c7fa5d383bbcc1498abe090d4fad991a6a3b0a17e58b59f9180463855ec" name="a6e4d18c7fa5d383bbcc1498abe090d4fad991a6a3b0a17e58b59f9180463855ec"></a>QDMI_DEVICE_JOB_PROPERTY_ID&#160;</td><td class="fieldinit">0&#160;</td><td class="fielddoc"><p><code>char*</code> (string) The job's ID. </p>
+<p>The ID must uniquely identify a job for the specific device. It should generally be universally unique (such as a UUID), to avoid conflicts with other devices' job IDs. It may be used to recover a <a class="el" href="group__device__job__interface.html#gaa9f37f29bc40f719b440a277654789a4">QDMI_Device_Job</a> handle upon device failure. It may, for example, correspond to the job ID provided by the device's API or may be generated by the QDMI Device implementation. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a6e4d18c7fa5d383bbcc1498abe090d4fa5ed68ab8ce50f4b2362a0c6ba4c92c93" name="a6e4d18c7fa5d383bbcc1498abe090d4fa5ed68ab8ce50f4b2362a0c6ba4c92c93"></a>QDMI_DEVICE_JOB_PROPERTY_PROGRAMFORMAT&#160;</td><td class="fieldinit">1&#160;</td><td class="fielddoc"><p><a class="el" href="#a475336f0c08bd0218dd76a6016098231">QDMI_Program_Format</a> The format of the program to be executed. </p>
+<dl class="section note"><dt>Note</dt><dd>This property returns the value of the <a class="el" href="#a40dd25c531ebf99fb4b46469083b609ea5ee9218fc51cbd01765619467b90056f">QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT</a> parameter. </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="a6e4d18c7fa5d383bbcc1498abe090d4fa1215ae3034ffc3c9e6207253b81fa649" name="a6e4d18c7fa5d383bbcc1498abe090d4fa1215ae3034ffc3c9e6207253b81fa649"></a>QDMI_DEVICE_JOB_PROPERTY_PROGRAM&#160;</td><td class="fieldinit">2&#160;</td><td class="fielddoc"><p><code>void*</code> The program to be executed. </p>
+<dl class="section note"><dt>Note</dt><dd>This property returns the value of the <a class="el" href="#a40dd25c531ebf99fb4b46469083b609ea7ef134726b7ec6f0855c0d8171e44dd3">QDMI_DEVICE_JOB_PARAMETER_PROGRAM</a> parameter. </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="a6e4d18c7fa5d383bbcc1498abe090d4faad5344a33a120865b1c6f987b9fe023c" name="a6e4d18c7fa5d383bbcc1498abe090d4faad5344a33a120865b1c6f987b9fe023c"></a>QDMI_DEVICE_JOB_PROPERTY_SHOTSNUM&#160;</td><td class="fieldinit">3&#160;</td><td class="fielddoc"><p><code>size_t</code> The number of shots to execute for a quantum circuit job. </p>
+<dl class="section note"><dt>Note</dt><dd>This property returns the value of the <a class="el" href="#a40dd25c531ebf99fb4b46469083b609ea4ecec990e69afb205f9801433be37b26">QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM</a> parameter. </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="a6e4d18c7fa5d383bbcc1498abe090d4fac476c098fa8050146b00c2857a151303" name="a6e4d18c7fa5d383bbcc1498abe090d4fac476c098fa8050146b00c2857a151303"></a>QDMI_DEVICE_JOB_PROPERTY_MAX&#160;</td><td class="fieldinit">4&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
+<p>It can be used by devices for bounds checking and validation of function parameters.</p>
+<dl class="section attention"><dt>Attention</dt><dd>This value must remain the last regular member of the enum besides the custom members and must be updated when new members are added. </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="a6e4d18c7fa5d383bbcc1498abe090d4fa19282bf485e4af273b4cfff5290540d6" name="a6e4d18c7fa5d383bbcc1498abe090d4fa19282bf485e4af273b4cfff5290540d6"></a>QDMI_DEVICE_JOB_PROPERTY_CUSTOM1&#160;</td><td class="fieldinit">999999995&#160;</td><td class="fielddoc"><p>This enum value is reserved for a custom parameter. </p>
+<p>The device defines the meaning and the type of this parameter. </p><dl class="section attention"><dt>Attention</dt><dd>The value of this enum member must not be changed to maintain binary compatibility. </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="a6e4d18c7fa5d383bbcc1498abe090d4fad86d4edb36e54ab09f6c3a424d5bc8e4" name="a6e4d18c7fa5d383bbcc1498abe090d4fad86d4edb36e54ab09f6c3a424d5bc8e4"></a>QDMI_DEVICE_JOB_PROPERTY_CUSTOM2&#160;</td><td class="fieldinit">999999996&#160;</td><td class="fielddoc"><dl class="section see"><dt>See also</dt><dd><a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4fa19282bf485e4af273b4cfff5290540d6" title="This enum value is reserved for a custom parameter.">QDMI_DEVICE_JOB_PROPERTY_CUSTOM1</a> </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="a6e4d18c7fa5d383bbcc1498abe090d4faa7144a601ca05f6f3e0d4155dbc6a08e" name="a6e4d18c7fa5d383bbcc1498abe090d4faa7144a601ca05f6f3e0d4155dbc6a08e"></a>QDMI_DEVICE_JOB_PROPERTY_CUSTOM3&#160;</td><td class="fieldinit">999999997&#160;</td><td class="fielddoc"><dl class="section see"><dt>See also</dt><dd><a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4fa19282bf485e4af273b4cfff5290540d6" title="This enum value is reserved for a custom parameter.">QDMI_DEVICE_JOB_PROPERTY_CUSTOM1</a> </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="a6e4d18c7fa5d383bbcc1498abe090d4fa7f324d6c1468d7c14608e1ffad230c3c" name="a6e4d18c7fa5d383bbcc1498abe090d4fa7f324d6c1468d7c14608e1ffad230c3c"></a>QDMI_DEVICE_JOB_PROPERTY_CUSTOM4&#160;</td><td class="fieldinit">999999998&#160;</td><td class="fielddoc"><dl class="section see"><dt>See also</dt><dd><a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4fa19282bf485e4af273b4cfff5290540d6" title="This enum value is reserved for a custom parameter.">QDMI_DEVICE_JOB_PROPERTY_CUSTOM1</a> </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="a6e4d18c7fa5d383bbcc1498abe090d4fa08224f2da22d71f598bf27aa85ac9bd4" name="a6e4d18c7fa5d383bbcc1498abe090d4fa08224f2da22d71f598bf27aa85ac9bd4"></a>QDMI_DEVICE_JOB_PROPERTY_CUSTOM5&#160;</td><td class="fieldinit">999999999&#160;</td><td class="fielddoc"><dl class="section see"><dt>See also</dt><dd><a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4fa19282bf485e4af273b4cfff5290540d6" title="This enum value is reserved for a custom parameter.">QDMI_DEVICE_JOB_PROPERTY_CUSTOM1</a> </dd></dl>
+</td></tr>
+</table>
+
+</div>
+</div>
 <a id="ad251d8ae8fbbe9a5c7a10d66b243d526" name="ad251d8ae8fbbe9a5c7a10d66b243d526"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad251d8ae8fbbe9a5c7a10d66b243d526">&#9670;&#160;</a></span>QDMI_DEVICE_PROPERTY_T</h2>
 
@@ -576,7 +668,7 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="ad251d8ae8fbbe9a5c7a10d66b243d526a7ada8f720629c4cac8d74ac4270a1c46" name="ad251d8ae8fbbe9a5c7a10d66b243d526a7ada8f720629c4cac8d74ac4270a1c46"></a>QDMI_DEVICE_PROPERTY_QUBITSNUM&#160;</td><td class="fieldinit">4&#160;</td><td class="fielddoc"><p><code>size_t</code> The number of qubits in the device. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="ad251d8ae8fbbe9a5c7a10d66b243d526aea4d3c2d95a753625a6b61c75a30d07b" name="ad251d8ae8fbbe9a5c7a10d66b243d526aea4d3c2d95a753625a6b61c75a30d07b"></a>QDMI_DEVICE_PROPERTY_SITES&#160;</td><td class="fieldinit">5&#160;</td><td class="fielddoc"><p><code>QDMI_Site*</code> (<a class="el" href="types_8h.html#ab26279159380e378f258cb663968b9ec">QDMI_Site</a> list) The sites of the device. </p>
-<p>The returned <a class="el" href="types_8h.html#ab26279159380e378f258cb663968b9ec">QDMI_Site</a> handles may be used to query site and operation properties. The list need not be sorted based on the <a class="el" href="#a69ef10d452cc6f03cac8a917ba48d6e2a7bea2b521064f18ecea86fd20f698477">QDMI_SITE_PROPERTY_ID</a>. </p>
+<p>The returned <a class="el" href="types_8h.html#ab26279159380e378f258cb663968b9ec">QDMI_Site</a> handles may be used to query site and operation properties. The list need not be sorted based on the <a class="el" href="#a69ef10d452cc6f03cac8a917ba48d6e2a02a5ff9f7dfc10bb579e93d95bef06cf">QDMI_SITE_PROPERTY_INDEX</a>. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="ad251d8ae8fbbe9a5c7a10d66b243d526a8bf723293994cc57b1dfa7bc5d41ff5b" name="ad251d8ae8fbbe9a5c7a10d66b243d526a8bf723293994cc57b1dfa7bc5d41ff5b"></a>QDMI_DEVICE_PROPERTY_OPERATIONS&#160;</td><td class="fieldinit">6&#160;</td><td class="fielddoc"><p><code>QDMI_Operation*</code> (<a class="el" href="types_8h.html#ae777e8f92186c1e6f836eeaa53b149d7">QDMI_Operation</a> list) The operations supported by the device. </p>
 <p>The returned <a class="el" href="types_8h.html#ae777e8f92186c1e6f836eeaa53b149d7">QDMI_Operation</a> handles may be used to query operation properties. </p>
@@ -655,14 +747,17 @@ Enumerations</h2></td></tr>
 </div><div class="memdoc">
 <p>Enum of the site properties that can be queried via <a class="el" href="group__device__query__interface.html#ga953bf947b1efcfaa3fb63dcce61127d5">QDMI_device_session_query_site_property</a> as part of the <a class="el" href="group__device__interface.html">device interface</a> and via <a class="el" href="group__client__query__interface.html#gae6e14d1868412f8e80904377116938bb">QDMI_device_query_site_property</a> as part of the <a class="el" href="group__client__interface.html">client interface</a>. </p>
 <table class="fieldtable">
-<tr><th colspan="3">Enumerator</th></tr><tr><td class="fieldname"><a id="a69ef10d452cc6f03cac8a917ba48d6e2a7bea2b521064f18ecea86fd20f698477" name="a69ef10d452cc6f03cac8a917ba48d6e2a7bea2b521064f18ecea86fd20f698477"></a>QDMI_SITE_PROPERTY_ID&#160;</td><td class="fieldinit">0&#160;</td><td class="fielddoc"><p><code>size_t</code> The unique ID to identify the site in a program. </p>
-<p>The ID of a site is used to link the qubits used in a quantum program to the physical sites of the device that can be queried via this interface. IDs may be non-consecutive and need not start at 0. See <a class="el" href="#a475336f0c08bd0218dd76a6016098231">QDMI_Program_Format</a> for more information on how the site IDs map to the qubits in a program. </p>
+<tr><th colspan="3">Enumerator</th></tr><tr><td class="fieldname"><a id="a69ef10d452cc6f03cac8a917ba48d6e2a02a5ff9f7dfc10bb579e93d95bef06cf" name="a69ef10d452cc6f03cac8a917ba48d6e2a02a5ff9f7dfc10bb579e93d95bef06cf"></a>QDMI_SITE_PROPERTY_INDEX&#160;</td><td class="fieldinit">0&#160;</td><td class="fielddoc"><p><code>size_t</code> The unique index (or ID) to identify the site in a program. </p>
+<p>The index of a site is used to link the qubits used in a quantum program to the physical sites of the device that can be queried via this interface. Indices may be non-consecutive and need not start at 0. See <a class="el" href="#a475336f0c08bd0218dd76a6016098231">QDMI_Program_Format</a> for more information on how the site indices map to the qubits in a program.</p>
+<dl class="section user"><dt>This property must be available for all sites since it is used to</dt><dd>address the sites in a program. </dd></dl>
 </td></tr>
 <tr><td class="fieldname"><a id="a69ef10d452cc6f03cac8a917ba48d6e2a60262ea30467ff3d36cbe4730c4a23f3" name="a69ef10d452cc6f03cac8a917ba48d6e2a60262ea30467ff3d36cbe4730c4a23f3"></a>QDMI_SITE_PROPERTY_T1&#160;</td><td class="fieldinit">1&#160;</td><td class="fielddoc"><p><code>double</code> The T1 time of a site in µs. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a69ef10d452cc6f03cac8a917ba48d6e2a65eccdb8bdeed5294d48fa80621ac9d9" name="a69ef10d452cc6f03cac8a917ba48d6e2a65eccdb8bdeed5294d48fa80621ac9d9"></a>QDMI_SITE_PROPERTY_T2&#160;</td><td class="fieldinit">2&#160;</td><td class="fielddoc"><p><code>double</code> The T2 time of a site in µs. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a69ef10d452cc6f03cac8a917ba48d6e2ade44c67aa77a26645d41d7529cdbff8e" name="a69ef10d452cc6f03cac8a917ba48d6e2ade44c67aa77a26645d41d7529cdbff8e"></a>QDMI_SITE_PROPERTY_MAX&#160;</td><td class="fieldinit">3&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
+<tr><td class="fieldname"><a id="a69ef10d452cc6f03cac8a917ba48d6e2adcf75512f18098e344687f86fb574ff3" name="a69ef10d452cc6f03cac8a917ba48d6e2adcf75512f18098e344687f86fb574ff3"></a>QDMI_SITE_PROPERTY_NAME&#160;</td><td class="fieldinit">3&#160;</td><td class="fielddoc"><p><code>char*</code> (string) The name of a site, e.g., another identifier of the site given by the device. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a69ef10d452cc6f03cac8a917ba48d6e2ade44c67aa77a26645d41d7529cdbff8e" name="a69ef10d452cc6f03cac8a917ba48d6e2ade44c67aa77a26645d41d7529cdbff8e"></a>QDMI_SITE_PROPERTY_MAX&#160;</td><td class="fieldinit">4&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
 <p>It can be used by devices for bounds checking and validation of function parameters.</p>
 <dl class="section attention"><dt>Attention</dt><dd>This value must remain the last regular member of the enum besides the custom members and must be updated when new members are added. </dd></dl>
 </td></tr>
@@ -740,13 +835,17 @@ Enumerations</h2></td></tr>
 <table class="fieldtable">
 <tr><th colspan="3">Enumerator</th></tr><tr><td class="fieldname"><a id="a04e5c793bcbe8b354a9223bb60f828a6a2d985c815c2e1024b9eb5605e8825df5" name="a04e5c793bcbe8b354a9223bb60f828a6a2d985c815c2e1024b9eb5605e8825df5"></a>QDMI_JOB_STATUS_CREATED&#160;</td><td class="fieldinit">0&#160;</td><td class="fielddoc"><p>The job was created and can be configured via <a class="el" href="group__client__job__interface.html#ga94b84ea6efa5e7f2ad1ee65bff04381c">QDMI_job_set_parameter</a>. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a04e5c793bcbe8b354a9223bb60f828a6a3c531c6a92164cfb31a6c4c1a6cc5dfe" name="a04e5c793bcbe8b354a9223bb60f828a6a3c531c6a92164cfb31a6c4c1a6cc5dfe"></a>QDMI_JOB_STATUS_SUBMITTED&#160;</td><td class="fieldinit">1&#160;</td><td class="fielddoc"><p>The job was submitted and is waiting to be executed. </p>
+<tr><td class="fieldname"><a id="a04e5c793bcbe8b354a9223bb60f828a6a3c531c6a92164cfb31a6c4c1a6cc5dfe" name="a04e5c793bcbe8b354a9223bb60f828a6a3c531c6a92164cfb31a6c4c1a6cc5dfe"></a>QDMI_JOB_STATUS_SUBMITTED&#160;</td><td class="fieldinit">1&#160;</td><td class="fielddoc"><p>The job was submitted. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a04e5c793bcbe8b354a9223bb60f828a6ad3dad6dd89491e223f42ff9cd9bdade2" name="a04e5c793bcbe8b354a9223bb60f828a6ad3dad6dd89491e223f42ff9cd9bdade2"></a>QDMI_JOB_STATUS_DONE&#160;</td><td class="fieldinit">2&#160;</td><td class="fielddoc"><p>The job is done, and the result can be retrieved. </p>
+<tr><td class="fieldname"><a id="a04e5c793bcbe8b354a9223bb60f828a6a8af19691cae44fb6816555b1c087e6e8" name="a04e5c793bcbe8b354a9223bb60f828a6a8af19691cae44fb6816555b1c087e6e8"></a>QDMI_JOB_STATUS_QUEUED&#160;</td><td class="fieldinit">2&#160;</td><td class="fielddoc"><p>The job was received, and is waiting to be executed. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a04e5c793bcbe8b354a9223bb60f828a6ac1203df2c0360fafd873b42cdcbe9cc5" name="a04e5c793bcbe8b354a9223bb60f828a6ac1203df2c0360fafd873b42cdcbe9cc5"></a>QDMI_JOB_STATUS_RUNNING&#160;</td><td class="fieldinit">3&#160;</td><td class="fielddoc"><p>The job is running, and the result is not yet available. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a04e5c793bcbe8b354a9223bb60f828a6a05163481e57725e91bb22ff798394f33" name="a04e5c793bcbe8b354a9223bb60f828a6a05163481e57725e91bb22ff798394f33"></a>QDMI_JOB_STATUS_CANCELED&#160;</td><td class="fieldinit">4&#160;</td><td class="fielddoc"><p>The job was canceled, and the result is not available. </p>
+<tr><td class="fieldname"><a id="a04e5c793bcbe8b354a9223bb60f828a6ad3dad6dd89491e223f42ff9cd9bdade2" name="a04e5c793bcbe8b354a9223bb60f828a6ad3dad6dd89491e223f42ff9cd9bdade2"></a>QDMI_JOB_STATUS_DONE&#160;</td><td class="fieldinit">4&#160;</td><td class="fielddoc"><p>The job is done, and the result can be retrieved. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a04e5c793bcbe8b354a9223bb60f828a6a05163481e57725e91bb22ff798394f33" name="a04e5c793bcbe8b354a9223bb60f828a6a05163481e57725e91bb22ff798394f33"></a>QDMI_JOB_STATUS_CANCELED&#160;</td><td class="fieldinit">5&#160;</td><td class="fielddoc"><p>The job was canceled, and the result is not available. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a04e5c793bcbe8b354a9223bb60f828a6ab9b201ad1770dc23b9c1d4753e238d4f" name="a04e5c793bcbe8b354a9223bb60f828a6ab9b201ad1770dc23b9c1d4753e238d4f"></a>QDMI_JOB_STATUS_FAILED&#160;</td><td class="fieldinit">6&#160;</td><td class="fielddoc"><p>An error occurred in the job's lifecycle. </p>
 </td></tr>
 </table>
 
@@ -777,12 +876,12 @@ Enumerations</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09a46cb051d6e1f54c658570dee57813903" name="a3eff3252203fcad146d5896e4466ec09a46cb051d6e1f54c658570dee57813903"></a>QDMI_PROGRAM_FORMAT_QASM3&#160;</td><td class="fieldinit">1&#160;</td><td class="fielddoc"><p><code>char*</code> (string) An OpenQASM 3 program. </p>
 <p>A text-based representation of a quantum circuit in the <a href="https://openqasm.com/">OpenQASM 3 language</a>. Devices that claim to support this format must accept programs conforming to the same rules as for <a class="el" href="#a3eff3252203fcad146d5896e4466ec09afd3bab5e29afc660e29b2a132246471b">QDMI_PROGRAM_FORMAT_QASM2</a>.</p>
-<dl class="section user"><dt></dt><dd>Besides the rules for OpenQASM 2.0 programs, OpenQASM 3 programs may be written using physical qubits, which are denoted by <code>$[NUM]</code>, with <code>[NUM]</code> being a non-negative integer denoting the physical qubit's index. If a program uses physical qubits, the operations in the program must be performed on the sites with IDs corresponding to the physical qubits in the program.</dd></dl>
+<dl class="section user"><dt></dt><dd>Besides the rules for OpenQASM 2.0 programs, OpenQASM 3 programs may be written using physical qubits, which are denoted by <code>$[NUM]</code>, with <code>[NUM]</code> being a non-negative integer denoting the physical qubit's index. If a program uses physical qubits, the operations in the program must be performed on the sites with indices corresponding to the physical qubits in the program.</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Devices may decide to support more general OpenQASM 3 programs that do not follow these rules, for example, using multiple qubit registers or arbitrary gates. However, in that case, no guarantees can be made about the mapping of qubits in the program to the physical sites of the device. </dd></dl>
 </td></tr>
 <tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09a3645597dc4c99852e2820de66569ceac" name="a3eff3252203fcad146d5896e4466ec09a3645597dc4c99852e2820de66569ceac"></a>QDMI_PROGRAM_FORMAT_QIRBASESTRING&#160;</td><td class="fieldinit">2&#160;</td><td class="fielddoc"><p><code>char*</code> (string) A text-based QIR program complying to the QIR base profile. </p>
 <p>A text-based representation of a quantum circuit in the Quantum Intermediate Representation (QIR) format; specifically, the <a href="https://github.com/qir-alliance/qir-spec/blob/8b3fd47b7b70122a104e24733ef9de911576f7d6/specification/under_development/profiles/Base_Profile.md">QIR base profile</a>. Devices that claim to support this format must accept programs that follow the rules for the QIR base profile and that only contain operations that are reported by the <a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726a5197136670f9d415464f09f283921b5a">QDMI_OPERATION_PROPERTY_NAME</a> property of the device's operations (for example, <code>@__quantum__qis__[NAME]__body</code>, where <code>[NAME]</code> is the name of the operation).</p>
-<dl class="section user"><dt></dt><dd>QIR has a similar distinction between dynamically allocated and static hardware qubits as <a class="el" href="#a3eff3252203fcad146d5896e4466ec09a46cb051d6e1f54c658570dee57813903">QDMI_PROGRAM_FORMAT_QASM3</a>. The same rules apply for the mapping of qubits in the program to the physical sites of the device. Specifically, if the program only allocates a single register named <code>q</code> with as many qubits as there are sites in the device, the operations in the program are expected to be performed on the physical sites of the device as queried via <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526aea4d3c2d95a753625a6b61c75a30d07b">QDMI_DEVICE_PROPERTY_SITES</a>. If the program uses static qubit addresses (for example, <code>ptr inttoptr (i64 1 to ptr)</code>), the operations in the program must be performed on the sites with IDs corresponding to the static qubit addresses in the program.</dd></dl>
+<dl class="section user"><dt></dt><dd>QIR has a similar distinction between dynamically allocated and static hardware qubits as <a class="el" href="#a3eff3252203fcad146d5896e4466ec09a46cb051d6e1f54c658570dee57813903">QDMI_PROGRAM_FORMAT_QASM3</a>. The same rules apply for the mapping of qubits in the program to the physical sites of the device. Specifically, if the program only allocates a single register named <code>q</code> with as many qubits as there are sites in the device, the operations in the program are expected to be performed on the physical sites of the device as queried via <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526aea4d3c2d95a753625a6b61c75a30d07b">QDMI_DEVICE_PROPERTY_SITES</a>. If the program uses static qubit addresses (for example, <code>ptr inttoptr (i64 1 to ptr)</code>), the operations in the program must be performed on the sites with indices corresponding to the static qubit addresses in the program.</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Devices may decide to support more general QIR programs that do not follow these rules, for example, using multiple qubit registers or arbitrary gates. However, in that case, no guarantees can be made about the mapping of qubits in the program to the physical sites of the device. </dd></dl>
 </td></tr>
 <tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09a705ba084cac8769dc2bf91c0beb35ac7" name="a3eff3252203fcad146d5896e4466ec09a705ba084cac8769dc2bf91c0beb35ac7"></a>QDMI_PROGRAM_FORMAT_QIRBASEMODULE&#160;</td><td class="fieldinit">3&#160;</td><td class="fielddoc"><p><code>void*</code> A QIR binary complying to the QIR base profile. </p>

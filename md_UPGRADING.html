@@ -20,7 +20,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
     <meta http-equiv="X-UA-Compatible" content="IE=11" />
     <meta name="generator" content="Doxygen 1.13.2" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>QDMI: QDMI Client Interface</title>
+    <title>QDMI: Upgrade Guide</title>
     <link href="tabs.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="jquery.js"></script>
     <script type="text/javascript" src="dynsections.js"></script>
@@ -176,7 +176,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('group__client__interface.html',''); initResizable(true); });
+$(function(){initNavTree('md_UPGRADING.html',''); initResizable(true); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -201,59 +201,51 @@ $(function(){initNavTree('group__client__interface.html',''); initResizable(true
 </div>
 </div>
 
-<div class="header">
-  <div class="summary">
-<a href="#groups">Interfaces</a> &#124;
-<a href="#typedef-members">Typedefs</a>  </div>
-  <div class="headertitle"><div class="title">QDMI Client Interface</div></div>
+<div><div class="header">
+  <div class="headertitle"><div class="title">Upgrade Guide</div></div>
 </div><!--header-->
 <div class="contents">
-<a name="details" id="details"></a><h2 class="groupheader">Description</h2>
-<p>Describes the functions accessible to clients or users of QDMI. </p>
-<p>This is an interface between the QDMI driver and the client. It includes functions to establish sessions between a QDMI driver and a client, as well as to interact with the devices managed by the driver.</p>
-<p>The client interface is split into three parts:</p><ul>
-<li>The <a class="el" href="group__client__session__interface.html">client session interface</a> for managing sessions between a QDMI driver and a client.</li>
-<li>The <a class="el" href="group__client__query__interface.html">client query interface</a> for querying properties of devices.</li>
-<li>The <a class="el" href="group__client__job__interface.html">client job interface</a> for submitting jobs to devices. </li>
+<div class="textblock"><p>This document describes breaking changes and how to upgrade. For a complete list of changes including minor and patch releases, please refer to the <a class="el" href="md_CHANGELOG.html">changelog</a>.</p>
+<h1><a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.1.0...HEAD">Unreleased</a></h1>
+<h2>General Changes</h2>
+<p>The enum value <code>QDMI_SITE_PROPERTY_ID</code> has been renamed to <code>QDMI_SITE_PROPERTY_INDEX</code>.</p>
+<h2>Device-side Changes</h2>
+<ul>
+<li>Devices now also need to implement the function <code>QDMI_device_job_query_property</code> for querying properties of jobs.</li>
+<li>The <code>QDMI_device_job_wait</code> function now has a new parameter <code>timeout</code> that specifies how long (in seconds) the function must wait for a result before returning with a <code>QDMI_ERROR_TIMEOUT</code> error. A timeout of <code>0</code> means that the function will wait indefinitely.</li>
+<li><p class="startli">New authentication options have been added to the <code>QDMI_DEVICE_SESSION_PARAMETER</code> enum. Specifically, besides the existing <code>QDMI_DEVICE_SESSION_PARAMETER_BASEURL</code> and <code>QDMI_DEVICE_SESSION_PARAMETER_TOKEN</code>, the following authentication options are now available:</p><ul>
+<li><code>QDMI_DEVICE_SESSION_PARAMETER_AUTHFILE</code>, which allows the use of a file containing authentication information.</li>
+<li><code>QDMI_DEVICE_SESSION_PARAMETER_AUTHURL</code>, which allows the use of a URL for authentication.</li>
+<li><code>QDMI_DEVICE_SESSION_PARAMETER_USERNAME</code>, which allows the use of a username for authentication.</li>
+<li><code>QDMI_DEVICE_SESSION_PARAMETER_PASSWORD</code>, which allows the use of a password for authentication.</li>
 </ul>
-<table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="groups" name="groups"></a>
-Interfaces</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__client__session__interface.html">QDMI Client Session Interface</a></td></tr>
-<tr class="memdesc:group__client__session__interface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides functions to manage sessions between the client and driver. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__client__query__interface.html">QDMI Client Query Interface</a></td></tr>
-<tr class="memdesc:group__client__query__interface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides functions to query properties of devices. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__client__job__interface.html">QDMI Client Job Interface</a></td></tr>
-<tr class="memdesc:group__client__job__interface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides functions to manage client-side jobs. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:ga2772c94ab19957ce5aaef652b626baec" id="r_ga2772c94ab19957ce5aaef652b626baec"><td class="memItemLeft" align="right" valign="top">typedef struct QDMI_Device_impl_d *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga2772c94ab19957ce5aaef652b626baec">QDMI_Device</a></td></tr>
-<tr class="memdesc:ga2772c94ab19957ce5aaef652b626baec"><td class="mdescLeft">&#160;</td><td class="mdescRight">A handle for a device implementing the <a class="el" href="group__device__interface.html">QDMI Device Interface</a>.  <br /></td></tr>
-<tr class="separator:ga2772c94ab19957ce5aaef652b626baec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table>
-<h2 class="groupheader">Typedef Documentation</h2>
-<a id="ga2772c94ab19957ce5aaef652b626baec" name="ga2772c94ab19957ce5aaef652b626baec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga2772c94ab19957ce5aaef652b626baec">&#9670;&#160;</a></span>QDMI_Device</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct QDMI_Device_impl_d* <a class="el" href="#ga2772c94ab19957ce5aaef652b626baec">QDMI_Device</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>A handle for a device implementing the <a class="el" href="group__device__interface.html">QDMI Device Interface</a>. </p>
-<p>An opaque pointer to a type defined by the driver that encapsulates an implementation of the <a class="el" href="group__device__interface.html">QDMI Device Interface</a>. </p>
-
-</div>
-</div>
-</div><!-- contents -->
+<p class="startli">As part of this change, the order of the enum values in <code>QDMI_DEVICE_SESSION_PARAMETER</code> has been changed to accommodate the new authentication options. It is the responsibility of the device to document the authentication options it supports.</p>
+</li>
+</ul>
+<p>For full compatibility with this QDMI version, the device needs to be recompiled with the latest header file versions.</p>
+<h2>Driver-internal Changes</h2>
+<ul>
+<li>Drivers now also need to implement the function <code>QDMI_job_query_property</code> for querying properties of jobs.</li>
+<li>The function <code>QDMI_device_job_wait</code> may now also return after a timeout resulting in a new <code>QDMI_Status</code> code <code>QDMI_ERROR_TIMEOUT</code> that must be handled. Additionally, the <code>QDMI_job_wait</code> function now has a new parameter <code>timeout</code> that must be handled.</li>
+<li><p class="startli">New authentication options have been added to the <code>QDMI_SESSION_PARAMETER</code> enum. Specifically, besides the existing <code>QDMI_SESSION_PARAMETER_TOKEN</code> and <code>QDMI_SESSION_PARAMETER_PROJECTID</code>, the following authentication options are now available:</p><ul>
+<li><code>QDMI_SESSION_PARAMETER_AUTHFILE</code>, which allows the use of a file containing authentication information.</li>
+<li><code>QDMI_SESSION_PARAMETER_AUTHURL</code>, which allows the use of a URL for authentication.</li>
+<li><code>QDMI_SESSION_PARAMETER_USERNAME</code>, which allows the use of a username for authentication.</li>
+<li><code>QDMI_SESSION_PARAMETER_PASSWORD</code>, which allows the use of a password for authentication.</li>
+</ul>
+<p class="startli">As part of this change, the order of the enum values in <code>QDMI_SESSION_PARAMETER</code> has been changed to accommodate the new authentication options. It is the responsibility of the driver to document the authentication options it supports.</p>
+</li>
+</ul>
+<p>For full compatibility with this QDMI version, the driver needs to be recompiled with the latest header file versions.</p>
+<h2>Client-side Changes</h2>
+<ul>
+<li>A new <code>timeout</code> parameter has been added to the <code>QDMI_job_wait</code> function that influences how long (in seconds) the function will wait before eventually returning with <code>QDMI_ERROR_TIMEOUT</code>. A timeout of <code>0</code> means that the function will wait indefinitely.</li>
+<li>The function <code>QDMI_job_query_property</code> has been added to query properties of jobs.</li>
+<li>New authentication options may be provided by drivers and devices. This includes authentication options such as <code>QDMI_SESSION_PARAMETER_AUTHFILE</code>, <code>QDMI_SESSION_PARAMETER_AUTHURL</code>, <code>QDMI_SESSION_PARAMETER_USERNAME</code>, and <code>QDMI_SESSION_PARAMETER_PASSWORD</code>. The order of the enum values in <code>QDMI_SESSION_PARAMETER</code> has been changed to accommodate the new authentication options.</li>
+</ul>
+<p>For full compatibility with this QDMI version, the client needs to be recompiled with the latest header file versions. </p>
+</div></div><!-- contents -->
+</div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

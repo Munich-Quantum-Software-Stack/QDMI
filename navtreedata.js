@@ -54,13 +54,15 @@ var NAVTREE =
         [ "Working with the Template", "md_docs_2templates.html#template-working", null ],
         [ "Building the Template and Running the Tests", "md_docs_2templates.html#template-building", null ]
       ] ],
+      [ "Changelog", "md_CHANGELOG.html", null ],
+      [ "Upgrade Guide", "md_UPGRADING.html", null ],
       [ "Development Guide", "md_docs_2guide.html", null ]
     ] ],
     [ "Interfaces", "topics.html", "topics" ],
     [ "API Reference", "files.html", [
       [ "Files", "files.html", "files_dup" ],
       [ "Index", "globals.html", [
-        [ "All", "globals.html", null ],
+        [ "All", "globals.html", "globals_dup" ],
         [ "Functions", "globals_func.html", null ],
         [ "Typedefs", "globals_type.html", null ],
         [ "Enumerations", "globals_enum.html", null ],
@@ -72,7 +74,8 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"client_8h.html"
+"client_8h.html",
+"group__device__session__interface.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

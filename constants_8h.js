@@ -2,6 +2,7 @@ var constants_8h =
 [
     [ "QDMI_Device_Session_Parameter", "constants_8h.html#ab99cb3929c8d79596e66fb276711ebda", null ],
     [ "QDMI_Device_Job_Parameter", "constants_8h.html#a65db59774d7c61601159d00d505d835c", null ],
+    [ "QDMI_Device_Job_Property", "constants_8h.html#a9962b2d3a2ebb0791c8c6196069e499e", null ],
     [ "QDMI_Device_Property", "constants_8h.html#afeaad074a7321ebb8fb87e06598fc055", null ],
     [ "QDMI_Device_Status", "constants_8h.html#a0ae270851e3adac50d4584088ebe67d4", null ],
     [ "QDMI_Site_Property", "constants_8h.html#a699a82efc1fb132a1b67a6e9d5592080", null ],
@@ -21,11 +22,16 @@ var constants_8h =
       [ "QDMI_ERROR_INVALIDARGUMENT", "constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642", null ],
       [ "QDMI_ERROR_PERMISSIONDENIED", "constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8ab875f28072043ad44f7ee5290bba8d01", null ],
       [ "QDMI_ERROR_NOTSUPPORTED", "constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651", null ],
-      [ "QDMI_ERROR_BADSTATE", "constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a916e0810bf915e2ad67f2c1430c54fec", null ]
+      [ "QDMI_ERROR_BADSTATE", "constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a916e0810bf915e2ad67f2c1430c54fec", null ],
+      [ "QDMI_ERROR_TIMEOUT", "constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8acf9abde59858a1087762ba3e287e9fdd", null ]
     ] ],
     [ "QDMI_DEVICE_SESSION_PARAMETER_T", "constants_8h.html#a9f1e467b2b3870263b0e9d7e5d36cea4", [
-      [ "QDMI_DEVICE_SESSION_PARAMETER_TOKEN", "constants_8h.html#a9f1e467b2b3870263b0e9d7e5d36cea4a497c89c2b59737d70086a54e1958c292", null ],
       [ "QDMI_DEVICE_SESSION_PARAMETER_BASEURL", "constants_8h.html#a9f1e467b2b3870263b0e9d7e5d36cea4a8f7ec33012b7a91ce8e7311dfa51f724", null ],
+      [ "QDMI_DEVICE_SESSION_PARAMETER_TOKEN", "constants_8h.html#a9f1e467b2b3870263b0e9d7e5d36cea4a497c89c2b59737d70086a54e1958c292", null ],
+      [ "QDMI_DEVICE_SESSION_PARAMETER_AUTHFILE", "constants_8h.html#a9f1e467b2b3870263b0e9d7e5d36cea4ae1c235ca2c51428c830906d123668123", null ],
+      [ "QDMI_DEVICE_SESSION_PARAMETER_AUTHURL", "constants_8h.html#a9f1e467b2b3870263b0e9d7e5d36cea4ae114dae6d45e69beda502dec6f54019c", null ],
+      [ "QDMI_DEVICE_SESSION_PARAMETER_USERNAME", "constants_8h.html#a9f1e467b2b3870263b0e9d7e5d36cea4a5588159e3e38ae5186eebc2b9fc2cac7", null ],
+      [ "QDMI_DEVICE_SESSION_PARAMETER_PASSWORD", "constants_8h.html#a9f1e467b2b3870263b0e9d7e5d36cea4a29fd3a0ea9c9f2e06ea50c032cd78ea0", null ],
       [ "QDMI_DEVICE_SESSION_PARAMETER_MAX", "constants_8h.html#a9f1e467b2b3870263b0e9d7e5d36cea4a08c16fae1a1083cf6aae5b0131b0c6e1", null ],
       [ "QDMI_DEVICE_SESSION_PARAMETER_CUSTOM1", "constants_8h.html#a9f1e467b2b3870263b0e9d7e5d36cea4a90b1f07e865a147dfba3d1531b4f8275", null ],
       [ "QDMI_DEVICE_SESSION_PARAMETER_CUSTOM2", "constants_8h.html#a9f1e467b2b3870263b0e9d7e5d36cea4a741c03ce313a4b09a4ef26721e544140", null ],
@@ -43,6 +49,18 @@ var constants_8h =
       [ "QDMI_DEVICE_JOB_PARAMETER_CUSTOM3", "constants_8h.html#a40dd25c531ebf99fb4b46469083b609eae919fa568a0f06015060a074cd6466d4", null ],
       [ "QDMI_DEVICE_JOB_PARAMETER_CUSTOM4", "constants_8h.html#a40dd25c531ebf99fb4b46469083b609ea75c3ac2ca26800b70515160515e8d5e5", null ],
       [ "QDMI_DEVICE_JOB_PARAMETER_CUSTOM5", "constants_8h.html#a40dd25c531ebf99fb4b46469083b609ead04b984fe78deafa5c507101da54ad32", null ]
+    ] ],
+    [ "QDMI_DEVICE_JOB_PROPERTY_T", "constants_8h.html#a6e4d18c7fa5d383bbcc1498abe090d4f", [
+      [ "QDMI_DEVICE_JOB_PROPERTY_ID", "constants_8h.html#a6e4d18c7fa5d383bbcc1498abe090d4fad991a6a3b0a17e58b59f9180463855ec", null ],
+      [ "QDMI_DEVICE_JOB_PROPERTY_PROGRAMFORMAT", "constants_8h.html#a6e4d18c7fa5d383bbcc1498abe090d4fa5ed68ab8ce50f4b2362a0c6ba4c92c93", null ],
+      [ "QDMI_DEVICE_JOB_PROPERTY_PROGRAM", "constants_8h.html#a6e4d18c7fa5d383bbcc1498abe090d4fa1215ae3034ffc3c9e6207253b81fa649", null ],
+      [ "QDMI_DEVICE_JOB_PROPERTY_SHOTSNUM", "constants_8h.html#a6e4d18c7fa5d383bbcc1498abe090d4faad5344a33a120865b1c6f987b9fe023c", null ],
+      [ "QDMI_DEVICE_JOB_PROPERTY_MAX", "constants_8h.html#a6e4d18c7fa5d383bbcc1498abe090d4fac476c098fa8050146b00c2857a151303", null ],
+      [ "QDMI_DEVICE_JOB_PROPERTY_CUSTOM1", "constants_8h.html#a6e4d18c7fa5d383bbcc1498abe090d4fa19282bf485e4af273b4cfff5290540d6", null ],
+      [ "QDMI_DEVICE_JOB_PROPERTY_CUSTOM2", "constants_8h.html#a6e4d18c7fa5d383bbcc1498abe090d4fad86d4edb36e54ab09f6c3a424d5bc8e4", null ],
+      [ "QDMI_DEVICE_JOB_PROPERTY_CUSTOM3", "constants_8h.html#a6e4d18c7fa5d383bbcc1498abe090d4faa7144a601ca05f6f3e0d4155dbc6a08e", null ],
+      [ "QDMI_DEVICE_JOB_PROPERTY_CUSTOM4", "constants_8h.html#a6e4d18c7fa5d383bbcc1498abe090d4fa7f324d6c1468d7c14608e1ffad230c3c", null ],
+      [ "QDMI_DEVICE_JOB_PROPERTY_CUSTOM5", "constants_8h.html#a6e4d18c7fa5d383bbcc1498abe090d4fa08224f2da22d71f598bf27aa85ac9bd4", null ]
     ] ],
     [ "QDMI_DEVICE_PROPERTY_T", "constants_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526", [
       [ "QDMI_DEVICE_PROPERTY_NAME", "constants_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a18d3f183afc4d65c9e368f7cedf2d741", null ],
@@ -71,9 +89,10 @@ var constants_8h =
       [ "QDMI_DEVICE_STATUS_MAX", "constants_8h.html#aa13ac5e1c93a4b358d84bb9fd1f5fd99a974d09c52e8a39e509639b2ceb7f96ee", null ]
     ] ],
     [ "QDMI_SITE_PROPERTY_T", "constants_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2", [
-      [ "QDMI_SITE_PROPERTY_ID", "constants_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2a7bea2b521064f18ecea86fd20f698477", null ],
+      [ "QDMI_SITE_PROPERTY_INDEX", "constants_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2a02a5ff9f7dfc10bb579e93d95bef06cf", null ],
       [ "QDMI_SITE_PROPERTY_T1", "constants_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2a60262ea30467ff3d36cbe4730c4a23f3", null ],
       [ "QDMI_SITE_PROPERTY_T2", "constants_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2a65eccdb8bdeed5294d48fa80621ac9d9", null ],
+      [ "QDMI_SITE_PROPERTY_NAME", "constants_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2adcf75512f18098e344687f86fb574ff3", null ],
       [ "QDMI_SITE_PROPERTY_MAX", "constants_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2ade44c67aa77a26645d41d7529cdbff8e", null ],
       [ "QDMI_SITE_PROPERTY_CUSTOM1", "constants_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2a1ad5483fe6bcbedf073cd6ae41031e3a", null ],
       [ "QDMI_SITE_PROPERTY_CUSTOM2", "constants_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2a4be19ea36b28202b31f21816f968d977", null ],
@@ -97,9 +116,11 @@ var constants_8h =
     [ "QDMI_JOB_STATUS_T", "constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6", [
       [ "QDMI_JOB_STATUS_CREATED", "constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6a2d985c815c2e1024b9eb5605e8825df5", null ],
       [ "QDMI_JOB_STATUS_SUBMITTED", "constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6a3c531c6a92164cfb31a6c4c1a6cc5dfe", null ],
-      [ "QDMI_JOB_STATUS_DONE", "constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6ad3dad6dd89491e223f42ff9cd9bdade2", null ],
+      [ "QDMI_JOB_STATUS_QUEUED", "constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6a8af19691cae44fb6816555b1c087e6e8", null ],
       [ "QDMI_JOB_STATUS_RUNNING", "constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6ac1203df2c0360fafd873b42cdcbe9cc5", null ],
-      [ "QDMI_JOB_STATUS_CANCELED", "constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6a05163481e57725e91bb22ff798394f33", null ]
+      [ "QDMI_JOB_STATUS_DONE", "constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6ad3dad6dd89491e223f42ff9cd9bdade2", null ],
+      [ "QDMI_JOB_STATUS_CANCELED", "constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6a05163481e57725e91bb22ff798394f33", null ],
+      [ "QDMI_JOB_STATUS_FAILED", "constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6ab9b201ad1770dc23b9c1d4753e238d4f", null ]
     ] ],
     [ "QDMI_PROGRAM_FORMAT_T", "constants_8h.html#a3eff3252203fcad146d5896e4466ec09", [
       [ "QDMI_PROGRAM_FORMAT_QASM2", "constants_8h.html#a3eff3252203fcad146d5896e4466ec09afd3bab5e29afc660e29b2a132246471b", null ],
