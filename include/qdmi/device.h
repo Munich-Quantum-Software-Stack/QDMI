@@ -445,6 +445,44 @@ int QDMI_device_job_set_parameter(QDMI_Device_Job job,
                                   const void *value);
 
 /**
+ * @brief Query a job property.
+ * @param[in] job A handle to a job for which to query @p prop. Must not be @c
+ * NULL.
+ * @param[in] prop The property to query. Must be one of the values specified
+ * for @ref QDMI_Device_Job_Property.
+ * @param[in] size The size of the memory pointed to by @p value in bytes. Must
+ * be greater or equal to the size of the return type specified for @p prop,
+ * except when @p value is @c NULL, in which case it is ignored.
+ * @param[out] value A pointer to the memory location where the value of the
+ * property will be stored. If this is @c NULL, it is ignored.
+ * @param[out] size_ret The actual size of the data being queried in bytes. If
+ * this is @c NULL, it is ignored.
+ * @return @ref QDMI_SUCCESS if the job supports the specified property and,
+ * when @p value is not @c NULL, the property was successfully retrieved.
+ * @return @ref QDMI_ERROR_NOTSUPPORTED if the job does not support the
+ * property.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if
+ *  - @p job is @c NULL,
+ *  - @p prop is invalid, or
+ *  - @p value is not @c NULL and @p size is less than the size of the data
+ *    being queried.
+ * @return @ref QDMI_ERROR_BADSTATE if the property cannot be queried in the
+ * current state of the job, for example, because the job failed or the property
+ * is not initialized because it has no default value and was not set.
+ * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
+ *
+ * @remark Calling this function with @p value set to @c NULL is expected to
+ * allow checking if the job supports the specified property without
+ * retrieving the property and without the need to provide a buffer for it.
+ * Additionally, the size of the buffer needed to retrieve the property is
+ * returned in @p size_ret if @p size_ret is not @c NULL.
+ * See the @ref QDMI_device_query_device_property documentation for an example.
+ */
+int QDMI_device_job_query_property(QDMI_Device_Job job,
+                                   QDMI_Device_Job_Property prop, size_t size,
+                                   void *value, size_t *size_ret);
+
+/**
  * @brief Submit a job to the device.
  * @details This function can either be blocking until the job is finished or
  * non-blocking and return while the job is running. In the latter case, the
@@ -490,17 +528,23 @@ int QDMI_device_job_check(QDMI_Device_Job job, QDMI_Job_Status *status);
 
 /**
  * @brief Wait for a job to finish.
- * @details This function blocks until the job has either finished or has been
- * cancelled.
+ * @details This function blocks until the job has either finished, has been
+ * canceled, or the timeout has been reached.
+ * If @p timeout is not zero, this function returns latest after the specified
+ * number of seconds.
  * @param[in] job The job to wait for. Must not be @c NULL.
+ * @param[in] timeout The timeout in seconds.
+ * If this is zero, the function waits indefinitely until the job has finished.
  * @return @ref QDMI_SUCCESS if the job is finished or canceled.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p job is @c NULL.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the device does not allow using
  * the @ref device_job_interface "device job interface" for the current session.
+ * @return @ref QDMI_ERROR_TIMEOUT if @p timeout is not zero and the job did not
+ * finish within the specified time.
  * @return @ref QDMI_ERROR_FATAL if the job could not be waited for and this
  * function returns before the job has finished or has been canceled.
  */
-int QDMI_device_job_wait(QDMI_Device_Job job);
+int QDMI_device_job_wait(QDMI_Device_Job job, size_t timeout);
 
 /**
  * @brief Retrieve the results of a job.

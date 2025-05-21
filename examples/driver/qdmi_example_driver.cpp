@@ -81,6 +81,8 @@ struct QDMI_Library {
   decltype(QDMI_device_job_free) *device_job_free{};
   /// Function pointer to @ref QDMI_device_job_set_parameter.
   decltype(QDMI_device_job_set_parameter) *device_job_set_parameter{};
+  /// Function pointer to @ref QDMI_device_job_query_property.
+  decltype(QDMI_device_job_query_property) *device_job_query_property{};
   /// Function pointer to @ref QDMI_device_job_submit.
   decltype(QDMI_device_job_submit) *device_job_submit{};
   /// Function pointer to @ref QDMI_device_job_cancel.
@@ -207,6 +209,7 @@ void QDMI_library_load(const std::string &lib_name, const std::string &prefix) {
     LOAD_SYMBOL(library, prefix, device_session_create_device_job)
     LOAD_SYMBOL(library, prefix, device_job_free)
     LOAD_SYMBOL(library, prefix, device_job_set_parameter)
+    LOAD_SYMBOL(library, prefix, device_job_query_property)
     LOAD_SYMBOL(library, prefix, device_job_submit)
     LOAD_SYMBOL(library, prefix, device_job_cancel)
     LOAD_SYMBOL(library, prefix, device_job_check)
@@ -445,6 +448,16 @@ int QDMI_job_set_parameter(QDMI_Job job, QDMI_Job_Parameter param,
       value);
 }
 
+int QDMI_job_query_property(QDMI_Job job, QDMI_Job_Property prop,
+                            const size_t size, void *value, size_t *size_ret) {
+  if (job == nullptr) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  return job->device->library->device_job_query_property(
+      job->device_job, static_cast<QDMI_Device_Job_Property>(prop), size, value,
+      size_ret);
+}
+
 int QDMI_job_submit(QDMI_Job job) {
   if (job == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
@@ -466,11 +479,11 @@ int QDMI_job_check(QDMI_Job job, QDMI_Job_Status *status) {
   return job->device->library->device_job_check(job->device_job, status);
 }
 
-int QDMI_job_wait(QDMI_Job job) {
+int QDMI_job_wait(QDMI_Job job, const size_t timeout) {
   if (job == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
-  return job->device->library->device_job_wait(job->device_job);
+  return job->device->library->device_job_wait(job->device_job, timeout);
 }
 
 int QDMI_job_get_results(QDMI_Job job, QDMI_Job_Result result,

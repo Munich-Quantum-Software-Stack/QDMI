@@ -26,6 +26,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include <math.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -39,6 +40,7 @@ typedef struct C_QDMI_Device_Session_impl_d {
 typedef struct C_QDMI_Device_Job_impl_d {
   C_QDMI_Device_Session session;
   int id;
+  size_t timeout;
   QDMI_Program_Format format;
   void *program;
   QDMI_Job_Status status;
@@ -307,6 +309,31 @@ int C_QDMI_device_job_set_parameter(C_QDMI_Device_Job job,
   }
 } /// [DOXYGEN FUNCTION END]
 
+int C_QDMI_device_job_query_property(C_QDMI_Device_Job job,
+                                     const QDMI_Device_Job_Property prop,
+                                     const size_t size, void *value,
+                                     size_t *size_ret) {
+  if (job == NULL || (value != NULL && size == 0) ||
+      (prop >= QDMI_DEVICE_JOB_PROPERTY_MAX &&
+       prop != QDMI_DEVICE_JOB_PROPERTY_CUSTOM1 &&
+       prop != QDMI_DEVICE_JOB_PROPERTY_CUSTOM2 &&
+       prop != QDMI_DEVICE_JOB_PROPERTY_CUSTOM3 &&
+       prop != QDMI_DEVICE_JOB_PROPERTY_CUSTOM4 &&
+       prop != QDMI_DEVICE_JOB_PROPERTY_CUSTOM5)) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  char str[20];
+  sprintf(str, "%d", job->id);
+  ADD_STRING_PROPERTY(QDMI_DEVICE_JOB_PROPERTY_ID, str, prop, size, value,
+                      size_ret)
+  ADD_SINGLE_VALUE_PROPERTY(QDMI_DEVICE_JOB_PROPERTY_PROGRAMFORMAT,
+                            QDMI_Program_Format, job->format, prop, size, value,
+                            size_ret)
+  ADD_SINGLE_VALUE_PROPERTY(QDMI_DEVICE_JOB_PROPERTY_SHOTSNUM, size_t,
+                            job->num_shots, prop, size, value, size_ret)
+  return QDMI_ERROR_NOTSUPPORTED;
+} /// [DOXYGEN FUNCTION END]
+
 int C_QDMI_device_job_submit(C_QDMI_Device_Job job) {
   if (job == NULL || job->status != QDMI_JOB_STATUS_CREATED) {
     return QDMI_ERROR_INVALIDARGUMENT;
@@ -385,12 +412,13 @@ int C_QDMI_device_job_check(C_QDMI_Device_Job job, QDMI_Job_Status *status) {
   return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]
 
-int C_QDMI_device_job_wait(C_QDMI_Device_Job job) {
+int C_QDMI_device_job_wait(C_QDMI_Device_Job job, const size_t timeout) {
   if (job == NULL) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   // in a real implementation, this would wait for the job to finish
   job->status = QDMI_JOB_STATUS_DONE;
+  job->timeout = timeout;
   C_QDMI_set_device_status(QDMI_DEVICE_STATUS_IDLE);
   return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]
@@ -713,7 +741,7 @@ int C_QDMI_device_session_query_site_property(C_QDMI_Device_Session session,
        prop != QDMI_SITE_PROPERTY_CUSTOM5)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
-  ADD_SINGLE_VALUE_PROPERTY(QDMI_SITE_PROPERTY_ID, uint64_t, site->id, prop,
+  ADD_SINGLE_VALUE_PROPERTY(QDMI_SITE_PROPERTY_INDEX, uint64_t, site->id, prop,
                             size, value, size_ret)
   ADD_SINGLE_VALUE_PROPERTY(QDMI_SITE_PROPERTY_T1, double, 1000.0, prop, size,
                             value, size_ret)

@@ -98,6 +98,13 @@ int MY_QDMI_device_job_set_parameter(MY_QDMI_Device_Job job,
   return QDMI_ERROR_NOTIMPLEMENTED;
 }
 
+int MY_QDMI_device_job_query_property(MY_QDMI_Device_Job job,
+                                      const QDMI_Device_Job_Property prop,
+                                      const size_t size, void *value,
+                                      size_t *size_ret) {
+  return QDMI_ERROR_NOTIMPLEMENTED;
+}
+
 int MY_QDMI_device_job_submit(MY_QDMI_Device_Job job) {
   return QDMI_ERROR_NOTIMPLEMENTED;
 }
@@ -110,7 +117,7 @@ int MY_QDMI_device_job_check(MY_QDMI_Device_Job job, QDMI_Job_Status *status) {
   return QDMI_ERROR_NOTIMPLEMENTED;
 }
 
-int MY_QDMI_device_job_wait(MY_QDMI_Device_Job job) {
+int MY_QDMI_device_job_wait(MY_QDMI_Device_Job job, const size_t timeout) {
   return QDMI_ERROR_NOTIMPLEMENTED;
 }
 
