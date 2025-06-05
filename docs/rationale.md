@@ -224,4 +224,6 @@ both interfaces include. There is one exception to the above rule: Enumerations 
 in the \ref device_interface, such as \ref QDMI_Device_Job_Parameter, are also centrally defined in
 the `constants.h` header. If this were not the case, each device implementation would have to define
 the same enumeration, each with a different prefix. It would also not be possible for the driver to
-know about all the different values of the enumeration.
+know about all the different values of the enumeration. Additionally, when linking all devices
+statically into the driver, the name-shifted header for each device must be included. If each device
+would define the enumerations anew, this would lead to a compile-time error.

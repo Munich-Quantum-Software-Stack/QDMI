@@ -48,6 +48,7 @@ enum QDMI_STATUS {
   QDMI_ERROR_NOTSUPPORTED = -9,     ///< Operation is not supported.
   /// Resource is in the wrong state for the operation.
   QDMI_ERROR_BADSTATE = -10,
+  QDMI_ERROR_TIMEOUT = -11, ///< Operation timed out.
 };
 
 /**
@@ -58,24 +59,60 @@ enum QDMI_STATUS {
  */
 enum QDMI_DEVICE_SESSION_PARAMETER_T {
   /**
-   * @brief `char*` (string) A token to be used in the session initialization
-   * for authenticating with the device.
-   * @details A token could be a password, an API key, or any other form of
-   * authentication that the device requires. The device documentation *must*
-   * document what kind of token is required and how it is used. If the device
-   * requires authentication via a token, this parameter must be set before
-   * calling @ref QDMI_device_session_init.
-   */
-  QDMI_DEVICE_SESSION_PARAMETER_TOKEN = 0,
-  /**
    * @brief `char*` (string) The baseURL or API endpoint to be used for
    * accessing the device within the session.
-   * @details If this parameter is set, and the device supports it, the device
+   * @details If this parameter is set and the device supports it, the device
    * must use the specified baseURL or API endpoint for the session. Devices may
    * use this parameter to switch between different versions of the API or
    * different endpoints for testing or production environments.
    */
-  QDMI_DEVICE_SESSION_PARAMETER_BASEURL = 1,
+  QDMI_DEVICE_SESSION_PARAMETER_BASEURL = 0,
+  /**
+   * @brief `char*` (string) A token to be used in the session initialization
+   * for authenticating with the device.
+   * @details A token could be an API key. The device documentation *must*
+   * document what kind of token is required and how it is used. If the device
+   * requires authentication via a token, this parameter must be set before
+   * calling @ref QDMI_device_session_init.
+   */
+  QDMI_DEVICE_SESSION_PARAMETER_TOKEN = 1,
+  /**
+   * @brief `char*` (string) A file path to a file containing authentication
+   * information.
+   * @details The file may contain a token or other authentication information
+   * required for the session. The device documentation *must* document
+   * whether the implementation requires this parameter to be set and what
+   * kind of authentication information is expected in the file.
+   */
+  QDMI_DEVICE_SESSION_PARAMETER_AUTHFILE = 2,
+  /**
+   * @brief `char*` (string) The URL to an authentication server used as part of
+   * the authentication procedure.
+   * @details This parameter might be used as part of an authentication scheme
+   * where an API token is received from an authentication server. This may,
+   * additionally, require a username and a password, which can be set via the
+   * @ref QDMI_DEVICE_SESSION_PARAMETER_USERNAME and @ref
+   * QDMI_DEVICE_SESSION_PARAMETER_PASSWORD parameters.
+   *
+   * @par The device documentation *must* document if the implementation
+   * requires this parameter to be set and which additional parameters need to
+   * be set in case this authentication method is used.
+   */
+  QDMI_DEVICE_SESSION_PARAMETER_AUTHURL = 3,
+  /**
+   * @brief `char*` (string) The username to use for the device session.
+   * @details The username is used for authentication within the session. The
+   * device documentation *must* document when the implementation requires this
+   * parameter to be set.
+   */
+  QDMI_DEVICE_SESSION_PARAMETER_USERNAME = 4,
+  /**
+   * @brief `char*` (string) The password to use for the session.
+   * @details The password is used for authentication within the session. The
+   * device documentation *must* document if the implementation requires this
+   * parameter to be set.
+   */
+  QDMI_DEVICE_SESSION_PARAMETER_PASSWORD = 5,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
@@ -84,7 +121,7 @@ enum QDMI_DEVICE_SESSION_PARAMETER_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_DEVICE_SESSION_PARAMETER_MAX = 2,
+  QDMI_DEVICE_SESSION_PARAMETER_MAX = 6,
   /**
    * @brief This enum value is reserved for a custom parameter.
    * @details The device defines the meaning and the type of this parameter.
@@ -164,11 +201,79 @@ enum QDMI_DEVICE_JOB_PARAMETER_T {
 /// Device job parameter type.
 typedef enum QDMI_DEVICE_JOB_PARAMETER_T QDMI_Device_Job_Parameter;
 
-/// Enum of the device properties that can be queried via @ref
-/// QDMI_device_session_query_device_property as part of the @ref
-/// device_interface "device interface" and via @ref
-/// QDMI_device_query_device_property as part of the @ref client_interface
-/// "client interface".
+/**
+ * @brief Enum of the device job properties that can be queried via @ref
+ * QDMI_device_job_query_property as part of the @ref
+ * device_interface "device interface".
+ * @details In particular, every parameter's value that can be set via @ref
+ * QDMI_device_job_set_parameter can be queried.
+ */
+enum QDMI_DEVICE_JOB_PROPERTY_T {
+  /**
+   * @brief `char*` (string) The job's ID.
+   * @details The ID must uniquely identify a job for the specific device.
+   * It should generally be universally unique (such as a UUID), to avoid
+   * conflicts with other devices' job IDs.
+   * It may be used to recover a @ref QDMI_Device_Job handle upon device
+   * failure.
+   * It may, for example, correspond to the job ID provided by the
+   * device's API or may be generated by the QDMI Device implementation.
+   */
+  QDMI_DEVICE_JOB_PROPERTY_ID = 0,
+  /**
+   * @brief @ref QDMI_Program_Format The format of the program to be executed.
+   * @note This property returns the value of the @ref
+   * QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT parameter.
+   */
+  QDMI_DEVICE_JOB_PROPERTY_PROGRAMFORMAT = 1,
+  /**
+   * @brief `void*` The program to be executed.
+   * @note This property returns the value of the @ref
+   * QDMI_DEVICE_JOB_PARAMETER_PROGRAM parameter.
+   */
+  QDMI_DEVICE_JOB_PROPERTY_PROGRAM = 2,
+  /**
+   * @brief `size_t` The number of shots to execute for a quantum circuit job.
+   * @note This property returns the value of the @ref
+   * QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM parameter.
+   */
+  QDMI_DEVICE_JOB_PROPERTY_SHOTSNUM = 3,
+  /**
+   * @brief The maximum value of the enum.
+   * @details It can be used by devices for bounds checking and validation of
+   * function parameters.
+   *
+   * @attention This value must remain the last regular member of the enum
+   * besides the custom members and must be updated when new members are added.
+   */
+  QDMI_DEVICE_JOB_PROPERTY_MAX = 4,
+  /**
+   * @brief This enum value is reserved for a custom parameter.
+   * @details The device defines the meaning and the type of this parameter.
+   * @attention The value of this enum member must not be changed to maintain
+   * binary compatibility.
+   */
+  QDMI_DEVICE_JOB_PROPERTY_CUSTOM1 = 999999995,
+  /// @see QDMI_DEVICE_JOB_PROPERTY_CUSTOM1
+  QDMI_DEVICE_JOB_PROPERTY_CUSTOM2 = 999999996,
+  /// @see QDMI_DEVICE_JOB_PROPERTY_CUSTOM1
+  QDMI_DEVICE_JOB_PROPERTY_CUSTOM3 = 999999997,
+  /// @see QDMI_DEVICE_JOB_PROPERTY_CUSTOM1
+  QDMI_DEVICE_JOB_PROPERTY_CUSTOM4 = 999999998,
+  /// @see QDMI_DEVICE_JOB_PROPERTY_CUSTOM1
+  QDMI_DEVICE_JOB_PROPERTY_CUSTOM5 = 999999999
+};
+
+/// Device job property type.
+typedef enum QDMI_DEVICE_JOB_PROPERTY_T QDMI_Device_Job_Property;
+
+/**
+ * Enum of the device properties that can be queried via @ref
+ * QDMI_device_session_query_device_property as part of the @ref
+ * device_interface "device interface" and via @ref
+ * QDMI_device_query_device_property as part of the @ref client_interface
+ * "client interface".
+ */
 enum QDMI_DEVICE_PROPERTY_T {
   /// `char*` (string) The name of the device.
   QDMI_DEVICE_PROPERTY_NAME = 0,
@@ -184,7 +289,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @brief `QDMI_Site*` (@ref QDMI_Site list) The sites of the device.
    * @details The returned @ref QDMI_Site handles may be used to query site
    * and operation properties. The list need not be sorted based on the @ref
-   * QDMI_SITE_PROPERTY_ID.
+   * QDMI_SITE_PROPERTY_INDEX.
    */
   QDMI_DEVICE_PROPERTY_SITES = 5,
   /**
@@ -279,18 +384,26 @@ typedef enum QDMI_DEVICE_STATUS_T QDMI_Device_Status;
 /// the @ref client_interface "client interface".
 enum QDMI_SITE_PROPERTY_T {
   /**
-   * @brief `size_t` The unique ID to identify the site in a program.
-   * @details The ID of a site is used to link the qubits used in a quantum
+   * @brief `size_t` The unique index (or ID) to identify the site in a program.
+   * @details The index of a site is used to link the qubits used in a quantum
    * program to the physical sites of the device that can be queried via this
-   * interface. IDs may be non-consecutive and need not start at 0.
-   * See @ref QDMI_Program_Format for more information on how the site IDs map
-   * to the qubits in a program.
+   * interface. Indices may be non-consecutive and need not start at 0.
+   * See @ref QDMI_Program_Format for more information on how the site indices
+   * map to the qubits in a program.
+   *
+   * @par This property must be available for all sites since it is used to
+   * address the sites in a program.
    */
-  QDMI_SITE_PROPERTY_ID = 0,
+  QDMI_SITE_PROPERTY_INDEX = 0,
   /// `double` The T1 time of a site in µs.
   QDMI_SITE_PROPERTY_T1 = 1,
   /// `double` The T2 time of a site in µs.
   QDMI_SITE_PROPERTY_T2 = 2,
+  /**
+   * `char*` (string) The name of a site, e.g., another identifier of the site
+   * given by the device.
+   */
+  QDMI_SITE_PROPERTY_NAME = 3,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
@@ -299,7 +412,7 @@ enum QDMI_SITE_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_SITE_PROPERTY_MAX = 3,
+  QDMI_SITE_PROPERTY_MAX = 4,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.
@@ -376,14 +489,18 @@ enum QDMI_JOB_STATUS_T {
    * QDMI_job_set_parameter.
    */
   QDMI_JOB_STATUS_CREATED = 0,
-  /// The job was submitted and is waiting to be executed.
+  /// The job was submitted.
   QDMI_JOB_STATUS_SUBMITTED = 1,
-  /// The job is done, and the result can be retrieved.
-  QDMI_JOB_STATUS_DONE = 2,
+  /// The job was received, and is waiting to be executed.
+  QDMI_JOB_STATUS_QUEUED = 2,
   /// The job is running, and the result is not yet available.
   QDMI_JOB_STATUS_RUNNING = 3,
+  /// The job is done, and the result can be retrieved.
+  QDMI_JOB_STATUS_DONE = 4,
   /// The job was canceled, and the result is not available.
-  QDMI_JOB_STATUS_CANCELED = 4
+  QDMI_JOB_STATUS_CANCELED = 5,
+  /// An error occurred in the job's lifecycle.
+  QDMI_JOB_STATUS_FAILED = 6
 };
 
 /// Job status type.
@@ -431,8 +548,8 @@ enum QDMI_PROGRAM_FORMAT_T {
    * be written using physical qubits, which are denoted by `$[NUM]`, with
    * `[NUM]` being a non-negative integer denoting the physical qubit's index.
    * If a program uses physical qubits, the operations in the program must be
-   * performed on the sites with IDs corresponding to the physical qubits in the
-   * program.
+   * performed on the sites with indices corresponding to the physical qubits in
+   * the program.
    *
    * @note
    * Devices may decide to support more general OpenQASM 3 programs that
@@ -462,7 +579,7 @@ enum QDMI_PROGRAM_FORMAT_T {
    * program are expected to be performed on the physical sites of the device as
    * queried via @ref QDMI_DEVICE_PROPERTY_SITES. If the program uses static
    * qubit addresses (for example, `ptr inttoptr (i64 1 to ptr)`), the
-   * operations in the program must be performed on the sites with IDs
+   * operations in the program must be performed on the sites with indices
    * corresponding to the static qubit addresses in the program.
    *
    * @note Devices may decide to support more general QIR programs that do not

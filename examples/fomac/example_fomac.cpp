@@ -160,8 +160,9 @@ auto FoMaC::get_sites() const -> std::vector<QDMI_Site> {
 
 auto FoMaC::get_site_id(QDMI_Site site) const -> uint64_t {
   uint64_t site_id = 0;
-  const int ret = QDMI_device_query_site_property(
-      device, site, QDMI_SITE_PROPERTY_ID, sizeof(uint64_t), &site_id, nullptr);
+  const int ret =
+      QDMI_device_query_site_property(device, site, QDMI_SITE_PROPERTY_INDEX,
+                                      sizeof(uint64_t), &site_id, nullptr);
   throw_if_error(ret, "Failed to query the site ID");
   return site_id;
 }
