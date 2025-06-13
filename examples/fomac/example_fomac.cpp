@@ -201,61 +201,61 @@ auto FoMaC::get_parameters_num(const QDMI_Operation &op) const -> size_t {
   return parameters_num;
 }
 
-auto FoMaC::get_environment_variables() const -> std::vector<QDMI_Environment> {
-  size_t environments_size = 0;
+auto FoMaC::get_environment_variables() const -> std::vector<QDMI_EnvironmentSensor> {
+  size_t environment_sensor_size = 0;
   int ret = QDMI_device_query_device_property(
-      device, QDMI_DEVICE_PROPERTY_ENVIRONMENTVARIABLES, 0, nullptr,
-      &environments_size);
+      device, QDMI_DEVICE_PROPERTY_ENVIRONMENTSENSORS, 0, nullptr,
+      &environment_sensor_size);
   throw_if_error(ret, "Failed to get the environment variable list size.");
-  std::vector<QDMI_Environment> environments(environments_size /
+  std::vector<QDMI_EnvironmentSensor> environment_sensors(environment_sensor_size /
                                              sizeof(QDMI_Site));
   ret = QDMI_device_query_device_property(
-      device, QDMI_DEVICE_PROPERTY_ENVIRONMENTVARIABLES, environments_size,
-      static_cast<void *>(environments.data()), nullptr);
+      device, QDMI_DEVICE_PROPERTY_ENVIRONMENTSENSORS, environment_sensor_size,
+      static_cast<void *>(environment_sensors.data()), nullptr);
   throw_if_error(ret, "Failed to get the environment variables.");
-  return environments;
+  return environment_sensors;
 }
 
-auto FoMaC::get_environment_id(QDMI_Environment environment) const
+auto FoMaC::get_environment_id(QDMI_EnvironmentSensor environment_sensor) const
     -> std::string {
-  size_t environment_id_size = 0;
+  size_t environmentsensor_id_size = 0;
 
-  int ret = QDMI_device_query_environment_property(
-      device, environment, QDMI_ENVIRONMENT_PROPERTY_ID, 0, nullptr,
-      &environment_id_size);
+  int ret = QDMI_device_query_environmentsensor_property(
+      device, environment_sensor, QDMI_ENVIRONMENTSENSOR_PROPERTY_ID, 0, nullptr,
+      &environmentsensor_id_size);
   throw_if_error(ret, "Failed to query the size for environment ID");
-  std::string environment_id(environment_id_size - 1, '\0');
-  ret = QDMI_device_query_environment_property(
-      device, environment, QDMI_ENVIRONMENT_PROPERTY_ID,
-      environment_id.size() + 1, environment_id.data(), nullptr);
+  std::string environmentsensor_id(environmentsensor_id_size - 1, '\0');
+  ret = QDMI_device_query_environmentsensor_property(
+      device, environment_sensor, QDMI_ENVIRONMENTSENSOR_PROPERTY_ID,
+      environmentsensor_id.size() + 1, environmentsensor_id.data(), nullptr);
   throw_if_error(ret, "Failed to query the environment ID");
 
-  return environment_id;
+  return environmentsensor_id;
 }
 
-auto FoMaC::get_environment_unit(QDMI_Environment environment) const
+auto FoMaC::get_environment_unit(QDMI_EnvironmentSensor environment_sensor) const
     -> std::string {
-  size_t environment_unit_size = 0;
+  size_t environmentsensor_unit_size = 0;
 
-  int ret = QDMI_device_query_environment_property(
-      device, environment, QDMI_ENVIRONMENT_PROPERTY_UNIT, 0, nullptr,
-      &environment_unit_size);
+  int ret = QDMI_device_query_environmentsensor_property(
+      device, environment_sensor, QDMI_ENVIRONMENTSENSOR_PROPERTY_UNIT, 0, nullptr,
+      &environmentsensor_unit_size);
   throw_if_error(ret, "Failed to query the size for environment unit");
 
-  std::string environment_unit(environment_unit_size - 1, '\0');
-  ret = QDMI_device_query_environment_property(
-      device, environment, QDMI_ENVIRONMENT_PROPERTY_UNIT,
-      environment_unit.size() + 1, environment_unit.data(), nullptr);
+  std::string environmentsensor_unit(environmentsensor_unit_size - 1, '\0');
+  ret = QDMI_device_query_environmentsensor_property(
+      device, environment_sensor, QDMI_ENVIRONMENTSENSOR_PROPERTY_UNIT,
+      environmentsensor_unit.size() + 1, environmentsensor_unit.data(), nullptr);
   throw_if_error(ret, "Failed to query the environment unit");
 
-  return environment_unit;
+  return environmentsensor_unit;
 }
 
-auto FoMaC::get_environment_sampling_rate(QDMI_Environment environment) const
+auto FoMaC::get_environment_sampling_rate(QDMI_EnvironmentSensor environment_sensor) const
     -> int {
   int sampling_rate = 0;
-  const int ret = QDMI_device_query_environment_property(
-      device, environment, QDMI_ENVIRONMENT_PROPERTY_SAMPLING_RATE, sizeof(int),
+  const int ret = QDMI_device_query_environmentsensor_property(
+      device, environment_sensor, QDMI_ENVIRONMENTSENSOR_PROPERTY_SAMPLINGRATE, sizeof(int),
       &sampling_rate, nullptr);
   throw_if_error(ret, "Failed to query the sampling rate");
 

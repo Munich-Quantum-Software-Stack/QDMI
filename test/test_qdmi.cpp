@@ -994,69 +994,69 @@ TEST_P(QDMIImplementationTest, EnvironmentQuery) {
 
   const auto fomac = FoMaC(device);
 
-  auto environments = fomac.get_environment_variables();
+  std::vector<QDMI_EnvironmentSensor> environment_sensors = fomac.get_environment_variables();
 
-  ASSERT_GT(environments.size(), 0);
+  ASSERT_GT(environment_sensors.size(), 0);
 
-  for (const auto &environment : environments) {
-    QDMI_Environment_Query query = nullptr;
-    QDMI_Environment_Query_Status status;
+  for (QDMI_EnvironmentSensor environment_sensor : environment_sensors) {
+    QDMI_EnvironmentSensor_Query query = nullptr;
+    QDMI_EnvironmentSensor_Query_Status status = {};
     time_t start_time = time(&start_time);
     time_t end_time = time(&end_time) + 600;
 
-    EXPECT_EQ(QDMI_device_create_environment_query(device, &query),
+    EXPECT_EQ(QDMI_device_create_environmentsensor_query(device, &query),
               QDMI_SUCCESS);
 
-    EXPECT_EQ(QDMI_environment_query_set_parameter(
-                  query, QDMI_ENVIRONMENT_QUERY_PARAMETER_ENVIRONMENT,
-                  sizeof(QDMI_Environment), &environment),
+    EXPECT_EQ(QDMI_environmentsensor_query_set_parameter(
+                  query, QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_ENVIRONMENT,
+                  sizeof(QDMI_EnvironmentSensor), &environment_sensor),
               QDMI_SUCCESS);
 
-    EXPECT_EQ(QDMI_environment_query_set_parameter(
-                  query, QDMI_ENVIRONMENT_QUERY_PARAMETER_START_TIME,
+    EXPECT_EQ(QDMI_environmentsensor_query_set_parameter(
+                  query, QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_START_TIME,
                   sizeof(time_t), &start_time),
               QDMI_SUCCESS);
 
-    EXPECT_EQ(QDMI_environment_query_set_parameter(
-                  query, QDMI_ENVIRONMENT_QUERY_PARAMETER_END_TIME,
+    EXPECT_EQ(QDMI_environmentsensor_query_set_parameter(
+                  query, QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_END_TIME,
                   sizeof(time_t), &end_time),
               QDMI_SUCCESS);
 
-    EXPECT_EQ(QDMI_environment_query_submit(query), QDMI_SUCCESS);
+    EXPECT_EQ(QDMI_environmentsensor_query_submit(query), QDMI_SUCCESS);
 
-    EXPECT_EQ(QDMI_environment_query_wait(query), QDMI_SUCCESS);
+    EXPECT_EQ(QDMI_environmentsensor_query_wait(query), QDMI_SUCCESS);
 
-    EXPECT_EQ(QDMI_environment_query_check_status(query, &status),
+    EXPECT_EQ(QDMI_environmentsensor_query_check_status(query, &status),
               QDMI_SUCCESS);
 
     size_t timestamps_size = 0;
-    EXPECT_EQ(QDMI_environment_query_get_results(
-                  query, QDMI_ENVIRONMENT_QUERY_RESULT_TIMESTAMPS, 0, nullptr,
+    EXPECT_EQ(QDMI_environmentsensor_query_get_results(
+                  query, QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_TIMESTAMPS, 0, nullptr,
                   &timestamps_size),
               QDMI_SUCCESS);
 
     std::vector<time_t> timestamps;
     timestamps.reserve(timestamps_size);
 
-    EXPECT_EQ(QDMI_environment_query_get_results(
-                  query, QDMI_ENVIRONMENT_QUERY_RESULT_TIMESTAMPS,
+    EXPECT_EQ(QDMI_environmentsensor_query_get_results(
+                  query, QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_TIMESTAMPS,
                   timestamps_size, timestamps.data(), nullptr),
               QDMI_SUCCESS);
 
     size_t size_values = 0;
-    EXPECT_EQ(QDMI_environment_query_get_results(
-                  query, QDMI_ENVIRONMENT_QUERY_RESULT_VALUES, 0, nullptr,
+    EXPECT_EQ(QDMI_environmentsensor_query_get_results(
+                  query, QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_VALUES, 0, nullptr,
                   &size_values),
               QDMI_SUCCESS);
 
     std::vector<float> values;
     values.reserve(size_values);
 
-    EXPECT_EQ(QDMI_environment_query_get_results(
-                  query, QDMI_ENVIRONMENT_QUERY_RESULT_VALUES, size_values,
+    EXPECT_EQ(QDMI_environmentsensor_query_get_results(
+                  query, QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_VALUES, size_values,
                   values.data(), nullptr),
               QDMI_SUCCESS);
 
-    QDMI_environment_query_free(query);
+    QDMI_environmentsensor_query_free(query);
   }
 }

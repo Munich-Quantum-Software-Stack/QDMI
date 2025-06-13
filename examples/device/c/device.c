@@ -60,21 +60,21 @@ typedef struct C_QDMI_Operation_impl_d {
   char *name;
 } C_QDMI_Operation_impl_t;
 
-typedef struct C_QDMI_Environment_impl_d {
+typedef struct C_QDMI_EnvironmentSensor_impl_d {
   char *id;
   char *unit;
   int sampling_rate; // in seconds
-} C_QDMI_Environment_impl_t;
+} C_QDMI_EnvironmentSensor_impl_t;
 
-typedef struct C_QDMI_Device_Environment_Query_impl_d {
+typedef struct C_QDMI_Device_EnvironmentSensor_Query_impl_d {
   time_t start_time;
   time_t end_time;
-  C_QDMI_Environment environment;
+  C_QDMI_EnvironmentSensor environment_sensor;
   time_t *result_timestamps;
   float *result_values;
   size_t result_length;
-  QDMI_Environment_Query_Status status;
-} C_QDMI_Device_Environment_Query_impl_t;
+  QDMI_EnvironmentSensor_Query_Status status;
+} C_QDMI_Device_EnvironmentSensor_Query_impl_t;
 
 /**
  * @brief Static function to maintain the device status.
@@ -106,8 +106,8 @@ void C_QDMI_set_device_status(QDMI_Device_Status status) {
 QDMI_Device_Status C_QDMI_read_device_status(void) {
   return *C_QDMI_get_device_status();
 }
-const C_QDMI_Environment C_DEVICE_ENVIRONMENTS[] = {
-    &(C_QDMI_Environment_impl_t){"t4k", "K", 60},
+const C_QDMI_EnvironmentSensor C_DEVICE_ENVIRONMENTSENSORS[] = {
+    &(C_QDMI_EnvironmentSensor_impl_t){"t4k", "K", 60},
 };
 
 const C_QDMI_Site C_DEVICE_SITES[] = {
@@ -744,8 +744,8 @@ int C_QDMI_device_session_query_device_property(C_QDMI_Device_Session session,
   // The example device never requires calibration
   ADD_SINGLE_VALUE_PROPERTY(QDMI_DEVICE_PROPERTY_NEEDSCALIBRATION, size_t, 0,
                             prop, size, value, size_ret)
-  ADD_LIST_PROPERTY(QDMI_DEVICE_PROPERTY_ENVIRONMENTVARIABLES,
-                    C_QDMI_Environment, C_DEVICE_ENVIRONMENTS, 1, prop, size,
+  ADD_LIST_PROPERTY(QDMI_DEVICE_PROPERTY_ENVIRONMENTSENSORS,
+                    C_QDMI_EnvironmentSensor, C_DEVICE_ENVIRONMENTSENSORS, 1, prop, size,
                     value, size_ret)
 
   return QDMI_ERROR_NOTSUPPORTED;
@@ -866,32 +866,32 @@ int C_QDMI_device_session_query_operation_property(
   return QDMI_ERROR_NOTSUPPORTED;
 } /// [DOXYGEN FUNCTION END]
 
-int C_QDMI_device_session_query_environment_property(
-    C_QDMI_Device_Session session, C_QDMI_Environment environment,
-    QDMI_Environment_Property prop, size_t size, void *value,
+int C_QDMI_device_session_query_environmentsensor_property(
+    C_QDMI_Device_Session session, C_QDMI_EnvironmentSensor environment_sensor,
+    QDMI_EnvironmentSensor_Property prop, size_t size, void *value,
     size_t *size_ret) {
-  if (session == NULL || environment == NULL || (value != NULL && size == 0) ||
-      (prop >= QDMI_ENVIRONMENT_PROPERTY_MAX &&
-       prop != QDMI_ENVIRONMENT_PROPERTY_CUSTOM1 &&
-       prop != QDMI_ENVIRONMENT_PROPERTY_CUSTOM2 &&
-       prop != QDMI_ENVIRONMENT_PROPERTY_CUSTOM3 &&
-       prop != QDMI_ENVIRONMENT_PROPERTY_CUSTOM4 &&
-       prop != QDMI_ENVIRONMENT_PROPERTY_CUSTOM5)) {
+  if (session == NULL || environment_sensor == NULL || (value != NULL && size == 0) ||
+      (prop >= QDMI_ENVIRONMENTSENSOR_PROPERTY_MAX &&
+       prop != QDMI_ENVIRONMENTSENSOR_PROPERTY_CUSTOM1 &&
+       prop != QDMI_ENVIRONMENTSENSOR_PROPERTY_CUSTOM2 &&
+       prop != QDMI_ENVIRONMENTSENSOR_PROPERTY_CUSTOM3 &&
+       prop != QDMI_ENVIRONMENTSENSOR_PROPERTY_CUSTOM4 &&
+       prop != QDMI_ENVIRONMENTSENSOR_PROPERTY_CUSTOM5)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
 
-  ADD_STRING_PROPERTY(QDMI_ENVIRONMENT_PROPERTY_ID, environment->id, prop, size,
+  ADD_STRING_PROPERTY(QDMI_ENVIRONMENTSENSOR_PROPERTY_ID, environment_sensor->id, prop, size,
                       value, size_ret)
-  ADD_STRING_PROPERTY(QDMI_ENVIRONMENT_PROPERTY_UNIT, environment->unit, prop,
+  ADD_STRING_PROPERTY(QDMI_ENVIRONMENTSENSOR_PROPERTY_UNIT, environment_sensor->unit, prop,
                       size, value, size_ret)
-  ADD_SINGLE_VALUE_PROPERTY(QDMI_ENVIRONMENT_PROPERTY_SAMPLING_RATE, int,
-                            environment->sampling_rate, prop, size, value,
+  ADD_SINGLE_VALUE_PROPERTY(QDMI_ENVIRONMENTSENSOR_PROPERTY_SAMPLINGRATE, int,
+                            environment_sensor->sampling_rate, prop, size, value,
                             size_ret)
   return QDMI_ERROR_NOTSUPPORTED;
 }
 
-int C_QDMI_device_session_create_environment_query(
-    C_QDMI_Device_Session session, C_QDMI_Device_Environment_Query *query) {
+int C_QDMI_device_session_create_environmentsensor_query(
+    C_QDMI_Device_Session session, C_QDMI_Device_EnvironmentSensor_Query *query) {
 
   if (session == NULL || query == NULL) {
     return QDMI_ERROR_INVALIDARGUMENT;
@@ -899,48 +899,48 @@ int C_QDMI_device_session_create_environment_query(
   if (session->status != INITIALIZED) {
     return QDMI_ERROR_BADSTATE;
   }
-  *query = malloc(sizeof(C_QDMI_Device_Environment_Query_impl_t));
-  (*query)->environment = malloc(sizeof(C_QDMI_Environment));
+  *query = malloc(sizeof(C_QDMI_Device_EnvironmentSensor_Query_impl_t));
+  (*query)->environment_sensor = malloc(sizeof(C_QDMI_EnvironmentSensor));
   (*query)->start_time = time(NULL);
   (*query)->end_time = time(NULL);
 
   return QDMI_SUCCESS;
 }
 
-int C_QDMI_device_environment_query_set_parameter(
-    C_QDMI_Device_Environment_Query query,
-    QDMI_Device_Environment_Query_Parameter param, size_t size,
+int C_QDMI_device_environmentsensor_query_set_parameter(
+    C_QDMI_Device_EnvironmentSensor_Query query,
+    QDMI_Device_EnvironmentSensor_Query_Parameter param, size_t size,
     const void *value) {
 
   if (query == NULL || (value != NULL && size == 0) ||
-      (param >= QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_MAX &&
-       param != QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_CUSTOM1 &&
-       param != QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_CUSTOM2 &&
-       param != QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_CUSTOM3 &&
-       param != QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_CUSTOM4 &&
-       param != QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_CUSTOM5)) {
+      (param >= QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_MAX &&
+       param != QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_CUSTOM1 &&
+       param != QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_CUSTOM2 &&
+       param != QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_CUSTOM3 &&
+       param != QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_CUSTOM4 &&
+       param != QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_CUSTOM5)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   switch (param) {
 
-  case QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_START_TIME:
+  case QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_START_TIME:
     query->start_time = *(time_t *)(value);
     return QDMI_SUCCESS;
-  case QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_END_TIME:
+  case QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_END_TIME:
     query->end_time = *(time_t *)(value);
     return QDMI_SUCCESS;
-  case QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_ENVIRONMENT:
-    query->environment = *(C_QDMI_Environment *)(value);
+  case QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_ENVIRONMENTSENSOR:
+    query->environment_sensor = *(C_QDMI_EnvironmentSensor *)(value);
     return QDMI_SUCCESS;
   default:
     return QDMI_ERROR_NOTSUPPORTED;
   }
 }
 
-int C_QDMI_device_environment_query_submit(
-    C_QDMI_Device_Environment_Query query) {
+int C_QDMI_device_environmentsensor_query_submit(
+    C_QDMI_Device_EnvironmentSensor_Query query) {
 
-  if (query == NULL || query->environment == NULL) {
+  if (query == NULL || query->environment_sensor == NULL) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
 
@@ -951,7 +951,7 @@ int C_QDMI_device_environment_query_submit(
   // here, the actual submission.
 
   // for demonstration purposes
-  int sampling_rate = query->environment->sampling_rate;
+  int sampling_rate = query->environment_sensor->sampling_rate;
 
   size_t result_length = (size_t)(time_difference / sampling_rate);
 
@@ -967,22 +967,22 @@ int C_QDMI_device_environment_query_submit(
   return QDMI_SUCCESS;
 }
 
-int C_QDMI_device_environment_query_get_results(
-    C_QDMI_Device_Environment_Query query, QDMI_Environment_Query_Result result,
+int C_QDMI_device_environmentsensor_query_get_results(
+    C_QDMI_Device_EnvironmentSensor_Query query, QDMI_EnvironmentSensor_Query_Result result,
     size_t size, void *data, size_t *size_ret) {
 
   if (query == NULL || (data != NULL && size == 0) ||
-      (result >= QDMI_ENVIRONMENT_QUERY_RESULT_MAX &&
-       result != QDMI_ENVIRONMENT_QUERY_RESULT_CUSTOM1 &&
-       result != QDMI_ENVIRONMENT_QUERY_RESULT_CUSTOM2 &&
-       result != QDMI_ENVIRONMENT_QUERY_RESULT_CUSTOM3 &&
-       result != QDMI_ENVIRONMENT_QUERY_RESULT_CUSTOM4 &&
-       result != QDMI_ENVIRONMENT_QUERY_RESULT_CUSTOM5)) {
+      (result >= QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_MAX &&
+       result != QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_CUSTOM1 &&
+       result != QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_CUSTOM2 &&
+       result != QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_CUSTOM3 &&
+       result != QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_CUSTOM4 &&
+       result != QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_CUSTOM5)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   size_t req_size = query->result_length;
   switch (result) {
-  case QDMI_ENVIRONMENT_QUERY_RESULT_TIMESTAMPS:
+  case QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_TIMESTAMPS:
     req_size *= sizeof(time_t);
     if (data != NULL) {
       if (size < req_size) {
@@ -995,7 +995,7 @@ int C_QDMI_device_environment_query_get_results(
       *(size_ret) = req_size;
     }
     return QDMI_SUCCESS;
-  case QDMI_ENVIRONMENT_QUERY_RESULT_VALUES:
+  case QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_VALUES:
 
     req_size *= sizeof(float);
     if (data != NULL) {
@@ -1016,48 +1016,48 @@ int C_QDMI_device_environment_query_get_results(
   return QDMI_SUCCESS;
 }
 
-int C_QDMI_device_environment_query_check_status(
-    C_QDMI_Device_Environment_Query query,
-    QDMI_Environment_Query_Status *status) {
+int C_QDMI_device_environmentsensor_query_check_status(
+    C_QDMI_Device_EnvironmentSensor_Query query,
+    QDMI_EnvironmentSensor_Query_Status *status) {
   if (query == NULL || status == NULL) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
 
   // randomly decide whether job is done or not
-  if (query->status == QDMI_ENVIRONMENT_QUERY_STATUS_RUNNING &&
+  if (query->status == QDMI_ENVIRONMENTSENSOR_QUERY_STATUS_RUNNING &&
       rand() % 2 == 0) {
-    query->status = QDMI_ENVIRONMENT_QUERY_STATUS_DONE;
+    query->status = QDMI_ENVIRONMENTSENSOR_QUERY_STATUS_DONE;
   }
 
   *status = query->status;
   return QDMI_SUCCESS;
 }
 
-int C_QDMI_device_environment_query_wait(
-    C_QDMI_Device_Environment_Query query) {
+int C_QDMI_device_environmentsensor_query_wait(
+    C_QDMI_Device_EnvironmentSensor_Query query) {
 
   if (query == NULL) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
 
-  query->status = QDMI_ENVIRONMENT_QUERY_STATUS_DONE;
+  query->status = QDMI_ENVIRONMENTSENSOR_QUERY_STATUS_DONE;
   return QDMI_SUCCESS;
 }
 
-int C_QDMI_device_environment_query_cancel(
-    C_QDMI_Device_Environment_Query query) {
+int C_QDMI_device_environmentsensor_query_cancel(
+    C_QDMI_Device_EnvironmentSensor_Query query) {
 
-  if (query == NULL || query->status == QDMI_ENVIRONMENT_QUERY_STATUS_DONE) {
+  if (query == NULL || query->status == QDMI_ENVIRONMENTSENSOR_QUERY_STATUS_DONE) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
 
-  query->status = QDMI_ENVIRONMENT_QUERY_STATUS_CANCELED;
+  query->status = QDMI_ENVIRONMENTSENSOR_QUERY_STATUS_CANCELED;
 
   return QDMI_SUCCESS;
 }
 
-void C_QDMI_device_environment_query_free(
-    C_QDMI_Device_Environment_Query query) {
+void C_QDMI_device_environmentsensor_query_free(
+    C_QDMI_Device_EnvironmentSensor_Query query) {
   free(query->result_timestamps);
   query->result_timestamps = NULL;
 

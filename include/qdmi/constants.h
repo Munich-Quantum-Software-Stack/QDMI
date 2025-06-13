@@ -326,7 +326,7 @@ enum QDMI_DEVICE_PROPERTY_T {
   /**
    * TODO
    */
-  QDMI_DEVICE_PROPERTY_ENVIRONMENTVARIABLES = 9,
+  QDMI_DEVICE_PROPERTY_ENVIRONMENTSENSORS = 9,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
@@ -764,24 +764,24 @@ enum QDMI_JOB_RESULT_T {
 /// Job result type.
 typedef enum QDMI_JOB_RESULT_T QDMI_Job_Result;
 
-/// Enum of the environment properties that can be queried via @ref
-/// QDMI_device_session_query_environment_property as part of the @ref
+/// Enum of the environment sensor properties that can be queried via @ref
+/// QDMI_device_session_query_environmentsensor_property as part of the @ref
 /// device_interface "device interface" and via @ref
-/// QDMI_device_query_environment_property as part of the @ref client_interface
-/// "client interface".
-enum QDMI_ENVIRONMENT_PROPERTY_T {
+/// QDMI_device_query_environmentsensor_property as part of the @ref
+/// client_interface "client interface".
+enum QDMI_ENVIRONMENTSENSOR_PROPERTY_T {
   /**
-   * @brief `char*` (string) The unique ID to identify the environment.
-   * @details TThe ID of an environment is used to identify the sensors. The
-   * sensors collect environmental data in the HPCQC Labs, i.e., temperature and
-   * pressure.
+   * @brief `char*` (string) The unique ID to identify the environment sensor.
+   * @details The ID of an environment sensor is used to identify the sensors.
+   * The sensors collect environmental data in the HPCQC Labs, i.e., temperature
+   * and pressure.
    */
-  QDMI_ENVIRONMENT_PROPERTY_ID = 0,
-  /// `char*` (string) The unit of an environment variable, e.g., Kelvin for
+  QDMI_ENVIRONMENTSENSOR_PROPERTY_ID = 0,
+  /// `char*` (string) The unit of an environment sensor, e.g., Kelvin for
   /// temperature.
-  QDMI_ENVIRONMENT_PROPERTY_UNIT = 1,
-  /// `float` The samples per second of an environment.
-  QDMI_ENVIRONMENT_PROPERTY_SAMPLING_RATE = 2,
+  QDMI_ENVIRONMENTSENSOR_PROPERTY_UNIT = 1,
+  /// `float` The samples per second of an environment sensor.
+  QDMI_ENVIRONMENTSENSOR_PROPERTY_SAMPLINGRATE = 2,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and
@@ -791,7 +791,7 @@ enum QDMI_ENVIRONMENT_PROPERTY_T {
    * enum besides the custom members and must be updated when new
    * members are added.
    */
-  QDMI_ENVIRONMENT_PROPERTY_MAX = 3,
+  QDMI_ENVIRONMENTSENSOR_PROPERTY_MAX = 3,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this
@@ -799,74 +799,76 @@ enum QDMI_ENVIRONMENT_PROPERTY_T {
    * @attention The value of this enum member must not be changed to
    * maintain binary compatibility.
    */
-  QDMI_ENVIRONMENT_PROPERTY_CUSTOM1 = 999999995,
-  /// @see QDMI_ENVIRONMENT_PROPERTY_CUSTOM1
-  QDMI_ENVIRONMENT_PROPERTY_CUSTOM2 = 999999996,
-  /// @see QDMI_ENVIRONMENT_PROPERTY_CUSTOM1
-  QDMI_ENVIRONMENT_PROPERTY_CUSTOM3 = 999999997,
-  /// @see QDMI_ENVIRONMENT_PROPERTY_CUSTOM1
-  QDMI_ENVIRONMENT_PROPERTY_CUSTOM4 = 999999998,
-  /// @see QDMI_ENVIRONMENT_PROPERTY_CUSTOM1
-  QDMI_ENVIRONMENT_PROPERTY_CUSTOM5 = 999999999
+  QDMI_ENVIRONMENTSENSOR_PROPERTY_CUSTOM1 = 999999995,
+  /// @see QDMI_ENVIRONMENTSENSOR_PROPERTY_CUSTOM1
+  QDMI_ENVIRONMENTSENSOR_PROPERTY_CUSTOM2 = 999999996,
+  /// @see QDMI_ENVIRONMENTSENSOR_PROPERTY_CUSTOM1
+  QDMI_ENVIRONMENTSENSOR_PROPERTY_CUSTOM3 = 999999997,
+  /// @see QDMI_ENVIRONMENTSENSOR_PROPERTY_CUSTOM1
+  QDMI_ENVIRONMENTSENSOR_PROPERTY_CUSTOM4 = 999999998,
+  /// @see QDMI_ENVIRONMENTSENSOR_PROPERTY_CUSTOM1
+  QDMI_ENVIRONMENTSENSOR_PROPERTY_CUSTOM5 = 999999999
 };
 
 /// Environment property type.
-typedef enum QDMI_ENVIRONMENT_PROPERTY_T QDMI_Environment_Property;
+typedef enum QDMI_ENVIRONMENTSENSOR_PROPERTY_T QDMI_EnvironmentSensor_Property;
 
 /**
- * @brief Enum of the device environment query parameters that can be set via
- * @ref QDMI_device_environment_query_set_parameter.
+ * @brief Enum of the device environmentsensor query parameters that can be set
+ * via
+ * @ref QDMI_device_environmentsensor_query_set_parameter.
  * @details If not noted otherwise, parameters are mandatory and devices must
  * require them to be set.
  */
-enum QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_T {
-  /// The start time of the environment query interval.
-  QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_START_TIME = 0,
-  /// The end time of the environment query interval.
-  QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_END_TIME = 1,
-  /// The environment for the environment query.
-  QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_ENVIRONMENT = 2,
+enum QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_T {
+  /// The start time of the environment sensor query interval.
+  QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_START_TIME = 0,
+  /// The end time of the environment sensor query interval.
+  QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_END_TIME = 1,
+  /// The environment sensor for the environment sensor query.
+  QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_ENVIRONMENTSENSOR = 2,
   /// The maximum value of the enum.
-  QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_MAX = 3,
+  QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_MAX = 3,
   /**
    * @brief This enum value is reserved for a custom parameter.
    * @details The devices defines the meaning and the type of this parameter.
    * @attention The value of this enum member must not be changed to maintain
    * binary compatibility.
    */
-  QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_CUSTOM1 = 999999995,
+  QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_CUSTOM1 = 999999995,
   /// @see QDMI_DEVICE_JOB_PARAMETER_CUSTOM1
-  QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_CUSTOM2 = 999999996,
+  QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_CUSTOM2 = 999999996,
   /// @see QDMI_DEVICE_JOB_PARAMETER_CUSTOM1
-  QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_CUSTOM3 = 999999997,
+  QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_CUSTOM3 = 999999997,
   /// @see QDMI_DEVICE_JOB_PARAMETER_CUSTOM1
-  QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_CUSTOM4 = 999999998,
+  QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_CUSTOM4 = 999999998,
   /// @see QDMI_DEVICE_JOB_PARAMETER_CUSTOM1
-  QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_CUSTOM5 = 999999999
+  QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_CUSTOM5 = 999999999
 };
 
 /// Device environment query parameter type.
-typedef enum QDMI_DEVICE_ENVIRONMENT_QUERY_PARAMETER_T
-    QDMI_Device_Environment_Query_Parameter;
+typedef enum QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_T
+    QDMI_Device_EnvironmentSensor_Query_Parameter;
 
 /**
- * @brief Enum of the formats the environment query results can be returned in.
+ * @brief Enum of the formats the environment sensor query results can be
+ * returned in.
  */
-enum QDMI_ENVIRONMENT_QUERY_RESULT_T {
+enum QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_T {
   /**
    * @brief `uint64_t*` (`unsigned 64 bit integer` list) The timestamps at which
    * the corresponding values in the results were recorded by a sensor.
-   * @details The result of an environment query is represented as a key-value
-   * mapping. This mapping is returned as a list of keys and an equal-length
-   * list of values. The corresponding partners of the keys and values can be
-   * found at the same index in the lists
+   * @details The result of an environment sensor query is represented as a
+   * key-value mapping. This mapping is returned as a list of keys and an
+   * equal-length list of values. The corresponding partners of the keys and
+   * values can be found at the same index in the lists
    */
-  QDMI_ENVIRONMENT_QUERY_RESULT_TIMESTAMPS = 0,
+  QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_TIMESTAMPS = 0,
   /**
    * @brief `float*` (`float` list) The values of the result.
-   * @see QDMI_ENVIRONMENT_QUERY_RESULT_TIMESTAMPS
+   * @see QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_TIMESTAMPS
    */
-  QDMI_ENVIRONMENT_QUERY_RESULT_VALUES = 1,
+  QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_VALUES = 1,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
@@ -875,53 +877,55 @@ enum QDMI_ENVIRONMENT_QUERY_RESULT_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_ENVIRONMENT_QUERY_RESULT_MAX = 2,
+  QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_MAX = 2,
   /**
    * @brief This enum value is reserved for a custom result.
    * @details The device defines the meaning and the type of this result.
    * @attention The value of this enum member must not be changed to maintain
    * binary compatibility.
    */
-  QDMI_ENVIRONMENT_QUERY_RESULT_CUSTOM1 = 999999995,
+  QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_CUSTOM1 = 999999995,
   /// @see QDMI_JOB_RESULT_CUSTOM1
-  QDMI_ENVIRONMENT_QUERY_RESULT_CUSTOM2 = 999999996,
+  QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_CUSTOM2 = 999999996,
   /// @see QDMI_JOB_RESULT_CUSTOM1
-  QDMI_ENVIRONMENT_QUERY_RESULT_CUSTOM3 = 999999997,
+  QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_CUSTOM3 = 999999997,
   /// @see QDMI_JOB_RESULT_CUSTOM1
-  QDMI_ENVIRONMENT_QUERY_RESULT_CUSTOM4 = 999999998,
+  QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_CUSTOM4 = 999999998,
   /// @see QDMI_JOB_RESULT_CUSTOM1
-  QDMI_ENVIRONMENT_QUERY_RESULT_CUSTOM5 = 999999999
+  QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_CUSTOM5 = 999999999
 };
 /// Environment query result type.
-typedef enum QDMI_ENVIRONMENT_QUERY_RESULT_T QDMI_Environment_Query_Result;
+typedef enum QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_T
+    QDMI_EnvironmentSensor_Query_Result;
 
 /**
- * @brief Enum of the status Environment query can have.
- * @details See also @ref client_environment_query_interface for a description
- * of the environment query's lifecycle.
+ * @brief Enum of the status Environment sensor query can have.
+ * @details See also @ref client_environmentsensor_query_interface for a
+ * description of the environment sensor query's lifecycle.
  */
 
-enum QDMI_ENVIRONMENT_QUERY_STATUS_T {
+enum QDMI_ENVIRONMENTSENSOR_QUERY_STATUS_T {
   /**
-   * @brief The environment query was created and can be configured via @ref
-   * QDMI_environment_query_set_parameter.
+   * @brief The environment sensor query was created and can be configured via
+   * @ref QDMI_environmentsensor_query_set_parameter.
    */
-  QDMI_ENVIRONMENT_QUERY_STATUS_CREATED = 0,
-  /// The environment query was submitted.
-  QDMI_ENVIRONMENT_QUERY_STATUS_SUBMITTED = 1,
+  QDMI_ENVIRONMENTSENSOR_QUERY_STATUS_CREATED = 0,
+  /// The environment sensor query was submitted.
+  QDMI_ENVIRONMENTSENSOR_QUERY_STATUS_SUBMITTED = 1,
   /// The environment query was received is waiting to be executed.
-  QDMI_ENVIRONMENT_QUERY_STATUS_QUEUED = 2,
+  QDMI_ENVIRONMENTSENSOR_QUERY_STATUS_QUEUED = 2,
   /// The environment query is running, and the result is not yet available.
-  QDMI_ENVIRONMENT_QUERY_STATUS_RUNNING = 3,
+  QDMI_ENVIRONMENTSENSOR_QUERY_STATUS_RUNNING = 3,
   /// The environment query is done, and the result can be retrieved.
-  QDMI_ENVIRONMENT_QUERY_STATUS_DONE = 4,
+  QDMI_ENVIRONMENTSENSOR_QUERY_STATUS_DONE = 4,
   /// The environment query was canceled, and the result is not available.
-  QDMI_ENVIRONMENT_QUERY_STATUS_CANCELED = 5,
-  /// An error occurred in the environment query's lifecycle.
-  QDMI_ENVIRONMENT_QUERY_STATUS_FAILED = 6
+  QDMI_ENVIRONMENTSENSOR_QUERY_STATUS_CANCELED = 5,
+  /// An error occurred in the environment sensor query's lifecycle.
+  QDMI_ENVIRONMENTSENSOR_QUERY_STATUS_FAILED = 6
 };
 /// Environment query status type.
-typedef enum QDMI_ENVIRONMENT_QUERY_STATUS_T QDMI_Environment_Query_Status;
+typedef enum QDMI_ENVIRONMENTSENSOR_QUERY_STATUS_T
+    QDMI_EnvironmentSensor_Query_Status;
 
 // NOLINTEND(performance-enum-size, modernize-use-using)
 
