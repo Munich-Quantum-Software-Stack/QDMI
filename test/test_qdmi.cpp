@@ -994,7 +994,8 @@ TEST_P(QDMIImplementationTest, EnvironmentQuery) {
 
   const auto fomac = FoMaC(device);
 
-  std::vector<QDMI_EnvironmentSensor> environment_sensors = fomac.get_environment_variables();
+  std::vector<QDMI_EnvironmentSensor> environment_sensors =
+      fomac.get_environment_variables();
 
   ASSERT_GT(environment_sensors.size(), 0);
 
@@ -1031,8 +1032,8 @@ TEST_P(QDMIImplementationTest, EnvironmentQuery) {
 
     size_t timestamps_size = 0;
     EXPECT_EQ(QDMI_environmentsensor_query_get_results(
-                  query, QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_TIMESTAMPS, 0, nullptr,
-                  &timestamps_size),
+                  query, QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_TIMESTAMPS, 0,
+                  nullptr, &timestamps_size),
               QDMI_SUCCESS);
 
     std::vector<time_t> timestamps;
@@ -1053,8 +1054,8 @@ TEST_P(QDMIImplementationTest, EnvironmentQuery) {
     values.reserve(size_values);
 
     EXPECT_EQ(QDMI_environmentsensor_query_get_results(
-                  query, QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_VALUES, size_values,
-                  values.data(), nullptr),
+                  query, QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_VALUES,
+                  size_values, values.data(), nullptr),
               QDMI_SUCCESS);
 
     QDMI_environmentsensor_query_free(query);

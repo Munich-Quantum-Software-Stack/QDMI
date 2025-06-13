@@ -121,12 +121,14 @@ struct QDMI_Library {
   decltype(QDMI_device_environmentsensor_query_check_status)
       *device_environmentsensor_query_check_status{};
 
-  decltype(QDMI_device_environmentsensor_query_wait) *device_environmentsensor_query_wait{};
+  decltype(QDMI_device_environmentsensor_query_wait)
+      *device_environmentsensor_query_wait{};
 
   decltype(QDMI_device_environmentsensor_query_cancel)
       *device_environmentsensor_query_cancel{};
 
-  decltype(QDMI_device_environmentsensor_query_free) *device_environmentsensor_query_free{};
+  decltype(QDMI_device_environmentsensor_query_free)
+      *device_environmentsensor_query_free{};
 
   // default constructor
   QDMI_Library() = default;
@@ -249,7 +251,8 @@ void QDMI_library_load(const std::string &lib_name, const std::string &prefix) {
     LOAD_SYMBOL(library, prefix, device_session_query_device_property)
     LOAD_SYMBOL(library, prefix, device_session_query_site_property)
     LOAD_SYMBOL(library, prefix, device_session_query_operation_property)
-    LOAD_SYMBOL(library, prefix, device_session_query_environmentsensor_property)
+    LOAD_SYMBOL(library, prefix,
+                device_session_query_environmentsensor_property)
     // device qnvironment interface
     LOAD_SYMBOL(library, prefix, device_session_create_environmentsensor_query)
     LOAD_SYMBOL(library, prefix, device_environmentsensor_query_set_parameter)
@@ -569,11 +572,10 @@ int QDMI_device_query_operation_property(
       prop, size, value, size_ret);
 }
 
-int QDMI_device_query_environmentsensor_property(QDMI_Device device,
-                                           QDMI_EnvironmentSensor environment_sensor,
-                                           QDMI_EnvironmentSensor_Property prop,
-                                           const size_t size, void *value,
-                                           size_t *size_ret) {
+int QDMI_device_query_environmentsensor_property(
+    QDMI_Device device, QDMI_EnvironmentSensor environment_sensor,
+    QDMI_EnvironmentSensor_Property prop, const size_t size, void *value,
+    size_t *size_ret) {
   if (device == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
@@ -581,8 +583,8 @@ int QDMI_device_query_environmentsensor_property(QDMI_Device device,
       device->device_session, environment_sensor, prop, size, value, size_ret);
 }
 
-int QDMI_device_create_environmentsensor_query(QDMI_Device dev,
-                                         QDMI_EnvironmentSensor_Query *query) {
+int QDMI_device_create_environmentsensor_query(
+    QDMI_Device dev, QDMI_EnvironmentSensor_Query *query) {
   if (dev == nullptr || query == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
@@ -597,15 +599,17 @@ int QDMI_device_create_environmentsensor_query(QDMI_Device dev,
       dev->device_session, &(*query)->env_query);
 }
 
-int QDMI_environmentsensor_query_set_parameter(QDMI_EnvironmentSensor_Query query,
-                                         QDMI_EnvironmentSensor_Query_Parameter param,
-                                         size_t size, const void *value) {
+int QDMI_environmentsensor_query_set_parameter(
+    QDMI_EnvironmentSensor_Query query,
+    QDMI_EnvironmentSensor_Query_Parameter param, size_t size,
+    const void *value) {
   if (query == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   return query->device->library->device_environmentsensor_query_set_parameter(
       query->env_query,
-      static_cast<QDMI_Device_EnvironmentSensor_Query_Parameter>(param), size, value);
+      static_cast<QDMI_Device_EnvironmentSensor_Query_Parameter>(param), size,
+      value);
 }
 
 int QDMI_environmentsensor_query_submit(QDMI_EnvironmentSensor_Query query) {
@@ -616,10 +620,10 @@ int QDMI_environmentsensor_query_submit(QDMI_EnvironmentSensor_Query query) {
       query->env_query);
 }
 
-int QDMI_environmentsensor_query_get_results(QDMI_EnvironmentSensor_Query query,
-                                       QDMI_EnvironmentSensor_Query_Result result,
-                                       size_t size, void *data,
-                                       size_t *size_ret) {
+int QDMI_environmentsensor_query_get_results(
+    QDMI_EnvironmentSensor_Query query,
+    QDMI_EnvironmentSensor_Query_Result result, size_t size, void *data,
+    size_t *size_ret) {
   if (query == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
@@ -627,8 +631,9 @@ int QDMI_environmentsensor_query_get_results(QDMI_EnvironmentSensor_Query query,
       query->env_query, result, size, data, size_ret);
 }
 
-int QDMI_environmentsensor_query_check_status(QDMI_EnvironmentSensor_Query query,
-                                        QDMI_EnvironmentSensor_Query_Status *status) {
+int QDMI_environmentsensor_query_check_status(
+    QDMI_EnvironmentSensor_Query query,
+    QDMI_EnvironmentSensor_Query_Status *status) {
 
   if (query == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
@@ -656,7 +661,8 @@ int QDMI_environmentsensor_query_cancel(QDMI_EnvironmentSensor_Query query) {
 
 void QDMI_environmentsensor_query_free(QDMI_EnvironmentSensor_Query query) {
   if (query != nullptr) {
-    query->device->library->device_environmentsensor_query_free(query->env_query);
+    query->device->library->device_environmentsensor_query_free(
+        query->env_query);
     delete query;
   }
 }

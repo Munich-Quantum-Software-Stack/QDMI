@@ -67,12 +67,13 @@ public:
   [[nodiscard]] auto get_environment_variables() const
       -> std::vector<QDMI_EnvironmentSensor>;
 
-  [[nodiscard]] auto get_environment_id(QDMI_EnvironmentSensor environment) const
-      -> std::string;
-
-  [[nodiscard]] auto get_environment_unit(QDMI_EnvironmentSensor environment) const
-      -> std::string;
+  [[nodiscard]] auto
+  get_environment_id(QDMI_EnvironmentSensor environment) const -> std::string;
 
   [[nodiscard]] auto
-  get_environment_sampling_rate(QDMI_EnvironmentSensor environment) const -> int;
+  get_environment_unit(QDMI_EnvironmentSensor environment) const -> std::string;
+
+  [[nodiscard]] auto
+  get_environment_sampling_rate(QDMI_EnvironmentSensor environment) const
+      -> int;
 };

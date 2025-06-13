@@ -745,8 +745,8 @@ int C_QDMI_device_session_query_device_property(C_QDMI_Device_Session session,
   ADD_SINGLE_VALUE_PROPERTY(QDMI_DEVICE_PROPERTY_NEEDSCALIBRATION, size_t, 0,
                             prop, size, value, size_ret)
   ADD_LIST_PROPERTY(QDMI_DEVICE_PROPERTY_ENVIRONMENTSENSORS,
-                    C_QDMI_EnvironmentSensor, C_DEVICE_ENVIRONMENTSENSORS, 1, prop, size,
-                    value, size_ret)
+                    C_QDMI_EnvironmentSensor, C_DEVICE_ENVIRONMENTSENSORS, 1,
+                    prop, size, value, size_ret)
 
   return QDMI_ERROR_NOTSUPPORTED;
 } /// [DOXYGEN FUNCTION END]
@@ -870,7 +870,8 @@ int C_QDMI_device_session_query_environmentsensor_property(
     C_QDMI_Device_Session session, C_QDMI_EnvironmentSensor environment_sensor,
     QDMI_EnvironmentSensor_Property prop, size_t size, void *value,
     size_t *size_ret) {
-  if (session == NULL || environment_sensor == NULL || (value != NULL && size == 0) ||
+  if (session == NULL || environment_sensor == NULL ||
+      (value != NULL && size == 0) ||
       (prop >= QDMI_ENVIRONMENTSENSOR_PROPERTY_MAX &&
        prop != QDMI_ENVIRONMENTSENSOR_PROPERTY_CUSTOM1 &&
        prop != QDMI_ENVIRONMENTSENSOR_PROPERTY_CUSTOM2 &&
@@ -880,18 +881,19 @@ int C_QDMI_device_session_query_environmentsensor_property(
     return QDMI_ERROR_INVALIDARGUMENT;
   }
 
-  ADD_STRING_PROPERTY(QDMI_ENVIRONMENTSENSOR_PROPERTY_ID, environment_sensor->id, prop, size,
-                      value, size_ret)
-  ADD_STRING_PROPERTY(QDMI_ENVIRONMENTSENSOR_PROPERTY_UNIT, environment_sensor->unit, prop,
-                      size, value, size_ret)
+  ADD_STRING_PROPERTY(QDMI_ENVIRONMENTSENSOR_PROPERTY_ID,
+                      environment_sensor->id, prop, size, value, size_ret)
+  ADD_STRING_PROPERTY(QDMI_ENVIRONMENTSENSOR_PROPERTY_UNIT,
+                      environment_sensor->unit, prop, size, value, size_ret)
   ADD_SINGLE_VALUE_PROPERTY(QDMI_ENVIRONMENTSENSOR_PROPERTY_SAMPLINGRATE, int,
-                            environment_sensor->sampling_rate, prop, size, value,
-                            size_ret)
+                            environment_sensor->sampling_rate, prop, size,
+                            value, size_ret)
   return QDMI_ERROR_NOTSUPPORTED;
 }
 
 int C_QDMI_device_session_create_environmentsensor_query(
-    C_QDMI_Device_Session session, C_QDMI_Device_EnvironmentSensor_Query *query) {
+    C_QDMI_Device_Session session,
+    C_QDMI_Device_EnvironmentSensor_Query *query) {
 
   if (session == NULL || query == NULL) {
     return QDMI_ERROR_INVALIDARGUMENT;
@@ -968,8 +970,9 @@ int C_QDMI_device_environmentsensor_query_submit(
 }
 
 int C_QDMI_device_environmentsensor_query_get_results(
-    C_QDMI_Device_EnvironmentSensor_Query query, QDMI_EnvironmentSensor_Query_Result result,
-    size_t size, void *data, size_t *size_ret) {
+    C_QDMI_Device_EnvironmentSensor_Query query,
+    QDMI_EnvironmentSensor_Query_Result result, size_t size, void *data,
+    size_t *size_ret) {
 
   if (query == NULL || (data != NULL && size == 0) ||
       (result >= QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_MAX &&
@@ -1047,7 +1050,8 @@ int C_QDMI_device_environmentsensor_query_wait(
 int C_QDMI_device_environmentsensor_query_cancel(
     C_QDMI_Device_EnvironmentSensor_Query query) {
 
-  if (query == NULL || query->status == QDMI_ENVIRONMENTSENSOR_QUERY_STATUS_DONE) {
+  if (query == NULL ||
+      query->status == QDMI_ENVIRONMENTSENSOR_QUERY_STATUS_DONE) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
 
