@@ -808,21 +808,24 @@ int QDMI_device_environmentsensor_query_check_status(
 /**
  * @brief Wait for an environment sensor query to finish.
  * @details This function blocks until the environment sensor query has either
- * finished or has been canceled.
+ * finished or has been canceled, or the timeout has been reached.
  * @param[in] query The environment sensor query to wait for. Must not be @c
  * NULL.
+ * @param[in] timeout The timeout in seconds.
  * @return @ref QDMI_SUCCESS if the environment sensor query is finished or
  * canceled.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p query is @c NULL.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the device does not allow using
  * the @ref device_environmentsensor_query_interface "device environment sensor
  * query interface" for the current session.
+ * @return @ref QDMI_ERROR_TIMEOUT if @p timeout is not zero and the job did not
+ * finish within the specified time.
  * @return @ref QDMI_ERROR_FATAL if the environment sensor query could not be
  * waited for and this function returns before the environment sensor query has
  * finished or has been canceled.
  */
 int QDMI_device_environmentsensor_query_wait(
-    QDMI_Device_EnvironmentSensor_Query query);
+    QDMI_Device_EnvironmentSensor_Query query, size_t timeout);
 
 /**
  * @brief Retrieve the results of an environment sensor query.

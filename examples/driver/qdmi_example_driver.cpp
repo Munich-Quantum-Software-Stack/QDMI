@@ -642,12 +642,13 @@ int QDMI_environmentsensor_query_check_status(
       query->env_query, status);
 }
 
-int QDMI_environmentsensor_query_wait(QDMI_EnvironmentSensor_Query query) {
+int QDMI_environmentsensor_query_wait(QDMI_EnvironmentSensor_Query query,
+                                      size_t timeout) {
   if (query == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   return query->device->library->device_environmentsensor_query_wait(
-      query->env_query);
+      query->env_query, timeout);
 }
 
 int QDMI_environmentsensor_query_cancel(QDMI_EnvironmentSensor_Query query) {

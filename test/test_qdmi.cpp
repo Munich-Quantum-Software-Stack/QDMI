@@ -1025,7 +1025,7 @@ TEST_P(QDMIImplementationTest, EnvironmentQuery) {
 
     EXPECT_EQ(QDMI_environmentsensor_query_submit(query), QDMI_SUCCESS);
 
-    EXPECT_EQ(QDMI_environmentsensor_query_wait(query), QDMI_SUCCESS);
+    EXPECT_EQ(QDMI_environmentsensor_query_wait(query, 0), QDMI_SUCCESS);
 
     EXPECT_EQ(QDMI_environmentsensor_query_check_status(query, &status),
               QDMI_SUCCESS);

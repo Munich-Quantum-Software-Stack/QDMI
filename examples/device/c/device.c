@@ -1037,7 +1037,7 @@ int C_QDMI_device_environmentsensor_query_check_status(
 }
 
 int C_QDMI_device_environmentsensor_query_wait(
-    C_QDMI_Device_EnvironmentSensor_Query query) {
+    C_QDMI_Device_EnvironmentSensor_Query query, size_t timeout) {
 
   if (query == NULL) {
     return QDMI_ERROR_INVALIDARGUMENT;
