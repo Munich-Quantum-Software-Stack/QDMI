@@ -1010,7 +1010,8 @@ TEST_P(QDMIImplementationTest, EnvironmentQuery) {
 
     EXPECT_EQ(QDMI_environmentsensor_query_set_parameter(
                   query, QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_ENVIRONMENT,
-                  sizeof(QDMI_EnvironmentSensor), &*environment_sensor),
+                  sizeof(QDMI_EnvironmentSensor),
+                  static_cast<void *>(&environment_sensor)),
               QDMI_SUCCESS);
 
     EXPECT_EQ(QDMI_environmentsensor_query_set_parameter(
