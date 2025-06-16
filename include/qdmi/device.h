@@ -812,6 +812,7 @@ int QDMI_device_environmentsensor_query_check_status(
  * @param[in] query The environment sensor query to wait for. Must not be @c
  * NULL.
  * @param[in] timeout The timeout in seconds.
+ * If this is zero, the function waits indefinitely until the job has finished.
  * @return @ref QDMI_SUCCESS if the environment sensor query is finished or
  * canceled.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p query is @c NULL.

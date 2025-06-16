@@ -1014,12 +1014,12 @@ TEST_P(QDMIImplementationTest, EnvironmentQuery) {
               QDMI_SUCCESS);
 
     EXPECT_EQ(QDMI_environmentsensor_query_set_parameter(
-                  query, QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_START_TIME,
+                  query, QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_STARTTIME,
                   sizeof(time_t), &start_time),
               QDMI_SUCCESS);
 
     EXPECT_EQ(QDMI_environmentsensor_query_set_parameter(
-                  query, QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_END_TIME,
+                  query, QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_ENDTIME,
                   sizeof(time_t), &end_time),
               QDMI_SUCCESS);
 

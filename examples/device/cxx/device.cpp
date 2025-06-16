@@ -960,13 +960,13 @@ int CXX_QDMI_device_environmentsensor_query_set_parameter(
   }
   switch (param) {
 
-  case QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_START_TIME: {
+  case QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_STARTTIME: {
     const auto *c_start_time_ptr = static_cast<const time_t *>(value);
     query->start_time =
         std::chrono::system_clock::from_time_t(*c_start_time_ptr);
     return QDMI_SUCCESS;
   }
-  case QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_END_TIME: {
+  case QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_ENDTIME: {
 
     const auto *c_end_time_ptr = static_cast<const time_t *>(value);
     query->end_time = std::chrono::system_clock::from_time_t(*c_end_time_ptr);
@@ -1095,7 +1095,7 @@ int CXX_QDMI_device_environmentsensor_query_check_status(
 }
 
 int CXX_QDMI_device_environmentsensor_query_wait(
-    CXX_QDMI_Device_EnvironmentSensor_Query query) {
+    CXX_QDMI_Device_EnvironmentSensor_Query query, size_t timeout) {
 
   if (query == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;

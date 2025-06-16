@@ -822,9 +822,9 @@ typedef enum QDMI_ENVIRONMENTSENSOR_PROPERTY_T QDMI_EnvironmentSensor_Property;
  */
 enum QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_T {
   /// The start time of the environment sensor query interval.
-  QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_START_TIME = 0,
+  QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_STARTTIME = 0,
   /// The end time of the environment sensor query interval.
-  QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_END_TIME = 1,
+  QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_ENDTIME = 1,
   /// The environment sensor for the environment sensor query.
   QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_ENVIRONMENTSENSOR = 2,
   /// The maximum value of the enum.
@@ -856,8 +856,8 @@ typedef enum QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_T
  */
 enum QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_T {
   /**
-   * @brief `uint64_t*` (`unsigned 64 bit integer` list) The timestamps at which
-   * the corresponding values in the results were recorded by a sensor.
+   * @brief `uint64_t*` (`unsigned 64 bit integer` list) The UNIX timestamps at
+   * which the corresponding values in the results were recorded by a sensor.
    * @details The result of an environment sensor query is represented as a
    * key-value mapping. This mapping is returned as a list of keys and an
    * equal-length list of values. The corresponding partners of the keys and

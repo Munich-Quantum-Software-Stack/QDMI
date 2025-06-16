@@ -1125,10 +1125,10 @@ int QDMI_device_create_environmentsensor_query(
 enum QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_T {
 
   /// The start time of the environment query interval.
-  QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_START_TIME = 0,
+  QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_STARTTIME = 0,
 
   /// The end time of the environment query interval.
-  QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_END_TIME = 1,
+  QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_ENDTIME = 1,
 
   /// The environment for the environment query.
   QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_ENVIRONMENT = 2,
@@ -1289,6 +1289,7 @@ int QDMI_environmentsensor_query_check_status(
  * @param[in] query The environment sensor query to wait for. Must not be @c
  * NULL.
  * @param[in] timeout The timeout in seconds.
+ * If this is zero, the function waits indefinitely until the job has finished.
  * @return @ref QDMI_SUCCESS if the environment sensor query is finished or
  * canceled.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p query is @c NULL.
