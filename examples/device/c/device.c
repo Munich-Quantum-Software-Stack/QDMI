@@ -69,6 +69,7 @@ typedef struct C_QDMI_EnvironmentSensor_impl_d {
 typedef struct C_QDMI_Device_EnvironmentSensor_Query_impl_d {
   time_t start_time;
   time_t end_time;
+  size_t timeout;
   C_QDMI_EnvironmentSensor environment_sensor;
   time_t *result_timestamps;
   float *result_values;
@@ -901,8 +902,11 @@ int C_QDMI_device_session_create_environmentsensor_query(
   if (session->status != INITIALIZED) {
     return QDMI_ERROR_BADSTATE;
   }
-  *query = malloc(sizeof(C_QDMI_Device_EnvironmentSensor_Query_impl_t));
-  (*query)->environment_sensor = malloc(sizeof(C_QDMI_EnvironmentSensor));
+
+  *query = (C_QDMI_Device_EnvironmentSensor_Query)malloc(
+      sizeof(C_QDMI_Device_EnvironmentSensor_Query_impl_t));
+  (*query)->environment_sensor =
+      (C_QDMI_EnvironmentSensor)malloc(sizeof(C_QDMI_EnvironmentSensor_impl_t));
   (*query)->start_time = time(NULL);
   (*query)->end_time = time(NULL);
 
@@ -920,7 +924,8 @@ int C_QDMI_device_environmentsensor_query_set_parameter(
        param != QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_CUSTOM2 &&
        param != QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_CUSTOM3 &&
        param != QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_CUSTOM4 &&
-       param != QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_CUSTOM5)) {
+       param != QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_CUSTOM5) ||
+      value == NULL) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   switch (param) {
@@ -1044,6 +1049,7 @@ int C_QDMI_device_environmentsensor_query_wait(
   }
 
   query->status = QDMI_ENVIRONMENTSENSOR_QUERY_STATUS_DONE;
+  query->timeout = timeout;
   return QDMI_SUCCESS;
 }
 

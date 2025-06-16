@@ -29,6 +29,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include <chrono>
 #include <cmath>
 #include <complex>
+#include <cstddef>
 #include <cstdint>
 #include <cstring>
 #include <ctime>
@@ -87,8 +88,9 @@ struct CXX_QDMI_EnvironmentSensor_impl_d {
 };
 
 struct CXX_QDMI_Device_EnvironmentSensor_Query_impl_d {
-  std::chrono::time_point<std::chrono::system_clock> start_time{};
-  std::chrono::time_point<std::chrono::system_clock> end_time{};
+  std::chrono::time_point<std::chrono::system_clock> start_time;
+  std::chrono::time_point<std::chrono::system_clock> end_time;
+  size_t timeout{};
   CXX_QDMI_EnvironmentSensor environment_sensor{};
   std::vector<std::chrono::time_point<std::chrono::system_clock>>
       result_timestamps;
@@ -955,28 +957,26 @@ int CXX_QDMI_device_environmentsensor_query_set_parameter(
        param != QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_CUSTOM2 &&
        param != QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_CUSTOM3 &&
        param != QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_CUSTOM4 &&
-       param != QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_CUSTOM5)) {
+       param != QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_CUSTOM5) ||
+      value == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   switch (param) {
 
   case QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_STARTTIME: {
-    const auto *c_start_time_ptr = static_cast<const time_t *>(value);
-    query->start_time =
-        std::chrono::system_clock::from_time_t(*c_start_time_ptr);
+    query->start_time = std::chrono::system_clock::from_time_t(
+        *static_cast<const time_t *>(value));
     return QDMI_SUCCESS;
   }
   case QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_ENDTIME: {
-
-    const auto *c_end_time_ptr = static_cast<const time_t *>(value);
-    query->end_time = std::chrono::system_clock::from_time_t(*c_end_time_ptr);
+    query->end_time = std::chrono::system_clock::from_time_t(
+        *static_cast<const time_t *>(value));
     return QDMI_SUCCESS;
   }
 
   case QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_ENVIRONMENTSENSOR: {
-    const auto *environment_ptr =
-        static_cast<const CXX_QDMI_EnvironmentSensor *>(value);
-    query->environment_sensor = *environment_ptr;
+    query->environment_sensor =
+        *(static_cast<const CXX_QDMI_EnvironmentSensor *>(value));
     return QDMI_SUCCESS;
   }
   default:
@@ -1102,6 +1102,7 @@ int CXX_QDMI_device_environmentsensor_query_wait(
   }
 
   query->status = QDMI_ENVIRONMENTSENSOR_QUERY_STATUS_DONE;
+  query->timeout = timeout;
   return QDMI_SUCCESS;
 }
 
