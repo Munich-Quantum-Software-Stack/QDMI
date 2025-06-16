@@ -995,8 +995,9 @@ int CXX_QDMI_device_environmentsensor_query_submit(
   // here, the actual submission.
 
   // for demonstration purposes
-  auto time_difference = std::chrono::round<std::chrono::seconds>( // NOLINT(misc-include-cleaner)
-      query->end_time - query->start_time); 
+  auto time_difference =
+      std::chrono::round<std::chrono::seconds>( // NOLINT(misc-include-cleaner)
+          query->end_time - query->start_time);
 
   auto sampling_rate = query->environment_sensor->sampling_rate;
 
