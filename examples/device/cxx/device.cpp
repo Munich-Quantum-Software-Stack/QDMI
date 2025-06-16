@@ -33,6 +33,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include <cstdint>
 #include <cstring>
 #include <ctime>
+#include <cstdlib>
 #include <functional>
 #include <iterator>
 #include <limits>

@@ -28,7 +28,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include <random>
 #include <sstream>
 #include <string>
-#include <time.h>
+#include <ctime>
 #include <tuple>
 #include <unordered_map>
 #include <utility>
@@ -994,7 +994,7 @@ TEST_P(QDMIImplementationTest, EnvironmentQuery) {
 
   const auto fomac = FoMaC(device);
 
-  std::vector<QDMI_EnvironmentSensor> environment_sensors =
+  const std::vector<QDMI_EnvironmentSensor> environment_sensors =
       fomac.get_environment_variables();
 
   ASSERT_GT(environment_sensors.size(), 0);
@@ -1010,7 +1010,7 @@ TEST_P(QDMIImplementationTest, EnvironmentQuery) {
 
     EXPECT_EQ(QDMI_environmentsensor_query_set_parameter(
                   query, QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_ENVIRONMENT,
-                  sizeof(QDMI_EnvironmentSensor), &environment_sensor),
+                  sizeof(QDMI_EnvironmentSensor), &*environment_sensor),
               QDMI_SUCCESS);
 
     EXPECT_EQ(QDMI_environmentsensor_query_set_parameter(
