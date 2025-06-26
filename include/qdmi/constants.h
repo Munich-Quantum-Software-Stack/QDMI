@@ -768,13 +768,15 @@ enum QDMI_JOB_RESULT_T {
 /// Job result type.
 typedef enum QDMI_JOB_RESULT_T QDMI_Job_Result;
 
-// Enum to indicate the level of pulse support a device has.
+/**
+ * @brief Enum to indicate the level of pulse support a device has.
+ */
 enum QDMI_DEVICE_PULSE_SUPPORT_LEVEL_T {
   /// The device does not support pulse-level control.
   QDMI_DEVICE_PULSE_SUPPORT_LEVEL_NONE = 0,
   /**
    * @brief The device supports pulse-level control at an abstraction level of
-   * @ref `QDMI_Site`.
+   * @ref QDMI_Site.
    * @details This means that the device can execute pulse-level
    * instructions on the sites of the device.
    * This level of support is sufficient for most devices that can execute
@@ -785,7 +787,7 @@ enum QDMI_DEVICE_PULSE_SUPPORT_LEVEL_T {
   QDMI_DEVICE_PULSE_SUPPORT_LEVEL_SITE = 1,
   /**
    * @brief The device supports pulse-level control at an abstraction level of
-   * `QDMI_Pulse_Channel`. (#TODO add link to QDMI_Pulse_Channel)
+   * `QDMI_Pulse_Channel`.
    * @details This means that the device can execute pulse-level instructions on
    * the channels of the device.
    * This level of support is sufficient for devices that can execute quantum
@@ -795,8 +797,7 @@ enum QDMI_DEVICE_PULSE_SUPPORT_LEVEL_T {
   QDMI_DEVICE_PULSE_SUPPORT_LEVEL_CHANNEL = 2,
   /**
    * @brief The device supports pulse-level control at an abstraction level of
-   * @ref `QDMI_Site` and `QDMI_Pulse_Channel`. (#TODO add link to
-   * QDMI_Pulse_Channel)
+   * @ref QDMI_Site and `QDMI_Pulse_Channel`.
    * @details This means that the device can execute pulse-level instructions on
    * both the sites and channels of the device.
    */
