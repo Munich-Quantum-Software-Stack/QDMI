@@ -725,6 +725,10 @@ int C_QDMI_device_session_query_device_property(C_QDMI_Device_Session session,
   ADD_SINGLE_VALUE_PROPERTY(QDMI_DEVICE_PROPERTY_NEEDSCALIBRATION, size_t, 0,
                             prop, size, value, size_ret)
 
+  ADD_SINGLE_VALUE_PROPERTY(
+      QDMI_DEVICE_PROPERTY_PULSESUPPORT, QDMI_Device_Pulse_Support_Level,
+      QDMI_DEVICE_PULSE_SUPPORT_LEVEL_NONE, prop, size, value, size_ret)
+
   return QDMI_ERROR_NOTSUPPORTED;
 } /// [DOXYGEN FUNCTION END]
 
