@@ -52,7 +52,6 @@ Ready to contribute to QDMI? This guide will help you get started.
    run a set of checks before each commit.
 
    <div class="tabbed">
-
    - <b class="tab-title">via `uv`</b> The easiest way to install pre-commit is via
      [uv](https://docs.astral.sh/uv/).
 
