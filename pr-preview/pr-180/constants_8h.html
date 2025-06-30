@@ -255,6 +255,10 @@ typedef enum <a class="el" href="#a3eff3252203fcad146d5896e4466ec09">QDMI_PROGRA
 typedef enum <a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1">QDMI_JOB_RESULT_T</a>&#160;</td><td class="memItemRight" valign="bottom"><b>QDMI_Job_Result</b></td></tr>
 <tr class="memdesc:a52254cd217f8627659a19c8e0c2feed6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Job result type. <br /></td></tr>
 <tr class="separator:a52254cd217f8627659a19c8e0c2feed6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbe592e696ab58711eb26bc2bb6d9668" id="r_adbe592e696ab58711eb26bc2bb6d9668"><td class="memItemLeft" align="right" valign="top"><a id="adbe592e696ab58711eb26bc2bb6d9668" name="adbe592e696ab58711eb26bc2bb6d9668"></a>
+typedef enum <a class="el" href="#a4dbe8fa81be42cf37de7172f059092ad">QDMI_DEVICE_PULSE_SUPPORT_LEVEL_T</a>&#160;</td><td class="memItemRight" valign="bottom"><b>QDMI_Device_Pulse_Support_Level</b></td></tr>
+<tr class="memdesc:adbe592e696ab58711eb26bc2bb6d9668"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pulse support level type. <br /></td></tr>
+<tr class="separator:adbe592e696ab58711eb26bc2bb6d9668"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -343,11 +347,12 @@ Enumerations</h2></td></tr>
 , <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a8550a0c1b86c2f97791289647a159efd">QDMI_DEVICE_PROPERTY_COUPLINGMAP</a> = 7
 , <br />
 &#160;&#160;<a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a3ab681f741c7fd8f6ad753674b4c1e28">QDMI_DEVICE_PROPERTY_NEEDSCALIBRATION</a> = 8
-, <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526afe696a25133fa887276e666460981688">QDMI_DEVICE_PROPERTY_MAX</a> = 9
+, <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a636246d24c553aa36459537718588965">QDMI_DEVICE_PROPERTY_PULSESUPPORT</a> = 9
+, <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526afe696a25133fa887276e666460981688">QDMI_DEVICE_PROPERTY_MAX</a> = 10
 , <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a994b8261b6addc3f56993c467641b122">QDMI_DEVICE_PROPERTY_CUSTOM1</a> = 999999995
-, <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a36730bc67d1fd3c7578a352adf47745e">QDMI_DEVICE_PROPERTY_CUSTOM2</a> = 999999996
 , <br />
-&#160;&#160;<a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a32e4c833c31ffb4add4245a722d70e88">QDMI_DEVICE_PROPERTY_CUSTOM3</a> = 999999997
+&#160;&#160;<a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a36730bc67d1fd3c7578a352adf47745e">QDMI_DEVICE_PROPERTY_CUSTOM2</a> = 999999996
+, <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a32e4c833c31ffb4add4245a722d70e88">QDMI_DEVICE_PROPERTY_CUSTOM3</a> = 999999997
 , <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526ac8f6978f4bf1ad2e263b74bb3bb98aef">QDMI_DEVICE_PROPERTY_CUSTOM4</a> = 999999998
 , <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526adb994f1dc9dfee2910261951f7e4b39f">QDMI_DEVICE_PROPERTY_CUSTOM5</a> = 999999999
 <br />
@@ -456,6 +461,13 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:aa154b942b0f67e437c393ad7b33cadd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum of the formats the results can be returned in.  <a href="#aa154b942b0f67e437c393ad7b33cadd1">More...</a><br /></td></tr>
 <tr class="separator:aa154b942b0f67e437c393ad7b33cadd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4dbe8fa81be42cf37de7172f059092ad" id="r_a4dbe8fa81be42cf37de7172f059092ad"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4dbe8fa81be42cf37de7172f059092ad">QDMI_DEVICE_PULSE_SUPPORT_LEVEL_T</a> { <a class="el" href="#a4dbe8fa81be42cf37de7172f059092ada37a5a4ff5f9297d9806e57c901a026d4">QDMI_DEVICE_PULSE_SUPPORT_LEVEL_NONE</a> = 0
+, <a class="el" href="#a4dbe8fa81be42cf37de7172f059092ada9618ac2ae6549428f4830b9b60ef6944">QDMI_DEVICE_PULSE_SUPPORT_LEVEL_SITE</a> = 1
+, <a class="el" href="#a4dbe8fa81be42cf37de7172f059092ada15b6967755608a70f135f8ecd90cc61f">QDMI_DEVICE_PULSE_SUPPORT_LEVEL_CHANNEL</a> = 2
+, <a class="el" href="#a4dbe8fa81be42cf37de7172f059092ada3ed6ea2f6ef78e4b82aeb726cc86659a">QDMI_DEVICE_PULSE_SUPPORT_LEVEL_SITEANDCHANNEL</a> = 3
+ }</td></tr>
+<tr class="memdesc:a4dbe8fa81be42cf37de7172f059092ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum to indicate the level of pulse support a device has.  <a href="#a4dbe8fa81be42cf37de7172f059092ad">More...</a><br /></td></tr>
+<tr class="separator:a4dbe8fa81be42cf37de7172f059092ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="a450b1adf81abc6f0accbf0ce4abe92f8" name="a450b1adf81abc6f0accbf0ce4abe92f8"></a>
@@ -681,7 +693,10 @@ Enumerations</h2></td></tr>
 <p>This flag indicates whether the device needs calibration. A value of zero indicates that the device does not need calibration, while any non-zero value indicates that the device needs calibration. It is up to the device to assign a specific meaning to the non-zero value.</p>
 <p>If a device reports that it needs calibration, a calibration run can be triggered by submitting a job with the <a class="el" href="#a475336f0c08bd0218dd76a6016098231">QDMI_Program_Format</a> set to <a class="el" href="#a3eff3252203fcad146d5896e4466ec09a250ddcb8393b04b08471c5fe7abb3d27">QDMI_PROGRAM_FORMAT_CALIBRATION</a>. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ad251d8ae8fbbe9a5c7a10d66b243d526afe696a25133fa887276e666460981688" name="ad251d8ae8fbbe9a5c7a10d66b243d526afe696a25133fa887276e666460981688"></a>QDMI_DEVICE_PROPERTY_MAX&#160;</td><td class="fieldinit">9&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
+<tr><td class="fieldname"><a id="ad251d8ae8fbbe9a5c7a10d66b243d526a636246d24c553aa36459537718588965" name="ad251d8ae8fbbe9a5c7a10d66b243d526a636246d24c553aa36459537718588965"></a>QDMI_DEVICE_PROPERTY_PULSESUPPORT&#160;</td><td class="fieldinit">9&#160;</td><td class="fielddoc"><p><a class="el" href="#adbe592e696ab58711eb26bc2bb6d9668">QDMI_Device_Pulse_Support_Level</a> Whether the device supports pulse-level control. </p>
+<p>This property indicates the level of pulse-level control. If a device supports pulse-level control, it may provide additional functionality for pulse-level programming and execution. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ad251d8ae8fbbe9a5c7a10d66b243d526afe696a25133fa887276e666460981688" name="ad251d8ae8fbbe9a5c7a10d66b243d526afe696a25133fa887276e666460981688"></a>QDMI_DEVICE_PROPERTY_MAX&#160;</td><td class="fieldinit">10&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
 <p>It can be used by devices for bounds checking and validation of function parameters.</p>
 <dl class="section attention"><dt>Attention</dt><dd>This value must remain the last regular member of the enum besides the custom members and must be updated when new members are added. </dd></dl>
 </td></tr>
@@ -977,6 +992,35 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="aa154b942b0f67e437c393ad7b33cadd1af3bb2512523d7a0ab9838a6810b257d6" name="aa154b942b0f67e437c393ad7b33cadd1af3bb2512523d7a0ab9838a6810b257d6"></a>QDMI_JOB_RESULT_CUSTOM4&#160;</td><td class="fieldinit">999999998&#160;</td><td class="fielddoc"><dl class="section see"><dt>See also</dt><dd><a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1a885df1084d1067b6336ad6a0eaaffac2" title="This enum value is reserved for a custom result.">QDMI_JOB_RESULT_CUSTOM1</a> </dd></dl>
 </td></tr>
 <tr><td class="fieldname"><a id="aa154b942b0f67e437c393ad7b33cadd1aa892eb092c55f5c7ea34c47358675125" name="aa154b942b0f67e437c393ad7b33cadd1aa892eb092c55f5c7ea34c47358675125"></a>QDMI_JOB_RESULT_CUSTOM5&#160;</td><td class="fieldinit">999999999&#160;</td><td class="fielddoc"><dl class="section see"><dt>See also</dt><dd><a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1a885df1084d1067b6336ad6a0eaaffac2" title="This enum value is reserved for a custom result.">QDMI_JOB_RESULT_CUSTOM1</a> </dd></dl>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="a4dbe8fa81be42cf37de7172f059092ad" name="a4dbe8fa81be42cf37de7172f059092ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4dbe8fa81be42cf37de7172f059092ad">&#9670;&#160;</a></span>QDMI_DEVICE_PULSE_SUPPORT_LEVEL_T</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="#a4dbe8fa81be42cf37de7172f059092ad">QDMI_DEVICE_PULSE_SUPPORT_LEVEL_T</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Enum to indicate the level of pulse support a device has. </p>
+<table class="fieldtable">
+<tr><th colspan="3">Enumerator</th></tr><tr><td class="fieldname"><a id="a4dbe8fa81be42cf37de7172f059092ada37a5a4ff5f9297d9806e57c901a026d4" name="a4dbe8fa81be42cf37de7172f059092ada37a5a4ff5f9297d9806e57c901a026d4"></a>QDMI_DEVICE_PULSE_SUPPORT_LEVEL_NONE&#160;</td><td class="fieldinit">0&#160;</td><td class="fielddoc"><p>The device does not support pulse-level control. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a4dbe8fa81be42cf37de7172f059092ada9618ac2ae6549428f4830b9b60ef6944" name="a4dbe8fa81be42cf37de7172f059092ada9618ac2ae6549428f4830b9b60ef6944"></a>QDMI_DEVICE_PULSE_SUPPORT_LEVEL_SITE&#160;</td><td class="fieldinit">1&#160;</td><td class="fielddoc"><p>The device supports pulse-level control at an abstraction level of <a class="el" href="types_8h.html#ab26279159380e378f258cb663968b9ec">QDMI_Site</a>. </p>
+<p>This means that the device can execute pulse-level instructions on the sites of the device. This level of support is sufficient for most devices that can execute quantum circuits with pulse-level control, as it allows the device to execute pulse-level instructions on the sites of the device. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="types_8h.html#ab26279159380e378f258cb663968b9ec" title="A handle for a site.">QDMI_Site</a> for more information on the site abstraction. </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="a4dbe8fa81be42cf37de7172f059092ada15b6967755608a70f135f8ecd90cc61f" name="a4dbe8fa81be42cf37de7172f059092ada15b6967755608a70f135f8ecd90cc61f"></a>QDMI_DEVICE_PULSE_SUPPORT_LEVEL_CHANNEL&#160;</td><td class="fieldinit">2&#160;</td><td class="fielddoc"><p>The device supports pulse-level control at an abstraction level of <code>QDMI_Pulse_Channel</code>. </p>
+<p>This means that the device can execute pulse-level instructions on the channels of the device. This level of support is sufficient for devices that can execute quantum circuits with pulse-level control on a channel basis, such as devices that use a single channel for all sites. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a4dbe8fa81be42cf37de7172f059092ada3ed6ea2f6ef78e4b82aeb726cc86659a" name="a4dbe8fa81be42cf37de7172f059092ada3ed6ea2f6ef78e4b82aeb726cc86659a"></a>QDMI_DEVICE_PULSE_SUPPORT_LEVEL_SITEANDCHANNEL&#160;</td><td class="fieldinit">3&#160;</td><td class="fielddoc"><p>The device supports pulse-level control at an abstraction level of <a class="el" href="types_8h.html#ab26279159380e378f258cb663968b9ec">QDMI_Site</a> and <code>QDMI_Pulse_Channel</code>. </p>
+<p>This means that the device can execute pulse-level instructions on both the sites and channels of the device. </p>
 </td></tr>
 </table>
 
