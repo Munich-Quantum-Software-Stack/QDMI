@@ -71,6 +71,34 @@ typedef struct QDMI_Site_impl_d *QDMI_Site;
  */
 typedef struct QDMI_Operation_impl_d *QDMI_Operation;
 
+/**
+ * @brief A handle for a pulse parameter.
+ * @details An opaque pointer to an implementation of the QDMI pulse parameter
+ * concept. A pulse parameter is a variable that can be adjusted to modify the
+ * behavior of a pulse. This includes parameters such as amplitude, and
+ * duration. Each implementation of the @ref device_interface "QDMI Device
+ * Interface" defines the actual implementation of the concept.
+ */
+typedef struct QDMI_Pulse_Parameter_impl_d *QDMI_Pulse_Parameter;
+
+/**
+ * @brief A handle for a pulse waveform.
+ * @details An opaque pointer to a QDMI pulse waveform concept.
+ * A pulse waveform is a representation of the shape of a pulse in
+ * time. Each implementation of the @ref device_interface "QDMI Device
+ * Interface" defines the actual implementation of the concept.
+ */
+typedef struct QDMI_Pulse_Waveform_impl_d *QDMI_Pulse_Waveform;
+
+/**
+ * @brief A handle for a pulse implementation.
+ * @details An opaque pointer to a pulse implementation of a QDMI operation.
+ * A pulse implementation is a specific way of implementing a pulse on a device,
+ * which may include details such as the waveform used, the parameters of the
+ * pulse. Each implementation of the @ref device_interface "QDMI Device
+ * Interface" defines the actual implementation of the concept.
+ */
+typedef struct QDMI_Pulse_Implementation_impl_d *QDMI_Pulse_Implementation;
 // NOLINTEND(modernize-use-using)
 
 #ifdef __cplusplus

@@ -453,6 +453,9 @@ enum QDMI_OPERATION_PROPERTY_T {
   QDMI_OPERATION_PROPERTY_DURATION = 3,
   /// `double` The fidelity of an operation.
   QDMI_OPERATION_PROPERTY_FIDELITY = 4,
+  /// @ref QDMI_Pulse_Implementation The pulse implementation of the
+  /// operation.
+  QDMI_OPERATION_PROPERTY_PULSEIMPLEMENTATION = 5,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
@@ -461,7 +464,7 @@ enum QDMI_OPERATION_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_OPERATION_PROPERTY_MAX = 5,
+  QDMI_OPERATION_PROPERTY_MAX = 6,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.
@@ -481,6 +484,180 @@ enum QDMI_OPERATION_PROPERTY_T {
 
 /// Operation property type.
 typedef enum QDMI_OPERATION_PROPERTY_T QDMI_Operation_Property;
+
+/**
+ * @brief Enum of the pulse parameter properties that can be queried via @ref
+ * QDMI_device_session_query_pulse_parameter_property as part of the @ref
+ * device_interface "device interface" and via @ref
+ * QDMI_device_query_pulse_parameter_property as part of the @ref
+ * client_interface "client interface".
+ * @details Pulse parameters are used to define the behavior of a pulse, such as
+ * its amplitude, and duration. The properties of a pulse parameter can
+ * be queried to understand how it can be used in a pulse program.
+ */
+enum QDMI_PULSE_PARAMETER_PROPERTY_T {
+  /**
+   * @brief `char*` (string) The name of the pulse parameter.
+   * @details The name is used to identify the pulse parameter in a pulse
+   * program.
+   */
+  QDMI_PULSE_PARAMETER_PROPERTY_NAME = 0,
+  /**
+   * @brief `size_t` The minimum value that the pulse parameter can take.
+   * @details This property indicates the minimum value that the pulse
+   * parameter can take.
+   */
+  QDMI_PULSE_PARAMETER_PROPERTY_RANGEMIN = 1,
+  /**
+   * @brief `size_t` The maximum value that the pulse parameter can take.
+   * @details This property indicates the maximum value that the pulse
+   * parameter can take.
+   */
+  QDMI_PULSE_PARAMETER_PROPERTY_RANGEMAX = 2,
+  /**
+   * @brief `bool` Whether the pulse parameter is mutable.
+   * @details If this property is set to true, the pulse parameter can be
+   * modified by the user. If it is set to false, the pulse parameter is fixed
+   * and cannot be changed.
+   */
+  QDMI_PULSE_PARAMETER_PROPERTY_MUTABLE = 3,
+  /**
+   * @brief The maximum value of the enum.
+   * @details It can be used by devices for bounds checking and validation of
+   * function parameters.
+   */
+  QDMI_PULSE_PARAMETER_PROPERTY_MAX = 4,
+  /**
+   * @brief This enum value is reserved for a custom property.
+   * @details The device defines the meaning and the type of this property.
+   * @attention The value of this enum member must not be changed to maintain
+   * binary compatibility.
+   */
+  QDMI_PULSE_PARAMETER_PROPERTY_CUSTOM1 = 999999995,
+  /// @see QDMI_PULSE_PARAMETER_PROPERTY_CUSTOM1
+  QDMI_PULSE_PARAMETER_PROPERTY_CUSTOM2 = 999999996,
+  /// @see QDMI_PULSE_PARAMETER_PROPERTY_CUSTOM1
+  QDMI_PULSE_PARAMETER_PROPERTY_CUSTOM3 = 999999997,
+  /// @see QDMI_PULSE_PARAMETER_PROPERTY_CUSTOM1
+  QDMI_PULSE_PARAMETER_PROPERTY_CUSTOM4 = 999999998,
+  /// @see QDMI_PULSE_PARAMETER_PROPERTY_CUSTOM1
+  QDMI_PULSE_PARAMETER_PROPERTY_CUSTOM5 = 999999999
+};
+
+/// Pulse parameter property type.
+typedef enum QDMI_PULSE_PARAMETER_PROPERTY_T QDMI_Pulse_Parameter_Property;
+
+/**
+ * @brief Enum of the pulse waveform properties that can be queried via @ref
+ * QDMI_device_session_query_pulse_waveform_property as part of the @ref
+ * device_interface "device interface" and via @ref
+ * QDMI_device_query_pulse_waveform_property as part of the @ref
+ * client_interface "client interface".
+ * @details Pulse waveforms are used to define the shape of a pulse. The
+ * properties of a pulse waveform can be queried to understand how it can be
+ * used in a pulse program.
+ */
+enum QDMI_PULSE_WAVEFORM_PROPERTY_T {
+  /**
+   * @brief `char*` (string) The name is used to identify the pulse waveform.
+   */
+  QDMI_PULSE_WAVEFORM_PROPERTY_NAME = 0,
+  /**
+   * @brief `char*` (string) The formula used to generate the pulse waveform.
+   */
+  QDMI_PULSE_WAVEFORM_PROPERTY_FORMULA = 1,
+  /**
+   * @brief `QDMI_Pulse_Parameter*` (@ref QDMI_Pulse_Parameter list) The
+   * parameters of the pulse waveform.
+   * @details This property returns a list of pulse parameters that can be used
+   * to define the behavior of the pulse waveform. The list may be empty if the
+   * pulse waveform does not have any parameters.
+   */
+  QDMI_PULSE_WAVEFORM_PROPERTY_PARAMETERS = 2,
+  /**
+   * @brief The maximum value of the enum.
+   * @details It can be used by devices for bounds checking and validation of
+   * function parameters.
+   */
+  QDMI_PULSE_WAVEFORM_PROPERTY_MAX = 3,
+  /**
+   * @brief This enum value is reserved for a custom property.
+   * @details The device defines the meaning and the type of this property.
+   * @attention The value of this enum member must not be changed to maintain
+   * binary compatibility.
+   */
+  QDMI_PULSE_WAVEFORM_PROPERTY_CUSTOM1 = 999999995,
+  /// @see QDMI_PULSE_WAVEFORM_PROPERTY_CUSTOM1
+  QDMI_PULSE_WAVEFORM_PROPERTY_CUSTOM2 = 999999996,
+  /// @see QDMI_PULSE_WAVEFORM_PROPERTY_CUSTOM1
+  QDMI_PULSE_WAVEFORM_PROPERTY_CUSTOM3 = 999999997,
+  /// @see QDMI_PULSE_WAVEFORM_PROPERTY_CUSTOM1
+  QDMI_PULSE_WAVEFORM_PROPERTY_CUSTOM4 = 999999998,
+  /// @see QDMI_PULSE_WAVEFORM_PROPERTY_CUSTOM1
+  QDMI_PULSE_WAVEFORM_PROPERTY_CUSTOM5 = 999999999
+};
+
+/// Pulse waveform property type.
+typedef enum QDMI_PULSE_WAVEFORM_PROPERTY_T QDMI_Pulse_Waveform_Property;
+
+/**
+ * @brief Enum of the pulse implementation properties that can be queried via
+ * @ref QDMI_device_session_query_pulse_implementation_property as part of the
+ * @ref device_interface "device interface" and via @ref
+ * QDMI_device_query_pulse_implementation_property as part of the @ref
+ * client_interface "client interface".
+ * @details Pulse implementations are used to define how a pulse is
+ * implemented on the device. The properties of a pulse implementation can be
+ * queried to query the pulse program in the desired or in the available format.
+ */
+enum QDMI_PULSE_IMPLEMENTATION_PROPERTY_T {
+  /**
+   * @brief `char*` (string) The pulse implementation in the Open Pulse format.
+   */
+  QDMI_PULSE_IMPLEMENTATION_PROPERTY_OPENPULSE = 0,
+  /**
+   * @brief `QDMI_Pulse_Waveform` (@ref QDMI_Pulse_Waveform) The pulse
+   * implementation as pulse waveform.
+   * @details This property returns a pulse waveform that alongside pulse
+   * parameters define the pulse implementation. The corresponding pulse
+   * parameter values can be queried via @ref
+   * QDMI_PULSE_IMPLEMENTATION_PROPERTY_PULSEPARAMETERS.
+   */
+  QDMI_PULSE_IMPLEMENTATION_PROPERTY_PULSEWAVEFORM = 1,
+  /**
+   * @brief `QDMI_Pulse_Parameter*` (@ref QDMI_Pulse_Parameter list) The
+   * pulse parameter values of the pulse implementation.
+   * @details This property returns a list of pulse parameters that are used
+   * to define the pulse implementation. The list may be empty if the pulse
+   * implementation does not have any parameters. @see
+   * QDMI_PULSE_IMPLEMENTATION_PROPERTY_PULSEWAVEFORM
+   */
+  QDMI_PULSE_IMPLEMENTATION_PROPERTY_PULSEPARAMETERS = 2,
+  /**
+   * @brief The maximum value of the enum.
+   * @details It can be used by devices for bounds checking and validation of
+   * function parameters.
+   */
+  QDMI_PULSE_IMPLEMENTATION_PROPERTY_MAX = 3,
+  /**
+   * @brief This enum value is reserved for a custom property.
+   * @details The device defines the meaning and the type of this property.
+   * @attention The value of this enum member must not be changed to maintain
+   * binary compatibility.
+   */
+  QDMI_PULSE_IMPLEMENTATION_PROPERTY_CUSTOM1 = 999999995,
+  /// @see QDMI_PULSE_IMPLEMENTATION_PROPERTY_CUSTOM1
+  QDMI_PULSE_IMPLEMENTATION_PROPERTY_CUSTOM2 = 999999996,
+  /// @see QDMI_PULSE_IMPLEMENTATION_PROPERTY_CUSTOM1
+  QDMI_PULSE_IMPLEMENTATION_PROPERTY_CUSTOM3 = 999999997,
+  /// @see QDMI_PULSE_IMPLEMENTATION_PROPERTY_CUSTOM1
+  QDMI_PULSE_IMPLEMENTATION_PROPERTY_CUSTOM4 = 999999998,
+  /// @see QDMI_PULSE_IMPLEMENTATION_PROPERTY_CUSTOM1
+  QDMI_PULSE_IMPLEMENTATION_PROPERTY_CUSTOM5 = 999999999
+};
+/// Pulse implementation property type.
+typedef enum QDMI_PULSE_IMPLEMENTATION_PROPERTY_T
+    QDMI_Pulse_Implementation_Property;
 
 /**
  * @brief Enum of the status a job can have.

@@ -573,7 +573,147 @@ int QDMI_device_query_operation_property(
     QDMI_Device device, QDMI_Operation operation, size_t num_sites,
     const QDMI_Site *sites, size_t num_params, const double *params,
     QDMI_Operation_Property prop, size_t size, void *value, size_t *size_ret);
-
+/**
+ * @brief Query a pulse parameter property.
+ * @param[in] device The device to query. Must not be @c NULL.
+ * @param[in] parameter The pulse parameter to query. Must not be @c NULL.
+ * @param[in] prop The property to query. Must be one of the values specified
+ * for @ref QDMI_Pulse_Parameter_Property.
+ * @param[in] size The size of the memory pointed to by @p value in bytes. Must
+ * be greater or equal to the size of the return type specified for @p prop,
+ * except when @p value is @c NULL, in which case it is ignored.
+ * @param[out] value A pointer to the memory location where the value of the
+ * property will be stored. If this is @c NULL, it is ignored.
+ * @param[out] size_ret The actual size of the data being queried in bytes. If
+ * this is @c NULL, it is ignored.
+ * @return @ref QDMI_SUCCESS if the device supports the specified property and,
+ * when @p value is not @c NULL, the property was successfully retrieved.
+ * @return @ref QDMI_ERROR_NOTSUPPORTED if the device does not support the
+ * property.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if
+ *  - @p device or @p parameter is @c NULL,
+ *  - @p prop is invalid, or
+ *  - @p value is not @c NULL and @p size is less than the size of the data
+ *    being queried.
+ * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
+ * @note By calling this function with @p value set to @c NULL, the function can
+ * be used to check if the device supports the specified property without
+ * retrieving the property and without the need to provide a buffer for it.
+ * Additionally, the size of the buffer needed to retrieve the property is
+ * returned in @p size_ret if @p size_ret is not @c NULL.
+ * @note For example, to query the value of a pulse parameter, the following
+ * code pattern can be used:
+ * ```
+ * // Query the size of the property.
+ * size_t size;
+ * auto ret = QDMI_device_query_pulse_parameter_property(
+ *   device, parameter, QDMI_PULSE_PARAMETER_PROPERTY_NAME, 0, nullptr, &size);
+ * // Allocate memory for the property.
+ * auto name = std::vector<char>(size);
+ * // Query the property.
+ * ret = QDMI_device_query_pulse_parameter_property(
+ *   device, parameter, QDMI_PULSE_PARAMETER_PROPERTY_NAME, size,
+ *   static_cast<void*>(name.data()), nullptr);
+ * ```
+ */
+int QDMI_device_query_pulse_parameter_property(
+    QDMI_Device device, QDMI_Pulse_Parameter parameter,
+    QDMI_Pulse_Parameter_Property prop, size_t size, void *value,
+    size_t *size_ret);
+/** * @brief Query a pulse waveform property.
+ * @param[in] device The device to query. Must not be @c NULL.
+ * @param[in] waveform The pulse waveform to query. Must not be @c NULL.
+ * @param[in] prop The property to query. Must be one of the values specified
+ * for @ref QDMI_Pulse_Waveform_Property.
+ * @param[in] size The size of the memory pointed to by @p value in bytes. Must
+ * be greater or equal to the size of the return type specified for @p prop,
+ * except when @p value is @c NULL, in which case it is ignored.
+ * @param[out] value A pointer to the memory location where the value of the
+ * property will be stored. If this is @c NULL, it is ignored.
+ * @param[out] size_ret The actual size of the data being queried in bytes. If
+ * this is @c NULL, it is ignored.
+ * @return @ref QDMI_SUCCESS if the device supports the specified property and,
+ * when @p value is not @c NULL, the property was successfully retrieved.
+ * @return @ref QDMI_ERROR_NOTSUPPORTED if the device does not support the
+ * property.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if
+ *  - @p device or @p waveform is @c NULL,
+ *  - @p prop is invalid, or
+ *  - @p value is not @c NULL and @p size is less than the size of the data
+ *    being queried.
+ * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
+ * @note By calling this function with @p value set to @c NULL, the function
+ * can be used to check if the device supports the specified property without
+ * retrieving the property and without the need to provide a buffer for it.
+ * Additionally, the size of the buffer needed to retrieve the property is
+ * returned in @p size_ret if @p size_ret is not @c NULL.
+ * @note For example, to query the name of a pulse waveform, the following code
+ * pattern can be used:
+ * ```
+ * // Query the size of the property.
+ * size_t size;
+ * auto ret = QDMI_device_query_pulse_waveform_property(
+ *   device, waveform, QDMI_PULSE_WAVEFORM_PROPERTY_NAME, 0, nullptr, &size);
+ * // Allocate memory for the property.
+ * auto name = std::vector<char>(size);
+ * // Query the property.
+ * ret = QDMI_device_query_pulse_waveform_property(
+ *   device, waveform, QDMI_PULSE_WAVEFORM_PROPERTY_NAME, size,
+ *   static_cast<void*>(name.data()), nullptr);
+ * ```
+ */
+int QDMI_device_query_pulse_waveform_property(QDMI_Device device,
+                                              QDMI_Pulse_Waveform waveform,
+                                              QDMI_Pulse_Waveform_Property prop,
+                                              size_t size, void *value,
+                                              size_t *size_ret);
+/** * @brief Query a pulse implementation property.
+ * @param[in] device The device to query. Must not be @c NULL.
+ * @param[in] impl The pulse implementation to query. Must not be @c NULL.
+ * @param[in] prop The property to query. Must be one of the values specified
+ * for @ref QDMI_Pulse_Implementation_Property.
+ * @param[in] size The size of the memory pointed to by @p value in bytes. Must
+ * be greater or equal to the size of the return type specified for @p prop,
+ * except when @p value is @c NULL, in which case it is ignored.
+ * @param[out] value A pointer to the memory location where the value of the
+ * property will be stored. If this is @c NULL, it is ignored.
+ * @param[out] size_ret The actual size of the data being queried in bytes. If
+ * this is @c NULL, it is ignored.
+ * @return @ref QDMI_SUCCESS if the device supports the specified property and,
+ * when @p value is not @c NULL, the property was successfully retrieved.
+ * @return @ref QDMI_ERROR_NOTSUPPORTED if the device does not support the
+ * property.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if
+ *  - @p device or @p impl is @c NULL,
+ *  - @p prop is invalid, or
+ *  - @p value is not @c NULL and @p size is less than the size of the data
+ *    being queried.
+ * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
+ * @note By calling this function with @p value set to @c NULL, the function
+ * can be used to check if the device supports the specified property without
+ * retrieving the property and without the need to provide a buffer for it.
+ * Additionally, the size of the buffer needed to retrieve the property is
+ * returned in @p size_ret if @p size_ret is not @c NULL.
+ * @note For example, to query the name of a pulse implementation, the following
+ * code pattern can be used:
+ * ```
+ * // Query the size of the property.
+ * size_t size;
+ * auto ret = QDMI_device_query_pulse_implementation_property(
+ *   device, impl, QDMI_PULSE_IMPLEMENTATION_PROPERTY_OPENPULSE, 0, nullptr,
+ * &size);
+ * // Allocate memory for the property.
+ * auto open_pulse_impl = std::vector<char>(size);
+ * // Query the property.
+ * ret = QDMI_device_query_pulse_implementation_property(
+ *   device, impl, QDMI_PULSE_IMPLEMENTATION_PROPERTY_NAME, size,
+ *   static_cast<void*>(open_pulse_impl.data()), nullptr);
+ * ```
+ */
+int QDMI_device_query_pulse_implementation_property(
+    QDMI_Device device, QDMI_Pulse_Implementation impl,
+    QDMI_Pulse_Implementation_Property prop, size_t size, void *value,
+    size_t *size_ret);
 /** @} */ // end of client_query_interface
 
 /** @defgroup client_job_interface QDMI Client Job Interface
