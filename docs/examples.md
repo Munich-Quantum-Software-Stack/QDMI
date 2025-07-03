@@ -113,7 +113,7 @@ into a single list of @ref QDMI_Site's.
 
 <!-- prettier-ignore-start -->
 \dontinclude device.cpp
-\skipline constexpr std::array<const CXX_QDMI_Site_impl_d \*, 20>
+\skipline constexpr std::array<const CXX_QDMI_Site_impl_d *, 20>
 \skip DEVICE_COUPLING_MAP
 \until ;
 \skip int CXX_QDMI_device_session_query_device_property
