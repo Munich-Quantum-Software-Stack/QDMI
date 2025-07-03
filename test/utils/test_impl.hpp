@@ -54,6 +54,7 @@ protected:
   QDMI_Device device = nullptr;
   TEST_SESSION_MODE mode = TEST_SESSION_MODE::READONLY;
   std::string config_file_name;
+  std::string lib_prefix;
 
   void SetUp() override;
 

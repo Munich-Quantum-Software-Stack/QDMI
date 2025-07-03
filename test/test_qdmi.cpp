@@ -19,6 +19,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include "example_fomac.hpp"
 #include "example_tool.hpp"
 #include "qdmi/client.h"
+#include "qdmi/constants.h"
 #include "utils/test_impl.hpp"
 
 #include <array>
@@ -972,5 +973,51 @@ TEST_P(QDMIImplementationTest, QueryPulseSupportLevel) {
       device, QDMI_DEVICE_PROPERTY_PULSESUPPORT,
       sizeof(QDMI_Device_Pulse_Support_Level), &pulse_support_level, nullptr);
   EXPECT_EQ(ret, QDMI_SUCCESS);
-  EXPECT_EQ(pulse_support_level, QDMI_DEVICE_PULSE_SUPPORT_LEVEL_NONE);
+  EXPECT_EQ(pulse_support_level, QDMI_DEVICE_PULSE_SUPPORT_LEVEL_SITE);
+}
+
+TEST_P(QDMIImplementationTest, QueryPulseImplementation) {
+
+  if (lib_prefix != "CXX") {
+    GTEST_SKIP() << "Skipping test for non-C++ implementations";
+  }
+
+  const auto fomac = FoMaC(device);
+  const auto ops = fomac.get_operation_map();
+  for (const auto &[name, op] : ops) {
+    const auto pulse_impl = fomac.get_operation_pulse_implementation(op);
+    EXPECT_NE(pulse_impl, nullptr);
+
+    const auto waveform = fomac.get_pulse_waveform(pulse_impl);
+    EXPECT_NE(waveform, nullptr);
+    EXPECT_GT(fomac.get_pulse_waveform_name(waveform).size(), 0);
+    EXPECT_GT(fomac.get_pulse_waveform_formula(waveform).size(), 0);
+    const auto waveform_params = fomac.get_pulse_waveform_parameters(waveform);
+    EXPECT_GE(waveform_params.size(), 0);
+    for (const auto &param : waveform_params) {
+      auto param_name = fomac.get_pulse_parameter_name(param);
+      EXPECT_GT(param_name.size(), 0);
+      EXPECT_GE(fomac.get_pulse_parameter_rangemin(param),
+                -std::numeric_limits<double>::infinity());
+      EXPECT_LE(fomac.get_pulse_parameter_rangemax(param),
+                std::numeric_limits<double>::infinity());
+      if (fomac.get_pulse_parameter_ismutable(param)) {
+        ASSERT_TRUE(fomac.get_pulse_parameter_ismutable(param));
+      }
+    }
+
+    const auto pulse_params = fomac.get_pulse_parameters(pulse_impl);
+    EXPECT_GT(pulse_params.size(), 0);
+    for (const auto &param : pulse_params) {
+      auto param_name = fomac.get_pulse_parameter_name(param);
+      EXPECT_GT(param_name.size(), 0);
+      EXPECT_GE(fomac.get_pulse_parameter_rangemin(param),
+                -std::numeric_limits<double>::infinity());
+      EXPECT_LE(fomac.get_pulse_parameter_rangemax(param),
+                std::numeric_limits<double>::infinity());
+      if (fomac.get_pulse_parameter_ismutable(param)) {
+        ASSERT_TRUE(fomac.get_pulse_parameter_ismutable(param));
+      }
+    }
+  }
 }

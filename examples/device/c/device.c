@@ -23,6 +23,8 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 #include "c_qdmi/device.h"
 
+#include "c_qdmi/types.h"
+
 #include <math.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -727,7 +729,7 @@ int C_QDMI_device_session_query_device_property(C_QDMI_Device_Session session,
 
   ADD_SINGLE_VALUE_PROPERTY(
       QDMI_DEVICE_PROPERTY_PULSESUPPORT, QDMI_Device_Pulse_Support_Level,
-      QDMI_DEVICE_PULSE_SUPPORT_LEVEL_NONE, prop, size, value, size_ret)
+      QDMI_DEVICE_PULSE_SUPPORT_LEVEL_SITE, prop, size, value, size_ret)
 
   return QDMI_ERROR_NOTSUPPORTED;
 } /// [DOXYGEN FUNCTION END]
@@ -844,5 +846,31 @@ int C_QDMI_device_session_query_operation_property(
     ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_FIDELITY, double, 0.999,
                               prop, size, value, size_ret)
   }
+  return QDMI_ERROR_NOTSUPPORTED;
+} /// [DOXYGEN FUNCTION END]
+
+struct C_QDMI_Pulse_Implementation_impl_d {};
+struct C_QDMI_Pulse_Waveform_impl_t {};
+struct C_QDMI_Pulse_Implementation_impl_t {};
+
+int C_QDMI_device_session_query_pulse_parameter_property(
+    C_QDMI_Device_Session session, C_QDMI_Pulse_Parameter param,
+    const QDMI_Pulse_Parameter_Property prop, const size_t size, void *value,
+    size_t *size_ret) {
+
+  return QDMI_ERROR_NOTSUPPORTED;
+} /// [DOXYGEN FUNCTION END]
+
+int C_QDMI_device_session_query_pulse_waveform_property(
+    C_QDMI_Device_Session session, C_QDMI_Pulse_Waveform waveform,
+    const QDMI_Pulse_Waveform_Property prop, const size_t size, void *value,
+    size_t *size_ret) {
+  return QDMI_ERROR_NOTSUPPORTED;
+} /// [DOXYGEN FUNCTION END]
+
+int C_QDMI_device_session_query_pulse_implementation_property(
+    C_QDMI_Device_Session session, C_QDMI_Pulse_Implementation impl,
+    const QDMI_Pulse_Implementation_Property prop, const size_t size,
+    void *value, size_t *size_ret) {
   return QDMI_ERROR_NOTSUPPORTED;
 } /// [DOXYGEN FUNCTION END]

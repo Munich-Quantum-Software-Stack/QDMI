@@ -498,18 +498,18 @@ typedef enum QDMI_OPERATION_PROPERTY_T QDMI_Operation_Property;
 enum QDMI_PULSE_PARAMETER_PROPERTY_T {
   /**
    * @brief `char*` (string) The name of the pulse parameter.
-   * @details The name is used to identify the pulse parameter in a pulse
-   * program.
+   * @details The name is used to identify the parameter in a pulse
+   * waveform formula @see QDMI_PULSE_WAVEFORM_PROPERTY_FORMULA.
    */
   QDMI_PULSE_PARAMETER_PROPERTY_NAME = 0,
   /**
-   * @brief `size_t` The minimum value that the pulse parameter can take.
+   * @brief `double` The minimum value that the pulse parameter can take.
    * @details This property indicates the minimum value that the pulse
    * parameter can take.
    */
   QDMI_PULSE_PARAMETER_PROPERTY_RANGEMIN = 1,
   /**
-   * @brief `size_t` The maximum value that the pulse parameter can take.
+   * @brief `double` The maximum value that the pulse parameter can take.
    * @details This property indicates the maximum value that the pulse
    * parameter can take.
    */

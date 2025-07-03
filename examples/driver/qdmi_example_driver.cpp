@@ -24,6 +24,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 #include "qdmi/client.h"
 #include "qdmi/device.h"
+#include "qdmi/types.h"
 
 #include <algorithm>
 #include <cstdint>
@@ -102,7 +103,18 @@ struct QDMI_Library {
   /// Function pointer to @ref QDMI_device_session_query_operation_property.
   decltype(QDMI_device_session_query_operation_property)
       *device_session_query_operation_property{};
-
+  /// Function pointer to @ref
+  /// QDMI_device_session_query_pulse_parameter_property.
+  decltype(QDMI_device_session_query_pulse_parameter_property)
+      *device_session_query_pulse_parameter_property{};
+  /// Function pointer to @ref
+  /// QDMI_device_session_query_pulse_waveform_property.
+  decltype(QDMI_device_session_query_pulse_waveform_property)
+      *device_session_query_pulse_waveform_property{};
+  /// Function pointer to @ref
+  /// QDMI_device_session_query_pulse_implementation_property.
+  decltype(QDMI_device_session_query_pulse_implementation_property)
+      *device_session_query_pulse_implementation_property{};
   // default constructor
   QDMI_Library() = default;
 
@@ -219,6 +231,10 @@ void QDMI_library_load(const std::string &lib_name, const std::string &prefix) {
     LOAD_SYMBOL(library, prefix, device_session_query_device_property)
     LOAD_SYMBOL(library, prefix, device_session_query_site_property)
     LOAD_SYMBOL(library, prefix, device_session_query_operation_property)
+    LOAD_SYMBOL(library, prefix, device_session_query_pulse_parameter_property)
+    LOAD_SYMBOL(library, prefix, device_session_query_pulse_waveform_property)
+    LOAD_SYMBOL(library, prefix,
+                device_session_query_pulse_implementation_property)
 
     // NOLINTEND(cppcoreguidelines-pro-type-reinterpret-cast)
   } catch (const std::exception &) {
@@ -527,4 +543,38 @@ int QDMI_device_query_operation_property(
   return device->library->device_session_query_operation_property(
       device->device_session, operation, num_sites, sites, num_params, params,
       prop, size, value, size_ret);
+}
+
+int QDMI_device_query_pulse_parameter_property(
+    QDMI_Device device, QDMI_Pulse_Parameter parameter,
+    QDMI_Pulse_Parameter_Property prop, const size_t size, void *value,
+    size_t *size_ret) {
+  if (device == nullptr) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  return device->library->device_session_query_pulse_parameter_property(
+      device->device_session, parameter, prop, size, value, size_ret);
+}
+
+int QDMI_device_query_pulse_waveform_property(QDMI_Device device,
+                                              QDMI_Pulse_Waveform waveform,
+                                              QDMI_Pulse_Waveform_Property prop,
+                                              const size_t size, void *value,
+                                              size_t *size_ret) {
+  if (device == nullptr) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  return device->library->device_session_query_pulse_waveform_property(
+      device->device_session, waveform, prop, size, value, size_ret);
+}
+
+int QDMI_device_query_pulse_implementation_property(
+    QDMI_Device device, QDMI_Pulse_Implementation implementation,
+    QDMI_Pulse_Implementation_Property prop, const size_t size, void *value,
+    size_t *size_ret) {
+  if (device == nullptr) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  return device->library->device_session_query_pulse_implementation_property(
+      device->device_session, implementation, prop, size, value, size_ret);
 }

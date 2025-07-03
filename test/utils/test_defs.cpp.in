@@ -32,6 +32,9 @@ int main() {
   @QDMI_PREFIX@_QDMI_Device_Job job = nullptr;
   @QDMI_PREFIX@_QDMI_Site site = nullptr;
   @QDMI_PREFIX@_QDMI_Operation operation = nullptr;
+  @QDMI_PREFIX@_QDMI_Pulse_Parameter pulse_param = nullptr;
+  @QDMI_PREFIX@_QDMI_Pulse_Waveform waveform = nullptr;
+  @QDMI_PREFIX@_QDMI_Pulse_Implementation pulse_impl = nullptr;
   @QDMI_PREFIX@_QDMI_device_initialize();
   @QDMI_PREFIX@_QDMI_device_finalize();
   @QDMI_PREFIX@_QDMI_device_session_alloc(&session);
@@ -50,4 +53,7 @@ int main() {
   @QDMI_PREFIX@_QDMI_device_session_query_device_property(session, QDMI_DEVICE_PROPERTY_MAX, 0, nullptr, nullptr);
   @QDMI_PREFIX@_QDMI_device_session_query_site_property(session, site, QDMI_SITE_PROPERTY_MAX, 0, nullptr, nullptr);
   @QDMI_PREFIX@_QDMI_device_session_query_operation_property(session, operation, 0, nullptr, 0, nullptr, QDMI_OPERATION_PROPERTY_MAX, 0, nullptr, nullptr);
+  @QDMI_PREFIX@_QDMI_device_session_query_pulse_parameter_property(session, pulse_param, QDMI_PULSE_PARAMETER_PROPERTY_MAX, 0, nullptr, nullptr);
+  @QDMI_PREFIX@_QDMI_device_session_query_pulse_waveform_property(session, waveform, QDMI_PULSE_WAVEFORM_PROPERTY_MAX, 0, nullptr, nullptr);
+  @QDMI_PREFIX@_QDMI_device_session_query_pulse_implementation_property(session, pulse_impl, QDMI_PULSE_IMPLEMENTATION_PROPERTY_MAX, 0, nullptr, nullptr);
 }

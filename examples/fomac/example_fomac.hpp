@@ -63,4 +63,35 @@ public:
 
   [[nodiscard]] auto get_parameters_num(const QDMI_Operation &op) const
       -> size_t;
+  [[nodiscard]] auto
+  get_operation_pulse_implementation(const QDMI_Operation &op) const
+      -> QDMI_Pulse_Implementation;
+  [[nodiscard]] auto
+  get_pulse_waveform(const QDMI_Pulse_Implementation &impl) const
+      -> QDMI_Pulse_Waveform;
+  [[nodiscard]] auto
+  get_pulse_parameters(const QDMI_Pulse_Implementation &impl) const
+      -> std::vector<QDMI_Pulse_Parameter>;
+
+  [[nodiscard]] auto
+  get_pulse_parameter_name(const QDMI_Pulse_Parameter &param) const
+      -> std::string;
+  [[nodiscard]] auto
+  get_pulse_parameter_rangemin(const QDMI_Pulse_Parameter &param) const
+      -> double;
+  [[nodiscard]] auto
+  get_pulse_parameter_rangemax(const QDMI_Pulse_Parameter &param) const
+      -> double;
+  [[nodiscard]] auto
+  get_pulse_parameter_ismutable(const QDMI_Pulse_Parameter &param) const
+      -> bool;
+  [[nodiscard]] auto
+  get_pulse_waveform_name(const QDMI_Pulse_Waveform &waveform) const
+      -> std::string;
+  [[nodiscard]] auto
+  get_pulse_waveform_formula(const QDMI_Pulse_Waveform &waveform) const
+      -> std::string;
+  [[nodiscard]] auto
+  get_pulse_waveform_parameters(const QDMI_Pulse_Waveform &waveform) const
+      -> std::vector<QDMI_Pulse_Parameter>;
 };

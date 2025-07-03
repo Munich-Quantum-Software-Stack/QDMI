@@ -65,6 +65,25 @@ struct MY_QDMI_Device_Site_impl_d {};
  */
 struct MY_QDMI_Device_Operation_impl_d {};
 
+/**
+ * @brief Implementation of the MY_QDMI_Device_Pulse_Parameter structure.
+ * @details This structure can, e.g., be used to store the pulse parameter id.
+ */
+struct MY_QDMI_Device_Pulse_Parameter_impl_d {};
+
+/**
+ * @brief Implementation of the MY_QDMI_Device_Pulse_Waveform structure.
+ * @details This structure can, e.g., be used to store the pulse waveform id.
+ */
+struct MY_QDMI_Device_Pulse_Waveform_impl_d {};
+
+/**
+ * @brief Implementation of the MY_QDMI_Device_Pulse_Implementation structure.
+ * @details This structure can, e.g., be used to store the pulse implementation
+ * id.
+ */
+struct MY_QDMI_Device_Pulse_Implementation_impl_d {};
+
 int MY_QDMI_device_initialize() { return QDMI_ERROR_NOTIMPLEMENTED; }
 
 int MY_QDMI_device_finalize() { return QDMI_ERROR_NOTIMPLEMENTED; }
@@ -149,6 +168,25 @@ int MY_QDMI_device_session_query_operation_property(
   return QDMI_ERROR_NOTIMPLEMENTED;
 }
 
+int MY_QDMI_device_session_query_pulse_parameter_property(
+    MY_QDMI_Device_Session session, MY_QDMI_Pulse_Parameter param,
+    const QDMI_Pulse_Parameter_Property prop, const size_t size, void *value,
+    size_t *size_ret) {
+  return QDMI_ERROR_NOTIMPLEMENTED;
+}
+
+int MY_QDMI_device_session_query_pulse_waveform_property(
+    MY_QDMI_Device_Session session, MY_QDMI_Pulse_Waveform waveform,
+    const QDMI_Pulse_Waveform_Property prop, const size_t size, void *value,
+    size_t *size_ret) {
+  return QDMI_ERROR_NOTIMPLEMENTED;
+}
+int MY_QDMI_device_session_query_pulse_implementation_property(
+    MY_QDMI_Device_Session session, MY_QDMI_Pulse_Implementation impl,
+    const QDMI_Pulse_Implementation_Property prop, const size_t size,
+    void *value, size_t *size_ret) {
+  return QDMI_ERROR_NOTIMPLEMENTED;
+}
 // The following line ignores the unused parameters in the functions.
 // Please remove the following code block after populating the functions.
 // NOLINTEND(misc-unused-parameters,clang-diagnostic-unused-parameter)

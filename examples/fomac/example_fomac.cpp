@@ -199,3 +199,142 @@ auto FoMaC::get_parameters_num(const QDMI_Operation &op) const -> size_t {
   throw_if_error(ret, "Failed to query the parameter number");
   return parameters_num;
 }
+
+auto FoMaC::get_operation_pulse_implementation(const QDMI_Operation &op) const
+    -> QDMI_Pulse_Implementation {
+  size_t size = 0;
+  int ret = QDMI_device_query_operation_property(
+      device, op, 0, nullptr, 0, nullptr,
+      QDMI_OPERATION_PROPERTY_PULSEIMPLEMENTATION, 0, nullptr, &size);
+  throw_if_error(ret,
+                 "Failed to query the operation pulse implementation size");
+  QDMI_Pulse_Implementation impl = static_cast<QDMI_Pulse_Implementation>(
+      malloc(sizeof(QDMI_Pulse_Implementation)));
+  ret = QDMI_device_query_operation_property(
+      device, op, 0, nullptr, 0, nullptr,
+      QDMI_OPERATION_PROPERTY_PULSEIMPLEMENTATION, sizeof(impl), &impl,
+      nullptr);
+  throw_if_error(ret, "Failed to query the operation pulse implementation");
+  return impl;
+}
+
+auto FoMaC::get_pulse_waveform(const QDMI_Pulse_Implementation &impl) const
+    -> QDMI_Pulse_Waveform {
+  size_t size = 0;
+  int ret = QDMI_device_query_pulse_implementation_property(
+      device, impl, QDMI_PULSE_IMPLEMENTATION_PROPERTY_PULSEWAVEFORM, 0,
+      nullptr, &size);
+  throw_if_error(ret, "Failed to query the pulse waveform size.");
+  QDMI_Pulse_Waveform waveform =
+      static_cast<QDMI_Pulse_Waveform>(malloc(sizeof(QDMI_Pulse_Waveform)));
+  ret = QDMI_device_query_pulse_implementation_property(
+      device, impl, QDMI_PULSE_IMPLEMENTATION_PROPERTY_PULSEWAVEFORM, size,
+      &waveform, nullptr);
+  throw_if_error(ret, "Failed to query the pulse waveform.");
+  return waveform;
+}
+
+auto FoMaC::get_pulse_parameters(const QDMI_Pulse_Implementation &impl) const
+    -> std::vector<QDMI_Pulse_Parameter> {
+  size_t size = 0;
+  int ret = QDMI_device_query_pulse_implementation_property(
+      device, impl, QDMI_PULSE_IMPLEMENTATION_PROPERTY_PULSEPARAMETERS, 0,
+      nullptr, &size);
+  throw_if_error(ret, "Failed to query the pulse parameters size.");
+  std::vector<QDMI_Pulse_Parameter> params(size / sizeof(QDMI_Pulse_Parameter));
+  ret = QDMI_device_query_pulse_implementation_property(
+      device, impl, QDMI_PULSE_IMPLEMENTATION_PROPERTY_PULSEPARAMETERS, size,
+      static_cast<void *>(params.data()), nullptr);
+  throw_if_error(ret, "Failed to query the pulse parameters.");
+  return params;
+}
+
+auto FoMaC::get_pulse_parameter_name(const QDMI_Pulse_Parameter &param) const
+    -> std::string {
+  size_t name_length = 0;
+  int ret = QDMI_device_query_pulse_parameter_property(
+      device, param, QDMI_PULSE_PARAMETER_PROPERTY_NAME, 0, nullptr,
+      &name_length);
+  throw_if_error(ret, "Failed to query the pulse parameter name length.");
+  std::string name(name_length - 1, '\0');
+  ret = QDMI_device_query_pulse_parameter_property(
+      device, param, QDMI_PULSE_PARAMETER_PROPERTY_NAME, name_length,
+      name.data(), nullptr);
+  throw_if_error(ret, "Failed to query the pulse parameter name.");
+  return name;
+}
+
+auto FoMaC::get_pulse_parameter_rangemin(
+    const QDMI_Pulse_Parameter &param) const -> double {
+  double range_min = 0;
+  int ret = QDMI_device_query_pulse_parameter_property(
+      device, param, QDMI_PULSE_PARAMETER_PROPERTY_RANGEMIN, sizeof(double),
+      &range_min, nullptr);
+  throw_if_error(ret, "Failed to query the pulse parameter range minimum.");
+  return range_min;
+}
+
+auto FoMaC::get_pulse_parameter_rangemax(
+    const QDMI_Pulse_Parameter &param) const -> double {
+  double range_max = 0;
+  int ret = QDMI_device_query_pulse_parameter_property(
+      device, param, QDMI_PULSE_PARAMETER_PROPERTY_RANGEMAX, sizeof(double),
+      &range_max, nullptr);
+  throw_if_error(ret, "Failed to query the pulse parameter range maximum.");
+  return range_max;
+}
+
+auto FoMaC::get_pulse_parameter_ismutable(
+    const QDMI_Pulse_Parameter &param) const -> bool {
+  bool is_mutable = false;
+  int ret = QDMI_device_query_pulse_parameter_property(
+      device, param, QDMI_PULSE_PARAMETER_PROPERTY_MUTABLE, sizeof(bool),
+      &is_mutable, nullptr);
+  throw_if_error(ret, "Failed to query the pulse parameter mutability.");
+  return is_mutable;
+}
+
+auto FoMaC::get_pulse_waveform_name(const QDMI_Pulse_Waveform &waveform) const
+    -> std::string {
+  size_t name_length = 0;
+  int ret = QDMI_device_query_pulse_waveform_property(
+      device, waveform, QDMI_PULSE_WAVEFORM_PROPERTY_NAME, 0, nullptr,
+      &name_length);
+  throw_if_error(ret, "Failed to query the pulse waveform name length.");
+  std::string name(name_length - 1, '\0');
+  ret = QDMI_device_query_pulse_waveform_property(
+      device, waveform, QDMI_PULSE_WAVEFORM_PROPERTY_NAME, name_length,
+      name.data(), nullptr);
+  throw_if_error(ret, "Failed to query the pulse waveform name.");
+  return name;
+}
+
+auto FoMaC::get_pulse_waveform_formula(
+    const QDMI_Pulse_Waveform &waveform) const -> std::string {
+  size_t formula_length = 0;
+  int ret = QDMI_device_query_pulse_waveform_property(
+      device, waveform, QDMI_PULSE_WAVEFORM_PROPERTY_FORMULA, 0, nullptr,
+      &formula_length);
+  throw_if_error(ret, "Failed to query the pulse waveform formula length.");
+  std::string formula(formula_length - 1, '\0');
+  ret = QDMI_device_query_pulse_waveform_property(
+      device, waveform, QDMI_PULSE_WAVEFORM_PROPERTY_FORMULA, formula_length,
+      formula.data(), nullptr);
+  throw_if_error(ret, "Failed to query the pulse waveform formula.");
+  return formula;
+}
+
+auto FoMaC::get_pulse_waveform_parameters(const QDMI_Pulse_Waveform &waveform)
+    const -> std::vector<QDMI_Pulse_Parameter> {
+  size_t size = 0;
+  int ret = QDMI_device_query_pulse_waveform_property(
+      device, waveform, QDMI_PULSE_WAVEFORM_PROPERTY_PARAMETERS, 0, nullptr,
+      &size);
+  throw_if_error(ret, "Failed to query the pulse waveform parameters size.");
+  std::vector<QDMI_Pulse_Parameter> params(size / sizeof(QDMI_Pulse_Parameter));
+  ret = QDMI_device_query_pulse_waveform_property(
+      device, waveform, QDMI_PULSE_WAVEFORM_PROPERTY_PARAMETERS, size,
+      static_cast<void *>(params.data()), nullptr);
+  throw_if_error(ret, "Failed to query the pulse waveform parameters.");
+  return params;
+}

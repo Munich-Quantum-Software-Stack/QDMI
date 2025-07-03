@@ -17,6 +17,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 ------------------------------------------------------------------------------*/
 
 #include "my_qdmi/device.h"
+#include "qdmi/constants.h"
 
 #include <cstddef>
 #include <gtest/gtest.h>
@@ -225,4 +226,25 @@ TEST_F(QDMIImplementationTest, QueryDeviceQubitNum) {
                 session, QDMI_DEVICE_PROPERTY_QUBITSNUM, sizeof(size_t),
                 &num_qubits, nullptr),
             QDMI_SUCCESS);
+}
+
+TEST_F(QDMIImplementationTest, QueryPulseParameterImplemented) {
+  ASSERT_EQ(MY_QDMI_device_session_query_pulse_parameter_property(
+                nullptr, nullptr, QDMI_PULSE_PARAMETER_PROPERTY_MAX, 0, nullptr,
+                nullptr),
+            QDMI_ERROR_INVALIDARGUMENT);
+}
+
+TEST_F(QDMIImplementationTest, QueryPulseWaveformPropertyImplemented) {
+  ASSERT_EQ(MY_QDMI_device_session_query_pulse_waveform_property(
+                nullptr, nullptr, QDMI_PULSE_WAVEFORM_PROPERTY_MAX, 0, nullptr,
+                nullptr),
+            QDMI_ERROR_INVALIDARGUMENT);
+}
+
+TEST_F(QDMIImplementationTest, QueryPulseImplementationPropertyImplemented) {
+  ASSERT_EQ(MY_QDMI_device_session_query_pulse_implementation_property(
+                nullptr, nullptr, QDMI_PULSE_IMPLEMENTATION_PROPERTY_MAX, 0,
+                nullptr, nullptr),
+            QDMI_ERROR_INVALIDARGUMENT);
 }

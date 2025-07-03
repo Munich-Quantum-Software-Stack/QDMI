@@ -24,6 +24,9 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 #include "cxx_qdmi/device.h"
 
+#include "cxx_qdmi/types.h"
+#include "qdmi/constants.h"
+
 #include <algorithm>
 #include <array>
 #include <cmath>
@@ -36,6 +39,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include <map>
 #include <random>
 #include <string>
+#include <tuple>
 #include <unordered_map>
 #include <utility>
 #include <vector>
@@ -78,6 +82,17 @@ struct CXX_QDMI_Operation_impl_d {
   std::string name;
 };
 
+struct CXX_QDMI_Pulse_Parameter_impl_d {
+  std::string name;
+};
+
+struct CXX_QDMI_Pulse_Waveform_impl_d {
+  std::string name;
+};
+
+struct CXX_QDMI_Pulse_Implementation_impl_d {
+  std::string operation_name;
+};
 namespace {
 /**
  * @brief Static function to maintain the device state.
@@ -212,7 +227,57 @@ const std::unordered_map<
           {{CXX_DEVICE_SITES[0], CXX_DEVICE_SITES[4]}, 0.95}}},
         // No need to specify single-qubit fidelities here
 };
-} // namespace
+
+const CXX_QDMI_Pulse_Parameter_impl_d AMPLITUDE{"A"};
+const CXX_QDMI_Pulse_Parameter_impl_d TIME{"t"};
+const CXX_QDMI_Pulse_Parameter_impl_d SIGMA{"sigma"};
+
+const CXX_QDMI_Pulse_Waveform_impl_d GAUSSIAN{"gaussian"};
+
+std::array<const CXX_QDMI_Pulse_Parameter_impl_d *, 3>
+    GAUSSIAN_PULSE_PARAMETERS = {&AMPLITUDE, &TIME, &SIGMA};
+
+const std::unordered_map<const CXX_QDMI_Pulse_Parameter_impl_d *,
+                         std::tuple<double, double, bool>>
+    GAUSSIAN_PULSE_PARAMETERS_PROPERTIES = {
+        {&AMPLITUDE, {0.3, 0.7, true}},
+        {&TIME,
+         {-std::numeric_limits<double>::infinity(),
+          std::numeric_limits<double>::infinity(), true}},
+        {&SIGMA, {10.0, 20.0, true}},
+};
+const std::unordered_map<
+    const CXX_QDMI_Pulse_Waveform_impl_d *,
+    std::pair<std::string,
+              std::array<const CXX_QDMI_Pulse_Parameter_impl_d *, 3>>>
+    PULSE_WAVEFORMS = {
+        {&GAUSSIAN, {"A * e^(-(t / sigma)^2)", GAUSSIAN_PULSE_PARAMETERS}}};
+
+const CXX_QDMI_Pulse_Implementation_impl_d RX_PULSE_IMPLEMENTATION = {"rx"};
+const CXX_QDMI_Pulse_Implementation_impl_d RY_PULSE_IMPLEMENTATION = {"ry"};
+const CXX_QDMI_Pulse_Implementation_impl_d RZ_PULSE_IMPLEMENTATION = {"rz"};
+const CXX_QDMI_Pulse_Implementation_impl_d CX_PULSE_IMPLEMENTATION = {"cx"};
+
+const std::unordered_map<const CXX_QDMI_Operation_impl_d *,
+                         const CXX_QDMI_Pulse_Implementation_impl_d *>
+    OPERATION_PULSE_IMPLEMENTATIONS = {
+        {CXX_DEVICE_OPERATIONS[0], &RX_PULSE_IMPLEMENTATION},
+        {CXX_DEVICE_OPERATIONS[1], &RY_PULSE_IMPLEMENTATION},
+        {CXX_DEVICE_OPERATIONS[2], &RZ_PULSE_IMPLEMENTATION},
+        {CXX_DEVICE_OPERATIONS[3], &CX_PULSE_IMPLEMENTATION}};
+
+const std::unordered_map<
+    const CXX_QDMI_Pulse_Implementation_impl_d *,
+    std::pair<const CXX_QDMI_Pulse_Waveform_impl_d *,
+              std::array<const CXX_QDMI_Pulse_Parameter_impl_d *, 3>>>
+    OPERATION_PULSE_IMPLEMENTATIONS_PROPERTIES = {
+        {&RX_PULSE_IMPLEMENTATION, {&GAUSSIAN, GAUSSIAN_PULSE_PARAMETERS}},
+        {&RY_PULSE_IMPLEMENTATION, {&GAUSSIAN, GAUSSIAN_PULSE_PARAMETERS}},
+        {&RZ_PULSE_IMPLEMENTATION, {&GAUSSIAN, GAUSSIAN_PULSE_PARAMETERS}},
+        {&CX_PULSE_IMPLEMENTATION, {&GAUSSIAN, GAUSSIAN_PULSE_PARAMETERS}},
+};
+
+}; // namespace
 
 // NOLINTBEGIN(bugprone-macro-parentheses)
 #define ADD_SINGLE_VALUE_PROPERTY(prop_name, prop_type, prop_value, prop,      \
@@ -776,7 +841,7 @@ int CXX_QDMI_device_session_query_device_property(
 
   ADD_SINGLE_VALUE_PROPERTY(
       QDMI_DEVICE_PROPERTY_PULSESUPPORT, QDMI_Device_Pulse_Support_Level,
-      QDMI_DEVICE_PULSE_SUPPORT_LEVEL_NONE, prop, size, value, size_ret)
+      QDMI_DEVICE_PULSE_SUPPORT_LEVEL_SITE, prop, size, value, size_ret)
 
   return QDMI_ERROR_NOTSUPPORTED;
 } /// [DOXYGEN FUNCTION END]
@@ -821,10 +886,17 @@ int CXX_QDMI_device_session_query_operation_property(
        prop != QDMI_OPERATION_PROPERTY_CUSTOM5)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
+
   // General properties
   ADD_STRING_PROPERTY(QDMI_OPERATION_PROPERTY_NAME,
                       OPERATION_PROPERTIES.at(operation).first.c_str(), prop,
                       size, value, size_ret)
+  ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_PULSEIMPLEMENTATION,
+                            CXX_QDMI_Pulse_Implementation,
+                            const_cast<CXX_QDMI_Pulse_Implementation>(
+                                OPERATION_PULSE_IMPLEMENTATIONS.at(operation)),
+                            prop, size, value, size_ret)
+
   if (operation == CXX_DEVICE_OPERATIONS[3]) {
     if (sites != nullptr && num_sites != 2) {
       return QDMI_ERROR_INVALIDARGUMENT;
@@ -871,5 +943,89 @@ int CXX_QDMI_device_session_query_operation_property(
     ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_FIDELITY, double, 0.999,
                               prop, size, value, size_ret)
   }
+  return QDMI_ERROR_NOTSUPPORTED;
+} /// [DOXYGEN FUNCTION END]
+
+int CXX_QDMI_device_session_query_pulse_parameter_property(
+    CXX_QDMI_Device_Session session, CXX_QDMI_Pulse_Parameter param,
+    const QDMI_Pulse_Parameter_Property prop, const size_t size, void *value,
+    size_t *size_ret) {
+  if (session == nullptr || (value != nullptr && size == 0) ||
+      (prop >= QDMI_PULSE_PARAMETER_PROPERTY_MAX &&
+       prop != QDMI_PULSE_PARAMETER_PROPERTY_CUSTOM1 &&
+       prop != QDMI_PULSE_PARAMETER_PROPERTY_CUSTOM2 &&
+       prop != QDMI_PULSE_PARAMETER_PROPERTY_CUSTOM3 &&
+       prop != QDMI_PULSE_PARAMETER_PROPERTY_CUSTOM4 &&
+       prop != QDMI_PULSE_PARAMETER_PROPERTY_CUSTOM5)) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+
+  auto [range_min, range_max, is_mutable] =
+      GAUSSIAN_PULSE_PARAMETERS_PROPERTIES.at(param);
+
+  ADD_STRING_PROPERTY(QDMI_PULSE_PARAMETER_PROPERTY_NAME, param->name.c_str(),
+                      prop, size, value, size_ret)
+  ADD_SINGLE_VALUE_PROPERTY(QDMI_PULSE_PARAMETER_PROPERTY_RANGEMIN, double,
+                            range_min, prop, size, value, size_ret)
+  ADD_SINGLE_VALUE_PROPERTY(QDMI_PULSE_PARAMETER_PROPERTY_RANGEMAX, double,
+                            range_max, prop, size, value, size_ret)
+  ADD_SINGLE_VALUE_PROPERTY(QDMI_PULSE_PARAMETER_PROPERTY_MUTABLE, bool,
+                            is_mutable, prop, size, value, size_ret)
+
+  return QDMI_ERROR_NOTSUPPORTED;
+} /// [DOXYGEN FUNCTION END]
+
+int CXX_QDMI_device_session_query_pulse_waveform_property(
+    CXX_QDMI_Device_Session session, CXX_QDMI_Pulse_Waveform waveform,
+    const QDMI_Pulse_Waveform_Property prop, const size_t size, void *value,
+    size_t *size_ret) {
+  if (session == nullptr || waveform == nullptr ||
+      (value != nullptr && size == 0) ||
+      (prop >= QDMI_PULSE_WAVEFORM_PROPERTY_MAX &&
+       prop != QDMI_PULSE_WAVEFORM_PROPERTY_CUSTOM1 &&
+       prop != QDMI_PULSE_WAVEFORM_PROPERTY_CUSTOM2 &&
+       prop != QDMI_PULSE_WAVEFORM_PROPERTY_CUSTOM3 &&
+       prop != QDMI_PULSE_WAVEFORM_PROPERTY_CUSTOM4 &&
+       prop != QDMI_PULSE_WAVEFORM_PROPERTY_CUSTOM5)) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+
+  ADD_STRING_PROPERTY(QDMI_PULSE_WAVEFORM_PROPERTY_NAME, waveform->name.c_str(),
+                      prop, size, value, size_ret)
+  ADD_STRING_PROPERTY(QDMI_PULSE_WAVEFORM_PROPERTY_FORMULA,
+                      PULSE_WAVEFORMS.at(waveform).first.c_str(), prop, size,
+                      value, size_ret)
+  ADD_LIST_PROPERTY(
+      QDMI_PULSE_WAVEFORM_PROPERTY_PARAMETERS, CXX_QDMI_Pulse_Parameter,
+      PULSE_WAVEFORMS.at(waveform).second, prop, size, value, size_ret)
+
+  return QDMI_ERROR_NOTSUPPORTED;
+} /// [DOXYGEN FUNCTION END]
+
+int CXX_QDMI_device_session_query_pulse_implementation_property(
+    CXX_QDMI_Device_Session session, CXX_QDMI_Pulse_Implementation impl,
+    const QDMI_Pulse_Implementation_Property prop, const size_t size,
+    void *value, size_t *size_ret) {
+  if (session == nullptr || impl == nullptr ||
+      (value != nullptr && size == 0) ||
+      (prop >= QDMI_PULSE_IMPLEMENTATION_PROPERTY_MAX &&
+       prop != QDMI_PULSE_IMPLEMENTATION_PROPERTY_CUSTOM1 &&
+       prop != QDMI_PULSE_IMPLEMENTATION_PROPERTY_CUSTOM2 &&
+       prop != QDMI_PULSE_IMPLEMENTATION_PROPERTY_CUSTOM3 &&
+       prop != QDMI_PULSE_IMPLEMENTATION_PROPERTY_CUSTOM4 &&
+       prop != QDMI_PULSE_IMPLEMENTATION_PROPERTY_CUSTOM5)) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  ADD_SINGLE_VALUE_PROPERTY(
+      QDMI_PULSE_IMPLEMENTATION_PROPERTY_PULSEWAVEFORM, CXX_QDMI_Pulse_Waveform,
+      const_cast<CXX_QDMI_Pulse_Waveform>(
+          OPERATION_PULSE_IMPLEMENTATIONS_PROPERTIES.at(impl).first),
+      prop, size, value, size_ret)
+
+  ADD_LIST_PROPERTY(QDMI_PULSE_IMPLEMENTATION_PROPERTY_PULSEPARAMETERS,
+                    CXX_QDMI_Pulse_Parameter,
+                    OPERATION_PULSE_IMPLEMENTATIONS_PROPERTIES.at(impl).second,
+                    prop, size, value, size_ret)
+
   return QDMI_ERROR_NOTSUPPORTED;
 } /// [DOXYGEN FUNCTION END]

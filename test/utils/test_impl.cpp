@@ -36,6 +36,7 @@ void QDMIImplementationTest::SetUp() {
   const std::string &library_name = std::get<0>(params);
   const std::string &prefix = std::get<1>(params);
   mode = std::get<2>(params);
+  lib_prefix = std::get<1>(params);
 
   // Get the current test info
   const ::testing::TestInfo *test_info =
