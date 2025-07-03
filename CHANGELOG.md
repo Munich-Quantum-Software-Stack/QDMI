@@ -13,6 +13,7 @@ clients compiled against a different minor or major version.
 
 ### Added
 
+- 🔥 Remove example device implementation in C ([#169]) ([\@ystade])
 - 📝 Add changelog and upgrade guide ([#160]) ([\@ystade], [\@burgholzer])
 - 🚸 Support querying of job properties incl. previously set parameters values ([#160]) ([\@ystade])
 - 🚸 Add new authentication options to `QDMI_SESSION_PARAMETER` and `QDMI_DEVICE_SESSION_PARAMETER`
