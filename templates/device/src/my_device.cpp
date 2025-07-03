@@ -54,16 +54,16 @@ struct MY_QDMI_Device_Session_impl_d {};
 struct MY_QDMI_Device_Job_impl_d {};
 
 /**
- * @brief Implementation of the MY_QDMI_Device_Site structure.
+ * @brief Implementation of the MY_QDMI_Site structure.
  * @details This structure can, e.g., be used to store the site id.
  */
-struct MY_QDMI_Device_Site_impl_d {};
+struct MY_QDMI_Site_impl_d {};
 
 /**
- * @brief Implementation of the MY_QDMI_Device_Operation structure.
+ * @brief Implementation of the MY_QDMI_Operation structure.
  * @details This structure can, e.g., be used to store the operation id.
  */
-struct MY_QDMI_Device_Operation_impl_d {};
+struct MY_QDMI_Operation_impl_d {};
 
 int MY_QDMI_device_initialize() { return QDMI_ERROR_NOTIMPLEMENTED; }
 
