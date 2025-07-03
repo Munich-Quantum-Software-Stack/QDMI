@@ -27,6 +27,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include <cstdlib>
 #include <filesystem>
 #include <fstream>
+#include <gmock/gmock-matchers.h>
 #include <gtest/gtest.h>
 #include <string>
 #include <vector>
@@ -99,8 +100,27 @@ void QDMIImplementationTest::TearDown() {
   std::filesystem::remove(config_file_name);
 }
 
+TEST_P(QDMIImplementationTest, SessionAllocImplemented) {
+  ASSERT_EQ(QDMI_session_alloc(nullptr), QDMI_ERROR_INVALIDARGUMENT);
+}
+
+TEST_P(QDMIImplementationTest, SessionInitImplemented) {
+  ASSERT_EQ(QDMI_session_init(nullptr), QDMI_ERROR_INVALIDARGUMENT);
+}
+
 TEST_P(QDMIImplementationTest, SessionSetParameterImplemented) {
-  ASSERT_EQ(QDMI_session_set_parameter(session, QDMI_SESSION_PARAMETER_MAX, 0,
+  QDMI_Session uninitialized_session = nullptr;
+  ASSERT_EQ(QDMI_session_alloc(&uninitialized_session), QDMI_SUCCESS);
+  EXPECT_EQ(QDMI_session_set_parameter(uninitialized_session,
+                                       QDMI_SESSION_PARAMETER_AUTHURL, 20,
+                                       "https://example.com"),
+            QDMI_ERROR_BADSTATE);
+  EXPECT_THAT(QDMI_session_set_parameter(session,
+                                         QDMI_SESSION_PARAMETER_AUTHURL, 20,
+                                         "https://example.com"),
+              testing::AnyOf(QDMI_SUCCESS, QDMI_ERROR_NOTSUPPORTED,
+                             QDMI_ERROR_INVALIDARGUMENT, QDMI_ERROR_BADSTATE));
+  EXPECT_EQ(QDMI_session_set_parameter(session, QDMI_SESSION_PARAMETER_MAX, 0,
                                        nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
 }
