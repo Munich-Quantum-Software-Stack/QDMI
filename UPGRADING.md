@@ -21,7 +21,6 @@ The enum value `QDMI_SITE_PROPERTY_ID` has been renamed to `QDMI_SITE_PROPERTY_I
 - New authentication options have been added to the `QDMI_DEVICE_SESSION_PARAMETER` enum.
   Specifically, besides the existing `QDMI_DEVICE_SESSION_PARAMETER_BASEURL` and
   `QDMI_DEVICE_SESSION_PARAMETER_TOKEN`, the following authentication options are now available:
-
   - `QDMI_DEVICE_SESSION_PARAMETER_AUTHFILE`, which allows the use of a file containing
     authentication information.
   - `QDMI_DEVICE_SESSION_PARAMETER_AUTHURL`, which allows the use of a URL for authentication.
@@ -47,7 +46,6 @@ header file versions.
 - New authentication options have been added to the `QDMI_SESSION_PARAMETER` enum. Specifically,
   besides the existing `QDMI_SESSION_PARAMETER_TOKEN` and `QDMI_SESSION_PARAMETER_PROJECTID`, the
   following authentication options are now available:
-
   - `QDMI_SESSION_PARAMETER_AUTHFILE`, which allows the use of a file containing authentication
     information.
   - `QDMI_SESSION_PARAMETER_AUTHURL`, which allows the use of a URL for authentication.
