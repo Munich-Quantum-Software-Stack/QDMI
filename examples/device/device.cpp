@@ -61,8 +61,7 @@ struct CXX_QDMI_Device_Job_impl_d {
 
 struct CXX_QDMI_Device_State {
   QDMI_Device_Status status = QDMI_DEVICE_STATUS_OFFLINE;
-  std::random_device rd;
-  std::mt19937 gen{rd()};
+  std::mt19937 gen{80333}; // Seeded with a constant for reproducibility
   std::uniform_int_distribution<> dis =
       std::uniform_int_distribution<>(0, std::numeric_limits<int>::max());
   std::bernoulli_distribution dis_bin{0.5};

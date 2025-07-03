@@ -292,6 +292,9 @@ int QDMI_driver_init() {
 }
 
 int QDMI_session_alloc(QDMI_Session *session) {
+  if (session == nullptr) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
   *session = new QDMI_Session_impl_d();
   QDMI_get_driver_state()->sessions.emplace(*session);
   return QDMI_SUCCESS;

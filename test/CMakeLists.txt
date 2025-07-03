@@ -22,16 +22,12 @@ endif()
 
 # add CXX language support
 enable_language(CXX)
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_subdirectory(utils)
 
 # ------------------------------------------------------------------------------
 # Non-Functional Tests
 # ------------------------------------------------------------------------------
-generate_device_defs_executable("C")
 generate_device_defs_executable("CXX")
 
 # ------------------------------------------------------------------------------
@@ -52,6 +48,8 @@ target_link_libraries(
           qdmi::project_warnings
           gtest_main)
 
+target_compile_features(qdmi_test PRIVATE cxx_std_17)
+
 # discover tests
 gtest_discover_tests(
   qdmi_test
@@ -59,13 +57,12 @@ gtest_discover_tests(
   PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
              DISCOVERY_TIMEOUT 60)
 
-# ensure c_device and cxx_device are built whenever qdmi_test is built. Those
-# targets build the dynamic libraries that are loaded in the tests.
-add_dependencies(qdmi_test qdmi::c_device qdmi::cxx_device)
-# ensure qdmi_test_c_device_defs and qdmi_test_cxx_device_defs are built
-# whenever qdmi_test is built. Those targets ensure that the respective devices
-# implement all interface functions.
-add_dependencies(qdmi_test qdmi_test_c_device_defs qdmi_test_cxx_device_defs)
+# ensure cxx_device are built whenever qdmi_test is built. Those targets build
+# the dynamic libraries that are loaded in the tests.
+add_dependencies(qdmi_test qdmi::cxx_device)
+# ensure qdmi_test_cxx_device_defs are built whenever qdmi_test is built. Those
+# targets ensure that the respective devices implement all interface functions.
+add_dependencies(qdmi_test qdmi_test_cxx_device_defs)
 # ensure my_device_test is built whenever qdmi_test is built. That target
 # ensures that there is no compilation error in the templates provided with QDMI
 # and their tests.

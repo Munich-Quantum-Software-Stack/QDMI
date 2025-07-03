@@ -19,9 +19,6 @@
 if(NOT CXX_DEVICE)
   # add CXX language support
   enable_language(CXX)
-  set(CMAKE_CXX_STANDARD 17)
-  set(CMAKE_CXX_STANDARD_REQUIRED ON)
-  set(CMAKE_CXX_EXTENSIONS OFF)
 endif()
 
 # ------------------------------------------------------------------------------
@@ -40,6 +37,9 @@ add_executable(my_device_test test_my_device.cpp)
 # link the Google test infrastructure to the test executable.
 target_link_libraries(my_device_test PRIVATE gtest_main qdmi::qdmi my_device
                                              qdmi::project_warnings)
+
+# set c++ standard
+target_compile_features(my_device_test PRIVATE cxx_std_17)
 
 # ensure my_device and my_device_definitions_test are built whenever
 # my_device_test is built

@@ -24,14 +24,19 @@ clients compiled against a different minor or major version.
 
 ### Changed
 
+- 🔧 Set c++ standard target based ([#165]) ([\@ystade])
 - 🚸 Change order of `QDMI_SESSION_PARAMETER` and `QDMI_DEVICE_SESSION` enum values due to new
   authentication options ([#160]) ([\@ystade], [\@burgholzer])
 - 🚸 Change order of `QDMI_JOB_STATUS` enum values to better reflect job cycle ([#160]) ([\@ystade])
 - 🚚 Rename `QDMI_SITE_PROPERTY_ID` to `QDMI_SITE_PROPERTY_INDEX` ([#160]) ([\@ystade])
 
+### Fixed
+
+- 🐛 Fix definitions of `QDMI_Site`and `QDMI_Operation` in device template ([#169]) ([\@ystade])
+
 ### Removed
 
-- 🔥 Remove example device implementation in C ([#169]) ([\@ystade])
+- 🔥 Remove example device implementation in C ([#165]) ([\@ystade])
 
 ## [1.1.0] - 2025-01-10
 
@@ -47,6 +52,7 @@ changelogs._
 <!-- PR links -->
 
 [#169]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/169
+[#165]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/165
 [#160]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/160
 
 <!-- Contributor -->
