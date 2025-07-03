@@ -115,7 +115,7 @@ TEST_P(QDMIImplementationTest, SessionSetParameterImplemented) {
                                          QDMI_SESSION_PARAMETER_AUTHURL, 20,
                                          "https://example.com"),
               testing::AnyOf(QDMI_SUCCESS, QDMI_ERROR_NOTSUPPORTED,
-                             QDMI_ERROR_INVALIDARGUMENT, QDMI_ERROR_BADSTATE));
+                             QDMI_ERROR_INVALIDARGUMENT));
   EXPECT_EQ(QDMI_session_set_parameter(session, QDMI_SESSION_PARAMETER_AUTHURL,
                                        20, "https://example.com"),
             QDMI_ERROR_BADSTATE);
