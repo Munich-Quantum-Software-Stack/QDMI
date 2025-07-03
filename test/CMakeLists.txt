@@ -22,9 +22,6 @@ endif()
 
 # add CXX language support
 enable_language(CXX)
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_subdirectory(utils)
 
@@ -50,6 +47,9 @@ target_link_libraries(
           qdmi::example_driver
           qdmi::project_warnings
           gtest_main)
+
+target_compile_features(qdmi_test PRIVATE cxx_std_17)
+target_compile_options(qdmi_test PRIVATE -pedantic)
 
 # discover tests
 gtest_discover_tests(

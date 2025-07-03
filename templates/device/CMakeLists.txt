@@ -31,10 +31,6 @@ project(
 
 if(CXX_DEVICE)
   enable_language(CXX)
-  # Require C++ standard
-  set(CMAKE_CXX_STANDARD 17)
-  set(CMAKE_CXX_STANDARD_REQUIRED ON)
-  set(CMAKE_CXX_EXTENSIONS OFF)
 endif()
 
 # make scripts available to cmake

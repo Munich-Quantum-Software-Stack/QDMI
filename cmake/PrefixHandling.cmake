@@ -73,4 +73,7 @@ function(generate_device_defs_executable prefix)
   target_link_libraries(
     qdmi_test_${QDMI_prefix}_device_defs
     PRIVATE qdmi::qdmi qdmi::${QDMI_prefix}_device qdmi::project_warnings)
+  target_compile_features(qdmi_test_${QDMI_prefix}_device_defs
+                          PRIVATE cxx_std_17)
+  target_compile_options(qdmi_test_${QDMI_prefix}_device_defs PRIVATE -pedantic)
 endfunction()

@@ -18,9 +18,6 @@
 
 # add C++ language support
 enable_language(CXX)
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
 
 # NOTE: If you change the target name, the name of the shared library will also
 # change. Hence, in the test you have to adopt the name of the shared library
@@ -30,4 +27,6 @@ target_link_libraries(cxx_device PRIVATE qdmi::qdmi qdmi::project_warnings)
 generate_prefixed_qdmi_headers("CXX")
 target_include_directories(cxx_device
                            PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/include)
+target_compile_features(cxx_device PRIVATE cxx_std_17)
+target_compile_options(cxx_device PRIVATE -pedantic)
 add_library(qdmi::cxx_device ALIAS cxx_device)

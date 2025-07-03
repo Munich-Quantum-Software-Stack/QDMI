@@ -27,4 +27,6 @@ target_link_libraries(qdmi_example_fomac PRIVATE qdmi::qdmi
                                                  qdmi::project_warnings)
 target_include_directories(qdmi_example_fomac
                            PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_compile_features(qdmi_example_fomac PRIVATE cxx_std_17)
+target_compile_options(qdmi_example_fomac PRIVATE -pedantic)
 add_library(qdmi::example_fomac ALIAS qdmi_example_fomac)
