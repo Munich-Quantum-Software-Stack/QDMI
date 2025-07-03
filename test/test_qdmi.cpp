@@ -40,9 +40,9 @@ INSTANTIATE_TEST_SUITE_P(
     QDMIImplementationTest,
     // Test suite name
     // Parameters to test with
-    ::testing::Values(std::tuple{"../examples/device/cxx/libcxx_device", "CXX",
+    ::testing::Values(std::tuple{"../examples/device/libcxx_device", "CXX",
                                  TEST_SESSION_MODE::READONLY},
-                      std::tuple{"../examples/device/cxx/libcxx_device", "CXX",
+                      std::tuple{"../examples/device/libcxx_device", "CXX",
                                  TEST_SESSION_MODE::READWRITE}),
     [](const testing::TestParamInfo<
         std::tuple<std::string, std::string, TEST_SESSION_MODE>> &inf) {
