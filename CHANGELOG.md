@@ -43,6 +43,7 @@ changelogs._
 
 <!-- PR links -->
 
+[#169]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/169
 [#160]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/160
 
 <!-- Contributor -->
