@@ -28,5 +28,4 @@ generate_prefixed_qdmi_headers("CXX")
 target_include_directories(cxx_device
                            PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/include)
 target_compile_features(cxx_device PRIVATE cxx_std_17)
-target_compile_options(cxx_device PRIVATE -pedantic)
 add_library(qdmi::cxx_device ALIAS cxx_device)

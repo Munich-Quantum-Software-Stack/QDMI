@@ -22,6 +22,5 @@ target_include_directories(my_device PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/include)
 if(NOT CXX_DEVICE)
   # set c++ standard
   target_compile_features(my_device PRIVATE cxx_std_17)
-  target_compile_options(my_device PRIVATE -pedantic)
 endif()
 add_library(qdmi::my_device ALIAS my_device)

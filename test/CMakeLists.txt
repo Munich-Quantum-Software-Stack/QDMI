@@ -49,7 +49,6 @@ target_link_libraries(
           gtest_main)
 
 target_compile_features(qdmi_test PRIVATE cxx_std_17)
-target_compile_options(qdmi_test PRIVATE -pedantic)
 
 # discover tests
 gtest_discover_tests(

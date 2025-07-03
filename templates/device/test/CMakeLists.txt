@@ -40,7 +40,6 @@ target_link_libraries(my_device_test PRIVATE gtest_main qdmi::qdmi my_device
 
 # set c++ standard
 target_compile_features(my_device_test PRIVATE cxx_std_17)
-target_compile_options(my_device_test PRIVATE -pedantic)
 
 # ensure my_device and my_device_definitions_test are built whenever
 # my_device_test is built
