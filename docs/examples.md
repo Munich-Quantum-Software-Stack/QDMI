@@ -30,8 +30,7 @@ repository.
 
 ## Implementing a Device {#device}
 
-Below you find mock implementations of two QDMI devices: One is implemented in C++ and the other one
-in C.
+Below you find mock implementations of a QDMI device in C++.
 
 \note Keep in mind, that even though the interface is defined in C, the device can be implemented in
 C++ or any other language that supports the C ABI.
