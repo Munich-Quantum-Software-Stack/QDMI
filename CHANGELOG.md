@@ -29,6 +29,10 @@ clients compiled against a different minor or major version.
 - 🚸 Change order of `QDMI_JOB_STATUS` enum values to better reflect job cycle ([#160]) ([\@ystade])
 - 🚚 Rename `QDMI_SITE_PROPERTY_ID` to `QDMI_SITE_PROPERTY_INDEX` ([#160]) ([\@ystade])
 
+### Removed
+
+- 🔥 Remove example device implementation in C ([#169]) ([\@ystade])
+
 ## [1.1.0] - 2025-01-10
 
 _📚 Refer to the
@@ -42,6 +46,7 @@ changelogs._
 
 <!-- PR links -->
 
+[#169]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/169
 [#160]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/160
 
 <!-- Contributor -->
