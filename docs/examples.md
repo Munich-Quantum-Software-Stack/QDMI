@@ -48,9 +48,14 @@ All of those properties are of type `char*` (string). Since they are properties 
 are returned by the @ref QDMI_device_session_query_device_property function. Below you find the
 respective implementation in C++.
 
-\dontinclude device.cpp \skip int CXX_QDMI_device_session_query_device_property \until
-QDMI_DEVICE_PROPERTY_LIBRARYVERSION \until size_ret) \skip QDMI_ERROR_NOTSUPPORTED \until DOXYGEN
-FUNCTION END
+<!-- prettier-ignore-start -->
+\dontinclude device.cpp
+\skip int CXX_QDMI_device_session_query_device_property
+\until QDMI_DEVICE_PROPERTY_LIBRARYVERSION
+\until size_ret)
+\skip QDMI_ERROR_NOTSUPPORTED
+\until DOXYGEN FUNCTION END
+<!-- prettier-ignore-end -->
 
 Both implementations use an auxiliary macro to add the string properties to the device. For an
 explanation of the macro, see the next section [Auxiliary Macros](#device-macros).
@@ -60,15 +65,27 @@ explanation of the macro, see the next section [Auxiliary Macros](#device-macros
 The following macro is used to add string properties to the device. The macro is used, e.g., in the
 implementation of the @ref QDMI_device_session_query_device_property function.
 
-\dontinclude device.cpp \skip #define ADD_STRING_PROPERTY \until DOXYGEN MACRO END
+<!-- prettier-ignore-start -->
+\dontinclude device.cpp
+\skip #define ADD_STRING_PROPERTY
+\until DOXYGEN MACRO END
+<!-- prettier-ignore-end -->
 
 A similar macro is defined for other (fixed length) data types, for example, `int`, `double`.
 
-\dontinclude device.cpp \skip #define ADD_SINGLE_VALUE_PROPERTY \until DOXYGEN MACRO END
+<!-- prettier-ignore-start -->
+\dontinclude device.cpp
+\skip #define ADD_SINGLE_VALUE_PROPERTY
+\until DOXYGEN MACRO END
+<!-- prettier-ignore-end -->
 
 Another macro is defined for list properties of the data types above.
 
-\dontinclude device.cpp \skip #define ADD_LIST_PROPERTY \until DOXYGEN MACRO END
+<!-- prettier-ignore-start -->
+\dontinclude device.cpp
+\skip #define ADD_LIST_PROPERTY
+\until DOXYGEN MACRO END
+<!-- prettier-ignore-end -->
 
 The usage of the two latter macros is demonstrated in the following sections.
 
@@ -77,9 +94,16 @@ The usage of the two latter macros is demonstrated in the following sections.
 The following two examples demonstrate how to return integer or enumeration properties of the
 device.
 
-\dontinclude device.cpp \skip int CXX_QDMI_device_session_query_device_property \until { \skip
-QDMI_DEVICE_PROPERTY_STATUS \until QDMI_DEVICE_PROPERTY_QUBITSNUM \until size_ret) \skip
-QDMI_ERROR_NOTSUPPORTED \until DOXYGEN FUNCTION END
+<!-- prettier-ignore-start -->
+\dontinclude device.cpp
+\skip int CXX_QDMI_device_session_query_device_property
+\until {
+\skip QDMI_DEVICE_PROPERTY_STATUS
+\until QDMI_DEVICE_PROPERTY_QUBITSNUM
+\until size_ret)
+\skip QDMI_ERROR_NOTSUPPORTED
+\until DOXYGEN FUNCTION END
+<!-- prettier-ignore-end -->
 
 ### List Properties {#device-list}
 
@@ -87,9 +111,16 @@ Some properties are returned as a list of various data types. The following exam
 return the coupling map of the device as a list of @ref QDMI_Site pairs. The pairs are flattened
 into a single list of @ref QDMI_Site's.
 
-\dontinclude device.cpp \skipline constexpr std::array<const CXX_QDMI_Site_impl_d \*, 20> \skip
-DEVICE_COUPLING_MAP \until ; \skip int CXX_QDMI_device_session_query_device_property \until { \skip
-ADD_LIST_PROPERTY \until DOXYGEN FUNCTION END
+<!-- prettier-ignore-start -->
+\dontinclude device.cpp
+\skipline constexpr std::array<const CXX_QDMI_Site_impl_d \*, 20>
+\skip DEVICE_COUPLING_MAP
+\until ;
+\skip int CXX_QDMI_device_session_query_device_property
+\until {
+\skip ADD_LIST_PROPERTY
+\until DOXYGEN FUNCTION END
+<!-- prettier-ignore-end -->
 
 ### Complex Properties {#device-complex}
 
@@ -100,8 +131,14 @@ QDMI_Operation and @ref QDMI_Site, corresponding properties can be queried. The 
 demonstrates how different properties of operations, for example, varying fidelities of two-qubit
 gates can be returned.
 
-\dontinclude device.cpp \skip QDMI_Pair_hash \until OPERATION_FIDELITIES \until ; \skip
-QDMI_device_session_query_operation_property \until DOXYGEN FUNCTION END
+<!-- prettier-ignore-start -->
+\dontinclude device.cpp
+\skip QDMI_Pair_hash
+\until OPERATION_FIDELITIES
+\until ;
+\skip QDMI_device_session_query_operation_property
+\until DOXYGEN FUNCTION END
+<!-- prettier-ignore-end -->
 
 ### Submitting a Job {#device-submit}
 
@@ -109,19 +146,31 @@ One crucial part of QDMI is that it allows submitting a job to the device for ex
 following example provides a mock implementation of the necessary functions to submit a job. The
 first example shows a mock implementation of @ref QDMI_device_session_create_device_job.
 
-\dontinclude device.cpp \skip QDMI_device_session_create_device_job \until DOXYGEN FUNCTION END
+<!-- prettier-ignore-start -->
+\dontinclude device.cpp
+\skip QDMI_device_session_create_device_job
+\until DOXYGEN FUNCTION END
+<!-- prettier-ignore-end -->
 
 The function @ref QDMI_device_job_set_parameter allows setting different parameters for the job, for
 example, the number of shots (@ref QDMI_JOB_PARAMETER_SHOTSNUM).
 
-\dontinclude device.cpp \skip QDMI_device_job_set_parameter \until DOXYGEN FUNCTION END
+<!-- prettier-ignore-start -->
+\dontinclude device.cpp
+\skip QDMI_device_job_set_parameter
+\until DOXYGEN FUNCTION END
+<!-- prettier-ignore-end -->
 
 After the job is set up, it can be submitted to the device. The following example shows a mock
 implementation of @ref QDMI_device_job_submit.
 
-\dontinclude device.cpp \skip QDMI_device_job_submit \until DOXYGEN FUNCTION END
+<!-- prettier-ignore-start -->
+\dontinclude device.cpp
+\skip QDMI_device_job_submit
+\until DOXYGEN FUNCTION END
+<!-- prettier-ignore-end -->
 
 For the full implementation of the example devices we refer to the respective source files in the
 QDMI repository, that is,
-[`device.cpp`](https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/develop/examples/device/cxx/device.cpp)
+[`device.cpp`](https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/develop/examples/device/device.cpp)
 for the C++ implementation.
