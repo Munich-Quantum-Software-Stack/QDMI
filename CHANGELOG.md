@@ -13,7 +13,6 @@ clients compiled against a different minor or major version.
 
 ### Added
 
-- 🔥 Remove example device implementation in C ([#169]) ([\@ystade])
 - 📝 Add changelog and upgrade guide ([#160]) ([\@ystade], [\@burgholzer])
 - 🚸 Support querying of job properties incl. previously set parameters values ([#160]) ([\@ystade])
 - 🚸 Add new authentication options to `QDMI_SESSION_PARAMETER` and `QDMI_DEVICE_SESSION_PARAMETER`
@@ -29,6 +28,10 @@ clients compiled against a different minor or major version.
   authentication options ([#160]) ([\@ystade], [\@burgholzer])
 - 🚸 Change order of `QDMI_JOB_STATUS` enum values to better reflect job cycle ([#160]) ([\@ystade])
 - 🚚 Rename `QDMI_SITE_PROPERTY_ID` to `QDMI_SITE_PROPERTY_INDEX` ([#160]) ([\@ystade])
+
+### Removed
+
+- 🔥 Remove example device implementation in C ([#169]) ([\@ystade])
 
 ## [1.1.0] - 2025-01-10
 
