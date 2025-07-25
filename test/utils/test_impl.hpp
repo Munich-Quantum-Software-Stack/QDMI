@@ -22,7 +22,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
  * @details It calls all the functions in the device interface to ensure that
  * they are implemented. During linking, when a function is not implemented this
  * will raise an error. Additionally, when executed, the tests check that no
- * function returns QDMI_ERROR_NOT_IMPLEMENTED.
+ * function returns QDMI_ERROR_NOTIMPLEMENTED.
  */
 
 #pragma once

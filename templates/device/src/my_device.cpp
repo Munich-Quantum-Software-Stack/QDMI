@@ -18,8 +18,8 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 /** @file
  * @brief A template of a device implementation in C++.
- * @details In the end, all QDMI_ERROR_NOT_IMPLEMENTED return codes should be
- * replaced by QDMI_ERROR_NOT_IMPLEMENTED return codes.
+ * @details In the end, all QDMI_ERROR_NOTIMPLEMENTED return codes should be
+ * replaced by proper return codes.
  * For the documentation of the functions, see the official documentation.
  */
 
