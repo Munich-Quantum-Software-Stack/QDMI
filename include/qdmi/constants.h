@@ -334,7 +334,7 @@ enum QDMI_DEVICE_PROPERTY_T {
   /**
    * TODO
    */
-  QDMI_DEVICE_PROPERTY_ENVIRONMENTSENSORS = 9,
+  QDMI_DEVICE_PROPERTY_ENVIRONMENTSENSORS = 10,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
