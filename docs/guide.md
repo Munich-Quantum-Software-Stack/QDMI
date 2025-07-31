@@ -51,12 +51,13 @@ Ready to contribute to QDMI? This guide will help you get started.
 5. (Optional, **highly recommended**) Install [pre-commit](https://pre-commit.com/) to automatically
    run a set of checks before each commit.
 
+<!-- prettier-ignore-start -->
    <div class="tabbed">
 
    - <b class="tab-title">via `uv`</b> The easiest way to install pre-commit is via
-     [uv](https://docs.astral.sh/uv/).
+   [uv](https://docs.astral.sh/uv/).
 
-     \code{.sh} uv tool install pre-commit \endcode
+     \code{.shell} uv tool install pre-commit \endcode
 
    - <b class="tab-title">via `brew`</b> If you use macOS, then pre-commit is in Homebrew, use
 
@@ -73,6 +74,7 @@ Ready to contribute to QDMI? This guide will help you get started.
      \code{.shell} pip install pre-commit \endcode
 
    </div>
+<!-- prettier-ignore-end -->
    Afterwards, you can install the pre-commit hooks with
 
    \code{.shell} pre-commit install \endcode

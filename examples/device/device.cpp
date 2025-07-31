@@ -65,8 +65,7 @@ struct CXX_QDMI_Device_Job_impl_d {
 
 struct CXX_QDMI_Device_State {
   QDMI_Device_Status status = QDMI_DEVICE_STATUS_OFFLINE;
-  std::random_device rd;
-  std::mt19937 gen{rd()};
+  std::mt19937 gen{80333}; // Seeded with a constant for reproducibility
   std::uniform_int_distribution<> dis =
       std::uniform_int_distribution<>(0, std::numeric_limits<int>::max());
   std::bernoulli_distribution dis_bin{0.5};
@@ -805,6 +804,9 @@ int CXX_QDMI_device_session_query_device_property(
   ADD_LIST_PROPERTY(QDMI_DEVICE_PROPERTY_ENVIRONMENTSENSORS,
                     CXX_QDMI_EnvironmentSensor, CXX_DEVICE_ENVIRONMENTSENSORS,
                     prop, size, value, size_ret)
+  ADD_SINGLE_VALUE_PROPERTY(
+      QDMI_DEVICE_PROPERTY_PULSESUPPORT, QDMI_Device_Pulse_Support_Level,
+      QDMI_DEVICE_PULSE_SUPPORT_LEVEL_NONE, prop, size, value, size_ret)
 
   return QDMI_ERROR_NOTSUPPORTED;
 } /// [DOXYGEN FUNCTION END]

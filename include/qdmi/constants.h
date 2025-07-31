@@ -324,6 +324,14 @@ enum QDMI_DEVICE_PROPERTY_T {
    */
   QDMI_DEVICE_PROPERTY_NEEDSCALIBRATION = 8,
   /**
+   * @brief @ref QDMI_Device_Pulse_Support_Level Whether the device supports
+   * pulse-level control.
+   * @details This property indicates the level of pulse-level control.
+   * If a device supports pulse-level control, it may provide additional
+   * functionality for pulse-level programming and execution.
+   */
+  QDMI_DEVICE_PROPERTY_PULSESUPPORT = 9,
+  /**
    * TODO
    */
   QDMI_DEVICE_PROPERTY_ENVIRONMENTSENSORS = 9,
@@ -335,7 +343,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_DEVICE_PROPERTY_MAX = 10,
+  QDMI_DEVICE_PROPERTY_MAX = 11,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.
@@ -763,6 +771,45 @@ enum QDMI_JOB_RESULT_T {
 
 /// Job result type.
 typedef enum QDMI_JOB_RESULT_T QDMI_Job_Result;
+
+/**
+ * @brief Enum to indicate the level of pulse support a device has.
+ */
+enum QDMI_DEVICE_PULSE_SUPPORT_LEVEL_T {
+  /// The device does not support pulse-level control.
+  QDMI_DEVICE_PULSE_SUPPORT_LEVEL_NONE = 0,
+  /**
+   * @brief The device supports pulse-level control at an abstraction level of
+   * @ref QDMI_Site.
+   * @details This means that the device can execute pulse-level
+   * instructions on the sites of the device.
+   * This level of support is sufficient for most devices that can execute
+   * quantum circuits with pulse-level control, as it allows the device to
+   * execute pulse-level instructions on the sites of the device.
+   * @see QDMI_Site for more information on the site abstraction.
+   */
+  QDMI_DEVICE_PULSE_SUPPORT_LEVEL_SITE = 1,
+  /**
+   * @brief The device supports pulse-level control at an abstraction level of
+   * `QDMI_Pulse_Channel`.
+   * @details This means that the device can execute pulse-level instructions on
+   * the channels of the device.
+   * This level of support is sufficient for devices that can execute quantum
+   * circuits with pulse-level control on a channel basis, such as devices that
+   * use a single channel for all sites.
+   */
+  QDMI_DEVICE_PULSE_SUPPORT_LEVEL_CHANNEL = 2,
+  /**
+   * @brief The device supports pulse-level control at an abstraction level of
+   * @ref QDMI_Site and `QDMI_Pulse_Channel`.
+   * @details This means that the device can execute pulse-level instructions on
+   * both the sites and channels of the device.
+   */
+  QDMI_DEVICE_PULSE_SUPPORT_LEVEL_SITEANDCHANNEL = 3,
+};
+
+/// Pulse support level type.
+typedef enum QDMI_DEVICE_PULSE_SUPPORT_LEVEL_T QDMI_Device_Pulse_Support_Level;
 
 /// Enum of the environment sensor properties that can be queried via @ref
 /// QDMI_device_session_query_environmentsensor_property as part of the @ref
