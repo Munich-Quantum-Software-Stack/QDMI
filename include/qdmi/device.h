@@ -697,7 +697,7 @@ typedef struct QDMI_Device_EnvironmentSensor_Query_impl_d
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the device does not allow using
  * the @ref device_environmentsensor_query_interface "device environment sensor
  * query interface" for the current session.
- * @return @ref QDMI_ERROR_FATAL if environment sensor query creation failed due
+ * @return @ref QDMI_ERROR_FATAL if the environment sensor query creation failed due
  * to a fatal error.
  *
  * @attention May only be called after the session has been initialized with
@@ -758,7 +758,7 @@ int QDMI_device_environmentsensor_query_set_parameter(
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p job is @c NULL.
  * @return @ref QDMI_ERROR_BADSTATE if the job is in an invalid state.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the device does not allow using
- * the @ref device_environmentsensor_query_interface "device environment sensro
+ * the @ref device_environmentsensor_query_interface "device environment sensor
  * query interface" for the current session.
  * @return @ref QDMI_ERROR_FATAL if the job submission failed.
  */
@@ -808,7 +808,7 @@ int QDMI_device_environmentsensor_query_check_status(
 /**
  * @brief Wait for an environment sensor query to finish.
  * @details This function blocks until the environment sensor query has either
- * finished or has been canceled, or the timeout has been reached.
+ * finished, has been canceled, or the timeout has been reached.
  * @param[in] query The environment sensor query to wait for. Must not be @c
  * NULL.
  * @param[in] timeout The timeout in seconds.
@@ -871,8 +871,8 @@ int QDMI_device_environmentsensor_query_get_results(
     size_t *size_ret);
 /**
  * @brief Free an environment sensor query.
- * @details Free the resources associated with a environment sensor query. Using
- * a environment sensor query handle after it has been freed is undefined
+ * @details Free the resources associated with an environment sensor query. Using
+ * an environment sensor query handle after it has been freed is undefined
  * behavior.
  * @param[in] query The environment sensor query to free.
  */

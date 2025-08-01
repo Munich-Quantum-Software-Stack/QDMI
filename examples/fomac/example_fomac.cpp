@@ -201,7 +201,7 @@ auto FoMaC::get_parameters_num(const QDMI_Operation &op) const -> size_t {
   return parameters_num;
 }
 
-auto FoMaC::get_environment_variables() const
+auto FoMaC::get_environment_sensors() const
     -> std::vector<QDMI_EnvironmentSensor> {
   size_t environment_sensor_size = 0;
   int ret = QDMI_device_query_device_property(
