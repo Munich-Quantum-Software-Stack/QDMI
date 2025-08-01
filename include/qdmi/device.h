@@ -697,8 +697,8 @@ typedef struct QDMI_Device_EnvironmentSensor_Query_impl_d
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the device does not allow using
  * the @ref device_environmentsensor_query_interface "device environment sensor
  * query interface" for the current session.
- * @return @ref QDMI_ERROR_FATAL if the environment sensor query creation failed due
- * to a fatal error.
+ * @return @ref QDMI_ERROR_FATAL if the environment sensor query creation failed
+ * due to a fatal error.
  *
  * @attention May only be called after the session has been initialized with
  * @ref QDMI_device_session_init.
@@ -871,8 +871,8 @@ int QDMI_device_environmentsensor_query_get_results(
     size_t *size_ret);
 /**
  * @brief Free an environment sensor query.
- * @details Free the resources associated with an environment sensor query. Using
- * an environment sensor query handle after it has been freed is undefined
+ * @details Free the resources associated with an environment sensor query.
+ * Using an environment sensor query handle after it has been freed is undefined
  * behavior.
  * @param[in] query The environment sensor query to free.
  */
