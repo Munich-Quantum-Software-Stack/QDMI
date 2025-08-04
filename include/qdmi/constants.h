@@ -332,7 +332,10 @@ enum QDMI_DEVICE_PROPERTY_T {
    */
   QDMI_DEVICE_PROPERTY_PULSESUPPORT = 9,
   /**
-   * TODO
+   * @brief `QDMI_EnvironmentSensor*` (@ref QDMI_EnvironmentSensor list) The
+   * envoronment sensors of the device.
+   * @details The returned @ref QDMI_EnvironmentSensor handles may be used to
+   * query envoronment sensors.
    */
   QDMI_DEVICE_PROPERTY_ENVIRONMENTSENSORS = 10,
   /**

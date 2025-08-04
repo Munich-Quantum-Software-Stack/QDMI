@@ -64,7 +64,7 @@ public:
   [[nodiscard]] auto get_parameters_num(const QDMI_Operation &op) const
       -> size_t;
 
-  [[nodiscard]] auto get_environment_variables() const
+  [[nodiscard]] auto get_environment_sensors() const
       -> std::vector<QDMI_EnvironmentSensor>;
 
   [[nodiscard]] auto

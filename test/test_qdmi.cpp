@@ -976,7 +976,7 @@ TEST_P(QDMIImplementationTest, QueryEveryEnvironmentProperties) {
 
   const auto fomac = FoMaC(device);
 
-  auto environments = fomac.get_environment_variables();
+  auto environments = fomac.get_environment_sensors();
 
   ASSERT_GT(environments.size(), 0);
 
@@ -1001,7 +1001,7 @@ TEST_P(QDMIImplementationTest, EnvironmentQuery) {
   const auto fomac = FoMaC(device);
 
   const std::vector<QDMI_EnvironmentSensor> environment_sensors =
-      fomac.get_environment_variables();
+      fomac.get_environment_sensors();
 
   ASSERT_GT(environment_sensors.size(), 0);
 

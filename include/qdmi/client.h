@@ -50,8 +50,8 @@ extern "C" {
  * properties of devices.
  *  - The @ref client_job_interface "client job interface" for submitting jobs
  * to devices.
- *  - The @ref client_environmentsensor_query_interface "client environment
- * sensor query interface" for querying environment sensors.
+ *  - The @ref client_environmentsensor_query_interface
+ * "client environment sensor query interface" for querying environment sensors.
  *
  * @{
  */
@@ -1054,8 +1054,8 @@ void QDMI_job_free(QDMI_Job job);
 
 /** @} */ // end of client_job_interface
 
-/** @defgroup client_environmentsensor_query_interface QDMI Client Environment
- * Sensor Query Interface
+/** @defgroup client_environmentsensor_query_interface
+ * QDMI Client Environment Sensor Query Interface
  *  @brief Provides functions to query environment sensors.
  *  @details An environment sensor query is a task submitted by a client to a
  * device for querying environment sensors, i.e. temperature or power.
@@ -1108,8 +1108,9 @@ typedef struct QDMI_EnvironmentSensor_Query_impl_d
  * @return @ref QDMI_SUCCESS if the job was successfully created.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p device or @p query are @c NULL.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the driver does not allow using
- * the @ref client_environmentsensor_query_interface "client environment sensor
- * query interface" for the device in the current session.
+ * the @ref client_environmentsensor_query_interface
+ * "client environment sensor query interface" for the device in the current
+ * session.
  * @return @ref QDMI_ERROR_FATAL if the environment sensor query creation failed
  * due to a fatal error.
  */
@@ -1186,8 +1187,9 @@ typedef enum QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_T
  * current state of the job, for example, because the query is already
  * submitted.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the driver does not allow using
- * the @ref client_environmentsensor_query_interface "client environment sensor
- * query interface" for the device in the current session.
+ * the @ref client_environmentsensor_query_interface
+ * "client environment sensor query interface" for the device in the current
+ * session.
  * @return @ref QDMI_ERROR_FATAL if setting the parameter failed due to a fatal
  * error.
  *
@@ -1234,8 +1236,9 @@ int QDMI_environmentsensor_query_set_parameter(
  * @return @ref QDMI_ERROR_BADSTATE if the environment sensor query is in an
  * invalid state.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the driver does not allow using
- * the @ref client_environmentsensor_query_interface "client environment sensor
- * query interface" for the device in the current session.
+ * the @ref client_environmentsensor_query_interface
+ * "client environment sensor query interface" for the device in the current
+ * session.
  * @return @ref QDMI_ERROR_FATAL if the environment sensor query submission
  * failed.
  */
@@ -1253,8 +1256,9 @@ int QDMI_environmentsensor_query_submit(QDMI_EnvironmentSensor_Query query);
  * environment sensor query already has the status @ref
  * QDMI_ENVIRONMENTSENSOR_QUERY_STATUS_DONE.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the driver does not allow using
- * the @ref client_environmentsensor_query_interface "client environment sensor
- * query interface" for the device in the current session.
+ * the @ref client_environmentsensor_query_interface
+ * "client environment sensor query interface" for the device in the current
+ * session.
  * @return @ref QDMI_ERROR_FATAL if the environment sensor query could not be
  * canceled.
  */
@@ -1273,8 +1277,9 @@ int QDMI_environmentsensor_query_cancel(QDMI_EnvironmentSensor_Query query);
  * successfully checked.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p query or @p status is @c NULL.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the driver does not allow using
- * the @ref client_environmentsensor_query_interface "client environment sensor
- * query interface" for the device in the current session.
+ * the @ref client_environmentsensor_query_interface
+ * "client environment sensor query interface" for the device in the current
+ * session.
  * @return @ref QDMI_ERROR_FATAL if the environment sensor query status could
  * not be checked.
  */
@@ -1294,8 +1299,9 @@ int QDMI_environmentsensor_query_check_status(
  * canceled.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p query is @c NULL.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the driver does not allow using
- * the @ref client_environmentsensor_query_interface "client environment sensor
- * query interface" for the device in the current session.
+ * the @ref client_environmentsensor_query_interface
+ * "client environment sensor query interface" for the device in the current
+ * session.
  * @return @ref QDMI_ERROR_TIMEOUT if @p timeout is not zero and the query did
  * not finish within the specified time.
  * @return @ref QDMI_ERROR_FATAL if the environment sensor query could not be
@@ -1329,8 +1335,9 @@ int QDMI_environmentsensor_query_wait(QDMI_EnvironmentSensor_Query query,
  *  - @p data is not @c NULL and @p size is smaller than the size of the data
  *    being queried.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the driver does not allow using
- * the @ref client_environmentsensor_query_interface "client environment sensor
- * query interface" for the device in the current session.
+ * the @ref client_environmentsensor_query_interface
+ * "client environment sensor query interface" for the device in the current
+ * session.
  * @return @ref QDMI_ERROR_FATAL if an error occurred during the retrieval.
  *
  * @note By calling this function with @p data set to @c NULL, the function can
