@@ -200,63 +200,61 @@ auto FoMaC::get_parameters_num(const QDMI_Operation &op) const -> size_t {
   return parameters_num;
 }
 
-auto FoMaC::get_environment_sensors() const
-    -> std::vector<QDMI_EnvironmentSensor> {
-  size_t environment_sensor_size = 0;
+auto FoMaC::get_telemetry_sensors() const -> std::vector<QDMI_TelemetrySensor> {
+  size_t telemetry_sensor_size = 0;
   int ret = QDMI_device_query_device_property(
-      device, QDMI_DEVICE_PROPERTY_ENVIRONMENTSENSORS, 0, nullptr,
-      &environment_sensor_size);
-  throw_if_error(ret, "Failed to get the environment variable list size.");
-  std::vector<QDMI_EnvironmentSensor> environment_sensors(
-      environment_sensor_size / sizeof(QDMI_Site));
+      device, QDMI_DEVICE_PROPERTY_TELEMETRYSENSORS, 0, nullptr,
+      &telemetry_sensor_size);
+  throw_if_error(ret, "Failed to get the telemetry variable list size.");
+  std::vector<QDMI_TelemetrySensor> telemetry_sensors(telemetry_sensor_size /
+                                                      sizeof(QDMI_Site));
   ret = QDMI_device_query_device_property(
-      device, QDMI_DEVICE_PROPERTY_ENVIRONMENTSENSORS, environment_sensor_size,
-      static_cast<void *>(environment_sensors.data()), nullptr);
-  throw_if_error(ret, "Failed to get the environment variables.");
-  return environment_sensors;
+      device, QDMI_DEVICE_PROPERTY_TELEMETRYSENSORS, telemetry_sensor_size,
+      static_cast<void *>(telemetry_sensors.data()), nullptr);
+  throw_if_error(ret, "Failed to get the telemetry variables.");
+  return telemetry_sensors;
 }
 
-auto FoMaC::get_environment_id(QDMI_EnvironmentSensor environment_sensor) const
+auto FoMaC::get_telemetry_id(QDMI_TelemetrySensor telemetry_sensor) const
     -> std::string {
-  size_t environmentsensor_id_size = 0;
+  size_t telemetrysensor_id_size = 0;
 
-  int ret = QDMI_device_query_environmentsensor_property(
-      device, environment_sensor, QDMI_ENVIRONMENTSENSOR_PROPERTY_ID, 0,
-      nullptr, &environmentsensor_id_size);
-  throw_if_error(ret, "Failed to query the size for environment ID");
-  std::string environmentsensor_id(environmentsensor_id_size - 1, '\0');
-  ret = QDMI_device_query_environmentsensor_property(
-      device, environment_sensor, QDMI_ENVIRONMENTSENSOR_PROPERTY_ID,
-      environmentsensor_id.size() + 1, environmentsensor_id.data(), nullptr);
-  throw_if_error(ret, "Failed to query the environment ID");
+  int ret = QDMI_device_query_telemetrysensor_property(
+      device, telemetry_sensor, QDMI_TELEMETRYSENSOR_PROPERTY_ID, 0, nullptr,
+      &telemetrysensor_id_size);
+  throw_if_error(ret, "Failed to query the size for telemetry ID");
+  std::string telemetrysensor_id(telemetrysensor_id_size - 1, '\0');
+  ret = QDMI_device_query_telemetrysensor_property(
+      device, telemetry_sensor, QDMI_TELEMETRYSENSOR_PROPERTY_ID,
+      telemetrysensor_id.size() + 1, telemetrysensor_id.data(), nullptr);
+  throw_if_error(ret, "Failed to query the telemetry ID");
 
-  return environmentsensor_id;
+  return telemetrysensor_id;
 }
 
-auto FoMaC::get_environment_unit(
-    QDMI_EnvironmentSensor environment_sensor) const -> std::string {
-  size_t environmentsensor_unit_size = 0;
+auto FoMaC::get_telemetry_unit(QDMI_TelemetrySensor telemetry_sensor) const
+    -> std::string {
+  size_t telemetrysensor_unit_size = 0;
 
-  int ret = QDMI_device_query_environmentsensor_property(
-      device, environment_sensor, QDMI_ENVIRONMENTSENSOR_PROPERTY_UNIT, 0,
-      nullptr, &environmentsensor_unit_size);
-  throw_if_error(ret, "Failed to query the size for environment unit");
+  int ret = QDMI_device_query_telemetrysensor_property(
+      device, telemetry_sensor, QDMI_TELEMETRYSENSOR_PROPERTY_UNIT, 0, nullptr,
+      &telemetrysensor_unit_size);
+  throw_if_error(ret, "Failed to query the size for telemetry unit");
 
-  std::string environmentsensor_unit(environmentsensor_unit_size - 1, '\0');
-  ret = QDMI_device_query_environmentsensor_property(
-      device, environment_sensor, QDMI_ENVIRONMENTSENSOR_PROPERTY_UNIT,
-      environmentsensor_unit.size() + 1, environmentsensor_unit.data(),
-      nullptr);
-  throw_if_error(ret, "Failed to query the environment unit");
+  std::string telemetrysensor_unit(telemetrysensor_unit_size - 1, '\0');
+  ret = QDMI_device_query_telemetrysensor_property(
+      device, telemetry_sensor, QDMI_TELEMETRYSENSOR_PROPERTY_UNIT,
+      telemetrysensor_unit.size() + 1, telemetrysensor_unit.data(), nullptr);
+  throw_if_error(ret, "Failed to query the telemetry unit");
 
-  return environmentsensor_unit;
+  return telemetrysensor_unit;
 }
 
-auto FoMaC::get_environment_sampling_rate(
-    QDMI_EnvironmentSensor environment_sensor) const -> int {
+auto FoMaC::get_telemetry_sampling_rate(
+    QDMI_TelemetrySensor telemetry_sensor) const -> int {
   int sampling_rate = 0;
-  const int ret = QDMI_device_query_environmentsensor_property(
-      device, environment_sensor, QDMI_ENVIRONMENTSENSOR_PROPERTY_SAMPLINGRATE,
+  const int ret = QDMI_device_query_telemetrysensor_property(
+      device, telemetry_sensor, QDMI_TELEMETRYSENSOR_PROPERTY_SAMPLINGRATE,
       sizeof(int), &sampling_rate, nullptr);
   throw_if_error(ret, "Failed to query the sampling rate");
 

@@ -972,99 +972,99 @@ TEST_P(QDMIImplementationTest, QueryPulseSupportLevel) {
   EXPECT_EQ(pulse_support_level, QDMI_DEVICE_PULSE_SUPPORT_LEVEL_NONE);
 }
 
-TEST_P(QDMIImplementationTest, QueryEveryEnvironmentProperties) {
+TEST_P(QDMIImplementationTest, QueryEveryTelemetryProperties) {
 
   const auto fomac = FoMaC(device);
 
-  auto environments = fomac.get_environment_sensors();
+  auto telemetrys = fomac.get_telemetry_sensors();
 
-  ASSERT_GT(environments.size(), 0);
+  ASSERT_GT(telemetrys.size(), 0);
 
-  for (const auto &environment : environments) {
+  for (const auto &telemetry : telemetrys) {
 
-    auto environment_id = fomac.get_environment_id(environment);
-    EXPECT_STRNE(environment_id.c_str(), "");
+    auto telemetry_id = fomac.get_telemetry_id(telemetry);
+    EXPECT_STRNE(telemetry_id.c_str(), "");
 
-    auto environment_unit = fomac.get_environment_unit(environment);
-    EXPECT_STRNE(environment_unit.c_str(), "");
+    auto telemetry_unit = fomac.get_telemetry_unit(telemetry);
+    EXPECT_STRNE(telemetry_unit.c_str(), "");
 
-    auto sampling_rate = fomac.get_environment_sampling_rate(environment);
+    auto sampling_rate = fomac.get_telemetry_sampling_rate(telemetry);
     EXPECT_GT(sampling_rate, 0);
   }
 }
 
-TEST_P(QDMIImplementationTest, EnvironmentQuery) {
+TEST_P(QDMIImplementationTest, TelemetryQuery) {
   if (mode == TEST_SESSION_MODE::READONLY) {
     GTEST_SKIP() << "Skipping test for read-only session";
   }
 
   const auto fomac = FoMaC(device);
 
-  const std::vector<QDMI_EnvironmentSensor> environment_sensors =
-      fomac.get_environment_sensors();
+  const std::vector<QDMI_TelemetrySensor> telemetry_sensors =
+      fomac.get_telemetry_sensors();
 
-  ASSERT_GT(environment_sensors.size(), 0);
+  ASSERT_GT(telemetry_sensors.size(), 0);
 
-  for (QDMI_EnvironmentSensor environment_sensor : environment_sensors) {
-    QDMI_EnvironmentSensor_Query query = nullptr;
-    QDMI_EnvironmentSensor_Query_Status status = {};
+  for (QDMI_TelemetrySensor telemetry_sensor : telemetry_sensors) {
+    QDMI_TelemetrySensor_Query query = nullptr;
+    QDMI_TelemetrySensor_Query_Status status = {};
     time_t start_time = time(&start_time);
     time_t end_time = time(&end_time) + 600;
 
-    EXPECT_EQ(QDMI_device_create_environmentsensor_query(device, &query),
+    EXPECT_EQ(QDMI_device_create_telemetrysensor_query(device, &query),
               QDMI_SUCCESS);
 
-    EXPECT_EQ(QDMI_environmentsensor_query_set_parameter(
-                  query, QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_ENVIRONMENT,
-                  sizeof(QDMI_EnvironmentSensor),
-                  static_cast<void *>(&environment_sensor)),
+    EXPECT_EQ(QDMI_telemetrysensor_query_set_parameter(
+                  query, QDMI_TELEMETRYSENSOR_QUERY_PARAMETER_TELEMETRY,
+                  sizeof(QDMI_TelemetrySensor),
+                  static_cast<void *>(&telemetry_sensor)),
               QDMI_SUCCESS);
 
-    EXPECT_EQ(QDMI_environmentsensor_query_set_parameter(
-                  query, QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_STARTTIME,
+    EXPECT_EQ(QDMI_telemetrysensor_query_set_parameter(
+                  query, QDMI_TELEMETRYSENSOR_QUERY_PARAMETER_STARTTIME,
                   sizeof(time_t), &start_time),
               QDMI_SUCCESS);
 
-    EXPECT_EQ(QDMI_environmentsensor_query_set_parameter(
-                  query, QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_ENDTIME,
+    EXPECT_EQ(QDMI_telemetrysensor_query_set_parameter(
+                  query, QDMI_TELEMETRYSENSOR_QUERY_PARAMETER_ENDTIME,
                   sizeof(time_t), &end_time),
               QDMI_SUCCESS);
 
-    EXPECT_EQ(QDMI_environmentsensor_query_submit(query), QDMI_SUCCESS);
+    EXPECT_EQ(QDMI_telemetrysensor_query_submit(query), QDMI_SUCCESS);
 
-    EXPECT_EQ(QDMI_environmentsensor_query_wait(query, 0), QDMI_SUCCESS);
+    EXPECT_EQ(QDMI_telemetrysensor_query_wait(query, 0), QDMI_SUCCESS);
 
-    EXPECT_EQ(QDMI_environmentsensor_query_check_status(query, &status),
+    EXPECT_EQ(QDMI_telemetrysensor_query_check_status(query, &status),
               QDMI_SUCCESS);
 
     size_t timestamps_size = 0;
-    EXPECT_EQ(QDMI_environmentsensor_query_get_results(
-                  query, QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_TIMESTAMPS, 0,
+    EXPECT_EQ(QDMI_telemetrysensor_query_get_results(
+                  query, QDMI_TELEMETRYSENSOR_QUERY_RESULT_TIMESTAMPS, 0,
                   nullptr, &timestamps_size),
               QDMI_SUCCESS);
 
     std::vector<time_t> timestamps;
     timestamps.reserve(timestamps_size);
 
-    EXPECT_EQ(QDMI_environmentsensor_query_get_results(
-                  query, QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_TIMESTAMPS,
+    EXPECT_EQ(QDMI_telemetrysensor_query_get_results(
+                  query, QDMI_TELEMETRYSENSOR_QUERY_RESULT_TIMESTAMPS,
                   timestamps_size, timestamps.data(), nullptr),
               QDMI_SUCCESS);
 
     size_t size_values = 0;
-    EXPECT_EQ(QDMI_environmentsensor_query_get_results(
-                  query, QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_VALUES, 0, nullptr,
+    EXPECT_EQ(QDMI_telemetrysensor_query_get_results(
+                  query, QDMI_TELEMETRYSENSOR_QUERY_RESULT_VALUES, 0, nullptr,
                   &size_values),
               QDMI_SUCCESS);
 
     std::vector<float> values;
     values.reserve(size_values);
 
-    EXPECT_EQ(QDMI_environmentsensor_query_get_results(
-                  query, QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_VALUES,
-                  size_values, values.data(), nullptr),
+    EXPECT_EQ(QDMI_telemetrysensor_query_get_results(
+                  query, QDMI_TELEMETRYSENSOR_QUERY_RESULT_VALUES, size_values,
+                  values.data(), nullptr),
               QDMI_SUCCESS);
 
-    QDMI_environmentsensor_query_free(query);
+    QDMI_telemetrysensor_query_free(query);
   }
 }

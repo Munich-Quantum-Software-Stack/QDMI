@@ -81,22 +81,22 @@ struct CXX_QDMI_Operation_impl_d {
   std::string name;
 };
 
-struct CXX_QDMI_EnvironmentSensor_impl_d {
+struct CXX_QDMI_TelemetrySensor_impl_d {
   std::string id;
   std::string unit;
   std::chrono::duration<int> sampling_rate{}; // in seconds
 };
 
-struct CXX_QDMI_Device_EnvironmentSensor_Query_impl_d {
+struct CXX_QDMI_Device_TelemetrySensor_Query_impl_d {
   std::chrono::time_point<std::chrono::system_clock> start_time;
   std::chrono::time_point<std::chrono::system_clock> end_time;
   size_t timeout{};
-  CXX_QDMI_EnvironmentSensor environment_sensor{};
+  CXX_QDMI_TelemetrySensor telemetry_sensor{};
   std::vector<std::chrono::time_point<std::chrono::system_clock>>
       result_timestamps;
   std::vector<float> result_values;
   size_t result_length{};
-  QDMI_EnvironmentSensor_Query_Status status{};
+  QDMI_TelemetrySensor_Query_Status status{};
 };
 
 namespace {
@@ -181,11 +181,11 @@ constexpr CXX_QDMI_Site_impl_d SITE4{4};
 constexpr std::array<const CXX_QDMI_Site_impl_d *, 5> CXX_DEVICE_SITES = {
     &SITE0, &SITE1, &SITE2, &SITE3, &SITE4};
 
-const CXX_QDMI_EnvironmentSensor_impl_d ENVSEN{"t4k", "K",
-                                               std::chrono::duration<int>{60}};
+const CXX_QDMI_TelemetrySensor_impl_d ENVSEN{"t4k", "K",
+                                             std::chrono::duration<int>{60}};
 
-constexpr std::array<const CXX_QDMI_EnvironmentSensor_impl_d *, 1>
-    CXX_DEVICE_ENVIRONMENTSENSORS{&ENVSEN};
+constexpr std::array<const CXX_QDMI_TelemetrySensor_impl_d *, 1>
+    CXX_DEVICE_TELEMETRYSENSORS{&ENVSEN};
 
 constexpr std::array<const CXX_QDMI_Site_impl_d *, 20>
     // clang-format off
@@ -801,9 +801,9 @@ int CXX_QDMI_device_session_query_device_property(
   ADD_SINGLE_VALUE_PROPERTY(QDMI_DEVICE_PROPERTY_NEEDSCALIBRATION, size_t, 0,
                             prop, size, value, size_ret)
 
-  ADD_LIST_PROPERTY(QDMI_DEVICE_PROPERTY_ENVIRONMENTSENSORS,
-                    CXX_QDMI_EnvironmentSensor, CXX_DEVICE_ENVIRONMENTSENSORS,
-                    prop, size, value, size_ret)
+  ADD_LIST_PROPERTY(QDMI_DEVICE_PROPERTY_TELEMETRYSENSORS,
+                    CXX_QDMI_TelemetrySensor, CXX_DEVICE_TELEMETRYSENSORS, prop,
+                    size, value, size_ret)
   ADD_SINGLE_VALUE_PROPERTY(
       QDMI_DEVICE_PROPERTY_PULSESUPPORT, QDMI_Device_Pulse_Support_Level,
       QDMI_DEVICE_PULSE_SUPPORT_LEVEL_NONE, prop, size, value, size_ret)
@@ -904,36 +904,34 @@ int CXX_QDMI_device_session_query_operation_property(
   return QDMI_ERROR_NOTSUPPORTED;
 } /// [DOXYGEN FUNCTION END]
 
-int CXX_QDMI_device_session_query_environmentsensor_property(
-    CXX_QDMI_Device_Session session,
-    CXX_QDMI_EnvironmentSensor environment_sensor,
-    QDMI_EnvironmentSensor_Property prop, size_t size, void *value,
+int CXX_QDMI_device_session_query_telemetrysensor_property(
+    CXX_QDMI_Device_Session session, CXX_QDMI_TelemetrySensor telemetry_sensor,
+    QDMI_TelemetrySensor_Property prop, size_t size, void *value,
     size_t *size_ret) {
-  if (session == nullptr || environment_sensor == nullptr ||
+  if (session == nullptr || telemetry_sensor == nullptr ||
       (value != nullptr && size == 0) ||
-      (prop >= QDMI_ENVIRONMENTSENSOR_PROPERTY_MAX &&
-       prop != QDMI_ENVIRONMENTSENSOR_PROPERTY_CUSTOM1 &&
-       prop != QDMI_ENVIRONMENTSENSOR_PROPERTY_CUSTOM2 &&
-       prop != QDMI_ENVIRONMENTSENSOR_PROPERTY_CUSTOM3 &&
-       prop != QDMI_ENVIRONMENTSENSOR_PROPERTY_CUSTOM4 &&
-       prop != QDMI_ENVIRONMENTSENSOR_PROPERTY_CUSTOM5)) {
+      (prop >= QDMI_TELEMETRYSENSOR_PROPERTY_MAX &&
+       prop != QDMI_TELEMETRYSENSOR_PROPERTY_CUSTOM1 &&
+       prop != QDMI_TELEMETRYSENSOR_PROPERTY_CUSTOM2 &&
+       prop != QDMI_TELEMETRYSENSOR_PROPERTY_CUSTOM3 &&
+       prop != QDMI_TELEMETRYSENSOR_PROPERTY_CUSTOM4 &&
+       prop != QDMI_TELEMETRYSENSOR_PROPERTY_CUSTOM5)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
-  ADD_STRING_PROPERTY(QDMI_ENVIRONMENTSENSOR_PROPERTY_ID,
-                      environment_sensor->id.c_str(), prop, size, value,
+  ADD_STRING_PROPERTY(QDMI_TELEMETRYSENSOR_PROPERTY_ID,
+                      telemetry_sensor->id.c_str(), prop, size, value, size_ret)
+  ADD_STRING_PROPERTY(QDMI_TELEMETRYSENSOR_PROPERTY_UNIT,
+                      telemetry_sensor->unit.c_str(), prop, size, value,
                       size_ret)
-  ADD_STRING_PROPERTY(QDMI_ENVIRONMENTSENSOR_PROPERTY_UNIT,
-                      environment_sensor->unit.c_str(), prop, size, value,
-                      size_ret)
-  ADD_SINGLE_VALUE_PROPERTY(QDMI_ENVIRONMENTSENSOR_PROPERTY_SAMPLINGRATE, int,
-                            environment_sensor->sampling_rate.count(), prop,
-                            size, value, size_ret)
+  ADD_SINGLE_VALUE_PROPERTY(QDMI_TELEMETRYSENSOR_PROPERTY_SAMPLINGRATE, int,
+                            telemetry_sensor->sampling_rate.count(), prop, size,
+                            value, size_ret)
   return QDMI_ERROR_NOTSUPPORTED;
 }
 
-int CXX_QDMI_device_session_create_environmentsensor_query(
+int CXX_QDMI_device_session_create_telemetrysensor_query(
     CXX_QDMI_Device_Session session,
-    CXX_QDMI_Device_EnvironmentSensor_Query *query) {
+    CXX_QDMI_Device_TelemetrySensor_Query *query) {
 
   if (session == nullptr || query == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
@@ -941,45 +939,45 @@ int CXX_QDMI_device_session_create_environmentsensor_query(
   if (session->status != CXX_QDMI_DEVICE_SESSION_STATUS::INITIALIZED) {
     return QDMI_ERROR_BADSTATE;
   }
-  *query = new CXX_QDMI_Device_EnvironmentSensor_Query_impl_d();
-  (*query)->environment_sensor = new CXX_QDMI_EnvironmentSensor_impl_d();
+  *query = new CXX_QDMI_Device_TelemetrySensor_Query_impl_d();
+  (*query)->telemetry_sensor = new CXX_QDMI_TelemetrySensor_impl_d();
   (*query)->start_time = std::chrono::system_clock::now();
   (*query)->end_time = std::chrono::system_clock::now();
 
   return QDMI_SUCCESS;
 }
 
-int CXX_QDMI_device_environmentsensor_query_set_parameter(
-    CXX_QDMI_Device_EnvironmentSensor_Query query,
-    QDMI_Device_EnvironmentSensor_Query_Parameter param, size_t size,
+int CXX_QDMI_device_telemetrysensor_query_set_parameter(
+    CXX_QDMI_Device_TelemetrySensor_Query query,
+    QDMI_Device_TelemetrySensor_Query_Parameter param, size_t size,
     const void *value) {
 
   if (query == nullptr || (value != nullptr && size == 0) ||
-      (param >= QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_MAX &&
-       param != QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_CUSTOM1 &&
-       param != QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_CUSTOM2 &&
-       param != QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_CUSTOM3 &&
-       param != QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_CUSTOM4 &&
-       param != QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_CUSTOM5) ||
+      (param >= QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_MAX &&
+       param != QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_CUSTOM1 &&
+       param != QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_CUSTOM2 &&
+       param != QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_CUSTOM3 &&
+       param != QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_CUSTOM4 &&
+       param != QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_CUSTOM5) ||
       value == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   switch (param) {
 
-  case QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_STARTTIME: {
+  case QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_STARTTIME: {
     query->start_time = std::chrono::system_clock::from_time_t(
         *static_cast<const time_t *>(value));
     return QDMI_SUCCESS;
   }
-  case QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_ENDTIME: {
+  case QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_ENDTIME: {
     query->end_time = std::chrono::system_clock::from_time_t(
         *static_cast<const time_t *>(value));
     return QDMI_SUCCESS;
   }
 
-  case QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_ENVIRONMENTSENSOR: {
-    query->environment_sensor =
-        *(static_cast<const CXX_QDMI_EnvironmentSensor *>(value));
+  case QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_TELEMETRYSENSOR: {
+    query->telemetry_sensor =
+        *(static_cast<const CXX_QDMI_TelemetrySensor *>(value));
     return QDMI_SUCCESS;
   }
   default:
@@ -987,10 +985,10 @@ int CXX_QDMI_device_environmentsensor_query_set_parameter(
   }
 }
 
-int CXX_QDMI_device_environmentsensor_query_submit(
-    CXX_QDMI_Device_EnvironmentSensor_Query query) {
+int CXX_QDMI_device_telemetrysensor_query_submit(
+    CXX_QDMI_Device_TelemetrySensor_Query query) {
 
-  if (query == nullptr || query->environment_sensor == nullptr) {
+  if (query == nullptr || query->telemetry_sensor == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
 
@@ -1001,7 +999,7 @@ int CXX_QDMI_device_environmentsensor_query_submit(
       std::chrono::round<std::chrono::seconds>( // NOLINT(misc-include-cleaner)
           query->end_time - query->start_time);
 
-  auto sampling_rate = query->environment_sensor->sampling_rate;
+  auto sampling_rate = query->telemetry_sensor->sampling_rate;
 
   auto result_length =
       static_cast<size_t>(time_difference.count() / sampling_rate.count());
@@ -1017,7 +1015,7 @@ int CXX_QDMI_device_environmentsensor_query_submit(
   for (unsigned int i = 0; i < result_length; i++) {
     auto duration_to_add =
         std::chrono::duration_cast<std::chrono::system_clock::duration>(
-            query->environment_sensor->sampling_rate * i);
+            query->telemetry_sensor->sampling_rate * i);
     auto next_time = query->start_time + duration_to_add;
     query->result_timestamps.emplace_back(next_time);
     query->result_values[i] =
@@ -1027,23 +1025,23 @@ int CXX_QDMI_device_environmentsensor_query_submit(
   return QDMI_SUCCESS;
 }
 
-int CXX_QDMI_device_environmentsensor_query_get_results(
-    CXX_QDMI_Device_EnvironmentSensor_Query query,
-    QDMI_EnvironmentSensor_Query_Result result, size_t size, void *data,
+int CXX_QDMI_device_telemetrysensor_query_get_results(
+    CXX_QDMI_Device_TelemetrySensor_Query query,
+    QDMI_TelemetrySensor_Query_Result result, size_t size, void *data,
     size_t *size_ret) {
 
   if (query == nullptr || (data != nullptr && size == 0) ||
-      (result >= QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_MAX &&
-       result != QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_CUSTOM1 &&
-       result != QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_CUSTOM2 &&
-       result != QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_CUSTOM3 &&
-       result != QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_CUSTOM4 &&
-       result != QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_CUSTOM5)) {
+      (result >= QDMI_TELEMETRYSENSOR_QUERY_RESULT_MAX &&
+       result != QDMI_TELEMETRYSENSOR_QUERY_RESULT_CUSTOM1 &&
+       result != QDMI_TELEMETRYSENSOR_QUERY_RESULT_CUSTOM2 &&
+       result != QDMI_TELEMETRYSENSOR_QUERY_RESULT_CUSTOM3 &&
+       result != QDMI_TELEMETRYSENSOR_QUERY_RESULT_CUSTOM4 &&
+       result != QDMI_TELEMETRYSENSOR_QUERY_RESULT_CUSTOM5)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   size_t req_size = query->result_length;
   switch (result) {
-  case QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_TIMESTAMPS:
+  case QDMI_TELEMETRYSENSOR_QUERY_RESULT_TIMESTAMPS:
     req_size *= sizeof(time_t);
     if (data != nullptr) {
       if (size < req_size) {
@@ -1060,7 +1058,7 @@ int CXX_QDMI_device_environmentsensor_query_get_results(
       *(size_ret) = req_size;
     }
     return QDMI_SUCCESS;
-  case QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_VALUES:
+  case QDMI_TELEMETRYSENSOR_QUERY_RESULT_VALUES:
 
     req_size *= sizeof(float);
     if (data != nullptr) {
@@ -1081,49 +1079,49 @@ int CXX_QDMI_device_environmentsensor_query_get_results(
   return QDMI_SUCCESS;
 }
 
-int CXX_QDMI_device_environmentsensor_query_check_status(
-    CXX_QDMI_Device_EnvironmentSensor_Query query,
-    QDMI_EnvironmentSensor_Query_Status *status) {
+int CXX_QDMI_device_telemetrysensor_query_check_status(
+    CXX_QDMI_Device_TelemetrySensor_Query query,
+    QDMI_TelemetrySensor_Query_Status *status) {
   if (query == nullptr || status == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
 
   // randomly decide whether job is done or not
-  if (query->status == QDMI_ENVIRONMENTSENSOR_QUERY_STATUS_RUNNING &&
+  if (query->status == QDMI_TELEMETRYSENSOR_QUERY_STATUS_RUNNING &&
       CXX_QDMI_generate_bit()) {
-    query->status = QDMI_ENVIRONMENTSENSOR_QUERY_STATUS_DONE;
+    query->status = QDMI_TELEMETRYSENSOR_QUERY_STATUS_DONE;
   }
 
   *status = query->status;
   return QDMI_SUCCESS;
 }
 
-int CXX_QDMI_device_environmentsensor_query_wait(
-    CXX_QDMI_Device_EnvironmentSensor_Query query, size_t timeout) {
+int CXX_QDMI_device_telemetrysensor_query_wait(
+    CXX_QDMI_Device_TelemetrySensor_Query query, size_t timeout) {
 
   if (query == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
 
-  query->status = QDMI_ENVIRONMENTSENSOR_QUERY_STATUS_DONE;
+  query->status = QDMI_TELEMETRYSENSOR_QUERY_STATUS_DONE;
   query->timeout = timeout;
   return QDMI_SUCCESS;
 }
 
-int CXX_QDMI_device_environmentsensor_query_cancel(
-    CXX_QDMI_Device_EnvironmentSensor_Query query) {
+int CXX_QDMI_device_telemetrysensor_query_cancel(
+    CXX_QDMI_Device_TelemetrySensor_Query query) {
 
   if (query == nullptr ||
-      query->status == QDMI_ENVIRONMENTSENSOR_QUERY_STATUS_DONE) {
+      query->status == QDMI_TELEMETRYSENSOR_QUERY_STATUS_DONE) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
 
-  query->status = QDMI_ENVIRONMENTSENSOR_QUERY_STATUS_CANCELED;
+  query->status = QDMI_TELEMETRYSENSOR_QUERY_STATUS_CANCELED;
 
   return QDMI_SUCCESS;
 }
 
-void CXX_QDMI_device_environmentsensor_query_free(
-    CXX_QDMI_Device_EnvironmentSensor_Query query) {
+void CXX_QDMI_device_telemetrysensor_query_free(
+    CXX_QDMI_Device_TelemetrySensor_Query query) {
   delete query;
 }

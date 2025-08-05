@@ -72,24 +72,24 @@ typedef struct QDMI_Site_impl_d *QDMI_Site;
 typedef struct QDMI_Operation_impl_d *QDMI_Operation;
 
 /**
- * @brief A handle for an environment sensor variable.
- * @details An opaque pointer to an implementation of the QDMI environment
- * sensor concept. The environmental factors of the laboratories can affect the
+ * @brief A handle for an telemetry sensor variable.
+ * @details An opaque pointer to an implementation of the QDMI telemetry
+ * sensor concept. The telemetryal factors of the laboratories can affect the
  * operations and measurement results of quantum devices. Therefore, they are
- * closely monitored. An environment sensor generally represents any sensors
+ * closely monitored. An telemetry sensor generally represents any sensors
  * that can be queried. They might be sensors for temperature, noise, etc. Each
  * implementation of the @ref device_interface "QDMI Device Interface" defines
  * the actual implementation of the concept.
  *
  * A simple example of an implementation is a struct that merely contains the
- * environment sensor ID, which can be used to identify the site.
+ * telemetry sensor ID, which can be used to identify the site.
  * ```
- * struct QDMI_EnvironmentSensor_impl_d {
+ * struct QDMI_TelemetrySensor_impl_d {
  *   char* id;
  * };
  * ```
  */
-typedef struct QDMI_EnvironmentSensor_impl_d *QDMI_EnvironmentSensor;
+typedef struct QDMI_TelemetrySensor_impl_d *QDMI_TelemetrySensor;
 
 // NOLINTEND(modernize-use-using)
 

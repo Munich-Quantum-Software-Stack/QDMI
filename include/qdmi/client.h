@@ -50,8 +50,9 @@ extern "C" {
  * properties of devices.
  *  - The @ref client_job_interface "client job interface" for submitting jobs
  * to devices.
- *  - The @ref client_environmentsensor_query_interface
- * "client environment sensor query interface" for querying environment sensors.
+ *  - The @ref client_telemetrysensor_query_interface
+ * "client telemetry sensor query interface" for querying telemetry sensors from
+ * devices.
  *
  * @{
  */
@@ -577,12 +578,12 @@ int QDMI_device_query_operation_property(
     QDMI_Operation_Property prop, size_t size, void *value, size_t *size_ret);
 
 /**
- * @brief Query an environment sensor property.
+ * @brief Query an telemetry sensor property.
  * @param[in] device The device to query. Must not be @c NULL.
- * @param[in] environment_sensor The environment sensor to query. Must not be @c
+ * @param[in] telemetry_sensor The telemetry sensor to query. Must not be @c
  NULL.
  * @param[in] prop The property to query. Must be one of the values specified
- * for @ref QDMI_EnvironmentSensor_Property.
+ * for @ref QDMI_TelemetrySensor_Property.
  * @param[in] size The size of the memory pointed to by @p value in bytes. Must
  * be greater or equal to the size of the return type specified for @p prop,
  * except when @p value is @c NULL, in which case it is ignored.
@@ -595,26 +596,26 @@ int QDMI_device_query_operation_property(
  * @return @ref QDMI_ERROR_NOTSUPPORTED if the device does not support the
  * property.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if
- *  - @p device or @p environment_sensor is @c NULL,
+ *  - @p device or @p telemetry_sensor is @c NULL,
  *  - @p prop is invalid, or
  *  - @p value is not @c NULL and @p size is less than the size of the data
  *    being queried.
  * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
  *
  * @note By calling this function with @p value set to @c NULL, the function can
- * be used to check if the environment sensor supports the specified property
+ * be used to check if the telemetry sensor supports the specified property
  without
  * retrieving the property and without the need to provide a buffer for it.
  * Additionally, the size of the buffer needed to retrieve the property is
  * returned in @p size_ret if @p size_ret is not @c NULL.
  *
- * @note For example, to query the unit of an environment sensor, the following
+ * @note For example, to query the unit of an telemetry sensor, the following
  code pattern
  * can be used:
  * ```
  * // Check if the device supports the property.
- * auto ret = QDMI_device_query_environmentsensor_property(
- *   device, environment_sensor, QDMI_ENVIRONMENTSENSOR_PROPERTY_UNIT, 0,
+ * auto ret = QDMI_device_query_telemetrysensor_property(
+ *   device, telemetry_sensor, QDMI_TELEMETRYSENSOR_PROPERTY_UNIT, 0,
  nullptr, nullptr);
  * if (ret == QDMI_ERROR_NOTSUPPORTED) {
  *   // The device does not support the property.
@@ -622,29 +623,29 @@ int QDMI_device_query_operation_property(
  * }
  *
  * // Query the size of the property and the property.
- * size_t environmentsensor_unit_size = 0;
- * auto ret = QDMI_device_query_environmentsensor_property(
- *     device, environment_sensor, QDMI_ENVIRONMENTSENSOR_PROPERTY_UNIT, 0,
+ * size_t telemetrysensor_unit_size = 0;
+ * auto ret = QDMI_device_query_telemetrysensor_property(
+ *     device, telemetry_sensor, QDMI_TELEMETRYSENSOR_PROPERTY_UNIT, 0,
  nullptr,
- *     &environmentsensor_unit_size);
+ *     &telemetrysensor_unit_size);
  * if (ret != QDMI_SUCCESS) {
  *   // An error occurred.
  *   ...
  * }
- * std::string environmentsensor_unit(environmentsensor_unit_size - 1, '\0');
- * ret = QDMI_device_query_environmentsensor_property(
- *      device, environment_sensor, QDMI_ENVIRONMENTSENSOR_PROPERTY_UNIT,
- *      environmentsensor_unit.size() + 1, environmentsensor_unit.data(),
+ * std::string telemetrysensor_unit(telemetrysensor_unit_size - 1, '\0');
+ * ret = QDMI_device_query_telemetrysensor_property(
+ *      device, telemetry_sensor, QDMI_TELEMETRYSENSOR_PROPERTY_UNIT,
+ *      telemetrysensor_unit.size() + 1, telemetrysensor_unit.data(),
  nullptr);
  * ```
  *
- * @remark @ref QDMI_EnvironmentSensor handles may be queried via @ref
+ * @remark @ref QDMI_TelemetrySensor handles may be queried via @ref
  * QDMI_device_query_device_property with @ref
- QDMI_DEVICE_PROPERTY_ENVIRONMENTSENSORS.
+ QDMI_DEVICE_PROPERTY_TELEMETRYSENSORS.
  */
-int QDMI_device_query_environmentsensor_property(
-    QDMI_Device device, QDMI_EnvironmentSensor environment_sensor,
-    QDMI_EnvironmentSensor_Property prop, size_t size, void *value,
+int QDMI_device_query_telemetrysensor_property(
+    QDMI_Device device, QDMI_TelemetrySensor telemetry_sensor,
+    QDMI_TelemetrySensor_Property prop, size_t size, void *value,
     size_t *size_ret);
 
 /** @} */ // end of client_query_interface
@@ -1054,88 +1055,87 @@ void QDMI_job_free(QDMI_Job job);
 
 /** @} */ // end of client_job_interface
 
-/** @defgroup client_environmentsensor_query_interface
- * QDMI Client Environment Sensor Query Interface
- *  @brief Provides functions to query environment sensors.
- *  @details An environment sensor query is a task submitted by a client to a
- * device for querying environment sensors, i.e. temperature or power.
+/** @defgroup client_telemetrysensor_query_interface \
+ *  QDMI Client Telemetry Sensor Query Interface
+ *  @brief Provides functions to query telemetry sensors.
+ *  @details An telemetry sensor query is a task submitted by a client to a
+ * device for querying telemetry sensors, i.e. temperature or power.
  *
- *  The typical workflow for a client environment sensor query is as follows:
- *  - Create an environment sensor query with @ref
- * QDMI_device_create_environmentsensor_query.
- *  - Set parameters for the environment sensor query with @ref
- * QDMI_environmentsensor_query_set_parameter
- *  - Submit the environment query to the device with @ref
- * QDMI_environmentsensor_query_submit.
- *  - Check the status of the environment sensor query with @ref
- * QDMI_environmentsensor_query_check_status.
- *  - Wait for the environment sensor query to finish with @ref
- * QDMI_environmentsensor_query_wait.
- *  - Retrieve the results of the environment sensor query with @ref
- * QDMI_environmentsensor_query_get_results.
- *  - Free the environment sensor query with @ref
- * QDMI_environmentsensor_query_free when it is no longer used.
+ *  The typical workflow for a client telemetry sensor query is as follows:
+ *  - Create an telemetry sensor query with @ref
+ * QDMI_device_create_telemetrysensor_query.
+ *  - Set parameters for the telemetry sensor query with @ref
+ * QDMI_telemetrysensor_query_set_parameter
+ *  - Submit the telemetry query to the device with @ref
+ * QDMI_telemetrysensor_query_submit.
+ *  - Check the status of the telemetry sensor query with @ref
+ * QDMI_telemetrysensor_query_check_status.
+ *  - Wait for the telemetry sensor query to finish with @ref
+ * QDMI_telemetrysensor_query_wait.
+ *  - Retrieve the results of the telemetry sensor query with @ref
+ * QDMI_telemetrysensor_query_get_results.
+ *  - Free the telemetry sensor query with @ref
+ * QDMI_telemetrysensor_query_free when it is no longer used.
  *
  *  @{
  */
 
 /**
- * @brief A handle for a client-side environment sensor query.
+ * @brief A handle for a client-side telemetry sensor query.
  * @details An opaque pointer to a type defined by the driver that encapsulates
- * all information about an environment sensor query submitted to a device by a
+ * all information about an telemetry sensor query submitted to a device by a
  * client.
  * @remark Implementations of the underlying type will want to store the device
- * handle used to create the environment sensor query in the handle to be able
+ * handle used to create the telemetry sensor query in the handle to be able
  * to access the device when needed.
- * @see QDMI_Device_EnvironmentSensor_Query for the device-side the environment
+ * @see QDMI_Device_TelemetrySensor_Query for the device-side the telemetry
  * sensor query handle.
  */
-typedef struct QDMI_EnvironmentSensor_Query_impl_d
-    *QDMI_EnvironmentSensor_Query;
+typedef struct QDMI_TelemetrySensor_Query_impl_d *QDMI_TelemetrySensor_Query;
 
 /**
- * @brief Create an environment sensor query.
- * @details This is the main entry point for a client to submit an environment
+ * @brief Create an telemetry sensor query.
+ * @details This is the main entry point for a client to submit an telemetry
  * sensor query to a device. The returned handle can be used throughout the
- * @ref client_environmentsensor_query_interface
- * "client environment sensor query interface" to refer to the environment
+ * @ref client_telemetrysensor_query_interface
+ * "client telemetry sensor query interface" to refer to the telemetry
  * sensor query.
- * @param[in] device The device to create the environment sensor query on. Must
+ * @param[in] device The device to create the telemetry sensor query on. Must
  * not be @c NULL.
  * @param[out] query A pointer to a handle that will store the created
- * environment sensor query. Must not be @c NULL. The job must be freed by
- * calling @ref QDMI_environmentsensor_query_free when it is no longer used.
+ * telemetry sensor query. Must not be @c NULL. The job must be freed by
+ * calling @ref QDMI_telemetrysensor_query_free when it is no longer used.
  * @return @ref QDMI_SUCCESS if the job was successfully created.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p device or @p query are @c NULL.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the driver does not allow using
- * the @ref client_environmentsensor_query_interface
- * "client environment sensor query interface" for the device in the current
+ * the @ref client_telemetrysensor_query_interface
+ * "client telemetry sensor query interface" for the device in the current
  * session.
- * @return @ref QDMI_ERROR_FATAL if the environment sensor query creation failed
+ * @return @ref QDMI_ERROR_FATAL if the telemetry sensor query creation failed
  * due to a fatal error.
  */
-int QDMI_device_create_environmentsensor_query(
-    QDMI_Device device, QDMI_EnvironmentSensor_Query *query);
+int QDMI_device_create_telemetrysensor_query(QDMI_Device device,
+                                             QDMI_TelemetrySensor_Query *query);
 
 /**
- * @brief Enum of the environment sensor query parameters that can be set.
+ * @brief Enum of the telemetry sensor query parameters that can be set.
  * @details If not noted otherwise, parameters are mandatory and drivers must
  * require them to be set.
  */
 
-enum QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_T {
+enum QDMI_TELEMETRYSENSOR_QUERY_PARAMETER_T {
 
-  /// The start time of the environment query interval.
-  QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_STARTTIME = 0,
+  /// The start time of the telemetry query interval.
+  QDMI_TELEMETRYSENSOR_QUERY_PARAMETER_STARTTIME = 0,
 
-  /// The end time of the environment query interval.
-  QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_ENDTIME = 1,
+  /// The end time of the telemetry query interval.
+  QDMI_TELEMETRYSENSOR_QUERY_PARAMETER_ENDTIME = 1,
 
-  /// The environment for the environment query.
-  QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_ENVIRONMENT = 2,
+  /// The telemetry for the telemetry query.
+  QDMI_TELEMETRYSENSOR_QUERY_PARAMETER_TELEMETRY = 2,
 
   /// The maximum value of the enum.
-  QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_MAX = 3,
+  QDMI_TELEMETRYSENSOR_QUERY_PARAMETER_MAX = 3,
 
   /**
    * @brief This enum value is reserved for a custom parameter.
@@ -1143,37 +1143,37 @@ enum QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_T {
    * @attention The value of this enum member must not be changed to maintain
    * binary compatibility.
    */
-  QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_CUSTOM1 = 999999995,
+  QDMI_TELEMETRYSENSOR_QUERY_PARAMETER_CUSTOM1 = 999999995,
 
-  /// @see QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_CUSTOM1
-  QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_CUSTOM2 = 999999996,
+  /// @see QDMI_TELEMETRYSENSOR_QUERY_PARAMETER_CUSTOM1
+  QDMI_TELEMETRYSENSOR_QUERY_PARAMETER_CUSTOM2 = 999999996,
 
-  /// @see QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_CUSTOM1
-  QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_CUSTOM3 = 999999997,
+  /// @see QDMI_TELEMETRYSENSOR_QUERY_PARAMETER_CUSTOM1
+  QDMI_TELEMETRYSENSOR_QUERY_PARAMETER_CUSTOM3 = 999999997,
 
-  /// @see QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_CUSTOM1
-  QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_CUSTOM4 = 999999998,
+  /// @see QDMI_TELEMETRYSENSOR_QUERY_PARAMETER_CUSTOM1
+  QDMI_TELEMETRYSENSOR_QUERY_PARAMETER_CUSTOM4 = 999999998,
 
-  /// @see QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_CUSTOM1
-  QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_CUSTOM5 = 999999999
+  /// @see QDMI_TELEMETRYSENSOR_QUERY_PARAMETER_CUSTOM1
+  QDMI_TELEMETRYSENSOR_QUERY_PARAMETER_CUSTOM5 = 999999999
 };
 
-/// Environment sensor query parameter type.
-typedef enum QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_T
-    QDMI_EnvironmentSensor_Query_Parameter;
+/// Telemetry sensor query parameter type.
+typedef enum QDMI_TELEMETRYSENSOR_QUERY_PARAMETER_T
+    QDMI_TelemetrySensor_Query_Parameter;
 /**
- * @brief Set a parameter for an environment sensor.
+ * @brief Set a parameter for an telemetry sensor.
  * @param[in] query A handle to a job for which to set @p param. Must not be @c
  * NULL.
  * @param[in] param The parameter whose value will be set. Must be one of the
- * values specified for @ref QDMI_EnvironmentSensor_Query_Parameter.
+ * values specified for @ref QDMI_TelemetrySensor_Query_Parameter.
  * @param[in] size The size of the data pointed to by @p value in bytes. Must
  * not be zero, except when @p value is @c NULL, in which case it is ignored.
  * @param[in] value A pointer to the memory location that contains the value of
  * the parameter to be set. The data pointed to by @p value is copied and can be
  * safely reused after this function returns. If this is @c NULL, it is ignored.
  * @return @ref QDMI_SUCCESS if the driver supports the specified @ref
- * QDMI_EnvironmentSensor_Query_Parameter @p param and, when @p value is not @c
+ * QDMI_TelemetrySensor_Query_Parameter @p param and, when @p value is not @c
  * NULL, the parameter was successfully set.
  * @return @ref QDMI_ERROR_NOTSUPPORTED if the driver does not support the
  * parameter or the value of the parameter.
@@ -1182,13 +1182,13 @@ typedef enum QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_T
  *  - @p param is invalid, or
  *  - @p value is not @c NULL and @p size is zero or not the expected size for
  *  the parameter (if specified by the @ref
- * QDMI_EnvironmentSensor_Query_Parameter documentation).
+ * QDMI_TelemetrySensor_Query_Parameter documentation).
  * @return @ref QDMI_ERROR_BADSTATE if the parameter cannot be set in the
  * current state of the job, for example, because the query is already
  * submitted.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the driver does not allow using
- * the @ref client_environmentsensor_query_interface
- * "client environment sensor query interface" for the device in the current
+ * the @ref client_telemetrysensor_query_interface
+ * "client telemetry sensor query interface" for the device in the current
  * session.
  * @return @ref QDMI_ERROR_FATAL if setting the parameter failed due to a fatal
  * error.
@@ -1202,8 +1202,8 @@ typedef enum QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_T
  * used:
  * ```
  * // Check if the device supports setting the start time
- * auto ret = QDMI_environmentsensor_query_set_parameter(
- *   query, QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_START_TIME, 0, nullptr);
+ * auto ret = QDMI_telemetrysensor_query_set_parameter(
+ *   query, QDMI_TELEMETRYSENSOR_QUERY_PARAMETER_START_TIME, 0, nullptr);
  * if (ret == QDMI_ERROR_NOTSUPPORTED) {
  *   // The device does not support setting the start time.
  *   ...
@@ -1211,115 +1211,114 @@ typedef enum QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_T
  *
  * // Set the start time.
  * uint64_t start_ts = 1744970400;
- * QDMI_environmentsensor_query_set_parameter(
- *   query, QDMI_ENVIRONMENTSENSOR_QUERY_PARAMETER_START_TIME, sizeof(uint64_t),
+ * QDMI_telemetrysensor_query_set_parameter(
+ *   query, QDMI_TELEMETRYSENSOR_QUERY_PARAMETER_START_TIME, sizeof(uint64_t),
  * &start_ts);
  * ```
  */
-int QDMI_environmentsensor_query_set_parameter(
-    QDMI_EnvironmentSensor_Query query,
-    QDMI_EnvironmentSensor_Query_Parameter param, size_t size,
-    const void *value);
+int QDMI_telemetrysensor_query_set_parameter(
+    QDMI_TelemetrySensor_Query query,
+    QDMI_TelemetrySensor_Query_Parameter param, size_t size, const void *value);
 /**
- * @brief Submit an environment sensor query to the device.
- * @details This function can either be blocking until the environment sensor
- * query is finished or non-blocking and return while the environment sensor
+ * @brief Submit an telemetry sensor query to the device.
+ * @details This function can either be blocking until the telemetry sensor
+ * query is finished or non-blocking and return while the telemetry sensor
  * query is running. In the latter case, the functions @ref
- * QDMI_environmentsensor_query_check_status and @ref
- * QDMI_environmentsensor_query_wait can be used to check the status and wait
- * for the environment sensor query to finish.
- * @param[in] query The environment sensor query to submit. Must not be @c NULL.
- * @return @ref QDMI_SUCCESS if the environment sensor query was successfully
+ * QDMI_telemetrysensor_query_check_status and @ref
+ * QDMI_telemetrysensor_query_wait can be used to check the status and wait
+ * for the telemetry sensor query to finish.
+ * @param[in] query The telemetry sensor query to submit. Must not be @c NULL.
+ * @return @ref QDMI_SUCCESS if the telemetry sensor query was successfully
  * submitted.
- * @return @ref QDMI_ERROR_INVALIDARGUMENT if environment sensor query is @c
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if telemetry sensor query is @c
  * NULL.
- * @return @ref QDMI_ERROR_BADSTATE if the environment sensor query is in an
+ * @return @ref QDMI_ERROR_BADSTATE if the telemetry sensor query is in an
  * invalid state.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the driver does not allow using
- * the @ref client_environmentsensor_query_interface
- * "client environment sensor query interface" for the device in the current
+ * the @ref client_telemetrysensor_query_interface
+ * "client telemetry sensor query interface" for the device in the current
  * session.
- * @return @ref QDMI_ERROR_FATAL if the environment sensor query submission
+ * @return @ref QDMI_ERROR_FATAL if the telemetry sensor query submission
  * failed.
  */
-int QDMI_environmentsensor_query_submit(QDMI_EnvironmentSensor_Query query);
+int QDMI_telemetrysensor_query_submit(QDMI_TelemetrySensor_Query query);
 
 /**
- * @brief Cancel an already submitted environment sensor query.
- * @details Remove the environment sensor query from the queue of waiting
- * environment sensor query. This changes the status of the environment sensor
- * query to @ref QDMI_ENVIRONMENTSENSOR_QUERY_STATUS_CANCELED.
- * @param[in] query The environment sensor query to cancel. Must not be @c NULL.
- * @return @ref QDMI_SUCCESS if the environment sensor query was successfully
+ * @brief Cancel an already submitted telemetry sensor query.
+ * @details Remove the telemetry sensor query from the queue of waiting
+ * telemetry sensor query. This changes the status of the telemetry sensor
+ * query to @ref QDMI_TELEMETRYSENSOR_QUERY_STATUS_CANCELED.
+ * @param[in] query The telemetry sensor query to cancel. Must not be @c NULL.
+ * @return @ref QDMI_SUCCESS if the telemetry sensor query was successfully
  * canceled.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p query is @c NULL or the
- * environment sensor query already has the status @ref
- * QDMI_ENVIRONMENTSENSOR_QUERY_STATUS_DONE.
+ * telemetry sensor query already has the status @ref
+ * QDMI_TELEMETRYSENSOR_QUERY_STATUS_DONE.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the driver does not allow using
- * the @ref client_environmentsensor_query_interface
- * "client environment sensor query interface" for the device in the current
+ * the @ref client_telemetrysensor_query_interface
+ * "client telemetry sensor query interface" for the device in the current
  * session.
- * @return @ref QDMI_ERROR_FATAL if the environment sensor query could not be
+ * @return @ref QDMI_ERROR_FATAL if the telemetry sensor query could not be
  * canceled.
  */
-int QDMI_environmentsensor_query_cancel(QDMI_EnvironmentSensor_Query query);
+int QDMI_telemetrysensor_query_cancel(QDMI_TelemetrySensor_Query query);
 
 /**
- * @brief Check the status of an environment sensor query.
+ * @brief Check the status of an telemetry sensor query.
  * @details This function is non-blocking and returns immediately with the
- * environment sensor query status. It is not required to call this function
- * before calling @ref QDMI_environmentsensor_query_get_results.
- * @param[in] query The environment sensor query to check the status of. Must
+ * telemetry sensor query status. It is not required to call this function
+ * before calling @ref QDMI_telemetrysensor_query_get_results.
+ * @param[in] query The telemetry sensor query to check the status of. Must
  * not be @c NULL.
- * @param[out] status The status of the environment sensor query. Must not be @c
+ * @param[out] status The status of the telemetry sensor query. Must not be @c
  * NULL.
- * @return @ref QDMI_SUCCESS if the environment sensor query status was
+ * @return @ref QDMI_SUCCESS if the telemetry sensor query status was
  * successfully checked.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p query or @p status is @c NULL.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the driver does not allow using
- * the @ref client_environmentsensor_query_interface
- * "client environment sensor query interface" for the device in the current
+ * the @ref client_telemetrysensor_query_interface
+ * "client telemetry sensor query interface" for the device in the current
  * session.
- * @return @ref QDMI_ERROR_FATAL if the environment sensor query status could
+ * @return @ref QDMI_ERROR_FATAL if the telemetry sensor query status could
  * not be checked.
  */
-int QDMI_environmentsensor_query_check_status(
-    QDMI_EnvironmentSensor_Query query,
-    QDMI_EnvironmentSensor_Query_Status *status);
+int QDMI_telemetrysensor_query_check_status(
+    QDMI_TelemetrySensor_Query query,
+    QDMI_TelemetrySensor_Query_Status *status);
 
 /**
- * @brief Wait for an environment sensor query to finish.
- * @details This function blocks until the environment sensor query has either
+ * @brief Wait for an telemetry sensor query to finish.
+ * @details This function blocks until the telemetry sensor query has either
  * finished or has been canceled, or the timeout has been reached.
- * @param[in] query The environment sensor query to wait for. Must not be @c
+ * @param[in] query The telemetry sensor query to wait for. Must not be @c
  * NULL.
  * @param[in] timeout The timeout in seconds.
  * If this is zero, the function waits indefinitely until the job has finished.
- * @return @ref QDMI_SUCCESS if the environment sensor query is finished or
+ * @return @ref QDMI_SUCCESS if the telemetry sensor query is finished or
  * canceled.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p query is @c NULL.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the driver does not allow using
- * the @ref client_environmentsensor_query_interface
- * "client environment sensor query interface" for the device in the current
+ * the @ref client_telemetrysensor_query_interface
+ * "client telemetry sensor query interface" for the device in the current
  * session.
  * @return @ref QDMI_ERROR_TIMEOUT if @p timeout is not zero and the query did
  * not finish within the specified time.
- * @return @ref QDMI_ERROR_FATAL if the environment sensor query could not be
- * waited for and this function returns before the environment sensor query has
+ * @return @ref QDMI_ERROR_FATAL if the telemetry sensor query could not be
+ * waited for and this function returns before the telemetry sensor query has
  * finished or has been canceled.
  */
-int QDMI_environmentsensor_query_wait(QDMI_EnvironmentSensor_Query query,
-                                      size_t timeout);
+int QDMI_telemetrysensor_query_wait(QDMI_TelemetrySensor_Query query,
+                                    size_t timeout);
 
 /**
- * @brief Retrieve the results of an environment sensor query.
- * @param[in] query The environment sensor query to retrieve the results from.
+ * @brief Retrieve the results of an telemetry sensor query.
+ * @param[in] query The telemetry sensor query to retrieve the results from.
  * Must not be @c NULL.
  * @param[in] result The result to retrieve. Must be one of the values specified
- * for @ref QDMI_EnvironmentSensor_Query_Result.
+ * for @ref QDMI_TelemetrySensor_Query_Result.
  * @param[in] size The size of the buffer pointed to by @p data in bytes. Must
  * be greater or equal to the size of the return type specified for the @ref
- * QDMI_EnvironmentSensor_Query_Result @p result, except when @p data is @c
+ * QDMI_TelemetrySensor_Query_Result @p result, except when @p data is @c
  * NULL, in which case it is ignored.
  * @param[out] data A pointer to the memory location where the results will be
  * stored. If this is @c NULL, it is ignored.
@@ -1335,8 +1334,8 @@ int QDMI_environmentsensor_query_wait(QDMI_EnvironmentSensor_Query query,
  *  - @p data is not @c NULL and @p size is smaller than the size of the data
  *    being queried.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the driver does not allow using
- * the @ref client_environmentsensor_query_interface
- * "client environment sensor query interface" for the device in the current
+ * the @ref client_telemetrysensor_query_interface
+ * "client telemetry sensor query interface" for the device in the current
  * session.
  * @return @ref QDMI_ERROR_FATAL if an error occurred during the retrieval.
  *
@@ -1347,38 +1346,37 @@ int QDMI_environmentsensor_query_wait(QDMI_EnvironmentSensor_Query query,
  * Additionally, the size of the buffer needed to retrieve the result is
  * returned in @p size_ret if @p size_ret is not @c NULL.
  *
- * @note For example, to query the results of a environment sensor query,
+ * @note For example, to query the results of a telemetry sensor query,
  * the following code pattern can be used:
  * ```
  * // Query the size of the result.
  * size_t size;
- * auto ret = QDMI_environmentsensor_query_get_results(
- *   query, QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_VALUES, 0, nullptr, &size);
+ * auto ret = QDMI_telemetrysensor_query_get_results(
+ *   query, QDMI_TELEMETRYSENSOR_QUERY_RESULT_VALUES, 0, nullptr, &size);
  *
  * // Allocate memory for the result.
  * std::vector<float> values;
  * values.reserve(size);
  *
  * // Query the result.
- * QDMI_environmentsensor_query_get_results(
- *   query, QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_VALUES, size, values.data(),
+ * QDMI_telemetrysensor_query_get_results(
+ *   query, QDMI_TELEMETRYSENSOR_QUERY_RESULT_VALUES, size, values.data(),
  * nullptr);
  * ```
  */
-int QDMI_environmentsensor_query_get_results(
-    QDMI_EnvironmentSensor_Query query,
-    QDMI_EnvironmentSensor_Query_Result result, size_t size, void *data,
-    size_t *size_ret);
+int QDMI_telemetrysensor_query_get_results(
+    QDMI_TelemetrySensor_Query query, QDMI_TelemetrySensor_Query_Result result,
+    size_t size, void *data, size_t *size_ret);
 /**
- * @brief Free an environment sensor query.
- * @details Free the resources associated with a environment sensor query. Using
- * a environment sensor query handle after it has been freed is undefined
+ * @brief Free an telemetry sensor query.
+ * @details Free the resources associated with a telemetry sensor query. Using
+ * a telemetry sensor query handle after it has been freed is undefined
  * behavior.
- * @param[in] query The environment sensor query to free.
+ * @param[in] query The telemetry sensor query to free.
  */
-void QDMI_environmentsensor_query_free(QDMI_EnvironmentSensor_Query query);
+void QDMI_telemetrysensor_query_free(QDMI_TelemetrySensor_Query query);
 
-/** @} */ // end of client_environmentsensor_query_interface
+/** @} */ // end of client_telemetrysensor_query_interface
 
 /** @} */ // end of client_interface
 

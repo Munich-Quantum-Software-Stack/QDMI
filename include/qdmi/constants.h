@@ -64,7 +64,7 @@ enum QDMI_DEVICE_SESSION_PARAMETER_T {
    * @details If this parameter is set and the device supports it, the device
    * must use the specified baseURL or API endpoint for the session. Devices may
    * use this parameter to switch between different versions of the API or
-   * different endpoints for testing or production environments.
+   * different endpoints for testing or production telemetrys.
    */
   QDMI_DEVICE_SESSION_PARAMETER_BASEURL = 0,
   /**
@@ -332,12 +332,12 @@ enum QDMI_DEVICE_PROPERTY_T {
    */
   QDMI_DEVICE_PROPERTY_PULSESUPPORT = 9,
   /**
-   * @brief `QDMI_EnvironmentSensor*` (@ref QDMI_EnvironmentSensor list) The
+   * @brief `QDMI_TelemetrySensor*` (@ref QDMI_TelemetrySensor list) The
    * envoronment sensors of the device.
-   * @details The returned @ref QDMI_EnvironmentSensor handles may be used to
+   * @details The returned @ref QDMI_TelemetrySensor handles may be used to
    * query envoronment sensors.
    */
-  QDMI_DEVICE_PROPERTY_ENVIRONMENTSENSORS = 10,
+  QDMI_DEVICE_PROPERTY_TELEMETRYSENSORS = 10,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
@@ -814,24 +814,24 @@ enum QDMI_DEVICE_PULSE_SUPPORT_LEVEL_T {
 /// Pulse support level type.
 typedef enum QDMI_DEVICE_PULSE_SUPPORT_LEVEL_T QDMI_Device_Pulse_Support_Level;
 
-/// Enum of the environment sensor properties that can be queried via @ref
-/// QDMI_device_session_query_environmentsensor_property as part of the @ref
+/// Enum of the telemetry sensor properties that can be queried via @ref
+/// QDMI_device_session_query_telemetrysensor_property as part of the @ref
 /// device_interface "device interface" and via @ref
-/// QDMI_device_query_environmentsensor_property as part of the @ref
+/// QDMI_device_query_telemetrysensor_property as part of the @ref
 /// client_interface "client interface".
-enum QDMI_ENVIRONMENTSENSOR_PROPERTY_T {
+enum QDMI_TELEMETRYSENSOR_PROPERTY_T {
   /**
-   * @brief `char*` (string) The unique ID to identify the environment sensor.
-   * @details The ID of an environment sensor is used to identify the sensors.
-   * The sensors collect environmental data in the HPCQC Labs, i.e., temperature
+   * @brief `char*` (string) The unique ID to identify the telemetry sensor.
+   * @details The ID of an telemetry sensor is used to identify the sensors.
+   * The sensors collect telemetryal data in the HPCQC Labs, i.e., temperature
    * and pressure.
    */
-  QDMI_ENVIRONMENTSENSOR_PROPERTY_ID = 0,
-  /// `char*` (string) The unit of an environment sensor, e.g., Kelvin for
+  QDMI_TELEMETRYSENSOR_PROPERTY_ID = 0,
+  /// `char*` (string) The unit of an telemetry sensor, e.g., Kelvin for
   /// temperature.
-  QDMI_ENVIRONMENTSENSOR_PROPERTY_UNIT = 1,
-  /// `float` The samples per second of an environment sensor.
-  QDMI_ENVIRONMENTSENSOR_PROPERTY_SAMPLINGRATE = 2,
+  QDMI_TELEMETRYSENSOR_PROPERTY_UNIT = 1,
+  /// `float` The samples per second of an telemetry sensor.
+  QDMI_TELEMETRYSENSOR_PROPERTY_SAMPLINGRATE = 2,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and
@@ -841,7 +841,7 @@ enum QDMI_ENVIRONMENTSENSOR_PROPERTY_T {
    * enum besides the custom members and must be updated when new
    * members are added.
    */
-  QDMI_ENVIRONMENTSENSOR_PROPERTY_MAX = 3,
+  QDMI_TELEMETRYSENSOR_PROPERTY_MAX = 3,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this
@@ -849,76 +849,76 @@ enum QDMI_ENVIRONMENTSENSOR_PROPERTY_T {
    * @attention The value of this enum member must not be changed to
    * maintain binary compatibility.
    */
-  QDMI_ENVIRONMENTSENSOR_PROPERTY_CUSTOM1 = 999999995,
-  /// @see QDMI_ENVIRONMENTSENSOR_PROPERTY_CUSTOM1
-  QDMI_ENVIRONMENTSENSOR_PROPERTY_CUSTOM2 = 999999996,
-  /// @see QDMI_ENVIRONMENTSENSOR_PROPERTY_CUSTOM1
-  QDMI_ENVIRONMENTSENSOR_PROPERTY_CUSTOM3 = 999999997,
-  /// @see QDMI_ENVIRONMENTSENSOR_PROPERTY_CUSTOM1
-  QDMI_ENVIRONMENTSENSOR_PROPERTY_CUSTOM4 = 999999998,
-  /// @see QDMI_ENVIRONMENTSENSOR_PROPERTY_CUSTOM1
-  QDMI_ENVIRONMENTSENSOR_PROPERTY_CUSTOM5 = 999999999
+  QDMI_TELEMETRYSENSOR_PROPERTY_CUSTOM1 = 999999995,
+  /// @see QDMI_TELEMETRYSENSOR_PROPERTY_CUSTOM1
+  QDMI_TELEMETRYSENSOR_PROPERTY_CUSTOM2 = 999999996,
+  /// @see QDMI_TELEMETRYSENSOR_PROPERTY_CUSTOM1
+  QDMI_TELEMETRYSENSOR_PROPERTY_CUSTOM3 = 999999997,
+  /// @see QDMI_TELEMETRYSENSOR_PROPERTY_CUSTOM1
+  QDMI_TELEMETRYSENSOR_PROPERTY_CUSTOM4 = 999999998,
+  /// @see QDMI_TELEMETRYSENSOR_PROPERTY_CUSTOM1
+  QDMI_TELEMETRYSENSOR_PROPERTY_CUSTOM5 = 999999999
 };
 
-/// Environment property type.
-typedef enum QDMI_ENVIRONMENTSENSOR_PROPERTY_T QDMI_EnvironmentSensor_Property;
+/// Telemetry property type.
+typedef enum QDMI_TELEMETRYSENSOR_PROPERTY_T QDMI_TelemetrySensor_Property;
 
 /**
- * @brief Enum of the device environmentsensor query parameters that can be set
+ * @brief Enum of the device telemetrysensor query parameters that can be set
  * via
- * @ref QDMI_device_environmentsensor_query_set_parameter.
+ * @ref QDMI_device_telemetrysensor_query_set_parameter.
  * @details If not noted otherwise, parameters are mandatory and devices must
  * require them to be set.
  */
-enum QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_T {
-  /// The start time of the environment sensor query interval.
-  QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_STARTTIME = 0,
-  /// The end time of the environment sensor query interval.
-  QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_ENDTIME = 1,
-  /// The environment sensor for the environment sensor query.
-  QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_ENVIRONMENTSENSOR = 2,
+enum QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_T {
+  /// The start time of the telemetry sensor query interval.
+  QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_STARTTIME = 0,
+  /// The end time of the telemetry sensor query interval.
+  QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_ENDTIME = 1,
+  /// The telemetry sensor for the telemetry sensor query.
+  QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_TELEMETRYSENSOR = 2,
   /// The maximum value of the enum.
-  QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_MAX = 3,
+  QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_MAX = 3,
   /**
    * @brief This enum value is reserved for a custom parameter.
    * @details The devices defines the meaning and the type of this parameter.
    * @attention The value of this enum member must not be changed to maintain
    * binary compatibility.
    */
-  QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_CUSTOM1 = 999999995,
+  QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_CUSTOM1 = 999999995,
   /// @see QDMI_DEVICE_JOB_PARAMETER_CUSTOM1
-  QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_CUSTOM2 = 999999996,
+  QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_CUSTOM2 = 999999996,
   /// @see QDMI_DEVICE_JOB_PARAMETER_CUSTOM1
-  QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_CUSTOM3 = 999999997,
+  QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_CUSTOM3 = 999999997,
   /// @see QDMI_DEVICE_JOB_PARAMETER_CUSTOM1
-  QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_CUSTOM4 = 999999998,
+  QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_CUSTOM4 = 999999998,
   /// @see QDMI_DEVICE_JOB_PARAMETER_CUSTOM1
-  QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_CUSTOM5 = 999999999
+  QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_CUSTOM5 = 999999999
 };
 
-/// Device environment query parameter type.
-typedef enum QDMI_DEVICE_ENVIRONMENTSENSOR_QUERY_PARAMETER_T
-    QDMI_Device_EnvironmentSensor_Query_Parameter;
+/// Device telemetry query parameter type.
+typedef enum QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_T
+    QDMI_Device_TelemetrySensor_Query_Parameter;
 
 /**
- * @brief Enum of the formats the environment sensor query results can be
+ * @brief Enum of the formats the telemetry sensor query results can be
  * returned in.
  */
-enum QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_T {
+enum QDMI_TELEMETRYSENSOR_QUERY_RESULT_T {
   /**
    * @brief `uint64_t*` (`unsigned 64 bit integer` list) The UNIX timestamps at
    * which the corresponding values in the results were recorded by a sensor.
-   * @details The result of an environment sensor query is represented as a
+   * @details The result of an telemetry sensor query is represented as a
    * key-value mapping. This mapping is returned as a list of keys and an
    * equal-length list of values. The corresponding partners of the keys and
    * values can be found at the same index in the lists
    */
-  QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_TIMESTAMPS = 0,
+  QDMI_TELEMETRYSENSOR_QUERY_RESULT_TIMESTAMPS = 0,
   /**
    * @brief `float*` (`float` list) The values of the result.
-   * @see QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_TIMESTAMPS
+   * @see QDMI_TELEMETRYSENSOR_QUERY_RESULT_TIMESTAMPS
    */
-  QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_VALUES = 1,
+  QDMI_TELEMETRYSENSOR_QUERY_RESULT_VALUES = 1,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
@@ -927,55 +927,55 @@ enum QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_MAX = 2,
+  QDMI_TELEMETRYSENSOR_QUERY_RESULT_MAX = 2,
   /**
    * @brief This enum value is reserved for a custom result.
    * @details The device defines the meaning and the type of this result.
    * @attention The value of this enum member must not be changed to maintain
    * binary compatibility.
    */
-  QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_CUSTOM1 = 999999995,
+  QDMI_TELEMETRYSENSOR_QUERY_RESULT_CUSTOM1 = 999999995,
   /// @see QDMI_JOB_RESULT_CUSTOM1
-  QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_CUSTOM2 = 999999996,
+  QDMI_TELEMETRYSENSOR_QUERY_RESULT_CUSTOM2 = 999999996,
   /// @see QDMI_JOB_RESULT_CUSTOM1
-  QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_CUSTOM3 = 999999997,
+  QDMI_TELEMETRYSENSOR_QUERY_RESULT_CUSTOM3 = 999999997,
   /// @see QDMI_JOB_RESULT_CUSTOM1
-  QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_CUSTOM4 = 999999998,
+  QDMI_TELEMETRYSENSOR_QUERY_RESULT_CUSTOM4 = 999999998,
   /// @see QDMI_JOB_RESULT_CUSTOM1
-  QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_CUSTOM5 = 999999999
+  QDMI_TELEMETRYSENSOR_QUERY_RESULT_CUSTOM5 = 999999999
 };
-/// Environment query result type.
-typedef enum QDMI_ENVIRONMENTSENSOR_QUERY_RESULT_T
-    QDMI_EnvironmentSensor_Query_Result;
+/// Telemetry query result type.
+typedef enum QDMI_TELEMETRYSENSOR_QUERY_RESULT_T
+    QDMI_TelemetrySensor_Query_Result;
 
 /**
- * @brief Enum of the status Environment sensor query can have.
- * @details See also @ref client_environmentsensor_query_interface for a
- * description of the environment sensor query's lifecycle.
+ * @brief Enum of the status Telemetry sensor query can have.
+ * @details See also @ref client_telemetrysensor_query_interface for a
+ * description of the telemetry sensor query's lifecycle.
  */
 
-enum QDMI_ENVIRONMENTSENSOR_QUERY_STATUS_T {
+enum QDMI_TELEMETRYSENSOR_QUERY_STATUS_T {
   /**
-   * @brief The environment sensor query was created and can be configured via
-   * @ref QDMI_environmentsensor_query_set_parameter.
+   * @brief The telemetry sensor query was created and can be configured via
+   * @ref QDMI_telemetrysensor_query_set_parameter.
    */
-  QDMI_ENVIRONMENTSENSOR_QUERY_STATUS_CREATED = 0,
-  /// The environment sensor query was submitted.
-  QDMI_ENVIRONMENTSENSOR_QUERY_STATUS_SUBMITTED = 1,
-  /// The environment query was received is waiting to be executed.
-  QDMI_ENVIRONMENTSENSOR_QUERY_STATUS_QUEUED = 2,
-  /// The environment query is running, and the result is not yet available.
-  QDMI_ENVIRONMENTSENSOR_QUERY_STATUS_RUNNING = 3,
-  /// The environment query is done, and the result can be retrieved.
-  QDMI_ENVIRONMENTSENSOR_QUERY_STATUS_DONE = 4,
-  /// The environment query was canceled, and the result is not available.
-  QDMI_ENVIRONMENTSENSOR_QUERY_STATUS_CANCELED = 5,
-  /// An error occurred in the environment sensor query's lifecycle.
-  QDMI_ENVIRONMENTSENSOR_QUERY_STATUS_FAILED = 6
+  QDMI_TELEMETRYSENSOR_QUERY_STATUS_CREATED = 0,
+  /// The telemetry sensor query was submitted.
+  QDMI_TELEMETRYSENSOR_QUERY_STATUS_SUBMITTED = 1,
+  /// The telemetry query was received is waiting to be executed.
+  QDMI_TELEMETRYSENSOR_QUERY_STATUS_QUEUED = 2,
+  /// The telemetry query is running, and the result is not yet available.
+  QDMI_TELEMETRYSENSOR_QUERY_STATUS_RUNNING = 3,
+  /// The telemetry query is done, and the result can be retrieved.
+  QDMI_TELEMETRYSENSOR_QUERY_STATUS_DONE = 4,
+  /// The telemetry query was canceled, and the result is not available.
+  QDMI_TELEMETRYSENSOR_QUERY_STATUS_CANCELED = 5,
+  /// An error occurred in the telemetry sensor query's lifecycle.
+  QDMI_TELEMETRYSENSOR_QUERY_STATUS_FAILED = 6
 };
-/// Environment query status type.
-typedef enum QDMI_ENVIRONMENTSENSOR_QUERY_STATUS_T
-    QDMI_EnvironmentSensor_Query_Status;
+/// Telemetry query status type.
+typedef enum QDMI_TELEMETRYSENSOR_QUERY_STATUS_T
+    QDMI_TelemetrySensor_Query_Status;
 
 // NOLINTEND(performance-enum-size, modernize-use-using)
 

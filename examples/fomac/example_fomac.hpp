@@ -64,16 +64,15 @@ public:
   [[nodiscard]] auto get_parameters_num(const QDMI_Operation &op) const
       -> size_t;
 
-  [[nodiscard]] auto get_environment_sensors() const
-      -> std::vector<QDMI_EnvironmentSensor>;
+  [[nodiscard]] auto get_telemetry_sensors() const
+      -> std::vector<QDMI_TelemetrySensor>;
+
+  [[nodiscard]] auto get_telemetry_id(QDMI_TelemetrySensor telemetry) const
+      -> std::string;
+
+  [[nodiscard]] auto get_telemetry_unit(QDMI_TelemetrySensor telemetry) const
+      -> std::string;
 
   [[nodiscard]] auto
-  get_environment_id(QDMI_EnvironmentSensor environment) const -> std::string;
-
-  [[nodiscard]] auto
-  get_environment_unit(QDMI_EnvironmentSensor environment) const -> std::string;
-
-  [[nodiscard]] auto
-  get_environment_sampling_rate(QDMI_EnvironmentSensor environment) const
-      -> int;
+  get_telemetry_sampling_rate(QDMI_TelemetrySensor telemetry) const -> int;
 };
