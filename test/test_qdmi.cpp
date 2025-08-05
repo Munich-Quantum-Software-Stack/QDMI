@@ -24,6 +24,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include <array>
 #include <complex>
 #include <cstddef>
+#include <cstdint>
 #include <gtest/gtest.h>
 #include <random>
 #include <sstream>
@@ -206,6 +207,18 @@ TEST_P(QDMIImplementationTest, QuerySiteProperties) {
     EXPECT_GT(t1, 0);
     const auto t2 = fomac.get_site_t2(site);
     EXPECT_GT(t2, 0);
+
+    uint64_t module_id = 1;
+    EXPECT_EQ(QDMI_device_query_site_property(device, site,
+                                              QDMI_SITE_PROPERTY_MODULEINDEX, 0,
+                                              &module_id, nullptr),
+              QDMI_SUCCESS);
+    // Example device always returns 0 for module index
+    EXPECT_EQ(module_id, 0);
+    EXPECT_EQ(QDMI_device_query_site_property(device, site,
+                                              QDMI_SITE_PROPERTY_SUBMODULEINDEX,
+                                              0, nullptr, nullptr),
+              QDMI_ERROR_NOTSUPPORTED);
 
     // The MAX property is not a valid value for any device.
     EXPECT_EQ(QDMI_device_query_site_property(

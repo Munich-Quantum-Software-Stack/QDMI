@@ -409,6 +409,21 @@ enum QDMI_SITE_PROPERTY_T {
    */
   QDMI_SITE_PROPERTY_NAME = 3,
   /**
+   * @brief `uint64_t` an unsigned integer that uniquely identifies the module.
+   * @details A module is a logical grouping of sites, e.g., one part on a
+   * superconducting chip or an array of sites in a neutral atom-based device.
+   */
+  QDMI_SITE_PROPERTY_MODULEINDEX = 4,
+  /**
+   * @brief `uint64_t` an unsigned integer uniquely identifying the submodule
+   * within a module.
+   * @details A submodule is a repetitive substructure of sites within a
+   * module. E.g., for a module (@ref QDMI_SITE_PROPERTY_MODULEINDEX), where the
+   * sites are arranged in pairs and the pairs are arranged in a grid, the
+   * submodule index would be the index of the pair within the module.
+   */
+  QDMI_SITE_PROPERTY_SUBMODULEINDEX = 5,
+  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -416,7 +431,7 @@ enum QDMI_SITE_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_SITE_PROPERTY_MAX = 4,
+  QDMI_SITE_PROPERTY_MAX = 6,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.
