@@ -211,7 +211,7 @@ TEST_P(QDMIImplementationTest, QuerySiteProperties) {
     uint64_t module_id = 1;
     EXPECT_EQ(QDMI_device_query_site_property(
                   device, site, QDMI_SITE_PROPERTY_MODULEINDEX,
-                  sizeof(u_int64_t), &module_id, nullptr),
+                  sizeof(uint64_t), &module_id, nullptr),
               QDMI_SUCCESS);
     // Example device always returns 0 for module index
     EXPECT_EQ(module_id, 0);
