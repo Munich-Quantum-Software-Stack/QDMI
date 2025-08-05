@@ -84,7 +84,7 @@ struct CXX_QDMI_Operation_impl_d {
 struct CXX_QDMI_TelemetrySensor_impl_d {
   std::string id;
   std::string unit;
-  std::chrono::duration<int> sampling_rate{}; // in seconds
+  std::chrono::seconds sampling_rate;
 };
 
 struct CXX_QDMI_Device_TelemetrySensor_Query_impl_d {
@@ -923,9 +923,9 @@ int CXX_QDMI_device_session_query_telemetrysensor_property(
   ADD_STRING_PROPERTY(QDMI_TELEMETRYSENSOR_PROPERTY_UNIT,
                       telemetry_sensor->unit.c_str(), prop, size, value,
                       size_ret)
-  ADD_SINGLE_VALUE_PROPERTY(QDMI_TELEMETRYSENSOR_PROPERTY_SAMPLINGRATE, int,
-                            telemetry_sensor->sampling_rate.count(), prop, size,
-                            value, size_ret)
+  ADD_SINGLE_VALUE_PROPERTY(QDMI_TELEMETRYSENSOR_PROPERTY_SAMPLINGRATE,
+                            long int, telemetry_sensor->sampling_rate.count(),
+                            prop, size, value, size_ret)
   return QDMI_ERROR_NOTSUPPORTED;
 }
 
@@ -940,7 +940,6 @@ int CXX_QDMI_device_session_create_telemetrysensor_query(
     return QDMI_ERROR_BADSTATE;
   }
   *query = new CXX_QDMI_Device_TelemetrySensor_Query_impl_d();
-  (*query)->telemetry_sensor = new CXX_QDMI_TelemetrySensor_impl_d();
   (*query)->start_time = std::chrono::system_clock::now();
   (*query)->end_time = std::chrono::system_clock::now();
 

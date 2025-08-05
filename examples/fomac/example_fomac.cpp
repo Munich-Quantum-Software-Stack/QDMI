@@ -251,11 +251,11 @@ auto FoMaC::get_telemetry_unit(QDMI_TelemetrySensor telemetry_sensor) const
 }
 
 auto FoMaC::get_telemetry_sampling_rate(
-    QDMI_TelemetrySensor telemetry_sensor) const -> int {
-  int sampling_rate = 0;
+    QDMI_TelemetrySensor telemetry_sensor) const -> int64_t {
+  int64_t sampling_rate = 0;
   const int ret = QDMI_device_query_telemetrysensor_property(
       device, telemetry_sensor, QDMI_TELEMETRYSENSOR_PROPERTY_SAMPLINGRATE,
-      sizeof(int), &sampling_rate, nullptr);
+      sizeof(int64_t), &sampling_rate, nullptr);
   throw_if_error(ret, "Failed to query the sampling rate");
 
   return sampling_rate;

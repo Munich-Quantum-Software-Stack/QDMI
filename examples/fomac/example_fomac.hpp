@@ -74,5 +74,5 @@ public:
       -> std::string;
 
   [[nodiscard]] auto
-  get_telemetry_sampling_rate(QDMI_TelemetrySensor telemetry) const -> int;
+  get_telemetry_sampling_rate(QDMI_TelemetrySensor telemetry) const -> int64_t;
 };
