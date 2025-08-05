@@ -332,6 +332,23 @@ enum QDMI_DEVICE_PROPERTY_T {
    */
   QDMI_DEVICE_PROPERTY_PULSESUPPORT = 9,
   /**
+   * @brief `char*` (string) The length unit used by the device.
+   * @details This property must be a known SI unit, e.g., "mm", "um" or "nm".
+   * All length values are first multiplied with the value returned by @ref
+   * QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR and then interpreted in this unit.
+   * @note If the device returns any length value, this property must be set.
+   */
+  QDMI_DEVICE_PROPERTY_LENGTHUNIT,
+  /**
+   * @brief `double` A factor applied to all length values.
+   * @details This value must be multiplied with all length values returned by
+   * the device before it can be interpreted in the unit returned by  @ref
+   * QDMI_DEVICE_PROPERTY_LENGTHUNIT.
+   * @note If this property is @ref QDMI_ERROR_NOTSUPPORTED, a default value of
+   * `1.0` is assumed.
+   */
+  QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR,
+  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -416,6 +433,10 @@ enum QDMI_SITE_PROPERTY_T {
    * the site.
    * @note This property is mainly required for neutral atom devices to report
    * the location of sites.
+   * @note This property is a length value and must be interpreted in the way
+   * specified by the @ref QDMI_DEVICE_PROPERTY_LENGTHUNIT and @ref
+   * QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR properties.
+   * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
    */
   QDMI_SITE_PROPERTY_XCOORDINATE = 4,
   /**
@@ -426,6 +447,10 @@ enum QDMI_SITE_PROPERTY_T {
    * the site.
    * @note This property is mainly required for neutral atom devices to report
    * the location of sites.
+   * @note This property is a length value and must be interpreted in the way
+   * specified by the @ref QDMI_DEVICE_PROPERTY_LENGTHUNIT and @ref
+   * QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR properties.
+   * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
    */
   QDMI_SITE_PROPERTY_YCOORDINATE = 5,
   /**
@@ -436,6 +461,10 @@ enum QDMI_SITE_PROPERTY_T {
    * the site.
    * @note This property is mainly required for neutral atom devices to report
    * the location of sites.
+   * @note This property is a length value and must be interpreted in the way
+   * specified by the @ref QDMI_DEVICE_PROPERTY_LENGTHUNIT and @ref
+   * QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR properties.
+   * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
    */
   QDMI_SITE_PROPERTY_ZCOORDINATE = 6,
   /**
