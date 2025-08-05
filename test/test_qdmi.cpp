@@ -16,7 +16,6 @@ the License.
 SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 ------------------------------------------------------------------------------*/
 
-#include "../cmake-build-installed/_deps/googletest-src/googlemock/include/gmock/gmock-matchers.h"
 #include "example_fomac.hpp"
 #include "example_tool.hpp"
 #include "qdmi/client.h"
@@ -25,6 +24,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include <array>
 #include <complex>
 #include <cstddef>
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <random>
 #include <sstream>
