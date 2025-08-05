@@ -25,6 +25,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include <complex>
 #include <cstddef>
 #include <cstdint>
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <random>
 #include <sstream>
@@ -219,6 +220,19 @@ TEST_P(QDMIImplementationTest, QuerySiteProperties) {
                                               QDMI_SITE_PROPERTY_SUBMODULEINDEX,
                                               0, nullptr, nullptr),
               QDMI_ERROR_NOTSUPPORTED);
+    // The example devices do not support neutral atom-specific properties
+    EXPECT_EQ(QDMI_device_query_site_property(device, site,
+                                              QDMI_SITE_PROPERTY_XCOORDINATE, 0,
+                                              nullptr, nullptr),
+              QDMI_ERROR_NOTSUPPORTED);
+    EXPECT_EQ(QDMI_device_query_site_property(device, site,
+                                              QDMI_SITE_PROPERTY_YCOORDINATE, 0,
+                                              nullptr, nullptr),
+              QDMI_ERROR_NOTSUPPORTED);
+    EXPECT_EQ(QDMI_device_query_site_property(device, site,
+                                              QDMI_SITE_PROPERTY_ZCOORDINATE, 0,
+                                              nullptr, nullptr),
+              QDMI_ERROR_NOTSUPPORTED);
 
     // The MAX property is not a valid value for any device.
     EXPECT_EQ(QDMI_device_query_site_property(
@@ -260,6 +274,24 @@ TEST_P(QDMIImplementationTest, QueryDeviceProperties) {
                                               name.size() + 1, name.data(),
                                               nullptr),
             QDMI_SUCCESS);
+
+  // Query the length unit of the device
+  size = 0;
+  EXPECT_EQ(QDMI_device_query_device_property(
+                device, QDMI_DEVICE_PROPERTY_LENGTHUNIT, 0, nullptr, &size),
+            QDMI_SUCCESS);
+  std::string unit(size - 1, '\0');
+  EXPECT_EQ(
+      QDMI_device_query_device_property(device, QDMI_DEVICE_PROPERTY_LENGTHUNIT,
+                                        unit.size() + 1, unit.data(), nullptr),
+      QDMI_SUCCESS);
+  EXPECT_THAT(unit, testing::AnyOf("mm", "um", "nm"));
+  double scale_factor = 0.0;
+  EXPECT_EQ(QDMI_device_query_device_property(
+                device, QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR, sizeof(double),
+                &scale_factor, nullptr),
+            QDMI_SUCCESS);
+  EXPECT_GE(scale_factor, 0.0);
 
   // The MAX property is not a valid value for any device.
   EXPECT_EQ(QDMI_device_query_device_property(device, QDMI_DEVICE_PROPERTY_MAX,
