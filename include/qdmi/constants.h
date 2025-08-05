@@ -338,7 +338,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR and then interpreted in this unit.
    * @note If the device returns any length value, this property must be set.
    */
-  QDMI_DEVICE_PROPERTY_LENGTHUNIT,
+  QDMI_DEVICE_PROPERTY_LENGTHUNIT = 10,
   /**
    * @brief `double` A factor applied to all length values.
    * @details This value must be multiplied with all length values returned by
@@ -347,7 +347,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @note If this property is @ref QDMI_ERROR_NOTSUPPORTED, a default value of
    * `1.0` is assumed.
    */
-  QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR,
+  QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR = 11,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
@@ -356,7 +356,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_DEVICE_PROPERTY_MAX = 10,
+  QDMI_DEVICE_PROPERTY_MAX = 12,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.
