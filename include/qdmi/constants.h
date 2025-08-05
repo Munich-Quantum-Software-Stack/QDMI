@@ -515,8 +515,8 @@ enum QDMI_OPERATION_PROPERTY_T {
   /**
    * @brief @ref QDMI_Operation_Scope The scope of the operation.
    * @details The scope of an operation indicates whether the operation
-   * executes on individual sites or on all sites within the region of
-   * the operation.
+   * executes on individual sites or on all sites this operation can be applied
+   * to.
    * @note This property is mainly required for neutral atom devices that offer
    * apart from local operations also global operations.
    */
@@ -884,8 +884,8 @@ enum QDMI_OPERATION_SCOPE_T {
    */
   QDMI_OPERATION_SCOPE_LOCAL = 0,
   /**
-   * @brief The operation is global, i.e., it acts on all sites in the
-   * operation's region.
+   * @brief The operation is global, i.e., it acts on all sites the operation is
+   * applicable to.
    * @note This scope is mainly used for neutral atom devices that can
    * perform operations on all sites at once, e.g., global laser pulses.
    */
