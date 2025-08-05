@@ -72,9 +72,9 @@ typedef struct QDMI_Site_impl_d *QDMI_Site;
 typedef struct QDMI_Operation_impl_d *QDMI_Operation;
 
 /**
- * @brief A handle for an telemetry sensor variable.
+ * @brief A handle for an telemetry sensor.
  * @details An opaque pointer to an implementation of the QDMI telemetry
- * sensor concept. The telemetryal factors of the laboratories can affect the
+ * sensor concept. The telemetry factors of the laboratories can affect the
  * operations and measurement results of quantum devices. Therefore, they are
  * closely monitored. An telemetry sensor generally represents any sensors
  * that can be queried. They might be sensors for temperature, noise, etc. Each

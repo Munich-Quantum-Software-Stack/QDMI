@@ -976,11 +976,11 @@ TEST_P(QDMIImplementationTest, QueryEveryTelemetryProperties) {
 
   const auto fomac = FoMaC(device);
 
-  auto telemetrys = fomac.get_telemetry_sensors();
+  auto telemetries = fomac.get_telemetry_sensors();
 
-  ASSERT_GT(telemetrys.size(), 0);
+  ASSERT_GT(telemetries.size(), 0);
 
-  for (const auto &telemetry : telemetrys) {
+  for (const auto &telemetry : telemetries) {
 
     auto telemetry_id = fomac.get_telemetry_id(telemetry);
     EXPECT_STRNE(telemetry_id.c_str(), "");

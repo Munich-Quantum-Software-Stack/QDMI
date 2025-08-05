@@ -64,7 +64,7 @@ enum QDMI_DEVICE_SESSION_PARAMETER_T {
    * @details If this parameter is set and the device supports it, the device
    * must use the specified baseURL or API endpoint for the session. Devices may
    * use this parameter to switch between different versions of the API or
-   * different endpoints for testing or production telemetrys.
+   * different endpoints for testing or production environments.
    */
   QDMI_DEVICE_SESSION_PARAMETER_BASEURL = 0,
   /**
@@ -823,7 +823,7 @@ enum QDMI_TELEMETRYSENSOR_PROPERTY_T {
   /**
    * @brief `char*` (string) The unique ID to identify the telemetry sensor.
    * @details The ID of an telemetry sensor is used to identify the sensors.
-   * The sensors collect telemetryal data in the HPCQC Labs, i.e., temperature
+   * The sensors collect telemetry data in the HPCQC Labs, i.e., temperature
    * and pressure.
    */
   QDMI_TELEMETRYSENSOR_PROPERTY_ID = 0,
