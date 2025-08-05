@@ -994,6 +994,9 @@ int CXX_QDMI_device_telemetrysensor_query_submit(
   // here, the actual submission.
 
   // for demonstration purposes
+  
+  // Clang-tidy generates a warning due to a known bug
+  // https://github.com/llvm/llvm-project/issues/98122
   auto time_difference =
       std::chrono::round<std::chrono::seconds>( // NOLINT(misc-include-cleaner)
           query->end_time - query->start_time);
