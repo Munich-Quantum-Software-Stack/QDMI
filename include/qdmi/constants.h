@@ -409,6 +409,36 @@ enum QDMI_SITE_PROPERTY_T {
    */
   QDMI_SITE_PROPERTY_NAME = 3,
   /**
+   * @brief `double` The x-coordinate of the site.
+   * @details The x-coordinate is measured relative to some unique origin of the
+   * device, i.e., the triple of x-, y- (@ref QDMI_SITE_PROPERTY_YCOORDINATE),
+   * and z-coordinate (@ref QDMI_SITE_PROPERTY_ZCOORDINATE) must be unique to
+   * the site.
+   * @note This property is mainly required for neutral atom devices to report
+   * the location of sites.
+   */
+  QDMI_SITE_PROPERTY_XCOORDINATE = 4,
+  /**
+   * @brief `double` The y-coordinate of the site.
+   * @details The y-coordinate is measured relative to some unique origin of the
+   * device, i.e., the triple of x- (@ref QDMI_SITE_PROPERTY_XCOORDINATE), y-,
+   * and z-coordinate (@ref QDMI_SITE_PROPERTY_ZCOORDINATE) must be unique to
+   * the site.
+   * @note This property is mainly required for neutral atom devices to report
+   * the location of sites.
+   */
+  QDMI_SITE_PROPERTY_YCOORDINATE = 5,
+  /**
+   * @brief `double` The z-coordinate of the site.
+   * @details The z-coordinate is measured relative to some unique origin of the
+   * device, i.e., the triple of x- (@ref QDMI_SITE_PROPERTY_XCOORDINATE), y-
+   * (@ref QDMI_SITE_PROPERTY_YCOORDINATE), and z-coordinate must be unique to
+   * the site.
+   * @note This property is mainly required for neutral atom devices to report
+   * the location of sites.
+   */
+  QDMI_SITE_PROPERTY_ZCOORDINATE = 6,
+  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -416,7 +446,7 @@ enum QDMI_SITE_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_SITE_PROPERTY_MAX = 4,
+  QDMI_SITE_PROPERTY_MAX = 7,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.
