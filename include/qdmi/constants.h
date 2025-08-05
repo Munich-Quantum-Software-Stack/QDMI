@@ -48,7 +48,7 @@ enum QDMI_STATUS {
   QDMI_ERROR_NOTSUPPORTED = -9,     ///< Operation is not supported.
   /// Resource is in the wrong state for the operation.
   QDMI_ERROR_BADSTATE = -10,
-  QDMI_ERROR_TIMEOUT = -11, ///< Operation timed out.
+  QDMI_ERROR_TIMEOUT = -11 ///< Operation timed out.
 };
 
 /**
