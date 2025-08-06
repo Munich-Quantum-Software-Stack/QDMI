@@ -518,7 +518,7 @@ enum QDMI_OPERATION_PROPERTY_T {
    * executes on individual sites or on all sites this operation can be applied
    * to.
    * @note This property is mainly required for neutral atom devices that offer
-   * apart from local operations also global operations.
+   * global operations in addition to local operations.
    */
   QDMI_OPERATION_PROPERTY_SCOPE = 5,
   /**
