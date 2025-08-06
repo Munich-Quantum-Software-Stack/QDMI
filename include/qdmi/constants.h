@@ -514,14 +514,12 @@ enum QDMI_OPERATION_PROPERTY_T {
   /// `double` The fidelity of an operation.
   QDMI_OPERATION_PROPERTY_FIDELITY = 4,
   /**
-   * @brief @ref QDMI_Operation_Scope The scope of the operation.
-   * @details The scope of an operation indicates whether the operation
-   * executes on individual sites or on all sites this operation can be applied
-   * to.
-   * @note This property is mainly required for neutral atom devices that offer
-   * global operations in addition to local operations.
+   * @brief `bool` An operation is global if it acts on all sites
+   * simultaneously. the operation is applicable to.
+   * @note This property is mainly relevant for neutral atom devices that can
+   * perform operations on all sites at once, e.g., by global laser pulses.
    */
-  QDMI_OPERATION_PROPERTY_SCOPE = 5,
+  QDMI_OPERATION_PROPERTY_GLOBAL = 5,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
@@ -875,26 +873,6 @@ enum QDMI_DEVICE_PULSE_SUPPORT_LEVEL_T {
 
 /// Pulse support level type.
 typedef enum QDMI_DEVICE_PULSE_SUPPORT_LEVEL_T QDMI_Device_Pulse_Support_Level;
-
-/// The scope of an operation, e.g., local on a site or global on all sites.
-enum QDMI_OPERATION_SCOPE_T {
-  /**
-   * @brief The operation is local, i.e., it acts on individual sites.
-   * @details If the gate is a n-qubit gate, it acts exactly on the n sites
-   * that are specified in the program.
-   */
-  QDMI_OPERATION_SCOPE_LOCAL = 0,
-  /**
-   * @brief The operation is global, i.e., it acts on all sites the operation is
-   * applicable to.
-   * @note This scope is mainly used for neutral atom devices that can
-   * perform operations on all sites at once, e.g., global laser pulses.
-   */
-  QDMI_OPERATION_SCOPE_GLOBAL = 1
-};
-
-/// Operation's scope type.
-typedef enum QDMI_OPERATION_SCOPE_T QDMI_Operation_Scope;
 
 // NOLINTEND(performance-enum-size, modernize-use-using)
 

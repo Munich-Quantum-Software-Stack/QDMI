@@ -167,12 +167,14 @@ TEST_P(QDMIImplementationTest, QueryGatePropertiesForEachGate) {
                   device, op, 0, nullptr, 0, nullptr,
                   QDMI_OPERATION_PROPERTY_MAX, 0, nullptr, nullptr),
               QDMI_ERROR_INVALIDARGUMENT);
-
-    // The example devices do not support neutral atom-specific properties
-    EXPECT_EQ(QDMI_device_query_operation_property(
-                  device, op, 0, nullptr, 0, nullptr,
-                  QDMI_OPERATION_PROPERTY_SCOPE, 0, nullptr, nullptr),
-              QDMI_ERROR_NOTSUPPORTED);
+    // the example device only offers local operations
+    bool global = true;
+    EXPECT_EQ(
+        QDMI_device_query_operation_property(device, op, 0, nullptr, 0, nullptr,
+                                             QDMI_OPERATION_PROPERTY_GLOBAL,
+                                             sizeof(bool), &global, nullptr),
+        QDMI_ERROR_NOTSUPPORTED);
+    EXPECT_FALSE(global);
 
     // The example devices do not support custom properties
     EXPECT_EQ(QDMI_device_query_operation_property(

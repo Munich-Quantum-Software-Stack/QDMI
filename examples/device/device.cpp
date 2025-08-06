@@ -835,9 +835,11 @@ int CXX_QDMI_device_session_query_operation_property(
     }
     ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_PARAMETERSNUM, size_t, 0,
                               prop, size, value, size_ret)
-
     ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_DURATION, double,
                               OPERATION_PROPERTIES.at(operation).second, prop,
+                              size, value, size_ret)
+    // all operations of this example device are considered local
+    ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_GLOBAL, bool, false, prop,
                               size, value, size_ret)
     if (sites == nullptr) {
       ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_QUBITSNUM, size_t, 2,
