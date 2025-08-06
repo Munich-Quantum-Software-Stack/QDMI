@@ -332,6 +332,24 @@ enum QDMI_DEVICE_PROPERTY_T {
    */
   QDMI_DEVICE_PROPERTY_PULSESUPPORT = 9,
   /**
+   * @brief `char*` (string) The length unit used by the device.
+   * @details This property must be a known SI unit, e.g., "mm", "um" or "nm".
+   * All length values must first be multiplied with the value returned by @ref
+   * QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR and then interpreted in the unit
+   * set for this property here.
+   * @note If the device returns any length value, this property must be set.
+   */
+  QDMI_DEVICE_PROPERTY_LENGTHUNIT = 10,
+  /**
+   * @brief `double` A factor applied to all length values.
+   * @details This value must be multiplied with all length values returned by
+   * the device before it can be interpreted in the unit returned by  @ref
+   * QDMI_DEVICE_PROPERTY_LENGTHUNIT.
+   * @note If this property is @ref QDMI_ERROR_NOTSUPPORTED, a default value of
+   * `1.0` is assumed.
+   */
+  QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR = 11,
+  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -339,7 +357,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_DEVICE_PROPERTY_MAX = 10,
+  QDMI_DEVICE_PROPERTY_MAX = 12,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.
@@ -409,6 +427,48 @@ enum QDMI_SITE_PROPERTY_T {
    */
   QDMI_SITE_PROPERTY_NAME = 3,
   /**
+   * @brief `int64_t` The x-coordinate of the site.
+   * @details The x-coordinate is measured relative to some unique origin of the
+   * device, i.e., the triple of x-, y- (@ref QDMI_SITE_PROPERTY_YCOORDINATE),
+   * and z-coordinate (@ref QDMI_SITE_PROPERTY_ZCOORDINATE) must be unique to
+   * the site.
+   * @note This property is mainly required for neutral atom devices to report
+   * the location of sites.
+   * @note This property is a length value and must be interpreted in the way
+   * specified by the @ref QDMI_DEVICE_PROPERTY_LENGTHUNIT and @ref
+   * QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR properties.
+   * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
+   */
+  QDMI_SITE_PROPERTY_XCOORDINATE = 4,
+  /**
+   * @brief `int64_t` The y-coordinate of the site.
+   * @details The y-coordinate is measured relative to some unique origin of the
+   * device, i.e., the triple of x- (@ref QDMI_SITE_PROPERTY_XCOORDINATE), y-,
+   * and z-coordinate (@ref QDMI_SITE_PROPERTY_ZCOORDINATE) must be unique to
+   * the site.
+   * @note This property is mainly required for neutral atom devices to report
+   * the location of sites.
+   * @note This property is a length value and must be interpreted in the way
+   * specified by the @ref QDMI_DEVICE_PROPERTY_LENGTHUNIT and @ref
+   * QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR properties.
+   * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
+   */
+  QDMI_SITE_PROPERTY_YCOORDINATE = 5,
+  /**
+   * @brief `int64_t` The z-coordinate of the site.
+   * @details The z-coordinate is measured relative to some unique origin of the
+   * device, i.e., the triple of x- (@ref QDMI_SITE_PROPERTY_XCOORDINATE), y-
+   * (@ref QDMI_SITE_PROPERTY_YCOORDINATE), and z-coordinate must be unique to
+   * the site.
+   * @note This property is mainly required for neutral atom devices to report
+   * the location of sites.
+   * @note This property is a length value and must be interpreted in the way
+   * specified by the @ref QDMI_DEVICE_PROPERTY_LENGTHUNIT and @ref
+   * QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR properties.
+   * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
+   */
+  QDMI_SITE_PROPERTY_ZCOORDINATE = 6,
+  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -416,7 +476,7 @@ enum QDMI_SITE_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_SITE_PROPERTY_MAX = 4,
+  QDMI_SITE_PROPERTY_MAX = 7,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.

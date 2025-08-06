@@ -46,7 +46,8 @@ target_link_libraries(
           qdmi::example_fomac
           qdmi::example_driver
           qdmi::project_warnings
-          gtest_main)
+          GTest::gtest_main
+          GTest::gmock)
 
 target_compile_features(qdmi_test PRIVATE cxx_std_17)
 
