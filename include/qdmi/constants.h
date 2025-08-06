@@ -515,7 +515,7 @@ enum QDMI_OPERATION_PROPERTY_T {
   QDMI_OPERATION_PROPERTY_FIDELITY = 4,
   /**
    * @brief `bool` An operation is global if it acts on all sites
-   * simultaneously. the operation is applicable to.
+   * the operation is applicable to simultaneously.
    * @note This property is mainly relevant for neutral atom devices that can
    * perform operations on all sites at once, e.g., by global laser pulses.
    */
