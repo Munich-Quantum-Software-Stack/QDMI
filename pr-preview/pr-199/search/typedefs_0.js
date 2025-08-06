@@ -16,11 +16,10 @@ var searchData=
   ['qdmi_5fjob_5fstatus_13',['QDMI_Job_Status',['../constants_8h.html#a28c071c6750e755deb9f375fdf4c5bfc',1,'constants.h']]],
   ['qdmi_5foperation_14',['QDMI_Operation',['../types_8h.html#ae777e8f92186c1e6f836eeaa53b149d7',1,'types.h']]],
   ['qdmi_5foperation_5fproperty_15',['QDMI_Operation_Property',['../constants_8h.html#abc8a0427b96af9020c80aedabcf393b3',1,'constants.h']]],
-  ['qdmi_5foperation_5fscope_16',['QDMI_Operation_Scope',['../constants_8h.html#ac10a07e45f14b7ae1c3c20e79e07257c',1,'constants.h']]],
-  ['qdmi_5fprogram_5fformat_17',['QDMI_Program_Format',['../constants_8h.html#a475336f0c08bd0218dd76a6016098231',1,'constants.h']]],
-  ['qdmi_5fsession_18',['QDMI_Session',['../group__client__session__interface.html#ga4dd0162b0321d12934f815f29504106e',1,'client.h']]],
-  ['qdmi_5fsession_5fparameter_19',['QDMI_Session_Parameter',['../group__client__session__interface.html#gaae2a513b3364705ca75f709215d912f5',1,'client.h']]],
-  ['qdmi_5fsession_5fproperty_20',['QDMI_Session_Property',['../group__client__session__interface.html#gacf251f306f595e62f34afbf2977115fe',1,'client.h']]],
-  ['qdmi_5fsite_21',['QDMI_Site',['../types_8h.html#ab26279159380e378f258cb663968b9ec',1,'types.h']]],
-  ['qdmi_5fsite_5fproperty_22',['QDMI_Site_Property',['../constants_8h.html#a699a82efc1fb132a1b67a6e9d5592080',1,'constants.h']]]
+  ['qdmi_5fprogram_5fformat_16',['QDMI_Program_Format',['../constants_8h.html#a475336f0c08bd0218dd76a6016098231',1,'constants.h']]],
+  ['qdmi_5fsession_17',['QDMI_Session',['../group__client__session__interface.html#ga4dd0162b0321d12934f815f29504106e',1,'client.h']]],
+  ['qdmi_5fsession_5fparameter_18',['QDMI_Session_Parameter',['../group__client__session__interface.html#gaae2a513b3364705ca75f709215d912f5',1,'client.h']]],
+  ['qdmi_5fsession_5fproperty_19',['QDMI_Session_Property',['../group__client__session__interface.html#gacf251f306f595e62f34afbf2977115fe',1,'client.h']]],
+  ['qdmi_5fsite_20',['QDMI_Site',['../types_8h.html#ab26279159380e378f258cb663968b9ec',1,'types.h']]],
+  ['qdmi_5fsite_5fproperty_21',['QDMI_Site_Property',['../constants_8h.html#a699a82efc1fb132a1b67a6e9d5592080',1,'constants.h']]]
 ];

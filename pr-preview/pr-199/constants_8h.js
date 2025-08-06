@@ -11,7 +11,6 @@ var constants_8h =
     [ "QDMI_Program_Format", "constants_8h.html#a475336f0c08bd0218dd76a6016098231", null ],
     [ "QDMI_Job_Result", "constants_8h.html#a52254cd217f8627659a19c8e0c2feed6", null ],
     [ "QDMI_Device_Pulse_Support_Level", "constants_8h.html#adbe592e696ab58711eb26bc2bb6d9668", null ],
-    [ "QDMI_Operation_Scope", "constants_8h.html#ac10a07e45f14b7ae1c3c20e79e07257c", null ],
     [ "QDMI_STATUS", "constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8", [
       [ "QDMI_WARN_GENERAL", "constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a3cada2f96b62a5d1893e5a74dfd8c78a", null ],
       [ "QDMI_SUCCESS", "constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a8039f5cd8202553b2a91a1c0b01d6751", null ],
@@ -114,7 +113,7 @@ var constants_8h =
       [ "QDMI_OPERATION_PROPERTY_PARAMETERSNUM", "constants_8h.html#ab23d5f0c5296e3eab4243e91f1213726a6589ef2b6a82aa9891cb505acb8af00c", null ],
       [ "QDMI_OPERATION_PROPERTY_DURATION", "constants_8h.html#ab23d5f0c5296e3eab4243e91f1213726ad45aa26cc41c80c697fa71a08f622eca", null ],
       [ "QDMI_OPERATION_PROPERTY_FIDELITY", "constants_8h.html#ab23d5f0c5296e3eab4243e91f1213726aeff33960f7a3da9e17058cf9bf05da77", null ],
-      [ "QDMI_OPERATION_PROPERTY_SCOPE", "constants_8h.html#ab23d5f0c5296e3eab4243e91f1213726a44b9a96e6f8e3bc7f83d98100f8b8fbe", null ],
+      [ "QDMI_OPERATION_PROPERTY_GLOBAL", "constants_8h.html#ab23d5f0c5296e3eab4243e91f1213726a817b16e9e0d58123c2d2009e73675dd7", null ],
       [ "QDMI_OPERATION_PROPERTY_MAX", "constants_8h.html#ab23d5f0c5296e3eab4243e91f1213726a049ae95ba8acfe7191dd7d5139389468", null ],
       [ "QDMI_OPERATION_PROPERTY_CUSTOM1", "constants_8h.html#ab23d5f0c5296e3eab4243e91f1213726aa8a314f70a9f754463dd1b8861230322", null ],
       [ "QDMI_OPERATION_PROPERTY_CUSTOM2", "constants_8h.html#ab23d5f0c5296e3eab4243e91f1213726a0475dc2bb362d79e84f539f09ea43160", null ],
@@ -168,9 +167,5 @@ var constants_8h =
       [ "QDMI_DEVICE_PULSE_SUPPORT_LEVEL_SITE", "constants_8h.html#a4dbe8fa81be42cf37de7172f059092ada9618ac2ae6549428f4830b9b60ef6944", null ],
       [ "QDMI_DEVICE_PULSE_SUPPORT_LEVEL_CHANNEL", "constants_8h.html#a4dbe8fa81be42cf37de7172f059092ada15b6967755608a70f135f8ecd90cc61f", null ],
       [ "QDMI_DEVICE_PULSE_SUPPORT_LEVEL_SITEANDCHANNEL", "constants_8h.html#a4dbe8fa81be42cf37de7172f059092ada3ed6ea2f6ef78e4b82aeb726cc86659a", null ]
-    ] ],
-    [ "QDMI_OPERATION_SCOPE_T", "constants_8h.html#ae51e6117ef3332e605f16b26275406ee", [
-      [ "QDMI_OPERATION_SCOPE_LOCAL", "constants_8h.html#ae51e6117ef3332e605f16b26275406eeafdef21bbb735b472b7e64d2d87846041", null ],
-      [ "QDMI_OPERATION_SCOPE_GLOBAL", "constants_8h.html#ae51e6117ef3332e605f16b26275406eeafc7cec264b0266157f15d81ded54b69c", null ]
     ] ]
 ];
