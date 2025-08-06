@@ -227,3 +227,22 @@ the same enumeration, each with a different prefix. It would also not be possibl
 know about all the different values of the enumeration. Additionally, when linking all devices
 statically into the driver, the name-shifted header for each device must be included. If each device
 would define the enumerations anew, this would lead to a compile-time error.
+
+## Why are there different kinds of sites? {#rationale-site-types}
+
+Originally, QDMI only defined a single kind of site, which was used to represent a location that can
+potentially hold a qubit. Already from the start, we intentionally avoided using the term `Qubit` to
+refer to their location, as on some devices, e.g., neutral atom-based ones, a site must not
+necessarily hold an atom representing the qubit. Hence, a site is more general than a qubit and can
+represent any kind of location that can hold a qubit, such as a superconducting qubit, a neutral
+atom, or a trapped ion. However, when extending the QDMI support for neutral atom-based devices, we
+realized that this was not general enough. These devices offer _global_ operations that execute on
+multiple atoms within a given zone simultaneously. In particular, these global operations cannot be
+executed on individual atoms but on all atoms within a zone at once. Consequently, we had to equip
+QDMI such that it is capable of reporting operation properties with respect to zones and not only
+individual qubit positions. To this end, we introduced the concept of _zone sites_ that represent a
+spatial zone. These have the same type as regular sites, i.e., @ref QDMI_Site, but are used to
+represent a zone instead of a single qubit position. Hence, they can be used in the function @ref
+QDMI_device_query_operation_property as parameter to query data like fidelity or duration of global
+operations specific to a zone. This allows QDMI to represent the capabilities of neutral atom-based
+devices while keeping the interface consistent with the existing site concept.
