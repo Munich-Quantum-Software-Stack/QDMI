@@ -469,6 +469,62 @@ enum QDMI_SITE_PROPERTY_T {
    */
   QDMI_SITE_PROPERTY_ZCOORDINATE = 6,
   /**
+   * @brief `bool` Whether the site is a zone.
+   * @details A zone is a site that has a spatial extent, i.e., it is not
+   * just a point in space as a regular site. These kind of sites, namely zones,
+   * are required to adequately represent global operations that act on all
+   * qubits within a certain area, i.e., a zone.
+   * @note Zones are typically used in neutral atom devices, where the atoms are
+   * arranged in a 2D or 3D lattice, and operations can be applied to all
+   * atoms within a certain zone.
+   * @note This property defaults to `false`, i.e., if a device reports @ref
+   * QDMI_ERROR_NOTSUPPORTED for this property, it is assumed that the site is
+   * a regular site and not a zone.
+   * @see QDMI_SITE_PROPERTY_XEXTENT
+   * @see QDMI_SITE_PROPERTY_YEXTENT
+   * @see QDMI_SITE_PROPERTY_ZEXTENT
+   */
+  QDMI_SITE_PROPERTY_ISZONE = 7,
+  /**
+   * @brief `uint64_t` The x-extent of a zone.
+   * @details The x-extent is the size of the zone in the x-direction.
+   * @note This property is a length value and must be interpreted in the way
+   * specified by the @ref QDMI_DEVICE_PROPERTY_LENGTHUNIT and @ref
+   * QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR properties.
+   * @note This property is mainly required for neutral atom devices to
+   * report the extent of zones, see @ref QDMI_SITE_PROPERTY_ISZONE.
+   * @note If the site is not a zone, this property must return @ref
+   * QDMI_ERROR_NOTSUPPORTED.
+   * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
+   */
+  QDMI_SITE_PROPERTY_XEXTENT = 8,
+  /**
+   * @brief `uint64_t` The y-extent of a zone.
+   * @details The y-extent is the size of the zone in the y-direction.
+   * @note This property is a length value and must be interpreted in the way
+   * specified by the @ref QDMI_DEVICE_PROPERTY_LENGTHUNIT and @ref
+   * QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR properties.
+   * @note This property is mainly required for neutral atom devices to
+   * report the extent of zones, see @ref QDMI_SITE_PROPERTY_ISZONE.
+   * @note If the site is not a zone, this property must return @ref
+   * QDMI_ERROR_NOTSUPPORTED.
+   * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
+   */
+  QDMI_SITE_PROPERTY_YEXTENT = 9,
+  /**
+   * @brief `uint64_t` The z-extent of a zone.
+   * @details The z-extent is the size of the zone in the z-direction.
+   * @note This property is a length value and must be interpreted in the way
+   * specified by the @ref QDMI_DEVICE_PROPERTY_LENGTHUNIT and @ref
+   * QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR properties.
+   * @note This property is mainly required for neutral atom devices to
+   * report the extent of zones, see @ref QDMI_SITE_PROPERTY_ISZONE.
+   * @note If the site is not a zone, this property must return @ref
+   * QDMI_ERROR_NOTSUPPORTED.
+   * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
+   */
+  QDMI_SITE_PROPERTY_ZEXTENT = 10,
+  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -476,7 +532,7 @@ enum QDMI_SITE_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_SITE_PROPERTY_MAX = 7,
+  QDMI_SITE_PROPERTY_MAX = 11,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.
@@ -514,13 +570,6 @@ enum QDMI_OPERATION_PROPERTY_T {
   /// `double` The fidelity of an operation.
   QDMI_OPERATION_PROPERTY_FIDELITY = 4,
   /**
-   * @brief `bool` An operation is global if it acts on all sites
-   * the operation is applicable to simultaneously.
-   * @note This property is mainly relevant for neutral atom devices that can
-   * perform operations on all sites at once, e.g., by global laser pulses.
-   */
-  QDMI_OPERATION_PROPERTY_GLOBAL = 5,
-  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -528,7 +577,7 @@ enum QDMI_OPERATION_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_OPERATION_PROPERTY_MAX = 6,
+  QDMI_OPERATION_PROPERTY_MAX = 5,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.
