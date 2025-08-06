@@ -1,5 +1,10 @@
 var NAVTREEINDEX1 =
 {
+"group__device__job__interface.html#ga1b4384e53a1d8fb2d782cd6179664d3b":[1,1,2,8],
+"group__device__job__interface.html#ga1ff5eda213c2bd60599efeac2166654d":[1,1,2,2],
+"group__device__job__interface.html#ga42686f735d112236118b5e033a6c8194":[1,1,2,3],
+"group__device__job__interface.html#ga63f4e17de8a04f7caeeb195f5d276f5c":[1,1,2,1],
+"group__device__job__interface.html#ga9170cd3f690b2ed7df4c2e0b24734138":[1,1,2,6],
 "group__device__job__interface.html#ga95a8e2c63727d079ef37a8171ba275e8":[1,1,2,5],
 "group__device__job__interface.html#gaa4f4c5bd68a6116353470de6d9284175":[1,1,2,7],
 "group__device__job__interface.html#gaa9f37f29bc40f719b440a277654789a4":[1,1,2,0],
