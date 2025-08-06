@@ -290,6 +290,11 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @details The returned @ref QDMI_Site handles may be used to query site
    * and operation properties. The list need not be sorted based on the @ref
    * QDMI_SITE_PROPERTY_INDEX.
+   * @par
+   * The list returned by this property contains all sites of the device, i.e.,
+   * regular and zone sites (see @ref QDMI_SITE_PROPERTY_ISZONE). To filter out
+   * regular or zone sites, use the function @ref
+   * QDMI_device_query_site_property.
    */
   QDMI_DEVICE_PROPERTY_SITES = 5,
   /**

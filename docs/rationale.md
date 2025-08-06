@@ -244,5 +244,7 @@ individual qubit positions. To this end, we introduced the concept of _zone site
 spatial zone. These have the same type as regular sites, i.e., @ref QDMI_Site, but are used to
 represent a zone instead of a single qubit position. Hence, they can be used in the function @ref
 QDMI_device_query_operation_property as parameter to query data like fidelity or duration of global
-operations specific to a zone. This allows QDMI to represent the capabilities of neutral atom-based
-devices while keeping the interface consistent with the existing site concept.
+operations specific to a zone. The function @ref QDMI_device_query_device_property will return a
+list of all, i.e., regular and zone sites, for the property @ref QDMI_DEVICE_PROPERTY_SITES.
+Overall, these modifications allow QDMI to represent the capabilities of neutral atom-based devices
+while keeping the interface consistent with the existing site concept.
