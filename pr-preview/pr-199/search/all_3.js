@@ -12,9 +12,10 @@ var searchData=
   ['device_2eh_9',['device.h',['../device_8h.html',1,'']]],
   ['devices_20and_20clients_10',['Why are there separate kinds of jobs for devices and clients?',['../md_docs_2rationale.html#rationale-job-structs',1,'']]],
   ['devices_20have_20sessions_11',['Why do devices have sessions?',['../md_docs_2rationale.html#device-session',1,'']]],
-  ['do_20device_20implementations_20use_20a_20prefix_12',['Why do device implementations use a prefix?',['../md_docs_2rationale.html#rationale-prefix',1,'']]],
-  ['do_20devices_20have_20sessions_13',['Why do devices have sessions?',['../md_docs_2rationale.html#device-session',1,'']]],
-  ['do_20sessions_20need_20to_20be_20initialized_20after_20allocation_14',['Why do sessions need to be initialized after allocation?',['../md_docs_2rationale.html#rationale-session-init',1,'']]],
-  ['does_20qdmi_20not_20define_20individual_20functions_20for_20each_20property_15',['Why does QDMI not define individual functions for each property?',['../md_docs_2rationale.html#rationale-properties',1,'']]],
-  ['does_20qdmi_20use_20opaque_20pointers_16',['Why does QDMI use opaque pointers?',['../md_docs_2rationale.html#rationale-opaque-pointers',1,'']]]
+  ['different_20kinds_20of_20sites_12',['Why are there different kinds of sites?',['../md_docs_2rationale.html#rationale-site-types',1,'']]],
+  ['do_20device_20implementations_20use_20a_20prefix_13',['Why do device implementations use a prefix?',['../md_docs_2rationale.html#rationale-prefix',1,'']]],
+  ['do_20devices_20have_20sessions_14',['Why do devices have sessions?',['../md_docs_2rationale.html#device-session',1,'']]],
+  ['do_20sessions_20need_20to_20be_20initialized_20after_20allocation_15',['Why do sessions need to be initialized after allocation?',['../md_docs_2rationale.html#rationale-session-init',1,'']]],
+  ['does_20qdmi_20not_20define_20individual_20functions_20for_20each_20property_16',['Why does QDMI not define individual functions for each property?',['../md_docs_2rationale.html#rationale-properties',1,'']]],
+  ['does_20qdmi_20use_20opaque_20pointers_17',['Why does QDMI use opaque pointers?',['../md_docs_2rationale.html#rationale-opaque-pointers',1,'']]]
 ];

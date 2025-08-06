@@ -1,5 +1,8 @@
 var NAVTREEINDEX1 =
 {
+"group__device__interface.html#gacea756e5f8d7cb2940252ed6d4e80571":[1,1,4],
+"group__device__job__interface.html":[1,1,2],
+"group__device__job__interface.html#ga1b4384e53a1d8fb2d782cd6179664d3b":[1,1,2,8],
 "group__device__job__interface.html#ga1ff5eda213c2bd60599efeac2166654d":[1,1,2,2],
 "group__device__job__interface.html#ga42686f735d112236118b5e033a6c8194":[1,1,2,3],
 "group__device__job__interface.html#ga63f4e17de8a04f7caeeb195f5d276f5c":[1,1,2,1],
@@ -40,6 +43,7 @@ var NAVTREEINDEX1 =
 "md_docs_2rationale.html#rationale-prefix":[0,2,3],
 "md_docs_2rationale.html#rationale-properties":[0,2,2],
 "md_docs_2rationale.html#rationale-session-init":[0,2,5],
+"md_docs_2rationale.html#rationale-site-types":[0,2,8],
 "md_docs_2rationale.html#rationale-structure":[0,2,0],
 "md_docs_2support.html":[0,1],
 "md_docs_2templates.html":[0,4],
