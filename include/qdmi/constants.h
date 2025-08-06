@@ -48,7 +48,7 @@ enum QDMI_STATUS {
   QDMI_ERROR_NOTSUPPORTED = -9,     ///< Operation is not supported.
   /// Resource is in the wrong state for the operation.
   QDMI_ERROR_BADSTATE = -10,
-  QDMI_ERROR_TIMEOUT = -11 ///< Operation timed out.
+  QDMI_ERROR_TIMEOUT = -11, ///< Operation timed out.
 };
 
 /**
@@ -334,8 +334,9 @@ enum QDMI_DEVICE_PROPERTY_T {
   /**
    * @brief `char*` (string) The length unit used by the device.
    * @details This property must be a known SI unit, e.g., "mm", "um" or "nm".
-   * All length values are first multiplied with the value returned by @ref
-   * QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR and then interpreted in this unit.
+   * All length values must first be multiplied with the value returned by @ref
+   * QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR and then interpreted in the unit
+   * set for this property here.
    * @note If the device returns any length value, this property must be set.
    */
   QDMI_DEVICE_PROPERTY_LENGTHUNIT = 10,
@@ -426,7 +427,7 @@ enum QDMI_SITE_PROPERTY_T {
    */
   QDMI_SITE_PROPERTY_NAME = 3,
   /**
-   * @brief `double` The x-coordinate of the site.
+   * @brief `int64_t` The x-coordinate of the site.
    * @details The x-coordinate is measured relative to some unique origin of the
    * device, i.e., the triple of x-, y- (@ref QDMI_SITE_PROPERTY_YCOORDINATE),
    * and z-coordinate (@ref QDMI_SITE_PROPERTY_ZCOORDINATE) must be unique to
@@ -440,7 +441,7 @@ enum QDMI_SITE_PROPERTY_T {
    */
   QDMI_SITE_PROPERTY_XCOORDINATE = 4,
   /**
-   * @brief `double` The y-coordinate of the site.
+   * @brief `int64_t` The y-coordinate of the site.
    * @details The y-coordinate is measured relative to some unique origin of the
    * device, i.e., the triple of x- (@ref QDMI_SITE_PROPERTY_XCOORDINATE), y-,
    * and z-coordinate (@ref QDMI_SITE_PROPERTY_ZCOORDINATE) must be unique to
@@ -454,7 +455,7 @@ enum QDMI_SITE_PROPERTY_T {
    */
   QDMI_SITE_PROPERTY_YCOORDINATE = 5,
   /**
-   * @brief `double` The z-coordinate of the site.
+   * @brief `int64_t` The z-coordinate of the site.
    * @details The z-coordinate is measured relative to some unique origin of the
    * device, i.e., the triple of x- (@ref QDMI_SITE_PROPERTY_XCOORDINATE), y-
    * (@ref QDMI_SITE_PROPERTY_YCOORDINATE), and z-coordinate must be unique to
