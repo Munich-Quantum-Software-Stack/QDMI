@@ -486,8 +486,7 @@ enum QDMI_SITE_PROPERTY_T {
    */
   QDMI_SITE_PROPERTY_ISZONE = 7,
   /**
-   * @brief `uint64_t` The x-extent of a zone.
-   * @details The x-extent is the size of the zone in the x-direction.
+   * @brief `uint64_t` The extent of a zone along the X-axis.
    * @note This property is a length value and must be interpreted in the way
    * specified by the @ref QDMI_DEVICE_PROPERTY_LENGTHUNIT and @ref
    * QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR properties.
@@ -499,8 +498,7 @@ enum QDMI_SITE_PROPERTY_T {
    */
   QDMI_SITE_PROPERTY_XEXTENT = 8,
   /**
-   * @brief `uint64_t` The y-extent of a zone.
-   * @details The y-extent is the size of the zone in the y-direction.
+   * @brief `uint64_t` The extent of a zone along the Y-axis.
    * @note This property is a length value and must be interpreted in the way
    * specified by the @ref QDMI_DEVICE_PROPERTY_LENGTHUNIT and @ref
    * QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR properties.
@@ -512,8 +510,7 @@ enum QDMI_SITE_PROPERTY_T {
    */
   QDMI_SITE_PROPERTY_YEXTENT = 9,
   /**
-   * @brief `uint64_t` The z-extent of a zone.
-   * @details The z-extent is the size of the zone in the z-direction.
+   * @brief `uint64_t` The extent of a zone along the Z-axis.
    * @note This property is a length value and must be interpreted in the way
    * specified by the @ref QDMI_DEVICE_PROPERTY_LENGTHUNIT and @ref
    * QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR properties.
