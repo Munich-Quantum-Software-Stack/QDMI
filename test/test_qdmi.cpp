@@ -173,7 +173,7 @@ TEST_P(QDMIImplementationTest, QueryGatePropertiesForEachGate) {
         QDMI_device_query_operation_property(device, op, 0, nullptr, 0, nullptr,
                                              QDMI_OPERATION_PROPERTY_GLOBAL,
                                              sizeof(bool), &global, nullptr),
-        QDMI_ERROR_NOTSUPPORTED);
+        QDMI_SUCCESS);
     EXPECT_FALSE(global);
 
     // The example devices do not support custom properties
