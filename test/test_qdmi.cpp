@@ -211,7 +211,7 @@ TEST_P(QDMIImplementationTest, QuerySiteProperties) {
     // the example device only offers regular sites
     EXPECT_EQ(QDMI_device_query_site_property(
                   device, site, QDMI_SITE_PROPERTY_ISZONE, 0, nullptr, nullptr),
-              QDMI_SUCCESS);
+              QDMI_ERROR_NOTSUPPORTED);
     // The example devices do not support neutral atom-specific properties
     EXPECT_EQ(QDMI_device_query_site_property(device, site,
                                               QDMI_SITE_PROPERTY_XCOORDINATE, 0,
