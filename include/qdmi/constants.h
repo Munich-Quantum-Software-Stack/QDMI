@@ -869,7 +869,7 @@ enum QDMI_DEVICE_PULSE_SUPPORT_LEVEL_T {
    * @details This means that the device can execute pulse-level instructions on
    * both the sites and channels of the device.
    */
-  QDMI_DEVICE_PULSE_SUPPORT_LEVEL_SITEANDCHANNEL = 3
+  QDMI_DEVICE_PULSE_SUPPORT_LEVEL_SITEANDCHANNEL = 3,
 };
 
 /// Pulse support level type.
