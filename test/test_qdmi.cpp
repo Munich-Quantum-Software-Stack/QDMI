@@ -167,14 +167,6 @@ TEST_P(QDMIImplementationTest, QueryGatePropertiesForEachGate) {
                   device, op, 0, nullptr, 0, nullptr,
                   QDMI_OPERATION_PROPERTY_MAX, 0, nullptr, nullptr),
               QDMI_ERROR_INVALIDARGUMENT);
-    // the example device only offers local operations
-    bool global = true;
-    EXPECT_EQ(
-        QDMI_device_query_operation_property(device, op, 0, nullptr, 0, nullptr,
-                                             QDMI_OPERATION_PROPERTY_GLOBAL,
-                                             sizeof(bool), &global, nullptr),
-        QDMI_SUCCESS);
-    EXPECT_FALSE(global);
 
     // The example devices do not support custom properties
     EXPECT_EQ(QDMI_device_query_operation_property(
@@ -216,6 +208,10 @@ TEST_P(QDMIImplementationTest, QuerySiteProperties) {
     const auto t2 = fomac.get_site_t2(site);
     EXPECT_GT(t2, 0);
 
+    // the example device only offers regular sites
+    EXPECT_EQ(QDMI_device_query_site_property(
+                  device, site, QDMI_SITE_PROPERTY_ISZONE, 0, nullptr, nullptr),
+              QDMI_SUCCESS);
     // The example devices do not support neutral atom-specific properties
     EXPECT_EQ(QDMI_device_query_site_property(device, site,
                                               QDMI_SITE_PROPERTY_XCOORDINATE, 0,
@@ -227,6 +223,18 @@ TEST_P(QDMIImplementationTest, QuerySiteProperties) {
               QDMI_ERROR_NOTSUPPORTED);
     EXPECT_EQ(QDMI_device_query_site_property(device, site,
                                               QDMI_SITE_PROPERTY_ZCOORDINATE, 0,
+                                              nullptr, nullptr),
+              QDMI_ERROR_NOTSUPPORTED);
+    EXPECT_EQ(QDMI_device_query_site_property(device, site,
+                                              QDMI_SITE_PROPERTY_XEXTENT, 0,
+                                              nullptr, nullptr),
+              QDMI_ERROR_NOTSUPPORTED);
+    EXPECT_EQ(QDMI_device_query_site_property(device, site,
+                                              QDMI_SITE_PROPERTY_YEXTENT, 0,
+                                              nullptr, nullptr),
+              QDMI_ERROR_NOTSUPPORTED);
+    EXPECT_EQ(QDMI_device_query_site_property(device, site,
+                                              QDMI_SITE_PROPERTY_ZEXTENT, 0,
                                               nullptr, nullptr),
               QDMI_ERROR_NOTSUPPORTED);
 
