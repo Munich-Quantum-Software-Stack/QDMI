@@ -1,5 +1,7 @@
 var NAVTREEINDEX1 =
 {
+"group__device__interface.html":[1,1],
+"group__device__interface.html#ga99e892052f2a14ae1da53f171649abc2":[1,1,3],
 "group__device__interface.html#gacea756e5f8d7cb2940252ed6d4e80571":[1,1,4],
 "group__device__job__interface.html":[1,1,2],
 "group__device__job__interface.html#ga1b4384e53a1d8fb2d782cd6179664d3b":[1,1,2,8],

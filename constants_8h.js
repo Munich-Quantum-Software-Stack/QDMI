@@ -104,6 +104,8 @@ var constants_8h =
       [ "QDMI_SITE_PROPERTY_XEXTENT", "constants_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2a47edc1bffaed2ac9960f722236deca2e", null ],
       [ "QDMI_SITE_PROPERTY_YEXTENT", "constants_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2a7c2b1d2d74c189add11f5cca9b621026", null ],
       [ "QDMI_SITE_PROPERTY_ZEXTENT", "constants_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2a134fc705238c87333dfd3b86cc45314c", null ],
+      [ "QDMI_SITE_PROPERTY_MODULEINDEX", "constants_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2a95cc2dc26ff0c52b0d2a1a5c54e571bb", null ],
+      [ "QDMI_SITE_PROPERTY_SUBMODULEINDEX", "constants_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2aae6022d61accc063ffbc0173481f3b90", null ],
       [ "QDMI_SITE_PROPERTY_MAX", "constants_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2ade44c67aa77a26645d41d7529cdbff8e", null ],
       [ "QDMI_SITE_PROPERTY_CUSTOM1", "constants_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2a1ad5483fe6bcbedf073cd6ae41031e3a", null ],
       [ "QDMI_SITE_PROPERTY_CUSTOM2", "constants_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2a4be19ea36b28202b31f21816f968d977", null ],
