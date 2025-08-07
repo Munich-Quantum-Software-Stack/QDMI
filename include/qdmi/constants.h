@@ -587,6 +587,36 @@ enum QDMI_OPERATION_PROPERTY_T {
   /// `double` The fidelity of an operation.
   QDMI_OPERATION_PROPERTY_FIDELITY = 4,
   /**
+   * @brief `uint64_t` The interaction radius of the operation.
+   * @details The interaction radius only applies to multi-qubit gates. The
+   * interaction radius is the maximum distance between two qubits that can be
+   * involved in the operation.
+   * @note This property is a length value and must be interpreted in the way
+   * specified by the @ref QDMI_DEVICE_PROPERTY_LENGTHUNIT and @ref
+   * QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR properties.
+   * @note This property is mainly required for neutral atom devices where
+   * atoms representing qubits can be at arbitrary locations. Hence, it is
+   * infeasible to define a coupling map. The coupling of atoms is instead
+   * defined by the interaction radius of the operation.
+   * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
+   */
+  QDMI_OPERATION_PROPERTY_INTERACTIONRADIUS = 5,
+  /**
+   * @brief `uint64_t` The blocking radius of the operation.
+   * @details The blocking radius only applies to multi-qubit gates. The
+   * blocking radius is the minimum distance between two qubits that should not
+   * be involved in the operation to avoid crosstalk.
+   * @note This property is a length value and must be interpreted in the way
+   * specified by the @ref QDMI_DEVICE_PROPERTY_LENGTHUNIT and @ref
+   * QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR properties.
+   * @note This property is mainly required for neutral atom devices where
+   * atoms representing qubits can be at arbitrary locations. Hence, it is
+   * infeasible to define a coupling map. To avoid crosstalk, the blocking
+   * radius of the operation must be respected.
+   * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
+   */
+  QDMI_OPERATION_PROPERTY_BLOCKINGRADIUS = 6,
+  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -594,7 +624,7 @@ enum QDMI_OPERATION_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_OPERATION_PROPERTY_MAX = 5,
+  QDMI_OPERATION_PROPERTY_MAX = 7,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.
