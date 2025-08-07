@@ -408,13 +408,16 @@ Enumerations</h2></td></tr>
 , <a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726ad45aa26cc41c80c697fa71a08f622eca">QDMI_OPERATION_PROPERTY_DURATION</a> = 3
 , <br />
 &#160;&#160;<a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726aeff33960f7a3da9e17058cf9bf05da77">QDMI_OPERATION_PROPERTY_FIDELITY</a> = 4
-, <a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726a049ae95ba8acfe7191dd7d5139389468">QDMI_OPERATION_PROPERTY_MAX</a> = 5
-, <a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726aa8a314f70a9f754463dd1b8861230322">QDMI_OPERATION_PROPERTY_CUSTOM1</a> = 999999995
-, <a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726a0475dc2bb362d79e84f539f09ea43160">QDMI_OPERATION_PROPERTY_CUSTOM2</a> = 999999996
+, <a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726a86bddef511f4a63885b9d9c7184bd999">QDMI_OPERATION_PROPERTY_INTERACTIONRADIUS</a> = 5
+, <a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726a0ee18159c08638a64f5b7e6ec3393f99">QDMI_OPERATION_PROPERTY_BLOCKINGRADIUS</a> = 6
+, <a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726a049ae95ba8acfe7191dd7d5139389468">QDMI_OPERATION_PROPERTY_MAX</a> = 7
 , <br />
-&#160;&#160;<a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726ad091b00466f4429b0b4a61df3ecee07e">QDMI_OPERATION_PROPERTY_CUSTOM3</a> = 999999997
+&#160;&#160;<a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726aa8a314f70a9f754463dd1b8861230322">QDMI_OPERATION_PROPERTY_CUSTOM1</a> = 999999995
+, <a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726a0475dc2bb362d79e84f539f09ea43160">QDMI_OPERATION_PROPERTY_CUSTOM2</a> = 999999996
+, <a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726ad091b00466f4429b0b4a61df3ecee07e">QDMI_OPERATION_PROPERTY_CUSTOM3</a> = 999999997
 , <a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726af340d37b0cb6a28660c0a064088125d0">QDMI_OPERATION_PROPERTY_CUSTOM4</a> = 999999998
-, <a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726ae4414f8e1b54a24d9db057f8214ad579">QDMI_OPERATION_PROPERTY_CUSTOM5</a> = 999999999
+, <br />
+&#160;&#160;<a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726ae4414f8e1b54a24d9db057f8214ad579">QDMI_OPERATION_PROPERTY_CUSTOM5</a> = 999999999
 <br />
  }</td></tr>
 <tr class="separator:ab23d5f0c5296e3eab4243e91f1213726"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -892,7 +895,19 @@ If the site is not a zone, this property must return <a class="el" href="#a450b1
 </td></tr>
 <tr><td class="fieldname"><a id="ab23d5f0c5296e3eab4243e91f1213726aeff33960f7a3da9e17058cf9bf05da77" name="ab23d5f0c5296e3eab4243e91f1213726aeff33960f7a3da9e17058cf9bf05da77"></a>QDMI_OPERATION_PROPERTY_FIDELITY&#160;</td><td class="fieldinit">4&#160;</td><td class="fielddoc"><p><code>double</code> The fidelity of an operation. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ab23d5f0c5296e3eab4243e91f1213726a049ae95ba8acfe7191dd7d5139389468" name="ab23d5f0c5296e3eab4243e91f1213726a049ae95ba8acfe7191dd7d5139389468"></a>QDMI_OPERATION_PROPERTY_MAX&#160;</td><td class="fieldinit">5&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
+<tr><td class="fieldname"><a id="ab23d5f0c5296e3eab4243e91f1213726a86bddef511f4a63885b9d9c7184bd999" name="ab23d5f0c5296e3eab4243e91f1213726a86bddef511f4a63885b9d9c7184bd999"></a>QDMI_OPERATION_PROPERTY_INTERACTIONRADIUS&#160;</td><td class="fieldinit">5&#160;</td><td class="fielddoc"><p><code>uint64_t</code> The interaction radius of the operation. </p>
+<p>The interaction radius is the maximum distance between two qubits that can be involved in the operation. It only applies to multi-qubit gates. </p><dl class="section note"><dt>Note</dt><dd>This property is mainly required for neutral atom devices where atoms representing qubits can be at arbitrary locations. Hence, it is infeasible to define a coupling map. Instead, the coupling of atoms is defined by the interaction radius of the operation. </dd>
+<dd>
+This property is a length value and must be interpreted in the way specified by the <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a3a25e71a82af0c1ef7343dd602a3921e">QDMI_DEVICE_PROPERTY_LENGTHUNIT</a> and <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a27e6f6733d8b32f0adada480f3af328f">QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR</a> properties. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a3a25e71a82af0c1ef7343dd602a3921e" title="char* (string) The length unit used by the device.">QDMI_DEVICE_PROPERTY_LENGTHUNIT</a> </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="ab23d5f0c5296e3eab4243e91f1213726a0ee18159c08638a64f5b7e6ec3393f99" name="ab23d5f0c5296e3eab4243e91f1213726a0ee18159c08638a64f5b7e6ec3393f99"></a>QDMI_OPERATION_PROPERTY_BLOCKINGRADIUS&#160;</td><td class="fieldinit">6&#160;</td><td class="fielddoc"><p><code>uint64_t</code> The blocking radius of the operation. </p>
+<p>The blocking radius is the minimum distance between two qubits that should not be involved in the operation to avoid crosstalk. It only applies to multi-qubit gates. </p><dl class="section note"><dt>Note</dt><dd>This property is mainly required for neutral atom devices where atoms representing qubits can be at arbitrary locations. To avoid crosstalk, the blocking radius of the operation must be respected when scheduling operations. </dd>
+<dd>
+This property is a length value and must be interpreted in the way specified by the <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a3a25e71a82af0c1ef7343dd602a3921e">QDMI_DEVICE_PROPERTY_LENGTHUNIT</a> and <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a27e6f6733d8b32f0adada480f3af328f">QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR</a> properties. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a3a25e71a82af0c1ef7343dd602a3921e" title="char* (string) The length unit used by the device.">QDMI_DEVICE_PROPERTY_LENGTHUNIT</a> </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="ab23d5f0c5296e3eab4243e91f1213726a049ae95ba8acfe7191dd7d5139389468" name="ab23d5f0c5296e3eab4243e91f1213726a049ae95ba8acfe7191dd7d5139389468"></a>QDMI_OPERATION_PROPERTY_MAX&#160;</td><td class="fieldinit">7&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
 <p>It can be used by devices for bounds checking and validation of function parameters.</p>
 <dl class="section attention"><dt>Attention</dt><dd>This value must remain the last regular member of the enum besides the custom members and must be updated when new members are added. </dd></dl>
 </td></tr>
