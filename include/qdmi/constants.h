@@ -290,6 +290,11 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @details The returned @ref QDMI_Site handles may be used to query site
    * and operation properties. The list need not be sorted based on the @ref
    * QDMI_SITE_PROPERTY_INDEX.
+   * @par
+   * The list returned by this property contains all sites of the device, i.e.,
+   * regular and zone sites (see @ref QDMI_SITE_PROPERTY_ISZONE). To filter out
+   * regular or zone sites, use the function @ref
+   * QDMI_device_query_site_property.
    */
   QDMI_DEVICE_PROPERTY_SITES = 5,
   /**
@@ -469,11 +474,64 @@ enum QDMI_SITE_PROPERTY_T {
    */
   QDMI_SITE_PROPERTY_ZCOORDINATE = 6,
   /**
+   * @brief `bool` Whether the site is a zone.
+   * @details A zone is a site that has a spatial extent, i.e., it is not
+   * just a point in space as a regular site. These kind of sites, namely zones,
+   * are required to adequately represent global operations that act on all
+   * qubits within a certain area, i.e., a zone.
+   * @note Zones are typically used in neutral atom devices, where the atoms are
+   * arranged in a 2D or 3D lattice, and operations can be applied to all
+   * atoms within a certain zone.
+   * @note This property defaults to `false`, i.e., if a device reports @ref
+   * QDMI_ERROR_NOTSUPPORTED for this property, it is assumed that the site is
+   * a regular site and not a zone.
+   * @see QDMI_SITE_PROPERTY_XEXTENT
+   * @see QDMI_SITE_PROPERTY_YEXTENT
+   * @see QDMI_SITE_PROPERTY_ZEXTENT
+   */
+  QDMI_SITE_PROPERTY_ISZONE = 7,
+  /**
+   * @brief `uint64_t` The extent of a zone along the X-axis.
+   * @note This property is a length value and must be interpreted in the way
+   * specified by the @ref QDMI_DEVICE_PROPERTY_LENGTHUNIT and @ref
+   * QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR properties.
+   * @note This property is mainly required for neutral atom devices to
+   * report the extent of zones, see @ref QDMI_SITE_PROPERTY_ISZONE.
+   * @note If the site is not a zone, this property must return @ref
+   * QDMI_ERROR_NOTSUPPORTED.
+   * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
+   */
+  QDMI_SITE_PROPERTY_XEXTENT = 8,
+  /**
+   * @brief `uint64_t` The extent of a zone along the Y-axis.
+   * @note This property is a length value and must be interpreted in the way
+   * specified by the @ref QDMI_DEVICE_PROPERTY_LENGTHUNIT and @ref
+   * QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR properties.
+   * @note This property is mainly required for neutral atom devices to
+   * report the extent of zones, see @ref QDMI_SITE_PROPERTY_ISZONE.
+   * @note If the site is not a zone, this property must return @ref
+   * QDMI_ERROR_NOTSUPPORTED.
+   * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
+   */
+  QDMI_SITE_PROPERTY_YEXTENT = 9,
+  /**
+   * @brief `uint64_t` The extent of a zone along the Z-axis.
+   * @note This property is a length value and must be interpreted in the way
+   * specified by the @ref QDMI_DEVICE_PROPERTY_LENGTHUNIT and @ref
+   * QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR properties.
+   * @note This property is mainly required for neutral atom devices to
+   * report the extent of zones, see @ref QDMI_SITE_PROPERTY_ISZONE.
+   * @note If the site is not a zone, this property must return @ref
+   * QDMI_ERROR_NOTSUPPORTED.
+   * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
+   */
+  QDMI_SITE_PROPERTY_ZEXTENT = 10,
+  /**
    * @brief `uint64_t` an unsigned integer that uniquely identifies the module.
    * @details A module is a logical grouping of sites, e.g., one part on a
    * superconducting chip or an array of sites in a neutral atom-based device.
    */
-  QDMI_SITE_PROPERTY_MODULEINDEX = 7,
+  QDMI_SITE_PROPERTY_MODULEINDEX = 11,
   /**
    * @brief `uint64_t` an unsigned integer uniquely identifying the submodule
    * within a module.
@@ -482,7 +540,7 @@ enum QDMI_SITE_PROPERTY_T {
    * sites are arranged in pairs and the pairs are arranged in a grid, the
    * submodule index would be the index of the pair within the module.
    */
-  QDMI_SITE_PROPERTY_SUBMODULEINDEX = 8,
+  QDMI_SITE_PROPERTY_SUBMODULEINDEX = 12,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
@@ -491,7 +549,7 @@ enum QDMI_SITE_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_SITE_PROPERTY_MAX = 9,
+  QDMI_SITE_PROPERTY_MAX = 13,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.

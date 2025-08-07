@@ -209,6 +209,10 @@ TEST_P(QDMIImplementationTest, QuerySiteProperties) {
     const auto t2 = fomac.get_site_t2(site);
     EXPECT_GT(t2, 0);
 
+    // the example device only offers regular sites
+    EXPECT_EQ(QDMI_device_query_site_property(
+                  device, site, QDMI_SITE_PROPERTY_ISZONE, 0, nullptr, nullptr),
+              QDMI_ERROR_NOTSUPPORTED);
     uint64_t module_id = 1;
     EXPECT_EQ(QDMI_device_query_site_property(
                   device, site, QDMI_SITE_PROPERTY_MODULEINDEX,
@@ -231,6 +235,18 @@ TEST_P(QDMIImplementationTest, QuerySiteProperties) {
               QDMI_ERROR_NOTSUPPORTED);
     EXPECT_EQ(QDMI_device_query_site_property(device, site,
                                               QDMI_SITE_PROPERTY_ZCOORDINATE, 0,
+                                              nullptr, nullptr),
+              QDMI_ERROR_NOTSUPPORTED);
+    EXPECT_EQ(QDMI_device_query_site_property(device, site,
+                                              QDMI_SITE_PROPERTY_XEXTENT, 0,
+                                              nullptr, nullptr),
+              QDMI_ERROR_NOTSUPPORTED);
+    EXPECT_EQ(QDMI_device_query_site_property(device, site,
+                                              QDMI_SITE_PROPERTY_YEXTENT, 0,
+                                              nullptr, nullptr),
+              QDMI_ERROR_NOTSUPPORTED);
+    EXPECT_EQ(QDMI_device_query_site_property(device, site,
+                                              QDMI_SITE_PROPERTY_ZEXTENT, 0,
                                               nullptr, nullptr),
               QDMI_ERROR_NOTSUPPORTED);
 
