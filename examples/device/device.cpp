@@ -801,6 +801,8 @@ int CXX_QDMI_device_session_query_site_property(CXX_QDMI_Device_Session session,
   }
   ADD_SINGLE_VALUE_PROPERTY(QDMI_SITE_PROPERTY_INDEX, uint64_t, site->id, prop,
                             size, value, size_ret)
+  ADD_SINGLE_VALUE_PROPERTY(QDMI_SITE_PROPERTY_MODULEINDEX, uint64_t, 0, prop,
+                            size, value, size_ret)
   ADD_SINGLE_VALUE_PROPERTY(QDMI_SITE_PROPERTY_T1, double, 1000.0, prop, size,
                             value, size_ret)
   ADD_SINGLE_VALUE_PROPERTY(QDMI_SITE_PROPERTY_T2, double, 100000.0, prop, size,

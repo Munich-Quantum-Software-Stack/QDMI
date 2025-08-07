@@ -24,6 +24,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include <array>
 #include <complex>
 #include <cstddef>
+#include <cstdint>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <random>
@@ -211,6 +212,17 @@ TEST_P(QDMIImplementationTest, QuerySiteProperties) {
     // the example device only offers regular sites
     EXPECT_EQ(QDMI_device_query_site_property(
                   device, site, QDMI_SITE_PROPERTY_ISZONE, 0, nullptr, nullptr),
+              QDMI_ERROR_NOTSUPPORTED);
+    uint64_t module_id = 1;
+    EXPECT_EQ(QDMI_device_query_site_property(
+                  device, site, QDMI_SITE_PROPERTY_MODULEINDEX,
+                  sizeof(uint64_t), &module_id, nullptr),
+              QDMI_SUCCESS);
+    // Example device always returns 0 for module index
+    EXPECT_EQ(module_id, 0);
+    EXPECT_EQ(QDMI_device_query_site_property(device, site,
+                                              QDMI_SITE_PROPERTY_SUBMODULEINDEX,
+                                              0, nullptr, nullptr),
               QDMI_ERROR_NOTSUPPORTED);
     // The example devices do not support neutral atom-specific properties
     EXPECT_EQ(QDMI_device_query_site_property(device, site,
