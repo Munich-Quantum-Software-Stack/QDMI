@@ -588,31 +588,31 @@ enum QDMI_OPERATION_PROPERTY_T {
   QDMI_OPERATION_PROPERTY_FIDELITY = 4,
   /**
    * @brief `uint64_t` The interaction radius of the operation.
-   * @details The interaction radius only applies to multi-qubit gates. The
-   * interaction radius is the maximum distance between two qubits that can be
-   * involved in the operation.
+   * @details The interaction radius is the maximum distance between two 
+   * qubits that can be involved in the operation. It only applies to
+   * multi-qubit gates.
+   * @note This property is mainly required for neutral atom devices where
+   * atoms representing qubits can be at arbitrary locations. Hence, it is
+   * infeasible to define a coupling map. Instead, the coupling of atoms is
+   * defined by the interaction radius of the operation.
    * @note This property is a length value and must be interpreted in the way
    * specified by the @ref QDMI_DEVICE_PROPERTY_LENGTHUNIT and @ref
    * QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR properties.
-   * @note This property is mainly required for neutral atom devices where
-   * atoms representing qubits can be at arbitrary locations. Hence, it is
-   * infeasible to define a coupling map. The coupling of atoms is instead
-   * defined by the interaction radius of the operation.
    * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
    */
   QDMI_OPERATION_PROPERTY_INTERACTIONRADIUS = 5,
   /**
    * @brief `uint64_t` The blocking radius of the operation.
-   * @details The blocking radius only applies to multi-qubit gates. The
-   * blocking radius is the minimum distance between two qubits that should not
-   * be involved in the operation to avoid crosstalk.
+   * @details The blocking radius is the minimum distance between two
+   * qubits that should not be involved in the operation to avoid crosstalk.
+   * It only applies to multi-qubit gates.
+   * @note This property is mainly required for neutral atom devices where
+   * atoms representing qubits can be at arbitrary locations. To avoid 
+   * crosstalk, the blocking radius of the operation must be respected when
+   * scheduling operations.
    * @note This property is a length value and must be interpreted in the way
    * specified by the @ref QDMI_DEVICE_PROPERTY_LENGTHUNIT and @ref
    * QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR properties.
-   * @note This property is mainly required for neutral atom devices where
-   * atoms representing qubits can be at arbitrary locations. Hence, it is
-   * infeasible to define a coupling map. To avoid crosstalk, the blocking
-   * radius of the operation must be respected.
    * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
    */
   QDMI_OPERATION_PROPERTY_BLOCKINGRADIUS = 6,
