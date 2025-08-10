@@ -840,6 +840,8 @@ int CXX_QDMI_device_session_query_operation_property(
     ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_DURATION, double,
                               OPERATION_PROPERTIES.at(operation).second, prop,
                               size, value, size_ret)
+    ADD_LIST_PROPERTY(QDMI_OPERATION_PROPERTY_SITES, CXX_QDMI_Site,
+                      DEVICE_COUPLING_MAP, prop, size, value, size_ret)
     if (sites == nullptr) {
       ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_QUBITSNUM, size_t, 2,
                                 prop, size, value, size_ret)
@@ -875,6 +877,8 @@ int CXX_QDMI_device_session_query_operation_property(
                               prop, size, value, size_ret)
     ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_FIDELITY, double, 0.999,
                               prop, size, value, size_ret)
+    ADD_LIST_PROPERTY(QDMI_OPERATION_PROPERTY_SITES, CXX_QDMI_Site,
+                      CXX_DEVICE_SITES, prop, size, value, size_ret)
   }
   return QDMI_ERROR_NOTSUPPORTED;
 } /// [DOXYGEN FUNCTION END]
