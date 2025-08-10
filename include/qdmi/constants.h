@@ -617,6 +617,21 @@ enum QDMI_OPERATION_PROPERTY_T {
    */
   QDMI_OPERATION_PROPERTY_BLOCKINGRADIUS = 6,
   /**
+   * @brief `QDMI_Site*` (@ref QDMI_Site list) The sites the operation is
+   * applicable to.
+   * @details The operations can be applied to every site of the list of
+   * returned sites. In case of multi-qubit operations the returned list will be
+   * a list of tuples. More precisely, for a k-qubit operation, where k is the
+   * number returned @ref QDMI_OPERATION_PROPERTY_QUBITSNUM, the list consists
+   * of k-tuples. The semantics is, that the operations can be applied to every
+   * tuple returned in the list. In case of global operations, the property will
+   * return a list of zone sites.
+   * @par
+   * The returned @ref QDMI_Site handles must be a subset of the sites returned
+   * by @ref QDMI_DEVICE_PROPERTIES_SITES.
+   */
+  QDMI_OPERATION_PROPERTY_SITES = 7,
+  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -624,7 +639,7 @@ enum QDMI_OPERATION_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_OPERATION_PROPERTY_MAX = 7,
+  QDMI_OPERATION_PROPERTY_MAX = 8,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.
