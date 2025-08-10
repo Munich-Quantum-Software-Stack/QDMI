@@ -356,7 +356,7 @@ enum QDMI_DEVICE_PROPERTY_T {
   QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR = 11,
   /**
    * @brief `char*` (string) The duration unit used by the device.
-   * @details This property must be a known SI unit, e.g., "s", "ms" or "ns".
+   * @details This property must be a known SI unit, e.g., "ms", "us" or "ns".
    * All length values must first be multiplied with the value returned by @ref
    * QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR and then interpreted in the unit
    * set for this property here.
