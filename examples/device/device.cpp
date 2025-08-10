@@ -808,9 +808,9 @@ int CXX_QDMI_device_session_query_site_property(CXX_QDMI_Device_Session session,
                             size, value, size_ret)
   ADD_SINGLE_VALUE_PROPERTY(QDMI_SITE_PROPERTY_MODULEINDEX, uint64_t, 0, prop,
                             size, value, size_ret)
-  ADD_SINGLE_VALUE_PROPERTY(QDMI_SITE_PROPERTY_T1, uint64_t, 1000U, prop, size,
-                            value, size_ret)
-  ADD_SINGLE_VALUE_PROPERTY(QDMI_SITE_PROPERTY_T2, uint64_t, 100000U, prop,
+  ADD_SINGLE_VALUE_PROPERTY(QDMI_SITE_PROPERTY_T1, uint64_t, 100000U, prop,
+                            size, value, size_ret)
+  ADD_SINGLE_VALUE_PROPERTY(QDMI_SITE_PROPERTY_T2, uint64_t, 10000000U, prop,
                             size, value, size_ret)
   return QDMI_ERROR_NOTSUPPORTED;
 } /// [DOXYGEN FUNCTION END]
