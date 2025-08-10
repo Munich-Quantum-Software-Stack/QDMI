@@ -476,9 +476,9 @@ int QDMI_device_query_device_property(QDMI_Device device,
  * }
  *
  * // Query the property.
- * double t1;
+ * uint64_t t1;
  * QDMI_device_query_site_property(
- *   device, site, QDMI_SITE_PROPERTY_T1, sizeof(double), &t1, nullptr);
+ *   device, site, QDMI_SITE_PROPERTY_T1, sizeof(uint64_t), &t1, nullptr);
  * ```
  *
  * @remark @ref QDMI_Site handles may be queried via @ref

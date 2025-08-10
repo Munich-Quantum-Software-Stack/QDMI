@@ -440,9 +440,21 @@ enum QDMI_SITE_PROPERTY_T {
    * address the sites in a program.
    */
   QDMI_SITE_PROPERTY_INDEX = 0,
-  /// `double` The T1 time of a site in µs.
+  /**
+   * @brief `uint64_t` The T1 time of a site.
+   * @note This property is a duration value and must be interpreted in the way
+   * specified by the @ref QDMI_DEVICE_PROPERTY_DURATIONHUNIT and @ref
+   * QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR properties.
+   * @see QDMI_DEVICE_PROPERTY_DURATIONUNIT
+   */
   QDMI_SITE_PROPERTY_T1 = 1,
-  /// `double` The T2 time of a site in µs.
+  /**
+   * @brief `uint64_t` The T2 time of a site.
+   * @note This property is a duration value and must be interpreted in the way
+   * specified by the @ref QDMI_DEVICE_PROPERTY_DURATIONHUNIT and @ref
+   * QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR properties.
+   * @see QDMI_DEVICE_PROPERTY_DURATIONUNIT
+   */
   QDMI_SITE_PROPERTY_T2 = 2,
   /**
    * `char*` (string) The name of a site, e.g., another identifier of the site
@@ -600,7 +612,13 @@ enum QDMI_OPERATION_PROPERTY_T {
   QDMI_OPERATION_PROPERTY_QUBITSNUM = 1,
   /// `size_t` The number of floating point parameters the operation takes.
   QDMI_OPERATION_PROPERTY_PARAMETERSNUM = 2,
-  /// `double` The duration of an operation in µs.
+  /**
+   * `uint64_t` The duration of an operation.
+   * @note This property is a duration value and must be interpreted in the way
+   * specified by the @ref QDMI_DEVICE_PROPERTY_DURATIONHUNIT and @ref
+   * QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR properties.
+   * @see QDMI_DEVICE_PROPERTY_DURATIONUNIT
+   */
   QDMI_OPERATION_PROPERTY_DURATION = 3,
   /// `double` The fidelity of an operation.
   QDMI_OPERATION_PROPERTY_FIDELITY = 4,
