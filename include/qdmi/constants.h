@@ -355,6 +355,16 @@ enum QDMI_DEVICE_PROPERTY_T {
    */
   QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR = 11,
   /**
+   * @brief `uint64_t` The minimal distance that must be maintained between
+   * qubits during a quantum computation.
+   * @details Atoms representing qubits on neutral atom-based device can be
+   * moved almost arbitrarily. However, they have to maintain a minimum
+   * distance, otherwise they may collide and be lost.
+   * @note This property is mainly required for neutral atom devices that
+   * feature the dynamic rearrangement of atoms.
+   */
+  QDMI_DEVICE_PROPERTY_MINATOMDISTANCE = 12,
+  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -362,7 +372,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_DEVICE_PROPERTY_MAX = 12,
+  QDMI_DEVICE_PROPERTY_MAX = 13,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.
