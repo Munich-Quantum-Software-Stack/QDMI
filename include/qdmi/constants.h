@@ -635,6 +635,23 @@ enum QDMI_OPERATION_PROPERTY_T {
    */
   QDMI_OPERATION_PROPERTY_BLOCKINGRADIUS = 6,
   /**
+   * @brief `uint64_t` The mean shuttling speed of the operation.
+   * @details The mean shuttling speed is the average speed at which qubits can
+   * be moved during the operation.
+   * @note This property is mainly required for neutral atom devices where atoms
+   * representing qubits can be moved to different sites.
+   * @note This property is a velocity value, i.e., it is a length divided by a
+   * duration. The value must be multiplied by the value returned by @ref
+   * QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR and divided by the value
+   * returned by @ref QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR to obtain the
+   * velocity in the unit specified by the @ref
+   * QDMI_DEVICE_PROPERTY_LENGTHUNIT divided by @ref
+   * QDMI_DEVICE_PROPERTY_DURATIONUNIT.
+   * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
+   * @see QDMI_DEVICE_PROPERTY_DURATIONUNIT
+   */
+  QDMI_OPERATION_PROPERTY_MEANSHUTTLINGSPEED = 7,
+  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -642,7 +659,7 @@ enum QDMI_OPERATION_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_OPERATION_PROPERTY_MAX = 7,
+  QDMI_OPERATION_PROPERTY_MAX = 8,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.
