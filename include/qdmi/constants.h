@@ -628,7 +628,7 @@ enum QDMI_OPERATION_PROPERTY_T {
    * return a list of zone sites.
    * @par
    * The returned @ref QDMI_Site handles must be a subset of the sites returned
-   * by @ref QDMI_DEVICE_PROPERTIES_SITES.
+   * by @ref QDMI_DEVICE_PROPERTY_SITES.
    */
   QDMI_OPERATION_PROPERTY_SITES = 7,
   /**
