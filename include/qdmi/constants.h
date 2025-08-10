@@ -443,7 +443,7 @@ enum QDMI_SITE_PROPERTY_T {
   /**
    * @brief `uint64_t` The T1 time of a site.
    * @note This property is a duration value and must be interpreted in the way
-   * specified by the @ref QDMI_DEVICE_PROPERTY_DURATIONHUNIT and @ref
+   * specified by the @ref QDMI_DEVICE_PROPERTY_DURATIONUNIT and @ref
    * QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR properties.
    * @see QDMI_DEVICE_PROPERTY_DURATIONUNIT
    */
@@ -451,7 +451,7 @@ enum QDMI_SITE_PROPERTY_T {
   /**
    * @brief `uint64_t` The T2 time of a site.
    * @note This property is a duration value and must be interpreted in the way
-   * specified by the @ref QDMI_DEVICE_PROPERTY_DURATIONHUNIT and @ref
+   * specified by the @ref QDMI_DEVICE_PROPERTY_DURATIONUNIT and @ref
    * QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR properties.
    * @see QDMI_DEVICE_PROPERTY_DURATIONUNIT
    */
@@ -615,7 +615,7 @@ enum QDMI_OPERATION_PROPERTY_T {
   /**
    * `uint64_t` The duration of an operation.
    * @note This property is a duration value and must be interpreted in the way
-   * specified by the @ref QDMI_DEVICE_PROPERTY_DURATIONHUNIT and @ref
+   * specified by the @ref QDMI_DEVICE_PROPERTY_DURATIONUNIT and @ref
    * QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR properties.
    * @see QDMI_DEVICE_PROPERTY_DURATIONUNIT
    */
