@@ -180,7 +180,7 @@ const std::unordered_map<const CXX_QDMI_Operation_impl_d *,
         {CXX_DEVICE_OPERATIONS[0], {"rx", 10}},
         {CXX_DEVICE_OPERATIONS[1], {"ry", 10}},
         {CXX_DEVICE_OPERATIONS[2], {"rz", 10}},
-        {CXX_DEVICE_OPERATIONS[3], {"cx", 10}},
+        {CXX_DEVICE_OPERATIONS[3], {"cx", 100}},
 };
 
 struct CXX_QDMI_Pair_hash {
