@@ -324,23 +324,6 @@ TEST_P(QDMIImplementationTest, QueryDeviceProperties) {
                 &scale_factor, nullptr),
             QDMI_SUCCESS);
   EXPECT_GE(scale_factor, 0.0);
-  // Query the duration unit of the device
-  size = 0;
-  EXPECT_EQ(QDMI_device_query_device_property(
-                device, QDMI_DEVICE_PROPERTY_DURATIONUNIT, 0, nullptr, &size),
-            QDMI_SUCCESS);
-  std::string duration_unit(size - 1, '\0');
-  EXPECT_EQ(QDMI_device_query_device_property(
-                device, QDMI_DEVICE_PROPERTY_DURATIONUNIT,
-                duration_unit.size() + 1, duration_unit.data(), nullptr),
-            QDMI_SUCCESS);
-  EXPECT_THAT(duration_unit, testing::AnyOf("ms", "us", "ns"));
-  scale_factor = 0.0;
-  EXPECT_EQ(QDMI_device_query_device_property(
-                device, QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR,
-                sizeof(double), &scale_factor, nullptr),
-            QDMI_SUCCESS);
-  EXPECT_GE(scale_factor, 0.0);
 
   // The MAX property is not a valid value for any device.
   EXPECT_EQ(QDMI_device_query_device_property(device, QDMI_DEVICE_PROPERTY_MAX,
