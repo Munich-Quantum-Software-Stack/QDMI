@@ -166,20 +166,45 @@ auto FoMaC::get_site_id(QDMI_Site site) const -> uint64_t {
   return site_id;
 }
 
+auto FoMaC::get_us_scale_factor() const -> double {
+  size_t size = 0;
+  int ret = QDMI_device_query_device_property(
+      device, QDMI_DEVICE_PROPERTY_DURATIONUNIT, 0, nullptr, &size);
+  throw_if_error(ret, "Failed to retrieve the device's duration unit size.");
+  std::string unit(size - 1, '\0');
+  ret = QDMI_device_query_device_property(
+      device, QDMI_DEVICE_PROPERTY_DURATIONUNIT, unit.size() + 1, unit.data(),
+      nullptr);
+  throw_if_error(ret, "Failed to retrieve the device's duration unit.");
+  double scale_factor = 0.0;
+  ret = QDMI_device_query_device_property(
+      device, QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR, sizeof(double),
+      &scale_factor, nullptr);
+  throw_if_error(ret, "Failed to query the duration scale factor");
+  if (unit == "ms") {
+    scale_factor /= 1000;
+  } else if (unit == "ns") {
+    scale_factor *= 1000;
+  } else if (unit != "us") {
+    throw std::runtime_error("Unrecognized unit: " + unit);
+  }
+  return scale_factor;
+}
+
 auto FoMaC::get_site_t1(QDMI_Site site) const -> double {
-  double t1 = 0;
+  uint64_t t1 = 0;
   const int ret = QDMI_device_query_site_property(
       device, site, QDMI_SITE_PROPERTY_T1, sizeof(double), &t1, nullptr);
   throw_if_error(ret, "Failed to query the T1 time");
-  return t1;
+  return t1 * get_us_scale_factor();
 }
 
 auto FoMaC::get_site_t2(QDMI_Site site) const -> double {
-  double t2 = 0;
+  uint64_t t2 = 0;
   const int ret = QDMI_device_query_site_property(
       device, site, QDMI_SITE_PROPERTY_T2, sizeof(double), &t2, nullptr);
   throw_if_error(ret, "Failed to query the T2 time");
-  return t2;
+  return t2 * get_us_scale_factor();
 }
 
 auto FoMaC::get_operands_num(const QDMI_Operation &op) const -> size_t {

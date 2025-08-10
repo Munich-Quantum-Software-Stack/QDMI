@@ -40,6 +40,8 @@ private:
 
   static auto throw_if_error(int status, const std::string &message) -> void;
 
+  [[nodiscard]] auto get_us_scale_factor() const -> double;
+
 public:
   explicit FoMaC(QDMI_Device dev) : device(dev) {}
 
