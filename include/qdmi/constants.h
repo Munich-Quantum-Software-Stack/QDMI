@@ -355,6 +355,24 @@ enum QDMI_DEVICE_PROPERTY_T {
    */
   QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR = 11,
   /**
+   * @brief `char*` (string) The duration unit used by the device.
+   * @details This property must be a known SI unit, e.g., "s", "ms" or "ns".
+   * All length values must first be multiplied with the value returned by @ref
+   * QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR and then interpreted in the unit
+   * set for this property here.
+   * @note If the device returns any duration value, this property must be set.
+   */
+  QDMI_DEVICE_PROPERTY_DURATIONUNIT = 12,
+  /**
+   * @brief `double` A factor applied to all duration values.
+   * @details This value must be multiplied with all duration values returned by
+   * the device before it can be interpreted in the unit returned by  @ref
+   * QDMI_DEVICE_PROPERTY_DURATIONUNIT.
+   * @note If this property is @ref QDMI_ERROR_NOTSUPPORTED, a default value of
+   * `1.0` is assumed.
+   */
+  QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR = 13,
+  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -362,7 +380,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_DEVICE_PROPERTY_MAX = 12,
+  QDMI_DEVICE_PROPERTY_MAX = 14,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.
