@@ -175,7 +175,7 @@ constexpr std::array<const CXX_QDMI_Site_impl_d *, 20>
 // clang-format on
 
 const std::unordered_map<const CXX_QDMI_Operation_impl_d *,
-                         std::pair<std::string, double>>
+                         std::pair<std::string, uint64_t>>
     OPERATION_PROPERTIES = {
         {CXX_DEVICE_OPERATIONS[0], {"rx", 10}},
         {CXX_DEVICE_OPERATIONS[1], {"ry", 10}},
