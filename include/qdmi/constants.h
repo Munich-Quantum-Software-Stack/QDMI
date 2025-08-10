@@ -619,12 +619,13 @@ enum QDMI_OPERATION_PROPERTY_T {
   /**
    * @brief `double` The idling fidelity of an operation.
    * @details Additional to @ref QDMI_OPERATION_PROPERTY_FIDELITY, this property
-   * denotes the fidelity on qubits that are affected by this operation but do
-   * not execute this operation. E.g., when applying a global multi-qubit
-   * operation, also isolated qubits that do not have another atom in their
-   * interaction radius to interact with, are affected. Even though they undergo
-   * an identity operation, this may be faulty and has higher infidelity than
-   * just idling not affected by the operation.
+   * denotes the fidelity on qubits that are affected by a global  operation but
+   * do not execute this operation because they do not have an interaction
+   * partner. When applying a global multi-qubit operation, also isolated qubits
+   * that do not have another atom in their interaction radius to interact with,
+   * are affected. Even though they undergo an identity operation, this may be
+   * faulty and has higher infidelity than just idling not affected by the
+   * operation.
    * @note This property is mainly required for neutral atom devices where
    * operations are performed by shining lasers on qubits. These can also
    * illuminate an entire array of atoms. This affects all atoms in the array
