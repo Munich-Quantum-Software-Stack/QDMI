@@ -122,7 +122,7 @@ TEST_P(QDMIImplementationTest, QueryGatePropertiesForEachGate) {
       param = dis(gen);
     }
 
-    double duration = 0;
+    uint64_t duration = 0;
     double fidelity = 0;
     if (gate_num_qubits == 1) {
       for (const auto &site : sites) {
@@ -130,7 +130,7 @@ TEST_P(QDMIImplementationTest, QueryGatePropertiesForEachGate) {
         EXPECT_EQ(QDMI_device_query_operation_property(
                       device, op, gate_num_qubits, site_arr.data(),
                       gate_num_params, params.data(),
-                      QDMI_OPERATION_PROPERTY_DURATION, sizeof(double),
+                      QDMI_OPERATION_PROPERTY_DURATION, sizeof(uint64_t),
                       &duration, nullptr),
                   QDMI_SUCCESS)
             << "Failed to query duration for operation " << name;
@@ -149,7 +149,7 @@ TEST_P(QDMIImplementationTest, QueryGatePropertiesForEachGate) {
         EXPECT_EQ(QDMI_device_query_operation_property(
                       device, op, gate_num_qubits, site_arr.data(),
                       gate_num_params, params.data(),
-                      QDMI_OPERATION_PROPERTY_DURATION, sizeof(double),
+                      QDMI_OPERATION_PROPERTY_DURATION, sizeof(uint64_t),
                       &duration, nullptr),
                   QDMI_SUCCESS)
             << "Failed to query duration for gate " << op;
