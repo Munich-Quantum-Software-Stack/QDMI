@@ -194,7 +194,7 @@ auto FoMaC::get_us_scale_factor() const -> double {
 auto FoMaC::get_site_t1(QDMI_Site site) const -> double {
   uint64_t t1 = 0;
   const int ret = QDMI_device_query_site_property(
-      device, site, QDMI_SITE_PROPERTY_T1, sizeof(double), &t1, nullptr);
+      device, site, QDMI_SITE_PROPERTY_T1, sizeof(uint64_t), &t1, nullptr);
   throw_if_error(ret, "Failed to query the T1 time");
   return static_cast<double>(t1) * get_us_scale_factor();
 }
@@ -202,7 +202,7 @@ auto FoMaC::get_site_t1(QDMI_Site site) const -> double {
 auto FoMaC::get_site_t2(QDMI_Site site) const -> double {
   uint64_t t2 = 0;
   const int ret = QDMI_device_query_site_property(
-      device, site, QDMI_SITE_PROPERTY_T2, sizeof(double), &t2, nullptr);
+      device, site, QDMI_SITE_PROPERTY_T2, sizeof(uint64_t), &t2, nullptr);
   throw_if_error(ret, "Failed to query the T2 time");
   return static_cast<double>(t2) * get_us_scale_factor();
 }
