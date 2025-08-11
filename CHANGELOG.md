@@ -13,6 +13,10 @@ clients compiled against a different minor or major version.
 
 ### Added
 
+- **Breaking**: ✨ Add properties to query the device's duration unit and adapt types of existing
+  duration related properties ([#210]) ([\@ystade])
+- ✨ Add properties to query neutral atom-based device specific characteristics and capabilities
+  ([#198], [#199], [#200], [#203], [#207], [#208], [#209], [#211]) ([\@ystade])
 - 📝 Add changelog and upgrade guide ([#160]) ([\@ystade], [\@burgholzer])
 - 🚸 Support querying of job properties incl. previously set parameters values ([#160]) ([\@ystade])
 - 🚸 Add new authentication options to `QDMI_SESSION_PARAMETER` and `QDMI_DEVICE_SESSION_PARAMETER`
@@ -51,6 +55,15 @@ changelogs._
 
 <!-- PR links -->
 
+[#211]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/211
+[#210]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/210
+[#209]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/209
+[#208]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/208
+[#207]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/207
+[#203]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/203
+[#200]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/200
+[#199]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/199
+[#198]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/198
 [#169]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/169
 [#165]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/165
 [#160]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/160
