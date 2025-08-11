@@ -7,6 +7,24 @@ including minor and patch releases, please refer to the [changelog](CHANGELOG.md
 
 ### Introduction of Length and Duration Units
 
+With this release, the device can use its own length and duration units to represent the respective
+properties of the device, sites, and operations. The value type of all length and duration related
+properties has been changed from `double` to `int64_t` or `uint64_t` (for exclusively positive
+values) to represent the values in multiples of the device's own length and duration units.
+
+The device's length and duration units can be queried using the new properties:
+
+- `QDMI_DEVICE_PROPERTY_LENGTHUNIT`: The length unit of the device, e.g., "um" for micrometers.
+- `QDMI_DEVICE_PROPERTY_DURATIONUNIT`: The duration unit of the device, e.g., "ns" for nanoseconds.
+- `QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR`: The factor by which the raw unscaled values returned by
+  the device must be multiplied to obtain the actual length in the units reported by
+  `QDMI_DEVICE_PROPERTY_LENGTHUNIT`.
+- `QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR`: The factor by which the raw unscaled values returned
+  by the device must be multiplied to obtain the actual duration in the units reported by
+  `QDMI_DEVICE_PROPERTY_DURATIONUNIT`.
+
+The provision of the units is mandatory for all devices if they report respective properties.
+
 ### General Changes
 
 The enum value `QDMI_SITE_PROPERTY_ID` has been renamed to `QDMI_SITE_PROPERTY_INDEX`. The
