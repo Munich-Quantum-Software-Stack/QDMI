@@ -355,21 +355,22 @@ enum QDMI_DEVICE_PROPERTY_T {
    */
   QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR = 11,
   /**
-   * @brief `char*` (string) The duration unit used by the device.
-   * @details This property must be a known SI unit, e.g., "ms", "us" or "ns".
-   * All length values must first be multiplied with the value returned by @ref
-   * QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR and then interpreted in the unit
-   * set for this property here.
-   * @note If the device returns any duration value, this property must be set.
+   * @brief `char*` (string) The duration unit reported by the device.
+   * @details The device implementation must report a known SI unit (e.g., "ms",
+   * "us", or "ns") for this property. A client querying a duration value must
+   * first scale it using @ref QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR. The
+   * resulting value is then interpreted in the unit specified by this property.
+   * @note If the device reports any duration values, this property must be set.
    */
   QDMI_DEVICE_PROPERTY_DURATIONUNIT = 12,
   /**
-   * @brief `double` A factor applied to all duration values.
-   * @details This value must be multiplied with all duration values returned by
-   * the device before it can be interpreted in the unit returned by  @ref
-   * QDMI_DEVICE_PROPERTY_DURATIONUNIT.
-   * @note If this property is @ref QDMI_ERROR_NOTSUPPORTED, a default value of
-   * `1.0` is assumed.
+   * @brief `double` A scale factor for all duration values.
+   * @details The device implementation reports this scale factor. A client must
+   * multiply any raw duration value received from the device by this factor to
+   * obtain the physical duration. The unit of the physical duration is given by
+   * @ref QDMI_DEVICE_PROPERTY_DURATIONUNIT.
+   * @note If querying this property returns @ref QDMI_ERROR_NOTSUPPORTED, a
+   * client should assume a default value of `1.0`.
    */
   QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR = 13,
   /**
@@ -441,19 +442,25 @@ enum QDMI_SITE_PROPERTY_T {
    */
   QDMI_SITE_PROPERTY_INDEX = 0,
   /**
-   * @brief `uint64_t` The T1 time of a site.
-   * @note This property is a duration value and must be interpreted in the way
-   * specified by the @ref QDMI_DEVICE_PROPERTY_DURATIONUNIT and @ref
-   * QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR properties.
+   * @brief `uint64_t` The raw, unscaled T1 time of a site.
+   * @details To obtain the physical T1 time, a client must scale the raw value
+   * of this property. The physical T1 time is calculated as: `raw_value *
+   * scale_factor`, where `scale_factor` is the value of the
+   * @ref QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR property. The resulting value
+   * is in units of @ref QDMI_DEVICE_PROPERTY_DURATIONUNIT.
    * @see QDMI_DEVICE_PROPERTY_DURATIONUNIT
+   * @see QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR
    */
   QDMI_SITE_PROPERTY_T1 = 1,
   /**
-   * @brief `uint64_t` The T2 time of a site.
-   * @note This property is a duration value and must be interpreted in the way
-   * specified by the @ref QDMI_DEVICE_PROPERTY_DURATIONUNIT and @ref
-   * QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR properties.
+   * @brief `uint64_t` The raw, unscaled T2 time of a site.
+   * @details To obtain the physical T2 time, a client must scale the raw value
+   * of this property. The physical T2 time is calculated as: `raw_value *
+   * scale_factor`, where `scale_factor` is the value of the
+   * @ref QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR property. The resulting value
+   * is in units of @ref QDMI_DEVICE_PROPERTY_DURATIONUNIT.
    * @see QDMI_DEVICE_PROPERTY_DURATIONUNIT
+   * @see QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR
    */
   QDMI_SITE_PROPERTY_T2 = 2,
   /**
@@ -613,11 +620,14 @@ enum QDMI_OPERATION_PROPERTY_T {
   /// `size_t` The number of floating point parameters the operation takes.
   QDMI_OPERATION_PROPERTY_PARAMETERSNUM = 2,
   /**
-   * `uint64_t` The duration of an operation.
-   * @note This property is a duration value and must be interpreted in the way
-   * specified by the @ref QDMI_DEVICE_PROPERTY_DURATIONUNIT and @ref
-   * QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR properties.
+   * @brief `uint64_t` The raw, unscaled duration of an operation.
+   * @details To obtain the physical duration, a client must scale the raw value
+   * of this property. The physical duration is calculated as: `raw_value *
+   * scale_factor`, where `scale_factor` is the value of the
+   * @ref QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR property. The resulting value
+   * is in units of @ref QDMI_DEVICE_PROPERTY_DURATIONUNIT.
    * @see QDMI_DEVICE_PROPERTY_DURATIONUNIT
+   * @see QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR
    */
   QDMI_OPERATION_PROPERTY_DURATION = 3,
   /// `double` The fidelity of an operation.
@@ -653,20 +663,21 @@ enum QDMI_OPERATION_PROPERTY_T {
    */
   QDMI_OPERATION_PROPERTY_BLOCKINGRADIUS = 6,
   /**
-   * @brief `uint64_t` The mean shuttling speed of the operation.
-   * @details The mean shuttling speed is the average speed at which qubits can
-   * be moved during the operation.
+   * @brief `uint64_t` The raw, unscaled mean shuttling speed of an operation.
+   * @details To obtain the physical speed, a client must scale the raw value of
+   * this property. The physical speed is calculated as: `raw_value *
+   * length_scale_factor / duration_scale_factor`. The `length_scale_factor` is
+   * the value of @ref QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR and the
+   * `duration_scale_factor` is the value of @ref
+   * QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR. The resulting value is in units
+   * of @ref QDMI_DEVICE_PROPERTY_LENGTHUNIT per @ref
+   * QDMI_DEVICE_PROPERTY_DURATIONUNIT.
    * @note This property is mainly required for neutral atom devices where atoms
    * representing qubits can be moved to different sites.
-   * @note This property is a velocity value, i.e., it is a length divided by a
-   * duration. The value must be multiplied by the value returned by @ref
-   * QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR and divided by the value
-   * returned by @ref QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR to obtain the
-   * velocity in the unit specified by the @ref
-   * QDMI_DEVICE_PROPERTY_LENGTHUNIT divided by @ref
-   * QDMI_DEVICE_PROPERTY_DURATIONUNIT.
    * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
+   * @see QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR
    * @see QDMI_DEVICE_PROPERTY_DURATIONUNIT
+   * @see QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR
    */
   QDMI_OPERATION_PROPERTY_MEANSHUTTLINGSPEED = 7,
   /**
