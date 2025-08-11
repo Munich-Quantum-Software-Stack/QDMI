@@ -337,21 +337,22 @@ enum QDMI_DEVICE_PROPERTY_T {
    */
   QDMI_DEVICE_PROPERTY_PULSESUPPORT = 9,
   /**
-   * @brief `char*` (string) The length unit used by the device.
-   * @details This property must be a known SI unit, e.g., "mm", "um" or "nm".
-   * All length values must first be multiplied with the value returned by @ref
-   * QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR and then interpreted in the unit
-   * set for this property here.
-   * @note If the device returns any length value, this property must be set.
+   * @brief `char*` (string) The length unit reported by the device.
+   * @details The device implementation must report a known SI unit (e.g., "mm",
+   * "um", or "nm") for this property. A client querying a length value must
+   * first scale it using @ref QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR. The
+   * resulting value is then interpreted in the unit specified by this property.
+   * @note If the device reports any length values, this property must be set.
    */
   QDMI_DEVICE_PROPERTY_LENGTHUNIT = 10,
   /**
-   * @brief `double` A factor applied to all length values.
-   * @details This value must be multiplied with all length values returned by
-   * the device before it can be interpreted in the unit returned by  @ref
-   * QDMI_DEVICE_PROPERTY_LENGTHUNIT.
-   * @note If this property is @ref QDMI_ERROR_NOTSUPPORTED, a default value of
-   * `1.0` is assumed.
+   * @brief `double` A scale factor for all length values.
+   * @details The device implementation reports this scale factor. A client must
+   * multiply any raw length value received from the device by this factor to
+   * obtain the physical length. The unit of the physical length is given by
+   * @ref QDMI_DEVICE_PROPERTY_LENGTHUNIT.
+   * @note If querying this property returns @ref QDMI_ERROR_NOTSUPPORTED, a
+   * client should assume a default value of `1.0`.
    */
   QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR = 11,
   /**
