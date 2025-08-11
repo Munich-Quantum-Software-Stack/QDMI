@@ -145,6 +145,9 @@ TEST_P(QDMIImplementationTest, QueryGatePropertiesForEachGate) {
                     QDMI_OPERATION_PROPERTY_SITES, 0, nullptr,
                     &size_of_supported_sites),
                 QDMI_SUCCESS);
+      ASSERT_EQ(size_of_supported_sites % sizeof(QDMI_Site), 0)
+          << "size_of_supported_sites (" << size_of_supported_sites
+          << ") is not a multiple of sizeof(QDMI_Site) (" << sizeof(QDMI_Site) << ")";
       std::vector<QDMI_Site> supported_sites(size_of_supported_sites /
                                              sizeof(QDMI_Site));
       ASSERT_EQ(QDMI_device_query_operation_property(
@@ -183,11 +186,14 @@ TEST_P(QDMIImplementationTest, QueryGatePropertiesForEachGate) {
                 QDMI_SUCCESS);
       std::vector<std::pair<QDMI_Site, QDMI_Site>> supported_site_pairs(
           size_of_supported_site_pairs /
-          sizeof(std::pair<QDMI_Site, QDMI_Site>));
+      ASSERT_EQ(size_of_supported_site_pairs % sizeof(std::pair<QDMI_Site, QDMI_Site>), 0)
+          << "size_of_supported_site_pairs is not a multiple of sizeof(std::pair<QDMI_Site, QDMI_Site>)";
+      std::vector<std::pair<QDMI_Site, QDMI_Site>> supported_site_pairs(
+          size_of_supported_site_pairs / sizeof(std::pair<QDMI_Site, QDMI_Site>));
       ASSERT_EQ(QDMI_device_query_operation_property(
                     device, op, 0, nullptr, 0, nullptr,
                     QDMI_OPERATION_PROPERTY_SITES, size_of_supported_site_pairs,
-                    supported_site_pairs.data(), nullptr),
+                    static_cast<void *>(supported_site_pairs.data()), nullptr),
                 QDMI_SUCCESS);
       for (const auto &pair : supported_site_pairs) {
         EXPECT_NE(set_of_all_site_pairs.find(pair), set_of_all_site_pairs.end())
