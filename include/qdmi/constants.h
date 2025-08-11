@@ -355,13 +355,18 @@ enum QDMI_DEVICE_PROPERTY_T {
    */
   QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR = 11,
   /**
-   * @brief `uint64_t` The minimal distance that must be maintained between
-   * qubits during a quantum computation.
-   * @details Atoms representing qubits on neutral atom-based device can be
-   * moved almost arbitrarily. However, they have to maintain a minimum
-   * distance, otherwise they may collide and be lost.
-   * @note This property is mainly required for neutral atom devices that
-   * feature the dynamic rearrangement of atoms.
+   * @brief `uint64_t` The minimum required distance between qubits during
+   * quantum computation.
+   * @details For neutral atom-based devices, qubits (atoms) can be repositioned
+   * dynamically. However, a minimum separation must be maintained to prevent
+   * collisions and loss of atoms. This property specifies that minimum
+   * distance.
+   * @note Primarily relevant for neutral atom devices supporting dynamic atom
+   * arrangement.
+   * @note This value is a length and must be interpreted using the unit from
+   * @ref QDMI_DEVICE_PROPERTY_LENGTHUNIT and scaled by @ref
+   * QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR.
+   * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
    */
   QDMI_DEVICE_PROPERTY_MINATOMDISTANCE = 12,
   /**
