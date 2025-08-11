@@ -25,6 +25,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include <complex>
 #include <cstddef>
 #include <cstdint>
+#include <functional>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <random>
@@ -32,8 +33,20 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include <string>
 #include <tuple>
 #include <unordered_map>
+#include <unordered_set>
 #include <utility>
 #include <vector>
+
+namespace {
+/// Hash function for a pair
+struct Pair_hash {
+  template <class T, class U>
+  auto operator()(const std::pair<T, U> &p) const noexcept -> std::size_t {
+    // Use the hash of the first and second element of the pair
+    return std::hash<T>{}(p.first) ^ std::hash<U>{}(p.second);
+  }
+};
+} // namespace
 
 // Instantiate the test suite with different parameters
 INSTANTIATE_TEST_SUITE_P(
@@ -125,7 +138,27 @@ TEST_P(QDMIImplementationTest, QueryGatePropertiesForEachGate) {
     double duration = 0;
     double fidelity = 0;
     if (gate_num_qubits == 1) {
-      for (const auto &site : sites) {
+      const std::unordered_set set_of_all_sites(sites.cbegin(), sites.cend());
+      size_t size_of_supported_sites = 0;
+      ASSERT_EQ(QDMI_device_query_operation_property(
+                    device, op, 0, nullptr, 0, nullptr,
+                    QDMI_OPERATION_PROPERTY_SITES, 0, nullptr,
+                    &size_of_supported_sites),
+                QDMI_SUCCESS);
+      ASSERT_EQ(size_of_supported_sites % sizeof(QDMI_Site), 0)
+          << "size_of_supported_sites (" << size_of_supported_sites
+          << ") is not a multiple of sizeof(QDMI_Site) (" << sizeof(QDMI_Site)
+          << ")";
+      std::vector<QDMI_Site> supported_sites(size_of_supported_sites /
+                                             sizeof(QDMI_Site));
+      ASSERT_EQ(QDMI_device_query_operation_property(
+                    device, op, 0, nullptr, 0, nullptr,
+                    QDMI_OPERATION_PROPERTY_SITES, size_of_supported_sites,
+                    static_cast<void *>(supported_sites.data()), nullptr),
+                QDMI_SUCCESS);
+      for (const auto &site : supported_sites) {
+        EXPECT_NE(set_of_all_sites.find(site), set_of_all_sites.end())
+            << "Supported sites must be a subset of all sites.";
         auto site_arr = std::array{site};
         EXPECT_EQ(QDMI_device_query_operation_property(
                       device, op, gate_num_qubits, site_arr.data(),
@@ -144,7 +177,32 @@ TEST_P(QDMIImplementationTest, QueryGatePropertiesForEachGate) {
       }
     }
     if (gate_num_qubits == 2) {
-      for (const auto &[control, target] : coupling_map) {
+      const std::unordered_set<std::pair<QDMI_Site, QDMI_Site>, Pair_hash>
+          set_of_all_site_pairs(coupling_map.cbegin(), coupling_map.cend());
+      size_t size_of_supported_site_pairs = 0;
+      ASSERT_EQ(QDMI_device_query_operation_property(
+                    device, op, 0, nullptr, 0, nullptr,
+                    QDMI_OPERATION_PROPERTY_SITES, 0, nullptr,
+                    &size_of_supported_site_pairs),
+                QDMI_SUCCESS);
+      ASSERT_EQ(size_of_supported_site_pairs %
+                    sizeof(std::pair<QDMI_Site, QDMI_Site>),
+                0)
+          << "size_of_supported_site_pairs is not a multiple of "
+             "sizeof(std::pair<QDMI_Site, QDMI_Site>)";
+      std::vector<std::pair<QDMI_Site, QDMI_Site>> supported_site_pairs(
+          size_of_supported_site_pairs /
+          sizeof(std::pair<QDMI_Site, QDMI_Site>));
+      ASSERT_EQ(QDMI_device_query_operation_property(
+                    device, op, 0, nullptr, 0, nullptr,
+                    QDMI_OPERATION_PROPERTY_SITES, size_of_supported_site_pairs,
+                    static_cast<void *>(supported_site_pairs.data()), nullptr),
+                QDMI_SUCCESS);
+      for (const auto &pair : supported_site_pairs) {
+        EXPECT_NE(set_of_all_site_pairs.find(pair), set_of_all_site_pairs.end())
+            << "Supported site pairs must be a subset of edges in the coupling "
+               "map.";
+        const auto &[control, target] = pair;
         auto site_arr = std::array{control, target};
         EXPECT_EQ(QDMI_device_query_operation_property(
                       device, op, gate_num_qubits, site_arr.data(),
@@ -162,6 +220,14 @@ TEST_P(QDMIImplementationTest, QueryGatePropertiesForEachGate) {
             << "Failed to query fidelity for gate " << op;
       }
     }
+
+    bool is_global = true;
+    EXPECT_EQ(
+        QDMI_device_query_operation_property(device, op, 0, nullptr, 0, nullptr,
+                                             QDMI_OPERATION_PROPERTY_ISZONED,
+                                             sizeof(bool), &is_global, nullptr),
+        QDMI_SUCCESS);
+    EXPECT_FALSE(is_global);
 
     // The example device does not support neutral atom-specific properties
     EXPECT_EQ(QDMI_device_query_operation_property(
