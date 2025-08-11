@@ -645,14 +645,17 @@ enum QDMI_OPERATION_PROPERTY_T {
    */
   QDMI_OPERATION_PROPERTY_IDLINGFIDELITY = 7,
   /**
-   * @brief `bool` Whether the operation is a global operation.
-   * @details A global operation is an operation that can be applied to all
-   * qubits in a zone simultaneously.
-   * @note The default value is `false`. If an operation reports @ref
-   * QDMI_ERROR_NOTSUPPORTED for this property, it is assumed to be a local (not
-   * global) operation.
+   * @brief `bool` Whether the operation is a zoned (global) operation.
+   * @details A zoned (or global) operation is an operation that can be applied
+   * simultaneously to all qubits within a specific zone. If this property is
+   * `true`, the operation is considered zoned. If it is `false` or returns @ref
+   * QDMI_ERROR_NOTSUPPORTED, the operation is considered local. The
+   * applicability of a zoned operation to specific zones is detailed in @ref
+   * QDMI_OPERATION_PROPERTY_SITES.
    * @note This property is primarily relevant for neutral atom devices, where a
    * laser can illuminate an entire array of atoms representing qubits.
+   * @see QDMI_SITE_PROPERTY_ISZONE
+   * @see QDMI_OPERATION_PROPERTY_SITES
    */
   QDMI_OPERATION_PROPERTY_ISZONED = 8,
   /**
