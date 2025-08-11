@@ -39,7 +39,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 namespace {
 /// Hash function for a pair
-struct PairHash {
+struct Pair_hash {
   template <class T, class U>
   auto operator()(const std::pair<T, U> &p) const noexcept -> std::size_t {
     // Use the hash of the first and second element of the pair
@@ -177,7 +177,7 @@ TEST_P(QDMIImplementationTest, QueryGatePropertiesForEachGate) {
       }
     }
     if (gate_num_qubits == 2) {
-      const std::unordered_set<std::pair<QDMI_Site, QDMI_Site>, PairHash>
+      const std::unordered_set<std::pair<QDMI_Site, QDMI_Site>, Pair_hash>
           set_of_all_site_pairs(coupling_map.cbegin(), coupling_map.cend());
       size_t size_of_supported_site_pairs = 0;
       ASSERT_EQ(QDMI_device_query_operation_property(
