@@ -691,6 +691,33 @@ enum QDMI_OPERATION_PROPERTY_T {
    */
   QDMI_OPERATION_PROPERTY_IDLINGFIDELITY = 7,
   /**
+   * @brief `bool` Whether the operation is a zoned (global) operation.
+   * @details A zoned (or global) operation is an operation that can be applied
+   * simultaneously to all qubits within a specific zone. If this property is
+   * `true`, the operation is considered zoned. If it is `false` or returns @ref
+   * QDMI_ERROR_NOTSUPPORTED, the operation is considered local. The
+   * applicability of a zoned operation to specific zones is detailed in @ref
+   * QDMI_OPERATION_PROPERTY_SITES.
+   * @note This property is primarily relevant for neutral atom devices, where a
+   * laser can illuminate an entire array of atoms representing qubits.
+   * @see QDMI_SITE_PROPERTY_ISZONE
+   * @see QDMI_OPERATION_PROPERTY_SITES
+   */
+  QDMI_OPERATION_PROPERTY_ISZONED = 8,
+  /**
+   * @brief `QDMI_Site*` (list) The sites to which the operation is applicable.
+   * @details
+   * - For local operations (see @ref QDMI_OPERATION_PROPERTY_ISZONED), this
+   * property returns a list of tuples. Each tuple contains sites from the list
+   * provided by @ref QDMI_DEVICE_PROPERTY_SITES and represents a valid
+   * combination for the operation. The number of sites in each tuple matches
+   * the value of @ref QDMI_OPERATION_PROPERTY_QUBITSNUM.
+   * - For global operations (see @ref QDMI_OPERATION_PROPERTY_ISZONED), this
+   * property returns a list of zone sites, i.e., zones where the operation can
+   * be applied.
+   */
+  QDMI_OPERATION_PROPERTY_SITES = 9,
+  /**
    * @brief `uint64_t` The raw, unscaled mean shuttling speed of an operation.
    * @details To obtain the physical speed, a client must scale the raw value of
    * this property. The physical speed is calculated as: `raw_value *
@@ -707,7 +734,7 @@ enum QDMI_OPERATION_PROPERTY_T {
    * @see QDMI_DEVICE_PROPERTY_DURATIONUNIT
    * @see QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR
    */
-  QDMI_OPERATION_PROPERTY_MEANSHUTTLINGSPEED = 8,
+  QDMI_OPERATION_PROPERTY_MEANSHUTTLINGSPEED = 10,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
@@ -716,7 +743,7 @@ enum QDMI_OPERATION_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_OPERATION_PROPERTY_MAX = 9,
+  QDMI_OPERATION_PROPERTY_MAX = 11,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.
