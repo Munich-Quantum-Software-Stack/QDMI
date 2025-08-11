@@ -147,7 +147,8 @@ TEST_P(QDMIImplementationTest, QueryGatePropertiesForEachGate) {
                 QDMI_SUCCESS);
       ASSERT_EQ(size_of_supported_sites % sizeof(QDMI_Site), 0)
           << "size_of_supported_sites (" << size_of_supported_sites
-          << ") is not a multiple of sizeof(QDMI_Site) (" << sizeof(QDMI_Site) << ")";
+          << ") is not a multiple of sizeof(QDMI_Site) (" << sizeof(QDMI_Site)
+          << ")";
       std::vector<QDMI_Site> supported_sites(size_of_supported_sites /
                                              sizeof(QDMI_Site));
       ASSERT_EQ(QDMI_device_query_operation_property(
