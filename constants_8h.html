@@ -351,12 +351,13 @@ Enumerations</h2></td></tr>
 , <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a3a25e71a82af0c1ef7343dd602a3921e">QDMI_DEVICE_PROPERTY_LENGTHUNIT</a> = 10
 , <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a27e6f6733d8b32f0adada480f3af328f">QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR</a> = 11
 , <br />
-&#160;&#160;<a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526afe696a25133fa887276e666460981688">QDMI_DEVICE_PROPERTY_MAX</a> = 12
+&#160;&#160;<a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a173bd4a2008da3122d48f15dea8379d8">QDMI_DEVICE_PROPERTY_MINATOMDISTANCE</a> = 12
+, <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526afe696a25133fa887276e666460981688">QDMI_DEVICE_PROPERTY_MAX</a> = 13
 , <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a994b8261b6addc3f56993c467641b122">QDMI_DEVICE_PROPERTY_CUSTOM1</a> = 999999995
 , <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a36730bc67d1fd3c7578a352adf47745e">QDMI_DEVICE_PROPERTY_CUSTOM2</a> = 999999996
-, <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a32e4c833c31ffb4add4245a722d70e88">QDMI_DEVICE_PROPERTY_CUSTOM3</a> = 999999997
 , <br />
-&#160;&#160;<a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526ac8f6978f4bf1ad2e263b74bb3bb98aef">QDMI_DEVICE_PROPERTY_CUSTOM4</a> = 999999998
+&#160;&#160;<a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a32e4c833c31ffb4add4245a722d70e88">QDMI_DEVICE_PROPERTY_CUSTOM3</a> = 999999997
+, <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526ac8f6978f4bf1ad2e263b74bb3bb98aef">QDMI_DEVICE_PROPERTY_CUSTOM4</a> = 999999998
 , <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526adb994f1dc9dfee2910261951f7e4b39f">QDMI_DEVICE_PROPERTY_CUSTOM5</a> = 999999999
 <br />
  }</td></tr>
@@ -720,7 +721,13 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="ad251d8ae8fbbe9a5c7a10d66b243d526a27e6f6733d8b32f0adada480f3af328f" name="ad251d8ae8fbbe9a5c7a10d66b243d526a27e6f6733d8b32f0adada480f3af328f"></a>QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR&#160;</td><td class="fieldinit">11&#160;</td><td class="fielddoc"><p><code>double</code> A factor applied to all length values. </p>
 <p>This value must be multiplied with all length values returned by the device before it can be interpreted in the unit returned by <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a3a25e71a82af0c1ef7343dd602a3921e">QDMI_DEVICE_PROPERTY_LENGTHUNIT</a>. </p><dl class="section note"><dt>Note</dt><dd>If this property is <a class="el" href="#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a>, a default value of <code>1.0</code> is assumed. </dd></dl>
 </td></tr>
-<tr><td class="fieldname"><a id="ad251d8ae8fbbe9a5c7a10d66b243d526afe696a25133fa887276e666460981688" name="ad251d8ae8fbbe9a5c7a10d66b243d526afe696a25133fa887276e666460981688"></a>QDMI_DEVICE_PROPERTY_MAX&#160;</td><td class="fieldinit">12&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
+<tr><td class="fieldname"><a id="ad251d8ae8fbbe9a5c7a10d66b243d526a173bd4a2008da3122d48f15dea8379d8" name="ad251d8ae8fbbe9a5c7a10d66b243d526a173bd4a2008da3122d48f15dea8379d8"></a>QDMI_DEVICE_PROPERTY_MINATOMDISTANCE&#160;</td><td class="fieldinit">12&#160;</td><td class="fielddoc"><p><code>uint64_t</code> The minimum required distance between qubits during quantum computation. </p>
+<p>For neutral atom-based devices, qubits (atoms) can be repositioned dynamically. However, a minimum separation must be maintained to prevent collisions and loss of atoms. This property specifies that minimum distance. </p><dl class="section note"><dt>Note</dt><dd>Primarily relevant for neutral atom devices supporting dynamic atom arrangement. </dd>
+<dd>
+This value is a length and must be interpreted using the unit from <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a3a25e71a82af0c1ef7343dd602a3921e">QDMI_DEVICE_PROPERTY_LENGTHUNIT</a> and scaled by <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a27e6f6733d8b32f0adada480f3af328f">QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR</a>. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a3a25e71a82af0c1ef7343dd602a3921e" title="char* (string) The length unit used by the device.">QDMI_DEVICE_PROPERTY_LENGTHUNIT</a> </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="ad251d8ae8fbbe9a5c7a10d66b243d526afe696a25133fa887276e666460981688" name="ad251d8ae8fbbe9a5c7a10d66b243d526afe696a25133fa887276e666460981688"></a>QDMI_DEVICE_PROPERTY_MAX&#160;</td><td class="fieldinit">13&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
 <p>It can be used by devices for bounds checking and validation of function parameters.</p>
 <dl class="section attention"><dt>Attention</dt><dd>This value must remain the last regular member of the enum besides the custom members and must be updated when new members are added. </dd></dl>
 </td></tr>
