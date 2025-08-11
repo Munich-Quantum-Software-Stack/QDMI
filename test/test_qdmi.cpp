@@ -215,9 +215,10 @@ TEST_P(QDMIImplementationTest, QueryGatePropertiesForEachGate) {
     bool isGlobal = true;
     EXPECT_EQ(
         QDMI_device_query_operation_property(device, op, 0, nullptr, 0, nullptr,
-                                             QDMI_OPERATION_PROPERTY_ISGLOBAL,
+                                             QDMI_OPERATION_PROPERTY_ISZONED,
                                              sizeof(bool), &isGlobal, nullptr),
-        QDMI_ERROR_NOTSUPPORTED);
+        QDMI_SUCCESS);
+    EXPECT_FALSE(isGlobal);
 
     // The example device does not support neutral atom-specific properties
     EXPECT_EQ(QDMI_device_query_operation_property(

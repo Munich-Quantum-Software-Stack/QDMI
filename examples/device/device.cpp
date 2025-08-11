@@ -840,7 +840,7 @@ int CXX_QDMI_device_session_query_operation_property(
     ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_DURATION, double,
                               OPERATION_PROPERTIES.at(operation).second, prop,
                               size, value, size_ret)
-    ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_ISGLOBAL, bool, false,
+    ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_ISZONED, bool, false,
                               prop, size, value, size_ret)
     ADD_LIST_PROPERTY(QDMI_OPERATION_PROPERTY_SITES, CXX_QDMI_Site,
                       DEVICE_COUPLING_MAP, prop, size, value, size_ret)

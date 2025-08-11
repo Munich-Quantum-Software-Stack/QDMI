@@ -626,16 +626,16 @@ enum QDMI_OPERATION_PROPERTY_T {
    * @note This property is primarily relevant for neutral atom devices, where a
    * laser can illuminate an entire array of atoms representing qubits.
    */
-  QDMI_OPERATION_PROPERTY_ISGLOBAL = 7,
+  QDMI_OPERATION_PROPERTY_ISZONED = 7,
   /**
    * @brief `QDMI_Site*` (list) The sites to which the operation is applicable.
    * @details
-   * - For local operations (see @ref QDMI_OPERATION_PROPERTY_GLOBAL), this
+   * - For local operations (see @ref QDMI_OPERATION_PROPERTY_ISZONED), this
    * property returns a list of tuples. Each tuple contains sites from the list
    * provided by @ref QDMI_DEVICE_PROPERTY_SITES and represents a valid
    * combination for the operation. The number of sites in each tuple matches
    * the value of @ref QDMI_OPERATION_PROPERTY_QUBITSNUM.
-   * - For global operations (see @ref QDMI_OPERATION_PROPERTY_GLOBAL), this
+   * - For global operations (see @ref QDMI_OPERATION_PROPERTY_ISZONED), this
    * property returns a list of zone sites, i.e., zones where the operation can
    * be applied.
    */
