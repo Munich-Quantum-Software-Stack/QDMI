@@ -5,9 +5,51 @@ including minor and patch releases, please refer to the [changelog](CHANGELOG.md
 
 ## [Unreleased]
 
+### Introduction of Length and Duration Units
+
 ### General Changes
 
-The enum value `QDMI_SITE_PROPERTY_ID` has been renamed to `QDMI_SITE_PROPERTY_INDEX`.
+The enum value `QDMI_SITE_PROPERTY_ID` has been renamed to `QDMI_SITE_PROPERTY_INDEX`. The
+operations received a new property `QDMI_OPERATION_PROPERTY_SITES` which returns a list of sites on
+which the operation can be performed.
+
+### Neutral Atom Device Properties
+
+This release introduces a set of new properties to represent neutral atom-based device
+characteristics and capabilities. Following is a list of all new properties related to neutral atom
+devices grouped by their respective categories:
+
+#### Device Properties
+
+- `QDMI_DEVICE_PROPERTY_MINATOMDISTANCE`: The minimum distance between two atoms in the device that
+  must be maintained also during rearrangements.
+
+#### Site Properties
+
+- `QDMI_SITE_PROPERTY_{X,Y,Z}COORDINATE`: The X/Y/Z-coordinate of the site relative to some device's
+  origin.
+- `QDMI_SITE_PROPERTY_ISZONE`: A boolean property indicating whether the site is a zone site
+  representing a zone of the device with an extent.
+- `QDMI_SITE_PROPERTY_{X,Y,Z}EXTENT`: The X/Y/Z-extent of the zone site (returns
+  `QDMI_ERROR_NOTSUPPORTED` for regular sites).
+- `QDMI_SITE_PROPERTY_MODULEINDEX`: The index of the module to which the site belongs.
+- `QDMI_SITE_PROPERTY_SUBMODULEINDEX`: The index of the submodule to which the site belongs. The
+  module and submodule indices facilitate the reconstruction of the site layout in a client.
+
+#### Operation Properties
+
+- `QDMI_OPERATION_PROPERTY_INTERACTIONRADIUS`: The interaction radius of a multi-qubit operation,
+  such as a CZ-gate performed via a Rydberg interaction.
+- `QDMI_OPERATION_PROPERTY_BLOCKINGRADIUS`: The blocking radius of a multi-qubit operation, such as
+  a CZ-gate performed via a Rydberg interaction. While performing a multi-qubit operation, no other
+  operations can be performed on sites within the blocking radius of the operation.
+- `QDMI_OPERATION_PROPERTY_ISZONED`: A boolean property indicating whether the operation is a zoned
+  operation, meaning that it can be performed on a zone of sites rather than individual sites.
+- `QDMI_OPERATION_PROPERTY_IDLINGFIDELITY`: The idling fidelity only applies to zoned operations and
+  indicates the fidelity of the operation on atoms that are not involved in the operation but are
+  still affected by the laser performing the operation.
+- `QDMI_OPERATION_PROPERTY_MEANSHUTTLINGSPEED`: The mean shuttling speed of the operation, which is
+  the average speed at which atoms are moved during a shuttling operation.
 
 ### Device-side Changes
 
