@@ -617,18 +617,16 @@ enum QDMI_OPERATION_PROPERTY_T {
    */
   QDMI_OPERATION_PROPERTY_BLOCKINGRADIUS = 6,
   /**
-   * @brief `QDMI_Site*` (@ref QDMI_Site list) The sites the operation is
-   * applicable to.
-   * @details The operations can be applied to every site of the list of
-   * returned sites. In case of multi-qubit operations the returned list will be
-   * a list of tuples. More precisely, for a k-qubit operation, where k is the
-   * number returned @ref QDMI_OPERATION_PROPERTY_QUBITSNUM, the list consists
-   * of k-tuples. The semantics is, that the operations can be applied to every
-   * tuple returned in the list. In case of global operations, the property will
-   * return a list of zone sites.
-   * @par
-   * The returned @ref QDMI_Site handles must be a subset of the sites returned
-   * by @ref QDMI_DEVICE_PROPERTY_SITES.
+   * @brief `QDMI_Site*` (list) The sites to which the operation is applicable.
+   * @details
+   * - For local operations (see @ref QDMI_OPERATION_PROPERTY_GLOBAL), this
+   * property returns a list of tuples. Each tuple contains sites from the list
+   * provided by @ref QDMI_DEVICE_PROPERTY_SITES and represents a valid
+   * combination for the operation. The number of sites in each tuple matches
+   * the value of @ref QDMI_OPERATION_PROPERTY_QUBITSNUM.
+   * - For global operations (see @ref QDMI_OPERATION_PROPERTY_GLOBAL), this
+   * property returns a list of zone sites, i.e., zones where the operation can
+   * be applied.
    */
   QDMI_OPERATION_PROPERTY_SITES = 7,
   /**
