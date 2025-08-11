@@ -175,6 +175,10 @@ TEST_P(QDMIImplementationTest, QueryGatePropertiesForEachGate) {
               QDMI_ERROR_NOTSUPPORTED);
     EXPECT_EQ(QDMI_device_query_operation_property(
                   device, op, 0, nullptr, 0, nullptr,
+                  QDMI_OPERATION_PROPERTY_IDLINGFIDELITY, 0, nullptr, nullptr),
+              QDMI_ERROR_NOTSUPPORTED);
+    EXPECT_EQ(QDMI_device_query_operation_property(
+                  device, op, 0, nullptr, 0, nullptr,
                   QDMI_OPERATION_PROPERTY_MEANSHUTTLINGSPEED, 0, nullptr,
                   nullptr),
               QDMI_ERROR_NOTSUPPORTED);
@@ -324,6 +328,12 @@ TEST_P(QDMIImplementationTest, QueryDeviceProperties) {
                 &scale_factor, nullptr),
             QDMI_SUCCESS);
   EXPECT_GE(scale_factor, 0.0);
+
+  // The example device does not support neutral atom-specific properties
+  EXPECT_EQ(
+      QDMI_device_query_device_property(
+          device, QDMI_DEVICE_PROPERTY_MINATOMDISTANCE, 0, nullptr, nullptr),
+      QDMI_ERROR_NOTSUPPORTED);
 
   // The MAX property is not a valid value for any device.
   EXPECT_EQ(QDMI_device_query_device_property(device, QDMI_DEVICE_PROPERTY_MAX,

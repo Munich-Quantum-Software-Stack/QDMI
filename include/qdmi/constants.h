@@ -374,6 +374,21 @@ enum QDMI_DEVICE_PROPERTY_T {
    */
   QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR = 13,
   /**
+   * @brief `uint64_t` The minimum required distance between qubits during
+   * quantum computation.
+   * @details For neutral atom-based devices, qubits (atoms) can be repositioned
+   * dynamically. However, a minimum separation must be maintained to prevent
+   * collisions and loss of atoms. This property specifies that minimum
+   * distance.
+   * @note Primarily relevant for neutral atom devices supporting dynamic atom
+   * arrangement.
+   * @note This value is a length and must be interpreted using the unit from
+   * @ref QDMI_DEVICE_PROPERTY_LENGTHUNIT and scaled by @ref
+   * QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR.
+   * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
+   */
+  QDMI_DEVICE_PROPERTY_MINATOMDISTANCE = 14,
+  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -381,7 +396,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_DEVICE_PROPERTY_MAX = 14,
+  QDMI_DEVICE_PROPERTY_MAX = 15,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.
@@ -663,6 +678,19 @@ enum QDMI_OPERATION_PROPERTY_T {
    */
   QDMI_OPERATION_PROPERTY_BLOCKINGRADIUS = 6,
   /**
+   * @brief `double` Fidelity of qubits idling during a global operation.
+   * @details This property measures the fidelity of qubits that are within the
+   * affected area of a global multi-qubit operation but do not actively
+   * participate (i.e., they lack an interaction partner within their radius).
+   * Even though these qubits undergo an identity operation, errors may still
+   * occur, resulting in lower fidelity compared to qubits that are simply
+   * idling and not exposed to the operation.
+   * @note This is especially relevant for neutral atom devices, where global
+   * operations (e.g., laser pulses) can impact all atoms in the array,
+   * including those not interacting.
+   */
+  QDMI_OPERATION_PROPERTY_IDLINGFIDELITY = 7,
+  /**
    * @brief `uint64_t` The raw, unscaled mean shuttling speed of an operation.
    * @details To obtain the physical speed, a client must scale the raw value of
    * this property. The physical speed is calculated as: `raw_value *
@@ -679,7 +707,7 @@ enum QDMI_OPERATION_PROPERTY_T {
    * @see QDMI_DEVICE_PROPERTY_DURATIONUNIT
    * @see QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR
    */
-  QDMI_OPERATION_PROPERTY_MEANSHUTTLINGSPEED = 7,
+  QDMI_OPERATION_PROPERTY_MEANSHUTTLINGSPEED = 8,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
@@ -688,7 +716,7 @@ enum QDMI_OPERATION_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_OPERATION_PROPERTY_MAX = 8,
+  QDMI_OPERATION_PROPERTY_MAX = 9,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.
