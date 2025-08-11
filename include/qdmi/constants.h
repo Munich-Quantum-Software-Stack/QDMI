@@ -617,6 +617,17 @@ enum QDMI_OPERATION_PROPERTY_T {
    */
   QDMI_OPERATION_PROPERTY_BLOCKINGRADIUS = 6,
   /**
+   * @brief `bool` Whether the operation is a global operation.
+   * @details A global operation is an operation that can be applied to all
+   * qubits in a zone simultaneously.
+   * @note The default value is `false`. If an operation reports @ref
+   * QDMI_ERROR_NOTSUPPORTED for this property, it is assumed to be a local (not
+   * global) operation.
+   * @note This property is primarily relevant for neutral atom devices, where a
+   * laser can illuminate an entire array of atoms representing qubits.
+   */
+  QDMI_OPERATION_PROPERTY_ISGLOBAL = 7,
+  /**
    * @brief `QDMI_Site*` (list) The sites to which the operation is applicable.
    * @details
    * - For local operations (see @ref QDMI_OPERATION_PROPERTY_GLOBAL), this
@@ -628,7 +639,7 @@ enum QDMI_OPERATION_PROPERTY_T {
    * property returns a list of zone sites, i.e., zones where the operation can
    * be applied.
    */
-  QDMI_OPERATION_PROPERTY_SITES = 7,
+  QDMI_OPERATION_PROPERTY_SITES = 8,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
@@ -637,7 +648,7 @@ enum QDMI_OPERATION_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_OPERATION_PROPERTY_MAX = 8,
+  QDMI_OPERATION_PROPERTY_MAX = 9,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.
