@@ -360,7 +360,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * qubits during quantum computation.
    * @details For neutral atom-based devices, qubits (atoms) can be repositioned
    * dynamically. However, a minimum separation must be maintained to prevent
-   * collisions and loss of atoms. This property specifies that minimum
+   * collisions and loss of atoms. This property specifies the minimum atom
    * distance.
    * @par
    * To obtain the physical minimum atom distance, a client must scale the raw
