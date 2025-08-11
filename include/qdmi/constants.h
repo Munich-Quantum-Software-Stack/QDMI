@@ -632,6 +632,19 @@ enum QDMI_OPERATION_PROPERTY_T {
    */
   QDMI_OPERATION_PROPERTY_BLOCKINGRADIUS = 6,
   /**
+   * @brief `double` Fidelity of qubits idling during a global operation.
+   * @details This property measures the fidelity of qubits that are within the
+   * affected area of a global multi-qubit operation but do not actively
+   * participate (i.e., they lack an interaction partner within their radius).
+   * Even though these qubits undergo an identity operation, errors may still
+   * occur, resulting in lower fidelity compared to qubits that are simply
+   * idling and not exposed to the operation.
+   * @note This is especially relevant for neutral atom devices, where global
+   * operations (e.g., laser pulses) can impact all atoms in the array,
+   * including those not interacting.
+   */
+  QDMI_OPERATION_PROPERTY_IDLINGFIDELITY = 7,
+  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -639,7 +652,7 @@ enum QDMI_OPERATION_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_OPERATION_PROPERTY_MAX = 7,
+  QDMI_OPERATION_PROPERTY_MAX = 8,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.
