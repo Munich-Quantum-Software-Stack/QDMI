@@ -135,7 +135,7 @@ TEST_P(QDMIImplementationTest, QueryGatePropertiesForEachGate) {
       param = dis(gen);
     }
 
-    double duration = 0;
+    uint64_t duration = 0;
     double fidelity = 0;
     if (gate_num_qubits == 1) {
       const std::unordered_set set_of_all_sites(sites.cbegin(), sites.cend());
@@ -163,7 +163,7 @@ TEST_P(QDMIImplementationTest, QueryGatePropertiesForEachGate) {
         EXPECT_EQ(QDMI_device_query_operation_property(
                       device, op, gate_num_qubits, site_arr.data(),
                       gate_num_params, params.data(),
-                      QDMI_OPERATION_PROPERTY_DURATION, sizeof(double),
+                      QDMI_OPERATION_PROPERTY_DURATION, sizeof(uint64_t),
                       &duration, nullptr),
                   QDMI_SUCCESS)
             << "Failed to query duration for operation " << name;
@@ -207,7 +207,7 @@ TEST_P(QDMIImplementationTest, QueryGatePropertiesForEachGate) {
         EXPECT_EQ(QDMI_device_query_operation_property(
                       device, op, gate_num_qubits, site_arr.data(),
                       gate_num_params, params.data(),
-                      QDMI_OPERATION_PROPERTY_DURATION, sizeof(double),
+                      QDMI_OPERATION_PROPERTY_DURATION, sizeof(uint64_t),
                       &duration, nullptr),
                   QDMI_SUCCESS)
             << "Failed to query duration for gate " << op;
@@ -242,6 +242,11 @@ TEST_P(QDMIImplementationTest, QueryGatePropertiesForEachGate) {
     EXPECT_EQ(QDMI_device_query_operation_property(
                   device, op, 0, nullptr, 0, nullptr,
                   QDMI_OPERATION_PROPERTY_IDLINGFIDELITY, 0, nullptr, nullptr),
+              QDMI_ERROR_NOTSUPPORTED);
+    EXPECT_EQ(QDMI_device_query_operation_property(
+                  device, op, 0, nullptr, 0, nullptr,
+                  QDMI_OPERATION_PROPERTY_MEANSHUTTLINGSPEED, 0, nullptr,
+                  nullptr),
               QDMI_ERROR_NOTSUPPORTED);
 
     // The MAX property is not a valid value for any device
@@ -377,12 +382,12 @@ TEST_P(QDMIImplementationTest, QueryDeviceProperties) {
   EXPECT_EQ(QDMI_device_query_device_property(
                 device, QDMI_DEVICE_PROPERTY_LENGTHUNIT, 0, nullptr, &size),
             QDMI_SUCCESS);
-  std::string unit(size - 1, '\0');
-  EXPECT_EQ(
-      QDMI_device_query_device_property(device, QDMI_DEVICE_PROPERTY_LENGTHUNIT,
-                                        unit.size() + 1, unit.data(), nullptr),
-      QDMI_SUCCESS);
-  EXPECT_THAT(unit, testing::AnyOf("mm", "um", "nm"));
+  std::string length_unit(size - 1, '\0');
+  EXPECT_EQ(QDMI_device_query_device_property(
+                device, QDMI_DEVICE_PROPERTY_LENGTHUNIT, length_unit.size() + 1,
+                length_unit.data(), nullptr),
+            QDMI_SUCCESS);
+  EXPECT_THAT(length_unit, testing::AnyOf("mm", "um", "nm"));
   double scale_factor = 0.0;
   EXPECT_EQ(QDMI_device_query_device_property(
                 device, QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR, sizeof(double),

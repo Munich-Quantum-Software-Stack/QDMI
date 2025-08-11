@@ -356,6 +356,25 @@ enum QDMI_DEVICE_PROPERTY_T {
    */
   QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR = 11,
   /**
+   * @brief `char*` (string) The duration unit reported by the device.
+   * @details The device implementation must report a known SI unit (e.g., "ms",
+   * "us", or "ns") for this property. A client querying a duration value must
+   * first scale it using @ref QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR. The
+   * resulting value is then interpreted in the unit specified by this property.
+   * @note If the device reports any duration values, this property must be set.
+   */
+  QDMI_DEVICE_PROPERTY_DURATIONUNIT = 12,
+  /**
+   * @brief `double` A scale factor for all duration values.
+   * @details The device implementation reports this scale factor. A client must
+   * multiply any raw duration value received from the device by this factor to
+   * obtain the physical duration. The unit of the physical duration is given by
+   * @ref QDMI_DEVICE_PROPERTY_DURATIONUNIT.
+   * @note If querying this property returns @ref QDMI_ERROR_NOTSUPPORTED, a
+   * client should assume a default value of `1.0`.
+   */
+  QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR = 13,
+  /**
    * @brief `uint64_t` The raw, unscaled minimum required distance between
    * qubits during quantum computation.
    * @details For neutral atom-based devices, qubits (atoms) can be repositioned
@@ -373,7 +392,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
    * @see QDMI_DEVICE_PROPERTY_LENGTSCALEFACTOR
    */
-  QDMI_DEVICE_PROPERTY_MINATOMDISTANCE = 12,
+  QDMI_DEVICE_PROPERTY_MINATOMDISTANCE = 14,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
@@ -382,7 +401,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_DEVICE_PROPERTY_MAX = 13,
+  QDMI_DEVICE_PROPERTY_MAX = 15,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.
@@ -442,9 +461,27 @@ enum QDMI_SITE_PROPERTY_T {
    * address the sites in a program.
    */
   QDMI_SITE_PROPERTY_INDEX = 0,
-  /// `double` The T1 time of a site in µs.
+  /**
+   * @brief `uint64_t` The raw, unscaled T1 time of a site.
+   * @details To obtain the physical T1 time, a client must scale the raw value
+   * of this property. The physical T1 time is calculated as: `raw_value *
+   * scale_factor`, where `scale_factor` is the value of the
+   * @ref QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR property. The resulting value
+   * is in units of @ref QDMI_DEVICE_PROPERTY_DURATIONUNIT.
+   * @see QDMI_DEVICE_PROPERTY_DURATIONUNIT
+   * @see QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR
+   */
   QDMI_SITE_PROPERTY_T1 = 1,
-  /// `double` The T2 time of a site in µs.
+  /**
+   * @brief `uint64_t` The raw, unscaled T2 time of a site.
+   * @details To obtain the physical T2 time, a client must scale the raw value
+   * of this property. The physical T2 time is calculated as: `raw_value *
+   * scale_factor`, where `scale_factor` is the value of the
+   * @ref QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR property. The resulting value
+   * is in units of @ref QDMI_DEVICE_PROPERTY_DURATIONUNIT.
+   * @see QDMI_DEVICE_PROPERTY_DURATIONUNIT
+   * @see QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR
+   */
   QDMI_SITE_PROPERTY_T2 = 2,
   /**
    * `char*` (string) The name of a site, e.g., another identifier of the site
@@ -632,7 +669,16 @@ enum QDMI_OPERATION_PROPERTY_T {
   QDMI_OPERATION_PROPERTY_QUBITSNUM = 1,
   /// `size_t` The number of floating point parameters the operation takes.
   QDMI_OPERATION_PROPERTY_PARAMETERSNUM = 2,
-  /// `double` The duration of an operation in µs.
+  /**
+   * @brief `uint64_t` The raw, unscaled duration of an operation.
+   * @details To obtain the physical duration, a client must scale the raw value
+   * of this property. The physical duration is calculated as: `raw_value *
+   * scale_factor`, where `scale_factor` is the value of the
+   * @ref QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR property. The resulting value
+   * is in units of @ref QDMI_DEVICE_PROPERTY_DURATIONUNIT.
+   * @see QDMI_DEVICE_PROPERTY_DURATIONUNIT
+   * @see QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR
+   */
   QDMI_OPERATION_PROPERTY_DURATION = 3,
   /// `double` The fidelity of an operation.
   QDMI_OPERATION_PROPERTY_FIDELITY = 4,
@@ -715,6 +761,24 @@ enum QDMI_OPERATION_PROPERTY_T {
    */
   QDMI_OPERATION_PROPERTY_SITES = 9,
   /**
+   * @brief `uint64_t` The raw, unscaled mean shuttling speed of an operation.
+   * @details To obtain the physical speed, a client must scale the raw value of
+   * this property. The physical speed is calculated as: `raw_value *
+   * length_scale_factor / duration_scale_factor`. The `length_scale_factor` is
+   * the value of @ref QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR and the
+   * `duration_scale_factor` is the value of @ref
+   * QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR. The resulting value is in units
+   * of @ref QDMI_DEVICE_PROPERTY_LENGTHUNIT per @ref
+   * QDMI_DEVICE_PROPERTY_DURATIONUNIT.
+   * @note This property is mainly required for neutral atom devices where atoms
+   * representing qubits can be moved to different sites.
+   * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
+   * @see QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR
+   * @see QDMI_DEVICE_PROPERTY_DURATIONUNIT
+   * @see QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR
+   */
+  QDMI_OPERATION_PROPERTY_MEANSHUTTLINGSPEED = 10,
+  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -722,7 +786,7 @@ enum QDMI_OPERATION_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_OPERATION_PROPERTY_MAX = 10,
+  QDMI_OPERATION_PROPERTY_MAX = 11,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.

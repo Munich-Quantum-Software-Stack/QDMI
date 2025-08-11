@@ -175,12 +175,12 @@ constexpr std::array<const CXX_QDMI_Site_impl_d *, 20>
 // clang-format on
 
 const std::unordered_map<const CXX_QDMI_Operation_impl_d *,
-                         std::pair<std::string, double>>
+                         std::pair<std::string, uint64_t>>
     OPERATION_PROPERTIES = {
-        {CXX_DEVICE_OPERATIONS[0], {"rx", 0.01}},
-        {CXX_DEVICE_OPERATIONS[1], {"ry", 0.01}},
-        {CXX_DEVICE_OPERATIONS[2], {"rz", 0.01}},
-        {CXX_DEVICE_OPERATIONS[3], {"cx", 0.1}},
+        {CXX_DEVICE_OPERATIONS[0], {"rx", 10}},
+        {CXX_DEVICE_OPERATIONS[1], {"ry", 10}},
+        {CXX_DEVICE_OPERATIONS[2], {"rz", 10}},
+        {CXX_DEVICE_OPERATIONS[3], {"cx", 100}},
 };
 
 struct CXX_QDMI_Pair_hash {
@@ -782,6 +782,11 @@ int CXX_QDMI_device_session_query_device_property(
   ADD_SINGLE_VALUE_PROPERTY(QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR, double, 1.0,
                             prop, size, value, size_ret)
 
+  ADD_STRING_PROPERTY(QDMI_DEVICE_PROPERTY_DURATIONUNIT, "us", prop, size,
+                      value, size_ret)
+  ADD_SINGLE_VALUE_PROPERTY(QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR, double,
+                            0.001, prop, size, value, size_ret)
+
   return QDMI_ERROR_NOTSUPPORTED;
 } /// [DOXYGEN FUNCTION END]
 
@@ -803,10 +808,10 @@ int CXX_QDMI_device_session_query_site_property(CXX_QDMI_Device_Session session,
                             size, value, size_ret)
   ADD_SINGLE_VALUE_PROPERTY(QDMI_SITE_PROPERTY_MODULEINDEX, uint64_t, 0, prop,
                             size, value, size_ret)
-  ADD_SINGLE_VALUE_PROPERTY(QDMI_SITE_PROPERTY_T1, double, 1000.0, prop, size,
-                            value, size_ret)
-  ADD_SINGLE_VALUE_PROPERTY(QDMI_SITE_PROPERTY_T2, double, 100000.0, prop, size,
-                            value, size_ret)
+  ADD_SINGLE_VALUE_PROPERTY(QDMI_SITE_PROPERTY_T1, uint64_t, 1000000U, prop,
+                            size, value, size_ret)
+  ADD_SINGLE_VALUE_PROPERTY(QDMI_SITE_PROPERTY_T2, uint64_t, 100000000U, prop,
+                            size, value, size_ret)
   return QDMI_ERROR_NOTSUPPORTED;
 } /// [DOXYGEN FUNCTION END]
 
@@ -839,7 +844,7 @@ int CXX_QDMI_device_session_query_operation_property(
     }
     ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_PARAMETERSNUM, size_t, 0,
                               prop, size, value, size_ret)
-    ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_DURATION, double,
+    ADD_SINGLE_VALUE_PROPERTY(QDMI_OPERATION_PROPERTY_DURATION, uint64_t,
                               OPERATION_PROPERTIES.at(operation).second, prop,
                               size, value, size_ret)
     ADD_LIST_PROPERTY(QDMI_OPERATION_PROPERTY_SITES, CXX_QDMI_Site,
