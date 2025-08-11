@@ -413,12 +413,14 @@ Enumerations</h2></td></tr>
 , <a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726a0ee18159c08638a64f5b7e6ec3393f99">QDMI_OPERATION_PROPERTY_BLOCKINGRADIUS</a> = 6
 , <a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726ae9d01bef086735217a97ddc4735ce761">QDMI_OPERATION_PROPERTY_IDLINGFIDELITY</a> = 7
 , <br />
-&#160;&#160;<a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726a049ae95ba8acfe7191dd7d5139389468">QDMI_OPERATION_PROPERTY_MAX</a> = 8
+&#160;&#160;<a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726a281ffac29395af251ebd38ffdbc65d3f">QDMI_OPERATION_PROPERTY_ISZONED</a> = 8
+, <a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726af054d7cd138407618e7b8fca7d642364">QDMI_OPERATION_PROPERTY_SITES</a> = 9
+, <a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726a049ae95ba8acfe7191dd7d5139389468">QDMI_OPERATION_PROPERTY_MAX</a> = 10
 , <a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726aa8a314f70a9f754463dd1b8861230322">QDMI_OPERATION_PROPERTY_CUSTOM1</a> = 999999995
-, <a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726a0475dc2bb362d79e84f539f09ea43160">QDMI_OPERATION_PROPERTY_CUSTOM2</a> = 999999996
-, <a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726ad091b00466f4429b0b4a61df3ecee07e">QDMI_OPERATION_PROPERTY_CUSTOM3</a> = 999999997
 , <br />
-&#160;&#160;<a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726af340d37b0cb6a28660c0a064088125d0">QDMI_OPERATION_PROPERTY_CUSTOM4</a> = 999999998
+&#160;&#160;<a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726a0475dc2bb362d79e84f539f09ea43160">QDMI_OPERATION_PROPERTY_CUSTOM2</a> = 999999996
+, <a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726ad091b00466f4429b0b4a61df3ecee07e">QDMI_OPERATION_PROPERTY_CUSTOM3</a> = 999999997
+, <a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726af340d37b0cb6a28660c0a064088125d0">QDMI_OPERATION_PROPERTY_CUSTOM4</a> = 999999998
 , <a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726ae4414f8e1b54a24d9db057f8214ad579">QDMI_OPERATION_PROPERTY_CUSTOM5</a> = 999999999
 <br />
  }</td></tr>
@@ -918,7 +920,19 @@ This property is a length value and must be interpreted in the way specified by 
 <tr><td class="fieldname"><a id="ab23d5f0c5296e3eab4243e91f1213726ae9d01bef086735217a97ddc4735ce761" name="ab23d5f0c5296e3eab4243e91f1213726ae9d01bef086735217a97ddc4735ce761"></a>QDMI_OPERATION_PROPERTY_IDLINGFIDELITY&#160;</td><td class="fieldinit">7&#160;</td><td class="fielddoc"><p><code>double</code> Fidelity of qubits idling during a global operation. </p>
 <p>This property measures the fidelity of qubits that are within the affected area of a global multi-qubit operation but do not actively participate (i.e., they lack an interaction partner within their radius). Even though these qubits undergo an identity operation, errors may still occur, resulting in lower fidelity compared to qubits that are simply idling and not exposed to the operation. </p><dl class="section note"><dt>Note</dt><dd>This is especially relevant for neutral atom devices, where global operations (e.g., laser pulses) can impact all atoms in the array, including those not interacting. </dd></dl>
 </td></tr>
-<tr><td class="fieldname"><a id="ab23d5f0c5296e3eab4243e91f1213726a049ae95ba8acfe7191dd7d5139389468" name="ab23d5f0c5296e3eab4243e91f1213726a049ae95ba8acfe7191dd7d5139389468"></a>QDMI_OPERATION_PROPERTY_MAX&#160;</td><td class="fieldinit">8&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
+<tr><td class="fieldname"><a id="ab23d5f0c5296e3eab4243e91f1213726a281ffac29395af251ebd38ffdbc65d3f" name="ab23d5f0c5296e3eab4243e91f1213726a281ffac29395af251ebd38ffdbc65d3f"></a>QDMI_OPERATION_PROPERTY_ISZONED&#160;</td><td class="fieldinit">8&#160;</td><td class="fielddoc"><p><code>bool</code> Whether the operation is a zoned (global) operation. </p>
+<p>A zoned (or global) operation is an operation that can be applied simultaneously to all qubits within a specific zone. If this property is <code>true</code>, the operation is considered zoned. If it is <code>false</code> or returns <a class="el" href="#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a>, the operation is considered local. The applicability of a zoned operation to specific zones is detailed in <a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726af054d7cd138407618e7b8fca7d642364">QDMI_OPERATION_PROPERTY_SITES</a>. </p><dl class="section note"><dt>Note</dt><dd>This property is primarily relevant for neutral atom devices, where a laser can illuminate an entire array of atoms representing qubits. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a69ef10d452cc6f03cac8a917ba48d6e2a646160af05c1eb2c97b9f272db3a4375" title="bool Whether the site is a zone.">QDMI_SITE_PROPERTY_ISZONE</a> </dd>
+<dd>
+<a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726af054d7cd138407618e7b8fca7d642364" title="QDMI_Site* (list) The sites to which the operation is applicable.">QDMI_OPERATION_PROPERTY_SITES</a> </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="ab23d5f0c5296e3eab4243e91f1213726af054d7cd138407618e7b8fca7d642364" name="ab23d5f0c5296e3eab4243e91f1213726af054d7cd138407618e7b8fca7d642364"></a>QDMI_OPERATION_PROPERTY_SITES&#160;</td><td class="fieldinit">9&#160;</td><td class="fielddoc"><p><code>QDMI_Site*</code> (list) The sites to which the operation is applicable. </p>
+<ul>
+<li>For local operations (see <a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726a281ffac29395af251ebd38ffdbc65d3f">QDMI_OPERATION_PROPERTY_ISZONED</a>), this property returns a list of tuples. Each tuple contains sites from the list provided by <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526aea4d3c2d95a753625a6b61c75a30d07b">QDMI_DEVICE_PROPERTY_SITES</a> and represents a valid combination for the operation. The number of sites in each tuple matches the value of <a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726a50c6ef3ffc889f80f8767bfe7296dc49">QDMI_OPERATION_PROPERTY_QUBITSNUM</a>.</li>
+<li>For global operations (see <a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726a281ffac29395af251ebd38ffdbc65d3f">QDMI_OPERATION_PROPERTY_ISZONED</a>), this property returns a list of zone sites, i.e., zones where the operation can be applied. </li>
+</ul>
+</td></tr>
+<tr><td class="fieldname"><a id="ab23d5f0c5296e3eab4243e91f1213726a049ae95ba8acfe7191dd7d5139389468" name="ab23d5f0c5296e3eab4243e91f1213726a049ae95ba8acfe7191dd7d5139389468"></a>QDMI_OPERATION_PROPERTY_MAX&#160;</td><td class="fieldinit">10&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
 <p>It can be used by devices for bounds checking and validation of function parameters.</p>
 <dl class="section attention"><dt>Attention</dt><dd>This value must remain the last regular member of the enum besides the custom members and must be updated when new members are added. </dd></dl>
 </td></tr>
