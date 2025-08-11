@@ -36,7 +36,8 @@ var NAVTREE =
         [ "Why do devices have sessions?", "md_docs_2rationale.html#device-session", null ],
         [ "Why do sessions need to be initialized after allocation?", "md_docs_2rationale.html#rationale-session-init", null ],
         [ "Why are there separate kinds of jobs for devices and clients?", "md_docs_2rationale.html#rationale-job-structs", null ],
-        [ "Why are some enum definitions placed in the constants.h header and some are not?", "md_docs_2rationale.html#rationale-enum-definitions", null ]
+        [ "Why are some enum definitions placed in the constants.h header and some are not?", "md_docs_2rationale.html#rationale-enum-definitions", null ],
+        [ "Why are there different kinds of sites?", "md_docs_2rationale.html#rationale-site-types", null ]
       ] ],
       [ "Examples", "md_docs_2examples.html", [
         [ "Implementing a Device", "md_docs_2examples.html#device", [
@@ -75,7 +76,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "client_8h.html",
-"group__device__job__interface.html#gaa9f37f29bc40f719b440a277654789a4"
+"group__client__session__interface.html#ggaac5ae9f0bf8046987569c6f4e75611d3afddfcf1fbf02114af0f96e9f20d08590"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';
