@@ -44,8 +44,7 @@ devices grouped by their respective categories:
 
 #### Site Properties
 
-- `QDMI_SITE_PROPERTY_{X,Y,Z}COORDINATE`: The X/Y/Z-coordinate of the site relative to some device's
-  origin.
+- `QDMI_SITE_PROPERTY_{X,Y,Z}COORDINATE`: The X/Y/Z-coordinate of the site relative to some origin of the device.
 - `QDMI_SITE_PROPERTY_ISZONE`: A boolean property indicating whether the site is a zone site
   representing a zone of the device with an extent.
 - `QDMI_SITE_PROPERTY_{X,Y,Z}EXTENT`: The X/Y/Z-extent of the zone site (returns

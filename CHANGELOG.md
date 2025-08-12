@@ -14,9 +14,9 @@ clients compiled against a different minor or major version.
 ### Added
 
 - **Breaking**: ✨ Add properties to query the device's duration unit and adapt types of existing
-  duration related properties ([#210]) ([\@ystade])
+  duration related properties ([#210]) ([\@ystade], [\@burgholzer])
 - ✨ Add properties to query neutral atom-based device specific characteristics and capabilities
-  ([#198], [#199], [#200], [#203], [#207], [#208], [#209], [#211]) ([\@ystade])
+  ([#198], [#199], [#200], [#203], [#207], [#208], [#209], [#211]) ([\@ystade], [\@burgholzer])
 - 📝 Add changelog and upgrade guide ([#160]) ([\@ystade], [\@burgholzer])
 - 🚸 Support querying of job properties incl. previously set parameters values ([#160]) ([\@ystade])
 - 🚸 Add new authentication options to `QDMI_SESSION_PARAMETER` and `QDMI_DEVICE_SESSION_PARAMETER`
