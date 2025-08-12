@@ -15,24 +15,29 @@ clients compiled against a different minor or major version.
 
 - **Breaking**: ✨ Add properties to query the device's duration unit and adapt types of existing
   duration related properties ([#210]) ([\@ystade], [\@burgholzer])
+- ✨ Add property to efficiently query applicability of operations ([#207]) ([\@ystade],
+  [\@burgholzer])
 - ✨ Add properties to query neutral atom-based device specific characteristics and capabilities
   ([#198], [#199], [#200], [#203], [#207], [#208], [#209], [#211]) ([\@ystade], [\@burgholzer])
 - 📝 Add changelog and upgrade guide ([#160]) ([\@ystade], [\@burgholzer])
-- 🚸 Support querying of job properties incl. previously set parameters values ([#160]) ([\@ystade])
+- **Breaking**: 🚸 Support querying of job properties incl. previously set parameters values
+  ([#160]) ([\@ystade])
 - 🚸 Add new authentication options to `QDMI_SESSION_PARAMETER` and `QDMI_DEVICE_SESSION_PARAMETER`
   enums ([#160]) ([\@ystade], [\@burgholzer])
 - 🚸 Add additional `QDMI_JOB_STATUS` enum values for better job cycle management ([#160])
   ([\@ystade])
-- ✨ Add required `timeout` parameter for the `QDMI_device_job_wait` and `QDMI__job_wait` functions
-  ([#160]) ([\@burgholzer])
+- **Breaking**: ✨ Add required `timeout` parameter for the `QDMI_device_job_wait` and
+  `QDMI__job_wait` functions ([#160]) ([\@burgholzer])
 
 ### Changed
 
 - 🔧 Set c++ standard target based ([#165]) ([\@ystade])
-- 🚸 Change order of `QDMI_SESSION_PARAMETER` and `QDMI_DEVICE_SESSION` enum values due to new
-  authentication options ([#160]) ([\@ystade], [\@burgholzer])
-- 🚸 Change order of `QDMI_JOB_STATUS` enum values to better reflect job cycle ([#160]) ([\@ystade])
-- 🚚 Rename `QDMI_SITE_PROPERTY_ID` to `QDMI_SITE_PROPERTY_INDEX` ([#160]) ([\@ystade])
+- **Breaking**: 🚸 Change order of `QDMI_SESSION_PARAMETER` and `QDMI_DEVICE_SESSION` enum values
+  due to new authentication options ([#160]) ([\@ystade], [\@burgholzer])
+- **Breaking**: 🚸 Change order of `QDMI_JOB_STATUS` enum values to better reflect job cycle
+  ([#160]) ([\@ystade])
+- **Breaking**: 🚚 Rename `QDMI_SITE_PROPERTY_ID` to `QDMI_SITE_PROPERTY_INDEX` ([#160])
+  ([\@ystade])
 
 ### Fixed
 
