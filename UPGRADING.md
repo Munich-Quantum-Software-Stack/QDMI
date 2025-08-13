@@ -5,74 +5,62 @@ including minor and patch releases, please refer to the [changelog](CHANGELOG.md
 
 ## [Unreleased]
 
-### General Changes
+### Units for Length and Duration (Breaking Change)
 
-The enum value `QDMI_SITE_PROPERTY_ID` has been renamed to `QDMI_SITE_PROPERTY_INDEX`.
+Length and duration properties now use `int64_t` or `uint64_t` (instead of `double`) and represent
+values in device-specific units. Devices must provide:
 
-### Device-side Changes
+- `QDMI_DEVICE_PROPERTY_LENGTHUNIT`
+- `QDMI_DEVICE_PROPERTY_DURATIONUNIT`
+- `QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR`
+- `QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR`
 
-- Devices now also need to implement the function `QDMI_device_job_query_property` for querying
-  properties of jobs.
+These properties define the units and scale factors for interpreting raw values.
 
-- The `QDMI_device_job_wait` function now has a new parameter `timeout` that specifies how long (in
-  seconds) the function must wait for a result before returning with a `QDMI_ERROR_TIMEOUT` error. A
-  timeout of `0` means that the function will wait indefinitely.
+### Enum and Property Updates (Partially Breaking Change)
 
-- New authentication options have been added to the `QDMI_DEVICE_SESSION_PARAMETER` enum.
-  Specifically, besides the existing `QDMI_DEVICE_SESSION_PARAMETER_BASEURL` and
-  `QDMI_DEVICE_SESSION_PARAMETER_TOKEN`, the following authentication options are now available:
-  - `QDMI_DEVICE_SESSION_PARAMETER_AUTHFILE`, which allows the use of a file containing
-    authentication information.
-  - `QDMI_DEVICE_SESSION_PARAMETER_AUTHURL`, which allows the use of a URL for authentication.
-  - `QDMI_DEVICE_SESSION_PARAMETER_USERNAME`, which allows the use of a username for authentication.
-  - `QDMI_DEVICE_SESSION_PARAMETER_PASSWORD`, which allows the use of a password for authentication.
+- **Breaking**: `QDMI_SITE_PROPERTY_ID` renamed to `QDMI_SITE_PROPERTY_INDEX`.
+- New: `QDMI_OPERATION_PROPERTY_SITES` returns a list of sites for an operation.
 
-  As part of this change, the order of the enum values in `QDMI_DEVICE_SESSION_PARAMETER` has been
-  changed to accommodate the new authentication options. It is the responsibility of the device to
-  document the authentication options it supports.
+### Neutral Atom Device Properties
 
-For full compatibility with this QDMI version, the device needs to be recompiled with the latest
-header file versions.
+New properties for neutral atom devices:
 
-### Driver-internal Changes
+**Device:**
 
-- Drivers now also need to implement the function `QDMI_job_query_property` for querying properties
-  of jobs.
+- `QDMI_DEVICE_PROPERTY_MINATOMDISTANCE`: Minimum atom distance.
 
-- The function `QDMI_device_job_wait` may now also return after a timeout resulting in a new
-  `QDMI_Status` code `QDMI_ERROR_TIMEOUT` that must be handled. Additionally, the `QDMI_job_wait`
-  function now has a new parameter `timeout` that must be handled.
+**Site:**
 
-- New authentication options have been added to the `QDMI_SESSION_PARAMETER` enum. Specifically,
-  besides the existing `QDMI_SESSION_PARAMETER_TOKEN` and `QDMI_SESSION_PARAMETER_PROJECTID`, the
-  following authentication options are now available:
-  - `QDMI_SESSION_PARAMETER_AUTHFILE`, which allows the use of a file containing authentication
-    information.
-  - `QDMI_SESSION_PARAMETER_AUTHURL`, which allows the use of a URL for authentication.
-  - `QDMI_SESSION_PARAMETER_USERNAME`, which allows the use of a username for authentication.
-  - `QDMI_SESSION_PARAMETER_PASSWORD`, which allows the use of a password for authentication.
+- `QDMI_SITE_PROPERTY_{X,Y,Z}COORDINATE`: Site coordinates.
+- `QDMI_SITE_PROPERTY_ISZONE`: Indicates zone site.
+- `QDMI_SITE_PROPERTY_{X,Y,Z}EXTENT`: Zone site extent (`QDMI_ERROR_NOTSUPPORTED` for regular
+  sites).
+- `QDMI_SITE_PROPERTY_MODULEINDEX` / `SUBMODULEINDEX`: Module/submodule indices.
 
-  As part of this change, the order of the enum values in `QDMI_SESSION_PARAMETER` has been changed
-  to accommodate the new authentication options. It is the responsibility of the driver to document
-  the authentication options it supports.
+**Operation:**
 
-For full compatibility with this QDMI version, the driver needs to be recompiled with the latest
-header file versions.
+- `QDMI_OPERATION_PROPERTY_INTERACTIONRADIUS` / `BLOCKINGRADIUS`: Radii for multi-qubit ops.
+- `QDMI_OPERATION_PROPERTY_ISZONED`: Zoned operation indicator.
+- `QDMI_OPERATION_PROPERTY_IDLINGFIDELITY`: Fidelity for idling atoms (zoned ops).
+- `QDMI_OPERATION_PROPERTY_MEANSHUTTLINGSPEED`: Mean shuttling speed.
 
-### Client-side Changes
+### Job Property Query and Timeout (Breaking Change)
 
-- A new `timeout` parameter has been added to the `QDMI_job_wait` function that influences how long
-  (in seconds) the function will wait before eventually returning with `QDMI_ERROR_TIMEOUT`. A
-  timeout of `0` means that the function will wait indefinitely.
+- New function: `QDMI_job_query_property` (and device-side `QDMI_device_job_query_property`) for
+  querying job properties.
+- `QDMI_job_wait` and `QDMI_device_job_wait` now accept a `timeout` parameter (seconds, `0` =
+  indefinite). May return `QDMI_ERROR_TIMEOUT`.
 
-- The function `QDMI_job_query_property` has been added to query properties of jobs.
+### Authentication Options
 
-- New authentication options may be provided by drivers and devices. This includes authentication
-  options such as `QDMI_SESSION_PARAMETER_AUTHFILE`, `QDMI_SESSION_PARAMETER_AUTHURL`,
-  `QDMI_SESSION_PARAMETER_USERNAME`, and `QDMI_SESSION_PARAMETER_PASSWORD`. The order of the enum
-  values in `QDMI_SESSION_PARAMETER` has been changed to accommodate the new authentication options.
+New authentication options added to session parameter enums:
 
-For full compatibility with this QDMI version, the client needs to be recompiled with the latest
-header file versions.
+- `AUTHFILE`: File with authentication info.
+- `AUTHURL`: URL for authentication.
+- `USERNAME`: Username.
+- `PASSWORD`: Password.
+
+Enum order updated; implementations must document supported options.
 
 [unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.1.0...HEAD
