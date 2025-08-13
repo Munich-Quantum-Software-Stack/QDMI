@@ -41,6 +41,7 @@ clients compiled against a different minor or major version.
 
 ### Fixed
 
+- 🐛 Add target `qdmi_project_warnings` to the export targets ([#214]) ([\@ystade])
 - 🐛 Fix definitions of `QDMI_Site`and `QDMI_Operation` in device template ([#169]) ([\@ystade])
 
 ### Removed
@@ -60,6 +61,7 @@ changelogs._
 
 <!-- PR links -->
 
+[#214]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/214
 [#211]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/211
 [#210]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/210
 [#209]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/209
