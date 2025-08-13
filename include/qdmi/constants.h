@@ -333,9 +333,9 @@ enum QDMI_DEVICE_PROPERTY_T {
   QDMI_DEVICE_PROPERTY_PULSESUPPORT = 9,
   /**
    * @brief `QDMI_TelemetrySensor*` (@ref QDMI_TelemetrySensor list) The
-   * envoronment sensors of the device.
+   * telemetry sensors of the device.
    * @details The returned @ref QDMI_TelemetrySensor handles may be used to
-   * query envoronment sensors.
+   * query telemetry sensors.
    */
   QDMI_DEVICE_PROPERTY_TELEMETRYSENSORS = 10,
   /**
@@ -814,11 +814,13 @@ enum QDMI_DEVICE_PULSE_SUPPORT_LEVEL_T {
 /// Pulse support level type.
 typedef enum QDMI_DEVICE_PULSE_SUPPORT_LEVEL_T QDMI_Device_Pulse_Support_Level;
 
-/// Enum of the telemetry sensor properties that can be queried via @ref
-/// QDMI_device_session_query_telemetrysensor_property as part of the @ref
-/// device_interface "device interface" and via @ref
-/// QDMI_device_query_telemetrysensor_property as part of the @ref
-/// client_interface "client interface".
+/**
+ * Enum of the telemetry sensor properties that can be queried via @ref
+ * QDMI_device_session_query_telemetrysensor_property as part of the @ref
+ * device_interface "device interface" and via @ref
+ * QDMI_device_query_telemetrysensor_property as part of the @ref
+ * client_interface "client interface".
+ */
 enum QDMI_TELEMETRYSENSOR_PROPERTY_T {
   /**
    * @brief `char*` (string) The unique ID to identify the telemetry sensor.
@@ -949,7 +951,7 @@ typedef enum QDMI_TELEMETRYSENSOR_QUERY_RESULT_T
     QDMI_TelemetrySensor_Query_Result;
 
 /**
- * @brief Enum of the status Telemetry sensor query can have.
+ * @brief Enum of the status a telemetry sensor query can have.
  * @details See also @ref client_telemetrysensor_query_interface for a
  * description of the telemetry sensor query's lifecycle.
  */
@@ -962,7 +964,7 @@ enum QDMI_TELEMETRYSENSOR_QUERY_STATUS_T {
   QDMI_TELEMETRYSENSOR_QUERY_STATUS_CREATED = 0,
   /// The telemetry sensor query was submitted.
   QDMI_TELEMETRYSENSOR_QUERY_STATUS_SUBMITTED = 1,
-  /// The telemetry query was received is waiting to be executed.
+  /// The telemetry query was received and is waiting to be executed.
   QDMI_TELEMETRYSENSOR_QUERY_STATUS_QUEUED = 2,
   /// The telemetry query is running, and the result is not yet available.
   QDMI_TELEMETRYSENSOR_QUERY_STATUS_RUNNING = 3,

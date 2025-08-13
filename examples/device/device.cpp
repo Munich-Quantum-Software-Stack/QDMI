@@ -924,7 +924,7 @@ int CXX_QDMI_device_session_query_telemetrysensor_property(
                       telemetry_sensor->unit.c_str(), prop, size, value,
                       size_ret)
   ADD_SINGLE_VALUE_PROPERTY(QDMI_TELEMETRYSENSOR_PROPERTY_SAMPLINGRATE,
-                            long int, telemetry_sensor->sampling_rate.count(),
+                            int32_t, telemetry_sensor->sampling_rate.count(),
                             prop, size, value, size_ret)
   return QDMI_ERROR_NOTSUPPORTED;
 }

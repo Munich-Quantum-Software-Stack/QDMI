@@ -1008,8 +1008,8 @@ TEST_P(QDMIImplementationTest, TelemetryQuery) {
   for (QDMI_TelemetrySensor telemetry_sensor : telemetry_sensors) {
     QDMI_TelemetrySensor_Query query = nullptr;
     QDMI_TelemetrySensor_Query_Status status = {};
-    time_t start_time = time(&start_time);
-    time_t end_time = time(&end_time) + 600;
+    time_t start_time = time(nullptr);
+    time_t end_time = time(nullptr) + 600;
 
     EXPECT_EQ(QDMI_device_create_telemetrysensor_query(device, &query),
               QDMI_SUCCESS);
