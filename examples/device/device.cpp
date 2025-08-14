@@ -90,12 +90,13 @@ struct CXX_QDMI_TelemetrySensor_impl_d {
 struct CXX_QDMI_Device_TelemetrySensor_Query_impl_d {
   std::chrono::time_point<std::chrono::system_clock> start_time;
   std::chrono::time_point<std::chrono::system_clock> end_time;
-  std::chrono::seconds timeout;
-  CXX_QDMI_TelemetrySensor telemetry_sensor;
+  std::chrono::seconds timeout = std::chrono::seconds();
+  CXX_QDMI_TelemetrySensor telemetry_sensor = nullptr;
   std::vector<std::chrono::time_point<std::chrono::system_clock>>
       result_timestamps;
   std::vector<double> result_values;
-  QDMI_TelemetrySensor_Query_Status status;
+  QDMI_TelemetrySensor_Query_Status status =
+      QDMI_TELEMETRYSENSOR_QUERY_STATUS_CREATED;
 };
 
 namespace {
@@ -1036,8 +1037,7 @@ int CXX_QDMI_device_telemetrysensor_query_submit(
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_real_distribution<> dis(0.0, RAND_MAX);
-    double random_value = dis(gen);
-    query->result_values[i] = random_value;
+    query->result_values[i] = dis(gen);
   }
 
   return QDMI_SUCCESS;
