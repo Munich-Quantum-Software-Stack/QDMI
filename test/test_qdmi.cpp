@@ -26,9 +26,9 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include <complex>
 #include <cstddef>
 #include <cstdint>
+#include <ctime>
 #include <functional>
 #include <gmock/gmock.h>
-#include <ctime>
 #include <gtest/gtest.h>
 #include <random>
 #include <sstream>
