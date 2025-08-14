@@ -650,7 +650,7 @@ void QDMI_device_job_free(QDMI_Device_Job job);
  *
  *  The typical workflow for a device telemetry sensor query is as follows:
  *  - Create an telemetry sensor query with @ref
- * QDMI_device_session_create_telemetrysensor_query.
+ * QDMI_device_session_create_device_telemetrysensor_query.
  *  - Set parameters for the telemetry sensor query with @ref
  * QDMI_device_telemetrysensor_query_set_parameter
  *  - Submit the telemetry sensor query to the device with @ref
@@ -707,7 +707,7 @@ typedef struct QDMI_Device_TelemetrySensor_Query_impl_d
  * @attention May only be called after the session has been initialized with
  * @ref QDMI_device_session_init.
  */
-int QDMI_device_session_create_telemetrysensor_query(
+int QDMI_device_session_create_device_telemetrysensor_query(
     QDMI_Device_Session session, QDMI_Device_TelemetrySensor_Query *query);
 /**
  * @brief Set a parameter for an telemetry sensor query.

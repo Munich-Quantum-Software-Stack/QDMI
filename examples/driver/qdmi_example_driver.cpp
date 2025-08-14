@@ -109,8 +109,8 @@ struct QDMI_Library {
   decltype(QDMI_device_telemetrysensor_query_set_parameter)
       *device_telemetrysensor_query_set_parameter{};
 
-  decltype(QDMI_device_session_create_telemetrysensor_query)
-      *device_session_create_telemetrysensor_query{};
+  decltype(QDMI_device_session_create_device_telemetrysensor_query)
+      *device_session_create_device_telemetrysensor_query{};
 
   decltype(QDMI_device_telemetrysensor_query_submit)
       *device_telemetrysensor_query_submit{};
@@ -253,7 +253,8 @@ void QDMI_library_load(const std::string &lib_name, const std::string &prefix) {
     LOAD_SYMBOL(library, prefix, device_session_query_operation_property)
     LOAD_SYMBOL(library, prefix, device_session_query_telemetrysensor_property)
     // device qnvironment interface
-    LOAD_SYMBOL(library, prefix, device_session_create_telemetrysensor_query)
+    LOAD_SYMBOL(library, prefix,
+                device_session_create_device_telemetrysensor_query)
     LOAD_SYMBOL(library, prefix, device_telemetrysensor_query_set_parameter)
     LOAD_SYMBOL(library, prefix, device_telemetrysensor_query_submit)
     LOAD_SYMBOL(library, prefix, device_telemetrysensor_query_get_results)
@@ -597,7 +598,7 @@ int QDMI_device_create_telemetrysensor_query(
 
   *query = new QDMI_TelemetrySensor_Query_impl_d();
   (*query)->device = dev;
-  return dev->library->device_session_create_telemetrysensor_query(
+  return dev->library->device_session_create_device_telemetrysensor_query(
       dev->device_session, &(*query)->env_query);
 }
 

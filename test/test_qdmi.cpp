@@ -19,6 +19,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include "example_fomac.hpp"
 #include "example_tool.hpp"
 #include "qdmi/client.h"
+#include "qdmi/constants.h"
 #include "utils/test_impl.hpp"
 
 #include <array>
@@ -1007,7 +1008,8 @@ TEST_P(QDMIImplementationTest, TelemetryQuery) {
 
   for (QDMI_TelemetrySensor telemetry_sensor : telemetry_sensors) {
     QDMI_TelemetrySensor_Query query = nullptr;
-    QDMI_TelemetrySensor_Query_Status status = {};
+    QDMI_TelemetrySensor_Query_Status status =
+        QDMI_TELEMETRYSENSOR_QUERY_STATUS_CREATED;
     time_t start_time = time(nullptr);
     time_t end_time = time(nullptr) + 600;
 
@@ -1037,6 +1039,8 @@ TEST_P(QDMIImplementationTest, TelemetryQuery) {
     EXPECT_EQ(QDMI_telemetrysensor_query_check_status(query, &status),
               QDMI_SUCCESS);
 
+    EXPECT_EQ(status, QDMI_TELEMETRYSENSOR_QUERY_STATUS_DONE);
+
     size_t timestamps_size = 0;
     EXPECT_EQ(QDMI_telemetrysensor_query_get_results(
                   query, QDMI_TELEMETRYSENSOR_QUERY_RESULT_TIMESTAMPS, 0,
@@ -1044,7 +1048,7 @@ TEST_P(QDMIImplementationTest, TelemetryQuery) {
               QDMI_SUCCESS);
 
     std::vector<time_t> timestamps;
-    timestamps.reserve(timestamps_size);
+    timestamps.reserve(timestamps_size / sizeof(time_t));
 
     EXPECT_EQ(QDMI_telemetrysensor_query_get_results(
                   query, QDMI_TELEMETRYSENSOR_QUERY_RESULT_TIMESTAMPS,
@@ -1057,8 +1061,8 @@ TEST_P(QDMIImplementationTest, TelemetryQuery) {
                   &size_values),
               QDMI_SUCCESS);
 
-    std::vector<float> values;
-    values.reserve(size_values);
+    std::vector<double> values;
+    values.reserve(size_values / sizeof(double));
 
     EXPECT_EQ(QDMI_telemetrysensor_query_get_results(
                   query, QDMI_TELEMETRYSENSOR_QUERY_RESULT_VALUES, size_values,

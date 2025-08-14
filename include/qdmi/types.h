@@ -74,12 +74,12 @@ typedef struct QDMI_Operation_impl_d *QDMI_Operation;
 /**
  * @brief A handle for a telemetry sensor.
  * @details An opaque pointer to an implementation of the QDMI telemetry
- * sensor concept. The environment can affect the and measurement results 
- * of quantum devices. Therefore, the environment is closely monitored by telemetry 
- * sensors. A telemetry sensor generally represents any sensor whose recorded data
- * can be queried. There might be sensors for temperature, noise, etc. Each
- * implementation of the @ref device_interface "QDMI Device Interface" defines
- * the actual implementation of the concept.
+ * sensor concept. The environment can affect the and measurement results
+ * of quantum devices. Therefore, the environment is closely monitored by
+ * telemetry sensors. A telemetry sensor generally represents any sensor whose
+ * recorded data can be queried. There might be sensors for temperature, noise,
+ * etc. Each implementation of the @ref device_interface "QDMI Device Interface"
+ * defines the actual implementation of the concept.
  *
  * A simple example of an implementation is a struct that merely contains the
  * telemetry sensor ID, which can be used to identify the site.

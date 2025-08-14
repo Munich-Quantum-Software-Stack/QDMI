@@ -824,15 +824,19 @@ typedef enum QDMI_DEVICE_PULSE_SUPPORT_LEVEL_T QDMI_Device_Pulse_Support_Level;
 enum QDMI_TELEMETRYSENSOR_PROPERTY_T {
   /**
    * @brief `char*` (string) The unique ID to identify the telemetry sensor.
-   * @details The ID of an telemetry sensor is used to identify the sensors.
-   * The sensors collect telemetry data in the HPCQC Labs, i.e., temperature
-   * and pressure.
+   * @details The ID of a telemetry sensor is used to identify the sensors. The
+   * sensors collect telemetry data in the environments that the quantum devices
+   * are hosted, such as HPCQC Labs, i.e., temperature and pressure.
    */
   QDMI_TELEMETRYSENSOR_PROPERTY_ID = 0,
-  /// `char*` (string) The unit of an telemetry sensor, e.g., Kelvin for
-  /// temperature.
+  /**
+   * `char*` (string) The unit of a telemetry sensor, e.g., Kelvin for
+   * temperature.
+   */
   QDMI_TELEMETRYSENSOR_PROPERTY_UNIT = 1,
-  /// `float` The samples per second of an telemetry sensor.
+  /**
+   * `uint64_t` The samples per second of a telemetry sensor.
+   */
   QDMI_TELEMETRYSENSOR_PROPERTY_SAMPLINGRATE = 2,
   /**
    * @brief The maximum value of the enum.
@@ -873,13 +877,22 @@ typedef enum QDMI_TELEMETRYSENSOR_PROPERTY_T QDMI_TelemetrySensor_Property;
  * require them to be set.
  */
 enum QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_T {
-  /// The start time of the telemetry sensor query interval.
+  /**
+   * `time_t` The start time of the telemetry sensor query interval.
+   */
   QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_STARTTIME = 0,
-  /// The end time of the telemetry sensor query interval.
+  /**
+   * `time_t` The end time of the telemetry sensor query interval.
+   */
   QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_ENDTIME = 1,
-  /// The telemetry sensor for the telemetry sensor query.
+  /**
+   * `QDMI_TelemetrySensor *` The telemetry sensor for the telemetry sensor
+   * query.
+   */
   QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_TELEMETRYSENSOR = 2,
-  /// The maximum value of the enum.
+  /**
+   * The maximum value of the enum.
+   */
   QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_MAX = 3,
   /**
    * @brief This enum value is reserved for a custom parameter.
@@ -888,13 +901,13 @@ enum QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_T {
    * binary compatibility.
    */
   QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_CUSTOM1 = 999999995,
-  /// @see QDMI_DEVICE_JOB_PARAMETER_CUSTOM1
+  /// @see QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_CUSTOM1
   QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_CUSTOM2 = 999999996,
-  /// @see QDMI_DEVICE_JOB_PARAMETER_CUSTOM1
+  /// @see QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_CUSTOM1
   QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_CUSTOM3 = 999999997,
-  /// @see QDMI_DEVICE_JOB_PARAMETER_CUSTOM1
+  /// @see QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_CUSTOM1
   QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_CUSTOM4 = 999999998,
-  /// @see QDMI_DEVICE_JOB_PARAMETER_CUSTOM1
+  /// @see QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_CUSTOM1
   QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_CUSTOM5 = 999999999
 };
 
@@ -908,16 +921,19 @@ typedef enum QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_T
  */
 enum QDMI_TELEMETRYSENSOR_QUERY_RESULT_T {
   /**
-   * @brief `uint64_t*` (`unsigned 64 bit integer` list) The UNIX timestamps at
+   * @brief `time_t*` (`unsigned 64 bit integer` list) The UNIX timestamps at
    * which the corresponding values in the results were recorded by a sensor.
-   * @details The result of an telemetry sensor query is represented as a
+   * @details The result of a telemetry sensor query is represented as a
    * key-value mapping. This mapping is returned as a list of keys and an
    * equal-length list of values. The corresponding partners of the keys and
-   * values can be found at the same index in the lists
+   * values can be found at the same index in the lists.
+   *
+   * This constant denotes the list of keys, @ref
+   * QDMI_TELEMETRYSENSOR_QUERY_RESULT_VALUES denotes the list of values.
    */
   QDMI_TELEMETRYSENSOR_QUERY_RESULT_TIMESTAMPS = 0,
   /**
-   * @brief `float*` (`float` list) The values of the result.
+   * @brief `double*` (`double` list) The values of the result.
    * @see QDMI_TELEMETRYSENSOR_QUERY_RESULT_TIMESTAMPS
    */
   QDMI_TELEMETRYSENSOR_QUERY_RESULT_VALUES = 1,
@@ -937,13 +953,13 @@ enum QDMI_TELEMETRYSENSOR_QUERY_RESULT_T {
    * binary compatibility.
    */
   QDMI_TELEMETRYSENSOR_QUERY_RESULT_CUSTOM1 = 999999995,
-  /// @see QDMI_JOB_RESULT_CUSTOM1
+  /// @see QDMI_TELEMETRYSENSOR_QUERY_RESULT_CUSTOM1
   QDMI_TELEMETRYSENSOR_QUERY_RESULT_CUSTOM2 = 999999996,
-  /// @see QDMI_JOB_RESULT_CUSTOM1
+  /// @see QDMI_TELEMETRYSENSOR_QUERY_RESULT_CUSTOM1
   QDMI_TELEMETRYSENSOR_QUERY_RESULT_CUSTOM3 = 999999997,
-  /// @see QDMI_JOB_RESULT_CUSTOM1
+  /// @see QDMI_TELEMETRYSENSOR_QUERY_RESULT_CUSTOM1
   QDMI_TELEMETRYSENSOR_QUERY_RESULT_CUSTOM4 = 999999998,
-  /// @see QDMI_JOB_RESULT_CUSTOM1
+  /// @see QDMI_TELEMETRYSENSOR_QUERY_RESULT_CUSTOM1
   QDMI_TELEMETRYSENSOR_QUERY_RESULT_CUSTOM5 = 999999999
 };
 /// Telemetry query result type.

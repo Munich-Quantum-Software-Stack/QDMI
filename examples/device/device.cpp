@@ -84,19 +84,18 @@ struct CXX_QDMI_Operation_impl_d {
 struct CXX_QDMI_TelemetrySensor_impl_d {
   std::string id;
   std::string unit;
-  std::chrono::seconds sampling_rate;
+  uint64_t sampling_rate;
 };
 
 struct CXX_QDMI_Device_TelemetrySensor_Query_impl_d {
   std::chrono::time_point<std::chrono::system_clock> start_time;
   std::chrono::time_point<std::chrono::system_clock> end_time;
-  size_t timeout{};
-  CXX_QDMI_TelemetrySensor telemetry_sensor{};
+  std::chrono::seconds timeout;
+  CXX_QDMI_TelemetrySensor telemetry_sensor;
   std::vector<std::chrono::time_point<std::chrono::system_clock>>
       result_timestamps;
-  std::vector<float> result_values;
-  size_t result_length{};
-  QDMI_TelemetrySensor_Query_Status status{};
+  std::vector<double> result_values;
+  QDMI_TelemetrySensor_Query_Status status;
 };
 
 namespace {
@@ -181,8 +180,7 @@ constexpr CXX_QDMI_Site_impl_d SITE4{4};
 constexpr std::array<const CXX_QDMI_Site_impl_d *, 5> CXX_DEVICE_SITES = {
     &SITE0, &SITE1, &SITE2, &SITE3, &SITE4};
 
-const CXX_QDMI_TelemetrySensor_impl_d ENVSEN{"t4k", "K",
-                                             std::chrono::duration<int>{60}};
+const CXX_QDMI_TelemetrySensor_impl_d ENVSEN{"t4k", "K", 60};
 
 constexpr std::array<const CXX_QDMI_TelemetrySensor_impl_d *, 1>
     CXX_DEVICE_TELEMETRYSENSORS{&ENVSEN};
@@ -924,12 +922,12 @@ int CXX_QDMI_device_session_query_telemetrysensor_property(
                       telemetry_sensor->unit.c_str(), prop, size, value,
                       size_ret)
   ADD_SINGLE_VALUE_PROPERTY(QDMI_TELEMETRYSENSOR_PROPERTY_SAMPLINGRATE,
-                            int32_t, telemetry_sensor->sampling_rate.count(),
-                            prop, size, value, size_ret)
+                            uint64_t, telemetry_sensor->sampling_rate, prop,
+                            size, value, size_ret)
   return QDMI_ERROR_NOTSUPPORTED;
 }
 
-int CXX_QDMI_device_session_create_telemetrysensor_query(
+int CXX_QDMI_device_session_create_device_telemetrysensor_query(
     CXX_QDMI_Device_Session session,
     CXX_QDMI_Device_TelemetrySensor_Query *query) {
 
@@ -942,6 +940,7 @@ int CXX_QDMI_device_session_create_telemetrysensor_query(
   *query = new CXX_QDMI_Device_TelemetrySensor_Query_impl_d();
   (*query)->start_time = std::chrono::system_clock::now();
   (*query)->end_time = std::chrono::system_clock::now();
+  (*query)->status = QDMI_TELEMETRYSENSOR_QUERY_STATUS_CREATED;
 
   return QDMI_SUCCESS;
 }
@@ -958,7 +957,7 @@ int CXX_QDMI_device_telemetrysensor_query_set_parameter(
        param != QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_CUSTOM3 &&
        param != QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_CUSTOM4 &&
        param != QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_CUSTOM5) ||
-      value == nullptr) {
+      value == nullptr || (size != sizeof(decltype(query->start_time)))) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   switch (param) {
@@ -994,7 +993,7 @@ int CXX_QDMI_device_telemetrysensor_query_submit(
   // here, the actual submission.
 
   // for demonstration purposes
-
+  query->status = QDMI_TELEMETRYSENSOR_QUERY_STATUS_RUNNING;
   // Clang-tidy generates a warning due to a known bug
   // https://github.com/llvm/llvm-project/issues/98122
   auto time_difference =
@@ -1004,24 +1003,24 @@ int CXX_QDMI_device_telemetrysensor_query_submit(
   auto sampling_rate = query->telemetry_sensor->sampling_rate;
 
   auto result_length =
-      static_cast<size_t>(time_difference.count() / sampling_rate.count());
-
+      static_cast<uint64_t>(time_difference.count()) / sampling_rate;
   query->result_timestamps.clear();
   query->result_timestamps.reserve(result_length);
 
   query->result_values.clear();
   query->result_values.reserve(result_length);
 
-  query->result_length = result_length;
-
+  auto interval = std::chrono::seconds(sampling_rate);
   for (unsigned int i = 0; i < result_length; i++) {
-    auto duration_to_add =
-        std::chrono::duration_cast<std::chrono::system_clock::duration>(
-            query->telemetry_sensor->sampling_rate * i);
-    auto next_time = query->start_time + duration_to_add;
+
+    auto next_time = query->start_time + interval * i;
     query->result_timestamps.emplace_back(next_time);
-    query->result_values[i] =
-        static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / 100));
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<> dis(0.0, RAND_MAX);
+    double random_value = dis(gen);
+    query->result_values[i] = random_value;
   }
 
   return QDMI_SUCCESS;
@@ -1041,36 +1040,35 @@ int CXX_QDMI_device_telemetrysensor_query_get_results(
        result != QDMI_TELEMETRYSENSOR_QUERY_RESULT_CUSTOM5)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
-  size_t req_size = query->result_length;
+  size_t required_size = query->result_values.size();
   switch (result) {
   case QDMI_TELEMETRYSENSOR_QUERY_RESULT_TIMESTAMPS:
-    req_size *= sizeof(time_t);
+    required_size *= sizeof(time_t);
     if (data != nullptr) {
-      if (size < req_size) {
+      if (size < required_size) {
         return QDMI_ERROR_INVALIDARGUMENT;
       }
       auto *data_ptr = static_cast<time_t *>(data);
-      for (size_t i = 0; i < query->result_length; i++) {
-        data_ptr[i] =
-            std::chrono::system_clock::to_time_t(query->result_timestamps[i]);
+      for (auto timestamps : query->result_timestamps) {
+        *data_ptr++ = std::chrono::system_clock::to_time_t(timestamps);
       }
     }
 
     if ((size_ret) != nullptr) {
-      *(size_ret) = req_size;
+      *(size_ret) = required_size;
     }
     return QDMI_SUCCESS;
   case QDMI_TELEMETRYSENSOR_QUERY_RESULT_VALUES:
 
-    req_size *= sizeof(float);
+    required_size *= sizeof(double);
     if (data != nullptr) {
-      if (size < req_size) {
+      if (size < required_size) {
         return QDMI_ERROR_INVALIDARGUMENT;
       }
-      memcpy(data, query->result_values.data(), req_size);
+      memcpy(data, query->result_values.data(), required_size);
     }
     if ((size_ret) != nullptr) {
-      *(size_ret) = req_size;
+      *(size_ret) = required_size;
     }
     return QDMI_SUCCESS;
 
@@ -1106,7 +1104,7 @@ int CXX_QDMI_device_telemetrysensor_query_wait(
   }
 
   query->status = QDMI_TELEMETRYSENSOR_QUERY_STATUS_DONE;
-  query->timeout = timeout;
+  query->timeout = std::chrono::seconds(timeout);
   return QDMI_SUCCESS;
 }
 
