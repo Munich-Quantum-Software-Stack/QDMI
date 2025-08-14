@@ -290,6 +290,11 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @details The returned @ref QDMI_Site handles may be used to query site
    * and operation properties. The list need not be sorted based on the @ref
    * QDMI_SITE_PROPERTY_INDEX.
+   * @par
+   * The list returned by this property contains all sites of the device, i.e.,
+   * regular and zone sites (see @ref QDMI_SITE_PROPERTY_ISZONE). To filter out
+   * regular or zone sites, use the function @ref
+   * QDMI_device_query_site_property.
    */
   QDMI_DEVICE_PROPERTY_SITES = 5,
   /**
@@ -332,12 +337,69 @@ enum QDMI_DEVICE_PROPERTY_T {
    */
   QDMI_DEVICE_PROPERTY_PULSESUPPORT = 9,
   /**
+   * @brief `char*` (string) The length unit reported by the device.
+   * @details The device implementation must report a known SI unit (e.g., "mm",
+   * "um", or "nm") for this property. A client querying a length value must
+   * first scale it using @ref QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR. The
+   * resulting value is then interpreted in the unit specified by this property.
+   * @note If the device reports any length values, this property must be set.
+   */
+  QDMI_DEVICE_PROPERTY_LENGTHUNIT = 10,
+  /**
+   * @brief `double` A scale factor for all length values.
+   * @details The device implementation reports this scale factor. A client must
+   * multiply any raw length value received from the device by this factor to
+   * obtain the physical length. The unit of the physical length is given by
+   * @ref QDMI_DEVICE_PROPERTY_LENGTHUNIT.
+   * @note If querying this property returns @ref QDMI_ERROR_NOTSUPPORTED, a
+   * client should assume a default value of `1.0`.
+   */
+  QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR = 11,
+  /**
+   * @brief `char*` (string) The duration unit reported by the device.
+   * @details The device implementation must report a known SI unit (e.g., "ms",
+   * "us", or "ns") for this property. A client querying a duration value must
+   * first scale it using @ref QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR. The
+   * resulting value is then interpreted in the unit specified by this property.
+   * @note If the device reports any duration values, this property must be set.
+   */
+  QDMI_DEVICE_PROPERTY_DURATIONUNIT = 12,
+  /**
+   * @brief `double` A scale factor for all duration values.
+   * @details The device implementation reports this scale factor. A client must
+   * multiply any raw duration value received from the device by this factor to
+   * obtain the physical duration. The unit of the physical duration is given by
+   * @ref QDMI_DEVICE_PROPERTY_DURATIONUNIT.
+   * @note If querying this property returns @ref QDMI_ERROR_NOTSUPPORTED, a
+   * client should assume a default value of `1.0`.
+   */
+  QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR = 13,
+  /**
+   * @brief `uint64_t` The raw, unscaled minimum required distance between
+   * qubits during quantum computation.
+   * @details For neutral atom-based devices, qubits (atoms) can be repositioned
+   * dynamically. However, a minimum separation must be maintained to prevent
+   * collisions and loss of atoms. This property specifies the minimum atom
+   * distance.
+   * @par
+   * To obtain the physical minimum atom distance, a client must scale the raw
+   * value of this property. The physical minimum atom distance is calculated
+   * as: `raw_value * scale_factor`, where `scale_factor` is the value of the
+   * @ref QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR property. The resulting value
+   * is in units of @ref QDMI_DEVICE_PROPERTY_LENGTHUNIT.
+   * @note Primarily relevant for neutral atom devices supporting dynamic atom
+   * arrangement.
+   * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
+   * @see QDMI_DEVICE_PROPERTY_LENGTSCALEFACTOR
+   */
+  QDMI_DEVICE_PROPERTY_MINATOMDISTANCE = 14,
+  /**
    * @brief `QDMI_TelemetrySensor*` (@ref QDMI_TelemetrySensor list) The
    * telemetry sensors of the device.
    * @details The returned @ref QDMI_TelemetrySensor handles may be used to
    * query telemetry sensors.
    */
-  QDMI_DEVICE_PROPERTY_TELEMETRYSENSORS = 10,
+  QDMI_DEVICE_PROPERTY_TELEMETRYSENSORS = 15,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
@@ -346,7 +408,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_DEVICE_PROPERTY_MAX = 11,
+  QDMI_DEVICE_PROPERTY_MAX = 16,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.
@@ -406,15 +468,173 @@ enum QDMI_SITE_PROPERTY_T {
    * address the sites in a program.
    */
   QDMI_SITE_PROPERTY_INDEX = 0,
-  /// `double` The T1 time of a site in µs.
+  /**
+   * @brief `uint64_t` The raw, unscaled T1 time of a site.
+   * @details To obtain the physical T1 time, a client must scale the raw value
+   * of this property. The physical T1 time is calculated as: `raw_value *
+   * scale_factor`, where `scale_factor` is the value of the
+   * @ref QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR property. The resulting value
+   * is in units of @ref QDMI_DEVICE_PROPERTY_DURATIONUNIT.
+   * @see QDMI_DEVICE_PROPERTY_DURATIONUNIT
+   * @see QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR
+   */
   QDMI_SITE_PROPERTY_T1 = 1,
-  /// `double` The T2 time of a site in µs.
+  /**
+   * @brief `uint64_t` The raw, unscaled T2 time of a site.
+   * @details To obtain the physical T2 time, a client must scale the raw value
+   * of this property. The physical T2 time is calculated as: `raw_value *
+   * scale_factor`, where `scale_factor` is the value of the
+   * @ref QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR property. The resulting value
+   * is in units of @ref QDMI_DEVICE_PROPERTY_DURATIONUNIT.
+   * @see QDMI_DEVICE_PROPERTY_DURATIONUNIT
+   * @see QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR
+   */
   QDMI_SITE_PROPERTY_T2 = 2,
   /**
    * `char*` (string) The name of a site, e.g., another identifier of the site
    * given by the device.
    */
   QDMI_SITE_PROPERTY_NAME = 3,
+  /**
+   * @brief `int64_t` The raw, unscaled X-coordinate of the site.
+   * @details The X-coordinate is measured relative to some unique origin of the
+   * device, i.e., the triple of X-, Y-, and Z-coordinate must be unique to the
+   * site.
+   * @par
+   * To obtain the physical X-coordinate of the site, a client must scale the
+   * raw value of this property. The physical X-coordinate of the site is
+   * calculated as: `raw_value * scale_factor`, where `scale_factor` is the
+   * value of the @ref QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR property. The
+   * resulting value is in units of @ref QDMI_DEVICE_PROPERTY_LENGTHUNIT.
+   * @note This property is mainly required for neutral atom devices to report
+   * the location of sites.
+   * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
+   * @see QDMI_DEVICE_PROPERTY_LENGTSCALEFACTOR
+   * @see QDMI_SITE_PROPERTY_XCOORDINATE
+   * @see QDMI_SITE_PROPERTY_YCOORDINATE
+   * @see QDMI_SITE_PROPERTY_ZCOORDINATE
+   */
+  QDMI_SITE_PROPERTY_XCOORDINATE = 4,
+  /**
+   * @brief `int64_t` The raw, unscaled Y-coordinate of the site.
+   * @details The Y-coordinate is measured relative to some unique origin of the
+   * device, i.e., the triple of X-, Y-, and Z-coordinate must be unique to the
+   * site.
+   * @par
+   * To obtain the physical Y-coordinate of the site, a client must scale the
+   * raw value of this property. The physical Y-coordinate of the site is
+   * calculated as: `raw_value * scale_factor`, where `scale_factor` is the
+   * value of the @ref QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR property. The
+   * resulting value is in units of @ref QDMI_DEVICE_PROPERTY_LENGTHUNIT.
+   * @note This property is mainly required for neutral atom devices to report
+   * the location of sites.
+   * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
+   * @see QDMI_DEVICE_PROPERTY_LENGTSCALEFACTOR
+   * @see QDMI_SITE_PROPERTY_XCOORDINATE
+   * @see QDMI_SITE_PROPERTY_YCOORDINATE
+   * @see QDMI_SITE_PROPERTY_ZCOORDINATE
+   */
+  QDMI_SITE_PROPERTY_YCOORDINATE = 5,
+  /**
+   * @brief `int64_t` The raw, unscaled Z-coordinate of the site.
+   * @details The Z-coordinate is measured relative to some unique origin of the
+   * device, i.e., the triple of X-, Y-, and Z-coordinate must be unique to the
+   * site.
+   * @par
+   * To obtain the physical Z-coordinate of the site, a client must scale the
+   * raw value of this property. The physical Z-coordinate of the site is
+   * calculated as: `raw_value * scale_factor`, where `scale_factor` is the
+   * value of the @ref QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR property. The
+   * resulting value is in units of @ref QDMI_DEVICE_PROPERTY_LENGTHUNIT.
+   * @note This property is mainly required for neutral atom devices to report
+   * the location of sites.
+   * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
+   * @see QDMI_DEVICE_PROPERTY_LENGTSCALEFACTOR
+   * @see QDMI_SITE_PROPERTY_XCOORDINATE
+   * @see QDMI_SITE_PROPERTY_YCOORDINATE
+   * @see QDMI_SITE_PROPERTY_ZCOORDINATE
+   */
+  QDMI_SITE_PROPERTY_ZCOORDINATE = 6,
+  /**
+   * @brief `bool` Whether the site is a zone.
+   * @details A zone is a site that has a spatial extent, i.e., it is not
+   * just a point in space as a regular site. These kind of sites, namely zones,
+   * are required to adequately represent global operations that act on all
+   * qubits within a certain area, i.e., a zone.
+   * @note Zones are typically used in neutral atom devices, where the atoms are
+   * arranged in a 2D or 3D lattice, and operations can be applied to all
+   * atoms within a certain zone.
+   * @note This property defaults to `false`, i.e., if a device reports @ref
+   * QDMI_ERROR_NOTSUPPORTED for this property, it is assumed that the site is
+   * a regular site and not a zone.
+   * @see QDMI_SITE_PROPERTY_XEXTENT
+   * @see QDMI_SITE_PROPERTY_YEXTENT
+   * @see QDMI_SITE_PROPERTY_ZEXTENT
+   */
+  QDMI_SITE_PROPERTY_ISZONE = 7,
+  /**
+   * @brief `uint64_t` The raw, unscaled extent of a zone along the X-axis.
+   * @details To obtain the physical extent of a zone along the X-axis, a client
+   * must scale the raw value of this property. The physical extent of a zone
+   * along the X-axis is calculated as: `raw_value * scale_factor`, where
+   * `scale_factor` is the value of the @ref
+   * QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR property. The resulting value is in
+   * units of @ref QDMI_DEVICE_PROPERTY_LENGTHUNIT.
+   * @note This property is mainly required for neutral atom devices to
+   * report the extent of zones, see @ref QDMI_SITE_PROPERTY_ISZONE.
+   * @note If the site is not a zone, this property must return @ref
+   * QDMI_ERROR_NOTSUPPORTED.
+   * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
+   * @see QDMI_DEVICE_PROPERTY_LENGTSCALEFACTOR
+   */
+  QDMI_SITE_PROPERTY_XEXTENT = 8,
+  /**
+   * @brief `uint64_t` The raw, unscaled extent of a zone along the Y-axis.
+   * @details To obtain the physical extent of a zone along the Y-axis, a client
+   * must scale the raw value of this property. The physical extent of a zone
+   * along the Y-axis is calculated as: `raw_value * scale_factor`, where
+   * `scale_factor` is the value of the @ref
+   * QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR property. The resulting value is in
+   * units of @ref QDMI_DEVICE_PROPERTY_LENGTHUNIT.
+   * @note This property is mainly required for neutral atom devices to
+   * report the extent of zones, see @ref QDMI_SITE_PROPERTY_ISZONE.
+   * @note If the site is not a zone, this property must return @ref
+   * QDMI_ERROR_NOTSUPPORTED.
+   * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
+   * @see QDMI_DEVICE_PROPERTY_LENGTSCALEFACTOR
+   */
+  QDMI_SITE_PROPERTY_YEXTENT = 9,
+  /**
+   * @brief `uint64_t` The raw, unscaled extent of a zone along the Z-axis.
+   * @details To obtain the physical extent of a zone along the Z-axis, a client
+   * must scale the raw value of this property. The physical extent of a zone
+   * along the Z-axis is calculated as: `raw_value * scale_factor`, where
+   * `scale_factor` is the value of the @ref
+   * QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR property. The resulting value is in
+   * units of @ref QDMI_DEVICE_PROPERTY_LENGTHUNIT.
+   * @note This property is mainly required for neutral atom devices to
+   * report the extent of zones, see @ref QDMI_SITE_PROPERTY_ISZONE.
+   * @note If the site is not a zone, this property must return @ref
+   * QDMI_ERROR_NOTSUPPORTED.
+   * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
+   * @see QDMI_DEVICE_PROPERTY_LENGTSCALEFACTOR
+   */
+  QDMI_SITE_PROPERTY_ZEXTENT = 10,
+  /**
+   * @brief `uint64_t` an unsigned integer that uniquely identifies the module.
+   * @details A module is a logical grouping of sites, e.g., one part on a
+   * superconducting chip or an array of sites in a neutral atom-based device.
+   */
+  QDMI_SITE_PROPERTY_MODULEINDEX = 11,
+  /**
+   * @brief `uint64_t` an unsigned integer uniquely identifying the submodule
+   * within a module.
+   * @details A submodule is a repetitive substructure of sites within a
+   * module. E.g., for a module (@ref QDMI_SITE_PROPERTY_MODULEINDEX), where the
+   * sites are arranged in pairs and the pairs are arranged in a grid, the
+   * submodule index would be the index of the pair within the module.
+   */
+  QDMI_SITE_PROPERTY_SUBMODULEINDEX = 12,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
@@ -423,7 +643,7 @@ enum QDMI_SITE_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_SITE_PROPERTY_MAX = 4,
+  QDMI_SITE_PROPERTY_MAX = 13,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.
@@ -456,10 +676,115 @@ enum QDMI_OPERATION_PROPERTY_T {
   QDMI_OPERATION_PROPERTY_QUBITSNUM = 1,
   /// `size_t` The number of floating point parameters the operation takes.
   QDMI_OPERATION_PROPERTY_PARAMETERSNUM = 2,
-  /// `double` The duration of an operation in µs.
+  /**
+   * @brief `uint64_t` The raw, unscaled duration of an operation.
+   * @details To obtain the physical duration, a client must scale the raw value
+   * of this property. The physical duration is calculated as: `raw_value *
+   * scale_factor`, where `scale_factor` is the value of the
+   * @ref QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR property. The resulting value
+   * is in units of @ref QDMI_DEVICE_PROPERTY_DURATIONUNIT.
+   * @see QDMI_DEVICE_PROPERTY_DURATIONUNIT
+   * @see QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR
+   */
   QDMI_OPERATION_PROPERTY_DURATION = 3,
   /// `double` The fidelity of an operation.
   QDMI_OPERATION_PROPERTY_FIDELITY = 4,
+  /**
+   * @brief `uint64_t` The raw, unscaled interaction radius of the operation.
+   * @details The interaction radius is the maximum distance between two
+   * qubits that can be involved in the operation. It only applies to
+   * multi-qubit gates.
+   * @par
+   * To obtain the physical interaction radius, a client must scale the raw
+   * value of this property. The physical interaction radius is calculated as:
+   * `raw_value * scale_factor`, where `scale_factor` is the value of the @ref
+   * QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR property. The resulting value is in
+   * units of @ref QDMI_DEVICE_PROPERTY_LENGTHUNIT.
+   * @note This property is mainly required for neutral atom devices where
+   * atoms representing qubits can be at arbitrary locations. Hence, it is
+   * infeasible to define a coupling map. Instead, the coupling of atoms is
+   * defined by the interaction radius of the operation.
+   * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
+   * @see QDMI_DEVICE_PROPERTY_LENGTSCALEFACTOR
+   */
+  QDMI_OPERATION_PROPERTY_INTERACTIONRADIUS = 5,
+  /**
+   * @brief `uint64_t` The raw, unscaled blocking radius of the operation.
+   * @details The blocking radius is the minimum distance between two
+   * qubits that should not be involved in the operation to avoid crosstalk.
+   * It only applies to multi-qubit gates.
+   * @par
+   * To obtain the physical blocking radius, a client must scale the raw value
+   * of this property. The physical blocking radius is calculated as: `raw_value
+   * * scale_factor`, where `scale_factor` is the value of the @ref
+   * QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR property. The resulting value is in
+   * units of @ref QDMI_DEVICE_PROPERTY_LENGTHUNIT.
+   * @note This property is mainly required for neutral atom devices where
+   * atoms representing qubits can be at arbitrary locations. To avoid
+   * crosstalk, the blocking radius of the operation must be respected when
+   * scheduling operations.
+   * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
+   * @see QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR
+   */
+  QDMI_OPERATION_PROPERTY_BLOCKINGRADIUS = 6,
+  /**
+   * @brief `double` Fidelity of qubits idling during a global operation.
+   * @details This property measures the fidelity of qubits that are within the
+   * affected area of a global multi-qubit operation but do not actively
+   * participate (i.e., they lack an interaction partner within their radius).
+   * Even though these qubits undergo an identity operation, errors may still
+   * occur, resulting in lower fidelity compared to qubits that are simply
+   * idling and not exposed to the operation.
+   * @note This is especially relevant for neutral atom devices, where global
+   * operations (e.g., laser pulses) can impact all atoms in the array,
+   * including those not interacting.
+   */
+  QDMI_OPERATION_PROPERTY_IDLINGFIDELITY = 7,
+  /**
+   * @brief `bool` Whether the operation is a zoned (global) operation.
+   * @details A zoned (or global) operation is an operation that can be applied
+   * simultaneously to all qubits within a specific zone. If this property is
+   * `true`, the operation is considered zoned. If it is `false` or returns @ref
+   * QDMI_ERROR_NOTSUPPORTED, the operation is considered local. The
+   * applicability of a zoned operation to specific zones is detailed in @ref
+   * QDMI_OPERATION_PROPERTY_SITES.
+   * @note This property is primarily relevant for neutral atom devices, where a
+   * laser can illuminate an entire array of atoms representing qubits.
+   * @see QDMI_SITE_PROPERTY_ISZONE
+   * @see QDMI_OPERATION_PROPERTY_SITES
+   */
+  QDMI_OPERATION_PROPERTY_ISZONED = 8,
+  /**
+   * @brief `QDMI_Site*` (list) The sites to which the operation is applicable.
+   * @details
+   * - For local operations (see @ref QDMI_OPERATION_PROPERTY_ISZONED), this
+   * property returns a list of tuples. Each tuple contains sites from the list
+   * provided by @ref QDMI_DEVICE_PROPERTY_SITES and represents a valid
+   * combination for the operation. The number of sites in each tuple matches
+   * the value of @ref QDMI_OPERATION_PROPERTY_QUBITSNUM.
+   * - For global operations (see @ref QDMI_OPERATION_PROPERTY_ISZONED), this
+   * property returns a list of zone sites, i.e., zones where the operation can
+   * be applied.
+   */
+  QDMI_OPERATION_PROPERTY_SITES = 9,
+  /**
+   * @brief `uint64_t` The raw, unscaled mean shuttling speed of an operation.
+   * @details To obtain the physical speed, a client must scale the raw value of
+   * this property. The physical speed is calculated as: `raw_value *
+   * length_scale_factor / duration_scale_factor`. The `length_scale_factor` is
+   * the value of @ref QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR and the
+   * `duration_scale_factor` is the value of @ref
+   * QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR. The resulting value is in units
+   * of @ref QDMI_DEVICE_PROPERTY_LENGTHUNIT per @ref
+   * QDMI_DEVICE_PROPERTY_DURATIONUNIT.
+   * @note This property is mainly required for neutral atom devices where atoms
+   * representing qubits can be moved to different sites.
+   * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
+   * @see QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR
+   * @see QDMI_DEVICE_PROPERTY_DURATIONUNIT
+   * @see QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR
+   */
+  QDMI_OPERATION_PROPERTY_MEANSHUTTLINGSPEED = 10,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
@@ -468,7 +793,7 @@ enum QDMI_OPERATION_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_OPERATION_PROPERTY_MAX = 5,
+  QDMI_OPERATION_PROPERTY_MAX = 11,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.

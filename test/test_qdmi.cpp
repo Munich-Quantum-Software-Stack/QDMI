@@ -25,6 +25,9 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include <array>
 #include <complex>
 #include <cstddef>
+#include <cstdint>
+#include <functional>
+#include <gmock/gmock.h>
 #include <ctime>
 #include <gtest/gtest.h>
 #include <random>
@@ -32,8 +35,20 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include <string>
 #include <tuple>
 #include <unordered_map>
+#include <unordered_set>
 #include <utility>
 #include <vector>
+
+namespace {
+/// Hash function for a pair
+struct Pair_hash {
+  template <class T, class U>
+  auto operator()(const std::pair<T, U> &p) const noexcept -> std::size_t {
+    // Use the hash of the first and second element of the pair
+    return std::hash<T>{}(p.first) ^ std::hash<U>{}(p.second);
+  }
+};
+} // namespace
 
 // Instantiate the test suite with different parameters
 INSTANTIATE_TEST_SUITE_P(
@@ -122,15 +137,35 @@ TEST_P(QDMIImplementationTest, QueryGatePropertiesForEachGate) {
       param = dis(gen);
     }
 
-    double duration = 0;
+    uint64_t duration = 0;
     double fidelity = 0;
     if (gate_num_qubits == 1) {
-      for (const auto &site : sites) {
+      const std::unordered_set set_of_all_sites(sites.cbegin(), sites.cend());
+      size_t size_of_supported_sites = 0;
+      ASSERT_EQ(QDMI_device_query_operation_property(
+                    device, op, 0, nullptr, 0, nullptr,
+                    QDMI_OPERATION_PROPERTY_SITES, 0, nullptr,
+                    &size_of_supported_sites),
+                QDMI_SUCCESS);
+      ASSERT_EQ(size_of_supported_sites % sizeof(QDMI_Site), 0)
+          << "size_of_supported_sites (" << size_of_supported_sites
+          << ") is not a multiple of sizeof(QDMI_Site) (" << sizeof(QDMI_Site)
+          << ")";
+      std::vector<QDMI_Site> supported_sites(size_of_supported_sites /
+                                             sizeof(QDMI_Site));
+      ASSERT_EQ(QDMI_device_query_operation_property(
+                    device, op, 0, nullptr, 0, nullptr,
+                    QDMI_OPERATION_PROPERTY_SITES, size_of_supported_sites,
+                    static_cast<void *>(supported_sites.data()), nullptr),
+                QDMI_SUCCESS);
+      for (const auto &site : supported_sites) {
+        EXPECT_NE(set_of_all_sites.find(site), set_of_all_sites.end())
+            << "Supported sites must be a subset of all sites.";
         auto site_arr = std::array{site};
         EXPECT_EQ(QDMI_device_query_operation_property(
                       device, op, gate_num_qubits, site_arr.data(),
                       gate_num_params, params.data(),
-                      QDMI_OPERATION_PROPERTY_DURATION, sizeof(double),
+                      QDMI_OPERATION_PROPERTY_DURATION, sizeof(uint64_t),
                       &duration, nullptr),
                   QDMI_SUCCESS)
             << "Failed to query duration for operation " << name;
@@ -144,12 +179,37 @@ TEST_P(QDMIImplementationTest, QueryGatePropertiesForEachGate) {
       }
     }
     if (gate_num_qubits == 2) {
-      for (const auto &[control, target] : coupling_map) {
+      const std::unordered_set<std::pair<QDMI_Site, QDMI_Site>, Pair_hash>
+          set_of_all_site_pairs(coupling_map.cbegin(), coupling_map.cend());
+      size_t size_of_supported_site_pairs = 0;
+      ASSERT_EQ(QDMI_device_query_operation_property(
+                    device, op, 0, nullptr, 0, nullptr,
+                    QDMI_OPERATION_PROPERTY_SITES, 0, nullptr,
+                    &size_of_supported_site_pairs),
+                QDMI_SUCCESS);
+      ASSERT_EQ(size_of_supported_site_pairs %
+                    sizeof(std::pair<QDMI_Site, QDMI_Site>),
+                0)
+          << "size_of_supported_site_pairs is not a multiple of "
+             "sizeof(std::pair<QDMI_Site, QDMI_Site>)";
+      std::vector<std::pair<QDMI_Site, QDMI_Site>> supported_site_pairs(
+          size_of_supported_site_pairs /
+          sizeof(std::pair<QDMI_Site, QDMI_Site>));
+      ASSERT_EQ(QDMI_device_query_operation_property(
+                    device, op, 0, nullptr, 0, nullptr,
+                    QDMI_OPERATION_PROPERTY_SITES, size_of_supported_site_pairs,
+                    static_cast<void *>(supported_site_pairs.data()), nullptr),
+                QDMI_SUCCESS);
+      for (const auto &pair : supported_site_pairs) {
+        EXPECT_NE(set_of_all_site_pairs.find(pair), set_of_all_site_pairs.end())
+            << "Supported site pairs must be a subset of edges in the coupling "
+               "map.";
+        const auto &[control, target] = pair;
         auto site_arr = std::array{control, target};
         EXPECT_EQ(QDMI_device_query_operation_property(
                       device, op, gate_num_qubits, site_arr.data(),
                       gate_num_params, params.data(),
-                      QDMI_OPERATION_PROPERTY_DURATION, sizeof(double),
+                      QDMI_OPERATION_PROPERTY_DURATION, sizeof(uint64_t),
                       &duration, nullptr),
                   QDMI_SUCCESS)
             << "Failed to query duration for gate " << op;
@@ -162,6 +222,34 @@ TEST_P(QDMIImplementationTest, QueryGatePropertiesForEachGate) {
             << "Failed to query fidelity for gate " << op;
       }
     }
+
+    bool is_global = true;
+    EXPECT_EQ(
+        QDMI_device_query_operation_property(device, op, 0, nullptr, 0, nullptr,
+                                             QDMI_OPERATION_PROPERTY_ISZONED,
+                                             sizeof(bool), &is_global, nullptr),
+        QDMI_SUCCESS);
+    EXPECT_FALSE(is_global);
+
+    // The example device does not support neutral atom-specific properties
+    EXPECT_EQ(QDMI_device_query_operation_property(
+                  device, op, 0, nullptr, 0, nullptr,
+                  QDMI_OPERATION_PROPERTY_INTERACTIONRADIUS, 0, nullptr,
+                  nullptr),
+              QDMI_ERROR_NOTSUPPORTED);
+    EXPECT_EQ(QDMI_device_query_operation_property(
+                  device, op, 0, nullptr, 0, nullptr,
+                  QDMI_OPERATION_PROPERTY_BLOCKINGRADIUS, 0, nullptr, nullptr),
+              QDMI_ERROR_NOTSUPPORTED);
+    EXPECT_EQ(QDMI_device_query_operation_property(
+                  device, op, 0, nullptr, 0, nullptr,
+                  QDMI_OPERATION_PROPERTY_IDLINGFIDELITY, 0, nullptr, nullptr),
+              QDMI_ERROR_NOTSUPPORTED);
+    EXPECT_EQ(QDMI_device_query_operation_property(
+                  device, op, 0, nullptr, 0, nullptr,
+                  QDMI_OPERATION_PROPERTY_MEANSHUTTLINGSPEED, 0, nullptr,
+                  nullptr),
+              QDMI_ERROR_NOTSUPPORTED);
 
     // The MAX property is not a valid value for any device
     EXPECT_EQ(QDMI_device_query_operation_property(
@@ -209,6 +297,47 @@ TEST_P(QDMIImplementationTest, QuerySiteProperties) {
     const auto t2 = fomac.get_site_t2(site);
     EXPECT_GT(t2, 0);
 
+    // the example device only offers regular sites
+    EXPECT_EQ(QDMI_device_query_site_property(
+                  device, site, QDMI_SITE_PROPERTY_ISZONE, 0, nullptr, nullptr),
+              QDMI_ERROR_NOTSUPPORTED);
+    uint64_t module_id = 1;
+    EXPECT_EQ(QDMI_device_query_site_property(
+                  device, site, QDMI_SITE_PROPERTY_MODULEINDEX,
+                  sizeof(uint64_t), &module_id, nullptr),
+              QDMI_SUCCESS);
+    // Example device always returns 0 for module index
+    EXPECT_EQ(module_id, 0);
+    EXPECT_EQ(QDMI_device_query_site_property(device, site,
+                                              QDMI_SITE_PROPERTY_SUBMODULEINDEX,
+                                              0, nullptr, nullptr),
+              QDMI_ERROR_NOTSUPPORTED);
+    // The example devices do not support neutral atom-specific properties
+    EXPECT_EQ(QDMI_device_query_site_property(device, site,
+                                              QDMI_SITE_PROPERTY_XCOORDINATE, 0,
+                                              nullptr, nullptr),
+              QDMI_ERROR_NOTSUPPORTED);
+    EXPECT_EQ(QDMI_device_query_site_property(device, site,
+                                              QDMI_SITE_PROPERTY_YCOORDINATE, 0,
+                                              nullptr, nullptr),
+              QDMI_ERROR_NOTSUPPORTED);
+    EXPECT_EQ(QDMI_device_query_site_property(device, site,
+                                              QDMI_SITE_PROPERTY_ZCOORDINATE, 0,
+                                              nullptr, nullptr),
+              QDMI_ERROR_NOTSUPPORTED);
+    EXPECT_EQ(QDMI_device_query_site_property(device, site,
+                                              QDMI_SITE_PROPERTY_XEXTENT, 0,
+                                              nullptr, nullptr),
+              QDMI_ERROR_NOTSUPPORTED);
+    EXPECT_EQ(QDMI_device_query_site_property(device, site,
+                                              QDMI_SITE_PROPERTY_YEXTENT, 0,
+                                              nullptr, nullptr),
+              QDMI_ERROR_NOTSUPPORTED);
+    EXPECT_EQ(QDMI_device_query_site_property(device, site,
+                                              QDMI_SITE_PROPERTY_ZEXTENT, 0,
+                                              nullptr, nullptr),
+              QDMI_ERROR_NOTSUPPORTED);
+
     // The MAX property is not a valid value for any device.
     EXPECT_EQ(QDMI_device_query_site_property(
                   device, site, QDMI_SITE_PROPERTY_MAX, 0, nullptr, nullptr),
@@ -249,6 +378,30 @@ TEST_P(QDMIImplementationTest, QueryDeviceProperties) {
                                               name.size() + 1, name.data(),
                                               nullptr),
             QDMI_SUCCESS);
+
+  // Query the length unit of the device
+  size = 0;
+  EXPECT_EQ(QDMI_device_query_device_property(
+                device, QDMI_DEVICE_PROPERTY_LENGTHUNIT, 0, nullptr, &size),
+            QDMI_SUCCESS);
+  std::string length_unit(size - 1, '\0');
+  EXPECT_EQ(QDMI_device_query_device_property(
+                device, QDMI_DEVICE_PROPERTY_LENGTHUNIT, length_unit.size() + 1,
+                length_unit.data(), nullptr),
+            QDMI_SUCCESS);
+  EXPECT_THAT(length_unit, testing::AnyOf("mm", "um", "nm"));
+  double scale_factor = 0.0;
+  EXPECT_EQ(QDMI_device_query_device_property(
+                device, QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR, sizeof(double),
+                &scale_factor, nullptr),
+            QDMI_SUCCESS);
+  EXPECT_GE(scale_factor, 0.0);
+
+  // The example device does not support neutral atom-specific properties
+  EXPECT_EQ(
+      QDMI_device_query_device_property(
+          device, QDMI_DEVICE_PROPERTY_MINATOMDISTANCE, 0, nullptr, nullptr),
+      QDMI_ERROR_NOTSUPPORTED);
 
   // The MAX property is not a valid value for any device.
   EXPECT_EQ(QDMI_device_query_device_property(device, QDMI_DEVICE_PROPERTY_MAX,

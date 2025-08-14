@@ -175,7 +175,7 @@ endif()
 # Installation instructions for the main library
 if(QDMI_INSTALL)
   install(
-    TARGETS qdmi
+    TARGETS qdmi qdmi_project_warnings
     EXPORT ${PROJECT_NAME}-targets
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT Development
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
