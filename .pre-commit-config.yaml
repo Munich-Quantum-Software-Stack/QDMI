@@ -14,7 +14,7 @@ ci:
 repos:
   # Standard hooks
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: check-added-large-files
       - id: check-case-conflict
@@ -46,7 +46,7 @@ repos:
 
   # Check for spelling
   - repo: https://github.com/crate-ci/typos
-    rev: v1.35.0
+    rev: v1
     hooks:
       - id: typos
 
@@ -89,7 +89,7 @@ repos:
 
   # Check JSON schemata
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.33.2
+    rev: 0.33.3
     hooks:
       - id: check-dependabot
       - id: check-github-workflows
