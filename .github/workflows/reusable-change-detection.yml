@@ -29,7 +29,7 @@ jobs:
       run-code-ql: ${{ steps.code-ql-changes.outputs.run-code-ql || false }}
       run-docs: ${{ steps.docs-changes.outputs.run-docs || false }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Get a list of the changed files relevant for the tests
         if: github.event_name == 'pull_request'
         id: changed-testable-files
