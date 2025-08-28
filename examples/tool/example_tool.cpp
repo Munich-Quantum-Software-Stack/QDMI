@@ -73,25 +73,25 @@ std::string Tool::compile(const std::string &qasm_string) {
   auto id0 = fomac.get_site_id(edge.first);
   auto id1 = fomac.get_site_id(edge.second);
 
-  std::string from_decl =
+  std::string const from_decl =
       (std::stringstream() << "qreg q[" << num_qubits << "];").str();
-  std::string to_decl =
+  std::string const to_decl =
       (std::stringstream() << "qreg q[" << fomac.get_qubits_num() << "];")
           .str();
   auto result = replace_all_occurrences(qasm_string, from_decl, to_decl);
 
   /// The aux-trick is needed for the edge case that id1 == 1 which would later
   /// on be replaced by id2 if directly replaced here.
-  std::string from_q0 = "q[0]";
-  std::string to_aux = (std::stringstream() << "q[aux]").str();
+  std::string const from_q0 = "q[0]";
+  std::string const to_aux = (std::stringstream() << "q[aux]").str();
   result = replace_all_occurrences(result, from_q0, to_aux);
 
-  std::string from_q1 = "q[1]";
-  std::string to_q1 = (std::stringstream() << "q[" << id1 << "]").str();
+  std::string const from_q1 = "q[1]";
+  std::string const to_q1 = (std::stringstream() << "q[" << id1 << "]").str();
   result = replace_all_occurrences(result, from_q1, to_q1);
 
-  std::string from_aux = "q[aux]";
-  std::string to_q0 = (std::stringstream() << "q[" << id0 << "]").str();
+  std::string const from_aux = "q[aux]";
+  std::string const to_q0 = (std::stringstream() << "q[" << id0 << "]").str();
   result = replace_all_occurrences(result, from_aux, to_q0);
 
   return result;
