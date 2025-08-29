@@ -65,4 +65,4 @@ jobs:
         with:
           fail_ci_if_error: true
           flags: cpp
-          use_oidc: true
+          token: ${{ secrets.CODECOV_TOKEN }}
