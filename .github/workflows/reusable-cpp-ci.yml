@@ -14,6 +14,9 @@ on:
         description: "Additional arguments to pass to CMake on macOS"
         default: ""
         type: string
+    secrets:
+      CODECOV_TOKEN:
+        required: true
 
 jobs:
   cpp-tests-ubuntu:
@@ -46,9 +49,6 @@ jobs:
       CMAKE_BUILD_PARALLEL_LEVEL: 4
       CTEST_PARALLEL_LEVEL: 4
       FORCE_COLOR: 3
-    permissions:
-      contents: read
-      id-token: write
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - name: Install Ninja
@@ -65,4 +65,4 @@ jobs:
         with:
           fail_ci_if_error: true
           flags: cpp
-          use_oidc: true
+          token: ${{ secrets.CODECOV_TOKEN }}
