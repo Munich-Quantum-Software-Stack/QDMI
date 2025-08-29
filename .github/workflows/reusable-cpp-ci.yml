@@ -41,9 +41,28 @@ jobs:
 
   coverage:
     name: 📈
-    uses: munich-quantum-toolkit/workflows/.github/workflows/reusable-cpp-coverage.yml@v1.16.2
-    with:
-      cmake-args: ${{ inputs.cmake-args }} ${{ inputs.cmake-args-ubuntu }}
+    runs-on: ubuntu-latest
+    env:
+      CMAKE_BUILD_PARALLEL_LEVEL: 4
+      CTEST_PARALLEL_LEVEL: 4
+      FORCE_COLOR: 3
     permissions:
       contents: read
       id-token: write
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - name: Install Ninja
+        run: pipx install ninja
+      - name: Configure CMake
+        run: |
+          cmake -G Ninja -S . -B build -DCMAKE_BUILD_TYPE=Debug -DENABLE_COVERAGE=ON -DBUILD_QDMI_DOCS=OFF
+      - name: Build
+        run: cmake --build build --config Debug
+      - name: Test
+        run: ctest -C Debug --output-on-failure --test-dir build --repeat until-pass:3 --timeout 600
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@fdcc8476540edceab3de004e990f80d881c6cc00 # v5.5.0
+        with:
+          fail_ci_if_error: true
+          flags: cpp
+          use_oidc: true
