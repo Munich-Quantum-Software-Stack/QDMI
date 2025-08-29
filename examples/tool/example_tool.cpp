@@ -67,22 +67,32 @@ std::string Tool::compile(const std::string &qasm_string) {
     throw std::invalid_argument(
         "The device does not provide enough qubits for the circuit.");
   }
+
   // Choose an arbitrary edge for the two qubits
   const auto edge = fomac.get_coupling_map().front();
-  std::stringstream from;
-  from << "qreg q[" << num_qubits << "];";
-  std::stringstream to;
-  to << "qreg q[" << fomac.get_qubits_num() << "];";
-  auto result = replace_all_occurrences(qasm_string, from.str(), to.str());
-  from.clear();
-  from << "q[0]";
-  to.clear();
-  to << "q[" << edge.first << "]";
-  result = replace_all_occurrences(result, from.str(), to.str());
-  from.clear();
-  from << "q[1]";
-  to.clear();
-  to << "q[" << edge.second << "]";
-  result = replace_all_occurrences(result, from.str(), to.str());
+  auto id0 = fomac.get_site_id(edge.first);
+  auto id1 = fomac.get_site_id(edge.second);
+
+  std::string const from_decl =
+      (std::stringstream() << "qreg q[" << num_qubits << "];").str();
+  std::string const to_decl =
+      (std::stringstream() << "qreg q[" << fomac.get_qubits_num() << "];")
+          .str();
+  auto result = replace_all_occurrences(qasm_string, from_decl, to_decl);
+
+  /// The aux-trick is needed for the edge case that id1 == 1 which would later
+  /// on be replaced by id2 if directly replaced here.
+  std::string const from_q0 = "q[0]";
+  std::string const to_aux = (std::stringstream() << "q[aux]").str();
+  result = replace_all_occurrences(result, from_q0, to_aux);
+
+  std::string const from_q1 = "q[1]";
+  std::string const to_q1 = (std::stringstream() << "q[" << id1 << "]").str();
+  result = replace_all_occurrences(result, from_q1, to_q1);
+
+  std::string const from_aux = "q[aux]";
+  std::string const to_q0 = (std::stringstream() << "q[" << id0 << "]").str();
+  result = replace_all_occurrences(result, from_aux, to_q0);
+
   return result;
 }
