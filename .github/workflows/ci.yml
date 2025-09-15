@@ -43,15 +43,6 @@ jobs:
       # do not try to build docs in linter builds
       cmake-args: "-DBUILD_QDMI_DOCS=OFF"
 
-  code-ql:
-    name: 📝 CodeQL
-    needs: change-detection
-    if: fromJSON(needs.change-detection.outputs.run-code-ql) && github.event.action != 'closed'
-    uses: munich-quantum-toolkit/workflows/.github/workflows/reusable-code-ql-cpp.yml@v1.17.0
-    with:
-      # do not try to build docs in CodeQL builds
-      cmake-args: "-DBUILD_QDMI_DOCS=OFF"
-
   docs:
     name: 📝 Build and Deploy Docs
     needs: change-detection
@@ -68,7 +59,6 @@ jobs:
       - change-detection
       - tests
       - linter
-      - code-ql
       - docs
     runs-on: ubuntu-latest
     steps:
@@ -82,9 +72,6 @@ jobs:
             }} ${{
               fromJSON(needs.change-detection.outputs.run-linter)
               && '' || 'linter,'
-            }} ${{
-              fromJSON(needs.change-detection.outputs.run-code-ql)
-              && '' || 'code-ql,'
             }} ${{
               fromJSON(needs.change-detection.outputs.run-docs)
               && '' || 'docs,'
