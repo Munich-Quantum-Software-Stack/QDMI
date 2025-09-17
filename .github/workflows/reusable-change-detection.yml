@@ -11,9 +11,6 @@ on:
       run-linter:
         description: Whether to run the linter
         value: ${{ jobs.change-detection.outputs.run-linter || false }}
-      run-code-ql:
-        description: Whether to run CodeQL
-        value: ${{ jobs.change-detection.outputs.run-code-ql || false }}
       run-docs:
         description: Whether to run the documentation job
         value: ${{ jobs.change-detection.outputs.run-docs || false }}
@@ -26,7 +23,6 @@ jobs:
     outputs:
       run-tests: ${{ steps.tests-changes.outputs.run-tests || false }}
       run-linter: ${{ steps.linter-changes.outputs.run-linter || false }}
-      run-code-ql: ${{ steps.code-ql-changes.outputs.run-code-ql || false }}
       run-docs: ${{ steps.docs-changes.outputs.run-docs || false }}
     steps:
       - uses: actions/checkout@v5
@@ -70,26 +66,6 @@ jobs:
         id: linter-changes
         run: >-
           echo "run-linter=true" >> "${GITHUB_OUTPUT}"
-      - name: Get a list of the changed files relevant for CodeQL
-        if: github.event_name == 'pull_request'
-        id: changed-code-ql-files
-        uses: Ana06/get-changed-files@v2.3.0
-        with:
-          filter: |
-            cmake/**
-            include/**
-            examples/**
-            test/**
-            templates/**
-            CMakeLists.txt
-            .github/workflows/ci.yml
-      - name: Set a flag for running CodeQL
-        if: >-
-          github.event_name != 'pull_request' ||
-          steps.changed-code-ql-files.outputs.added_modified_renamed != ''
-        id: code-ql-changes
-        run: >-
-          echo "run-code-ql=true" >> "${GITHUB_OUTPUT}"
       - name: Get a list of the changed files relevant for documentation build
         if: github.event_name == 'pull_request'
         id: changed-docs-files
