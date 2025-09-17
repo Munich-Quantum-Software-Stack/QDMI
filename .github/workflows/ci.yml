@@ -29,8 +29,6 @@ jobs:
     with:
       # do not try to build docs in test builds
       cmake-args: "-DBUILD_QDMI_DOCS=OFF -G Ninja"
-    secrets:
-      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   linter:
     name: 🇨‌ Lint
