@@ -252,7 +252,7 @@ void QDMI_library_load(const std::string &lib_name, const std::string &prefix) {
     LOAD_SYMBOL(library, prefix, device_session_query_site_property)
     LOAD_SYMBOL(library, prefix, device_session_query_operation_property)
     LOAD_SYMBOL(library, prefix, device_session_query_telemetrysensor_property)
-    // device qnvironment interface
+    // device environment interface
     LOAD_SYMBOL(library, prefix,
                 device_session_create_device_telemetrysensor_query)
     LOAD_SYMBOL(library, prefix, device_telemetrysensor_query_set_parameter)
@@ -577,7 +577,7 @@ int QDMI_device_query_operation_property(
 
 int QDMI_device_query_telemetrysensor_property(
     QDMI_Device device, QDMI_TelemetrySensor telemetry_sensor,
-    QDMI_TelemetrySensor_Property prop, const size_t size, void *value,
+    const QDMI_TelemetrySensor_Property prop, const size_t size, void *value,
     size_t *size_ret) {
   if (device == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
@@ -604,7 +604,7 @@ int QDMI_device_create_telemetrysensor_query(
 
 int QDMI_telemetrysensor_query_set_parameter(
     QDMI_TelemetrySensor_Query query,
-    QDMI_TelemetrySensor_Query_Parameter param, size_t size,
+    const QDMI_TelemetrySensor_Query_Parameter param, const size_t size,
     const void *value) {
   if (query == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
@@ -624,8 +624,9 @@ int QDMI_telemetrysensor_query_submit(QDMI_TelemetrySensor_Query query) {
 }
 
 int QDMI_telemetrysensor_query_get_results(
-    QDMI_TelemetrySensor_Query query, QDMI_TelemetrySensor_Query_Result result,
-    size_t size, void *data, size_t *size_ret) {
+    QDMI_TelemetrySensor_Query query,
+    const QDMI_TelemetrySensor_Query_Result result, const size_t size,
+    void *data, size_t *size_ret) {
   if (query == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
@@ -645,7 +646,7 @@ int QDMI_telemetrysensor_query_check_status(
 }
 
 int QDMI_telemetrysensor_query_wait(QDMI_TelemetrySensor_Query query,
-                                    size_t timeout) {
+                                    const size_t timeout) {
   if (query == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
