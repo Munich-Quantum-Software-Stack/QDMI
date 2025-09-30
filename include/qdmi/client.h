@@ -1057,9 +1057,9 @@ void QDMI_job_free(QDMI_Job job);
 
 /** @defgroup client_telemetrysensor_query_interface \
  *  QDMI Client Telemetry Sensor Query Interface
- *  @brief Provides functions to query telemetry sensors.
- *  @details A telemetry sensor query is a task submitted by a client to a
- * device for querying telemetry sensors, i.e. temperature or power.
+ *  @brief Provides functions to query data from telemetry sensors.
+ *  @details An telemetry sensor query is a task submitted by a client to a
+ * device for querying data from telemetry sensors, i.e. temperature or power.
  *
  *  The typical workflow for a client telemetry sensor query is as follows:
  *  - Create a telemetry sensor query with @ref
@@ -1103,9 +1103,9 @@ typedef struct QDMI_TelemetrySensor_Query_impl_d *QDMI_TelemetrySensor_Query;
  * @param[in] device The device to create the telemetry sensor query on. Must
  * not be @c NULL.
  * @param[out] query A pointer to a handle that will store the created
- * telemetry sensor query. Must not be @c NULL. The job must be freed by
+ * telemetry sensor query. Must not be @c NULL. The query must be freed by
  * calling @ref QDMI_telemetrysensor_query_free when it is no longer used.
- * @return @ref QDMI_SUCCESS if the job was successfully created.
+ * @return @ref QDMI_SUCCESS if the query was successfully created.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p device or @p query are @c NULL.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the driver does not allow using
  * the @ref client_telemetrysensor_query_interface
@@ -1163,7 +1163,7 @@ typedef enum QDMI_TELEMETRYSENSOR_QUERY_PARAMETER_T
     QDMI_TelemetrySensor_Query_Parameter;
 /**
  * @brief Set a parameter for a telemetry sensor.
- * @param[in] query A handle to a job for which to set @p param. Must not be @c
+ * @param[in] query A handle to a query for which to set @p param. Must not be @c
  * NULL.
  * @param[in] param The parameter whose value will be set. Must be one of the
  * values specified for @ref QDMI_TelemetrySensor_Query_Parameter.
@@ -1184,7 +1184,7 @@ typedef enum QDMI_TELEMETRYSENSOR_QUERY_PARAMETER_T
  *  the parameter (if specified by the @ref
  * QDMI_TelemetrySensor_Query_Parameter documentation).
  * @return @ref QDMI_ERROR_BADSTATE if the parameter cannot be set in the
- * current state of the job, for example, because the query is already
+ * current state of the query, for example, because the query is already
  * submitted.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the driver does not allow using
  * the @ref client_telemetrysensor_query_interface
