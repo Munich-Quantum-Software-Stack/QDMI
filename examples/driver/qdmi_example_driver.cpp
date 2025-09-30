@@ -102,13 +102,15 @@ struct QDMI_Library {
   /// Function pointer to @ref QDMI_device_session_query_operation_property.
   decltype(QDMI_device_session_query_operation_property)
       *device_session_query_operation_property{};
-  /// Function pointer to @ref QDMI_device_session_query_telemetrysensor_property.
+  /// Function pointer to @ref
+  /// QDMI_device_session_query_telemetrysensor_property.
   decltype(QDMI_device_session_query_telemetrysensor_property)
       *device_session_query_telemetrysensor_property{};
   /// Function pointer to @ref QDMI_device_telemetrysensor_query_set_parameter.
   decltype(QDMI_device_telemetrysensor_query_set_parameter)
       *device_telemetrysensor_query_set_parameter{};
-  /// Function pointer to @ref QDMI_device_session_create_device_telemetrysensor_query.
+  /// Function pointer to @ref
+  /// QDMI_device_session_create_device_telemetrysensor_query.
   decltype(QDMI_device_session_create_device_telemetrysensor_query)
       *device_session_create_device_telemetrysensor_query{};
   /// Function pointer to @ref QDMI_device_telemetrysensor_query_submit.
