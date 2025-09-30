@@ -581,7 +581,7 @@ int QDMI_device_query_operation_property(
  * @brief Query a telemetry sensor property.
  * @param[in] device The device to query. Must not be @c NULL.
  * @param[in] telemetry_sensor The telemetry sensor to query. Must not be @c
- NULL.
+ * NULL.
  * @param[in] prop The property to query. Must be one of the values specified
  * for @ref QDMI_TelemetrySensor_Property.
  * @param[in] size The size of the memory pointed to by @p value in bytes. Must
@@ -604,8 +604,8 @@ int QDMI_device_query_operation_property(
  *
  * @note By calling this function with @p value set to @c NULL, the function can
  * be used to check if the telemetry sensor supports the specified property
- without
- * retrieving the property and without the need to provide a buffer for it.
+ * without retrieving the property and without the need to provide a buffer for
+ * it.
  * Additionally, the size of the buffer needed to retrieve the property is
  * returned in @p size_ret if @p size_ret is not @c NULL.
  *
@@ -616,7 +616,7 @@ int QDMI_device_query_operation_property(
  * // Check if the device supports the property.
  * auto ret = QDMI_device_query_telemetrysensor_property(
  *   device, telemetry_sensor, QDMI_TELEMETRYSENSOR_PROPERTY_UNIT, 0,
- nullptr, nullptr);
+ * nullptr, nullptr);
  * if (ret == QDMI_ERROR_NOTSUPPORTED) {
  *   // The device does not support the property.
  *   ...
@@ -636,7 +636,7 @@ int QDMI_device_query_operation_property(
  * ret = QDMI_device_query_telemetrysensor_property(
  *      device, telemetry_sensor, QDMI_TELEMETRYSENSOR_PROPERTY_UNIT,
  *      telemetrysensor_unit.size() + 1, telemetrysensor_unit.data(),
- nullptr);
+ * nullptr);
  * ```
  *
  * @remark @ref QDMI_TelemetrySensor handles may be queried via @ref
@@ -1088,7 +1088,7 @@ void QDMI_job_free(QDMI_Job job);
  * @remark Implementations of the underlying type will want to store the device
  * handle used to create the telemetry sensor query in the handle to be able
  * to access the device when needed.
- * @see QDMI_Device_TelemetrySensor_Query for the device-side the telemetry
+ * @see QDMI_Device_TelemetrySensor_Query for the device-side telemetry
  * sensor query handle.
  */
 typedef struct QDMI_TelemetrySensor_Query_impl_d *QDMI_TelemetrySensor_Query;
