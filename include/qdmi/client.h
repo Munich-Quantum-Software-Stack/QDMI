@@ -1163,8 +1163,8 @@ typedef enum QDMI_TELEMETRYSENSOR_QUERY_PARAMETER_T
     QDMI_TelemetrySensor_Query_Parameter;
 /**
  * @brief Set a parameter for a telemetry sensor.
- * @param[in] query A handle to a query for which to set @p param. Must not be @c
- * NULL.
+ * @param[in] query A handle to a query for which to set @p param. Must not be
+ * @c NULL.
  * @param[in] param The parameter whose value will be set. Must be one of the
  * values specified for @ref QDMI_TelemetrySensor_Query_Parameter.
  * @param[in] size The size of the data pointed to by @p value in bytes. Must
