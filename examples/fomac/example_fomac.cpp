@@ -230,13 +230,13 @@ auto FoMaC::get_telemetry_sensors() const -> std::vector<QDMI_TelemetrySensor> {
   int ret = QDMI_device_query_device_property(
       device, QDMI_DEVICE_PROPERTY_TELEMETRYSENSORS, 0, nullptr,
       &telemetry_sensor_size);
-  throw_if_error(ret, "Failed to get the telemetry variable list size.");
+  throw_if_error(ret, "Failed to get the telemetry sensor list size.");
   std::vector<QDMI_TelemetrySensor> telemetry_sensors(telemetry_sensor_size /
                                                       sizeof(QDMI_Site));
   ret = QDMI_device_query_device_property(
       device, QDMI_DEVICE_PROPERTY_TELEMETRYSENSORS, telemetry_sensor_size,
       static_cast<void *>(telemetry_sensors.data()), nullptr);
-  throw_if_error(ret, "Failed to get the telemetry variables.");
+  throw_if_error(ret, "Failed to get the telemetry sensors.");
   return telemetry_sensors;
 }
 
