@@ -22,10 +22,10 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include "utils/test_impl.hpp"
 
 #include <array>
+#include <chrono>
 #include <complex>
 #include <cstddef>
 #include <cstdint>
-#include <ctime>
 #include <functional>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -1162,8 +1162,10 @@ TEST_P(QDMIImplementationTest, TelemetryQuery) {
     QDMI_TelemetrySensor_Query query = nullptr;
     QDMI_TelemetrySensor_Query_Status status =
         QDMI_TELEMETRYSENSOR_QUERY_STATUS_CREATED;
-    time_t start_time = time(nullptr);
-    time_t end_time = time(nullptr) + 600;
+
+    auto start_time = std::chrono::system_clock::now();
+
+    auto end_time = start_time + std::chrono::minutes(10);
 
     EXPECT_EQ(QDMI_device_create_telemetrysensor_query(device, &query),
               QDMI_SUCCESS);
@@ -1176,12 +1178,12 @@ TEST_P(QDMIImplementationTest, TelemetryQuery) {
 
     EXPECT_EQ(QDMI_telemetrysensor_query_set_parameter(
                   query, QDMI_TELEMETRYSENSOR_QUERY_PARAMETER_STARTTIME,
-                  sizeof(time_t), &start_time),
+                  sizeof(decltype(start_time)), &start_time),
               QDMI_SUCCESS);
 
     EXPECT_EQ(QDMI_telemetrysensor_query_set_parameter(
                   query, QDMI_TELEMETRYSENSOR_QUERY_PARAMETER_ENDTIME,
-                  sizeof(time_t), &end_time),
+                  sizeof(decltype(end_time)), &end_time),
               QDMI_SUCCESS);
 
     EXPECT_EQ(QDMI_telemetrysensor_query_submit(query), QDMI_SUCCESS);
@@ -1199,12 +1201,14 @@ TEST_P(QDMIImplementationTest, TelemetryQuery) {
                   nullptr, &timestamps_size),
               QDMI_SUCCESS);
 
-    std::vector<time_t> timestamps;
-    timestamps.reserve(timestamps_size / sizeof(time_t));
+    std::vector<std::chrono::time_point<std::chrono::system_clock>> timestamps{
+        timestamps_size /
+        sizeof(std::chrono::time_point<std::chrono::system_clock>)};
 
     EXPECT_EQ(QDMI_telemetrysensor_query_get_results(
                   query, QDMI_TELEMETRYSENSOR_QUERY_RESULT_TIMESTAMPS,
-                  timestamps_size, timestamps.data(), nullptr),
+                  timestamps_size, static_cast<void *>(timestamps.data()),
+                  nullptr),
               QDMI_SUCCESS);
 
     size_t size_values = 0;

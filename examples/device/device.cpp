@@ -33,7 +33,6 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include <cstdint>
 #include <cstdlib>
 #include <cstring>
-#include <ctime>
 #include <functional>
 #include <iterator>
 #include <limits>
@@ -975,19 +974,23 @@ int CXX_QDMI_device_telemetrysensor_query_set_parameter(
        param != QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_CUSTOM3 &&
        param != QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_CUSTOM4 &&
        param != QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_CUSTOM5) ||
-      value == nullptr || (size != sizeof(decltype(query->start_time)))) {
+      value == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   switch (param) {
 
   case QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_STARTTIME: {
-    query->start_time = std::chrono::system_clock::from_time_t(
-        *static_cast<const time_t *>(value));
+    if (size < sizeof(std::chrono::time_point<std::chrono::system_clock>)) {
+      return QDMI_ERROR_INVALIDARGUMENT;
+    }
+    std::memcpy(&query->start_time, value, size);
     return QDMI_SUCCESS;
   }
   case QDMI_DEVICE_TELEMETRYSENSOR_QUERY_PARAMETER_ENDTIME: {
-    query->end_time = std::chrono::system_clock::from_time_t(
-        *static_cast<const time_t *>(value));
+    std::memcpy(&query->end_time, value, size);
+    if (size < sizeof(std::chrono::time_point<std::chrono::system_clock>)) {
+      return QDMI_ERROR_INVALIDARGUMENT;
+    }
     return QDMI_SUCCESS;
   }
 
@@ -1037,7 +1040,7 @@ int CXX_QDMI_device_telemetrysensor_query_submit(
     const auto next_time = query->start_time + interval * i;
     query->result_timestamps.emplace_back(next_time);
 
-    query->result_values[i] = dis(gen);
+    query->result_values.emplace_back(dis(gen));
   }
 
   return QDMI_SUCCESS;
@@ -1060,14 +1063,17 @@ int CXX_QDMI_device_telemetrysensor_query_get_results(
   size_t required_size = query->result_values.size();
   switch (result) {
   case QDMI_TELEMETRYSENSOR_QUERY_RESULT_TIMESTAMPS:
-    required_size *= sizeof(time_t);
+    required_size *= sizeof(std::chrono::time_point<std::chrono::system_clock>);
     if (data != nullptr) {
       if (size < required_size) {
         return QDMI_ERROR_INVALIDARGUMENT;
       }
-      auto *data_ptr = static_cast<time_t *>(data);
-      for (auto timestamps : query->result_timestamps) {
-        *data_ptr++ = std::chrono::system_clock::to_time_t(timestamps);
+      auto *data_ptr =
+          static_cast<std::chrono::time_point<std::chrono::system_clock> *>(
+              data);
+      for (auto timestamp : query->result_timestamps) {
+        std::memcpy(data_ptr++, &timestamp,
+                    sizeof(std::chrono::time_point<std::chrono::system_clock>));
       }
     }
 
