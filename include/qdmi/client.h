@@ -578,7 +578,7 @@ int QDMI_device_query_operation_property(
     QDMI_Operation_Property prop, size_t size, void *value, size_t *size_ret);
 
 /**
- * @brief Query an telemetry sensor property.
+ * @brief Query a telemetry sensor property.
  * @param[in] device The device to query. Must not be @c NULL.
  * @param[in] telemetry_sensor The telemetry sensor to query. Must not be @c
  NULL.
@@ -609,7 +609,7 @@ int QDMI_device_query_operation_property(
  * Additionally, the size of the buffer needed to retrieve the property is
  * returned in @p size_ret if @p size_ret is not @c NULL.
  *
- * @note For example, to query the unit of an telemetry sensor, the following
+ * @note For example, to query the unit of a telemetry sensor, the following
  code pattern
  * can be used:
  * ```
@@ -1058,11 +1058,11 @@ void QDMI_job_free(QDMI_Job job);
 /** @defgroup client_telemetrysensor_query_interface \
  *  QDMI Client Telemetry Sensor Query Interface
  *  @brief Provides functions to query telemetry sensors.
- *  @details An telemetry sensor query is a task submitted by a client to a
+ *  @details A telemetry sensor query is a task submitted by a client to a
  * device for querying telemetry sensors, i.e. temperature or power.
  *
  *  The typical workflow for a client telemetry sensor query is as follows:
- *  - Create an telemetry sensor query with @ref
+ *  - Create a telemetry sensor query with @ref
  * QDMI_device_create_telemetrysensor_query.
  *  - Set parameters for the telemetry sensor query with @ref
  * QDMI_telemetrysensor_query_set_parameter
@@ -1083,7 +1083,7 @@ void QDMI_job_free(QDMI_Job job);
 /**
  * @brief A handle for a client-side telemetry sensor query.
  * @details An opaque pointer to a type defined by the driver that encapsulates
- * all information about an telemetry sensor query submitted to a device by a
+ * all information about a telemetry sensor query submitted to a device by a
  * client.
  * @remark Implementations of the underlying type will want to store the device
  * handle used to create the telemetry sensor query in the handle to be able
@@ -1094,8 +1094,8 @@ void QDMI_job_free(QDMI_Job job);
 typedef struct QDMI_TelemetrySensor_Query_impl_d *QDMI_TelemetrySensor_Query;
 
 /**
- * @brief Create an telemetry sensor query.
- * @details This is the main entry point for a client to submit an telemetry
+ * @brief Create a telemetry sensor query.
+ * @details This is the main entry point for a client to submit a telemetry
  * sensor query to a device. The returned handle can be used throughout the
  * @ref client_telemetrysensor_query_interface
  * "client telemetry sensor query interface" to refer to the telemetry
@@ -1162,7 +1162,7 @@ enum QDMI_TELEMETRYSENSOR_QUERY_PARAMETER_T {
 typedef enum QDMI_TELEMETRYSENSOR_QUERY_PARAMETER_T
     QDMI_TelemetrySensor_Query_Parameter;
 /**
- * @brief Set a parameter for an telemetry sensor.
+ * @brief Set a parameter for a telemetry sensor.
  * @param[in] query A handle to a job for which to set @p param. Must not be @c
  * NULL.
  * @param[in] param The parameter whose value will be set. Must be one of the
@@ -1220,7 +1220,7 @@ int QDMI_telemetrysensor_query_set_parameter(
     QDMI_TelemetrySensor_Query query,
     QDMI_TelemetrySensor_Query_Parameter param, size_t size, const void *value);
 /**
- * @brief Submit an telemetry sensor query to the device.
+ * @brief Submit a telemetry sensor query to the device.
  * @details This function can either be blocking until the telemetry sensor
  * query is finished or non-blocking and return while the telemetry sensor
  * query is running. In the latter case, the functions @ref
@@ -1264,7 +1264,7 @@ int QDMI_telemetrysensor_query_submit(QDMI_TelemetrySensor_Query query);
 int QDMI_telemetrysensor_query_cancel(QDMI_TelemetrySensor_Query query);
 
 /**
- * @brief Check the status of an telemetry sensor query.
+ * @brief Check the status of a telemetry sensor query.
  * @details This function is non-blocking and returns immediately with the
  * telemetry sensor query status. It is not required to call this function
  * before calling @ref QDMI_telemetrysensor_query_get_results.
@@ -1287,7 +1287,7 @@ int QDMI_telemetrysensor_query_check_status(
     QDMI_TelemetrySensor_Query_Status *status);
 
 /**
- * @brief Wait for an telemetry sensor query to finish.
+ * @brief Wait for a telemetry sensor query to finish.
  * @details This function blocks until the telemetry sensor query has either
  * finished or has been canceled, or the timeout has been reached.
  * @param[in] query The telemetry sensor query to wait for. Must not be @c
@@ -1311,7 +1311,7 @@ int QDMI_telemetrysensor_query_wait(QDMI_TelemetrySensor_Query query,
                                     size_t timeout);
 
 /**
- * @brief Retrieve the results of an telemetry sensor query.
+ * @brief Retrieve the results of a telemetry sensor query.
  * @param[in] query The telemetry sensor query to retrieve the results from.
  * Must not be @c NULL.
  * @param[in] result The result to retrieve. Must be one of the values specified
@@ -1368,7 +1368,7 @@ int QDMI_telemetrysensor_query_get_results(
     QDMI_TelemetrySensor_Query query, QDMI_TelemetrySensor_Query_Result result,
     size_t size, void *data, size_t *size_ret);
 /**
- * @brief Free an telemetry sensor query.
+ * @brief Free a telemetry sensor query.
  * @details Free the resources associated with a telemetry sensor query. Using
  * a telemetry sensor query handle after it has been freed is undefined
  * behavior.
