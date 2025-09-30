@@ -102,31 +102,31 @@ struct QDMI_Library {
   /// Function pointer to @ref QDMI_device_session_query_operation_property.
   decltype(QDMI_device_session_query_operation_property)
       *device_session_query_operation_property{};
-
+  /// Function pointer to @ref QDMI_device_session_query_telemetrysensor_property.
   decltype(QDMI_device_session_query_telemetrysensor_property)
       *device_session_query_telemetrysensor_property{};
-
+  /// Function pointer to @ref QDMI_device_telemetrysensor_query_set_parameter.
   decltype(QDMI_device_telemetrysensor_query_set_parameter)
       *device_telemetrysensor_query_set_parameter{};
-
+  /// Function pointer to @ref QDMI_device_session_create_device_telemetrysensor_query.
   decltype(QDMI_device_session_create_device_telemetrysensor_query)
       *device_session_create_device_telemetrysensor_query{};
-
+  /// Function pointer to @ref QDMI_device_telemetrysensor_query_submit.
   decltype(QDMI_device_telemetrysensor_query_submit)
       *device_telemetrysensor_query_submit{};
-
+  /// Function pointer to @ref QDMI_device_telemetrysensor_query_get_results.
   decltype(QDMI_device_telemetrysensor_query_get_results)
       *device_telemetrysensor_query_get_results{};
-
+  /// Function pointer to @ref QDMI_device_telemetrysensor_query_check_status.
   decltype(QDMI_device_telemetrysensor_query_check_status)
       *device_telemetrysensor_query_check_status{};
-
+  /// Function pointer to @ref QDMI_device_telemetrysensor_query_wait.
   decltype(QDMI_device_telemetrysensor_query_wait)
       *device_telemetrysensor_query_wait{};
-
+  /// Function pointer to @ref QDMI_device_telemetrysensor_query_cancel.
   decltype(QDMI_device_telemetrysensor_query_cancel)
       *device_telemetrysensor_query_cancel{};
-
+  /// Function pointer to @ref QDMI_device_telemetrysensor_query_free.
   decltype(QDMI_device_telemetrysensor_query_free)
       *device_telemetrysensor_query_free{};
 
