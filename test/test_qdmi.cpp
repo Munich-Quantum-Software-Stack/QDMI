@@ -22,10 +22,10 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include "utils/test_impl.hpp"
 
 #include <array>
-#include <chrono>
 #include <complex>
 #include <cstddef>
 #include <cstdint>
+#include <ctime>
 #include <functional>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -1163,27 +1163,21 @@ TEST_P(QDMIImplementationTest, TelemetryQuery) {
     QDMI_TelemetrySensor_Query_Status status =
         QDMI_TELEMETRYSENSOR_QUERY_STATUS_CREATED;
 
-    auto start_time = std::chrono::system_clock::now();
+    time_t start_timestamp = time(nullptr);
+    time_t end_timestamp = time(nullptr) + 600; // 10 minutes later
 
-    auto end_time = start_time + std::chrono::minutes(10);
-
-    EXPECT_EQ(QDMI_device_create_telemetrysensor_query(device, &query),
-              QDMI_SUCCESS);
-
-    EXPECT_EQ(QDMI_telemetrysensor_query_set_parameter(
-                  query, QDMI_TELEMETRYSENSOR_QUERY_PARAMETER_TELEMETRY,
-                  sizeof(QDMI_TelemetrySensor),
-                  static_cast<void *>(&telemetry_sensor)),
+    EXPECT_EQ(QDMI_device_create_telemetrysensor_query(
+                  device, &telemetry_sensor, &query),
               QDMI_SUCCESS);
 
     EXPECT_EQ(QDMI_telemetrysensor_query_set_parameter(
                   query, QDMI_TELEMETRYSENSOR_QUERY_PARAMETER_STARTTIME,
-                  sizeof(decltype(start_time)), &start_time),
+                  sizeof(time_t), &start_timestamp),
               QDMI_SUCCESS);
 
     EXPECT_EQ(QDMI_telemetrysensor_query_set_parameter(
                   query, QDMI_TELEMETRYSENSOR_QUERY_PARAMETER_ENDTIME,
-                  sizeof(decltype(end_time)), &end_time),
+                  sizeof(time_t), &end_timestamp),
               QDMI_SUCCESS);
 
     EXPECT_EQ(QDMI_telemetrysensor_query_submit(query), QDMI_SUCCESS);
@@ -1201,9 +1195,8 @@ TEST_P(QDMIImplementationTest, TelemetryQuery) {
                   nullptr, &timestamps_size),
               QDMI_SUCCESS);
 
-    std::vector<std::chrono::time_point<std::chrono::system_clock>> timestamps{
-        timestamps_size /
-        sizeof(std::chrono::time_point<std::chrono::system_clock>)};
+    size_t timestamp_length = timestamps_size / sizeof(time_t);
+    std::vector<time_t> timestamps(timestamp_length);
 
     EXPECT_EQ(QDMI_telemetrysensor_query_get_results(
                   query, QDMI_TELEMETRYSENSOR_QUERY_RESULT_TIMESTAMPS,
@@ -1217,8 +1210,8 @@ TEST_P(QDMIImplementationTest, TelemetryQuery) {
                   &size_values),
               QDMI_SUCCESS);
 
-    std::vector<double> values;
-    values.reserve(size_values / sizeof(double));
+    size_t values_length = timestamps_size / sizeof(time_t);
+    std::vector<double> values(values_length);
 
     EXPECT_EQ(QDMI_telemetrysensor_query_get_results(
                   query, QDMI_TELEMETRYSENSOR_QUERY_RESULT_VALUES, size_values,

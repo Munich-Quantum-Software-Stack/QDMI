@@ -610,7 +610,7 @@ int QDMI_device_query_operation_property(
  * returned in @p size_ret if @p size_ret is not @c NULL.
  *
  * @note For example, to query the unit of a telemetry sensor, the following
- code pattern
+ * code pattern
  * can be used:
  * ```
  * // Check if the device supports the property.
@@ -626,7 +626,7 @@ int QDMI_device_query_operation_property(
  * size_t telemetrysensor_unit_size = 0;
  * auto ret = QDMI_device_query_telemetrysensor_property(
  *     device, telemetry_sensor, QDMI_TELEMETRYSENSOR_PROPERTY_UNIT, 0,
- nullptr,
+ * nullptr,
  *     &telemetrysensor_unit_size);
  * if (ret != QDMI_SUCCESS) {
  *   // An error occurred.
@@ -641,7 +641,7 @@ int QDMI_device_query_operation_property(
  *
  * @remark @ref QDMI_TelemetrySensor handles may be queried via @ref
  * QDMI_device_query_device_property with @ref
- QDMI_DEVICE_PROPERTY_TELEMETRYSENSORS.
+ * QDMI_DEVICE_PROPERTY_TELEMETRYSENSORS.
  */
 int QDMI_device_query_telemetrysensor_property(
     QDMI_Device device, QDMI_TelemetrySensor telemetry_sensor,
@@ -1102,11 +1102,14 @@ typedef struct QDMI_TelemetrySensor_Query_impl_d *QDMI_TelemetrySensor_Query;
  * sensor query.
  * @param[in] device The device to create the telemetry sensor query on. Must
  * not be @c NULL.
+ * @param[in] telemetry_sensor The telemetry sensor to query data from. Must
+ * not be @c NULL.
  * @param[out] query A pointer to a handle that will store the created
  * telemetry sensor query. Must not be @c NULL. The query must be freed by
  * calling @ref QDMI_telemetrysensor_query_free when it is no longer used.
  * @return @ref QDMI_SUCCESS if the query was successfully created.
- * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p device or @p query are @c NULL.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p device, @p telemetry_sensor or
+ * @p query are @c NULL.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the driver does not allow using
  * the @ref client_telemetrysensor_query_interface
  * "client telemetry sensor query interface" for the device in the current
@@ -1114,8 +1117,9 @@ typedef struct QDMI_TelemetrySensor_Query_impl_d *QDMI_TelemetrySensor_Query;
  * @return @ref QDMI_ERROR_FATAL if the telemetry sensor query creation failed
  * due to a fatal error.
  */
-int QDMI_device_create_telemetrysensor_query(QDMI_Device device,
-                                             QDMI_TelemetrySensor_Query *query);
+int QDMI_device_create_telemetrysensor_query(
+    QDMI_Device device, QDMI_TelemetrySensor *telemetry_sensor,
+    QDMI_TelemetrySensor_Query *query);
 
 /**
  * @brief Enum of the telemetry sensor query parameters that can be set.
@@ -1124,17 +1128,38 @@ int QDMI_device_create_telemetrysensor_query(QDMI_Device device,
  */
 
 enum QDMI_TELEMETRYSENSOR_QUERY_PARAMETER_T {
-
-  /// The start time of the telemetry query interval.
+  /**
+   * @brief `time_t` The start time of the telemetry query interval.
+   * @details This parameter is required. It specifies the start time of the
+   * telemetry query interval as a UNIX timestamp. If the value is invalid, the
+   * @ref QDMI_telemetrysensor_query_set_parameter function must return @ref
+   * QDMI_ERROR_INVALIDARGUMENT.
+   */
   QDMI_TELEMETRYSENSOR_QUERY_PARAMETER_STARTTIME = 0,
-
-  /// The end time of the telemetry query interval.
+  /**
+   * @brief `time_t` The end time of the telemetry query interval.
+   * @details This parameter is required. It specifies the end time of the
+   * telemetry query interval as a UNIX timestamp. If the value is invalid, the
+   * @ref QDMI_telemetrysensor_query_set_parameter function must return @ref
+   * QDMI_ERROR_INVALIDARGUMENT.
+   */
   QDMI_TELEMETRYSENSOR_QUERY_PARAMETER_ENDTIME = 1,
-
-  /// The telemetry for the telemetry query.
+  /**
+   * @brief `QDMI_TelemetrySensor` The telemetry sensor to query data from.
+   * @details This parameter is required. It specifies the telemetry sensor to
+   * query data from. If the value is invalid, the @ref
+   * QDMI_telemetrysensor_query_set_parameter function must return @ref
+   * QDMI_ERROR_INVALIDARGUMENT. end time of the telemetry query interval.
+   */
   QDMI_TELEMETRYSENSOR_QUERY_PARAMETER_TELEMETRY = 2,
 
-  /// The maximum value of the enum.
+  /**
+   * @brief The maximum value of the enum.
+   * @details It can be used by drivers for bounds checking and validation of
+   * function parameters.
+   * @attention This value must remain the last regular member of the enum
+   * besides the custom members and must be updated when new members are added.
+   */
   QDMI_TELEMETRYSENSOR_QUERY_PARAMETER_MAX = 3,
 
   /**
@@ -1210,9 +1235,9 @@ typedef enum QDMI_TELEMETRYSENSOR_QUERY_PARAMETER_T
  * }
  *
  * // Set the start time.
- * uint64_t start_ts = 1744970400;
+ * time_t start_ts = 1744970400;
  * QDMI_telemetrysensor_query_set_parameter(
- *   query, QDMI_TELEMETRYSENSOR_QUERY_PARAMETER_START_TIME, sizeof(uint64_t),
+ *   query, QDMI_TELEMETRYSENSOR_QUERY_PARAMETER_START_TIME, sizeof(time_t),
  * &start_ts);
  * ```
  */
@@ -1293,7 +1318,8 @@ int QDMI_telemetrysensor_query_check_status(
  * @param[in] query The telemetry sensor query to wait for. Must not be @c
  * NULL.
  * @param[in] timeout The timeout in seconds.
- * If this is zero, the function waits indefinitely until the job has finished.
+ * If this is zero, the function waits indefinitely until the telemetry sensor
+ * query has finished.
  * @return @ref QDMI_SUCCESS if the telemetry sensor query is finished or
  * canceled.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p query is @c NULL.

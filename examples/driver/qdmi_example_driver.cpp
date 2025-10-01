@@ -254,7 +254,7 @@ void QDMI_library_load(const std::string &lib_name, const std::string &prefix) {
     LOAD_SYMBOL(library, prefix, device_session_query_site_property)
     LOAD_SYMBOL(library, prefix, device_session_query_operation_property)
     LOAD_SYMBOL(library, prefix, device_session_query_telemetrysensor_property)
-    // device environment interface
+    // device telemetry sensor interface
     LOAD_SYMBOL(library, prefix,
                 device_session_create_device_telemetrysensor_query)
     LOAD_SYMBOL(library, prefix, device_telemetrysensor_query_set_parameter)
@@ -589,8 +589,9 @@ int QDMI_device_query_telemetrysensor_property(
 }
 
 int QDMI_device_create_telemetrysensor_query(
-    QDMI_Device dev, QDMI_TelemetrySensor_Query *query) {
-  if (dev == nullptr || query == nullptr) {
+    QDMI_Device dev, QDMI_TelemetrySensor *telemetry_sensor,
+    QDMI_TelemetrySensor_Query *query) {
+  if (dev == nullptr || query == nullptr || telemetry_sensor == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
 
@@ -600,8 +601,15 @@ int QDMI_device_create_telemetrysensor_query(
 
   *query = new QDMI_TelemetrySensor_Query_impl_d();
   (*query)->device = dev;
-  return dev->library->device_session_create_device_telemetrysensor_query(
+  int err = dev->library->device_session_create_device_telemetrysensor_query(
       dev->device_session, &(*query)->env_query);
+  if (err != QDMI_SUCCESS) {
+    return err;
+  }
+
+  return QDMI_telemetrysensor_query_set_parameter(
+      *query, QDMI_TELEMETRYSENSOR_QUERY_PARAMETER_TELEMETRY,
+      sizeof(QDMI_TelemetrySensor), static_cast<void *>(telemetry_sensor));
 }
 
 int QDMI_telemetrysensor_query_set_parameter(
