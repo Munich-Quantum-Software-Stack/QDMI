@@ -90,7 +90,7 @@ struct CXX_QDMI_TelemetrySensor_impl_d {
 struct CXX_QDMI_Device_TelemetrySensor_Query_impl_d {
   std::unique_ptr<time_t> start_time = nullptr;
   std::unique_ptr<time_t> end_time = nullptr;
-  size_t timeout{};
+  size_t timeout = 0;
   CXX_QDMI_TelemetrySensor telemetry_sensor = nullptr;
   std::vector<time_t> result_timestamps;
   std::vector<double> result_values;
