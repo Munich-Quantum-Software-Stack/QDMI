@@ -31,6 +31,7 @@ clients compiled against a different minor or major version.
 
 ### Changed
 
+- 🔧 Improve library installation setup and header management ([#228]) ([\@burgholzer])
 - 🔧 Set c++ standard target based ([#165]) ([\@ystade])
 - **Breaking**: 🚸 Change order of `QDMI_SESSION_PARAMETER` and `QDMI_DEVICE_SESSION` enum values
   due to new authentication options ([#160]) ([\@ystade], [\@burgholzer])
@@ -61,6 +62,7 @@ changelogs._
 
 <!-- PR links -->
 
+[#228]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/228
 [#214]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/214
 [#211]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/211
 [#210]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/210
