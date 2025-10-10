@@ -117,10 +117,12 @@ if(NOT TARGET qdmi::qdmi)
   # add main library code
   add_library(qdmi INTERFACE)
 
-  # set include directories
-  target_include_directories(
-    qdmi INTERFACE $<BUILD_INTERFACE:${QDMI_INCLUDE_BUILD_DIR}>
-                   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+  # collect header files
+  file(GLOB_RECURSE QDMI_HEADERS ${QDMI_INCLUDE_BUILD_DIR}/qdmi/*.h)
+
+  # add headers using file sets
+  target_sources(qdmi PUBLIC FILE_SET HEADERS BASE_DIRS
+                             ${QDMI_INCLUDE_BUILD_DIR} FILES ${QDMI_HEADERS})
 
   # set required C standard
   target_compile_features(qdmi INTERFACE c_std_11)
@@ -174,35 +176,52 @@ endif()
 
 # Installation instructions for the main library
 if(QDMI_INSTALL)
-  install(
-    TARGETS qdmi qdmi_project_warnings
-    EXPORT ${PROJECT_NAME}-targets
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT Development
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-            COMPONENT Runtime
-            NAMELINK_COMPONENT Development
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT Runtime
-    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME})
+  set(QDMI_CONFIG_INSTALL_DIR
+      "${CMAKE_INSTALL_DATADIR}/cmake/${PROJECT_NAME}"
+      CACHE INTERNAL "Config install directory")
 
   include(CMakePackageConfigHelpers)
-  write_basic_package_version_file(
-    "${PROJECT_NAME}-config-version.cmake"
-    VERSION ${PROJECT_VERSION}
-    COMPATIBILITY SameMajorVersion)
   configure_package_config_file(
     "${PROJECT_SOURCE_DIR}/cmake/${PROJECT_NAME}-config.cmake.in"
     "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config.cmake"
-    INSTALL_DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}/cmake)
+    INSTALL_DESTINATION ${QDMI_CONFIG_INSTALL_DIR}
+    NO_SET_AND_CHECK_MACRO NO_CHECK_REQUIRED_COMPONENTS_MACRO)
+  write_basic_package_version_file(
+    "${PROJECT_NAME}-config-version.cmake"
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY SameMinorVersion)
+
+  install(FILES "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config.cmake"
+                "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake"
+          DESTINATION ${QDMI_CONFIG_INSTALL_DIR})
+
+  # FILE_SET should be aligned with LIBRARY and ARCHIVE, so we turn cmake-format
+  # off
+  # cmake-format: off
+  install(
+    TARGETS qdmi qdmi_project_warnings
+    EXPORT ${PROJECT_NAME}-targets
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT ${PROJECT_NAME}_Runtime
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+            COMPONENT ${PROJECT_NAME}_Runtime
+            NAMELINK_COMPONENT ${PROJECT_NAME}_Development
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT ${PROJECT_NAME}_Development
+    FILE_SET HEADERS
+             DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}
+             COMPONENT ${PROJECT_NAME}_Development)
+  # cmake-format: on
 
   install(
     EXPORT ${PROJECT_NAME}-targets
     FILE ${PROJECT_NAME}-targets.cmake
     NAMESPACE ${PROJECT_NAME}::
-    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}/cmake)
+    DESTINATION ${QDMI_CONFIG_INSTALL_DIR}
+    COMPONENT ${PROJECT_NAME}_Development)
 
-  install(FILES "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config.cmake"
-                "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake"
-          DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}/cmake)
-
-  install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/qdmi DESTINATION include)
+  install(
+    FILES ${PROJECT_SOURCE_DIR}/cmake/Cache.cmake
+          ${PROJECT_SOURCE_DIR}/cmake/prefix_defs.txt
+          ${PROJECT_SOURCE_DIR}/cmake/PrefixHandling.cmake
+    DESTINATION ${QDMI_CONFIG_INSTALL_DIR}
+    COMPONENT ${PROJECT_NAME}_Development)
 endif()
