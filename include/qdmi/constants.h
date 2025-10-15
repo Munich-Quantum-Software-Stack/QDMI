@@ -983,6 +983,25 @@ enum QDMI_PROGRAM_FORMAT_T {
    */
   QDMI_PROGRAM_FORMAT_CALIBRATION = 6,
   /**
+   * @brief `QDMI_Job*`/`QDMI_Device_Job*` (@ref QDMI_Job list / @ref
+   * QDMI_Device_Job list) A list of jobs within a batch job.
+   * @details This program format is used to submit a batch job, i.e., a job
+   * that consists of multiple sub-jobs. The program must be a list of jobs
+   * created via @ref QDMI_device_create_job or @ref
+   * QDMI_device_session_create_device_job. These jobs must be configured
+   * completely but not submitted. If a batch job contains already submitted
+   * jobs, @ref QDMI_job_submit or @ref QDMI_device_job_submit on the batch job
+   * will return @ref QDMI_ERROR_BADSTATE.
+   * @par
+   * Querying results from a batch job directly is not possible and will result
+   * in @ref QDMI_ERROR_NOTSUPPORTED Instead, the results must be queried from
+   * the individual jobs after they finished. If the device supports it, each
+   * job in the batch can be queried for its status or waited for. However,
+   * in any case, individual jobs in a batch cannot be canceled and this will
+   * result in @ref QDMI_ERROR_NOTSUPPORTED.
+   */
+  QDMI_PROGRAM_FORMAT_BATCHJOB = 7,
+  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -990,7 +1009,7 @@ enum QDMI_PROGRAM_FORMAT_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_PROGRAM_FORMAT_MAX = 7,
+  QDMI_PROGRAM_FORMAT_MAX = 8,
   /**
    * @brief This enum value is reserved for a custom program format.
    * @details The device defines the meaning and the type of this value.
