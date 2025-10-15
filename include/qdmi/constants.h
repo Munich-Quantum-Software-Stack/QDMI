@@ -114,6 +114,18 @@ enum QDMI_DEVICE_SESSION_PARAMETER_T {
    */
   QDMI_DEVICE_SESSION_PARAMETER_PASSWORD = 5,
   /**
+   * @brief `QDMI_Device` The child device to establish the session with.
+   * @details If the device manages child devices, a QDMI driver can establish
+   * a session with those child devices by setting this session parameter to the
+   * respective @ref QDMI_Device handle.
+   * @par
+   * After initialization of this session, the device will forward any function
+   * call on this session to the job or query interface of the child device.
+   * @note This parameter can be unset by setting this parameter to `NULL`.
+   * @see QDMI_DEVICE_PROPERTY_CHILDDEVICES
+   */
+  QDMI_DEVICE_SESSION_PARAMETER_CHILDDEVICE = 6,
+  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -121,7 +133,7 @@ enum QDMI_DEVICE_SESSION_PARAMETER_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_DEVICE_SESSION_PARAMETER_MAX = 6,
+  QDMI_DEVICE_SESSION_PARAMETER_MAX = 7,
   /**
    * @brief This enum value is reserved for a custom parameter.
    * @details The device defines the meaning and the type of this parameter.
