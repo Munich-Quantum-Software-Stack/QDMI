@@ -394,6 +394,20 @@ enum QDMI_DEVICE_PROPERTY_T {
    */
   QDMI_DEVICE_PROPERTY_MINATOMDISTANCE = 14,
   /**
+   * @brief `QDMI_Device*` (@ref QDMI_Device list) A list of device handles
+   * corresponding to the device's child devices managed by this device.
+   * @details Some devices may manage multiple child devices, e.g., a
+   * multi-device system or a device with multiple processing units. This
+   * property provides access to the child devices as separate @ref QDMI_Device
+   * handles.
+   * @par
+   * The property may yield @ref QDMI_ERROR_NOTSUPPORTED if the device does not
+   * have any child devices.
+   * @note Devices with child devices may have special job submission handling.
+   * Check the concrete device's job interface documentation.
+   */
+  QDMI_DEVICE_PROPERTY_CHILDDEVICES = 15,
+  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -401,7 +415,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_DEVICE_PROPERTY_MAX = 15,
+  QDMI_DEVICE_PROPERTY_MAX = 16,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.
