@@ -5,6 +5,13 @@ including minor and patch releases, please refer to the [changelog](CHANGELOG.md
 
 ## [Unreleased]
 
+### New Program Formats
+
+Two new program formats were added to the `QDMI_Program_Format` enum:
+
+- `QDMI_PROGRAM_FORMAT_QPY`: Binary representation of a Qiskit `QuantumCircuit` (QPY).
+- `QDMI_PROGRAM_FORMAT_IQMJSON`: IQM data transfer format serialized as JSON.
+
 ### Units for Length and Duration (Breaking Change)
 
 Length and duration properties now use `int64_t` or `uint64_t` (instead of `double`) and represent
