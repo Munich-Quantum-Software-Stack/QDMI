@@ -152,6 +152,8 @@ var constants_8h =
       [ "QDMI_PROGRAM_FORMAT_QIRADAPTIVESTRING", "constants_8h.html#a3eff3252203fcad146d5896e4466ec09ad749b99003f2b2f6bd07916b2e45be14", null ],
       [ "QDMI_PROGRAM_FORMAT_QIRADAPTIVEMODULE", "constants_8h.html#a3eff3252203fcad146d5896e4466ec09aded29a50e3dc815777fb45f54dbc1b02", null ],
       [ "QDMI_PROGRAM_FORMAT_CALIBRATION", "constants_8h.html#a3eff3252203fcad146d5896e4466ec09a250ddcb8393b04b08471c5fe7abb3d27", null ],
+      [ "QDMI_PROGRAM_FORMAT_QPY", "constants_8h.html#a3eff3252203fcad146d5896e4466ec09a6bd3fb1aca86016dfc70aa42421a5d48", null ],
+      [ "QDMI_PROGRAM_FORMAT_IQMJSON", "constants_8h.html#a3eff3252203fcad146d5896e4466ec09ae195460aa4da32f2efc5bb61cf50f740", null ],
       [ "QDMI_PROGRAM_FORMAT_MAX", "constants_8h.html#a3eff3252203fcad146d5896e4466ec09aed0bf48a068be1cc41e339c6ae48e655", null ],
       [ "QDMI_PROGRAM_FORMAT_CUSTOM1", "constants_8h.html#a3eff3252203fcad146d5896e4466ec09ae4c406dd4f873011195a218898ad2348", null ],
       [ "QDMI_PROGRAM_FORMAT_CUSTOM2", "constants_8h.html#a3eff3252203fcad146d5896e4466ec09aa623b6643ae8806cc0beae73b13723e4", null ],

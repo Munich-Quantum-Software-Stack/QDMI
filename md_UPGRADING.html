@@ -207,6 +207,12 @@ $(function(){initNavTree('md_UPGRADING.html',''); initResizable(true); });
 <div class="contents">
 <div class="textblock"><p>This document describes breaking changes and how to upgrade. For a complete list of changes including minor and patch releases, please refer to the <a class="el" href="md_CHANGELOG.html">changelog</a>.</p>
 <h1><a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.1.0...HEAD">Unreleased</a></h1>
+<h2>New Program Formats</h2>
+<p>Two new program formats were added to the <code><a class="el" href="constants_8h.html#a475336f0c08bd0218dd76a6016098231" title="Program format type.">QDMI_Program_Format</a></code> enum:</p>
+<ul>
+<li><code>QDMI_PROGRAM_FORMAT_QPY</code>: Binary representation of a Qiskit <code>QuantumCircuit</code> (QPY).</li>
+<li><code>QDMI_PROGRAM_FORMAT_IQMJSON</code>: IQM data transfer format serialized as JSON.</li>
+</ul>
 <h2>Units for Length and Duration (Breaking Change)</h2>
 <p>Length and duration properties now use <code>int64_t</code> or <code>uint64_t</code> (instead of <code>double</code>) and represent values in device-specific units. Devices must provide:</p>
 <ul>

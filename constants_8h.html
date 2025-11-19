@@ -452,14 +452,16 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="#a3eff3252203fcad146d5896e4466ec09ad749b99003f2b2f6bd07916b2e45be14">QDMI_PROGRAM_FORMAT_QIRADAPTIVESTRING</a> = 4
 , <a class="el" href="#a3eff3252203fcad146d5896e4466ec09aded29a50e3dc815777fb45f54dbc1b02">QDMI_PROGRAM_FORMAT_QIRADAPTIVEMODULE</a> = 5
 , <a class="el" href="#a3eff3252203fcad146d5896e4466ec09a250ddcb8393b04b08471c5fe7abb3d27">QDMI_PROGRAM_FORMAT_CALIBRATION</a> = 6
-, <a class="el" href="#a3eff3252203fcad146d5896e4466ec09aed0bf48a068be1cc41e339c6ae48e655">QDMI_PROGRAM_FORMAT_MAX</a> = 7
+, <a class="el" href="#a3eff3252203fcad146d5896e4466ec09a6bd3fb1aca86016dfc70aa42421a5d48">QDMI_PROGRAM_FORMAT_QPY</a> = 7
 , <br />
-&#160;&#160;<a class="el" href="#a3eff3252203fcad146d5896e4466ec09ae4c406dd4f873011195a218898ad2348">QDMI_PROGRAM_FORMAT_CUSTOM1</a> = 999999995
+&#160;&#160;<a class="el" href="#a3eff3252203fcad146d5896e4466ec09ae195460aa4da32f2efc5bb61cf50f740">QDMI_PROGRAM_FORMAT_IQMJSON</a> = 8
+, <a class="el" href="#a3eff3252203fcad146d5896e4466ec09aed0bf48a068be1cc41e339c6ae48e655">QDMI_PROGRAM_FORMAT_MAX</a> = 9
+, <a class="el" href="#a3eff3252203fcad146d5896e4466ec09ae4c406dd4f873011195a218898ad2348">QDMI_PROGRAM_FORMAT_CUSTOM1</a> = 999999995
 , <a class="el" href="#a3eff3252203fcad146d5896e4466ec09aa623b6643ae8806cc0beae73b13723e4">QDMI_PROGRAM_FORMAT_CUSTOM2</a> = 999999996
-, <a class="el" href="#a3eff3252203fcad146d5896e4466ec09a25fa2e815d2f0e788117c54188c379a8">QDMI_PROGRAM_FORMAT_CUSTOM3</a> = 999999997
-, <a class="el" href="#a3eff3252203fcad146d5896e4466ec09a606a32a79bea4e188111ac5728b04212">QDMI_PROGRAM_FORMAT_CUSTOM4</a> = 999999998
 , <br />
-&#160;&#160;<a class="el" href="#a3eff3252203fcad146d5896e4466ec09ac2fc29b4f13482775b7d080f281f9a21">QDMI_PROGRAM_FORMAT_CUSTOM5</a> = 999999999
+&#160;&#160;<a class="el" href="#a3eff3252203fcad146d5896e4466ec09a25fa2e815d2f0e788117c54188c379a8">QDMI_PROGRAM_FORMAT_CUSTOM3</a> = 999999997
+, <a class="el" href="#a3eff3252203fcad146d5896e4466ec09a606a32a79bea4e188111ac5728b04212">QDMI_PROGRAM_FORMAT_CUSTOM4</a> = 999999998
+, <a class="el" href="#a3eff3252203fcad146d5896e4466ec09ac2fc29b4f13482775b7d080f281f9a21">QDMI_PROGRAM_FORMAT_CUSTOM5</a> = 999999999
 <br />
  }</td></tr>
 <tr class="memdesc:a3eff3252203fcad146d5896e4466ec09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum of formats that can be submitted to the device.  <a href="#a3eff3252203fcad146d5896e4466ec09">More...</a><br /></td></tr>
@@ -1089,7 +1091,14 @@ QDMI_DEVICE_PROPERTY_LENGTSCALEFACTOR </dd></dl>
 <tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09a250ddcb8393b04b08471c5fe7abb3d27" name="a3eff3252203fcad146d5896e4466ec09a250ddcb8393b04b08471c5fe7abb3d27"></a>QDMI_PROGRAM_FORMAT_CALIBRATION&#160;</td><td class="fieldinit">6&#160;</td><td class="fielddoc"><p><code>void*</code> A calibration program. </p>
 <p>This program format is used to request the device to perform a calibration run. Triggering a calibration run does not require a program to be set via <a class="el" href="#a40dd25c531ebf99fb4b46469083b609ea7ef134726b7ec6f0855c0d8171e44dd3">QDMI_DEVICE_JOB_PARAMETER_PROGRAM</a>. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09aed0bf48a068be1cc41e339c6ae48e655" name="a3eff3252203fcad146d5896e4466ec09aed0bf48a068be1cc41e339c6ae48e655"></a>QDMI_PROGRAM_FORMAT_MAX&#160;</td><td class="fieldinit">7&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
+<tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09a6bd3fb1aca86016dfc70aa42421a5d48" name="a3eff3252203fcad146d5896e4466ec09a6bd3fb1aca86016dfc70aa42421a5d48"></a>QDMI_PROGRAM_FORMAT_QPY&#160;</td><td class="fieldinit">7&#160;</td><td class="fielddoc"><p><code>void*</code> A QPY program. </p>
+<p>A binary representation of a Qiskit <code>QuantumCircuit</code> in the <a href="https://quantum.cloud.ibm.com/docs/en/api/qiskit/qpy">QPY format</a>.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a3eff3252203fcad146d5896e4466ec09a46cb051d6e1f54c658570dee57813903" title="char* (string) An OpenQASM 3 program.">QDMI_PROGRAM_FORMAT_QASM3</a> for more information on the expected behavior of devices supporting this format. </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09ae195460aa4da32f2efc5bb61cf50f740" name="a3eff3252203fcad146d5896e4466ec09ae195460aa4da32f2efc5bb61cf50f740"></a>QDMI_PROGRAM_FORMAT_IQMJSON&#160;</td><td class="fieldinit">8&#160;</td><td class="fielddoc"><p><code>char*</code> (string) A program in the IQM data transfer format. </p>
+<p>A text-based, proprietary representation of a quantum circuit in the <a href="https://docs.meetiqm.com/iqm-client/api/iqm.iqm_client.models.html">IQM data transfer format</a>, encoded as a JSON string. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09aed0bf48a068be1cc41e339c6ae48e655" name="a3eff3252203fcad146d5896e4466ec09aed0bf48a068be1cc41e339c6ae48e655"></a>QDMI_PROGRAM_FORMAT_MAX&#160;</td><td class="fieldinit">9&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
 <p>It can be used by devices for bounds checking and validation of function parameters.</p>
 <dl class="section attention"><dt>Attention</dt><dd>This value must remain the last regular member of the enum besides the custom members and must be updated when new members are added. </dd></dl>
 </td></tr>
