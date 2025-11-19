@@ -14,7 +14,7 @@ clients compiled against a different minor or major version.
 ### Added
 
 - ✨ Add new program formats `QDMI_PROGRAM_FORMAT_QPY` and `QDMI_PROGRAM_FORMAT_IQMJSON` to
-  `QDMI_Program_Format` enum (PR TBD) ([\@burgholzer])
+  `QDMI_Program_Format` enum ([#234]) ([\@burgholzer])
 - **Breaking**: ✨ Add properties to query the device's duration unit and adapt types of existing
   duration related properties ([#210]) ([\@ystade], [\@burgholzer])
 - ✨ Add property to efficiently query applicability of operations ([#207]) ([\@ystade],
@@ -64,6 +64,7 @@ changelogs._
 
 <!-- PR links -->
 
+[#234]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/234
 [#228]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/228
 [#214]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/214
 [#211]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/211
