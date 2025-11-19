@@ -957,6 +957,23 @@ enum QDMI_PROGRAM_FORMAT_T {
    */
   QDMI_PROGRAM_FORMAT_CALIBRATION = 6,
   /**
+   * @brief `void*` A QPY program.
+   * @details A binary representation of a Qiskit `QuantumCircuit` in the
+   * [QPY format](https://quantum.cloud.ibm.com/docs/en/api/qiskit/qpy).
+   *
+   * @see QDMI_PROGRAM_FORMAT_QASM3 for more information on the expected
+   * behavior of devices supporting this format.
+   */
+  QDMI_PROGRAM_FORMAT_QPY = 7,
+  /**
+   * @brief `char*` (string) A program in the IQM data transfer format.
+   * @details A text-based, proprietary representation of a quantum circuit in
+   * the [IQM data transfer
+   * format](https://docs.meetiqm.com/iqm-client/api/iqm.iqm_client.models.html),
+   * encoded as a JSON string.
+   */
+  QDMI_PROGRAM_FORMAT_IQMJSON = 8,
+  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -964,7 +981,7 @@ enum QDMI_PROGRAM_FORMAT_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_PROGRAM_FORMAT_MAX = 7,
+  QDMI_PROGRAM_FORMAT_MAX = 9,
   /**
    * @brief This enum value is reserved for a custom program format.
    * @details The device defines the meaning and the type of this value.
