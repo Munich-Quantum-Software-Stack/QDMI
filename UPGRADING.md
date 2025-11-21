@@ -5,6 +5,8 @@ including minor and patch releases, please refer to the [changelog](CHANGELOG.md
 
 ## [Unreleased]
 
+## [1.2.0] - 2025-11-24
+
 ### New Program Formats
 
 Two new program formats were added to the `QDMI_Program_Format` enum:
@@ -70,4 +72,6 @@ New authentication options added to session parameter enums:
 
 Enum order updated; implementations must document supported options.
 
-[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.1.0...HEAD
+[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.1.0...v1.2.0
+[1.1.0]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.0.0...v1.1.0

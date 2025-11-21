@@ -11,6 +11,10 @@ clients compiled against a different minor or major version.
 
 ## [Unreleased]
 
+_No unreleased changes yet._
+
+## [1.2.0] - 2025-11-24
+
 ### Added
 
 - ✨ Add new program formats `QDMI_PROGRAM_FORMAT_QPY` and `QDMI_PROGRAM_FORMAT_IQMJSON` to
@@ -61,7 +65,8 @@ changelogs._
 
 <!-- Version links -->
 
-[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.1.0...HEAD
+[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.2.0
 [1.1.0]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.1.0
 
 <!-- PR links -->

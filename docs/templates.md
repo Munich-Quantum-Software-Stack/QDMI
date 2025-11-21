@@ -62,7 +62,7 @@ variable in `cmake/ExternalDependecies.cmake` as follows:
 
 ```diff
 -   set(QDMI_REV "develop"
-+   set(QDMI_REV "v1.1.0"
++   set(QDMI_REV "v1.2.0"
 ```
 
 When you want to change the prefix after the creation of the template, you need to change the prefix
