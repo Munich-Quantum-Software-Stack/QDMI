@@ -27,7 +27,7 @@ jobs:
       FORCE_COLOR: 3
     steps:
       # check out the repository (including submodules and all history)
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
