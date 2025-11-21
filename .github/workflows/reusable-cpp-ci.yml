@@ -25,14 +25,14 @@ jobs:
       matrix:
         config: [Debug, Release]
       fail-fast: false
-    uses: munich-quantum-toolkit/workflows/.github/workflows/reusable-cpp-tests-ubuntu.yml@v1.17.0
+    uses: munich-quantum-toolkit/workflows/.github/workflows/reusable-cpp-tests-ubuntu.yml@v1.17.1
     with:
       config: ${{ matrix.config }}
       cmake-args: ${{ inputs.cmake-args }} ${{ inputs.cmake-args-ubuntu }}
 
   cpp-tests-macos:
     name: 🍎
-    uses: munich-quantum-toolkit/workflows/.github/workflows/reusable-cpp-tests-macos.yml@v1.17.0
+    uses: munich-quantum-toolkit/workflows/.github/workflows/reusable-cpp-tests-macos.yml@v1.17.1
     with:
       cmake-args: ${{ inputs.cmake-args }} ${{ inputs.cmake-args-macos }}
 
@@ -50,7 +50,7 @@ jobs:
       CTEST_PARALLEL_LEVEL: 4
       FORCE_COLOR: 3
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
       - name: Install Ninja
         run: pipx install ninja
       - name: Configure CMake

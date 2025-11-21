@@ -25,7 +25,7 @@ jobs:
       run-linter: ${{ steps.linter-changes.outputs.run-linter || false }}
       run-docs: ${{ steps.docs-changes.outputs.run-docs || false }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Get a list of the changed files relevant for the tests
         if: github.event_name == 'pull_request'
         id: changed-testable-files
