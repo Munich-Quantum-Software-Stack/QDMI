@@ -25,11 +25,11 @@ jobs:
       run-linter: ${{ steps.linter-changes.outputs.run-linter || false }}
       run-docs: ${{ steps.docs-changes.outputs.run-docs || false }}
     steps:
-      - uses: actions/checkout@v6.0.0
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
       - name: Get a list of the changed files relevant for the tests
         if: github.event_name == 'pull_request'
         id: changed-testable-files
-        uses: Ana06/get-changed-files@v2.3.0
+        uses: Ana06/get-changed-files@25f79e676e7ea1868813e21465014798211fad8c # v2.3.0
         with:
           filter: |
             include/**
@@ -50,7 +50,7 @@ jobs:
       - name: Get a list of the changed files relevant for the linter
         if: github.event_name == 'pull_request'
         id: changed-linter-files
-        uses: Ana06/get-changed-files@v2.3.0
+        uses: Ana06/get-changed-files@25f79e676e7ea1868813e21465014798211fad8c # v2.3.0
         with:
           filter: |
             include/**
@@ -69,7 +69,7 @@ jobs:
       - name: Get a list of the changed files relevant for documentation build
         if: github.event_name == 'pull_request'
         id: changed-docs-files
-        uses: Ana06/get-changed-files@v2.3.0
+        uses: Ana06/get-changed-files@25f79e676e7ea1868813e21465014798211fad8c # v2.3.0
         with:
           filter: |
             include/**

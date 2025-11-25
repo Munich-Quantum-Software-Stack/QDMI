@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v6.0.0
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
       - name: Install Doxygen
         if: github.event.action != 'closed'
-        uses: ssciwr/doxygen-install@v1
+        uses: ssciwr/doxygen-install@501e53b879da7648ab392ee226f5b90e42148449 # v1
         with:
           version: "1.13.2"
       - name: Install and Build 🔧
@@ -24,12 +24,12 @@ jobs:
           mv build/docs/html/ static
       - name: Deploy preview 🚀 (for PRs; not for forks)
         if: github.event.pull_request.head.repo.full_name == github.repository
-        uses: rossjrw/pr-preview-action@v1
+        uses: rossjrw/pr-preview-action@8ff09e486b4c23709012eedd3b42e9f0b95dd0c5 # v1
         with:
           source-dir: ./static/
       - name: Deploy 🚀
         if: github.ref == 'refs/heads/develop' && github.event.action != 'closed'
-        uses: JamesIves/github-pages-deploy-action@v4
+        uses: JamesIves/github-pages-deploy-action@4a3abc783e1a24aeb44c16e869ad83caf6b4cc23 # v4
         with:
           folder: static
           clean-exclude: pr-preview/
