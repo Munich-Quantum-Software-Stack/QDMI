@@ -35,7 +35,6 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include <vector>
 
 class FoMaC {
-private:
   QDMI_Device device;
 
   static auto throw_if_error(int status, const std::string &message) -> void;
@@ -65,4 +64,7 @@ public:
 
   [[nodiscard]] auto get_parameters_num(const QDMI_Operation &op) const
       -> size_t;
+
+  [[nodiscard]] auto get_supported_program_formats() const
+      -> std::vector<QDMI_Program_Format>;
 };

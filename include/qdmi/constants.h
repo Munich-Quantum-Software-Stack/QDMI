@@ -394,6 +394,14 @@ enum QDMI_DEVICE_PROPERTY_T {
    */
   QDMI_DEVICE_PROPERTY_MINATOMDISTANCE = 14,
   /**
+   * @brief `QDMI_Program_Format*` (@ref QDMI_Program_Format list) The program
+   * formats supported by the device.
+   * @details The returned list contains all program formats that the device
+   * supports for execution. A client can use this information to determine
+   * which program formats can be used when submitting jobs to the device.
+   */
+  QDMI_DEVICE_PROPERTY_SUPPORTEDPROGRAMFORMATS = 15,
+  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -401,7 +409,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_DEVICE_PROPERTY_MAX = 15,
+  QDMI_DEVICE_PROPERTY_MAX = 16,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.
