@@ -11,47 +11,65 @@ clients compiled against a different minor or major version.
 
 ## [Unreleased]
 
+_No unreleased changes yet._
+
+## [1.2.0] - 2025-11-26
+
 ### Added
 
-- ✨ Add new program formats `QDMI_PROGRAM_FORMAT_QPY` and `QDMI_PROGRAM_FORMAT_IQMJSON` to
-  `QDMI_Program_Format` enum ([#234]) ([\@burgholzer])
-- **Breaking**: ✨ Add properties to query the device's duration unit and adapt types of existing
-  duration related properties ([#210]) ([\@ystade], [\@burgholzer])
-- ✨ Add property to efficiently query applicability of operations ([#207]) ([\@ystade],
+- ✨ Add comprehensive properties to query neutral atom-based device characteristics and
+  capabilities, including site coordinates, zone properties, module/submodule indices, interaction
+  and blocking radii, idling fidelity, and shuttling speed ([#198], [#199], [#200], [#203], [#207],
+  [#208], [#209], [#211]) ([\@ystade], [\@burgholzer])
+- ✨ Add new program formats `QDMI_PROGRAM_FORMAT_QPY` (Qiskit QPY binary format) and
+  `QDMI_PROGRAM_FORMAT_IQMJSON` (IQM JSON data transfer format) to the `QDMI_Program_Format` enum
+  ([#234]) ([\@burgholzer])
+- ✨ Add properties to query the device's duration unit and scale factor for proper interpretation
+  of duration values ([#210]) ([\@ystade], [\@burgholzer])
+- ✨ Add property to efficiently query the applicability of operations to specific sites ([#207])
+  ([\@ystade], [\@burgholzer])
+- ✨ Add device property `QDMI_DEVICE_PROPERTY_PULSESUPPORT` for querying pulse-level control
+  support level ([#181]) ([\@mnfarooqi])
+- 🚸 Add new functions `QDMI_job_query_property` and `QDMI_device_job_query_property` to support
+  querying of job properties, including previously set parameter values ([#160]) ([\@ystade])
+- 🚸 Add new authentication options (`AUTHFILE`, `AUTHURL`, `USERNAME`, `PASSWORD`) to
+  `QDMI_SESSION_PARAMETER` and `QDMI_DEVICE_SESSION_PARAMETER` enums ([#160]) ([\@ystade],
   [\@burgholzer])
-- ✨ Add properties to query neutral atom-based device specific characteristics and capabilities
-  ([#198], [#199], [#200], [#203], [#207], [#208], [#209], [#211]) ([\@ystade], [\@burgholzer])
-- 📝 Add changelog and upgrade guide ([#160]) ([\@ystade], [\@burgholzer])
-- **Breaking**: 🚸 Support querying of job properties incl. previously set parameters values
-  ([#160]) ([\@ystade])
-- 🚸 Add new authentication options to `QDMI_SESSION_PARAMETER` and `QDMI_DEVICE_SESSION_PARAMETER`
-  enums ([#160]) ([\@ystade], [\@burgholzer])
-- 🚸 Add additional `QDMI_JOB_STATUS` enum values for better job cycle management ([#160])
+- 🚸 Add additional `QDMI_JOB_STATUS` enum values for improved job lifecycle management ([#160])
   ([\@ystade])
-- **Breaking**: ✨ Add required `timeout` parameter for the `QDMI_device_job_wait` and
-  `QDMI__job_wait` functions ([#160]) ([\@burgholzer])
+- 📝 Add comprehensive changelog and upgrade guide documentation ([#160]) ([\@ystade],
+  [\@burgholzer])
 
 ### Changed
 
-- 📦 Raise the minimum required CMake version to 3.24 ([#250]) ([\@burgholzer])
-- 🔧 Improve library installation setup and header management ([#228]) ([\@burgholzer])
-- 🔧 Set c++ standard target based ([#165]) ([\@ystade])
-- **Breaking**: 🚸 Change order of `QDMI_SESSION_PARAMETER` and `QDMI_DEVICE_SESSION` enum values
-  due to new authentication options ([#160]) ([\@ystade], [\@burgholzer])
-- **Breaking**: 🚸 Change order of `QDMI_JOB_STATUS` enum values to better reflect job cycle
+- 🚚 **Breaking**: Rename `QDMI_SITE_PROPERTY_ID` to `QDMI_SITE_PROPERTY_INDEX` for improved naming
+  consistency ([#160]) ([\@ystade])
+- ♻️ **Breaking**: Change types of duration-related properties from `double` to `int64_t` or
+  `uint64_t`, representing values in device-specific units ([#210]) ([\@ystade], [\@burgholzer])
+- ♻️ **Breaking**: Add required `timeout` parameter (in seconds, 0 for indefinite) to
+  `QDMI_device_job_wait` and `QDMI_job_wait` functions ([#160]) ([\@burgholzer])
+- 🚸 **Breaking**: Change order of `QDMI_SESSION_PARAMETER` and `QDMI_DEVICE_SESSION_PARAMETER` enum
+  values due to new authentication options ([#160]) ([\@ystade], [\@burgholzer])
+- 🚸 **Breaking**: Change order of `QDMI_JOB_STATUS` enum values to better reflect the job lifecycle
   ([#160]) ([\@ystade])
-- **Breaking**: 🚚 Rename `QDMI_SITE_PROPERTY_ID` to `QDMI_SITE_PROPERTY_INDEX` ([#160])
-  ([\@ystade])
+- 📦 **Breaking**: Raise minimum required CMake version to 3.24 ([#250]) ([\@burgholzer])
+- 🔧 Improve library installation setup and header management for better downstream integration
+  ([#228]) ([\@burgholzer])
+- 🔧 Set C++ standard on a per-target basis rather than globally ([#165]) ([\@ystade])
 
 ### Fixed
 
-- 📝 Re-enable FetchContent for doxygen and build docs by default ([#250]) ([\@burgholzer])
-- 🐛 Add target `qdmi_project_warnings` to the export targets ([#214]) ([\@ystade])
-- 🐛 Fix definitions of `QDMI_Site`and `QDMI_Operation` in device template ([#169]) ([\@ystade])
+- 🐛 Fix incorrect definitions of `QDMI_Site` and `QDMI_Operation` in device template ([#169])
+  ([\@ystade])
+- 🐛 Add missing `qdmi_project_warnings` target to CMake export configuration ([#214]) ([\@ystade])
+- 🐛 Fix bug in example tool causing incorrect behavior ([#218]) ([\@rainij])
+- 📝 Re-enable FetchContent for Doxygen and build documentation by default ([#250]) ([\@burgholzer])
+- ✏️ Fix typo in error constant naming: `QDMI_ERROR_NOTIMPLEMENTED` ([#195]) ([\@burgholzer])
 
 ### Removed
 
-- 🔥 Remove example device implementation in C ([#165]) ([\@ystade])
+- 🔥 Remove C language example device implementation (C++ implementation remains) ([#165])
+  ([\@ystade])
 
 ## [1.1.0] - 2025-01-10
 
@@ -61,7 +79,8 @@ changelogs._
 
 <!-- Version links -->
 
-[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.1.0...HEAD
+[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.2.0
 [1.1.0]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.1.0
 
 <!-- PR links -->
@@ -69,6 +88,7 @@ changelogs._
 [#250]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/250
 [#234]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/234
 [#228]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/228
+[#218]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/218
 [#214]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/214
 [#211]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/211
 [#210]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/210
@@ -79,14 +99,18 @@ changelogs._
 [#200]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/200
 [#199]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/199
 [#198]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/198
+[#195]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/195
+[#181]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/181
 [#169]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/169
 [#165]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/165
 [#160]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/160
 
-<!-- Contributor -->
+<!-- Contributors -->
 
 [\@burgholzer]: https://github.com/burgholzer
 [\@ystade]: https://github.com/ystade
+[\@mnfarooqi]: https://github.com/mnfarooqi
+[\@rainij]: https://github.com/rainij
 
 <!-- General links -->
 
