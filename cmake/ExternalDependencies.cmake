@@ -57,7 +57,7 @@ if(BUILD_QDMI_TESTS)
       ON
       CACHE BOOL "" FORCE)
   set(GTEST_VERSION
-      1.16.0
+      1.17.0
       CACHE STRING "Google Test version")
   set(GTEST_URL
       https://github.com/google/googletest/archive/refs/tags/v${GTEST_VERSION}.tar.gz
@@ -65,17 +65,9 @@ if(BUILD_QDMI_TESTS)
   set(INSTALL_GTEST
       OFF
       CACHE BOOL "Disable GoogleTest installation")
-  if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.24)
-    FetchContent_Declare(googletest URL ${GTEST_URL} FIND_PACKAGE_ARGS
-                                        ${GTEST_VERSION} NAMES GTest)
-    list(APPEND FETCH_PACKAGES googletest)
-  else()
-    find_package(googletest ${GTEST_VERSION} QUIET NAMES GTest)
-    if(NOT googletest_FOUND)
-      FetchContent_Declare(googletest URL ${GTEST_URL})
-      list(APPEND FETCH_PACKAGES googletest)
-    endif()
-  endif()
+  FetchContent_Declare(googletest URL ${GTEST_URL} FIND_PACKAGE_ARGS
+                                      ${GTEST_VERSION} NAMES GTest)
+  list(APPEND FETCH_PACKAGES googletest)
 endif()
 
 # Make all declared dependencies available.
