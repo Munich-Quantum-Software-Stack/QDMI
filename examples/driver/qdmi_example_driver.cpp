@@ -47,7 +47,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
  * @note The values of this enum are meant to be used as bitflags. Hence, their
  * values must be powers of 2.
  */
-enum QDMI_DEVICE_MODE : uint8_t {
+enum class QDMI_DEVICE_MODE : uint8_t {
   /// Only gives read access to the device.
   QDMI_DEVICE_MODE_READONLY = 0b0,
   /// Gives read and write access to the device.
@@ -314,8 +314,9 @@ int QDMI_session_init(QDMI_Session session) {
   if (!session->token.has_value()) {
     return QDMI_ERROR_PERMISSIONDENIED;
   }
-  session->mode = session->token->empty() ? QDMI_DEVICE_MODE_READONLY
-                                          : QDMI_SESSION_MODE_READWRITE;
+  session->mode = session->token->empty()
+                      ? QDMI_DEVICE_MODE::QDMI_DEVICE_MODE_READONLY
+                      : QDMI_DEVICE_MODE::QDMI_SESSION_MODE_READWRITE;
 
   // Create a session for every device and initialize it.
   for (const auto &[_, lib] : QDMI_get_driver_state()->libraries) {
@@ -424,7 +425,7 @@ int QDMI_device_create_job(QDMI_Device dev, QDMI_Job *job) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
 
-  if ((dev->session->mode & QDMI_SESSION_MODE_READWRITE) == 0) {
+  if (dev->session->mode != QDMI_DEVICE_MODE::QDMI_SESSION_MODE_READWRITE) {
     return QDMI_ERROR_PERMISSIONDENIED;
   }
 

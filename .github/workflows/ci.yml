@@ -38,7 +38,7 @@ jobs:
     if: fromJSON(needs.change-detection.outputs.run-linter) && github.event.action != 'closed'
     uses: munich-quantum-toolkit/workflows/.github/workflows/reusable-cpp-linter.yml@ea4fccbb432596cbb6840a9608d6376b6b2c8ff7 # v1.17.2
     with:
-      clang-version: 19
+      clang-version: 21
       cpp-linter-extra-args: ""
       # do not try to build docs in linter builds
       cmake-args: "-DBUILD_QDMI_DOCS=OFF"
