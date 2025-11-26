@@ -79,6 +79,7 @@ var constants_8h =
       [ "QDMI_DEVICE_PROPERTY_DURATIONUNIT", "constants_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a9302820728da104e22ff1c3acb1f1ec8", null ],
       [ "QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR", "constants_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a8a160116a17df106ad975d457eabb848", null ],
       [ "QDMI_DEVICE_PROPERTY_MINATOMDISTANCE", "constants_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a173bd4a2008da3122d48f15dea8379d8", null ],
+      [ "QDMI_DEVICE_PROPERTY_SUPPORTEDPROGRAMFORMATS", "constants_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a6cc7734ed9ab8493aa2d6256ed9a8468", null ],
       [ "QDMI_DEVICE_PROPERTY_MAX", "constants_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526afe696a25133fa887276e666460981688", null ],
       [ "QDMI_DEVICE_PROPERTY_CUSTOM1", "constants_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a994b8261b6addc3f56993c467641b122", null ],
       [ "QDMI_DEVICE_PROPERTY_CUSTOM2", "constants_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a36730bc67d1fd3c7578a352adf47745e", null ],
