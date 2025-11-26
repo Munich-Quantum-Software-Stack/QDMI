@@ -33,6 +33,7 @@ clients compiled against a different minor or major version.
 
 ### Changed
 
+- 📦 Raise the minimum required CMake version to 3.24 ([#250]) ([\@burgholzer])
 - 🔧 Improve library installation setup and header management ([#228]) ([\@burgholzer])
 - 🔧 Set c++ standard target based ([#165]) ([\@ystade])
 - **Breaking**: 🚸 Change order of `QDMI_SESSION_PARAMETER` and `QDMI_DEVICE_SESSION` enum values
@@ -44,6 +45,7 @@ clients compiled against a different minor or major version.
 
 ### Fixed
 
+- 📝 Re-enable FetchContent for doxygen and build docs by default ([#250]) ([\@burgholzer])
 - 🐛 Add target `qdmi_project_warnings` to the export targets ([#214]) ([\@ystade])
 - 🐛 Fix definitions of `QDMI_Site`and `QDMI_Operation` in device template ([#169]) ([\@ystade])
 
@@ -64,6 +66,7 @@ changelogs._
 
 <!-- PR links -->
 
+[#250]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/250
 [#234]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/234
 [#228]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/228
 [#214]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/214
