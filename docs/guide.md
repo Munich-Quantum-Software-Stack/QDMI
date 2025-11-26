@@ -81,7 +81,7 @@ Ready to contribute to QDMI? This guide will help you get started.
 
 ## Working on Source Code
 
-Building the project requires a C compiler supporting _C11_ and a minimum CMake version of _3.19_.
+Building the project requires a C compiler supporting _C11_ and a minimum CMake version of _3.24_.
 The example devices and the tests require a C++ compiler supporting _C++17_.
 
 ### Configure and Build
