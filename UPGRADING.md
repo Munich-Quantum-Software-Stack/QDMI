@@ -5,7 +5,7 @@ including minor and patch releases, please refer to the [changelog](CHANGELOG.md
 
 ## [Unreleased]
 
-## [1.2.0] - 2025-11-24
+## [1.2.0] - 2025-11-26
 
 ### New Program Formats
 
@@ -30,6 +30,9 @@ These properties define the units and scale factors for interpreting raw values.
 
 - **Breaking**: `QDMI_SITE_PROPERTY_ID` renamed to `QDMI_SITE_PROPERTY_INDEX`.
 - New: `QDMI_OPERATION_PROPERTY_SITES` returns a list of sites for an operation.
+- New: `QDMI_DEVICE_PROPERTY_PULSESUPPORT` returns the degree of pulse-level support based on the
+  `QDMI_Device_Pulse_Support_Level` enum. Devices that do not support pulses should return
+  `QDMI_DEVICE_PULSE_SUPPORT_LEVEL_NONE`.
 
 ### Neutral Atom Device Properties
 
@@ -74,4 +77,3 @@ Enum order updated; implementations must document supported options.
 
 [unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.0...HEAD
 [1.2.0]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.1.0...v1.2.0
-[1.1.0]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.0.0...v1.1.0
