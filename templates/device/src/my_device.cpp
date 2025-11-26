@@ -34,10 +34,11 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 // The following line ignores the unused parameters in the functions.
 // Please remove the following code block after populating the functions.
 // NOLINTBEGIN(misc-unused-parameters,clang-diagnostic-unused-parameter)
-#if defined(__clang__)
+#ifdef __clang__
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-parameter"
-#elif defined(__GNUC__)
+#endif
+#ifdef __GNUC__
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 #endif
@@ -152,8 +153,9 @@ int MY_QDMI_device_session_query_operation_property(
 // The following line ignores the unused parameters in the functions.
 // Please remove the following code block after populating the functions.
 // NOLINTEND(misc-unused-parameters,clang-diagnostic-unused-parameter)
-#if defined(__clang__)
+#ifdef __clang__
 #pragma clang diagnostic pop
-#elif defined(__GNUC__)
+#endif
+#ifdef __GNUC__
 #pragma GCC diagnostic pop
 #endif

@@ -35,9 +35,10 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include <tuple>
 
 constexpr const char *Shared_library_file_extension() {
-#if defined(_WIN32)
+#ifdef _WIN32
   return ".dll";
-#elif defined(__APPLE__)
+#endif
+#ifdef __APPLE__
   return ".dylib";
 #else
   return ".so";
