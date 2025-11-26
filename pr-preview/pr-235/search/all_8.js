@@ -2,7 +2,7 @@ var searchData=
 [
   ['implementations_20use_20a_20prefix_0',['Why do device implementations use a prefix?',['../md_docs_2rationale.html#rationale-prefix',1,'']]],
   ['implementing_20a_20device_1',['Implementing a Device',['../md_docs_2examples.html#device',1,'']]],
-  ['in_20the_20tt_20constants_20h_20tt_20header_20and_20some_20are_20not_2',['Why are some enum definitions placed in the &lt;tt&gt;constants.h&lt;/tt&gt; header and some are not?',['../md_docs_2rationale.html#rationale-enum-definitions',1,'']]],
+  ['in_20the_20constants_20h_20header_20and_20some_20are_20not_2',['Why are some enum definitions placed in the &lt;span class=&quot;tt&quot;&gt;constants.h&lt;/span&gt; header and some are not?',['../md_docs_2rationale.html#rationale-enum-definitions',1,'']]],
   ['individual_20functions_20for_20each_20property_3',['Why does QDMI not define individual functions for each property?',['../md_docs_2rationale.html#rationale-properties',1,'']]],
   ['initialized_20after_20allocation_4',['Why do sessions need to be initialized after allocation?',['../md_docs_2rationale.html#rationale-session-init',1,'']]],
   ['integer_20or_20enumeration_20properties_5',['Integer or Enumeration Properties',['../md_docs_2examples.html#device-int-enumeration',1,'']]],

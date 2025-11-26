@@ -10,6 +10,5 @@ var searchData=
   ['the_20tests_7',['Building the Template and Running the Tests',['../md_docs_2templates.html#template-building',1,'']]],
   ['there_20different_20kinds_20of_20sites_8',['Why are there different kinds of sites?',['../md_docs_2rationale.html#rationale-site-types',1,'']]],
   ['there_20separate_20kinds_20of_20jobs_20for_20devices_20and_20clients_9',['Why are there separate kinds of jobs for devices and clients?',['../md_docs_2rationale.html#rationale-job-structs',1,'']]],
-  ['to_20be_20initialized_20after_20allocation_10',['Why do sessions need to be initialized after allocation?',['../md_docs_2rationale.html#rationale-session-init',1,'']]],
-  ['types_2eh_11',['types.h',['../types_8h.html',1,'']]]
+  ['to_20be_20initialized_20after_20allocation_10',['Why do sessions need to be initialized after allocation?',['../md_docs_2rationale.html#rationale-session-init',1,'']]]
 ];

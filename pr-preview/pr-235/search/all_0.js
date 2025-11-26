@@ -8,9 +8,9 @@ var searchData=
   ['allocation_5',['Why do sessions need to be initialized after allocation?',['../md_docs_2rationale.html#rationale-session-init',1,'']]],
   ['and_20clients_6',['Why are there separate kinds of jobs for devices and clients?',['../md_docs_2rationale.html#rationale-job-structs',1,'']]],
   ['and_20running_20the_20tests_7',['Building the Template and Running the Tests',['../md_docs_2templates.html#template-building',1,'']]],
-  ['and_20some_20are_20not_8',['Why are some enum definitions placed in the &lt;tt&gt;constants.h&lt;/tt&gt; header and some are not?',['../md_docs_2rationale.html#rationale-enum-definitions',1,'']]],
-  ['are_20not_9',['Why are some enum definitions placed in the &lt;tt&gt;constants.h&lt;/tt&gt; header and some are not?',['../md_docs_2rationale.html#rationale-enum-definitions',1,'']]],
-  ['are_20some_20enum_20definitions_20placed_20in_20the_20tt_20constants_20h_20tt_20header_20and_20some_20are_20not_10',['Why are some enum definitions placed in the &lt;tt&gt;constants.h&lt;/tt&gt; header and some are not?',['../md_docs_2rationale.html#rationale-enum-definitions',1,'']]],
+  ['and_20some_20are_20not_8',['Why are some enum definitions placed in the &lt;span class=&quot;tt&quot;&gt;constants.h&lt;/span&gt; header and some are not?',['../md_docs_2rationale.html#rationale-enum-definitions',1,'']]],
+  ['are_20not_9',['Why are some enum definitions placed in the &lt;span class=&quot;tt&quot;&gt;constants.h&lt;/span&gt; header and some are not?',['../md_docs_2rationale.html#rationale-enum-definitions',1,'']]],
+  ['are_20some_20enum_20definitions_20placed_20in_20the_20constants_20h_20header_20and_20some_20are_20not_10',['Why are some enum definitions placed in the &lt;span class=&quot;tt&quot;&gt;constants.h&lt;/span&gt; header and some are not?',['../md_docs_2rationale.html#rationale-enum-definitions',1,'']]],
   ['are_20there_20different_20kinds_20of_20sites_11',['Why are there different kinds of sites?',['../md_docs_2rationale.html#rationale-site-types',1,'']]],
   ['are_20there_20separate_20kinds_20of_20jobs_20for_20devices_20and_20clients_12',['Why are there separate kinds of jobs for devices and clients?',['../md_docs_2rationale.html#rationale-job-structs',1,'']]],
   ['auxiliary_20macros_13',['Auxiliary Macros',['../md_docs_2examples.html#device-macros',1,'']]]

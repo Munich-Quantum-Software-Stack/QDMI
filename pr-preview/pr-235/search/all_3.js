@@ -1,7 +1,7 @@
 var searchData=
 [
   ['define_20individual_20functions_20for_20each_20property_0',['Why does QDMI not define individual functions for each property?',['../md_docs_2rationale.html#rationale-properties',1,'']]],
-  ['definitions_20placed_20in_20the_20tt_20constants_20h_20tt_20header_20and_20some_20are_20not_1',['Why are some enum definitions placed in the &lt;tt&gt;constants.h&lt;/tt&gt; header and some are not?',['../md_docs_2rationale.html#rationale-enum-definitions',1,'']]],
+  ['definitions_20placed_20in_20the_20constants_20h_20header_20and_20some_20are_20not_1',['Why are some enum definitions placed in the &lt;span class=&quot;tt&quot;&gt;constants.h&lt;/span&gt; header and some are not?',['../md_docs_2rationale.html#rationale-enum-definitions',1,'']]],
   ['development_20guide_2',['Development Guide',['../md_docs_2guide.html',1,'']]],
   ['device_3',['Implementing a Device',['../md_docs_2examples.html#device',1,'']]],
   ['device_20implementations_20use_20a_20prefix_4',['Why do device implementations use a prefix?',['../md_docs_2rationale.html#rationale-prefix',1,'']]],
