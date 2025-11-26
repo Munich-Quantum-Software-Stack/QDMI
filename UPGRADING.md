@@ -1,79 +1,269 @@
 # Upgrade Guide
 
-This document describes breaking changes and how to upgrade. For a complete list of changes
-including minor and patch releases, please refer to the [changelog](CHANGELOG.md).
+This document describes breaking changes and provides guidance for upgrading between versions. For a
+complete list of changes, including minor and patch releases, please refer to the
+[changelog](CHANGELOG.md).
 
 ## [Unreleased]
 
+_No unreleased changes yet._
+
 ## [1.2.0] - 2025-11-26
 
-### New Program Formats
+Version 1.2.0 introduces several breaking changes, primarily related to type system improvements,
+duration/length unit handling, and API enhancements for neutral atom devices. Please review all
+sections carefully when upgrading.
 
-Two new program formats were added to the `QDMI_Program_Format` enum:
+### New Program Formats (Non-Breaking)
 
-- `QDMI_PROGRAM_FORMAT_QPY`: Binary representation of a Qiskit `QuantumCircuit` (QPY).
-- `QDMI_PROGRAM_FORMAT_IQMJSON`: IQM data transfer format serialized as JSON.
+Two new program formats were added to the `QDMI_Program_Format` enum to support additional quantum
+programming frameworks:
+
+- **`QDMI_PROGRAM_FORMAT_QPY`**: Binary representation of a Qiskit `QuantumCircuit` using the QPY
+  format
+- **`QDMI_PROGRAM_FORMAT_IQMJSON`**: IQM's proprietary data transfer format serialized as JSON
+
+These additions are backward-compatible and do not require changes to existing code.
 
 ### Units for Length and Duration (Breaking Change)
 
-Length and duration properties now use `int64_t` or `uint64_t` (instead of `double`) and represent
-values in device-specific units. Devices must provide:
+**Breaking Change**: Length and duration properties now use integer types (`int64_t` or `uint64_t`)
+instead of `double`, and represent values in device-specific units rather than standard SI units.
 
-- `QDMI_DEVICE_PROPERTY_LENGTHUNIT`
-- `QDMI_DEVICE_PROPERTY_DURATIONUNIT`
-- `QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR`
-- `QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR`
+#### What Changed
 
-These properties define the units and scale factors for interpreting raw values.
+- All duration-related properties now return integer values in device-specific units
+- All length-related properties now return integer values in device-specific units
+- The raw integer values must be interpreted using unit metadata provided by the device
 
-### Enum and Property Updates (Partially Breaking Change)
+#### Required Changes for Device Implementations
 
-- **Breaking**: `QDMI_SITE_PROPERTY_ID` renamed to `QDMI_SITE_PROPERTY_INDEX`.
-- New: `QDMI_OPERATION_PROPERTY_SITES` returns a list of sites for an operation.
-- New: `QDMI_DEVICE_PROPERTY_PULSESUPPORT` returns the degree of pulse-level support based on the
-  `QDMI_Device_Pulse_Support_Level` enum. Devices that do not support pulses should return
-  `QDMI_DEVICE_PULSE_SUPPORT_LEVEL_NONE`.
+Device implementations **must** now provide the following properties to define their unit system:
 
-### Neutral Atom Device Properties
+- **`QDMI_DEVICE_PROPERTY_LENGTHUNIT`**: String describing the length unit (e.g., "m", "μm", "nm")
+- **`QDMI_DEVICE_PROPERTY_DURATIONUNIT`**: String describing the duration unit (e.g., "s", "ms",
+  "ns")
+- **`QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR`**: Multiplier to apply to apply to raw length values to
+  convert to the device's length unit
+- **`QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR`**: Multiplier to apply to raw duration values to
+  convert to the device's duration unit
 
-New properties for neutral atom devices:
+#### Migration Example
 
-**Device:**
+**Before (v1.1.0):**
 
-- `QDMI_DEVICE_PROPERTY_MINATOMDISTANCE`: Minimum atom distance.
+```c
+double t1;
+QDMI_device_query_site_property(
+      device, site, QDMI_SITE_PROPERTY_T1, sizeof(double), &t1, nullptr);
+// T1 time in us
+```
 
-**Site:**
+**After (v1.2.0):**
 
-- `QDMI_SITE_PROPERTY_{X,Y,Z}COORDINATE`: Site coordinates.
-- `QDMI_SITE_PROPERTY_ISZONE`: Indicates zone site.
-- `QDMI_SITE_PROPERTY_{X,Y,Z}EXTENT`: Zone site extent (`QDMI_ERROR_NOTSUPPORTED` for regular
-  sites).
-- `QDMI_SITE_PROPERTY_MODULEINDEX` / `SUBMODULEINDEX`: Module/submodule indices.
+```c
+uint64_t t1 = 0;
+QDMI_device_query_site_property(
+  device, site, QDMI_SITE_PROPERTY_T1, sizeof(uint64_t), &t1, nullptr);
 
-**Operation:**
+double scale_factor = 0.0;
+QDMI_device_query_device_property(
+  device, QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR, sizeof(double),
+  &scale_factor, nullptr);
 
-- `QDMI_OPERATION_PROPERTY_INTERACTIONRADIUS` / `BLOCKINGRADIUS`: Radii for multi-qubit ops.
-- `QDMI_OPERATION_PROPERTY_ISZONED`: Zoned operation indicator.
-- `QDMI_OPERATION_PROPERTY_IDLINGFIDELITY`: Fidelity for idling atoms (zoned ops).
-- `QDMI_OPERATION_PROPERTY_MEANSHUTTLINGSPEED`: Mean shuttling speed.
+// T1 time in device duration units
+double t1_in_device_units = static_cast<double>(t1) * scale_factor;
+```
+
+To get the device's duration unit, use the `QDMI_DEVICE_PROPERTY_DURATIONUNIT` property.
+
+```c++
+size_t size = 0;
+QDMI_device_query_device_property(
+  device, QDMI_DEVICE_PROPERTY_DURATIONUNIT, 0, nullptr, &size);
+std::string unit(size - 1, '\0');
+QDMI_device_query_device_property(
+  device, QDMI_DEVICE_PROPERTY_DURATIONUNIT, size, unit.data(),
+  nullptr);
+```
+
+### Property Naming and New Properties (Partially Breaking)
+
+#### Breaking Change: Property Rename
+
+- **`QDMI_SITE_PROPERTY_ID`** has been renamed to **`QDMI_SITE_PROPERTY_INDEX`** for improved naming
+  consistency
+
+**Migration:** Replace all occurrences of `QDMI_SITE_PROPERTY_ID` with `QDMI_SITE_PROPERTY_INDEX` in
+your codebase.
+
+#### New Properties (Non-Breaking)
+
+- **`QDMI_OPERATION_PROPERTY_SITES`**: Returns the list of sites to which an operation applies
+- **`QDMI_DEVICE_PROPERTY_PULSESUPPORT`**: Returns the degree of pulse-level control support using
+  the `QDMI_Device_Pulse_Support_Level` enum
+  - Devices without pulse support should return `QDMI_DEVICE_PULSE_SUPPORT_LEVEL_NONE`
+  - Other levels include `LEVEL_SITE`, `LEVEL_CHANNEL`, and `LEVEL_SITEANDCHANNEL`
+
+### Neutral Atom Device Properties (Non-Breaking)
+
+Version 1.2.0 adds comprehensive support for neutral atom quantum computing platforms through a set
+of new device, site, and operation properties. These additions are non-breaking and optional for
+non-neutral-atom devices.
+
+#### Device-Level Properties
+
+- **`QDMI_DEVICE_PROPERTY_MINATOMDISTANCE`**: Minimum allowed distance between atoms (in device
+  length units)
+
+#### Site-Level Properties
+
+- **`QDMI_SITE_PROPERTY_XCOORDINATE`**, **`YCOORDINATE`**, **`ZCOORDINATE`**: Spatial coordinates of
+  sites in device coordinate system
+- **`QDMI_SITE_PROPERTY_ISZONE`**: Boolean indicating whether a site is a zone (flexible atom
+  placement area) or fixed position
+- **`QDMI_SITE_PROPERTY_XEXTENT`**, **`YEXTENT`**, **`ZEXTENT`**: Physical extent of zone sites
+  (returns `QDMI_ERROR_NOTSUPPORTED` for regular fixed-position sites)
+- **`QDMI_SITE_PROPERTY_MODULEINDEX`**, **`SUBMODULEINDEX`**: Hierarchical module/submodule
+  assignment for modular device architectures
+
+#### Operation-Level Properties
+
+- **`QDMI_OPERATION_PROPERTY_INTERACTIONRADIUS`**: Radius within which an operation affects nearby
+  atoms
+- **`QDMI_OPERATION_PROPERTY_BLOCKINGRADIUS`**: Radius within which other operations are blocked
+  during execution
+- **`QDMI_OPERATION_PROPERTY_ISZONED`**: Boolean indicating whether the operation is applied to a
+  zone (area) rather than fixed sites
+- **`QDMI_OPERATION_PROPERTY_IDLINGFIDELITY`**: Fidelity of idling atoms within the operation's
+  interaction area (relevant for zoned operations)
+- **`QDMI_OPERATION_PROPERTY_MEANSHUTTLINGSPEED`**: Average speed for atom movement operations
+
+These properties enable precise modeling of neutral atom device capabilities.
 
 ### Job Property Query and Timeout (Breaking Change)
 
-- New function: `QDMI_job_query_property` (and device-side `QDMI_device_job_query_property`) for
-  querying job properties.
-- `QDMI_job_wait` and `QDMI_device_job_wait` now accept a `timeout` parameter (seconds, `0` =
-  indefinite). May return `QDMI_ERROR_TIMEOUT`.
+#### New Job Property Query Functions (Non-Breaking)
 
-### Authentication Options
+Two new functions have been added for querying job properties:
 
-New authentication options added to session parameter enums:
+- **`QDMI_job_query_property`**: Client-side function to query job properties
+- **`QDMI_device_job_query_property`**: Device-side implementation function
 
-- `AUTHFILE`: File with authentication info.
-- `AUTHURL`: URL for authentication.
-- `USERNAME`: Username.
-- `PASSWORD`: Password.
+These functions allow clients to retrieve job metadata and previously set parameter values, enabling
+better job tracking and debugging.
 
-Enum order updated; implementations must document supported options.
+#### Breaking Change: Timeout Parameter Required
+
+**Breaking Change**: The functions `QDMI_job_wait` and `QDMI_device_job_wait` now require an
+additional `timeout` parameter.
+
+**Function Signatures:**
+
+```c
+// Before (v1.1.0)
+int QDMI_job_wait(QDMI_Job job);
+int QDMI_device_job_wait(QDMI_Device_Job job);
+
+// After (v1.2.0)
+int QDMI_job_wait(QDMI_Job job, size_t timeout);
+int QDMI_device_job_wait(QDMI_Device_Job job, size_t timeout);
+```
+
+**Timeout Parameter:**
+
+- Type: `size_t`
+- Unit: Seconds
+- Value `0`: Wait indefinitely (equivalent to old behavior)
+- Non-zero: Maximum wait time in seconds
+- New return code: `QDMI_ERROR_TIMEOUT` when timeout expires before job completion
+
+**Migration:**
+
+```c
+// To maintain v1.1.0 behavior (indefinite wait):
+QDMI_job_wait(job, 0);
+
+// Or specify an explicit timeout (e.g., 30 seconds):
+int ret = QDMI_job_wait(job, 30);
+if (ret == QDMI_ERROR_TIMEOUT) {
+    // Handle timeout case
+}
+```
+
+### Authentication Options (Breaking Change)
+
+#### New Authentication Parameters (Non-Breaking)
+
+Four new authentication options have been added to `QDMI_SESSION_PARAMETER` and
+`QDMI_DEVICE_SESSION_PARAMETER` enums to support diverse authentication mechanisms:
+
+- **`QDMI_SESSION_PARAMETER_AUTHFILE`**: Path to a file containing authentication credentials
+- **`QDMI_SESSION_PARAMETER_AUTHURL`**: URL endpoint for authentication
+- **`QDMI_SESSION_PARAMETER_USERNAME`**: Username for authentication
+- **`QDMI_SESSION_PARAMETER_PASSWORD`**: Password for authentication
+
+#### Breaking Change: Enum Value Ordering
+
+**Breaking Change**: The addition of new authentication options has changed the numeric values of
+existing enum entries in `QDMI_SESSION_PARAMETER` and `QDMI_DEVICE_SESSION_PARAMETER`.
+
+**Impact:**
+
+- Code that relies on specific numeric values of enum constants will break
+- Code using the enum symbolic names will continue to work correctly
+
+**Migration:**
+
+- **Recommended**: Always use symbolic enum names (e.g., `QDMI_SESSION_PARAMETER_HOST`) rather than
+  numeric values
+- If numeric values were stored or transmitted, update serialization/deserialization code to use
+  version-aware mapping
+
+**Device Implementation Requirements:**
+
+- Device implementations should document the authentication parameters they support
+- Unsupported parameters should return `QDMI_ERROR_NOTSUPPORTED`
+- New parameters are optional; existing authentication mechanisms remain valid
+
+### Job Status Enum Updates (Breaking Change)
+
+**Breaking Change**: The `QDMI_JOB_STATUS` enum values have been reordered to better reflect the
+typical job lifecycle progression.
+
+**Impact:**
+
+- Code relying on numeric values of `QDMI_JOB_STATUS` enum constants will break
+- Code using symbolic names will continue to work correctly
+
+**Migration:**
+
+- Use symbolic enum names (e.g., `QDMI_JOB_STATUS_QUEUED`) instead of numeric values
+- Review any code that performs numeric comparisons or ordering of job status values
+- Update serialization/deserialization code to be version-aware
+
+### CMake Version Requirement (Breaking Change)
+
+**Breaking Change**: The minimum required CMake version has been raised from **3.19** to **3.24**.
+
+**Migration:**
+
+- Update your CMake installation to version 3.24 or later
+- Update CI/CD pipelines and build documentation to reflect the new requirement
+- Most modern Linux distributions and development environments provide CMake 3.24+
+
+**Rationale:** This change enables better build system features and improved dependency management.
+
+### Summary of Breaking Changes
+
+For quick reference, here are all breaking changes in v1.2.0:
+
+1. **Duration/length properties**: Changed from `double` to integer types with device-specific units
+2. **`QDMI_SITE_PROPERTY_ID`**: Renamed to `QDMI_SITE_PROPERTY_INDEX`
+3. **Job wait functions**: Now require `timeout` parameter
+4. **`QDMI_SESSION_PARAMETER` enums**: Reordered due to new authentication options
+5. **`QDMI_JOB_STATUS` enum**: Reordered to reflect job lifecycle
+6. **CMake**: Minimum version raised to 3.24
 
 [unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.0...HEAD
 [1.2.0]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.1.0...v1.2.0
