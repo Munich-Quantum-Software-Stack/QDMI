@@ -137,10 +137,9 @@ If you use QDMI in your research, please cite the following paper:
 
 ## Contact
 
-The development of this project is led by [Laura Schulz](mailto:laura.schulz@lrz.de) (LRZ),
-[Martin Schulz](mailto:martin.w.j.schulz@tum.de) (TUM CAPS), and
-[Robert Wille](mailto:robert.wille@tum.de) (TUM CDA) on the management side and
-[Lukas Burgholzer](mailto:lukas.burgholzer@tum.de) (TUM CDA) as well as
+The development of this project is led by [Martin Schulz](mailto:martin.w.j.schulz@tum.de) (TUM
+CAPS), and [Robert Wille](mailto:robert.wille@tum.de) (TUM CDA / MQSC) on the management side and
+[Lukas Burgholzer](mailto:lukas.burgholzer@tum.de) (TUM CDA / MQSC) as well as
 [Jorge Echavarria](mailto:jorge.echavarria@lrz.de) (LRZ) from the technical side.
 
 Please try to use the publicly accessible GitHub channels
