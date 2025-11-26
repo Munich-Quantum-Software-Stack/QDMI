@@ -15,6 +15,9 @@ on:
         description: Whether to run the documentation job
         value: ${{ jobs.change-detection.outputs.run-docs || false }}
 
+permissions:
+  contents: read
+
 jobs:
   change-detection:
     name: 🕵️ Check

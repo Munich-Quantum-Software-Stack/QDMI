@@ -16,6 +16,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   change-detection:
     name: 🔍 Change
@@ -25,6 +28,9 @@ jobs:
     name: 🇨‌ Test
     needs: change-detection
     if: fromJSON(needs.change-detection.outputs.run-tests) && github.event.action != 'closed'
+    permissions:
+      contents: read
+      id-token: write
     uses: ./.github/workflows/reusable-cpp-ci.yml
     with:
       # do not try to build docs in test builds
