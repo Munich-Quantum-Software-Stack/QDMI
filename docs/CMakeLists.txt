@@ -90,6 +90,11 @@ set(PROJECT_LOGO "mqss_logo.svg")
 # DOXYGEN_INPUT_DIRS.
 configure_file(${DOXYGEN_CONFIG_FILE_IN} ${DOXYGEN_CONFIG_FILE_OUT} @ONLY)
 
+if(${DOXYGEN_EXECUTABLE} STREQUAL "DOXYGEN_EXECUTABLE-NOTFOUND")
+  set(DOXYGEN_EXECUTABLE ${doxygen_BINARY_DIR}/bin/doxygen)
+  message(STATUS "Setting doxygen binary manually to ${DOXYGEN_EXECUTABLE}")
+endif()
+
 # Create a custom command to run Doxygen
 add_custom_command(
   OUTPUT ${DOXYGEN_OUTPUT_DIR}/html/index.html
@@ -102,6 +107,7 @@ add_custom_command(
           ${CMAKE_SOURCE_DIR}/CHANGELOG.md
           ${CMAKE_SOURCE_DIR}/UPGRADING.md
           ${CMAKE_SOURCE_DIR}/.github/support.md
+          $<IF:$<TARGET_EXISTS:doxygen>,doxygen,>
   COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_CONFIG_FILE_OUT}
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
   COMMENT "Generating API documentation with Doxygen"

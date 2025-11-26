@@ -64,8 +64,8 @@ option(BUILD_QDMI_TESTS "Also build tests for the QDMI project"
        ${QDMI_MASTER_PROJECT})
 option(BUILD_QDMI_EXAMPLES "Also build examples for the QDMI project"
        ${QDMI_MASTER_PROJECT})
-# Temporarily making this opt-in until getting Doxygen via FetchContent works
-option(BUILD_QDMI_DOCS "Also build documentation for the QDMI project" OFF)
+option(BUILD_QDMI_DOCS "Also build documentation for the QDMI project"
+       ${QDMI_MASTER_PROJECT})
 option(BUILD_QDMI_TEMPLATES "Also build templates for the QDMI project"
        ${QDMI_MASTER_PROJECT})
 
