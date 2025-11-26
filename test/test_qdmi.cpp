@@ -453,6 +453,16 @@ TEST_P(QDMIImplementationTest, JobLifecycle) {
                                      &supported_format),
               QDMI_SUCCESS);
   }
+
+  const auto fomac = FoMaC(device);
+  const auto formats = fomac.get_supported_program_formats();
+  for (const auto &program_format : formats) {
+    ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
+                                     sizeof(QDMI_Program_Format),
+                                     &program_format),
+              QDMI_SUCCESS);
+  }
+
   constexpr std::array unsupported_formats = {
       QDMI_PROGRAM_FORMAT_QASM3,
       QDMI_PROGRAM_FORMAT_QIRADAPTIVESTRING,

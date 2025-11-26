@@ -100,6 +100,8 @@ your codebase.
 #### New Properties (Non-Breaking)
 
 - **`QDMI_OPERATION_PROPERTY_SITES`**: Returns the list of sites to which an operation applies
+- **`QDMI_DEVICE_PROPERTY_SUPPORTEDPROGRAMFORMATS`**: Returns the list of supported program formats
+  for the device. Devices are highly encouraged to implement support for this property.
 - **`QDMI_DEVICE_PROPERTY_PULSESUPPORT`**: Returns the degree of pulse-level control support using
   the `QDMI_Device_Pulse_Support_Level` enum
   - Devices without pulse support should return `QDMI_DEVICE_PULSE_SUPPORT_LEVEL_NONE`

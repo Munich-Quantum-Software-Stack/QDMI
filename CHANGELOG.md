@@ -28,6 +28,8 @@ _No unreleased changes yet._
   of duration values ([#210]) ([\@ystade], [\@burgholzer])
 - ✨ Add property to efficiently query the applicability of operations to specific sites ([#207])
   ([\@ystade], [\@burgholzer])
+- ✨ Add device property `QDMI_DEVICE_PROPERTY_SUPPORTEDPROGRAMFORMATS` for efficiently querying the
+  device's supported program formats ([#252]) ([\@burgholzer])
 - ✨ Add device property `QDMI_DEVICE_PROPERTY_PULSESUPPORT` for querying pulse-level control
   support level ([#181]) ([\@mnfarooqi])
 - 🚸 Add new functions `QDMI_job_query_property` and `QDMI_device_job_query_property` to support
@@ -85,6 +87,7 @@ changelogs._
 
 <!-- PR links -->
 
+[#252]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/252
 [#250]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/250
 [#234]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/234
 [#228]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/228

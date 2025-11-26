@@ -224,3 +224,17 @@ auto FoMaC::get_parameters_num(const QDMI_Operation &op) const -> size_t {
   throw_if_error(ret, "Failed to query the parameter number");
   return parameters_num;
 }
+
+auto FoMaC::get_supported_program_formats() const
+    -> std::vector<QDMI_Program_Format> {
+  size_t size = 0;
+  int ret = QDMI_device_query_device_property(
+      device, QDMI_DEVICE_PROPERTY_SUPPORTEDPROGRAMFORMATS, 0, nullptr, &size);
+  throw_if_error(ret, "Failed to query the supported program formats size.");
+  std::vector<QDMI_Program_Format> formats(size / sizeof(QDMI_Program_Format));
+  ret = QDMI_device_query_device_property(
+      device, QDMI_DEVICE_PROPERTY_SUPPORTEDPROGRAMFORMATS, size,
+      static_cast<void *>(formats.data()), nullptr);
+  throw_if_error(ret, "Failed to query the supported program formats.");
+  return formats;
+}
