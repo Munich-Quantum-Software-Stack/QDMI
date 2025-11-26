@@ -18,6 +18,9 @@ on:
       CODECOV_TOKEN:
         required: true
 
+permissions:
+  contents: read
+
 jobs:
   cpp-tests-ubuntu:
     name: 🐧 ${{ matrix.config }}
@@ -49,6 +52,9 @@ jobs:
       CMAKE_BUILD_PARALLEL_LEVEL: 4
       CTEST_PARALLEL_LEVEL: 4
       FORCE_COLOR: 3
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
       - name: Install Ninja
@@ -65,4 +71,4 @@ jobs:
         with:
           fail_ci_if_error: true
           flags: cpp
-          token: ${{ secrets.CODECOV_TOKEN }}
+          use_oidc: true
