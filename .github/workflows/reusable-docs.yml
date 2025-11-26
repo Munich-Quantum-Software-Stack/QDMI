@@ -15,11 +15,11 @@ jobs:
         if: github.event.action != 'closed'
         uses: ssciwr/doxygen-install@501e53b879da7648ab392ee226f5b90e42148449 # v1.6.4
         with:
-          version: "1.13.2"
+          version: "1.15.0"
       - name: Install and Build 🔧
         if: github.event.action != 'closed'
         run: |
-          cmake -S . -B build -DBUILD_QDMI_DOCS=ON
+          cmake -S . -B build
           cmake --build build --target qdmi_docs
           mv build/docs/html/ static
       - name: Deploy preview 🚀 (for PRs; not for forks)
