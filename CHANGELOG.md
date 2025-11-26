@@ -13,7 +13,7 @@ clients compiled against a different minor or major version.
 
 _No unreleased changes yet._
 
-## [1.2.0] - 2025-11-24
+## [1.2.0] - 2025-11-26
 
 ### Added
 
@@ -25,6 +25,7 @@ _No unreleased changes yet._
   [\@burgholzer])
 - ✨ Add properties to query neutral atom-based device specific characteristics and capabilities
   ([#198], [#199], [#200], [#203], [#207], [#208], [#209], [#211]) ([\@ystade], [\@burgholzer])
+- ✨ Add device property for querying pulse-level control support ([#181]) ([\@mnfarooqi])
 - 📝 Add changelog and upgrade guide ([#160]) ([\@ystade], [\@burgholzer])
 - **Breaking**: 🚸 Support querying of job properties incl. previously set parameters values
   ([#160]) ([\@ystade])
@@ -50,6 +51,7 @@ _No unreleased changes yet._
 ### Fixed
 
 - 📝 Re-enable FetchContent for doxygen and build docs by default ([#250]) ([\@burgholzer])
+- 🐛 Fix bug in example tool ([#218]) ([\@rainij])
 - 🐛 Add target `qdmi_project_warnings` to the export targets ([#214]) ([\@ystade])
 - 🐛 Fix definitions of `QDMI_Site`and `QDMI_Operation` in device template ([#169]) ([\@ystade])
 
@@ -74,6 +76,7 @@ changelogs._
 [#250]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/250
 [#234]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/234
 [#228]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/228
+[#218]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/218
 [#214]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/214
 [#211]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/211
 [#210]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/210
@@ -84,6 +87,7 @@ changelogs._
 [#200]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/200
 [#199]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/199
 [#198]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/198
+[#181]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/181
 [#169]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/169
 [#165]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/165
 [#160]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/160
@@ -92,6 +96,8 @@ changelogs._
 
 [\@burgholzer]: https://github.com/burgholzer
 [\@ystade]: https://github.com/ystade
+[\@mnfarooqi]: https://github.com/mnfarooqi
+[\@rainij]: https://github.com/rainij
 
 <!-- General links -->
 
