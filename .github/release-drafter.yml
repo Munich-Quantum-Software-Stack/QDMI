@@ -3,8 +3,9 @@ tag-template: "v$RESOLVED_VERSION"
 categories:
   - title: "🚀 Features and Enhancements"
     labels:
-      - "feature"
       - "enhancement"
+      - "feature"
+      - "refactor"
       - "usability"
   - title: "🐛 Bug Fixes"
     labels:
@@ -16,6 +17,9 @@ categories:
   - title: "🤖 CI"
     labels:
       - "continuous integration"
+  - title: "📦 Packaging"
+    labels:
+      - "packaging"
   - title: "🧹 Code Quality"
     labels:
       - "code quality"
@@ -23,8 +27,9 @@ categories:
     collapse-after: 5
     labels:
       - "dependencies"
-      - "github_actions"
+      - "github-actions"
       - "pre-commit"
+      - "submodules"
 change-template: "- $TITLE ([#$NUMBER]($URL)) ([**@$AUTHOR**](https://github.com/$AUTHOR))"
 change-title-escapes: '\<*_&'
 version-resolver:
