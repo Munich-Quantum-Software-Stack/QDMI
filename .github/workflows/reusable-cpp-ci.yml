@@ -28,14 +28,14 @@ jobs:
       matrix:
         config: [Debug, Release]
       fail-fast: false
-    uses: munich-quantum-toolkit/workflows/.github/workflows/reusable-cpp-tests-ubuntu.yml@ea4fccbb432596cbb6840a9608d6376b6b2c8ff7 # v1.17.2
+    uses: munich-quantum-toolkit/workflows/.github/workflows/reusable-cpp-tests-ubuntu.yml@dbcd4474154dda0794838207274a3bccd4550de0 # v1.17.3
     with:
       config: ${{ matrix.config }}
       cmake-args: ${{ inputs.cmake-args }} ${{ inputs.cmake-args-ubuntu }}
 
   cpp-tests-macos:
     name: 🍎
-    uses: munich-quantum-toolkit/workflows/.github/workflows/reusable-cpp-tests-macos.yml@ea4fccbb432596cbb6840a9608d6376b6b2c8ff7 # v1.17.2
+    uses: munich-quantum-toolkit/workflows/.github/workflows/reusable-cpp-tests-macos.yml@dbcd4474154dda0794838207274a3bccd4550de0 # v1.17.3
     with:
       cmake-args: ${{ inputs.cmake-args }} ${{ inputs.cmake-args-macos }}
 
