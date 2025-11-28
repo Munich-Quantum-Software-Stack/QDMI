@@ -230,14 +230,18 @@ void QDMI_library_load(const std::string &lib_name, const std::string &prefix) {
 }
 
 bool Is_path_allowed(const std::filesystem::path &path) {
-  // Construct the allowlist of canonical allowed directories, skipping any nullptr "HOME" values.
+  // Construct the allowlist of canonical allowed directories, skipping any
+  // nullptr "HOME" values.
   std::vector<std::filesystem::path> allowlist;
-  allowlist.push_back(std::filesystem::canonical(std::filesystem::current_path()));
+  allowlist.push_back(
+      std::filesystem::canonical(std::filesystem::current_path()));
   const char *home_env = std::getenv("HOME");
   if (home_env != nullptr) {
-    // Only add HOME to the allowlist if it is set and points to a valid directory
+    // Only add HOME to the allowlist if it is set and points to a valid
+    // directory
     try {
-      allowlist.push_back(std::filesystem::canonical(std::filesystem::path(home_env)));
+      allowlist.push_back(
+          std::filesystem::canonical(std::filesystem::path(home_env)));
     } catch (const std::filesystem::filesystem_error &) {
       // Ignore invalid home directory
     }
@@ -252,10 +256,13 @@ bool Is_path_allowed(const std::filesystem::path &path) {
     return false;
   }
 
-  // Check if the resolved path starts with any of the allowlisted canonical directories.
+  // Check if the resolved path starts with any of the allowlisted canonical
+  // directories.
   return std::any_of(
       allowlist.begin(), allowlist.end(), [&](const auto &allowed_path) {
-        return std::mismatch(allowed_path.begin(), allowed_path.end(), resolved_path.begin(), resolved_path.end()).first == allowed_path.end();
+        return std::mismatch(allowed_path.begin(), allowed_path.end(),
+                             resolved_path.begin(), resolved_path.end())
+                   .first == allowed_path.end();
       });
 }
 } // namespace
