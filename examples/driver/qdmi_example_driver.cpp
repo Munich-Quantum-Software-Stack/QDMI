@@ -230,18 +230,37 @@ void QDMI_library_load(const std::string &lib_name, const std::string &prefix) {
 }
 
 bool Is_path_allowed(const std::filesystem::path &path) {
-  // Define the allowlist of allowed directories
-  const std::vector<std::filesystem::path> allowlist = {
-      std::filesystem::current_path(),
-      std::filesystem::path(std::getenv("HOME"))};
+  // Construct the allowlist of canonical allowed directories, skipping any
+  // nullptr "HOME" values.
+  std::vector allowlist{
+      std::filesystem::canonical(std::filesystem::current_path())};
+  if (const char *home_env = std::getenv("HOME"); home_env != nullptr) {
+    // Only add HOME to the allowlist if it is set and points to a valid
+    // directory
+    try {
+      allowlist.emplace_back(
+          std::filesystem::canonical(std::filesystem::path(home_env)));
+    } catch (const std::filesystem::filesystem_error &) {
+      std::cerr << "Ignoring invalid HOME environment variable: " << home_env
+                << '\n';
+    }
+  }
 
-  // Resolve the provided path to its absolute form
-  std::filesystem::path resolved_path = std::filesystem::absolute(path);
+  // Canonicalize the provided path, but only if it exists.
+  std::filesystem::path resolved_path;
+  try {
+    resolved_path = std::filesystem::canonical(path);
+  } catch (const std::filesystem::filesystem_error &) {
+    // If it doesn't exist, deny access
+    return false;
+  }
 
   // Check if the resolved path starts with any of the allowlisted directories.
   return std::any_of(
       allowlist.begin(), allowlist.end(), [&](const auto &allowed_path) {
-        return resolved_path.string().rfind(allowed_path.string(), 0) == 0;
+        return std::mismatch(allowed_path.begin(), allowed_path.end(),
+                             resolved_path.begin(), resolved_path.end())
+                   .first == allowed_path.end();
       });
 }
 } // namespace
