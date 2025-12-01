@@ -1,0 +1,110 @@
+name: 📝 Build and Deploy Release Docs
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to deploy (e.g., v1.2.0)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy-release-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        with:
+          ref: ${{ github.event.release.tag_name || inputs.version }}
+
+      - name: Install Doxygen
+        uses: ssciwr/doxygen-install@501e53b879da7648ab392ee226f5b90e42148449 # v1.6.4
+        with:
+          version: "1.15.0"
+
+      - name: Install and Build 🔧
+        run: |
+          cmake -S . -B build
+          cmake --build build --target qdmi_docs
+          mv build/docs/html/ static
+
+      - name: Set version variable
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" == "release" ]; then
+            VERSION="${{ github.event.release.tag_name }}"
+          else
+            VERSION="${{ inputs.version }}"
+          fi
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+
+      - name: Inject version selector
+        run: |
+          chmod +x .github/scripts/inject-version-selector.sh
+          .github/scripts/inject-version-selector.sh static
+
+      - name: Deploy versioned docs 🚀
+        uses: JamesIves/github-pages-deploy-action@4a3abc783e1a24aeb44c16e869ad83caf6b4cc23 # v4.7.4
+        with:
+          folder: static
+          target-folder: ${{ steps.version.outputs.version }}
+          clean: false
+          force: false
+
+      - name: Update versions.json and redirect 🔗
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          git fetch origin gh-pages
+          git checkout gh-pages
+
+          # Get all version directories (excluding 'latest' and 'pr-preview')
+          VERSIONS=$(find . -maxdepth 1 -type d -name 'v*' | sed 's|./||' | sort -V -r)
+
+          # Create versions.json
+          cat > versions.json << EOF
+          {
+            "stable": "${VERSION}",
+            "releases": [
+          EOF
+
+          # Add versions to JSON
+          FIRST=true
+          for v in $VERSIONS; do
+            if [ "$FIRST" = true ]; then
+              echo "    \"$v\"" >> versions.json
+              FIRST=false
+            else
+              echo "    ,\"$v\"" >> versions.json
+            fi
+          done
+
+          cat >> versions.json << EOF
+            ]
+          }
+          EOF
+
+          # Create an index.html that redirects to the latest stable version
+          cat > index.html << EOF
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <meta charset="utf-8">
+            <title>Redirecting to latest stable documentation</title>
+            <meta http-equiv="refresh" content="0; url=${VERSION}/">
+            <link rel="canonical" href="${VERSION}/">
+          </head>
+          <body>
+            <p>Redirecting to <a href="${VERSION}/">latest stable documentation (${VERSION})</a>...</p>
+          </body>
+          </html>
+          EOF
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add versions.json index.html
+          git commit -m "Update versions.json and stable docs redirect to ${VERSION}" || echo "No changes to commit"
+          git push origin gh-pages
