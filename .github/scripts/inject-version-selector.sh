@@ -19,8 +19,9 @@ fi
 
 echo "Injecting version selector into Doxygen documentation..."
 
-# Read the version selector HTML
-SELECTOR_CONTENT=$(cat "$SELECTOR_HTML")
+# Create a temporary file for the selector content
+TEMP_SELECTOR=$(mktemp)
+cat "$SELECTOR_HTML" > "$TEMP_SELECTOR"
 
 # Find all HTML files in the docs directory
 find "$DOCS_DIR" -name "*.html" -type f | while read -r html_file; do
@@ -32,10 +33,27 @@ find "$DOCS_DIR" -name "*.html" -type f | while read -r html_file; do
 
   # Inject the version selector just before the closing </body> tag
   if grep -q "</body>" "$html_file"; then
-    # Use perl for in-place editing to handle multi-line replacements
-    perl -i -pe "s|</body>|${SELECTOR_CONTENT}\n</body>|" "$html_file"
+    # Create a temporary output file
+    TEMP_OUTPUT=$(mktemp)
+
+    # Use awk to inject the selector before </body>
+    awk -v selector="$TEMP_SELECTOR" '
+      /<\/body>/ {
+        while ((getline line < selector) > 0) {
+          print line
+        }
+        close(selector)
+      }
+      { print }
+    ' "$html_file" > "$TEMP_OUTPUT"
+
+    # Replace the original file
+    mv "$TEMP_OUTPUT" "$html_file"
     echo "Injected version selector into: $html_file"
   fi
 done
+
+# Clean up
+rm -f "$TEMP_SELECTOR"
 
 echo "Version selector injection complete!"
