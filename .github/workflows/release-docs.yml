@@ -16,19 +16,10 @@ jobs:
   build-and-deploy-release-docs:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout release tag 🛎️
+      - name: Checkout repository 🛎️
         uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
         with:
           ref: ${{ github.event.release.tag_name || inputs.version }}
-          path: release
-
-      - name: Checkout scripts from main branch 🛎️
-        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
-        with:
-          ref: develop
-          sparse-checkout: |
-            .github/scripts
-          path: scripts
 
       - name: Install Doxygen
         uses: ssciwr/doxygen-install@501e53b879da7648ab392ee226f5b90e42148449 # v1.6.4
@@ -37,10 +28,9 @@ jobs:
 
       - name: Install and Build 🔧
         run: |
-          cd release
           cmake -S . -B build
           cmake --build build --target qdmi_docs
-          mv build/docs/html/ ../static
+          mv build/docs/html/ static
 
       - name: Set version variable
         id: version
@@ -54,8 +44,8 @@ jobs:
 
       - name: Inject version selector
         run: |
-          chmod +x scripts/.github/scripts/inject-version-selector.sh
-          SELECTOR_HTML=scripts/.github/scripts/version-selector.html scripts/.github/scripts/inject-version-selector.sh static
+          chmod +x .github/scripts/inject-version-selector.sh
+          .github/scripts/inject-version-selector.sh static
 
       - name: Deploy versioned docs 🚀
         uses: JamesIves/github-pages-deploy-action@4a3abc783e1a24aeb44c16e869ad83caf6b4cc23 # v4.7.4
@@ -75,7 +65,8 @@ jobs:
 
       - name: Update versions.json and redirect 🔗
         working-directory: gh-pages
-        env: VERSION="${{ steps.version.outputs.version }}"
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
         run: |
           # Get all version directories (excluding 'latest' and 'pr-preview')
           VERSIONS=$(find . -maxdepth 1 -type d -name 'v*' | sed 's|./||' | sort -V -r)
