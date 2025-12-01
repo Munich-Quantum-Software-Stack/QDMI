@@ -21,6 +21,13 @@ jobs:
         with:
           ref: ${{ github.event.release.tag_name || inputs.version }}
 
+      - name: Fetch version selector scripts from develop 📝
+        run: |
+          # Fetch and checkout the scripts from develop branch
+          git fetch origin develop
+          mkdir -p .github/scripts
+          git checkout origin/develop -- .github/scripts/inject-version-selector.sh .github/scripts/version-selector.html || echo "Scripts not found in develop, will skip version selector"
+
       - name: Install Doxygen
         uses: ssciwr/doxygen-install@501e53b879da7648ab392ee226f5b90e42148449 # v1.6.4
         with:
@@ -44,8 +51,12 @@ jobs:
 
       - name: Inject version selector
         run: |
-          chmod +x .github/scripts/inject-version-selector.sh
-          .github/scripts/inject-version-selector.sh static
+          if [ -f .github/scripts/inject-version-selector.sh ]; then
+            chmod +x .github/scripts/inject-version-selector.sh
+            .github/scripts/inject-version-selector.sh static
+          else
+            echo "Version selector script not found, skipping..."
+          fi
 
       - name: Deploy versioned docs 🚀
         uses: JamesIves/github-pages-deploy-action@4a3abc783e1a24aeb44c16e869ad83caf6b4cc23 # v4.7.4
