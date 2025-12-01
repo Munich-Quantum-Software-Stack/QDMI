@@ -65,16 +65,18 @@ jobs:
           clean: false
           force: false
 
+      - name: Checkout gh-pages branch 🛎️
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        with:
+          ref: gh-pages
+          path: gh-pages
+          persist-credentials: true
+          fetch-depth: 0
+
       - name: Update versions.json and redirect 🔗
+        working-directory: gh-pages
+        env: VERSION="${{ steps.version.outputs.version }}"
         run: |
-          VERSION="${{ steps.version.outputs.version }}"
-
-          # Clean up checkout directories to avoid conflicts
-          rm -rf release scripts static
-
-          git fetch origin gh-pages
-          git checkout -f gh-pages
-
           # Get all version directories (excluding 'latest' and 'pr-preview')
           VERSIONS=$(find . -maxdepth 1 -type d -name 'v*' | sed 's|./||' | sort -V -r)
 
