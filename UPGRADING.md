@@ -8,7 +8,7 @@ complete list of changes, including minor and patch releases, please refer to th
 
 _No unreleased changes yet._
 
-## [1.2.0] - 2025-11-26
+## [1.2.0] - 2025-12-01
 
 Version 1.2.0 introduces several breaking changes, primarily related to type system improvements,
 duration/length unit handling, and API enhancements for neutral atom devices. Please review all
