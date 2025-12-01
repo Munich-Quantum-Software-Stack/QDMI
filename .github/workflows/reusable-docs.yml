@@ -22,6 +22,11 @@ jobs:
           cmake -S . -B build
           cmake --build build --target qdmi_docs
           mv build/docs/html/ static
+      - name: Inject version selector
+        if: github.event.action != 'closed'
+        run: |
+          chmod +x .github/scripts/inject-version-selector.sh
+          .github/scripts/inject-version-selector.sh static
       - name: Deploy preview 🚀 (for PRs; not for forks)
         if: github.event.pull_request.head.repo.full_name == github.repository
         uses: rossjrw/pr-preview-action@8ff09e486b4c23709012eedd3b42e9f0b95dd0c5 # v1.6.3
@@ -32,5 +37,6 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@4a3abc783e1a24aeb44c16e869ad83caf6b4cc23 # v4.7.4
         with:
           folder: static
+          target-folder: latest
           clean-exclude: pr-preview/
           force: false
