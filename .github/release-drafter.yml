@@ -47,7 +47,7 @@ version-resolver:
 template: |
   ## 👀 What Changed
 
-  _Please refer to the [changelog](https://github.com/$OWNER/$REPOSITORY/blob/main/CHANGELOG.md) and the [upgrade guide](https://github.com/$OWNER/$REPOSITORY/blob/main/UPGRADING.md) for a structured overview of the changes._
+  _Please refer to the [changelog](https://github.com/$OWNER/$REPOSITORY/blob/develop/CHANGELOG.md) and the [upgrade guide](https://github.com/$OWNER/$REPOSITORY/blob/develop/UPGRADING.md) for a structured overview of the changes._
 
   $CHANGES
 
