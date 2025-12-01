@@ -13,7 +13,7 @@ clients compiled against a different minor or major version.
 
 _No unreleased changes yet._
 
-## [1.2.0] - 2025-11-26
+## [1.2.0] - 2025-12-01
 
 ### Added
 
