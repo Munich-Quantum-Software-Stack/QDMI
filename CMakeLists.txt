@@ -21,8 +21,12 @@ cmake_minimum_required(VERSION 3.24...4.2)
 project(
   qdmi
   LANGUAGES C
-  VERSION 1.2.0
+  VERSION 1.2.1
   DESCRIPTION "QDMI –– Quantum Device Management Interface")
+
+# Add development pre-release identifier
+set(PROJECT_VERSION_PRERELEASE "dev")
+set(PROJECT_VERSION_FULL "${PROJECT_VERSION}-${PROJECT_VERSION_PRERELEASE}")
 
 # set some important directories
 set(QDMI_INCLUDE_BUILD_DIR

@@ -1,0 +1,220 @@
+<div id="version-selector">
+  <button id="version-button" aria-label="Select documentation version">
+    <span id="current-version">Loading...</span>
+    <svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor">
+      <path d="M0 0l5 5 5-5z" />
+    </svg>
+  </button>
+  <div id="version-menu" class="hidden">
+    <div class="version-menu-header">Documentation Versions</div>
+    <div id="version-list"></div>
+  </div>
+</div>
+
+<style>
+  #version-selector {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    font-family:
+      -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+
+  #version-button {
+    background: #2c3e50;
+    color: white;
+    border: 1px solid #34495e;
+    border-radius: 4px;
+    padding: 10px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: background 0.2s;
+  }
+
+  #version-button:hover {
+    background: #34495e;
+  }
+
+  #version-button svg {
+    transition: transform 0.2s;
+  }
+
+  #version-button.active svg {
+    transform: rotate(180deg);
+  }
+
+  #version-menu {
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    margin-bottom: 8px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    min-width: 200px;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  #version-menu.hidden {
+    display: none;
+  }
+
+  .version-menu-header {
+    padding: 12px 16px;
+    font-weight: 600;
+    border-bottom: 1px solid #eee;
+    background: #f8f9fa;
+    font-size: 13px;
+    color: #555;
+  }
+
+  .version-group {
+    border-bottom: 1px solid #eee;
+  }
+
+  .version-group:last-child {
+    border-bottom: none;
+  }
+
+  .version-group-title {
+    padding: 8px 16px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #888;
+    text-transform: uppercase;
+    background: #fafafa;
+  }
+
+  .version-item {
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: background 0.15s;
+    color: #333;
+    text-decoration: none;
+    display: block;
+    font-size: 14px;
+  }
+
+  .version-item:hover {
+    background: #f0f0f0;
+  }
+
+  .version-item.current {
+    background: #e8f4f8;
+    color: #2980b9;
+    font-weight: 600;
+  }
+
+  .version-item.current::after {
+    content: " ✓";
+    float: right;
+  }
+
+  .version-badge {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 2px 6px;
+    font-size: 10px;
+    border-radius: 3px;
+    background: #3498db;
+    color: white;
+    font-weight: 600;
+  }
+
+  .version-badge.latest {
+    background: #27ae60;
+  }
+
+  .version-badge.dev {
+    background: #e67e22;
+  }
+</style>
+
+<script>
+  (function () {
+    // Determine current version from URL path
+    const pathParts = window.location.pathname.split("/").filter((p) => p);
+    const repoName = pathParts[0] || "";
+    const currentPath = pathParts[1] || "latest";
+
+    // Fetch available versions
+    fetch(`/${repoName}/versions.json`)
+      .then((response) => response.json())
+      .then((data) => {
+        initVersionSelector(data, currentPath, repoName);
+      })
+      .catch((error) => {
+        console.error("Failed to load versions:", error);
+        document.getElementById("current-version").textContent = currentPath;
+      });
+
+    function initVersionSelector(versions, currentPath, repoName) {
+      const button = document.getElementById("version-button");
+      const menu = document.getElementById("version-menu");
+      const versionList = document.getElementById("version-list");
+      const currentVersionSpan = document.getElementById("current-version");
+
+      // Set current version display
+      if (currentPath === "latest") {
+        currentVersionSpan.innerHTML = 'latest <span class="version-badge dev">dev</span>';
+      } else {
+        const isLatestStable = currentPath === versions.stable;
+        currentVersionSpan.innerHTML =
+          currentPath + (isLatestStable ? ' <span class="version-badge latest">stable</span>' : "");
+      }
+
+      // Build version menu
+      let html = "";
+
+      // Development version
+      html += '<div class="version-group">';
+      html += '<div class="version-group-title">Development</div>';
+      html += `<a href="/${repoName}/latest/" class="version-item ${currentPath === "latest" ? "current" : ""}">
+      latest <span class="version-badge dev">dev</span>
+    </a>`;
+      html += "</div>";
+
+      // Stable releases
+      if (versions.releases && versions.releases.length > 0) {
+        html += '<div class="version-group">';
+        html += '<div class="version-group-title">Stable Releases</div>';
+
+        versions.releases.forEach((version, index) => {
+          const isStable = version === versions.stable;
+          const isCurrent = version === currentPath;
+          html += `<a href="/${repoName}/${version}/" class="version-item ${isCurrent ? "current" : ""}">
+          ${version}${isStable ? ' <span class="version-badge latest">stable</span>' : ""}
+        </a>`;
+        });
+        html += "</div>";
+      }
+
+      versionList.innerHTML = html;
+
+      // Toggle menu
+      button.addEventListener("click", (e) => {
+        e.stopPropagation();
+        menu.classList.toggle("hidden");
+        button.classList.toggle("active");
+      });
+
+      // Close menu when clicking outside
+      document.addEventListener("click", () => {
+        menu.classList.add("hidden");
+        button.classList.remove("active");
+      });
+
+      // Prevent menu clicks from closing it
+      menu.addEventListener("click", (e) => {
+        e.stopPropagation();
+      });
+    }
+  })();
+</script>
