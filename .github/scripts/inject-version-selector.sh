@@ -5,7 +5,7 @@ set -e
 # Usage: ./inject-version-selector.sh <docs_directory>
 
 DOCS_DIR="${1:-static}"
-SELECTOR_HTML=".github/scripts/version-selector.html"
+SELECTOR_HTML="${SELECTOR_HTML:-.github/scripts/version-selector.html}"
 
 if [ ! -d "$DOCS_DIR" ]; then
   echo "Error: Documentation directory '$DOCS_DIR' not found"
