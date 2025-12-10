@@ -36,7 +36,7 @@ add_executable(my_device_test test_my_device.cpp)
 
 # link the Google test infrastructure to the test executable.
 target_link_libraries(my_device_test PRIVATE gtest_main qdmi::qdmi my_device
-                                             qdmi::project_warnings)
+                                             qdmi::qdmi_project_warnings)
 
 # set c++ standard
 target_compile_features(my_device_test PRIVATE cxx_std_17)
