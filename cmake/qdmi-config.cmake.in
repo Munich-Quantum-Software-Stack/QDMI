@@ -26,6 +26,9 @@ if(TARGET qdmi::qdmi)
   return()
 endif()
 
+set(qdmi_INCLUDE_DIR "${PACKAGE_PREFIX_DIR}/include")
+set(qdmi_CMAKE_DIR "${CMAKE_CURRENT_LIST_DIR}")
+
 include("${CMAKE_CURRENT_LIST_DIR}/Cache.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/PrefixHandling.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/qdmi-targets.cmake")

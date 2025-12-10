@@ -22,6 +22,7 @@ clients compiled against a different minor or major version.
 
 ### Fixed
 
+- 🐛 Ensure devices can be instantiated from an installed version of QDMI ([#273]) ([\@burgholzer])
 - 🐛 Fix target name mismatch for `qdmi_project_warnings` between source and installed version of
   QDMI ([#270]) ([\@burgholzer])
 
@@ -99,6 +100,7 @@ changelogs._
 
 <!-- PR links -->
 
+[#273]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/273
 [#272]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/272
 [#270]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/270
 [#269]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/269
