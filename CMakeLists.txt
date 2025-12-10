@@ -101,52 +101,55 @@ include(cmake/ExternalDependencies.cmake)
 include(cmake/PrefixHandling.cmake)
 include(GNUInstallDirs)
 
-# add warnings target
-if(NOT TARGET qdmi::project_warnings)
-  # use the warnings specified in CompilerWarnings.cmake
-  add_library(qdmi_project_warnings INTERFACE)
+if(NOT USE_INSTALLED_QDMI)
+  # add warnings target
+  if(NOT TARGET qdmi::qdmi_project_warnings)
+    # use the warnings specified in CompilerWarnings.cmake
+    add_library(qdmi_project_warnings INTERFACE)
 
-  # standard compiler warnings
-  include(${PROJECT_SOURCE_DIR}/cmake/CompilerWarnings.cmake)
-  set_project_warnings(qdmi_project_warnings)
+    # standard compiler warnings
+    include(${PROJECT_SOURCE_DIR}/cmake/CompilerWarnings.cmake)
+    set_project_warnings(qdmi_project_warnings)
 
-  # add alias
-  add_library(qdmi::project_warnings ALIAS qdmi_project_warnings)
-endif()
-
-# add main library code
-if(NOT TARGET qdmi::qdmi)
-  # add main library code
-  add_library(qdmi INTERFACE)
-
-  # collect header files
-  file(GLOB_RECURSE QDMI_HEADERS ${QDMI_INCLUDE_BUILD_DIR}/qdmi/*.h)
-
-  # add headers using file sets
-  target_sources(qdmi PUBLIC FILE_SET HEADERS BASE_DIRS
-                             ${QDMI_INCLUDE_BUILD_DIR} FILES ${QDMI_HEADERS})
-
-  # set required C standard
-  target_compile_features(qdmi INTERFACE c_std_11)
-
-  # always include debug symbols (avoids common problems with LTO)
-  target_compile_options(qdmi INTERFACE -g)
-
-  # enable coverage collection options
-  option(ENABLE_COVERAGE "Enable coverage reporting" FALSE)
-  if(ENABLE_COVERAGE)
-    target_compile_options(qdmi INTERFACE --coverage -fprofile-arcs
-                                          -ftest-coverage -O0)
-    target_link_libraries(qdmi INTERFACE gcov --coverage)
+    # add alias
+    add_library(qdmi::qdmi_project_warnings ALIAS qdmi_project_warnings)
   endif()
 
-  # set the version of the library
-  set_target_properties(
-    qdmi PROPERTIES VERSION ${PROJECT_VERSION}
-                    SOVERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR})
+  # add main library code
+  if(NOT TARGET qdmi::qdmi)
+    # add main library code
+    add_library(qdmi INTERFACE)
 
-  # add alias
-  add_library(qdmi::qdmi ALIAS qdmi)
+    # collect header files
+    file(GLOB_RECURSE QDMI_HEADERS ${QDMI_INCLUDE_BUILD_DIR}/qdmi/*.h)
+
+    # add headers using file sets
+    target_sources(qdmi PUBLIC FILE_SET HEADERS BASE_DIRS
+                               ${QDMI_INCLUDE_BUILD_DIR} FILES ${QDMI_HEADERS})
+
+    # set required C standard
+    target_compile_features(qdmi INTERFACE c_std_11)
+
+    # always include debug symbols (avoids common problems with LTO)
+    target_compile_options(qdmi INTERFACE -g)
+
+    # enable coverage collection options
+    option(ENABLE_COVERAGE "Enable coverage reporting" FALSE)
+    if(ENABLE_COVERAGE)
+      target_compile_options(qdmi INTERFACE --coverage -fprofile-arcs
+                                            -ftest-coverage -O0)
+      target_link_libraries(qdmi INTERFACE gcov --coverage)
+    endif()
+
+    # set the version of the library
+    set_target_properties(
+      qdmi
+      PROPERTIES VERSION ${PROJECT_VERSION}
+                 SOVERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR})
+
+    # add alias
+    add_library(qdmi::qdmi ALIAS qdmi)
+  endif()
 endif()
 
 # add documentation
