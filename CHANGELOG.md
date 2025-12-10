@@ -15,6 +15,11 @@ clients compiled against a different minor or major version.
 
 - 👨‍💻 Turn off building QDMI documentation by default ([#269]) ([\@burgholzer])
 
+### Fixed
+
+- 🐛 Fix target name mismatch for `qdmi_project_warnings` between source and installed version of
+  QDMI ([#270]) ([\@burgholzer])
+
 ## [1.2.0] - 2025-12-01
 
 ### Added
@@ -89,6 +94,7 @@ changelogs._
 
 <!-- PR links -->
 
+[#270]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/270
 [#269]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/269
 [#252]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/252
 [#250]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/250
