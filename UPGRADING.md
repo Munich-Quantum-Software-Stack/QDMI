@@ -16,19 +16,15 @@ available in [the PR description](https://github.com/Munich-Quantum-Software-Sta
 ### Changes to Prefix Handling
 
 The CMake functionality for handling the prefixing of QDMI devices was refactored to improve the
-usability and flexibility. Particularly, the `generate_prefixed_qdmi_headers` and
-`generate_device_defs_executable` CMake functions have been changed to
-
-- Take the prefix as a keyword argument instead of a positional argument
-- Allow the optional specification of the QDMI device target to link in the
-  `generate_device_defs_executable` function via a `TARGET` keyword argument.
-
-Call to these functions should be updated accordingly. Example usage:
+usability and flexibility. Particularly, the `generate_device_defs_executable` CMake function has
+been changed to allow the optional specification of the QDMI device target to link via a `TARGET`
+keyword argument. Example usage:
 
 ```cmake
-generate_prefixed_qdmi_headers(PREFIX "my_prefix")
-generate_device_defs_executable(PREFIX "my_prefix" TARGET my_device)
+generate_device_defs_executable("my_prefix" TARGET my_device)
 ```
+
+This change is expected to be fully backwards compatible.
 
 ## [1.2.0] - 2025-12-01
 
