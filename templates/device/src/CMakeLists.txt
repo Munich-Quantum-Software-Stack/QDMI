@@ -25,5 +25,5 @@ if(NOT CXX_DEVICE)
 endif()
 add_library(qdmi::my_device ALIAS my_device)
 target_compile_definitions(
-  my_device PRIVATE QDMI_VERSION="${QDMI_VERSION}"
+  my_device PRIVATE QDMI_VERSION="${qdmi_VERSION}"
                     DEVICE_VERSION="${PROJECT_VERSION}")
