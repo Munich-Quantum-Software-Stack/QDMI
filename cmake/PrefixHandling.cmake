@@ -72,7 +72,7 @@ function(generate_device_defs_executable prefix)
                  ${CMAKE_CURRENT_BINARY_DIR}/${QDMI_prefix}_test_defs.cpp)
   target_link_libraries(
     qdmi_test_${QDMI_prefix}_device_defs
-    PRIVATE qdmi::qdmi qdmi::${QDMI_prefix}_device qdmi::project_warnings)
+    PRIVATE qdmi::qdmi qdmi::${QDMI_prefix}_device qdmi::qdmi_project_warnings)
   target_compile_features(qdmi_test_${QDMI_prefix}_device_defs
                           PRIVATE cxx_std_17)
 endfunction()

@@ -6,7 +6,12 @@ complete list of changes, including minor and patch releases, please refer to th
 
 ## [Unreleased]
 
-_No unreleased changes yet._
+### Fix for using Installed Version of QDMI
+
+In order to avoid a mismatch in the target name for the `qdmi_project_warnings` target between the
+source and installed versions of QDMI, the target alias has been adjusted. If your project relies on
+`qdmi::project_warnings`, you need to change it to `qdmi::qdmi_project_warnings`. More rationale is
+available in [the PR description](https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/270).
 
 ## [1.2.0] - 2025-12-01
 
