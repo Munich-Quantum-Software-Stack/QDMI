@@ -11,6 +11,11 @@ clients compiled against a different minor or major version.
 
 ## [Unreleased]
 
+### Added
+
+- 🚸 Provide compile definitions for inferring device and QDMI versions automatically ([#272])
+  ([\@burgholzer])
+
 ### Changed
 
 - 👨‍💻 Turn off building QDMI documentation by default ([#269]) ([\@burgholzer])
@@ -94,6 +99,7 @@ changelogs._
 
 <!-- PR links -->
 
+[#272]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/272
 [#270]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/270
 [#269]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/269
 [#252]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/252

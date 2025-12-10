@@ -24,3 +24,7 @@ if(NOT CXX_DEVICE)
   target_compile_features(my_device PRIVATE cxx_std_17)
 endif()
 add_library(qdmi::my_device ALIAS my_device)
+get_target_property(qdmi_library_VERSION qdmi::qdmi VERSION)
+target_compile_definitions(
+  my_device PRIVATE QDMI_VERSION="${qdmi_library_VERSION}"
+                    DEVICE_VERSION="${PROJECT_VERSION}")
