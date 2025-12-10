@@ -17,9 +17,23 @@
 # ------------------------------------------------------------------------------
 
 # A function for generating prefixed QDMI headers for a user-defined prefix.
-function(generate_prefixed_qdmi_headers prefix)
+#
+# Arguments: PREFIX - The prefix for the device (required)
+#
+# Usage: generate_prefixed_qdmi_headers(PREFIX "MY")
+function(generate_prefixed_qdmi_headers)
+  # Parse arguments
+  set(oneValueArgs PREFIX)
+  cmake_parse_arguments(ARG "" "${oneValueArgs}" "" ${ARGN})
+
+  # Validate required argument
+  if(NOT ARG_PREFIX)
+    message(
+      FATAL_ERROR "generate_prefixed_qdmi_headers: PREFIX argument is required")
+  endif()
+
   # Get the lowercase version of the prefix.
-  string(TOLOWER ${prefix} QDMI_prefix)
+  string(TOLOWER ${ARG_PREFIX} QDMI_prefix)
 
   # Determine the correct include directory
   set(QDMI_INCLUDE_DIR "${QDMI_INCLUDE_BUILD_DIR}")
@@ -60,7 +74,7 @@ function(generate_prefixed_qdmi_headers prefix)
       string(
         REGEX
         REPLACE "([^a-zA-Z0-9_])${replacement}([^a-zA-Z0-9_])"
-                "\\1${prefix}_${replacement}\\2" header_content
+                "\\1${ARG_PREFIX}_${replacement}\\2" header_content
                 "${header_content}")
     endforeach()
     # Write the prefixed header.
@@ -74,10 +88,35 @@ endfunction()
 # implemented by a device.
 #
 # NOTE: The executables are not meant to be executed, only built.
-function(generate_device_defs_executable prefix)
-  set(QDMI_PREFIX ${prefix})
+#
+# Arguments: PREFIX - The prefix for the device (required) TARGET - The device
+# target to link against (optional, defaults to qdmi::${prefix}_device)
+#
+# Usage: generate_device_defs_executable(PREFIX "MY")  # Links against
+# qdmi::my_device generate_device_defs_executable(PREFIX "MY" TARGET
+# my_custom_device)  # Links against my_custom_device
+function(generate_device_defs_executable)
+  # Parse arguments
+  set(oneValueArgs PREFIX TARGET)
+  cmake_parse_arguments(ARG "" "${oneValueArgs}" "" ${ARGN})
+
+  # Validate required argument
+  if(NOT ARG_PREFIX)
+    message(
+      FATAL_ERROR "generate_device_defs_executable: PREFIX argument is required"
+    )
+  endif()
+
+  set(QDMI_PREFIX ${ARG_PREFIX})
   # Get the lowercase version of the prefix.
-  string(TOLOWER ${prefix} QDMI_prefix)
+  string(TOLOWER ${QDMI_PREFIX} QDMI_prefix)
+
+  # Use provided target or default to qdmi::${QDMI_prefix}_device
+  if(ARG_TARGET)
+    set(DEVICE_TARGET ${ARG_TARGET})
+  else()
+    set(DEVICE_TARGET qdmi::${QDMI_prefix}_device)
+  endif()
 
   # Determine the correct CMake directory for prefix_defs.txt
   set(QDMI_PREFIX_DIR "${QDMI_CMAKE_DIR}")
@@ -92,8 +131,8 @@ function(generate_device_defs_executable prefix)
   add_executable(qdmi_test_${QDMI_prefix}_device_defs
                  ${CMAKE_CURRENT_BINARY_DIR}/${QDMI_prefix}_test_defs.cpp)
   target_link_libraries(
-    qdmi_test_${QDMI_prefix}_device_defs
-    PRIVATE qdmi::qdmi qdmi::${QDMI_prefix}_device qdmi::qdmi_project_warnings)
+    qdmi_test_${QDMI_prefix}_device_defs PRIVATE qdmi::qdmi ${DEVICE_TARGET}
+                                                 qdmi::qdmi_project_warnings)
   target_compile_features(qdmi_test_${QDMI_prefix}_device_defs
                           PRIVATE cxx_std_17)
 endfunction()
