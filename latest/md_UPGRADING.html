@@ -201,7 +201,16 @@ $(function(){initNavTree('md_UPGRADING.html','',''); });
 <h1><a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.0...HEAD">Unreleased</a></h1>
 <h2>Fix for using Installed Version of QDMI</h2>
 <p>In order to avoid a mismatch in the target name for the <span class="tt">qdmi_project_warnings</span> target between the source and installed versions of QDMI, the target alias has been adjusted. If your project relies on <span class="tt">qdmi::project_warnings</span>, you need to change it to <span class="tt">qdmi::qdmi_project_warnings</span>. More rationale is available in <a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/270">the PR description</a>.</p>
-<h1><a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.1.0...v1.2.0">1.2.0</a> - 2025-12-01</h1>
+<h2>Changes to Prefix Handling</h2>
+<p>The CMake functionality for handling the prefixing of QDMI devices was refactored to improve the usability and flexibility. Particularly, the <span class="tt">generate_prefixed_qdmi_headers</span> and <span class="tt">generate_device_defs_executable</span> CMake functions have been changed to</p>
+<ul>
+<li>Take the prefix as a keyword argument instead of a positional argument</li>
+<li>Allow the optional specification of the QDMI device target to link in the <span class="tt">generate_device_defs_executable</span> function via a <span class="tt">TARGET</span> keyword argument.</li>
+</ul>
+<p>Call to these functions should be updated accordingly. Example usage:</p>
+<div class="fragment"><div class="line">generate_prefixed_qdmi_headers(PREFIX &quot;my_prefix&quot;)</div>
+<div class="line">generate_device_defs_executable(PREFIX &quot;my_prefix&quot; TARGET my_device)</div>
+</div><!-- fragment --><h1><a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.1.0...v1.2.0">1.2.0</a> - 2025-12-01</h1>
 <p>Version 1.2.0 introduces several breaking changes, primarily related to type system improvements, duration/length unit handling, and API enhancements for neutral atom devices. Please review all sections carefully when upgrading.</p>
 <h2>New Program Formats (Non-Breaking)</h2>
 <p>Two new program formats were added to the <span class="tt"><a class="el" href="constants_8h.html#a475336f0c08bd0218dd76a6016098231" title="Program format type.">QDMI_Program_Format</a></span> enum to support additional quantum programming frameworks:</p>
