@@ -28,21 +28,19 @@ project(
 set(PROJECT_VERSION_PRERELEASE "dev")
 set(PROJECT_VERSION_FULL "${PROJECT_VERSION}-${PROJECT_VERSION_PRERELEASE}")
 
-# set some important directories
-set(QDMI_INCLUDE_BUILD_DIR
-    "${CMAKE_CURRENT_SOURCE_DIR}/include"
-    CACHE INTERNAL "Include directory")
-set(QDMI_TEST_DIR
-    "${CMAKE_CURRENT_SOURCE_DIR}/test"
-    CACHE INTERNAL "Test directory")
-set(QDMI_CMAKE_DIR
-    "${CMAKE_CURRENT_SOURCE_DIR}/cmake"
-    CACHE INTERNAL "CMake directory")
+# enable organization of targets into folders
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-# make scripts available to cmake
-list(APPEND CMAKE_MODULE_PATH ${QDMI_CMAKE_DIR})
-
-include(cmake/Cache.cmake)
+# Set a default build type if none was specified
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+  message(STATUS "Setting build type to 'Release' as none was specified.")
+  set(CMAKE_BUILD_TYPE
+      Release
+      CACHE STRING "Choose the type of build." FORCE)
+  # Set the possible values of build type for cmake-gui, ccmake
+  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release"
+                                               "MinSizeRel" "RelWithDebInfo")
+endif()
 
 # check if this is the master project or used via add_subdirectory
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
@@ -72,20 +70,6 @@ option(BUILD_QDMI_DOCS "Also build documentation for the QDMI project" OFF)
 option(BUILD_QDMI_TEMPLATES "Also build templates for the QDMI project"
        ${QDMI_MASTER_PROJECT})
 
-# enable organization of targets into folders
-set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-
-# Set a default build type if none was specified
-if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
-  message(STATUS "Setting build type to 'Release' as none was specified.")
-  set(CMAKE_BUILD_TYPE
-      Release
-      CACHE STRING "Choose the type of build." FORCE)
-  # Set the possible values of build type for cmake-gui, ccmake
-  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release"
-                                               "MinSizeRel" "RelWithDebInfo")
-endif()
-
 # Generate compile_commands.json to make it easier to work with clang-based
 # tools
 set(CMAKE_EXPORT_COMPILE_COMMANDS
@@ -98,10 +82,24 @@ set(CMAKE_C_STANDARD_REQUIRED True)
 set(CMAKE_C_EXTENSIONS False)
 
 include(cmake/ExternalDependencies.cmake)
-include(cmake/PrefixHandling.cmake)
-include(GNUInstallDirs)
 
 if(NOT USE_INSTALLED_QDMI)
+  # set some important directories
+  set(QDMI_INCLUDE_BUILD_DIR
+      "${CMAKE_CURRENT_SOURCE_DIR}/include"
+      CACHE INTERNAL "Include directory")
+  set(QDMI_CMAKE_DIR
+      "${CMAKE_CURRENT_SOURCE_DIR}/cmake"
+      CACHE INTERNAL "CMake directory")
+
+  # make scripts available to cmake
+  list(APPEND CMAKE_MODULE_PATH ${QDMI_CMAKE_DIR})
+
+  include(cmake/Cache.cmake)
+
+  include(cmake/PrefixHandling.cmake)
+  include(GNUInstallDirs)
+
   # add warnings target
   if(NOT TARGET qdmi::qdmi_project_warnings)
     # use the warnings specified in CompilerWarnings.cmake
@@ -212,7 +210,7 @@ if(QDMI_INSTALL)
             NAMELINK_COMPONENT ${PROJECT_NAME}_Development
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT ${PROJECT_NAME}_Development
     FILE_SET HEADERS
-             DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}
+             DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
              COMPONENT ${PROJECT_NAME}_Development)
   # cmake-format: on
 
@@ -227,6 +225,7 @@ if(QDMI_INSTALL)
     FILES ${PROJECT_SOURCE_DIR}/cmake/Cache.cmake
           ${PROJECT_SOURCE_DIR}/cmake/prefix_defs.txt
           ${PROJECT_SOURCE_DIR}/cmake/PrefixHandling.cmake
+          ${PROJECT_SOURCE_DIR}/cmake/test_defs.cpp.in
     DESTINATION ${QDMI_CONFIG_INSTALL_DIR}
     COMPONENT ${PROJECT_NAME}_Development)
 endif()
