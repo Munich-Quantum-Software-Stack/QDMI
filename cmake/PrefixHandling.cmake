@@ -31,10 +31,6 @@ function(generate_prefixed_qdmi_headers prefix)
   file(GLOB_RECURSE QDMI_DEVICE_HEADERS ${QDMI_INCLUDE_DIR}/qdmi/device.h
        ${QDMI_INCLUDE_DIR}/qdmi/types.h)
 
-  foreach(header ${QDMI_DEVICE_HEADERS})
-    message(STATUS "  ${header}")
-  endforeach()
-
   # Determine the correct CMake directory for prefix_defs.txt
   set(QDMI_PREFIX_DIR "${QDMI_CMAKE_DIR}")
   if(NOT QDMI_PREFIX_DIR)
