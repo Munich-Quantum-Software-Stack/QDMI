@@ -20,15 +20,33 @@
 function(generate_prefixed_qdmi_headers prefix)
   # Get the lowercase version of the prefix.
   string(TOLOWER ${prefix} QDMI_prefix)
+
+  # Determine the correct include directory
+  set(QDMI_INCLUDE_DIR "${QDMI_INCLUDE_BUILD_DIR}")
+  if(NOT QDMI_INCLUDE_DIR)
+    set(QDMI_INCLUDE_DIR "${qdmi_INCLUDE_DIR}")
+  endif()
+
   # Get the list of all QDMI device headers.
-  file(GLOB_RECURSE QDMI_DEVICE_HEADERS ${QDMI_INCLUDE_BUILD_DIR}/qdmi/device.h
-       ${QDMI_INCLUDE_BUILD_DIR}/qdmi/types.h)
+  file(GLOB_RECURSE QDMI_DEVICE_HEADERS ${QDMI_INCLUDE_DIR}/qdmi/device.h
+       ${QDMI_INCLUDE_DIR}/qdmi/types.h)
+
+  foreach(header ${QDMI_DEVICE_HEADERS})
+    message(STATUS "  ${header}")
+  endforeach()
+
+  # Determine the correct CMake directory for prefix_defs.txt
+  set(QDMI_PREFIX_DIR "${QDMI_CMAKE_DIR}")
+  if(NOT QDMI_PREFIX_DIR)
+    set(QDMI_PREFIX_DIR "${qdmi_CMAKE_DIR}")
+  endif()
+
   # Read the prefix definitions.
-  file(READ ${QDMI_CMAKE_DIR}/prefix_defs.txt replacements)
+  file(READ ${QDMI_PREFIX_DIR}/prefix_defs.txt replacements)
   string(REPLACE "\n" ";" replacements "${replacements}")
   foreach(header ${QDMI_DEVICE_HEADERS})
     # Get the relative path of the header.
-    file(RELATIVE_PATH rel_header ${QDMI_INCLUDE_BUILD_DIR}/qdmi ${header})
+    file(RELATIVE_PATH rel_header ${QDMI_INCLUDE_DIR}/qdmi ${header})
     get_filename_component(rel_dir ${rel_header} DIRECTORY)
     # Create the directory for the prefixed header.
     file(MAKE_DIRECTORY
@@ -64,8 +82,15 @@ function(generate_device_defs_executable prefix)
   set(QDMI_PREFIX ${prefix})
   # Get the lowercase version of the prefix.
   string(TOLOWER ${prefix} QDMI_prefix)
+
+  # Determine the correct CMake directory for prefix_defs.txt
+  set(QDMI_PREFIX_DIR "${QDMI_CMAKE_DIR}")
+  if(NOT QDMI_PREFIX_DIR)
+    set(QDMI_PREFIX_DIR "${qdmi_CMAKE_DIR}")
+  endif()
+
   # Create the test definitions file.
-  configure_file(${QDMI_TEST_DIR}/utils/test_defs.cpp.in
+  configure_file(${QDMI_PREFIX_DIR}/test_defs.cpp.in
                  ${CMAKE_CURRENT_BINARY_DIR}/${QDMI_prefix}_test_defs.cpp @ONLY)
   # Create the test executable.
   add_executable(qdmi_test_${QDMI_prefix}_device_defs
