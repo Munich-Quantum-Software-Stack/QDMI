@@ -18,6 +18,7 @@ clients compiled against a different minor or major version.
 
 ### Changed
 
+- 🚸 Improve prefix handling by making the device target name flexible ([#274]) ([\@burgholzer])
 - 👨‍💻 Turn off building QDMI documentation by default ([#269]) ([\@burgholzer])
 
 ### Fixed
@@ -100,6 +101,7 @@ changelogs._
 
 <!-- PR links -->
 
+[#274]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/274
 [#273]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/273
 [#272]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/272
 [#270]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/270

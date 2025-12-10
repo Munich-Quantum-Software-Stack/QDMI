@@ -28,7 +28,7 @@ add_subdirectory(utils)
 # ------------------------------------------------------------------------------
 # Non-Functional Tests
 # ------------------------------------------------------------------------------
-generate_device_defs_executable("CXX")
+generate_device_defs_executable(PREFIX "CXX" TARGET cxx_device)
 
 # ------------------------------------------------------------------------------
 # Functional Tests
@@ -60,7 +60,7 @@ gtest_discover_tests(
 
 # ensure cxx_device are built whenever qdmi_test is built. Those targets build
 # the dynamic libraries that are loaded in the tests.
-add_dependencies(qdmi_test qdmi::cxx_device)
+add_dependencies(qdmi_test cxx_device)
 # ensure qdmi_test_cxx_device_defs are built whenever qdmi_test is built. Those
 # targets ensure that the respective devices implement all interface functions.
 add_dependencies(qdmi_test qdmi_test_cxx_device_defs)
