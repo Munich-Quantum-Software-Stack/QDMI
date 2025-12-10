@@ -29,3 +29,6 @@ target_include_directories(cxx_device
                            PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/include)
 target_compile_features(cxx_device PRIVATE cxx_std_17)
 add_library(qdmi::cxx_device ALIAS cxx_device)
+target_compile_definitions(
+  cxx_device PRIVATE QDMI_VERSION="${QDMI_VERSION}"
+                     DEVICE_VERSION="${PROJECT_VERSION}")
