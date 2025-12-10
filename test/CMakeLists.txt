@@ -45,7 +45,7 @@ target_link_libraries(
           qdmi::example_tool
           qdmi::example_fomac
           qdmi::example_driver
-          qdmi::project_warnings
+          qdmi::qdmi_project_warnings
           GTest::gtest_main
           GTest::gmock)
 
