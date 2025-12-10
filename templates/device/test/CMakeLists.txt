@@ -25,7 +25,7 @@ endif()
 # Non-Functional Tests
 # ------------------------------------------------------------------------------
 
-generate_device_defs_executable(${QDMI_PREFIX})
+generate_device_defs_executable(PREFIX ${QDMI_PREFIX} TARGET my_device)
 
 # ------------------------------------------------------------------------------
 # Functional Tests
