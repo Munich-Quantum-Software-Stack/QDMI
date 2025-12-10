@@ -28,7 +28,7 @@ add_subdirectory(utils)
 # ------------------------------------------------------------------------------
 # Non-Functional Tests
 # ------------------------------------------------------------------------------
-generate_device_defs_executable(PREFIX "CXX" TARGET cxx_device)
+generate_device_defs_executable("CXX" TARGET cxx_device)
 
 # ------------------------------------------------------------------------------
 # Functional Tests
