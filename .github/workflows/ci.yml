@@ -85,7 +85,10 @@ jobs:
               fromJSON(needs.change-detection.outputs.run-linter)
               && '' || 'linter,'
             }} ${{
-              fromJSON(needs.change-detection.outputs.run-docs)
+              fromJSON(needs.change-detection.outputs.run-template)
+              && '' || 'template,'
+            }} ${{
+             fromJSON(needs.change-detection.outputs.run-docs)
               && '' || 'docs,'
             }}
           jobs: ${{ toJSON(needs) }}

@@ -29,6 +29,7 @@ jobs:
     outputs:
       run-tests: ${{ steps.tests-changes.outputs.run-tests || false }}
       run-linter: ${{ steps.linter-changes.outputs.run-linter || false }}
+      run-template: ${{ steps.template-changes.outputs.run-template || false }}
       run-docs: ${{ steps.docs-changes.outputs.run-docs || false }}
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
