@@ -350,7 +350,8 @@
     right: 20px;
     z-index: 9999;
     font-family:
-      -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+      Arial, sans-serif;
   }
 
   #version-button {
@@ -495,11 +496,15 @@
 
       // Set current version display
       if (currentPath === "latest") {
-        currentVersionSpan.innerHTML = 'latest <span class="version-badge dev">dev</span>';
+        currentVersionSpan.innerHTML =
+          'latest <span class="version-badge dev">dev</span>';
       } else {
         const isLatestStable = currentPath === versions.stable;
         currentVersionSpan.innerHTML =
-          currentPath + (isLatestStable ? ' <span class="version-badge latest">stable</span>' : "");
+          currentPath +
+          (isLatestStable
+            ? ' <span class="version-badge latest">stable</span>'
+            : "");
       }
 
       // Build version menu
