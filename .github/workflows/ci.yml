@@ -45,7 +45,7 @@ jobs:
     uses: munich-quantum-toolkit/workflows/.github/workflows/reusable-cpp-linter.yml@654680ab77b3af8226a9f5cd9acfd157bd106f17 # v1.17.5
     with:
       clang-version: 21
-      cpp-linter-extra-args: ""
+      cpp-linter-extra-args: "-std=c++20"
       # do not try to build docs in linter builds
       cmake-args: "-DBUILD_QDMI_DOCS=OFF"
 

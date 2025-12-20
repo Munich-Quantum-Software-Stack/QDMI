@@ -26,7 +26,7 @@ target_link_libraries(cxx_device PRIVATE qdmi::qdmi qdmi::qdmi_project_warnings)
 generate_prefixed_qdmi_headers("CXX")
 target_include_directories(cxx_device
                            PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/include)
-target_compile_features(cxx_device PRIVATE cxx_std_17)
+target_compile_features(cxx_device PRIVATE cxx_std_20)
 get_target_property(qdmi_library_VERSION qdmi::qdmi VERSION)
 target_compile_definitions(
   cxx_device PRIVATE QDMI_VERSION="${qdmi_library_VERSION}"

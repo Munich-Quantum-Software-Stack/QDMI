@@ -48,7 +48,7 @@ target_link_libraries(
           GTest::gtest_main
           GTest::gmock)
 
-target_compile_features(qdmi_test PRIVATE cxx_std_17)
+target_compile_features(qdmi_test PRIVATE cxx_std_20)
 
 # discover tests
 gtest_discover_tests(
