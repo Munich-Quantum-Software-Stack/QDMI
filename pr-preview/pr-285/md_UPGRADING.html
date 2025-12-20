@@ -192,6 +192,18 @@ $(function(){initNavTree('md_UPGRADING.html','',''); });
 <p>The CMake functionality for handling the prefixing of QDMI devices was refactored to improve the usability and flexibility. Particularly, the <span class="tt">generate_device_defs_executable</span> CMake function has been changed to allow the optional specification of the QDMI device target to link via a <span class="tt">TARGET</span> keyword argument. Example usage:</p>
 <div class="fragment"><div class="line">generate_device_defs_executable(&quot;my_prefix&quot; TARGET my_device)</div>
 </div><!-- fragment --><p>This change is expected to be fully backwards compatible.</p>
+<h2>Updated QDMI device template</h2>
+<p>The QDMI device template has been significantly updated to be more useful and provide a fully fletched starting point for new devices. This includes updating the existing template code with the latest best practices, including updating the CMake version range to 3.24-4.2 and using C++20 features.</p>
+<p>In addition to these basic changes, the template has been extended to include:</p>
+<ul>
+<li>installation instructions for the device library</li>
+<li>boilerplate documentation infrastructure</li>
+<li>a thin Python wrapper for distributing the device implementation</li>
+<li>linter and formatter configuration</li>
+<li>automatic license header generation</li>
+<li>and more.</li>
+</ul>
+<p>The corresponding documentation has been updated to reflect these changes.</p>
 <h1><a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.1.0...v1.2.0">1.2.0</a> - 2025-12-01</h1>
 <p>Version 1.2.0 introduces several breaking changes, primarily related to type system improvements, duration/length unit handling, and API enhancements for neutral atom devices. Please review all sections carefully when upgrading.</p>
 <h2>New Program Formats (Non-Breaking)</h2>
