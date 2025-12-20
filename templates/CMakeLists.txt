@@ -71,6 +71,8 @@ if(CONFIGURE_TEMPLATE)
        "${TEMPLATE_PATH}/src/${TEMPLATE_prefix}_device.cpp")
   file(RENAME "${TEMPLATE_PATH}/test/test_my_device.cpp"
        "${TEMPLATE_PATH}/test/test_${TEMPLATE_prefix}_device.cpp")
+  file(RENAME "${TEMPLATE_PATH}/cmake/my-qdmi-device-config.cmake.in"
+       "${TEMPLATE_PATH}/cmake/${TEMPLATE_prefix}-qdmi-device-config.cmake.in")
 
   message(
     STATUS
