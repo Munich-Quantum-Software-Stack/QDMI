@@ -26,6 +26,24 @@ generate_device_defs_executable("my_prefix" TARGET my_device)
 
 This change is expected to be fully backwards compatible.
 
+### Updated QDMI device template
+
+The QDMI device template has been significantly updated to be more useful and provide a fully
+fletched starting point for new devices. This includes updating the existing template code with
+the latest best practices, including updating the CMake version range to 3.24-4.2 and using C++20
+features.
+
+In addition to these basic changes, the template has been extended to include:
+
+- installation instructions for the device library
+- boilerplate documentation infrastructure
+- a thin Python wrapper for distributing the device implementation
+- linter and formatter configuration
+- automatic license header generation
+- and more.
+
+The corresponding documentation has been updated to reflect these changes.
+
 ## [1.2.0] - 2025-12-01
 
 Version 1.2.0 introduces several breaking changes, primarily related to type system improvements,
