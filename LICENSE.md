@@ -200,8 +200,7 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 
-
---- LLVM Exceptions to the Apache 2.0 License ----
+---- LLVM Exceptions to the Apache 2.0 License ----
 
 As an exception, if, as a result of your compiling your source code, portions
 of this Software are embedded into an Object form of such source code, you
