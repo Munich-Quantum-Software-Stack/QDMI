@@ -44,11 +44,32 @@ if(CONFIGURE_TEMPLATE)
               "${file_content}")
     string(REGEX REPLACE "MY_" "${TEMPLATE_PREFIX}_" file_content
                          "${file_content}")
+    string(REGEX REPLACE "MY QDMI" "${TEMPLATE_PREFIX} QDMI" file_content
+                         "${file_content}")
     string(REGEX REPLACE "my_" "${TEMPLATE_prefix}_" file_content
                          "${file_content}")
+    string(REGEX REPLACE "my-" "${TEMPLATE_prefix}-" file_content
+                         "${file_content}")
     string(REGEX REPLACE "my_" "${TEMPLATE_prefix}_" file_name "${file_name}")
+    string(REGEX REPLACE "python/my" "python/${TEMPLATE_prefix}" file_name
+                         "${file_name}")
+    string(REGEX REPLACE "my.qdmi" "${TEMPLATE_prefix}.qdmi" file_name
+                         "${file_name}")
+    string(REGEX REPLACE "my/qdmi" "${TEMPLATE_prefix}/qdmi" file_name
+                         "${file_name}")
+    string(REGEX REPLACE "my-qdmi" "${TEMPLATE_prefix}-qdmi" file_name
+                         "${file_name}")
+    string(REGEX REPLACE "\"my\"" "\"${TEMPLATE_PREFIX}\"" "${file_content}")
     file(WRITE ${TEMPLATE_PATH}/${rel_dir}/${file_name} "${file_content}")
   endforeach()
+
+  file(RENAME "${TEMPLATE_PATH}/python/my"
+       "${TEMPLATE_PATH}/python/${TEMPLATE_prefix}")
+  file(RENAME "${TEMPLATE_PATH}/src/my_device.cpp"
+       "${TEMPLATE_PATH}/src/${TEMPLATE_prefix}_device.cpp")
+  file(RENAME "${TEMPLATE_PATH}/test/test_my_device.cpp"
+       "${TEMPLATE_PATH}/test/test_${TEMPLATE_prefix}_device.cpp")
+
   message(
     STATUS
       "[qdmi] Configuring template for prefix \"${TEMPLATE_PREFIX}\" in '${TEMPLATE_PATH}' - done"

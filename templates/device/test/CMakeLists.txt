@@ -15,34 +15,31 @@
 #
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
-if(NOT CXX_DEVICE)
-  # add CXX language support
-  enable_language(CXX)
-endif()
-
 # ------------------------------------------------------------------------------
 # Non-Functional Tests
 # ------------------------------------------------------------------------------
 
-generate_device_defs_executable(${QDMI_PREFIX} TARGET my_device)
+generate_device_defs_executable(${QDMI_PREFIX} TARGET ${QDMI_TARGET_NAME})
 
 # ------------------------------------------------------------------------------
 # Functional Tests
 # ------------------------------------------------------------------------------
 
+set(QDMI_TEST_TARGET_NAME "${QDMI_TARGET_NAME}-test")
+
 # create an executable in which the tests will be stored
-add_executable(my_device_test test_my_device.cpp)
+add_executable(${QDMI_TEST_TARGET_NAME} test_my_device.cpp)
 
 # link the Google test infrastructure to the test executable.
-target_link_libraries(my_device_test PRIVATE gtest_main qdmi::qdmi my_device
-                                             qdmi::qdmi_project_warnings)
+target_link_libraries(
+  ${QDMI_TEST_TARGET_NAME}
+  PRIVATE GTest::gtest_main qdmi::qdmi ${QDMI_TARGET_NAME}
+          qdmi::qdmi_project_warnings)
 
 # set c++ standard
-target_compile_features(my_device_test PRIVATE cxx_std_17)
+target_compile_features(${QDMI_TEST_TARGET_NAME} PRIVATE cxx_std_20)
 
-# ensure my_device and my_device_definitions_test are built whenever
-# my_device_test is built
-add_dependencies(my_device_test qdmi_test_my_device_defs)
+add_dependencies(${QDMI_TEST_TARGET_NAME} qdmi_test_my_device_defs)
 
 # only discover tests if this is the main project
 if(NOT MY_DEVICE_MASTER_PROJECT)
@@ -50,7 +47,7 @@ if(NOT MY_DEVICE_MASTER_PROJECT)
 endif()
 
 gtest_discover_tests(
-  my_device_test
+  ${QDMI_TEST_TARGET_NAME}
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
   PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
              DISCOVERY_TIMEOUT 60)

@@ -66,4 +66,4 @@ add_dependencies(qdmi_test qdmi_test_cxx_device_defs)
 # ensure my_device_test is built whenever qdmi_test is built. That target
 # ensures that there is no compilation error in the templates provided with QDMI
 # and their tests.
-add_dependencies(qdmi_test my_device_test)
+add_dependencies(qdmi_test my-qdmi-device-test)
