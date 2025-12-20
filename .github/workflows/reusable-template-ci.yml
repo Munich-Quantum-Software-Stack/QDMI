@@ -1,0 +1,59 @@
+name: 🏗️ Build and Test Templates
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  device-template:
+    name: Build Device Template
+    runs-on: ubuntu-24.04
+    env:
+      CMAKE_BUILD_PARALLEL_LEVEL: 4
+      CTEST_PARALLEL_LEVEL: 4
+      FORCE_COLOR: 3
+      DEV_DIR: ${{ runner.temp }}/device
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          path: qdmi
+      - name: Configure template
+        working-directory: qdmi
+        run: >
+          cmake -DCONFIGURE_TEMPLATE=ON \
+                -DTEMPLATE_PREFIX="MQSS" \
+                -DTEMPLATE_PATH="$GITHUB_WORKSPACE" \
+                -S . -B build
+      - name: Build template
+        run: |
+          cmake -G Ninja -S . -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_MQSS_QDMI_TESTS=ON
+          cmake --build build --config Release
+      - name: Build docs
+        run: |
+          cmake -G Ninja -S . -B build_docs -DCMAKE_BUILD_TYPE=Release -DBUILD_MQSS_QDMI_DOCS=ON -DBUILD_MQSS_QDMI_TESTS=OFF
+          cmake --build build_docs --config Release --target mqss_qdmi_device_docs
+      - uses: pypa/cibuildwheel@63fd63b352a9a8bdcc24791c9dbee952ee9a8abc # v3.3.0
+      - name: Verify clean directory
+        run: git diff --exit-code
+        shell: bash
+      - name: Upload wheels
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        with:
+          name: ${{ github.event_name == 'pull_request' && 'dev-' || '' }}cibw-wheels-${{ inputs.runs-on }}
+          path: wheelhouse/*.whl
+      - name: Install the latest version of uv
+        uses: astral-sh/setup-uv@1e862dfacbd1d6d858c55d9b792c756523627244 # v7.1.4
+        with:
+          enable-cache: true
+          save-cache: ${{ github.ref == 'refs/heads/main' }}
+      - name: Build SDist
+        run: uv build --sdist
+      - name: Check metadata
+        run: uvx twine check dist/*
+      - name: Run check-sdist
+        run: uvx check-sdist --inject-junk
+      - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        with:
+          name: ${{ github.event_name == 'pull_request' && 'dev-' || '' }}cibw-sdist
+          path: dist/*.tar.gz

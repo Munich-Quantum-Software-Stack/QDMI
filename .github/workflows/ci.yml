@@ -49,6 +49,12 @@ jobs:
       # do not try to build docs in linter builds
       cmake-args: "-DBUILD_QDMI_DOCS=OFF"
 
+  template:
+    name: 🏗️ Build and Test Templates
+    needs: change-detection
+    if: fromJSON(needs.change-detection.outputs.run-template) && github.event.action != 'closed'
+    uses: ./.github/workflows/reusable-template-ci.yml
+
   docs:
     name: 📝 Build and Deploy Docs
     needs: change-detection
