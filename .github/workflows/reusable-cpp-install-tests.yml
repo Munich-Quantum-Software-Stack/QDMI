@@ -62,5 +62,4 @@ jobs:
         run: cmake --build build --config Release
       # run the tests
       - name: Test
-        run:
-          ctest -C Release --output-on-failure --test-dir build --repeat until-pass:3 --timeout 600
+        run: ctest -C Release --output-on-failure --test-dir build --repeat until-pass:3 --timeout 600
