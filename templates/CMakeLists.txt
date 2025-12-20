@@ -50,16 +50,18 @@ if(CONFIGURE_TEMPLATE)
                          "${file_content}")
     string(REGEX REPLACE "my-" "${TEMPLATE_prefix}-" file_content
                          "${file_content}")
-    string(REGEX REPLACE "my_" "${TEMPLATE_prefix}_" file_name "${file_name}")
-    string(REGEX REPLACE "python/my" "python/${TEMPLATE_prefix}" file_name
-                         "${file_name}")
-    string(REGEX REPLACE "my.qdmi" "${TEMPLATE_prefix}.qdmi" file_name
-                         "${file_name}")
-    string(REGEX REPLACE "my/qdmi" "${TEMPLATE_prefix}/qdmi" file_name
-                         "${file_name}")
-    string(REGEX REPLACE "my-qdmi" "${TEMPLATE_prefix}-qdmi" file_name
-                         "${file_name}")
-    string(REGEX REPLACE "\"my\"" "\"${TEMPLATE_PREFIX}\"" "${file_content}")
+    string(REGEX REPLACE "my_" "${TEMPLATE_prefix}_" file_content
+                         "${file_content}")
+    string(REGEX REPLACE "python/my" "python/${TEMPLATE_prefix}" file_content
+                         "${file_content}")
+    string(REGEX REPLACE "my.qdmi" "${TEMPLATE_prefix}.qdmi" file_content
+                         "${file_content}")
+    string(REGEX REPLACE "my/qdmi" "${TEMPLATE_prefix}/qdmi" file_content
+                         "${file_content}")
+    string(REGEX REPLACE "my-qdmi" "${TEMPLATE_prefix}-qdmi" file_content
+                         "${file_content}")
+    string(REGEX REPLACE "\"my\"" "\"${TEMPLATE_PREFIX}\"" file_content
+                         "${file_content}")
     file(WRITE ${TEMPLATE_PATH}/${rel_dir}/${file_name} "${file_content}")
   endforeach()
 
