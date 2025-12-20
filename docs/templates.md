@@ -29,15 +29,11 @@ cmake -DCONFIGURE_TEMPLATE=ON \       # activate template creation
 This command adds a `build/` directory to your project that stores all the build files. The
 configure step above only needs to be performed once. If the option `TEMPLATE_PATH` is not given it
 will be placed in `PREFIX_qdmi_device` relative to the parent directory where QDMI was cloned in.
-After this step you can directly start implementing your device in C++. If you want to implement in
-C, see also the next section. Example implementations are provided in the `examples/` directory. See
+After this step you can directly start implementing your device in C++.
+Example implementations are provided in the `examples/` directory. See
 [Examples](examples.md) for more information.
 
 ## Configuring the Template {#template-configure}
-
-The default template is set up as a C++ project with the specified prefix. You can switch the
-project to a purely C project by setting the `CXX_DEVICE` option to `OFF` in the `CMakeLists.txt`
-file in the root directory of the template.
 
 For stability, we recommend pinning the version of QDMI that you are using for your implementation.
 You can use any valid git tag, branch, or commit hash for that. To this end, adjust the `QDMI_REV`
@@ -56,13 +52,18 @@ All paths are given relative to the root of the template project directory.
 - `CMakeLists.txt`,
 - `src/CMakeLists.txt`: the target `prefix_qdmi` and `prefix_qdmi.cpp`
 - Rename `src/prefix_qdmi.cpp` accordingly
-- `src/prefix_qdmi.cpp`: adopt the includes and the prefix of each function
+- `src/prefix_qdmi.cpp`: adapt the includes and the prefix of each function
 - Rename `test/test_prefix_qdmi.cpp` accordingly
-- `test/test_prefix_qdmi.cpp`: adopt the includes and the prefix of each function
+- `test/test_prefix_qdmi.cpp`: adapt the includes and the prefix of each function
+- `pyproject.toml`: adapt the package name and several paths
+- `python/prefix`: adapt the package namespace in the directory structure
+- `python/prefix/qdmi/*`: adapt the prefix throughout the package
+- `test/python/*`: adapt the prefix throughout the tests
+- `docs/*`: the package name and several paths
 
 ## Working with the Template {#template-working}
 
-The template is structured into three directories plus the top-level `CMakeLists.txt`. The top-level
+The template is structured into five directories. The top-level
 `CMakeLists.txt` contains settings for the entire project. Some additional CMake code that imports
 required dependencies is outsourced into `cmake/`.
 
@@ -77,6 +78,15 @@ The implementation in the `src/` directory is complemented with a testing framew
 `.cpp` source file already contains some examples for tests. They are meant to serve as an
 inspiration, and more tests should be implemented to cover everything in your device implementation.
 
+The `python` directory in combination with the `pyproject.toml` file contains some basic packaging setup
+for distributing the device implementation as a Python package.
+
+The `docs/` directory contains the documentation for the template. This is intended to be used as a
+starting point for your own documentation.
+
+Some more files are present in the root directory of the template, such as `LICENSE`, `README.md`, and
+`.gitignore`.
+
 ## Building the Template and Running the Tests {#template-building}
 
 All following commands are meant to be executed from the root directory of the template. After
@@ -84,7 +94,8 @@ configuring your project (see [Configuring the Template](#template-configure)), 
 project with the following command:
 
 ```sh
-cmake --build build
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build --config Release
 ```
 
 If you only want to build a specific target, you can append, for example,
