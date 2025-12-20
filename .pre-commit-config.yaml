@@ -45,6 +45,12 @@ repos:
       - id: rst-directive-colons
       - id: rst-inline-touching-normal
 
+  # Check for license headers
+  - repo: https://github.com/emzeat/mz-lictools
+    rev: v2.9.0
+    hooks:
+      - id: license-tools
+
   # Check for spelling
   - repo: https://github.com/crate-ci/typos
     rev: v1.40.0
@@ -73,10 +79,6 @@ repos:
     hooks:
       - id: prettier
         types_or: [yaml, markdown, html, css, scss, javascript, json]
-        args:
-          - --print-width=100
-          - --prose-wrap=always
-          - --tab-width=2
         exclude: ^docs/header\.html$
 
   # Catch common capitalization mistakes

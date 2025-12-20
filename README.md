@@ -1,21 +1,3 @@
-<!----------------------------------------------------------------------------
-Copyright 2024 Munich Quantum Software Stack Project
-
-Licensed under the Apache License, Version 2.0 with LLVM Exceptions (the
-"License"); you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/develop/LICENSE
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
-License for the specific language governing permissions and limitations under
-the License.
-
-SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
--------------------------------------------------------------------------- -->
-
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Munich-Quantum-Software-Stack/QDMI/develop/docs/_static/mqss_logo_dark.svg" width="20%">
@@ -101,7 +83,7 @@ The code is publicly available and hosted on GitHub at
 ### Under which license is QDMI released?
 
 QDMI is released under the Apache License v2.0 with LLVM Exceptions. See
-[LICENSE](https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/develop/LICENSE) for more
+[LICENSE](https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/develop/LICENSE.md) for more
 information. Any contribution to the project is assumed to be under the same license.
 
 ### Why is it written in C and not in Python?
