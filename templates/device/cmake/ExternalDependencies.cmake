@@ -44,7 +44,7 @@ else()
     STATUS "[qdmi][template] QDMI will be included via FetchContent - done")
 endif()
 
-if(BUILD_MY_DEVICE_TESTS)
+if(BUILD_MY_QDMI_TESTS)
   set(gtest_force_shared_crt
       ON
       CACHE BOOL "" FORCE)
