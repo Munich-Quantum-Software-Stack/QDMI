@@ -73,6 +73,10 @@ if(CONFIGURE_TEMPLATE)
        "${TEMPLATE_PATH}/test/test_${TEMPLATE_prefix}_device.cpp")
   file(RENAME "${TEMPLATE_PATH}/cmake/my-qdmi-device-config.cmake.in"
        "${TEMPLATE_PATH}/cmake/${TEMPLATE_prefix}-qdmi-device-config.cmake.in")
+  file(RENAME "${TEMPLATE_PATH}/docs/_static/my_logo.svg"
+       "${TEMPLATE_PATH}/docs/_static/${TEMPLATE_prefix}_logo.svg")
+  file(RENAME "${TEMPLATE_PATH}/docs/_static/my_logo_dark.svg"
+       "${TEMPLATE_PATH}/docs/_static/${TEMPLATE_prefix}_logo_dark.svg")
 
   message(
     STATUS
