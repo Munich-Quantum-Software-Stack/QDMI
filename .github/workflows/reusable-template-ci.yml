@@ -20,12 +20,17 @@ jobs:
       - name: Configure template
         working-directory: qdmi
         run: >
-          cmake -DCONFIGURE_TEMPLATE=ON \
+          cmake -DQDMI_GENERATE_TEMPLATE=ON \
                 -DTEMPLATE_PREFIX="MQSS" \
-                -DTEMPLATE_PATH="$GITHUB_WORKSPACE/template" \
+                -DTEMPLATE_PATH="$GITHUB_WORKSPACE" \
                 -S . -B build
+      - name: Generate template
+        working-directory: qdmi
+        run: cmake --build build --target qdmi-template
+      - name: Delete source repository and build directory
+        run: |
+          rm -rf qdmi build
       - name: Initialize as git repository (with main as branch name) and commit
-        working-directory: template
         run: |
           git config --global init.defaultBranch main
           git config --global user.name "GitHub Actions"
@@ -34,7 +39,6 @@ jobs:
           git add .
           git commit -m "🎉 Initial commit"
       - name: Build template
-        working-directory: template
         run: |
           cmake -G Ninja -S . -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_MQSS_QDMI_TESTS=ON
           cmake --build build --config Release
@@ -43,15 +47,11 @@ jobs:
         with:
           version: "1.15.0"
       - name: Build docs
-        working-directory: template
         run: |
           cmake -G Ninja -S . -B build_docs -DCMAKE_BUILD_TYPE=Release -DBUILD_MQSS_QDMI_DOCS=ON -DBUILD_MQSS_QDMI_TESTS=OFF
           cmake --build build_docs --config Release --target mqss_qdmi_device_docs
       - uses: pypa/cibuildwheel@63fd63b352a9a8bdcc24791c9dbee952ee9a8abc # v3.3.0
-        with:
-          package-dir: template
       - name: Verify clean directory
-        working-directory: template
         run: git diff --exit-code
       - name: Upload wheels
         uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
@@ -64,15 +64,12 @@ jobs:
           enable-cache: true
           save-cache: ${{ github.ref == 'refs/heads/main' }}
       - name: Build SDist
-        working-directory: template
         run: uv build --sdist
       - name: Check metadata
-        working-directory: template
         run: uvx twine check dist/*
       - name: Run check-sdist
-        working-directory: template
         run: uvx check-sdist --inject-junk
       - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: ${{ github.event_name == 'pull_request' && 'dev-' || '' }}cibw-sdist
-          path: template/dist/*.tar.gz
+          path: dist/*.tar.gz

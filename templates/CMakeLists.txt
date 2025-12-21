@@ -15,73 +15,48 @@
 #
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
-option(CONFIGURE_TEMPLATE "Configure the template" OFF)
+# Template instantiation should be an explicit action (build target), not a
+# configure-time side effect.
+option(QDMI_GENERATE_TEMPLATE
+       "Enable targets to generate a prefixed device template" OFF)
 
-if(CONFIGURE_TEMPLATE)
+if(QDMI_GENERATE_TEMPLATE)
   set(TEMPLATE_PREFIX
       "MY"
       CACHE STRING "Prefix for the template")
-  string(TOLOWER ${TEMPLATE_PREFIX} TEMPLATE_prefix)
+  string(TOLOWER "${TEMPLATE_PREFIX}" TEMPLATE_prefix)
+
   set(TEMPLATE_PATH
       "${CMAKE_SOURCE_DIR}/../${TEMPLATE_prefix}_qdmi_device"
-      CACHE STRING "Path to the template")
-  file(REAL_PATH ${TEMPLATE_PATH} TEMPLATE_PATH)
-  message(
-    STATUS
-      "[qdmi] Configuring template for prefix \"${TEMPLATE_PREFIX}\" in '${TEMPLATE_PATH}'"
-  )
-  file(GLOB_RECURSE QDMI_TEMPLATE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/device/**.*)
-  foreach(file ${QDMI_TEMPLATE_FILES})
-    file(RELATIVE_PATH rel_file ${CMAKE_CURRENT_SOURCE_DIR}/device ${file})
-    get_filename_component(rel_dir ${rel_file} DIRECTORY)
-    get_filename_component(file_name ${rel_file} NAME)
-    file(MAKE_DIRECTORY ${TEMPLATE_PATH}/${rel_dir})
-    file(READ ${file} file_content)
-    string(
-      REGEX
-      REPLACE "set\\(QDMI_PREFIX \"MY\"\\)"
-              "set(QDMI_PREFIX \"${TEMPLATE_PREFIX}\")" file_content
-              "${file_content}")
-    string(REGEX REPLACE "MY_" "${TEMPLATE_PREFIX}_" file_content
-                         "${file_content}")
-    string(REGEX REPLACE "MY QDMI" "${TEMPLATE_PREFIX} QDMI" file_content
-                         "${file_content}")
-    string(REGEX REPLACE "my_" "${TEMPLATE_prefix}_" file_content
-                         "${file_content}")
-    string(REGEX REPLACE "my-" "${TEMPLATE_prefix}-" file_content
-                         "${file_content}")
-    string(REGEX REPLACE "my_" "${TEMPLATE_prefix}_" file_content
-                         "${file_content}")
-    string(REGEX REPLACE "python/my" "python/${TEMPLATE_prefix}" file_content
-                         "${file_content}")
-    string(REGEX REPLACE "my/qdmi" "${TEMPLATE_prefix}/qdmi" file_content
-                         "${file_content}")
-    string(REGEX REPLACE "my-qdmi" "${TEMPLATE_prefix}-qdmi" file_content
-                         "${file_content}")
-    string(REGEX REPLACE "my.qdmi" "${TEMPLATE_prefix}.qdmi" file_content
-                         "${file_content}")
-    string(REGEX REPLACE "\"my\"" "\"${TEMPLATE_PREFIX}\"" file_content
-                         "${file_content}")
-    file(WRITE ${TEMPLATE_PATH}/${rel_dir}/${file_name} "${file_content}")
-  endforeach()
+      CACHE PATH "Path where the instantiated template should be generated")
+  file(REAL_PATH "${TEMPLATE_PATH}" TEMPLATE_PATH)
 
-  file(RENAME "${TEMPLATE_PATH}/python/my"
-       "${TEMPLATE_PATH}/python/${TEMPLATE_prefix}")
-  file(RENAME "${TEMPLATE_PATH}/src/my_device.cpp"
-       "${TEMPLATE_PATH}/src/${TEMPLATE_prefix}_device.cpp")
-  file(RENAME "${TEMPLATE_PATH}/test/test_my_device.cpp"
-       "${TEMPLATE_PATH}/test/test_${TEMPLATE_prefix}_device.cpp")
-  file(RENAME "${TEMPLATE_PATH}/cmake/my-qdmi-device-config.cmake.in"
-       "${TEMPLATE_PATH}/cmake/${TEMPLATE_prefix}-qdmi-device-config.cmake.in")
-  file(RENAME "${TEMPLATE_PATH}/docs/_static/my_logo.svg"
-       "${TEMPLATE_PATH}/docs/_static/${TEMPLATE_prefix}_logo.svg")
-  file(RENAME "${TEMPLATE_PATH}/docs/_static/my_logo_dark.svg"
-       "${TEMPLATE_PATH}/docs/_static/${TEMPLATE_prefix}_logo_dark.svg")
+  set(QDMI_TEMPLATE_GENERATOR_SCRIPT
+      "${CMAKE_SOURCE_DIR}/cmake/GenerateTemplate.cmake")
 
-  message(
-    STATUS
-      "[qdmi] Configuring template for prefix \"${TEMPLATE_PREFIX}\" in '${TEMPLATE_PATH}' - done"
-  )
+  add_custom_target(
+    qdmi-template
+    COMMAND
+      "${CMAKE_COMMAND}"
+      -DQDMI_TEMPLATE_SOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR}/device
+      -DQDMI_TEMPLATE_OUTPUT_DIR=${TEMPLATE_PATH}
+      -DQDMI_TEMPLATE_PREFIX=${TEMPLATE_PREFIX} -DQDMI_TEMPLATE_FORCE=OFF -P
+      "${QDMI_TEMPLATE_GENERATOR_SCRIPT}"
+    COMMENT
+      "Generate QDMI device template in ${TEMPLATE_PATH} (prefix: ${TEMPLATE_PREFIX})"
+    VERBATIM)
+
+  add_custom_target(
+    qdmi-template-force
+    COMMAND
+      "${CMAKE_COMMAND}"
+      -DQDMI_TEMPLATE_SOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR}/device
+      -DQDMI_TEMPLATE_OUTPUT_DIR=${TEMPLATE_PATH}
+      -DQDMI_TEMPLATE_PREFIX=${TEMPLATE_PREFIX} -DQDMI_TEMPLATE_FORCE=ON -P
+      "${QDMI_TEMPLATE_GENERATOR_SCRIPT}"
+    COMMENT
+      "Force-regenerate QDMI device template in ${TEMPLATE_PATH} (overwrites)"
+    VERBATIM)
 endif()
 
 add_subdirectory(device)

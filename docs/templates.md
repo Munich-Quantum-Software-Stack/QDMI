@@ -12,23 +12,31 @@ The following sections describe how to set up and use the template.
 ## Creating a new Project {#template-create}
 
 The code for the template is contained in the `template/` directory of the QDMI repository. To start
-a new project based on the template, perform the following CMake command from the main project
-directory. Keep in mind to replace the prefix and the path as desired. To follow the naming
-conventions in QDMI, pick a prefix with uppercase letters.
+a new project based on the template, configure QDMI once to define the prefix and output path, then
+explicitly build the `qdmi-template` target that writes the files.
 
 \note An internet connection is needed for this step as the QDMI repository will be fetched from
 GitHub.
 
 ```sh
-cmake -DCONFIGURE_TEMPLATE=ON \       # activate template creation
-      -DTEMPLATE_PREFIX="PREFIX" \    # set your prefix here
-      -DTEMPLATE_PATH="path/to/dir" \ # set the path to your project
+cmake -DQDMI_GENERATE_TEMPLATE=ON \
+      -DTEMPLATE_PREFIX="PREFIX" \
+      -DTEMPLATE_PATH="path/to/dir" \
       -S . -B build
+
+# actually write the template files
+cmake --build build --target qdmi-template
 ```
 
-This command adds a `build/` directory to your project that stores all the build files. The
-configure step above only needs to be performed once. If the option `TEMPLATE_PATH` is not given it
-will be placed in `PREFIX_qdmi_device` relative to the parent directory where QDMI was cloned in.
+If the option `TEMPLATE_PATH` is not given it will be placed in `PREFIX_qdmi_device` relative to the
+parent directory where QDMI was cloned in.
+
+If you want to regenerate into an existing directory, use:
+
+```sh
+cmake --build build --target qdmi-template-force
+```
+
 After this step you can directly start implementing your device in C++.
 Example implementations are provided in the `examples/` directory. See
 [Examples](examples.md) for more information.
