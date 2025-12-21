@@ -27,8 +27,11 @@ jobs:
       - name: Initialize as git repository (with main as branch name) and commit
         run: |
           git config --global init.defaultBranch main
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
           git init
           git add .
+          git rm --cached qdmi
           git commit -m "🎉 Initial commit"
       - name: Build template
         run: |
