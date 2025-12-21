@@ -24,11 +24,11 @@ jobs:
                 -DTEMPLATE_PREFIX="MQSS" \
                 -DTEMPLATE_PATH="$GITHUB_WORKSPACE" \
                 -S . -B build
-      - name: Initialize as git repository and commit
+      - name: Initialize as git repository (with main as branch name) and commit
         run: |
+          git config --global init.defaultBranch main
           git init
-          git add .
-          git rm -r --cached qdmi
+          git add . --exclude qdmi
           git commit -m "🎉 Initial commit"
       - name: Build template
         run: |
