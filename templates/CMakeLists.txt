@@ -54,11 +54,11 @@ if(CONFIGURE_TEMPLATE)
                          "${file_content}")
     string(REGEX REPLACE "python/my" "python/${TEMPLATE_prefix}" file_content
                          "${file_content}")
-    string(REGEX REPLACE "my.qdmi" "${TEMPLATE_prefix}.qdmi" file_content
-                         "${file_content}")
     string(REGEX REPLACE "my/qdmi" "${TEMPLATE_prefix}/qdmi" file_content
                          "${file_content}")
     string(REGEX REPLACE "my-qdmi" "${TEMPLATE_prefix}-qdmi" file_content
+                         "${file_content}")
+    string(REGEX REPLACE "my.qdmi" "${TEMPLATE_prefix}.qdmi" file_content
                          "${file_content}")
     string(REGEX REPLACE "\"my\"" "\"${TEMPLATE_PREFIX}\"" file_content
                          "${file_content}")
