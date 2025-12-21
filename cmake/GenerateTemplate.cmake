@@ -20,7 +20,8 @@
 # Expected variables (passed via -D...): - QDMI_TEMPLATE_SOURCE_DIR: path to
 # templates/device - QDMI_TEMPLATE_OUTPUT_DIR: output directory to
 # create/populate - QDMI_TEMPLATE_PREFIX: uppercase prefix, e.g. "ABC" -
-# QDMI_TEMPLATE_FORCE: ON/OFF, overwrite destination if it already exists
+# QDMI_TEMPLATE_FORCE: ON/OFF, allow overwriting conflicting files -
+# QDMI_TEMPLATE_CLEAN: ON/OFF, remove the entire output dir before generating
 
 cmake_minimum_required(VERSION 3.24)
 
@@ -36,6 +37,11 @@ if("${QDMI_TEMPLATE_FORCE}" STREQUAL "")
   set(QDMI_TEMPLATE_FORCE OFF)
 endif()
 
+set(QDMI_TEMPLATE_CLEAN "${QDMI_TEMPLATE_CLEAN}")
+if("${QDMI_TEMPLATE_CLEAN}" STREQUAL "")
+  set(QDMI_TEMPLATE_CLEAN OFF)
+endif()
+
 file(REAL_PATH "${QDMI_TEMPLATE_SOURCE_DIR}" QDMI_TEMPLATE_SOURCE_DIR)
 file(REAL_PATH "${QDMI_TEMPLATE_OUTPUT_DIR}" QDMI_TEMPLATE_OUTPUT_DIR)
 
@@ -48,29 +54,31 @@ if(NOT EXISTS "${QDMI_TEMPLATE_SOURCE_DIR}")
   )
 endif()
 
-# Destination handling
+# Destination handling By default, we allow generating into an existing
+# directory (even if non-empty) and simply overwrite files that belong to the
+# template. This avoids surprising configure-time side effects while keeping the
+# generation convenient.
 if(EXISTS "${QDMI_TEMPLATE_OUTPUT_DIR}")
-  if(QDMI_TEMPLATE_FORCE)
+  if(QDMI_TEMPLATE_CLEAN)
+    message(
+      STATUS "[qdmi-template] Cleaning output dir: ${QDMI_TEMPLATE_OUTPUT_DIR}")
+    file(REMOVE_RECURSE "${QDMI_TEMPLATE_OUTPUT_DIR}")
+    file(MAKE_DIRECTORY "${QDMI_TEMPLATE_OUTPUT_DIR}")
+  else()
+    # Keep the directory and just overwrite files as needed.
     message(
       STATUS
-        "[qdmi-template] Removing existing output dir: ${QDMI_TEMPLATE_OUTPUT_DIR}"
+        "[qdmi-template] Output directory exists; updating in-place: ${QDMI_TEMPLATE_OUTPUT_DIR}"
     )
-    file(REMOVE_RECURSE "${QDMI_TEMPLATE_OUTPUT_DIR}")
-  else()
-    message(
-      FATAL_ERROR
-        "[qdmi-template] Output directory already exists: ${QDMI_TEMPLATE_OUTPUT_DIR}. "
-        "Re-run with -DQDMI_TEMPLATE_FORCE=ON to overwrite.")
   endif()
+else()
+  file(MAKE_DIRECTORY "${QDMI_TEMPLATE_OUTPUT_DIR}")
 endif()
 
 message(
   STATUS
     "[qdmi-template] Generating device template for prefix '${QDMI_TEMPLATE_PREFIX}' in '${QDMI_TEMPLATE_OUTPUT_DIR}'"
 )
-
-# Copy directory skeleton first
-file(MAKE_DIRECTORY "${QDMI_TEMPLATE_OUTPUT_DIR}")
 
 # Collect all files under the template source dir, but only regular files.
 file(

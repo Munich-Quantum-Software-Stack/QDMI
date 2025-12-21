@@ -47,7 +47,7 @@ The corresponding documentation has been updated to reflect these changes.
 In addition, the template instantiation workflow has changed: the template files are no longer
 written as a side effect of the CMake configure step. Instead, configuration only defines the
 prefix and output path, and the actual file generation happens when the explicit build target
-`qdmi-template` is invoked (use `qdmi-template-force` to overwrite an existing output directory).
+`qdmi-template` is invoked (use `qdmi-template-clean` to overwrite an existing output directory).
 
 ## [1.2.0] - 2025-12-01
 
