@@ -16,9 +16,9 @@ jobs:
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
-          path: qdmi
+          path: ../qdmi
       - name: Configure template
-        working-directory: qdmi
+        working-directory: ../qdmi
         run: >
           cmake -DCONFIGURE_TEMPLATE=ON \
                 -DTEMPLATE_PREFIX="MQSS" \
