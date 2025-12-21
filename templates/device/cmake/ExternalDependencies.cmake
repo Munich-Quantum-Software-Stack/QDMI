@@ -24,56 +24,71 @@ if(TARGET qdmi::qdmi)
 else()
   message(STATUS "[qdmi][template] QDMI will be included via FetchContent")
   # cmake-format: off
-  set(QDMI_VERSION 1.0.0
+  set(QDMI_VERSION 1.2.1
           CACHE STRING "QDMI version")
-  set(QDMI_REV "develop"
+  set(QDMI_REV "v1.2.x"
           CACHE STRING "QDMI identifier (tag, branch or commit hash)")
   set(QDMI_REPO_OWNER "Munich-Quantum-Software-Stack"
           CACHE STRING "QDMI repository owner (change when using a fork)")
+  set(QDMI_INSTALL
+      OFF
+      CACHE BOOL "Generate installation instructions for QDMI")
   # cmake-format: on
-
-  if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.24)
-    FetchContent_Declare(
-      qdmi
-      GIT_REPOSITORY https://github.com/${QDMI_REPO_OWNER}/qdmi.git
-      GIT_TAG ${QDMI_REV}
-      FIND_PACKAGE_ARGS ${QDMI_VERSION})
-    list(APPEND FETCH_PACKAGES qdmi)
-  else()
-    find_package(qdmi ${QDMI_VERSION} QUIET)
-    if(NOT qdmi_FOUND)
-      FetchContent_Declare(
-        qdmi
-        GIT_REPOSITORY https://github.com/${QDMI_REPO_OWNER}/qdmi.git
-        GIT_TAG ${QDMI_REV})
-      list(APPEND FETCH_PACKAGES qdmi)
-    endif()
-  endif()
+  FetchContent_Declare(
+    qdmi
+    GIT_REPOSITORY https://github.com/${QDMI_REPO_OWNER}/qdmi.git
+    GIT_TAG ${QDMI_REV}
+    FIND_PACKAGE_ARGS ${QDMI_VERSION})
+  list(APPEND FETCH_PACKAGES qdmi)
   message(
     STATUS "[qdmi][template] QDMI will be included via FetchContent - done")
 endif()
 
-if(BUILD_MY_DEVICE_TESTS)
+if(BUILD_MY_QDMI_TESTS)
   set(gtest_force_shared_crt
       ON
       CACHE BOOL "" FORCE)
   set(GTEST_VERSION
-      1.14.0
+      1.17.0
       CACHE STRING "Google Test version")
   set(GTEST_URL
       https://github.com/google/googletest/archive/refs/tags/v${GTEST_VERSION}.tar.gz
   )
-  if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.24)
-    FetchContent_Declare(googletest URL ${GTEST_URL} FIND_PACKAGE_ARGS
-                                        ${GTEST_VERSION} NAMES GTest)
-    list(APPEND FETCH_PACKAGES googletest)
-  else()
-    find_package(googletest ${GTEST_VERSION} QUIET NAMES GTest)
-    if(NOT googletest_FOUND)
-      FetchContent_Declare(googletest URL ${GTEST_URL})
-      list(APPEND FETCH_PACKAGES googletest)
-    endif()
-  endif()
+  FetchContent_Declare(googletest URL ${GTEST_URL} FIND_PACKAGE_ARGS
+                                      ${GTEST_VERSION} NAMES GTest)
+  list(APPEND FETCH_PACKAGES googletest)
+endif()
+
+if(BUILD_MY_QDMI_DOCS)
+  set(CMAKE_POLICY_DEFAULT_CMP0116
+      NEW
+      CACHE STRING
+            "Set the default CMP0116 policy to NEW for documentation builds")
+  set(DOXYGEN_VERSION
+      1.15.0
+      CACHE STRING "Doxygen version")
+  set(DOXYGEN_REV
+      "7cca38ba5185457e6d9495bf963d4cdeacebc25a"
+      CACHE STRING "Doxygen identifier (tag, branch or commit hash)")
+  FetchContent_Declare(
+    Doxygen
+    GIT_REPOSITORY https://github.com/doxygen/doxygen.git
+    GIT_TAG ${DOXYGEN_REV}
+    FIND_PACKAGE_ARGS ${DOXYGEN_VERSION})
+  list(APPEND FETCH_PACKAGES Doxygen)
+
+  set(DOXYGEN_AWESOME_VERSION
+      2.4.1
+      CACHE STRING "Doxygen Awesome version")
+  set(DOXYGEN_AWESOME_REV
+      "1f3620084ff75734ed192101acf40e9dff01d848"
+      CACHE STRING "Doxygen Awesome identifier (tag, branch or commit hash)")
+  FetchContent_Declare(
+    doxygen-awesome-css
+    GIT_REPOSITORY https://github.com/jothepro/doxygen-awesome-css.git
+    GIT_TAG ${DOXYGEN_AWESOME_REV}
+    FIND_PACKAGE_ARGS ${DOXYGEN_AWESOME_VERSION})
+  list(APPEND FETCH_PACKAGES doxygen-awesome-css)
 endif()
 
 # Make all declared dependencies available.

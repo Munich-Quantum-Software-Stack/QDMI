@@ -18,6 +18,9 @@ clients compiled against a different minor or major version.
 
 ### Changed
 
+- 🚸 Modernize QDMI device template (C++20, boilerplate docs, installation instructions, Python
+  distribution, and more) ([#285]) ([\@burgholzer])
+- ♻️ Update example libraries and test targets to C++20 ([#285]) ([\@burgholzer])
 - 🚸 Improve prefix handling by making the device target name flexible ([#274], [#275])
   ([\@burgholzer])
 - 👨‍💻 Turn off building QDMI documentation by default ([#269]) ([\@burgholzer])
@@ -102,6 +105,7 @@ changelogs._
 
 <!-- PR links -->
 
+[#285]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/285
 [#275]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/275
 [#274]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/274
 [#273]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/273

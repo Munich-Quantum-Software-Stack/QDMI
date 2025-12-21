@@ -49,6 +49,9 @@ jobs:
       # configure CMake
       - name: Configure CMake for QDMI Installation
         run: cmake -S . -B install-build -DCMAKE_BUILD_TYPE=Release ${{ inputs.cmake-args }}
+      # build the project
+      - name: Build the project
+        run: cmake --build install-build --config Release
       # install the project
       - name: Install QDMI
         run: cmake --install install-build --prefix install-dir

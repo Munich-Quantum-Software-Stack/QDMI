@@ -15,43 +15,70 @@
 #
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
-# set required cmake version
-cmake_minimum_required(VERSION 3.19...3.30)
+cmake_minimum_required(VERSION 3.24...4.2)
 
-option(CXX_DEVICE "Build a C++ device" ON)
+project(
+  my-qdmi-device
+  LANGUAGES C CXX
+  VERSION 0.1.0
+  DESCRIPTION "MY QDMI Device Implementation")
+
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+  set(CMAKE_BUILD_TYPE
+      Release
+      CACHE STRING "Choose the type of build." FORCE)
+  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release"
+                                               "MinSizeRel" "RelWithDebInfo")
+endif()
+
+option(USE_INSTALLED_MY_QDMI_DEVICE
+       "Use an installed version of the MY QDMI Device to build tests" OFF)
+
+if(USE_INSTALLED_MY_QDMI_DEVICE)
+  find_package(my-qdmi-device REQUIRED ${PROJECT_VERSION})
+endif()
+
+# Generate compile_commands.json to make it easier to work with clang based
+# tools
+set(CMAKE_EXPORT_COMPILE_COMMANDS
+    ON
+    CACHE BOOL "Export compile commands" FORCE)
+
+set(CMAKE_VERIFY_INTERFACE_HEADER_SETS
+    ON
+    CACHE BOOL "Verify interface header sets" FORCE)
 
 set(QDMI_PREFIX "MY")
 
-project(
-  MyDevice
-  LANGUAGES C
-  VERSION 0.0.1
-  DESCRIPTION "My QDMI Device Implementation")
-
-if(CXX_DEVICE)
-  enable_language(CXX)
-endif()
-
-# make scripts available to cmake
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-
 # check if this is the master project or used via add_subdirectory
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
-  set(MY_DEVICE_MASTER_PROJECT ON)
+  set(MY_QDMI_MASTER_PROJECT ON)
 else()
-  set(MY_DEVICE_MASTER_PROJECT OFF)
+  set(MY_QDMI_MASTER_PROJECT OFF)
 endif()
 
-option(BUILD_MY_DEVICE_TESTS "Build tests for MyDevice"
-       ${MY_DEVICE_MASTER_PROJECT})
+option(BUILD_MY_QDMI_TESTS "Build tests for the MY QDMI device"
+       ${MY_QDMI_MASTER_PROJECT})
+option(BUILD_MY_QDMI_DOCS "Build documentation for the MY QDMI device" OFF)
 
+# Manage external dependencies
 include(cmake/ExternalDependencies.cmake)
 
-# add main library code
-add_subdirectory(src)
+# Set target name
+set(QDMI_TARGET_NAME "my-qdmi-device")
 
-# enable testing
-if(BUILD_MY_DEVICE_TESTS)
+# Add the main library code
+if(NOT USE_INSTALLED_MY_QDMI_DEVICE)
+  add_subdirectory(src)
+endif()
+
+# Add the documentation
+if(BUILD_MY_QDMI_DOCS)
+  add_subdirectory(docs)
+endif()
+
+# Add the tests
+if(BUILD_MY_QDMI_TESTS)
   enable_testing()
   include(GoogleTest)
   add_subdirectory(test)
