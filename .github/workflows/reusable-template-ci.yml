@@ -16,14 +16,15 @@ jobs:
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
-          path: ../qdmi
+          path: qdmi
       - name: Configure template
-        working-directory: ../qdmi
+        working-directory: qdmi
         run: >
           cmake -DCONFIGURE_TEMPLATE=ON \
                 -DTEMPLATE_PREFIX="MQSS" \
-                -DTEMPLATE_PATH="$GITHUB_WORKSPACE" \
+                -DTEMPLATE_PATH="$GITHUB_WORKSPACE/template" \
                 -S . -B build
+          cd template
       - name: Initialize as git repository (with main as branch name) and commit
         run: |
           git config --global init.defaultBranch main
