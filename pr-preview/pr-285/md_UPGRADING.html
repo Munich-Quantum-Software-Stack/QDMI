@@ -204,6 +204,7 @@ $(function(){initNavTree('md_UPGRADING.html','',''); });
 <li>and more.</li>
 </ul>
 <p>The corresponding documentation has been updated to reflect these changes.</p>
+<p>In addition, the template instantiation workflow has changed: the template files are no longer written as a side effect of the CMake configure step. Instead, configuration only defines the prefix and output path, and the actual file generation happens when the explicit build target <span class="tt">qdmi-template</span> is invoked (use <span class="tt">qdmi-template-force</span> to overwrite an existing output directory).</p>
 <h1><a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.1.0...v1.2.0">1.2.0</a> - 2025-12-01</h1>
 <p>Version 1.2.0 introduces several breaking changes, primarily related to type system improvements, duration/length unit handling, and API enhancements for neutral atom devices. Please review all sections carefully when upgrading.</p>
 <h2>New Program Formats (Non-Breaking)</h2>
