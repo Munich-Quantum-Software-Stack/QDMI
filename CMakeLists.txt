@@ -19,7 +19,7 @@
 cmake_minimum_required(VERSION 3.24...4.2)
 project(
   qdmi
-  LANGUAGES C
+  LANGUAGES C CXX
   VERSION 1.3.0
   DESCRIPTION "QDMI –– Quantum Device Management Interface")
 
@@ -159,21 +159,21 @@ if(BUILD_QDMI_EXAMPLES OR BUILD_QDMI_TESTS)
   add_subdirectory(examples)
 endif()
 
+# add templates
+if(BUILD_QDMI_TEMPLATES OR BUILD_QDMI_TESTS)
+  # if testing is enabled, also enable building the tests in the templates
+  set(BUILD_MY_QDMI_TESTS
+      ${BUILD_QDMI_TESTS}
+      CACHE BOOL "Build tests for my-qdmi-device" FORCE)
+  add_subdirectory(templates)
+endif()
+
 # add test code
 if(BUILD_QDMI_TESTS)
   enable_testing()
   include(GoogleTest)
   # include the tests itself
   add_subdirectory(test)
-endif()
-
-# add templates
-if(BUILD_QDMI_TEMPLATES OR BUILD_QDMI_TESTS)
-  # if testing is enabled, also enable building the tests in the templates
-  set(BUILD_MY_DEVICE_TESTS
-      ${BUILD_QDMI_TESTS}
-      CACHE BOOL "Build tests for MyDevice" FORCE)
-  add_subdirectory(templates)
 endif()
 
 # Installation instructions for the main library
