@@ -24,7 +24,7 @@ if(TARGET qdmi::qdmi)
 else()
   message(STATUS "[qdmi][template] QDMI will be included via FetchContent")
   # cmake-format: off
-  set(QDMI_VERSION 1.2.1
+  set(QDMI_VERSION 1.2.2
           CACHE STRING "QDMI version")
   set(QDMI_REV "v1.2.x"
           CACHE STRING "QDMI identifier (tag, branch or commit hash)")
