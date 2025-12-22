@@ -612,8 +612,8 @@ Submitting a Job</h2>
 <div class="line">  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; job-&gt;num_shots; ++i) {</div>
 <div class="line">    <span class="comment">// generate random bitstring</span></div>
 <div class="line">    std::string result(num_qubits, <span class="charliteral">&#39;0&#39;</span>);</div>
-<div class="line">    std::generate(result.begin(), result.end(),</div>
-<div class="line">                  [&amp;]() { return CXX_QDMI_generate_bit() ? <span class="stringliteral">&#39;1&#39;</span> : <span class="stringliteral">&#39;0&#39;</span>; });</div>
+<div class="line">    std::ranges::generate(</div>
+<div class="line">        result, [&amp;]() { <span class="keywordflow">return</span> CXX_QDMI_generate_bit() ? <span class="charliteral">&#39;1&#39;</span> : <span class="charliteral">&#39;0&#39;</span>; });</div>
 <div class="line">    job-&gt;results.emplace_back(std::move(result));</div>
 <div class="line">  }</div>
 <div class="line">  <span class="comment">// Generate random complex numbers and calculate the norm</span></div>
