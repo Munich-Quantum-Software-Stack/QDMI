@@ -11,6 +11,10 @@ clients compiled against a different minor or major version.
 
 ## [Unreleased]
 
+## [1.2.1] - 2025-12-22
+
+_If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#121)._
+
 ### Added
 
 - 🚸 Provide compile definitions for inferring device and QDMI versions automatically ([#272])
@@ -32,6 +36,8 @@ clients compiled against a different minor or major version.
   QDMI ([#270]) ([\@burgholzer])
 
 ## [1.2.0] - 2025-12-01
+
+_If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#120)._
 
 ### Added
 
@@ -99,7 +105,8 @@ changelogs._
 
 <!-- Version links -->
 
-[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.0...HEAD
+[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.1...HEAD
+[1.2.1]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.2.1
 [1.2.0]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.2.0
 [1.1.0]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.1.0
 
