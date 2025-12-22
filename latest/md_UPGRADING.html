@@ -185,7 +185,8 @@ $(function(){initNavTree('md_UPGRADING.html','',''); });
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>This document describes breaking changes and provides guidance for upgrading between versions. For a complete list of changes, including minor and patch releases, please refer to the <a class="el" href="md_CHANGELOG.html">changelog</a>.</p>
-<h1><a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.0...HEAD">Unreleased</a></h1>
+<h1><a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.1...HEAD">Unreleased</a></h1>
+<h1><a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.0...v1.2.1">1.2.1</a> - 2025-12-22</h1>
 <h2>Fix for using Installed Version of QDMI</h2>
 <p>In order to avoid a mismatch in the target name for the <span class="tt">qdmi_project_warnings</span> target between the source and installed versions of QDMI, the target alias has been adjusted. If your project relies on <span class="tt">qdmi::project_warnings</span>, you need to change it to <span class="tt">qdmi::qdmi_project_warnings</span>. More rationale is available in <a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/270">the PR description</a>.</p>
 <h2>Changes to Prefix Handling</h2>
