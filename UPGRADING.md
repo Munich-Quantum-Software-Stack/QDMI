@@ -6,6 +6,8 @@ complete list of changes, including minor and patch releases, please refer to th
 
 ## [Unreleased]
 
+## [1.2.1] - 2025-12-22
+
 ### Fix for using Installed Version of QDMI
 
 In order to avoid a mismatch in the target name for the `qdmi_project_warnings` target between the
@@ -308,5 +310,6 @@ For quick reference, here are all breaking changes in v1.2.0:
 5. **`QDMI_JOB_STATUS` enum**: Reordered to reflect job lifecycle
 6. **CMake**: Minimum version raised to 3.24
 
-[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.0...HEAD
+[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.1...HEAD
+[1.2.1]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.1.0...v1.2.0
