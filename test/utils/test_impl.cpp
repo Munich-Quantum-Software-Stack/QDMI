@@ -45,7 +45,7 @@ void QDMIImplementationTest::SetUp() {
   auto test_name =
       test_info->test_suite_name() + std::string("_") + test_info->name();
   // replace all `/` with `_` in the test name
-  std::replace(test_name.begin(), test_name.end(), '/', '_');
+  std::ranges::replace(test_name, '/', '_');
 
   config_file_name = "qdmi_" + test_name + ".conf";
   std::ofstream conf_file(config_file_name);
