@@ -41,6 +41,8 @@
 #include <utility>
 #include <vector>
 
+// NOLINTBEGIN(*-pro-bounds-avoid-unchecked-container-access,*-throwing-static-initialization)
+
 enum class CXX_QDMI_DEVICE_SESSION_STATUS : uint8_t { ALLOCATED, INITIALIZED };
 
 struct CXX_QDMI_Device_Session_impl_d {
@@ -464,8 +466,8 @@ int CXX_QDMI_device_job_submit(CXX_QDMI_Device_Job job) {
   for (size_t i = 0; i < job->num_shots; ++i) {
     // generate random bitstring
     std::string result(num_qubits, '0');
-    std::generate(result.begin(), result.end(),
-                  [&]() { return CXX_QDMI_generate_bit() ? '1' : '0'; });
+    std::ranges::generate(
+        result, [&]() { return CXX_QDMI_generate_bit() ? '1' : '0'; });
     job->results.emplace_back(std::move(result));
   }
   // Generate random complex numbers and calculate the norm
@@ -567,7 +569,7 @@ int CXX_QDMI_device_job_get_results_hist(CXX_QDMI_Device_Job job,
       }
       char *data_ptr = static_cast<char *>(data);
       for (const auto &[bitstring, count] : hist) {
-        std::copy(bitstring.begin(), bitstring.end(), data_ptr);
+        std::ranges::copy(bitstring, data_ptr);
         data_ptr += bitstring.length();
         *data_ptr++ = ',';
       }
@@ -900,3 +902,5 @@ int CXX_QDMI_device_session_query_operation_property(
   }
   return QDMI_ERROR_NOTSUPPORTED;
 } /// [DOXYGEN FUNCTION END]
+
+// NOLINTEND(*-pro-bounds-avoid-unchecked-container-access,*-throwing-static-initialization)
