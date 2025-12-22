@@ -257,12 +257,11 @@ bool Is_path_allowed(const std::filesystem::path &path) {
   }
 
   // Check if the resolved path starts with any of the allowlisted directories.
-  return std::any_of(
-      allowlist.begin(), allowlist.end(), [&](const auto &allowed_path) {
-        return std::mismatch(allowed_path.begin(), allowed_path.end(),
-                             resolved_path.begin(), resolved_path.end())
-                   .first == allowed_path.end();
-      });
+  return std::ranges::any_of(allowlist, [&](const auto &allowed_path) {
+    return std::mismatch(allowed_path.begin(), allowed_path.end(),
+                         resolved_path.begin(), resolved_path.end())
+               .first == allowed_path.end();
+  });
 }
 } // namespace
 
