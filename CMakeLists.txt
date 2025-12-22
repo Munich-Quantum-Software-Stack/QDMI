@@ -23,9 +23,8 @@ project(
   VERSION 1.2.1
   DESCRIPTION "QDMI –– Quantum Device Management Interface")
 
-# Add development pre-release identifier
-set(PROJECT_VERSION_PRERELEASE "dev")
-set(PROJECT_VERSION_FULL "${PROJECT_VERSION}-${PROJECT_VERSION_PRERELEASE}")
+# set(PROJECT_VERSION_PRERELEASE "-dev")
+set(PROJECT_VERSION_FULL "${PROJECT_VERSION}${PROJECT_VERSION_PRERELEASE}")
 
 # enable organization of targets into folders
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
