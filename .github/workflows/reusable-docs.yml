@@ -29,7 +29,7 @@ jobs:
           .github/scripts/inject-version-selector.sh static
       - name: Deploy preview 🚀 (for PRs; not for forks)
         if: github.event.pull_request.head.repo.full_name == github.repository
-        uses: rossjrw/pr-preview-action@55147b5848acb4ab980e55ff0bdc228addacdae0 # v1.7.0
+        uses: rossjrw/pr-preview-action@8e38e8c287c670eb2f8e29ba9399a27fb59c0355 # v1.7.1
         with:
           source-dir: ./static/
       - name: Deploy 🚀
