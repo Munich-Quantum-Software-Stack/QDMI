@@ -127,7 +127,9 @@ if(NOT USE_INSTALLED_QDMI)
     target_compile_features(qdmi INTERFACE c_std_11)
 
     # always include debug symbols (avoids common problems with LTO)
-    target_compile_options(qdmi INTERFACE -g)
+    if(NOT MSVC)
+      target_compile_options(qdmi INTERFACE -g)
+    endif()
 
     # enable coverage collection options
     option(ENABLE_COVERAGE "Enable coverage reporting" FALSE)
