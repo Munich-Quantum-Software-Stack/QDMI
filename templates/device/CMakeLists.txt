@@ -31,7 +31,8 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
                                                "MinSizeRel" "RelWithDebInfo")
 endif()
 
-option(MY_QDMI_DEVICE_INSTALL "Generate installation instructions for MY QDMI Device" OFF)
+option(MY_QDMI_DEVICE_INSTALL
+       "Generate installation instructions for MY QDMI Device" OFF)
 
 option(USE_INSTALLED_MY_QDMI_DEVICE
        "Use an installed version of the MY QDMI Device to build tests" OFF)
@@ -89,22 +90,22 @@ endif()
 # Installation instructions for the main library
 if(MY_QDMI_DEVICE_INSTALL)
   set(MY_QDMI_DEVICE_CONFIG_INSTALL_DIR
-          "${CMAKE_INSTALL_DATADIR}/cmake/${PROJECT_NAME}"
-          CACHE INTERNAL "Config install directory")
+      "${CMAKE_INSTALL_DATADIR}/cmake/${PROJECT_NAME}"
+      CACHE INTERNAL "Config install directory")
 
   include(CMakePackageConfigHelpers)
   configure_package_config_file(
-          "${PROJECT_SOURCE_DIR}/cmake/${PROJECT_NAME}-config.cmake.in"
-          "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config.cmake"
-          INSTALL_DESTINATION ${MY_QDMI_DEVICE_CONFIG_INSTALL_DIR}
-          NO_SET_AND_CHECK_MACRO NO_CHECK_REQUIRED_COMPONENTS_MACRO)
+    "${PROJECT_SOURCE_DIR}/cmake/${PROJECT_NAME}-config.cmake.in"
+    "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config.cmake"
+    INSTALL_DESTINATION ${MY_QDMI_DEVICE_CONFIG_INSTALL_DIR}
+    NO_SET_AND_CHECK_MACRO NO_CHECK_REQUIRED_COMPONENTS_MACRO)
   write_basic_package_version_file(
-          "${PROJECT_NAME}-config-version.cmake"
-          VERSION ${PROJECT_VERSION}
-          COMPATIBILITY SameMinorVersion)
+    "${PROJECT_NAME}-config-version.cmake"
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY SameMinorVersion)
 
   install(FILES "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config.cmake"
-          "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake"
+                "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake"
           DESTINATION ${MY_QDMI_DEVICE_CONFIG_INSTALL_DIR})
 
   # FILE_SET should be aligned with LIBRARY and ARCHIVE, so we turn cmake-format
@@ -124,17 +125,17 @@ if(MY_QDMI_DEVICE_INSTALL)
   # cmake-format: on
 
   install(
-          EXPORT ${PROJECT_NAME}-targets
-          FILE ${PROJECT_NAME}-targets.cmake
-          NAMESPACE ${PROJECT_NAME}::
-          DESTINATION ${MY_QDMI_DEVICE_CONFIG_INSTALL_DIR}
-          COMPONENT ${PROJECT_NAME}_Development)
+    EXPORT ${PROJECT_NAME}-targets
+    FILE ${PROJECT_NAME}-targets.cmake
+    NAMESPACE ${PROJECT_NAME}::
+    DESTINATION ${MY_QDMI_DEVICE_CONFIG_INSTALL_DIR}
+    COMPONENT ${PROJECT_NAME}_Development)
 
   install(
-          FILES ${PROJECT_SOURCE_DIR}/cmake/Cache.cmake
+    FILES ${PROJECT_SOURCE_DIR}/cmake/Cache.cmake
           ${PROJECT_SOURCE_DIR}/cmake/prefix_defs.txt
           ${PROJECT_SOURCE_DIR}/cmake/PrefixHandling.cmake
           ${PROJECT_SOURCE_DIR}/cmake/test_defs.cpp.in
-          DESTINATION ${MY_QDMI_DEVICE_CONFIG_INSTALL_DIR}
-          COMPONENT ${PROJECT_NAME}_Development)
+    DESTINATION ${MY_QDMI_DEVICE_CONFIG_INSTALL_DIR}
+    COMPONENT ${PROJECT_NAME}_Development)
 endif()

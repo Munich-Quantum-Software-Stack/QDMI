@@ -31,10 +31,8 @@ function(generate_prefixed_qdmi_headers prefix)
   endif()
 
   # Get the list of all QDMI device headers.
-  file(GLOB_RECURSE QDMI_DEVICE_HEADERS
-       ${QDMI_INCLUDE_DIR}/qdmi/constants.h
-       ${QDMI_INCLUDE_DIR}/qdmi/device.h
-       ${QDMI_INCLUDE_DIR}/qdmi/types.h)
+  file(GLOB_RECURSE QDMI_DEVICE_HEADERS ${QDMI_INCLUDE_DIR}/qdmi/constants.h
+       ${QDMI_INCLUDE_DIR}/qdmi/device.h ${QDMI_INCLUDE_DIR}/qdmi/types.h)
 
   # Determine the correct CMake directory for prefix_defs.txt
   set(QDMI_PREFIX_DIR "${QDMI_CMAKE_DIR}")

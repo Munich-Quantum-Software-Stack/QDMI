@@ -54,8 +54,9 @@ option(
   "Use an installed version of QDMI to build examples, templates, and tests"
   OFF)
 
-cmake_dependent_option(QDMI_INSTALL "Generate installation instructions for QDMI"
-        ${QDMI_MASTER_PROJECT} "NOT USE_INSTALLED_QDMI" OFF)
+cmake_dependent_option(
+  QDMI_INSTALL "Generate installation instructions for QDMI"
+  ${QDMI_MASTER_PROJECT} "NOT USE_INSTALLED_QDMI" OFF)
 option(BUILD_QDMI_TESTS "Also build tests for the QDMI project"
        ${QDMI_MASTER_PROJECT})
 option(BUILD_QDMI_EXAMPLES "Also build examples for the QDMI project"
