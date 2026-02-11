@@ -64,10 +64,10 @@ INSTANTIATE_TEST_SUITE_P(
     QDMIImplementationTest,
     // Test suite name
     // Parameters to test with
-    ::testing::Values(std::tuple{"../examples/device/src/libcxx-qdmi-device", "CXX",
-                                 TEST_SESSION_MODE::READONLY},
-                      std::tuple{"../examples/device/src/libcxx-qdmi-device", "CXX",
-                                 TEST_SESSION_MODE::READWRITE}),
+    ::testing::Values(std::tuple{"../examples/device/src/libcxx-qdmi-device",
+                                 "CXX", TEST_SESSION_MODE::READONLY},
+                      std::tuple{"../examples/device/src/libcxx-qdmi-device",
+                                 "CXX", TEST_SESSION_MODE::READWRITE}),
     [](const testing::TestParamInfo<
         std::tuple<std::string, std::string, TEST_SESSION_MODE>> &inf) {
       // Extract the last part of the file path
