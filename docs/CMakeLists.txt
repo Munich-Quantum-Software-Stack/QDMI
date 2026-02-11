@@ -27,8 +27,14 @@ set(DOXYGEN_INPUT_DIRS ${PROJECT_SOURCE_DIR}/include)
 # correctly and is not passed to Doxygen. Whenever such a file is modified,
 # CMake detects that change and will rerun the Doxygen command instead of using
 # the cached result when the target `qdmi_docs` is built.
-file(GLOB_RECURSE DOXYGEN_INPUT_FILES ${PROJECT_SOURCE_DIR}/include/*.h
-     ${CMAKE_CURRENT_SOURCE_DIR}/*.md)
+file(
+  GLOB_RECURSE
+  DOXYGEN_INPUT_FILES
+  ${PROJECT_SOURCE_DIR}/include/*.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/*.md
+  ${PROJECT_SOURCE_DIR}/CHANGELOG.md
+  ${PROJECT_SOURCE_DIR}/UPGRADING.md
+  ${PROJECT_SOURCE_DIR}/README.md)
 # After the variable above is correctly initialized, we can add the additional
 # files that are not source code but still part of the documentation. IMPORTANT:
 # The order the files with the static content are added here influences their
@@ -52,8 +58,13 @@ string(REPLACE ";" " " DOXYGEN_INPUT_DIRS "${DOXYGEN_INPUT_DIRS}")
 # can be included with the `\include`or `\snippet` command, we need to add the
 # directories where these files are located.
 set(DOXYGEN_EXAMPLE_DIRS
-    ${PROJECT_SOURCE_DIR}/examples ${PROJECT_SOURCE_DIR}/.github
-    ${PROJECT_SOURCE_DIR}/CHANGELOG.md ${PROJECT_SOURCE_DIR}/UPGRADING.md
+    ${PROJECT_SOURCE_DIR}/examples/device/src
+    ${PROJECT_SOURCE_DIR}/examples/driver
+    ${PROJECT_SOURCE_DIR}/examples/fomac
+    ${PROJECT_SOURCE_DIR}/examples/tool
+    ${PROJECT_SOURCE_DIR}/.github
+    ${PROJECT_SOURCE_DIR}/CHANGELOG.md
+    ${PROJECT_SOURCE_DIR}/UPGRADING.md
     ${PROJECT_SOURCE_DIR}/README.md)
 # Again, replace the semicolon with a space such that Doxygen can handle it.
 string(REPLACE ";" " " DOXYGEN_EXAMPLE_DIRS "${DOXYGEN_EXAMPLE_DIRS}")

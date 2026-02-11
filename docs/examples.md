@@ -31,7 +31,7 @@ are returned by the @ref QDMI_device_session_query_device_property function. Bel
 respective implementation in C++.
 
 <!-- prettier-ignore-start -->
-\dontinclude device.cpp
+\dontinclude cxx_device.cpp
 \skip int CXX_QDMI_device_session_query_device_property
 \until QDMI_DEVICE_PROPERTY_LIBRARYVERSION
 \until size_ret)
@@ -48,7 +48,7 @@ The following macro is used to add string properties to the device. The macro is
 implementation of the @ref QDMI_device_session_query_device_property function.
 
 <!-- prettier-ignore-start -->
-\dontinclude device.cpp
+\dontinclude cxx_device.cpp
 \skip #define ADD_STRING_PROPERTY
 \until DOXYGEN MACRO END
 <!-- prettier-ignore-end -->
@@ -56,7 +56,7 @@ implementation of the @ref QDMI_device_session_query_device_property function.
 A similar macro is defined for other (fixed length) data types, for example, `int`, `double`.
 
 <!-- prettier-ignore-start -->
-\dontinclude device.cpp
+\dontinclude cxx_device.cpp
 \skip #define ADD_SINGLE_VALUE_PROPERTY
 \until DOXYGEN MACRO END
 <!-- prettier-ignore-end -->
@@ -64,7 +64,7 @@ A similar macro is defined for other (fixed length) data types, for example, `in
 Another macro is defined for list properties of the data types above.
 
 <!-- prettier-ignore-start -->
-\dontinclude device.cpp
+\dontinclude cxx_device.cpp
 \skip #define ADD_LIST_PROPERTY
 \until DOXYGEN MACRO END
 <!-- prettier-ignore-end -->
@@ -77,7 +77,7 @@ The following two examples demonstrate how to return integer or enumeration prop
 device.
 
 <!-- prettier-ignore-start -->
-\dontinclude device.cpp
+\dontinclude cxx_device.cpp
 \skip int CXX_QDMI_device_session_query_device_property
 \until {
 \skip QDMI_DEVICE_PROPERTY_STATUS
@@ -94,7 +94,7 @@ return the coupling map of the device as a list of @ref QDMI_Site pairs. The pai
 into a single list of @ref QDMI_Site's.
 
 <!-- prettier-ignore-start -->
-\dontinclude device.cpp
+\dontinclude cxx_device.cpp
 \skipline constexpr std::array<const CXX_QDMI_Site_impl_d *, 20>
 \skip DEVICE_COUPLING_MAP
 \until ;
@@ -114,7 +114,7 @@ demonstrates how different properties of operations, for example, varying fideli
 gates can be returned.
 
 <!-- prettier-ignore-start -->
-\dontinclude device.cpp
+\dontinclude cxx_device.cpp
 \skip QDMI_Pair_hash
 \until OPERATION_FIDELITIES
 \until ;
@@ -129,7 +129,7 @@ following example provides a mock implementation of the necessary functions to s
 first example shows a mock implementation of @ref QDMI_device_session_create_device_job.
 
 <!-- prettier-ignore-start -->
-\dontinclude device.cpp
+\dontinclude cxx_device.cpp
 \skip QDMI_device_session_create_device_job
 \until DOXYGEN FUNCTION END
 <!-- prettier-ignore-end -->
@@ -138,7 +138,7 @@ The function @ref QDMI_device_job_set_parameter allows setting different paramet
 example, the number of shots (@ref QDMI_JOB_PARAMETER_SHOTSNUM).
 
 <!-- prettier-ignore-start -->
-\dontinclude device.cpp
+\dontinclude cxx_device.cpp
 \skip QDMI_device_job_set_parameter
 \until DOXYGEN FUNCTION END
 <!-- prettier-ignore-end -->
@@ -147,12 +147,12 @@ After the job is set up, it can be submitted to the device. The following exampl
 implementation of @ref QDMI_device_job_submit.
 
 <!-- prettier-ignore-start -->
-\dontinclude device.cpp
+\dontinclude cxx_device.cpp
 \skip QDMI_device_job_submit
 \until DOXYGEN FUNCTION END
 <!-- prettier-ignore-end -->
 
 For the full implementation of the example devices we refer to the respective source files in the
 QDMI repository, that is,
-[`device.cpp`](https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/develop/examples/device/device.cpp)
+[`cxx_device.cpp`](https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/develop/examples/device/cxx_device.cpp)
 for the C++ implementation.
