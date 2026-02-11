@@ -31,7 +31,9 @@ function(generate_prefixed_qdmi_headers prefix)
   endif()
 
   # Get the list of all QDMI device headers.
-  file(GLOB_RECURSE QDMI_DEVICE_HEADERS ${QDMI_INCLUDE_DIR}/qdmi/device.h
+  file(GLOB_RECURSE QDMI_DEVICE_HEADERS
+       ${QDMI_INCLUDE_DIR}/qdmi/constants.h
+       ${QDMI_INCLUDE_DIR}/qdmi/device.h
        ${QDMI_INCLUDE_DIR}/qdmi/types.h)
 
   # Determine the correct CMake directory for prefix_defs.txt
@@ -55,7 +57,7 @@ function(generate_prefixed_qdmi_headers prefix)
     # Replace the include for the device header with the prefixed version.
     string(
       REGEX
-      REPLACE "#include (\"|<)qdmi/(device|types).h(\"|>)"
+      REPLACE "#include (\"|<)qdmi/(constants|device|types).h(\"|>)"
               "#include \\1${QDMI_prefix}_qdmi/\\2.h\\3" header_content
               "${header_content}")
     # Replace the prefix definitions.
