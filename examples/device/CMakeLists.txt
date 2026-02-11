@@ -31,7 +31,7 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
                                                "MinSizeRel" "RelWithDebInfo")
 endif()
 
-option(CXX_QDMI_DEVICE_INSTALL
+option(INSTALL_CXX_QDMI_DEVICE
        "Generate installation instructions for CXX QDMI Device" OFF)
 
 option(USE_INSTALLED_CXX_QDMI_DEVICE
@@ -88,7 +88,7 @@ if(BUILD_CXX_QDMI_TESTS)
 endif()
 
 # Installation instructions for the main library
-if(CXX_QDMI_DEVICE_INSTALL)
+if(INSTALL_CXX_QDMI_DEVICE)
   set(CXX_QDMI_DEVICE_CONFIG_INSTALL_DIR
       "${CMAKE_INSTALL_DATADIR}/cmake/${PROJECT_NAME}"
       CACHE INTERNAL "Config install directory")
@@ -112,14 +112,14 @@ if(CXX_QDMI_DEVICE_INSTALL)
   # off
   # cmake-format: off
   install(
-          TARGETS cxx-qdmi-device
-          EXPORT ${PROJECT_NAME}-targets
-          RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT ${PROJECT_NAME}_Runtime
-          LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    TARGETS cxx-qdmi-device
+    EXPORT ${PROJECT_NAME}-targets
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT ${PROJECT_NAME}_Runtime
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
           COMPONENT ${PROJECT_NAME}_Runtime
           NAMELINK_COMPONENT ${PROJECT_NAME}_Development
-          ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT ${PROJECT_NAME}_Development
-          FILE_SET HEADERS
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT ${PROJECT_NAME}_Development
+    FILE_SET HEADERS
           DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
           COMPONENT ${PROJECT_NAME}_Development)
   # cmake-format: on
@@ -128,14 +128,6 @@ if(CXX_QDMI_DEVICE_INSTALL)
     EXPORT ${PROJECT_NAME}-targets
     FILE ${PROJECT_NAME}-targets.cmake
     NAMESPACE ${PROJECT_NAME}::
-    DESTINATION ${CXX_QDMI_DEVICE_CONFIG_INSTALL_DIR}
-    COMPONENT ${PROJECT_NAME}_Development)
-
-  install(
-    FILES ${PROJECT_SOURCE_DIR}/cmake/Cache.cmake
-          ${PROJECT_SOURCE_DIR}/cmake/prefix_defs.txt
-          ${PROJECT_SOURCE_DIR}/cmake/PrefixHandling.cmake
-          ${PROJECT_SOURCE_DIR}/cmake/test_defs.cpp.in
     DESTINATION ${CXX_QDMI_DEVICE_CONFIG_INSTALL_DIR}
     COMPONENT ${PROJECT_NAME}_Development)
 endif()
