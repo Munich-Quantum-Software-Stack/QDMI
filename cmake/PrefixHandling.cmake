@@ -116,5 +116,5 @@ function(generate_device_defs_executable prefix)
     qdmi_test_${QDMI_prefix}_device_defs PRIVATE qdmi::qdmi ${DEVICE_TARGET}
                                                  qdmi::qdmi_project_warnings)
   target_compile_features(qdmi_test_${QDMI_prefix}_device_defs
-                          PRIVATE cxx_std_17)
+                          PRIVATE cxx_std_20)
 endfunction()
