@@ -31,9 +31,6 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
                                                "MinSizeRel" "RelWithDebInfo")
 endif()
 
-option(INSTALL_CXX_QDMI_DEVICE
-       "Generate installation instructions for CXX QDMI Device" OFF)
-
 option(USE_INSTALLED_CXX_QDMI_DEVICE
        "Use an installed version of the CXX QDMI Device to build tests" OFF)
 
@@ -85,49 +82,4 @@ if(BUILD_CXX_QDMI_TESTS)
   enable_testing()
   include(GoogleTest)
   add_subdirectory(test)
-endif()
-
-# Installation instructions for the main library
-if(INSTALL_CXX_QDMI_DEVICE)
-  set(CXX_QDMI_DEVICE_CONFIG_INSTALL_DIR
-      "${CMAKE_INSTALL_DATADIR}/cmake/${PROJECT_NAME}"
-      CACHE INTERNAL "Config install directory")
-
-  include(CMakePackageConfigHelpers)
-  configure_package_config_file(
-    "${PROJECT_SOURCE_DIR}/cmake/${PROJECT_NAME}-config.cmake.in"
-    "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config.cmake"
-    INSTALL_DESTINATION ${CXX_QDMI_DEVICE_CONFIG_INSTALL_DIR}
-    NO_SET_AND_CHECK_MACRO NO_CHECK_REQUIRED_COMPONENTS_MACRO)
-  write_basic_package_version_file(
-    "${PROJECT_NAME}-config-version.cmake"
-    VERSION ${PROJECT_VERSION}
-    COMPATIBILITY SameMinorVersion)
-
-  install(FILES "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config.cmake"
-                "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake"
-          DESTINATION ${CXX_QDMI_DEVICE_CONFIG_INSTALL_DIR})
-
-  # FILE_SET should be aligned with LIBRARY and ARCHIVE, so we turn cmake-format
-  # off
-  # cmake-format: off
-  install(
-    TARGETS cxx-qdmi-device
-    EXPORT ${PROJECT_NAME}-targets
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT ${PROJECT_NAME}_Runtime
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-          COMPONENT ${PROJECT_NAME}_Runtime
-          NAMELINK_COMPONENT ${PROJECT_NAME}_Development
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT ${PROJECT_NAME}_Development
-    FILE_SET HEADERS
-          DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-          COMPONENT ${PROJECT_NAME}_Development)
-  # cmake-format: on
-
-  install(
-    EXPORT ${PROJECT_NAME}-targets
-    FILE ${PROJECT_NAME}-targets.cmake
-    NAMESPACE ${PROJECT_NAME}::
-    DESTINATION ${CXX_QDMI_DEVICE_CONFIG_INSTALL_DIR}
-    COMPONENT ${PROJECT_NAME}_Development)
 endif()
