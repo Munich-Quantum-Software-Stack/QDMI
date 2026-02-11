@@ -29,6 +29,8 @@ set(PROJECT_VERSION_FULL "${PROJECT_VERSION}${PROJECT_VERSION_PRERELEASE}")
 # enable organization of targets into folders
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
+include(CMakeDependentOption)
+
 # Set a default build type if none was specified
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   message(STATUS "Setting build type to 'Release' as none was specified.")
@@ -52,14 +54,8 @@ option(
   "Use an installed version of QDMI to build examples, templates, and tests"
   OFF)
 
-if(USE_INSTALLED_QDMI)
-  set(QDMI_INSTALL
-      OFF
-      CACHE BOOL "Generate installation instructions for QDMI" FORCE)
-else()
-  option(QDMI_INSTALL "Generate installation instructions for QDMI"
-         ${QDMI_MASTER_PROJECT})
-endif()
+cmake_dependent_option(QDMI_INSTALL "Generate installation instructions for QDMI"
+        ${QDMI_MASTER_PROJECT} "NOT USE_INSTALLED_QDMI" OFF)
 option(BUILD_QDMI_TESTS "Also build tests for the QDMI project"
        ${QDMI_MASTER_PROJECT})
 option(BUILD_QDMI_EXAMPLES "Also build examples for the QDMI project"
