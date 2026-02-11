@@ -35,6 +35,11 @@ protected:
     ASSERT_EQ(CXX_QDMI_device_session_alloc(&session), QDMI_SUCCESS)
         << "Failed to allocate a session";
 
+    ASSERT_EQ(CXX_QDMI_device_session_set_parameter(session, QDMI_DEVICE_SESSION_PARAMETER_TOKEN,
+                                       6, "token"),
+            QDMI_SUCCESS)
+      << "Failed to set session parameter";
+
     ASSERT_EQ(CXX_QDMI_device_session_init(session), QDMI_SUCCESS)
         << "Failed to initialize a session. Potential errors: Wrong or missing "
            "authentication information, device status is offline, or in "
