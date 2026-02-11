@@ -31,9 +31,6 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
                                                "MinSizeRel" "RelWithDebInfo")
 endif()
 
-option(MY_QDMI_DEVICE_INSTALL
-       "Generate installation instructions for MY QDMI Device" OFF)
-
 option(USE_INSTALLED_MY_QDMI_DEVICE
        "Use an installed version of the MY QDMI Device to build tests" OFF)
 
