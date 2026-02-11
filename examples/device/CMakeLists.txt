@@ -31,6 +31,8 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
                                                "MinSizeRel" "RelWithDebInfo")
 endif()
 
+include(CMakeDependentOption)
+
 option(USE_INSTALLED_CXX_QDMI_DEVICE
        "Use an installed version of the CXX QDMI Device to build tests" OFF)
 
@@ -57,6 +59,8 @@ else()
   set(CXX_QDMI_MASTER_PROJECT OFF)
 endif()
 
+cmake_dependent_option(INSTALL_CXX_QDMI_DEVICE "Generate installation instructions for the CXX QDMI Device"
+        ${CXX_QDMI_MASTER_PROJECT} "NOT USE_INSTALLED_CXX_QDMI_DEVICE" OFF)
 option(BUILD_CXX_QDMI_TESTS "Build tests for the CXX QDMI device"
        ${CXX_QDMI_MASTER_PROJECT})
 option(BUILD_CXX_QDMI_DOCS "Build documentation for the CXX QDMI device" OFF)
