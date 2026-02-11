@@ -15,19 +15,71 @@
 #
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
-# add C++ language support
-enable_language(CXX)
+cmake_minimum_required(VERSION 3.24...4.2)
 
-# NOTE: If you change the target name, the name of the shared library will also
-# change. Hence, in the test you have to adopt the name of the shared library
-# accordingly.
-add_library(cxx_device SHARED device.cpp)
-target_link_libraries(cxx_device PRIVATE qdmi::qdmi_project_warnings)
-generate_prefixed_qdmi_headers("CXX")
-target_include_directories(cxx_device
-                           PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/include)
-target_compile_features(cxx_device PRIVATE cxx_std_20)
-get_target_property(qdmi_library_VERSION qdmi::qdmi VERSION)
-target_compile_definitions(
-  cxx_device PRIVATE QDMI_VERSION="${qdmi_library_VERSION}"
-                     DEVICE_VERSION="${PROJECT_VERSION}")
+project(
+  cxx-qdmi-device
+  LANGUAGES C CXX
+  VERSION 0.1.0
+  DESCRIPTION "CXX QDMI Device Implementation")
+
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+  set(CMAKE_BUILD_TYPE
+      Release
+      CACHE STRING "Choose the type of build." FORCE)
+  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release"
+                                               "MinSizeRel" "RelWithDebInfo")
+endif()
+
+option(USE_INSTALLED_CXX_QDMI_DEVICE
+       "Use an installed version of the CXX QDMI Device to build tests" OFF)
+
+if(USE_INSTALLED_CXX_QDMI_DEVICE)
+  find_package(cxx-qdmi-device REQUIRED ${PROJECT_VERSION})
+endif()
+
+# Generate compile_commands.json to make it easier to work with clang based
+# tools
+set(CMAKE_EXPORT_COMPILE_COMMANDS
+    ON
+    CACHE BOOL "Export compile commands" FORCE)
+
+set(CMAKE_VERIFY_INTERFACE_HEADER_SETS
+    ON
+    CACHE BOOL "Verify interface header sets" FORCE)
+
+set(QDMI_PREFIX "CXX")
+
+# check if this is the master project or used via add_subdirectory
+if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+  set(CXX_QDMI_MASTER_PROJECT ON)
+else()
+  set(CXX_QDMI_MASTER_PROJECT OFF)
+endif()
+
+option(BUILD_CXX_QDMI_TESTS "Build tests for the CXX QDMI device"
+       ${CXX_QDMI_MASTER_PROJECT})
+option(BUILD_CXX_QDMI_DOCS "Build documentation for the CXX QDMI device" OFF)
+
+# Manage external dependencies
+include(cmake/ExternalDependencies.cmake)
+
+# Set target name
+set(QDMI_TARGET_NAME "cxx-qdmi-device")
+
+# Add the main library code
+if(NOT USE_INSTALLED_CXX_QDMI_DEVICE)
+  add_subdirectory(src)
+endif()
+
+# Add the documentation
+if(BUILD_CXX_QDMI_DOCS)
+  add_subdirectory(docs)
+endif()
+
+# Add the tests
+if(BUILD_CXX_QDMI_TESTS)
+  enable_testing()
+  include(GoogleTest)
+  add_subdirectory(test)
+endif()

@@ -20,7 +20,7 @@
 /** @file
  * @brief A simple example of a device implementation in C++.
  * @details This file can be used as a template for implementing a device in
- * C++. For more implemented functions, see also the \ref device5.c file.
+ * C++.
  */
 
 #include "cxx_qdmi/device.h"
@@ -29,6 +29,7 @@
 #include <array>
 #include <cmath>
 #include <complex>
+#include <cstddef>
 #include <cstdint>
 #include <cstring>
 #include <functional>
@@ -36,6 +37,7 @@
 #include <limits>
 #include <map>
 #include <random>
+#include <ranges>
 #include <string>
 #include <unordered_map>
 #include <utility>
@@ -43,14 +45,21 @@
 
 // NOLINTBEGIN(*-pro-bounds-avoid-unchecked-container-access,*-throwing-static-initialization)
 
+/**
+ * @brief Implementation of the CXX_QDMI_Device_Session structure.
+ * @details This structure can, e.g., be used to store a token to access an API.
+ */
 enum class CXX_QDMI_DEVICE_SESSION_STATUS : uint8_t { ALLOCATED, INITIALIZED };
-
 struct CXX_QDMI_Device_Session_impl_d {
   std::string token;
   CXX_QDMI_DEVICE_SESSION_STATUS status =
       CXX_QDMI_DEVICE_SESSION_STATUS::ALLOCATED;
 };
 
+/**
+ * @brief Implementation of the CXX_QDMI_Device_Job structure.
+ * @details This structure can, e.g., be used to store the job id.
+ */
 struct CXX_QDMI_Device_Job_impl_d {
   CXX_QDMI_Device_Session session = nullptr;
   int id = 0;
@@ -72,10 +81,18 @@ struct CXX_QDMI_Device_State {
       std::uniform_real_distribution<>(-1.0, 1.0);
 };
 
+/**
+ * @brief Implementation of the CXX_QDMI_Site structure.
+ * @details This structure can, e.g., be used to store the site id.
+ */
 struct CXX_QDMI_Site_impl_d {
   size_t id;
 };
 
+/**
+ * @brief Implementation of the CXX_QDMI_Operation structure.
+ * @details This structure can, e.g., be used to store the operation id.
+ */
 struct CXX_QDMI_Operation_impl_d {
   std::string name;
 };
@@ -299,12 +316,12 @@ int CXX_QDMI_device_session_init(CXX_QDMI_Device_Session session) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   switch (CXX_QDMI_get_device_status()) {
-  case QDMI_DEVICE_STATUS_ERROR:
-  case QDMI_DEVICE_STATUS_OFFLINE:
-  case QDMI_DEVICE_STATUS_MAINTENANCE:
-    return QDMI_ERROR_FATAL;
-  default:
-    break;
+    case QDMI_DEVICE_STATUS_ERROR:
+    case QDMI_DEVICE_STATUS_OFFLINE:
+    case QDMI_DEVICE_STATUS_MAINTENANCE:
+      return QDMI_ERROR_FATAL;
+    default:
+      break;
   }
   if (session->token.empty()) {
     return QDMI_ERROR_PERMISSIONDENIED;
@@ -533,7 +550,7 @@ int CXX_QDMI_device_job_get_results_shots(CXX_QDMI_Device_Job job,
     }
     auto *data_ptr = static_cast<char *>(data);
     for (auto it = job->results.begin(); it != job->results.end(); ++it) {
-      data_ptr = std::copy(it->begin(), it->end(), data_ptr);
+      data_ptr = std::ranges::copy(*it, data_ptr).out;
       if (std::next(it) != job->results.end()) {
         *data_ptr++ = ','; // Add comma separator
       } else {
@@ -568,7 +585,7 @@ int CXX_QDMI_device_job_get_results_hist(CXX_QDMI_Device_Job job,
         return QDMI_ERROR_INVALIDARGUMENT;
       }
       char *data_ptr = static_cast<char *>(data);
-      for (const auto &[bitstring, count] : hist) {
+      for (const auto &bitstring: hist | std::views::keys) {
         std::ranges::copy(bitstring, data_ptr);
         data_ptr += bitstring.length();
         *data_ptr++ = ',';
@@ -586,7 +603,7 @@ int CXX_QDMI_device_job_get_results_hist(CXX_QDMI_Device_Job job,
         return QDMI_ERROR_INVALIDARGUMENT;
       }
       auto *data_ptr = static_cast<size_t *>(data);
-      for (const auto &[_, count] : hist) {
+      for (const auto &count: hist | std::views::values) {
         *data_ptr++ = count;
       }
     }
@@ -761,7 +778,7 @@ int CXX_QDMI_device_session_query_device_property(
   ADD_STRING_PROPERTY(QDMI_DEVICE_PROPERTY_NAME, "C++ Device with 5 qubits",
                       prop, size, value, size_ret)
   // NOLINTNEXTLINE(misc-include-cleaner)
-  ADD_STRING_PROPERTY(QDMI_DEVICE_PROPERTY_VERSION, DEVICE_VERSION, prop, size,
+  ADD_STRING_PROPERTY(QDMI_DEVICE_PROPERTY_VERSION, CXX_QDMI_DEVICE_VERSION, prop, size,
                       value, size_ret)
   // NOLINTNEXTLINE(misc-include-cleaner)
   ADD_STRING_PROPERTY(QDMI_DEVICE_PROPERTY_LIBRARYVERSION, QDMI_VERSION, prop,
