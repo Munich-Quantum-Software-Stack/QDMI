@@ -11,8 +11,15 @@ clients compiled against a different minor or major version.
 
 ## [Unreleased]
 
+### Added
+
+- 👨‍💻 Add an option to disable installation instructions for QDMI (example and template) device ([#326])
+  ([\@ystade])
+
 ### Changed
 
+- 👨‍💻 Base the example device implementation on the device template ([#326])
+  ([\@ystade])
 - 🚸 Export _all_ device headers (incl. `constants.h`) into device implementation ([#325]) ([\@ystade])
 
 ## [1.2.1] - 2025-12-22
@@ -116,6 +123,7 @@ changelogs._
 
 <!-- PR links -->
 
+[#326]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/326
 [#325]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/325
 [#285]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/285
 [#275]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/275
