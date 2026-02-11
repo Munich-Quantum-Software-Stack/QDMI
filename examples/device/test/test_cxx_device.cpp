@@ -35,10 +35,10 @@ protected:
     ASSERT_EQ(CXX_QDMI_device_session_alloc(&session), QDMI_SUCCESS)
         << "Failed to allocate a session";
 
-    ASSERT_EQ(CXX_QDMI_device_session_set_parameter(session, QDMI_DEVICE_SESSION_PARAMETER_TOKEN,
-                                       6, "token"),
-            QDMI_SUCCESS)
-      << "Failed to set session parameter";
+    ASSERT_EQ(CXX_QDMI_device_session_set_parameter(
+                  session, QDMI_DEVICE_SESSION_PARAMETER_TOKEN, 6, "token"),
+              QDMI_SUCCESS)
+        << "Failed to set session parameter";
 
     ASSERT_EQ(CXX_QDMI_device_session_init(session), QDMI_SUCCESS)
         << "Failed to initialize a session. Potential errors: Wrong or missing "
@@ -67,8 +67,8 @@ TEST_F(QDMIImplementationTest, JobSetParameterImplemented) {
   CXX_QDMI_Device_Job job = nullptr;
   ASSERT_EQ(CXX_QDMI_device_session_create_device_job(session, &job),
             QDMI_SUCCESS);
-  ASSERT_EQ(CXX_QDMI_device_job_set_parameter(job, QDMI_DEVICE_JOB_PARAMETER_MAX,
-                                             0, nullptr),
+  ASSERT_EQ(CXX_QDMI_device_job_set_parameter(
+                job, QDMI_DEVICE_JOB_PARAMETER_MAX, 0, nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
   CXX_QDMI_device_job_free(job);
 }
@@ -77,8 +77,8 @@ TEST_F(QDMIImplementationTest, JobQueryPropertyImplemented) {
   CXX_QDMI_Device_Job job = nullptr;
   ASSERT_EQ(CXX_QDMI_device_session_create_device_job(session, &job),
             QDMI_SUCCESS);
-  ASSERT_EQ(CXX_QDMI_device_job_query_property(job, QDMI_DEVICE_JOB_PROPERTY_MAX,
-                                              0, nullptr, nullptr),
+  ASSERT_EQ(CXX_QDMI_device_job_query_property(
+                job, QDMI_DEVICE_JOB_PROPERTY_MAX, 0, nullptr, nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
   CXX_QDMI_device_job_free(job);
 }
@@ -120,8 +120,8 @@ TEST_F(QDMIImplementationTest, JobGetResultsImplemented) {
   CXX_QDMI_Device_Job job = nullptr;
   ASSERT_EQ(CXX_QDMI_device_session_create_device_job(session, &job),
             QDMI_SUCCESS);
-  ASSERT_EQ(CXX_QDMI_device_job_get_results(job, QDMI_JOB_RESULT_MAX, 0, nullptr,
-                                           nullptr),
+  ASSERT_EQ(CXX_QDMI_device_job_get_results(job, QDMI_JOB_RESULT_MAX, 0,
+                                            nullptr, nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
   CXX_QDMI_device_job_free(job);
 }
