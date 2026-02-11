@@ -11,10 +11,6 @@ clients compiled against a different minor or major version.
 
 ## [Unreleased]
 
-### Added
-
-- 🚸 Add install instructions to device template ([#325]) ([\@ystade])
-
 ### Changed
 
 - 🚸 Export _all_ device headers (incl. `constants.h`) into device implementation ([#325]) ([\@ystade])
