@@ -23,6 +23,7 @@
 #include "qdmi_example_driver.h"
 #include "utils/test_impl.hpp"
 
+#include <algorithm>
 #include <array>
 #include <complex>
 #include <cstddef>
@@ -1243,7 +1244,7 @@ TEST(QDMIDriverLoadingTest, LoadLibraryWithInvalidHomeEnv) {
   // directory (test runs from build directory, library is in examples/device/)
   const std::string config_file_name = "qdmi_invalid_home.conf";
   std::ofstream conf_file(config_file_name);
-  conf_file << "../examples/device/libcxx_device"
+  conf_file << "../examples/device/libcxx-qdmi-device"
             << Shared_library_file_extension() << " CXX\n";
   conf_file.close();
 
