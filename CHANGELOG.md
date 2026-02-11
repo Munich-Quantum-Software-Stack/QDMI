@@ -11,6 +11,14 @@ clients compiled against a different minor or major version.
 
 ## [Unreleased]
 
+### Added
+
+- 🚸 Add install instructions to device template ([#325]) ([\@ystade])
+
+### Changed
+
+- 🚸 Export _all_ device headers (incl. `constants.h`) into device implementation ([#325]) ([\@ystade])
+
 ## [1.2.1] - 2025-12-22
 
 _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#121)._
@@ -112,6 +120,7 @@ changelogs._
 
 <!-- PR links -->
 
+[#325]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/325
 [#285]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/285
 [#275]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/275
 [#274]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/274
