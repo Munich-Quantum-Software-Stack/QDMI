@@ -58,7 +58,7 @@ jobs:
       # configure CMake for using the installed QDMI
       - name: Configure CMake for use of installed QDMI
         run:
-          cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DUSE_INSTALLED_QDMI=ON
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DUSE_INSTALLED_QDMI=ON -DBUILD_CXX_QDMI_TESTS=ON
           -DCMAKE_PREFIX_PATH=install-dir ${{ inputs.cmake-args }}
       # build the project
       - name: Build QDMI examples, templates, and tests with installed QDMI

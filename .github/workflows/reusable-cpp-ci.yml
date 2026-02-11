@@ -61,7 +61,7 @@ jobs:
         run: pipx install ninja
       - name: Configure CMake
         run: |
-          cmake -G Ninja -S . -B build -DCMAKE_BUILD_TYPE=Debug -DENABLE_COVERAGE=ON -DBUILD_QDMI_DOCS=OFF
+          cmake -G Ninja -S . -B build -DCMAKE_BUILD_TYPE=Debug -DENABLE_COVERAGE=ON -DBUILD_CXX_QDMI_TESTS=ON
       - name: Build
         run: cmake --build build --config Debug
       - name: Test
