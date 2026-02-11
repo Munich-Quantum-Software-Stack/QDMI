@@ -63,9 +63,9 @@ INSTANTIATE_TEST_SUITE_P(
     QDMIImplementationTest,
     // Test suite name
     // Parameters to test with
-    ::testing::Values(std::tuple{"../examples/device/libcxx_device", "CXX",
+    ::testing::Values(std::tuple{"../examples/device/libcxx-qdmi-device", "CXX",
                                  TEST_SESSION_MODE::READONLY},
-                      std::tuple{"../examples/device/libcxx_device", "CXX",
+                      std::tuple{"../examples/device/libcxx-qdmi-device", "CXX",
                                  TEST_SESSION_MODE::READWRITE}),
     [](const testing::TestParamInfo<
         std::tuple<std::string, std::string, TEST_SESSION_MODE>> &inf) {
@@ -74,6 +74,9 @@ INSTANTIATE_TEST_SUITE_P(
       std::string filename = (pos == std::string::npos)
                                  ? std::get<0>(inf.param)
                                  : std::get<0>(inf.param).substr(pos + 1);
+
+      // Replace '-' by '_' for valid test names
+      std::ranges::replace(filename, '-', '_');
 
       // Strip the 'lib' prefix if it exists
       const std::string prefix = "lib";
