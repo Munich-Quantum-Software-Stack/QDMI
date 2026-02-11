@@ -64,9 +64,9 @@ INSTANTIATE_TEST_SUITE_P(
     QDMIImplementationTest,
     // Test suite name
     // Parameters to test with
-    ::testing::Values(std::tuple{"../examples/device/libcxx-qdmi-device", "CXX",
+    ::testing::Values(std::tuple{"../examples/device/src/libcxx-qdmi-device", "CXX",
                                  TEST_SESSION_MODE::READONLY},
-                      std::tuple{"../examples/device/libcxx-qdmi-device", "CXX",
+                      std::tuple{"../examples/device/src/libcxx-qdmi-device", "CXX",
                                  TEST_SESSION_MODE::READWRITE}),
     [](const testing::TestParamInfo<
         std::tuple<std::string, std::string, TEST_SESSION_MODE>> &inf) {
@@ -1244,7 +1244,7 @@ TEST(QDMIDriverLoadingTest, LoadLibraryWithInvalidHomeEnv) {
   // directory (test runs from build directory, library is in examples/device/)
   const std::string config_file_name = "qdmi_invalid_home.conf";
   std::ofstream conf_file(config_file_name);
-  conf_file << "../examples/device/libcxx-qdmi-device"
+  conf_file << "../examples/device/src/libcxx-qdmi-device"
             << Shared_library_file_extension() << " CXX\n";
   conf_file.close();
 
