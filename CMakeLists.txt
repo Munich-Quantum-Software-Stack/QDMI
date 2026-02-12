@@ -137,7 +137,7 @@ if(NOT USE_INSTALLED_QDMI)
                                       -O0)
       target_link_libraries(qdmi_coverage_flags INTERFACE gcov --coverage)
       add_library(qdmi::qdmi_coverage_flags ALIAS qdmi_coverage_flags)
-      target_link_libraries(qdmi PUBLIC qdmi::qdmi_coverage_flags)
+      target_link_libraries(qdmi INTERFACE qdmi::qdmi_coverage_flags)
     endif()
 
     # set the version of the library
@@ -199,11 +199,16 @@ if(QDMI_INSTALL)
                 "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake"
           DESTINATION ${QDMI_CONFIG_INSTALL_DIR})
 
+  set(QDMI_INSTALL_TARGETS ${QDMI_INSTALL_TARGETS} qdmi qdmi_project_warnings)
+  if(ENABLE_COVERAGE)
+    set(QDMI_INSTALL_TARGETS ${QDMI_INSTALL_TARGETS} qdmi_coverage_flags)
+  endif()
+
   # FILE_SET should be aligned with LIBRARY and ARCHIVE, so we turn cmake-format
   # off
   # cmake-format: off
   install(
-    TARGETS qdmi qdmi_project_warnings
+    TARGETS ${QDMI_INSTALL_TARGETS}
     EXPORT ${PROJECT_NAME}-targets
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT ${PROJECT_NAME}_Runtime
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
