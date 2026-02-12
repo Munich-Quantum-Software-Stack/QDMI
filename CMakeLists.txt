@@ -131,9 +131,13 @@ if(NOT USE_INSTALLED_QDMI)
     # enable coverage collection options
     option(ENABLE_COVERAGE "Enable coverage reporting" FALSE)
     if(ENABLE_COVERAGE)
-      target_compile_options(qdmi INTERFACE --coverage -fprofile-arcs
-                                            -ftest-coverage -O0)
-      target_link_libraries(qdmi INTERFACE gcov --coverage)
+      add_library(qdmi_coverage_flags INTERFACE)
+      target_compile_options(
+        qdmi_coverage_flags INTERFACE --coverage -fprofile-arcs -ftest-coverage
+                                      -O0)
+      target_link_libraries(qdmi_coverage_flags INTERFACE gcov --coverage)
+      add_library(qdmi::qdmi_coverage_flags ALIAS qdmi_coverage_flags)
+      target_link_libraries(qdmi PUBLIC qdmi::qdmi_coverage_flags)
     endif()
 
     # set the version of the library
