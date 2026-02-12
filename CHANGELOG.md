@@ -13,7 +13,7 @@ clients compiled against a different minor or major version.
 
 ### Changed
 
-- 🚸 Export _all_ device headers (incl. `constants.h`) into device implementation ([#325]) ([\@ystade])
+- 🚸 Export _all_ device headers (incl. `constants.h`) as part of device implementations such that they do not need to link against the header-only QDMI library anymore ([#325]) ([\@ystade])
 
 ## [1.2.1] - 2025-12-22
 
