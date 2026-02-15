@@ -142,6 +142,7 @@ ignore = [
   "COM812",  # Conflicts with formatter
   "PLR09",   # Too many <...>
   "PLR2004", # Magic value used in comparison
+  "RUF067",  # `__init__` module should only contain docstrings and re-exports
   "S101",    # Use of assert detected
   "S404",    # `subprocess` module is possibly insecure
   "TID252"   # Prefer absolute imports over relative imports from parent modules
