@@ -11,6 +11,10 @@ clients compiled against a different minor or major version.
 
 ## [Unreleased]
 
+### Changed
+
+- 🚸 Export _all_ device headers (incl. `constants.h`) as part of device implementations such that they do not need to link against the header-only QDMI library anymore ([#325]) ([\@ystade], [\@burgholzer])
+
 ## [1.2.1] - 2025-12-22
 
 _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#121)._
@@ -112,6 +116,7 @@ changelogs._
 
 <!-- PR links -->
 
+[#325]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/325
 [#285]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/285
 [#275]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/275
 [#274]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/274

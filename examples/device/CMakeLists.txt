@@ -22,7 +22,10 @@ enable_language(CXX)
 # change. Hence, in the test you have to adopt the name of the shared library
 # accordingly.
 add_library(cxx_device SHARED device.cpp)
-target_link_libraries(cxx_device PRIVATE qdmi::qdmi qdmi::qdmi_project_warnings)
+target_link_libraries(cxx_device PRIVATE qdmi::qdmi_project_warnings)
+if(ENABLE_COVERAGE)
+  target_link_libraries(cxx_device PRIVATE qdmi::qdmi_coverage_flags)
+endif()
 generate_prefixed_qdmi_headers("CXX")
 target_include_directories(cxx_device
                            PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/include)

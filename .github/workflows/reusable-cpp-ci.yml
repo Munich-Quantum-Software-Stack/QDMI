@@ -28,14 +28,14 @@ jobs:
       matrix:
         config: [Debug, Release]
       fail-fast: false
-    uses: munich-quantum-toolkit/workflows/.github/workflows/reusable-cpp-tests-ubuntu.yml@2acb39781fa6ca7baa10c2a31a508cb0e2292d9e # v1.17.6
+    uses: munich-quantum-toolkit/workflows/.github/workflows/reusable-cpp-tests-ubuntu.yml@d6314c45667c131055a0389afc110e8dedc6da3f # v1.17.11
     with:
       config: ${{ matrix.config }}
       cmake-args: ${{ inputs.cmake-args }} ${{ inputs.cmake-args-ubuntu }}
 
   cpp-tests-macos:
     name: 🍎
-    uses: munich-quantum-toolkit/workflows/.github/workflows/reusable-cpp-tests-macos.yml@2acb39781fa6ca7baa10c2a31a508cb0e2292d9e # v1.17.6
+    uses: munich-quantum-toolkit/workflows/.github/workflows/reusable-cpp-tests-macos.yml@d6314c45667c131055a0389afc110e8dedc6da3f # v1.17.11
     with:
       cmake-args: ${{ inputs.cmake-args }} ${{ inputs.cmake-args-macos }}
 
@@ -56,7 +56,7 @@ jobs:
       contents: read
       id-token: write
     steps:
-      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Install Ninja
         run: pipx install ninja
       - name: Configure CMake
