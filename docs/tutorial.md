@@ -2,12 +2,46 @@
 
 <!-- IMPORTANT: Keep the line above as the first line. -->
 
-Welcome! This tutorial will guide you through the process of implementing a minimal QDMI device in C++. By the end of this guide, you will have a working device project capable of accepting queries and jobs.
+Welcome! This tutorial is the **definitive, self-contained guide** for implementing a QDMI device. It replaces and expands upon the basic template documentation to provide a hands-on, interactive learning experience. By the end of this guide, you will have a working device project capable of accepting queries and jobs.
 
-Together with QDMI, we provide a template meant to kick-start the implementation of a new device.
-The following sections describe how to set up and use the template.
+Together with QDMI, we provide a template meant to kick-start the implementation of a new device. The following sections describe how to set up, configure, and verify your implementation from the ground up.
 
 \tableofcontents
+
+## What is QDMI? {#tutorial-concepts}
+
+The **Quantum Device Management Interface (QDMI)** serves as the standardized hardware abstraction layer for the quantum ecosystem. Much like how OpenGL or DirectX abstracts graphics hardware for application developers, QDMI provides a unified interface that decouples high-level quantum software from the underlying physical implementation.
+
+By adhering to this standard, you enable interoperability across the entire Munich Quantum Software Stack, allowing your hardware to be seamlessly integrated with advanced drivers and optimization tools.
+
+### Core Architecture Concepts
+
+To build an effective QDMI device, it is essential to understand the primary entities and the "Opaque Pointer" pattern that defines the interface:
+
+*   **Implementation**: This is the logic you will develop. It acts as the bridge between the standardized QDMI C-API and your proprietary hardware controller or high-performance simulator.
+*   **Driver**: A client application (e.g., MQT Core) that orchestrates quantum workloads. The driver is agnostic to your hardware's internals, communicating only through the predefined QDMI protocol.
+*   **Handle Hierarchy**: QDMI utilizes "handles" (opaque pointers) to manage state without exposing sensitive implementation details.
+    *   `Session Handle`: A persistent context representing a single connection. It manages lifecycle tasks like authentication, configuration, and property discovery.
+    *   `Job Handle`: An ephemeral object representing a single execution unit (e.g., a quantum circuit). It encapsulates the program, execution parameters, and status tracking.
+
+### High-Level Architecture
+
+```mermaid
+graph LR
+    subgraph "The World"
+    A[Quantum Algorithm] --> B[Driver / User App]
+    end
+    
+    B -->|1. Submit Job / Query| C["QDMI Interface (API)"]
+    
+    subgraph "Your Project (This Tutorial)"
+    C -->|2. Invoke Stubs| D["Your Device Logic (prefix_device.cpp)"]
+    D <-->|3. Control / Read| E[Hardware or Simulator]
+    end
+    
+    D -->|4. Return Results| C
+    C -->|5. Deliver Status/Data| B
+```
 
 ## Prerequisites {#tutorial-prerequisites}
 
@@ -54,10 +88,35 @@ cmake --build build --target qdmi-template
 
 ```mermaid
 graph TD
-    A["Configure QDMI (CMake)"] -->|"Define PREFIX & PATH"| B["Generate Template (Build Target)"]
-    B --> C["Source Code & Project Generated"]
-    C --> D["Start Customizing Implementation"]
+    subgraph "Your Environment"
+    CONF["1. Configure CMake"]
+    BUILD["2. Build 'qdmi-template'"]
+    DIR["3. New Project Directory"]
+    end
+    
+    subgraph "QDMI Repository (Remote)"
+    RE["Template Source & Logic"]
+    end
+
+    CONF -->|"-DTEMPLATE_PREFIX=MY"| CONF
+    CONF -.->|FetchContent| RE
+    RE -->|Pull Metadata| CONF
+    CONF --> BUILD
+    BUILD -->|Inject Prefix & Logic| DIR
+    DIR -->|Output| SRC["my_device.cpp"]
+    DIR -->|Output| TST["test_my_device.cpp"]
 ```
+
+### Troubleshooting Fetch Failures
+
+Since the template is fetched from GitHub during configuration, you might encounter issues:
+
+*   **GitHub Rate Limits**: If you see "Access Denied" or "403" errors, you may have reached the unauthenticated API rate limit. 
+    *   *Solution*: Set the environment variable `GITHUB_TOKEN` to a personal access token, and CMake will use it for `FetchContent`.
+*   **SSL/Certificate Errors**: If your environment has old SSL certificates, the fetch might fail.
+    *   *Solution*: Ensure your system's `ca-certificates` are up to date, or as a last resort, use `-DQDMI_FETCH_VERIFY_SSL=OFF` (not recommended for production).
+*   **Missing Git**: CMake requires a local `git` installation to clone the repository.
+    *   *Solution*: Verify `git --version` works in your terminal.
 
 If the option `TEMPLATE_PATH` is not given, it will be placed in `PREFIX_qdmi_device` relative to the
 parent directory where QDMI was cloned.
@@ -101,13 +160,45 @@ in a couple of places. All paths are given relative to the root of the template 
 
 ## Working with the Template {#tutorial-working}
 
-The template is structured into several directories. The top-level
-`CMakeLists.txt` contains settings for the entire project. Some additional CMake code that imports
+The template is structured into several directories.
+
+```text
+.
+├── cmake/              # Build system logic & dependencies
+├── docs/               # Documentation source
+├── src/                # YOUR SOURCE CODE
+│   └── prefix_device.cpp
+├── test/               # YOUR TESTS
+│   └── test_prefix_device.cpp
+├── python/             # Python bindings
+├── CMakeLists.txt      # Main build configuration
+└── pyproject.toml      # Python package configuration
+```
+
+The top-level `CMakeLists.txt` contains settings for the entire project. Some additional CMake code that imports
 required dependencies is outsourced into `cmake/`.
 
 The most important directory for your implementation is `src/` and the `.cpp` file located in that
-directory (e.g., `prefix_device.cpp`). Here you find stubs for all functions that have to be implemented by a device. For every
-function, the `return QDMI_ERROR_NOTIMPLEMENTED;` should be replaced by a proper implementation of
+directory (e.g., `prefix_device.cpp`). Here you find stubs for all functions that have to be implemented by a device.
+
+### Headers and Status Codes
+
+To implementation the functions in this tutorial, ensure your `prefix_device.cpp` includes the following headers:
+
+```cpp
+#include "prefix_qdmi/device.h"
+#include <string>   // For std::string
+#include <cstring>  // For std::memcpy
+#include <cstdint>  // For uint8_t
+```
+
+**Status Codes**: Every QDMI function returns an `int` representing a status. 
+- `QDMI_SUCCESS`: The operation completed successfully.
+- `QDMI_ERROR_NOTIMPLEMENTED`: The default for stubs. You must replace this!
+- `QDMI_ERROR_INVALIDARGUMENT`: Used if the driver passes a `NULL` pointer or an invalid size.
+- `QDMI_ERROR_BADSTATE`: Used if a function is called at the wrong time (e.g., querying before initialization).
+
+For every function, the `return QDMI_ERROR_NOTIMPLEMENTED;` should be replaced by a proper implementation of
 the function. In particular, there should not be any computation path at the end that returns \ref
 QDMI_ERROR_NOTIMPLEMENTED. Instead, some other error code from \ref QDMI_STATUS should be returned
 in case of an erroneous state.
@@ -197,6 +288,171 @@ void PREFIX_QDMI_device_session_free(PREFIX_QDMI_Device_Session session) {
 
 By requiring a token before initialization, you ensure that only authenticated drivers can query your device or submit jobs.
 
+## First Query: Device Name {#tutorial-query}
+
+One of the most basic tasks a driver performs is querying the device for its characteristics. In QDMI, this is done via "Property Queries". Let's implement a query to retrieve the device's name.
+
+### Implementation Logic
+
+In your `prefix_device.cpp`, look for the `PREFIX_QDMI_device_session_query_device_property` function. You'll need to handle the `QDMI_DEVICE_PROPERTY_NAME` case.
+
+QDMI uses a **two-step retrieval pattern** for data of variable size (like strings):
+1.  **Request Size**: The driver calls the function with a `NULL` value pointer. Your implementation should set `size_ret` to the required buffer size (including the null terminator).
+2.  **Retrieve Data**: The driver provides a buffer of the requested size. Your implementation copies the data into the buffer.
+
+```cpp
+int PREFIX_QDMI_device_session_query_device_property(
+    PREFIX_QDMI_Device_Session session, const QDMI_Device_Property prop,
+    const size_t size, void *value, size_t *size_ret) {
+  
+  if (session == nullptr) return QDMI_ERROR_INVALIDARGUMENT;
+  if (session->status != DEVICE_SESSION_STATUS::INITIALIZED) return QDMI_ERROR_BADSTATE;
+
+  if (prop == QDMI_DEVICE_PROPERTY_NAME) {
+    const std::string name = "MyQDMI-Tutorial-Device";
+    const size_t name_size = name.size() + 1; // Include null terminator
+
+    if (size_ret != nullptr) *size_ret = name_size;
+    if (value == nullptr) return QDMI_SUCCESS; // Size request only
+
+    if (size < name_size) return QDMI_ERROR_INVALIDARGUMENT; // Buffer too small
+    std::memcpy(value, name.c_str(), name_size);
+    return QDMI_SUCCESS;
+  }
+
+  return QDMI_ERROR_NOTSUPPORTED;
+}
+```
+
+### Visualizing the Two-Step Query
+
+```mermaid
+sequenceDiagram
+    participant D as Driver
+    participant V as Device (Your Code)
+    D->>V: query_property(prop, value=NULL, &size_ret)
+    Note over V: Calculate required size
+    V-->>D: QDMI_SUCCESS, size_ret=N
+    D->>V: query_property(prop, value=Buffer[N], size=N)
+    Note over V: Copy data to buffer
+    V-->>D: QDMI_SUCCESS
+```
+
+## Job Handling {#tutorial-jobs}
+
+The primary purpose of a QDMI device is to execute jobs (typically quantum programs). The lifecycle of a job involves several state transitions managed by the device.
+
+### Job State Transitions
+
+```mermaid
+stateDiagram-v2
+    [*] --> Created: session_create_device_job()
+    Created --> Created: job_set_parameter(PROGRAM)
+    Created --> Submitted: job_submit()
+    Submitted --> Done: Simulated Execution
+    Done --> [*]: job_free()
+```
+
+### Implementation Logic
+
+First, define your job structure in `prefix_device.cpp`. It should track the associated session, the program to run, and the job's current status.
+
+```cpp
+struct PREFIX_QDMI_Device_Job_impl_d {
+  PREFIX_QDMI_Device_Session session = nullptr;
+  std::string program;
+  QDMI_Job_Status status = QDMI_JOB_STATUS_CREATED;
+};
+```
+
+Then, implement the core job management functions. For this tutorial, we will simulate immediate execution.
+
+```cpp
+int PREFIX_QDMI_device_session_create_device_job(PREFIX_QDMI_Device_Session session,
+                                                PREFIX_QDMI_Device_Job *job) {
+  if (session == nullptr || job == nullptr) return QDMI_ERROR_INVALIDARGUMENT;
+  if (session->status != DEVICE_SESSION_STATUS::INITIALIZED) return QDMI_ERROR_BADSTATE;
+
+  *job = new PREFIX_QDMI_Device_Job_impl_d();
+  (*job)->session = session;
+  return QDMI_SUCCESS;
+}
+
+int PREFIX_QDMI_device_job_set_parameter(PREFIX_QDMI_Device_Job job,
+                                        QDMI_Device_Job_Parameter param,
+                                        size_t size, const void *value) {
+  if (job == nullptr || (value != nullptr && size == 0)) return QDMI_ERROR_INVALIDARGUMENT;
+  
+  if (param == QDMI_DEVICE_JOB_PARAMETER_PROGRAM && value != nullptr) {
+    job->program = std::string(static_cast<const char *>(value), size);
+    return QDMI_SUCCESS;
+  }
+  return QDMI_ERROR_NOTSUPPORTED;
+}
+
+int PREFIX_QDMI_device_job_submit(PREFIX_QDMI_Device_Job job) {
+  if (job == nullptr) return QDMI_ERROR_INVALIDARGUMENT;
+  if (job->program.empty()) return QDMI_ERROR_BADSTATE; // Must have a program
+
+  // Simulate execution: transition directly to DONE
+  job->status = QDMI_JOB_STATUS_DONE;
+  return QDMI_SUCCESS;
+}
+
+int PREFIX_QDMI_device_job_check(PREFIX_QDMI_Device_Job job, QDMI_Job_Status *status) {
+  if (job == nullptr || status == nullptr) return QDMI_ERROR_INVALIDARGUMENT;
+  *status = job->status;
+  return QDMI_SUCCESS;
+}
+
+int PREFIX_QDMI_device_job_get_results(PREFIX_QDMI_Device_Job job, QDMI_Job_Result result,
+                                      size_t size, void *data, size_t *size_ret) {
+  if (job == nullptr) return QDMI_ERROR_INVALIDARGUMENT;
+  if (job->status != QDMI_JOB_STATUS_DONE) return QDMI_ERROR_INVALIDARGUMENT;
+
+  if (result == QDMI_JOB_RESULT_PROBABILITIES_DENSE) {
+    // Simulate probability results (e.g., 50/50 for a simple circuit)
+    const double probabilities[] = {0.5, 0.5};
+    const size_t res_size = sizeof(probabilities);
+
+    if (size_ret != nullptr) *size_ret = res_size;
+    if (data == nullptr) return QDMI_SUCCESS;
+
+    if (size < res_size) return QDMI_ERROR_INVALIDARGUMENT;
+    std::memcpy(data, probabilities, res_size);
+    return QDMI_SUCCESS;
+  }
+  return QDMI_ERROR_NOTSUPPORTED;
+}
+
+void PREFIX_QDMI_device_job_free(PREFIX_QDMI_Device_Job job) {
+  delete job;
+}
+```
+
+### Data Flow: Retrieving Results
+
+The following diagram illustrates how the probability data travels from your device logic back to the driver.
+
+```mermaid
+graph TD
+    subgraph "Driver"
+    DR["Request Result (prop=PROBABILITIES_DENSE)"]
+    BU["Buffer [0.5, 0.5]"]
+    end
+    subgraph "Your Device (prefix_device.cpp)"
+    IM["PREFIX_QDMI_device_job_get_results"]
+    LO{"Check Status"}
+    DA["Simulated Probabilities: {0.5, 0.5}"]
+    end
+    DR -->|1. Call with data=NULL| IM
+    IM -->|2. Return size_ret=16 bytes| DR
+    DR -->|3. Call with data=BU| IM
+    IM --> LO
+    LO -->|Done| DA
+    DA -->|4. memcpy to BU| BU
+```
+
 ## Test Environment {#tutorial-testing}
 
 A key part of implementing your QDMI device is verifying each step as you go. The template comes with a built-in test suite tailored to give you immediate feedback, similar to an interactive coding platform.
@@ -248,13 +504,53 @@ protected:
   void TearDown() override { PREFIX_QDMI_device_finalize(); }
 };
 
-TEST_F(QDMIImplementationTest, QueryDeviceQubitNum) {
-  size_t num_qubits = 0;
-  EXPECT_EQ(PREFIX_QDMI_device_session_query_device_property(
-                session, QDMI_DEVICE_PROPERTY_QUBITSNUM, sizeof(size_t),
-                &num_qubits, nullptr),
+TEST_F(QDMIImplementationTest, QueryDeviceName) {
+  size_t size = 0;
+  ASSERT_EQ(PREFIX_QDMI_device_session_query_device_property(
+                session, QDMI_DEVICE_PROPERTY_NAME, 0, nullptr, &size),
             QDMI_SUCCESS)
-      << "Checkpoint 3 Failed: Your device must report the number of available qubits.";
+      << "Checkpoint 3 Failed: Your device must report the size of its name.";
+  
+  std::string value(size - 1, '\0');
+  ASSERT_EQ(PREFIX_QDMI_device_session_query_device_property(
+                session, QDMI_DEVICE_PROPERTY_NAME, size, value.data(), nullptr),
+            QDMI_SUCCESS)
+      << "Checkpoint 3 Failed: Your device failed to return its name into the buffer.";
+  
+  ASSERT_EQ(value, "MyQDMI-Tutorial-Device")
+      << "Checkpoint 3 Failed: The returned device name does not match the expected tutorial value.";
+}
+
+TEST_F(QDMIImplementationTest, SubmitAndVerifyJob) {
+  PREFIX_QDMI_Device_Job job = nullptr;
+  ASSERT_EQ(PREFIX_QDMI_device_session_create_device_job(session, &job), QDMI_SUCCESS)
+      << "Checkpoint 4 Failed: Could not create a device job.";
+
+  const std::string qasm = "OPENQASM 2.0; qreg q[1]; creg c[1]; h q[0]; measure q[0] -> c[0];";
+  ASSERT_EQ(PREFIX_QDMI_device_job_set_parameter(
+                job, QDMI_DEVICE_JOB_PARAMETER_PROGRAM, qasm.size(), qasm.c_str()),
+            QDMI_SUCCESS)
+      << "Checkpoint 4 Failed: Could not set the QASM program for the job.";
+
+  ASSERT_EQ(PREFIX_QDMI_device_job_submit(job), QDMI_SUCCESS)
+      << "Checkpoint 4 Failed: Job submission failed.";
+
+  QDMI_Job_Status status = QDMI_JOB_STATUS_CREATED;
+  ASSERT_EQ(PREFIX_QDMI_device_job_check(job, &status), QDMI_SUCCESS);
+  ASSERT_EQ(status, QDMI_JOB_STATUS_DONE)
+      << "Checkpoint 4 Failed: Job status should be DONE after submission in this tutorial.";
+
+  double probs[2];
+  size_t size = 0;
+  ASSERT_EQ(PREFIX_QDMI_device_job_get_results(
+                job, QDMI_JOB_RESULT_PROBABILITIES_DENSE, sizeof(probs), probs, &size),
+            QDMI_SUCCESS)
+      << "Checkpoint 4 Failed: Could not retrieve simulated job results.";
+  
+  EXPECT_EQ(probs[0], 0.5);
+  EXPECT_EQ(probs[1], 0.5);
+
+  PREFIX_QDMI_device_job_free(job);
 }
 ```
 
@@ -275,7 +571,8 @@ If a test fails, it will provide a descriptive "Checkpoint" message to help you 
 | **0**      | Device Init       | Basic `QDMI_device_initialize` implementation.                  |
 | **1**      | Session Alloc     | Successful `QDMI_device_session_alloc` and memory management.   |
 | **2**      | Authentication    | Implementation of token handling in `set_parameter` and `init`. |
-| **3**      | Device Properties | Queries for device name, version, and qubit count.              |
+| **3**      | First Query       | Retrieval of the device name using the two-step pattern.        |
+| **4**      | Job Handling      | Complete job lifecycle: Create, Set Program, Submit, Get Result.|
 
 ### Understanding the Feedback
 
