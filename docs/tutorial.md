@@ -23,13 +23,13 @@ Before you start, ensure you have the following installed on your system:
 
 When you build the template project, CMake will automatically fetch the following dependencies:
 
-| Dependency                                                         | Version | Purpose                                |
-| :----------------------------------------------------------------- | :------ | :------------------------------------- |
-| [QDMI Core](https://github.com/Munich-Quantum-Software-Stack/QDMI)  | 1.3.0   | Core interface definitions             |
-| [GoogleTest](https://github.com/google/googletest)                 | 1.17.0  | C++ testing framework                  |
-| [Doxygen](https://www.doxygen.nl/)                                 | 1.15.0  | Documentation generation               |
-| [Doxygen Awesome](https://github.com/jothepro/doxygen-awesome-css) | 2.4.1   | Modern CSS for Doxygen documentation   |
-| [scikit-build-core](https://github.com/scikit-build/scikit-build-core) | 0.11.6+ | Python build backend                   |
+| Dependency                                                             | Version | Purpose                              |
+| :--------------------------------------------------------------------- | :------ | :----------------------------------- |
+| [QDMI Core](https://github.com/Munich-Quantum-Software-Stack/QDMI)     | 1.3.0   | Core interface definitions           |
+| [GoogleTest](https://github.com/google/googletest)                     | 1.17.0  | C++ testing framework                |
+| [Doxygen](https://www.doxygen.nl/)                                     | 1.15.0  | Documentation generation             |
+| [Doxygen Awesome](https://github.com/jothepro/doxygen-awesome-css)     | 2.4.1   | Modern CSS for Doxygen documentation |
+| [scikit-build-core](https://github.com/scikit-build/scikit-build-core) | 0.11.6+ | Python build backend                 |
 
 These dependencies are managed via `FetchContent` in `cmake/ExternalDependencies.cmake` or defined in `pyproject.toml`.
 
@@ -67,6 +67,7 @@ If you want to regenerate into an existing directory, use:
 ```sh
 cmake --build build --target qdmi-template-clean
 ```
+
 > [!NOTE]
 > The previous command `qdmi-template-force` has been updated to `qdmi-template-clean` to better reflect its function of cleaning and regenerating.
 
@@ -129,6 +130,7 @@ Some more files are present in the root directory of the template, such as `LICE
 To interact with a device, a driver must first establish a session. In QDMI, a session is an opaque handle (`QDMI_Device_Session`) that encapsulates the connection state, including authentication.
 
 The lifecycle of a session follows these steps:
+
 1.  **Allocation**: `QDMI_device_session_alloc` creates a new session object.
 2.  **Configuration**: `QDMI_device_session_set_parameter` is used to provide credentials (like an API token).
 3.  **Initialization**: `QDMI_device_session_init` validates the parameters and prepares the session for use.
@@ -257,23 +259,28 @@ TEST_F(QDMIImplementationTest, QueryDeviceQubitNum) {
 ```
 
 #### Run All Tests
+
 To check your overall progress:
+
 ```sh
 ctest --test-dir build --output-on-failure
 ```
 
 #### Verification Checkpoints
+
 If a test fails, it will provide a descriptive "Checkpoint" message to help you identify what's missing:
 
-| Checkpoint | Target Feature | What it verifies |
-| :--- | :--- | :--- |
-| **0** | Device Init | Basic `QDMI_device_initialize` implementation. |
-| **1** | Session Alloc | Successful `QDMI_device_session_alloc` and memory management. |
-| **2** | Authentication | Implementation of token handling in `set_parameter` and `init`. |
-| **3** | Device Properties | Queries for device name, version, and qubit count. |
+| Checkpoint | Target Feature    | What it verifies                                                |
+| :--------- | :---------------- | :-------------------------------------------------------------- |
+| **0**      | Device Init       | Basic `QDMI_device_initialize` implementation.                  |
+| **1**      | Session Alloc     | Successful `QDMI_device_session_alloc` and memory management.   |
+| **2**      | Authentication    | Implementation of token handling in `set_parameter` and `init`. |
+| **3**      | Device Properties | Queries for device name, version, and qubit count.              |
 
 ### Understanding the Feedback
+
 When a test fails, pay close attention to the custom failure messages. They are designed to point you toward the specific function or logic error in your code. For example:
+
 > `Checkpoint 2 Failed: Could not set the authentication token.`
 > `Did you implement QDMI_DEVICE_SESSION_PARAMETER_TOKEN?`
 
