@@ -18,11 +18,11 @@ By adhering to this standard, you enable interoperability across the entire Muni
 
 To build an effective QDMI device, it is essential to understand the primary entities and the "Opaque Pointer" pattern that defines the interface:
 
-*   **Implementation**: This is the logic you will develop. It acts as the bridge between the standardized QDMI C-API and your proprietary hardware controller or high-performance simulator.
-*   **Driver**: A client application (e.g., MQT Core) that orchestrates quantum workloads. The driver is agnostic to your hardware's internals, communicating only through the predefined QDMI protocol.
-*   **Handle Hierarchy**: QDMI utilizes "handles" (opaque pointers) to manage state without exposing sensitive implementation details.
-    *   `Session Handle`: A persistent context representing a single connection. It manages lifecycle tasks like authentication, configuration, and property discovery.
-    *   `Job Handle`: An ephemeral object representing a single execution unit (e.g., a quantum circuit). It encapsulates the program, execution parameters, and status tracking.
+- **Implementation**: This is the logic you will develop. It acts as the bridge between the standardized QDMI C-API and your proprietary hardware controller or high-performance simulator.
+- **Driver**: A client application (e.g., MQT Core) that orchestrates quantum workloads. The driver is agnostic to your hardware's internals, communicating only through the predefined QDMI protocol.
+- **Handle Hierarchy**: QDMI utilizes "handles" (opaque pointers) to manage state without exposing sensitive implementation details.
+  - `Session Handle`: A persistent context representing a single connection. It manages lifecycle tasks like authentication, configuration, and property discovery.
+  - `Job Handle`: An ephemeral object representing a single execution unit (e.g., a quantum circuit). It encapsulates the program, execution parameters, and status tracking.
 
 ### High-Level Architecture
 
@@ -31,14 +31,14 @@ graph LR
     subgraph "The World"
     A[Quantum Algorithm] --> B[Driver / User App]
     end
-    
+
     B -->|1. Submit Job / Query| C["QDMI Interface (API)"]
-    
+
     subgraph "Your Project (This Tutorial)"
     C -->|2. Invoke Stubs| D["Your Device Logic (prefix_device.cpp)"]
     D <-->|3. Control / Read| E[Hardware or Simulator]
     end
-    
+
     D -->|4. Return Results| C
     C -->|5. Deliver Status/Data| B
 ```
@@ -93,7 +93,7 @@ graph TD
     BUILD["2. Build 'qdmi-template'"]
     DIR["3. New Project Directory"]
     end
-    
+
     subgraph "QDMI Repository (Remote)"
     RE["Template Source & Logic"]
     end
@@ -111,12 +111,12 @@ graph TD
 
 Since the template is fetched from GitHub during configuration, you might encounter issues:
 
-*   **GitHub Rate Limits**: If you see "Access Denied" or "403" errors, you may have reached the unauthenticated API rate limit. 
-    *   *Solution*: Set the environment variable `GITHUB_TOKEN` to a personal access token, and CMake will use it for `FetchContent`.
-*   **SSL/Certificate Errors**: If your environment has old SSL certificates, the fetch might fail.
-    *   *Solution*: Ensure your system's `ca-certificates` are up to date, or as a last resort, use `-DQDMI_FETCH_VERIFY_SSL=OFF` (not recommended for production).
-*   **Missing Git**: CMake requires a local `git` installation to clone the repository.
-    *   *Solution*: Verify `git --version` works in your terminal.
+- **GitHub Rate Limits**: If you see "Access Denied" or "403" errors, you may have reached the unauthenticated API rate limit.
+  - _Solution_: Set the environment variable `GITHUB_TOKEN` to a personal access token, and CMake will use it for `FetchContent`.
+- **SSL/Certificate Errors**: If your environment has old SSL certificates, the fetch might fail.
+  - _Solution_: Ensure your system's `ca-certificates` are up to date, or as a last resort, use `-DQDMI_FETCH_VERIFY_SSL=OFF` (not recommended for production).
+- **Missing Git**: CMake requires a local `git` installation to clone the repository.
+  - _Solution_: Verify `git --version` works in your terminal.
 
 If the option `TEMPLATE_PATH` is not given, it will be placed in `PREFIX_qdmi_device` relative to the
 parent directory where QDMI was cloned.
@@ -192,7 +192,8 @@ To implementation the functions in this tutorial, ensure your `prefix_device.cpp
 #include <cstdint>  // For uint8_t
 ```
 
-**Status Codes**: Every QDMI function returns an `int` representing a status. 
+**Status Codes**: Every QDMI function returns an `int` representing a status.
+
 - `QDMI_SUCCESS`: The operation completed successfully.
 - `QDMI_ERROR_NOTIMPLEMENTED`: The default for stubs. You must replace this!
 - `QDMI_ERROR_INVALIDARGUMENT`: Used if the driver passes a `NULL` pointer or an invalid size.
@@ -297,6 +298,7 @@ One of the most basic tasks a driver performs is querying the device for its cha
 In your `prefix_device.cpp`, look for the `PREFIX_QDMI_device_session_query_device_property` function. You'll need to handle the `QDMI_DEVICE_PROPERTY_NAME` case.
 
 QDMI uses a **two-step retrieval pattern** for data of variable size (like strings):
+
 1.  **Request Size**: The driver calls the function with a `NULL` value pointer. Your implementation should set `size_ret` to the required buffer size (including the null terminator).
 2.  **Retrieve Data**: The driver provides a buffer of the requested size. Your implementation copies the data into the buffer.
 
@@ -304,7 +306,7 @@ QDMI uses a **two-step retrieval pattern** for data of variable size (like strin
 int PREFIX_QDMI_device_session_query_device_property(
     PREFIX_QDMI_Device_Session session, const QDMI_Device_Property prop,
     const size_t size, void *value, size_t *size_ret) {
-  
+
   if (session == nullptr) return QDMI_ERROR_INVALIDARGUMENT;
   if (session->status != DEVICE_SESSION_STATUS::INITIALIZED) return QDMI_ERROR_BADSTATE;
 
@@ -382,7 +384,7 @@ int PREFIX_QDMI_device_job_set_parameter(PREFIX_QDMI_Device_Job job,
                                         QDMI_Device_Job_Parameter param,
                                         size_t size, const void *value) {
   if (job == nullptr || (value != nullptr && size == 0)) return QDMI_ERROR_INVALIDARGUMENT;
-  
+
   if (param == QDMI_DEVICE_JOB_PARAMETER_PROGRAM && value != nullptr) {
     job->program = std::string(static_cast<const char *>(value), size);
     return QDMI_SUCCESS;
@@ -510,13 +512,13 @@ TEST_F(QDMIImplementationTest, QueryDeviceName) {
                 session, QDMI_DEVICE_PROPERTY_NAME, 0, nullptr, &size),
             QDMI_SUCCESS)
       << "Checkpoint 3 Failed: Your device must report the size of its name.";
-  
+
   std::string value(size - 1, '\0');
   ASSERT_EQ(PREFIX_QDMI_device_session_query_device_property(
                 session, QDMI_DEVICE_PROPERTY_NAME, size, value.data(), nullptr),
             QDMI_SUCCESS)
       << "Checkpoint 3 Failed: Your device failed to return its name into the buffer.";
-  
+
   ASSERT_EQ(value, "MyQDMI-Tutorial-Device")
       << "Checkpoint 3 Failed: The returned device name does not match the expected tutorial value.";
 }
@@ -546,7 +548,7 @@ TEST_F(QDMIImplementationTest, SubmitAndVerifyJob) {
                 job, QDMI_JOB_RESULT_PROBABILITIES_DENSE, sizeof(probs), probs, &size),
             QDMI_SUCCESS)
       << "Checkpoint 4 Failed: Could not retrieve simulated job results.";
-  
+
   EXPECT_EQ(probs[0], 0.5);
   EXPECT_EQ(probs[1], 0.5);
 
@@ -566,13 +568,13 @@ ctest --test-dir build --output-on-failure
 
 If a test fails, it will provide a descriptive "Checkpoint" message to help you identify what's missing:
 
-| Checkpoint | Target Feature    | What it verifies                                                |
-| :--------- | :---------------- | :-------------------------------------------------------------- |
-| **0**      | Device Init       | Basic `QDMI_device_initialize` implementation.                  |
-| **1**      | Session Alloc     | Successful `QDMI_device_session_alloc` and memory management.   |
-| **2**      | Authentication    | Implementation of token handling in `set_parameter` and `init`. |
-| **3**      | First Query       | Retrieval of the device name using the two-step pattern.        |
-| **4**      | Job Handling      | Complete job lifecycle: Create, Set Program, Submit, Get Result.|
+| Checkpoint | Target Feature | What it verifies                                                 |
+| :--------- | :------------- | :--------------------------------------------------------------- |
+| **0**      | Device Init    | Basic `QDMI_device_initialize` implementation.                   |
+| **1**      | Session Alloc  | Successful `QDMI_device_session_alloc` and memory management.    |
+| **2**      | Authentication | Implementation of token handling in `set_parameter` and `init`.  |
+| **3**      | First Query    | Retrieval of the device name using the two-step pattern.         |
+| **4**      | Job Handling   | Complete job lifecycle: Create, Set Program, Submit, Get Result. |
 
 ### Understanding the Feedback
 
