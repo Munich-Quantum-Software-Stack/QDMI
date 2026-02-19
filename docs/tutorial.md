@@ -1,3 +1,5 @@
+# Tutorial: Implementing a QDMI Device
+
 This guide walks you through implementing a minimal **QDMI device**. By the end of this tutorial, you'll have a functional implementation capable of handling simulated quantum workloads. We've designed this as an interactive walkthrough where you build and verify features incrementally.
 
 The **Quantum Device Management Interface (QDMI)** is a standardized layer for hardware abstraction. We're building a bridge that allows high-level drivers to control your device implementation through a stable C interface.
@@ -44,6 +46,9 @@ cmake -DQDMI_GENERATE_TEMPLATE=ON \
 
 # Step 2: Actually write the files to disk
 cmake --build build --target qdmi-template
+
+# Step 3: Enter the new project directory
+cd my_qdmi_device
 ```
 
 The resulting directory (`my_qdmi_device`) follows a standard structure:
@@ -96,13 +101,14 @@ The driver interacts with your device starting with `initialize` and ending with
 Open `src/tutorial_device.cpp` and update these stubs to return `QDMI_SUCCESS`.
 
 ```cpp
-int tutorial_qdmi_device_initialize() {
+int tutorial_QDMI_device_initialize() {
   // Global startup logic (e.g., hardware connection) goes here
   return QDMI_SUCCESS;
 }
 
-void tutorial_qdmi_device_finalize() {
+int tutorial_QDMI_device_finalize() {
   // Global cleanup logic goes here
+  return QDMI_SUCCESS;
 }
 ```
 
@@ -115,7 +121,7 @@ void tutorial_qdmi_device_finalize() {
 
 Once the global interface is ready, we need a way to manage connections. This is handled through a **Session**.
 
-In QDMI, sessions are managed via **handles**. A handle is essentially an opaque pointer to a struct that your implementation defines. Specifically, `tutorial_qdmi_session` is a typedef from the C API, while the internal struct (`tutorial_qdmi_session_impl_d`) is a private implementation detail.
+In QDMI, sessions are managed via **handles**. A handle is essentially an opaque pointer to a struct that your implementation defines. Specifically, `tutorial_QDMI_Device_Session` is a typedef from the C API, while the internal struct (`tutorial_QDMI_Device_Session_impl_d`) is a private implementation detail.
 
 ```mermaid
 stateDiagram-v2
@@ -138,7 +144,7 @@ Define a basic struct in `src/tutorial_device.cpp` to track the session state.
 ```cpp
 enum class SESSION_STATUS { ALLOCATED, INITIALIZED };
 
-struct tutorial_qdmi_session_impl_d {
+struct tutorial_QDMI_Device_Session_impl_d {
   std::string token;
   SESSION_STATUS status = SESSION_STATUS::ALLOCATED;
 };
@@ -149,20 +155,20 @@ struct tutorial_qdmi_session_impl_d {
 Implement the session management functions. We include safety checks here to ensure the implementation is robust against null handles.
 
 ```cpp
-int tutorial_qdmi_device_session_alloc(tutorial_qdmi_session *session) {
+int tutorial_QDMI_device_session_alloc(tutorial_QDMI_Device_Session *session) {
   if (session == nullptr) return QDMI_ERROR_INVALIDARGUMENT;
 
   try {
-    *session = new tutorial_qdmi_session_impl_d();
+    *session = new tutorial_QDMI_Device_Session_impl_d();
     return QDMI_SUCCESS;
   } catch (const std::bad_alloc&) {
     return QDMI_ERROR_OUTOFMEM;
   }
 }
 
-int tutorial_qdmi_device_session_set_parameter(tutorial_qdmi_session session,
+int tutorial_QDMI_device_session_set_parameter(tutorial_QDMI_Device_Session session,
                                             QDMI_Device_Session_Parameter param,
-                                            size_t size, const void *value) {
+                                            const size_t size, const void *value) {
   if (session == nullptr) return QDMI_ERROR_INVALIDARGUMENT;
 
   // We only support the TOKEN parameter for this tutorial
@@ -173,7 +179,7 @@ int tutorial_qdmi_device_session_set_parameter(tutorial_qdmi_session session,
   return QDMI_ERROR_NOTSUPPORTED;
 }
 
-int tutorial_qdmi_device_session_init(tutorial_qdmi_session session) {
+int tutorial_QDMI_device_session_init(tutorial_QDMI_Device_Session session) {
   if (session == nullptr) return QDMI_ERROR_INVALIDARGUMENT;
 
   // Note: Requiring a TOKEN is a design choice for this tutorial implementation,
@@ -184,7 +190,7 @@ int tutorial_qdmi_device_session_init(tutorial_qdmi_session session) {
   return QDMI_SUCCESS;
 }
 
-void tutorial_qdmi_device_session_free(tutorial_qdmi_session session) {
+void tutorial_QDMI_device_session_free(tutorial_QDMI_Device_Session session) {
   if (session != nullptr) delete session;
 }
 ```
@@ -226,9 +232,9 @@ Define the device constants and implement the query function in `src/tutorial_de
 const std::string DEVICE_NAME = "MyTutorialDevice";
 const size_t QUBIT_COUNT = 1;
 
-int tutorial_qdmi_device_session_query_device_property(
-    tutorial_qdmi_session session, QDMI_Device_Property prop,
-    size_t size, void *value, size_t *size_ret) {
+int tutorial_QDMI_device_session_query_device_property(
+    tutorial_QDMI_Device_Session session, const QDMI_Device_Property prop,
+    const size_t size, void *value, size_t *size_ret) {
 
   if (session == nullptr) return QDMI_ERROR_INVALIDARGUMENT;
   if (session->status != SESSION_STATUS::INITIALIZED) return QDMI_ERROR_BADSTATE;
@@ -279,7 +285,7 @@ stateDiagram-v2
 Add a simple struct for tracking job state in `src/tutorial_device.cpp`.
 
 ```cpp
-struct tutorial_qdmi_job_impl_d {
+struct tutorial_QDMI_Device_Job_impl_d {
   std::string program;
   QDMI_Job_Status status = QDMI_JOB_STATUS_CREATED;
 };
@@ -290,20 +296,20 @@ struct tutorial_qdmi_job_impl_d {
 The following functions handle creating and executing jobs. In this tutorial, we simulate immediate successful completion.
 
 ```cpp
-int tutorial_qdmi_device_session_create_device_job(tutorial_qdmi_session session,
-                                                tutorial_qdmi_job *job) {
+int tutorial_QDMI_device_session_create_device_job(tutorial_QDMI_Device_Session session,
+                                                tutorial_QDMI_Device_Job *job) {
   if (session == nullptr || job == nullptr) return QDMI_ERROR_INVALIDARGUMENT;
   try {
-    *job = new tutorial_qdmi_job_impl_d();
+    *job = new tutorial_QDMI_Device_Job_impl_d();
     return QDMI_SUCCESS;
   } catch (const std::bad_alloc&) {
     return QDMI_ERROR_OUTOFMEM;
   }
 }
 
-int tutorial_qdmi_device_job_set_parameter(tutorial_qdmi_job job,
-                                        QDMI_Device_Job_Parameter param,
-                                        size_t size, const void *value) {
+int tutorial_QDMI_device_job_set_parameter(tutorial_QDMI_Device_Job job,
+                                        const QDMI_Device_Job_Parameter param,
+                                        const size_t size, const void *value) {
   if (job == nullptr || value == nullptr) return QDMI_ERROR_INVALIDARGUMENT;
 
   if (param == QDMI_DEVICE_JOB_PARAMETER_PROGRAM) {
@@ -313,7 +319,7 @@ int tutorial_qdmi_device_job_set_parameter(tutorial_qdmi_job job,
   return QDMI_ERROR_NOTSUPPORTED;
 }
 
-int tutorial_qdmi_device_job_submit(tutorial_qdmi_job job) {
+int tutorial_QDMI_device_job_submit(tutorial_QDMI_Device_Job job) {
   if (job == nullptr) return QDMI_ERROR_INVALIDARGUMENT;
   if (job->program.empty()) return QDMI_ERROR_BADSTATE;
 
@@ -323,14 +329,15 @@ int tutorial_qdmi_device_job_submit(tutorial_qdmi_job job) {
   return QDMI_SUCCESS;
 }
 
-int tutorial_qdmi_device_job_check(tutorial_qdmi_job job, QDMI_Job_Status *status) {
+int tutorial_QDMI_device_job_check(tutorial_QDMI_Device_Job job, QDMI_Job_Status *status) {
   if (job == nullptr || status == nullptr) return QDMI_ERROR_INVALIDARGUMENT;
   *status = job->status;
   return QDMI_SUCCESS;
 }
 
-int tutorial_qdmi_device_job_get_results(tutorial_qdmi_job job, QDMI_Job_Result result,
-                                      size_t size, void *data, size_t *size_ret) {
+int tutorial_QDMI_device_job_get_results(tutorial_QDMI_Device_Job job,
+                                      QDMI_Job_Result result, const size_t size,
+                                      void *data, size_t *size_ret) {
   if (job == nullptr || job->status != QDMI_JOB_STATUS_DONE) return QDMI_ERROR_BADSTATE;
 
   if (result == QDMI_JOB_RESULT_PROBABILITIES_DENSE) {
@@ -347,7 +354,7 @@ int tutorial_qdmi_device_job_get_results(tutorial_qdmi_job job, QDMI_Job_Result 
   return QDMI_ERROR_NOTSUPPORTED;
 }
 
-void tutorial_qdmi_device_job_free(tutorial_qdmi_job job) {
+void tutorial_QDMI_device_job_free(tutorial_QDMI_Device_Job job) {
   if (job != nullptr) delete job;
 }
 ```
@@ -368,59 +375,67 @@ This is the full verification suite for `test/test_tutorial_device.cpp`, which p
 class QDMIBaseTest : public ::testing::Test {
 protected:
   void SetUp() override {
-    ASSERT_EQ(tutorial_qdmi_device_initialize(), QDMI_SUCCESS)
+    ASSERT_EQ(tutorial_QDMI_device_initialize(), QDMI_SUCCESS)
         << "Checkpoint 0 Failed: Basic device initialization returned an error.";
   }
-  void TearDown() override { tutorial_qdmi_device_finalize(); }
+  void TearDown() override { tutorial_QDMI_device_finalize(); }
 };
 
 class QDMISessionTest : public QDMIBaseTest {
 protected:
-  tutorial_qdmi_session session = nullptr;
+  tutorial_QDMI_Device_Session session = nullptr;
   void SetUp() override {
     QDMIBaseTest::SetUp();
-    ASSERT_EQ(tutorial_qdmi_device_session_alloc(&session), QDMI_SUCCESS)
+    ASSERT_EQ(tutorial_QDMI_device_session_alloc(&session), QDMI_SUCCESS)
         << "Checkpoint 1 Failed: Could not allocate a session handle.";
     const std::string token = "tutorial_token";
-    ASSERT_EQ(tutorial_qdmi_device_session_set_parameter(session, QDMI_DEVICE_SESSION_PARAMETER_TOKEN, token.size(), token.c_str()), QDMI_SUCCESS);
-    ASSERT_EQ(tutorial_qdmi_device_session_init(session), QDMI_SUCCESS)
+    ASSERT_EQ(tutorial_QDMI_device_session_set_parameter(session, QDMI_DEVICE_SESSION_PARAMETER_TOKEN, token.size(), token.c_str()), QDMI_SUCCESS);
+    ASSERT_EQ(tutorial_QDMI_device_session_init(session), QDMI_SUCCESS)
         << "Checkpoint 2 Failed: Session initialization failed.";
   }
   void TearDown() override {
-    if (session) tutorial_qdmi_device_session_free(session);
+    if (session) tutorial_QDMI_device_session_free(session);
     QDMIBaseTest::TearDown();
   }
 };
 
+TEST_F(QDMIBaseTest, Initialization) {
+  // Checkpoint 0: Verified by SetUp/TearDown
+}
+
+TEST_F(QDMISessionTest, Allocation) {
+  // Checkpoints 1 and 2: Verified by SetUp/TearDown
+}
+
 TEST_F(QDMISessionTest, QueryProperties) {
   size_t size = 0;
-  ASSERT_EQ(tutorial_qdmi_device_session_query_device_property(session, QDMI_DEVICE_PROPERTY_NAME, 0, nullptr, &size), QDMI_SUCCESS)
+  ASSERT_EQ(tutorial_QDMI_device_session_query_device_property(session, QDMI_DEVICE_PROPERTY_NAME, 0, nullptr, &size), QDMI_SUCCESS)
       << "Checkpoint 3 Failed: Device failed to report name size.";
 
   std::string value(size, '\0');
-  ASSERT_EQ(tutorial_qdmi_device_session_query_device_property(session, QDMI_DEVICE_PROPERTY_NAME, size, value.data(), nullptr), QDMI_SUCCESS);
+  ASSERT_EQ(tutorial_QDMI_device_session_query_device_property(session, QDMI_DEVICE_PROPERTY_NAME, size, value.data(), nullptr), QDMI_SUCCESS);
   EXPECT_STREQ(value.c_str(), "MyTutorialDevice");
 }
 
 TEST_F(QDMISessionTest, SubmitAndSimulateJob) {
-  tutorial_qdmi_job job = nullptr;
-  ASSERT_EQ(tutorial_qdmi_device_session_create_device_job(session, &job), QDMI_SUCCESS)
+  tutorial_QDMI_Device_Job job = nullptr;
+  ASSERT_EQ(tutorial_QDMI_device_session_create_device_job(session, &job), QDMI_SUCCESS)
       << "Checkpoint 4 Failed: Could not create a device job.";
 
   const std::string qasm = "OPENQASM 2.0; qreg q[1]; h q[0];";
-  ASSERT_EQ(tutorial_qdmi_device_job_set_parameter(job, QDMI_DEVICE_JOB_PARAMETER_PROGRAM, qasm.size(), qasm.c_str()), QDMI_SUCCESS);
-  ASSERT_EQ(tutorial_qdmi_device_job_submit(job), QDMI_SUCCESS)
+  ASSERT_EQ(tutorial_QDMI_device_job_set_parameter(job, QDMI_DEVICE_JOB_PARAMETER_PROGRAM, qasm.size(), qasm.c_str()), QDMI_SUCCESS);
+  ASSERT_EQ(tutorial_QDMI_device_job_submit(job), QDMI_SUCCESS)
       << "Checkpoint 4 Failed: Job submission failed.";
 
   QDMI_Job_Status status;
-  ASSERT_EQ(tutorial_qdmi_device_job_check(job, &status), QDMI_SUCCESS);
+  ASSERT_EQ(tutorial_QDMI_device_job_check(job, &status), QDMI_SUCCESS);
   EXPECT_EQ(status, QDMI_JOB_STATUS_DONE);
 
   double probs[2];
-  ASSERT_EQ(tutorial_qdmi_device_job_get_results(job, QDMI_JOB_RESULT_PROBABILITIES_DENSE, sizeof(probs), probs, nullptr), QDMI_SUCCESS)
+  ASSERT_EQ(tutorial_QDMI_device_job_get_results(job, QDMI_JOB_RESULT_PROBABILITIES_DENSE, sizeof(probs), probs, nullptr), QDMI_SUCCESS)
       << "Checkpoint 4 Failed: Could not retrieve simulated job results.";
 
-  tutorial_qdmi_job_free(job);
+  tutorial_QDMI_device_job_free(job);
 }
 ```
 
