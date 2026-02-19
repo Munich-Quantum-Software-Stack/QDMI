@@ -1,609 +1,479 @@
-# Tutorial: Implementing a QDMI Device
+This guide walks you through implementing a minimal **QDMI device**. By the end of this tutorial, you'll have a functional implementation capable of handling simulated quantum workloads. We've designed this as an interactive walkthrough where you build and verify features incrementally.
 
-<!-- IMPORTANT: Keep the line above as the first line. -->
-
-Welcome! This tutorial is the **definitive, self-contained guide** for implementing a QDMI device. It replaces and expands upon the basic template documentation to provide a hands-on, interactive learning experience. By the end of this guide, you will have a working device project capable of accepting queries and jobs.
-
-Together with QDMI, we provide a template meant to kick-start the implementation of a new device. The following sections describe how to set up, configure, and verify your implementation from the ground up.
-
-\tableofcontents
-
-## What is QDMI? {#tutorial-concepts}
-
-The **Quantum Device Management Interface (QDMI)** serves as the standardized hardware abstraction layer for the quantum ecosystem. Much like how OpenGL or DirectX abstracts graphics hardware for application developers, QDMI provides a unified interface that decouples high-level quantum software from the underlying physical implementation.
-
-By adhering to this standard, you enable interoperability across the entire Munich Quantum Software Stack, allowing your hardware to be seamlessly integrated with advanced drivers and optimization tools.
-
-### Core Architecture Concepts
-
-To build an effective QDMI device, it is essential to understand the primary entities and the "Opaque Pointer" pattern that defines the interface:
-
-- **Implementation**: This is the logic you will develop. It acts as the bridge between the standardized QDMI C-API and your proprietary hardware controller or high-performance simulator.
-- **Driver**: A client application (e.g., MQT Core) that orchestrates quantum workloads. The driver is agnostic to your hardware's internals, communicating only through the predefined QDMI protocol.
-- **Handle Hierarchy**: QDMI utilizes "handles" (opaque pointers) to manage state without exposing sensitive implementation details.
-  - `Session Handle`: A persistent context representing a single connection. It manages lifecycle tasks like authentication, configuration, and property discovery.
-  - `Job Handle`: An ephemeral object representing a single execution unit (e.g., a quantum circuit). It encapsulates the program, execution parameters, and status tracking.
-
-### High-Level Architecture
+The **Quantum Device Management Interface (QDMI)** is a standardized layer for hardware abstraction. We're building a bridge that allows high-level drivers to control your device implementation through a stable C interface.
 
 ```mermaid
 graph LR
-    subgraph "The World"
-    A[Quantum Algorithm] --> B[Driver / User App]
-    end
-
-    B -->|1. Submit Job / Query| C["QDMI Interface (API)"]
-
-    subgraph "Your Project (This Tutorial)"
-    C -->|2. Invoke Stubs| D["Your Device Logic (prefix_device.cpp)"]
-    D <-->|3. Control / Read| E[Hardware or Simulator]
-    end
-
-    D -->|4. Return Results| C
-    C -->|5. Deliver Status/Data| B
+    accTitle: QDMI Architecture Overview
+    accDescr: High-level diagram showing data flow from a Driver through the QDMI API to your Device Implementation and finally to the hardware.
+    
+    Driver[Driver / User App] -->|Request| API[QDMI API]
+    API -->|Invoke| Device[Your Device Implementation]
+    Device <-->|Control| HW[Quantum Hardware / Simulator]
 ```
+
+### Your Progress Journey
+- [ ] **Phase 1**: [Project Creation](#tutorial-create)
+- [ ] **Phase 2**: [Global Lifecycle](#tutorial-global)
+- [ ] **Phase 3**: [Session Handling](#tutorial-session)
+- [ ] **Phase 4**: [Device Properties](#tutorial-query)
+- [ ] **Phase 5**: [Job Execution](#tutorial-jobs)
 
 ## Prerequisites {#tutorial-prerequisites}
 
-Before you start, ensure you have the following installed on your system:
+The template requires a few standard development tools:
 
-- **C++ Compiler**: A compiler supporting **C++20** (e.g., GCC 10+, Clang 10+, or MSVC 19.29+).
-- **C Compiler**: A compiler supporting **C11**.
-- **CMake**: Version **3.24** or higher.
-- **Python**: Version **3.10** or higher (required for Python bindings and some build tools).
-- **uv** (Optional but recommended): For managing Python dependencies and pre-commit hooks.
+- **C++ Compiler**: Supporting C++20 (GCC 10+, Clang 10+, or MSVC 19.29+).
+- **C Compiler**: Supporting C11.
+- **CMake**: Version 3.24 or higher.
+- **Python**: Version 3.10 or higher.
 
-## Project Dependencies {#tutorial-dependencies}
+CMake handles fetching all other dependencies, such as the QDMI core interface and the GoogleTest framework, during the configuration step.
 
-When you build the template project, CMake will automatically fetch the following dependencies:
+## Phase 1 — Project Setup {#tutorial-create}
 
-| Dependency                                                             | Version | Purpose                              |
-| :--------------------------------------------------------------------- | :------ | :----------------------------------- |
-| [QDMI Core](https://github.com/Munich-Quantum-Software-Stack/QDMI)     | 1.3.0   | Core interface definitions           |
-| [GoogleTest](https://github.com/google/googletest)                     | 1.17.0  | C++ testing framework                |
-| [Doxygen](https://www.doxygen.nl/)                                     | 1.15.0  | Documentation generation             |
-| [Doxygen Awesome](https://github.com/jothepro/doxygen-awesome-css)     | 2.4.1   | Modern CSS for Doxygen documentation |
-| [scikit-build-core](https://github.com/scikit-build/scikit-build-core) | 0.11.6+ | Python build backend                 |
-
-These dependencies are managed via `FetchContent` in `cmake/ExternalDependencies.cmake` or defined in `pyproject.toml`.
-
-## Creating a new Project {#tutorial-create}
-
-The code for the template is contained in the `templates/` directory of the QDMI repository. To start
-a new project based on the template, configure QDMI once to define the prefix and output path, then
-explicitly build the `qdmi-template` target that writes the files.
-
-\note An internet connection is needed for this step as the QDMI repository will be fetched from
-GitHub.
+First, we'll generate the project workspace using the QDMI template. For this guide, we'll use `tutorial` as our project prefix.
 
 ```sh
+# Step 1: Generate the project files
 cmake -DQDMI_GENERATE_TEMPLATE=ON \
-      -DTEMPLATE_PREFIX="PREFIX" \
-      -DTEMPLATE_PATH="path/to/dir" \
+      -DTEMPLATE_PREFIX="tutorial" \
+      -DTEMPLATE_PATH="my_qdmi_device" \
       -S . -B build
 
-# actually write the template files
+# Step 2: Actually write the files to disk
 cmake --build build --target qdmi-template
 ```
 
-```mermaid
-graph TD
-    subgraph "Your Environment"
-    CONF["1. Configure CMake"]
-    BUILD["2. Build 'qdmi-template'"]
-    DIR["3. New Project Directory"]
-    end
-
-    subgraph "QDMI Repository (Remote)"
-    RE["Template Source & Logic"]
-    end
-
-    CONF -->|"-DTEMPLATE_PREFIX=MY"| CONF
-    CONF -.->|FetchContent| RE
-    RE -->|Pull Metadata| CONF
-    CONF --> BUILD
-    BUILD -->|Inject Prefix & Logic| DIR
-    DIR -->|Output| SRC["my_device.cpp"]
-    DIR -->|Output| TST["test_my_device.cpp"]
-```
-
-### Troubleshooting Fetch Failures
-
-Since the template is fetched from GitHub during configuration, you might encounter issues:
-
-- **GitHub Rate Limits**: If you see "Access Denied" or "403" errors, you may have reached the unauthenticated API rate limit.
-  - _Solution_: Set the environment variable `GITHUB_TOKEN` to a personal access token, and CMake will use it for `FetchContent`.
-- **SSL/Certificate Errors**: If your environment has old SSL certificates, the fetch might fail.
-  - _Solution_: Ensure your system's `ca-certificates` are up to date, or as a last resort, use `-DQDMI_FETCH_VERIFY_SSL=OFF` (not recommended for production).
-- **Missing Git**: CMake requires a local `git` installation to clone the repository.
-  - _Solution_: Verify `git --version` works in your terminal.
-
-If the option `TEMPLATE_PATH` is not given, it will be placed in `PREFIX_qdmi_device` relative to the
-parent directory where QDMI was cloned.
-
-If you want to regenerate into an existing directory, use:
-
-```sh
-cmake --build build --target qdmi-template-clean
-```
-
-> [!NOTE]
-> The previous command `qdmi-template-force` has been updated to `qdmi-template-clean` to better reflect its function of cleaning and regenerating.
-
-After this step, you can directly start implementing your device in C++.
-Example implementations are provided in the `examples/` directory. See
-[Examples](examples.md) for more information.
-
-## Configuring the Template {#tutorial-configure}
-
-For stability, we recommend pinning the version of QDMI that you are using for your implementation.
-You can use any valid git tag, branch, or commit hash for that. To this end, adjust the `QDMI_REV`
-variable in `cmake/ExternalDependencies.cmake` as follows:
-
-```diff
--   set(QDMI_REV "develop"
-+   set(QDMI_REV "v1.3.0"
-```
-
-When you want to change the prefix after the creation of the template, you need to change the prefix
-in a couple of places. All paths are given relative to the root of the template project directory.
-
-- `CMakeLists.txt`
-- `src/CMakeLists.txt`: the target name `${QDMI_TARGET_NAME}` (defaults to `prefix-qdmi-device`)
-- `src/prefix_device.cpp`: the source file for your device
-- `test/test_prefix_device.cpp`: the source file for your tests
-- `pyproject.toml`: adapt the package name and several paths
-- `python/prefix`: adapt the package namespace in the directory structure
-- `python/prefix/qdmi/*.py`: adapt the prefix throughout the package (e.g., `import prefix_qdmi.device`)
-- `test/python/*.py`: adapt the prefix throughout the tests
-- `docs/index.md` and other documentation files
-
-## Working with the Template {#tutorial-working}
-
-The template is structured into several directories.
+The resulting directory (`my_qdmi_device`) follows a standard structure:
 
 ```text
 .
-├── cmake/              # Build system logic & dependencies
-├── docs/               # Documentation source
-├── src/                # YOUR SOURCE CODE
-│   └── prefix_device.cpp
-├── test/               # YOUR TESTS
-│   └── test_prefix_device.cpp
-├── python/             # Python bindings
-├── CMakeLists.txt      # Main build configuration
-└── pyproject.toml      # Python package configuration
+├── src/                # Your implementation (tutorial_device.cpp)
+├── test/               # Your tests (test_tutorial_device.cpp)
+├── cmake/              # Build logic
+├── CMakeLists.txt      # Main project file
+└── pyproject.toml      # Python configuration
 ```
 
-The top-level `CMakeLists.txt` contains settings for the entire project. Some additional CMake code that imports
-required dependencies is outsourced into `cmake/`.
+### The Verification Loop
 
-The most important directory for your implementation is `src/` and the `.cpp` file located in that
-directory (e.g., `prefix_device.cpp`). Here you find stubs for all functions that have to be implemented by a device.
+We use a simple verification loop to track progress: you'll set up the tests first, confirm they fail, implement the fix, and then verify the results.
 
-### Headers and Status Codes
+**Action Required**: Copy the full test suite from the [Test Suite Reference](#tutorial-test-reference) section at the bottom of this page and paste it into `test/test_tutorial_device.cpp` now. 
 
-To implementation the functions in this tutorial, ensure your `prefix_device.cpp` includes the following headers:
+Building the tests at this stage should result in failures, which is expected as we haven't implemented the logic yet.
+
+```sh
+# Build the test target
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build --target tutorial-qdmi-device-test
+
+# Run the tests
+ctest --test-dir build -C Release
+```
+
+> [!TIP]
+> **Progess Check**: Starting with failures is expected—we'll address these one by one as we implement the required functions.
+
+> [!NOTE]
+> **Before writing any implementation code**, ensure `src/tutorial_device.cpp`
+> starts with these includes. They provide the core interface, string handling,
+> and memory utilities used throughout the implementation:
+> ```cpp
+> #include "tutorial_qdmi/device.h"
+> #include <string>    // For std::string
+> #include <cstring>   // For std::memcpy
+> #include <stdexcept> // For std::bad_alloc
+> ```
+
+## Phase 2 — Global Device Lifecycle {#tutorial-global}
+
+The driver interacts with your device starting with `initialize` and ending with `finalize`. In a real implementation, this is where you'd typically connect to physical hardware or allocate runtime resources; for this tutorial, we'll keep the logic minimal.
+
+Open `src/tutorial_device.cpp` and update these stubs to return `QDMI_SUCCESS`.
 
 ```cpp
-#include "prefix_qdmi/device.h"
-#include <string>   // For std::string
-#include <cstring>  // For std::memcpy
-#include <cstdint>  // For uint8_t
+int tutorial_qdmi_device_initialize() {
+  // Global startup logic (e.g., hardware connection) goes here
+  return QDMI_SUCCESS;
+}
+
+void tutorial_qdmi_device_finalize() {
+  // Global cleanup logic goes here
+}
 ```
 
-**Status Codes**: Every QDMI function returns an `int` representing a status.
+> [!TIP]
+> **Check Now**: 
+> Run the tests again. **Checkpoint 0** should now pass.
+> `ctest --test-dir build -C Release -R "Init"`
 
-- `QDMI_SUCCESS`: The operation completed successfully.
-- `QDMI_ERROR_NOTIMPLEMENTED`: The default for stubs. You must replace this!
-- `QDMI_ERROR_INVALIDARGUMENT`: Used if the driver passes a `NULL` pointer or an invalid size.
-- `QDMI_ERROR_BADSTATE`: Used if a function is called at the wrong time (e.g., querying before initialization).
+## Phase 3 — Session Handling {#tutorial-session}
 
-For every function, the `return QDMI_ERROR_NOTIMPLEMENTED;` should be replaced by a proper implementation of
-the function. In particular, there should not be any computation path at the end that returns \ref
-QDMI_ERROR_NOTIMPLEMENTED. Instead, some other error code from \ref QDMI_STATUS should be returned
-in case of an erroneous state.
+Once the global interface is ready, we need a way to manage connections. This is handled through a **Session**.
 
-The implementation in the `src/` directory is complemented with a testing framework in `test/`. The
-`.cpp` source file (e.g., `test_prefix_device.cpp`) already contains some examples for tests. They are meant to serve as an
-inspiration, and more tests should be implemented to cover everything in your device implementation.
-
-The `python` directory in combination with the `pyproject.toml` file contains some basic packaging setup
-for distributing the device implementation as a Python package.
-
-The `docs/` directory contains the documentation for the template. This is intended to be used as a
-starting point for your own documentation.
-
-Some more files are present in the root directory of the template, such as `LICENSE.md`, `README.md`, and
-`.gitignore`.
-
-## Session Handling {#tutorial-session}
-
-To interact with a device, a driver must first establish a session. In QDMI, a session is an opaque handle (`QDMI_Device_Session`) that encapsulates the connection state, including authentication.
-
-The lifecycle of a session follows these steps:
-
-1.  **Allocation**: `QDMI_device_session_alloc` creates a new session object.
-2.  **Configuration**: `QDMI_device_session_set_parameter` is used to provide credentials (like an API token).
-3.  **Initialization**: `QDMI_device_session_init` validates the parameters and prepares the session for use.
-4.  **Usage**: Once initialized, the session handle is passed to querying and job submission functions.
-5.  **Clean-up**: `QDMI_device_session_free` releases all resources associated with the session.
+In QDMI, sessions are managed via **handles**. A handle is essentially an opaque pointer to a struct that your implementation defines. Specifically, `tutorial_qdmi_session` is a typedef from the C API, while the internal struct (`tutorial_qdmi_session_impl_d`) is a private implementation detail.
 
 ```mermaid
 stateDiagram-v2
+    accTitle: Session State Lifecycle
+    accDescr: State diagram showing transitions from Allocation to Initialization, and finally to being Freed.
+    
     [*] --> Allocated: session_alloc()
     Allocated --> Allocated: set_parameter(TOKEN)
     Allocated --> Initialized: session_init()
-    Initialized --> Initialized: Query Property / Submit Job
     Initialized --> [*]: session_free()
-    Allocated --> [*]: session_free()
 ```
 
-### Implementation Example
+### 1. Define the Session
+Define a basic struct in `src/tutorial_device.cpp` to track the session state.
 
-In your `prefix_device.cpp`, you should define a structure to hold the session state:
+> [!NOTE]
+> Using a private C++ struct to hold session state helps keep the public C interface stable and avoids ABI versioning headaches between your implementation and the driver.
 
 ```cpp
-enum class DEVICE_SESSION_STATUS : uint8_t { ALLOCATED, INITIALIZED };
+enum class SESSION_STATUS { ALLOCATED, INITIALIZED };
 
-struct PREFIX_QDMI_Device_Session_impl_d {
+struct tutorial_qdmi_session_impl_d {
   std::string token;
-  DEVICE_SESSION_STATUS status = DEVICE_SESSION_STATUS::ALLOCATED;
+  SESSION_STATUS status = SESSION_STATUS::ALLOCATED;
 };
 ```
 
-Then, implement the core session functions. Here is how you might handle an authentication token and track the session state:
+### 2. Implement the Logic
+Implement the session management functions. We include safety checks here to ensure the implementation is robust against null handles.
 
 ```cpp
-int PREFIX_QDMI_device_session_alloc(PREFIX_QDMI_Device_Session *session) {
+int tutorial_qdmi_device_session_alloc(tutorial_qdmi_session *session) {
   if (session == nullptr) return QDMI_ERROR_INVALIDARGUMENT;
-  *session = new PREFIX_QDMI_Device_Session_impl_d();
-  return QDMI_SUCCESS;
+  
+  try {
+    *session = new tutorial_qdmi_session_impl_d();
+    return QDMI_SUCCESS;
+  } catch (const std::bad_alloc&) {
+    return QDMI_ERROR_OUTOFMEM;
+  }
 }
 
-int PREFIX_QDMI_device_session_set_parameter(PREFIX_QDMI_Device_Session session,
+int tutorial_qdmi_device_session_set_parameter(tutorial_qdmi_session session,
                                             QDMI_Device_Session_Parameter param,
-                                            const size_t size, const void *value) {
-  if (session == nullptr || (value != nullptr && size == 0)) return QDMI_ERROR_INVALIDARGUMENT;
-  if (session->status != DEVICE_SESSION_STATUS::ALLOCATED) return QDMI_ERROR_BADSTATE;
-
+                                            size_t size, const void *value) {
+  if (session == nullptr) return QDMI_ERROR_INVALIDARGUMENT;
+  
+  // We only support the TOKEN parameter for this tutorial
   if (param == QDMI_DEVICE_SESSION_PARAMETER_TOKEN && value != nullptr) {
-    session->token = std::string(static_cast<const char *>(value), size);
+    session->token = std::string(static_cast<const char*>(value), size);
     return QDMI_SUCCESS;
   }
   return QDMI_ERROR_NOTSUPPORTED;
 }
 
-int PREFIX_QDMI_device_session_init(PREFIX_QDMI_Device_Session session) {
+int tutorial_qdmi_device_session_init(tutorial_qdmi_session session) {
   if (session == nullptr) return QDMI_ERROR_INVALIDARGUMENT;
-  if (session->token.empty()) return QDMI_ERROR_PERMISSIONDENIED; // Token is required
+  
+  // Note: Requiring a TOKEN is a design choice for this tutorial implementation,
+  // as QDMI remains flexible about how hardware providers handle authentication.
+  if (session->token.empty()) return QDMI_ERROR_PERMISSIONDENIED;
 
-  session->status = DEVICE_SESSION_STATUS::INITIALIZED;
+  session->status = SESSION_STATUS::INITIALIZED;
   return QDMI_SUCCESS;
 }
 
-void PREFIX_QDMI_device_session_free(PREFIX_QDMI_Device_Session session) {
-  delete session;
+void tutorial_qdmi_device_session_free(tutorial_qdmi_session session) {
+  if (session != nullptr) delete session;
 }
 ```
 
-By requiring a token before initialization, you ensure that only authenticated drivers can query your device or submit jobs.
+> [!TIP]
+> **Check Now**:
+> With the handshake logic in place, you can now verify session handling. **Checkpoints 1 and 2** should pass.
+> `ctest --test-dir build -C Release -R "Alloc|Init"`
 
-## First Query: Device Name {#tutorial-query}
+## Phase 4 — First Query (Device Properties) {#tutorial-query}
 
-One of the most basic tasks a driver performs is querying the device for its characteristics. In QDMI, this is done via "Property Queries". Let's implement a query to retrieve the device's name.
-
-### Implementation Logic
-
-In your `prefix_device.cpp`, look for the `PREFIX_QDMI_device_session_query_device_property` function. You'll need to handle the `QDMI_DEVICE_PROPERTY_NAME` case.
-
-QDMI uses a **two-step retrieval pattern** for data of variable size (like strings):
-
-1.  **Request Size**: The driver calls the function with a `NULL` value pointer. Your implementation should set `size_ret` to the required buffer size (including the null terminator).
-2.  **Retrieve Data**: The driver provides a buffer of the requested size. Your implementation copies the data into the buffer.
-
-```cpp
-int PREFIX_QDMI_device_session_query_device_property(
-    PREFIX_QDMI_Device_Session session, const QDMI_Device_Property prop,
-    const size_t size, void *value, size_t *size_ret) {
-
-  if (session == nullptr) return QDMI_ERROR_INVALIDARGUMENT;
-  if (session->status != DEVICE_SESSION_STATUS::INITIALIZED) return QDMI_ERROR_BADSTATE;
-
-  if (prop == QDMI_DEVICE_PROPERTY_NAME) {
-    const std::string name = "MyQDMI-Tutorial-Device";
-    const size_t name_size = name.size() + 1; // Include null terminator
-
-    if (size_ret != nullptr) *size_ret = name_size;
-    if (value == nullptr) return QDMI_SUCCESS; // Size request only
-
-    if (size < name_size) return QDMI_ERROR_INVALIDARGUMENT; // Buffer too small
-    std::memcpy(value, name.c_str(), name_size);
-    return QDMI_SUCCESS;
-  }
-
-  return QDMI_ERROR_NOTSUPPORTED;
-}
-```
-
-### Visualizing the Two-Step Query
+The driver uses properties to retrieve information about your device, such as its name or qubit count. Since this data can vary in length, we use a **Two-Step Query Pattern**.
 
 ```mermaid
 sequenceDiagram
+    accTitle: Two-Step Query Handshake
+    accDescr: Sequence diagram illustrating the handshake between the Driver and the Device to query a property. 
     participant D as Driver
-    participant V as Device (Your Code)
-    D->>V: query_property(prop, value=NULL, &size_ret)
+    participant V as Device (You)
+    D->>V: query_property(prop, value=NULL)
     Note over V: Calculate required size
     V-->>D: QDMI_SUCCESS, size_ret=N
-    D->>V: query_property(prop, value=Buffer[N], size=N)
+    D->>V: query_property(prop, value=Buffer[N])
     Note over V: Copy data to buffer
     V-->>D: QDMI_SUCCESS
 ```
 
-## Job Handling {#tutorial-jobs}
+> [!NOTE]
+> While we use two steps for safety, QDMI also allows retrieving data in a single call if the driver already knows the correct size or provides a sufficiently large buffer.
 
-The primary purpose of a QDMI device is to execute jobs (typically quantum programs). The lifecycle of a job involves several state transitions managed by the device.
+### Implementing the Queries
+Define the device constants and implement the query function in `src/tutorial_device.cpp`. 
 
-### Job State Transitions
+> [!NOTE]
+> This switch-based pattern is standard in QDMI. It looks a bit verbose, but it's efficient and prevents the driver from needing to know your implementation's internal memory layout.
+
+```cpp
+const std::string DEVICE_NAME = "MyTutorialDevice";
+const size_t QUBIT_COUNT = 1;
+
+int tutorial_qdmi_device_session_query_device_property(
+    tutorial_qdmi_session session, QDMI_Device_Property prop, 
+    size_t size, void *value, size_t *size_ret) {
+  
+  if (session == nullptr) return QDMI_ERROR_INVALIDARGUMENT;
+  if (session->status != SESSION_STATUS::INITIALIZED) return QDMI_ERROR_BADSTATE;
+
+  switch (prop) {
+    case QDMI_DEVICE_PROPERTY_NAME: {
+      size_t name_size = DEVICE_NAME.size() + 1;
+      if (size_ret) *size_ret = name_size;
+      if (value == nullptr) return QDMI_SUCCESS; // Step 1: size request
+      
+      if (size < name_size) return QDMI_ERROR_INVALIDARGUMENT;
+      std::memcpy(value, DEVICE_NAME.c_str(), name_size);
+      return QDMI_SUCCESS;
+    }
+    case QDMI_DEVICE_PROPERTY_SITES: {
+      if (size_ret) *size_ret = sizeof(size_t);
+      if (value == nullptr) return QDMI_SUCCESS;
+      
+      *static_cast<size_t*>(value) = QUBIT_COUNT;
+      return QDMI_SUCCESS;
+    }
+    default: return QDMI_ERROR_NOTSUPPORTED;
+  }
+}
+```
+
+> [!TIP]
+> **Check Now**:
+> The device can now describe itself to the driver. **Checkpoint 3** should pass.
+> `ctest --test-dir build -C Release -R "Query"`
+
+## Phase 5 — Job Handling {#tutorial-jobs}
+
+Quantum programs are managed via **Jobs**. Jobs follow a specific lifecycle, moving from creation to submission and eventually to completion.
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Created: session_create_device_job()
-    Created --> Created: job_set_parameter(PROGRAM)
+    accTitle: Job Handling Lifecycle
+    accDescr: State diagram showing a job's journey from creation to submission and completion.
+    [*] --> Created: create_device_job()
     Created --> Submitted: job_submit()
-    Submitted --> Done: Simulated Execution
+    Submitted --> Done: Simulation
     Done --> [*]: job_free()
 ```
 
-### Implementation Logic
-
-First, define your job structure in `prefix_device.cpp`. It should track the associated session, the program to run, and the job's current status.
+### 1. Define the Job
+Add a simple struct for tracking job state in `src/tutorial_device.cpp`.
 
 ```cpp
-struct PREFIX_QDMI_Device_Job_impl_d {
-  PREFIX_QDMI_Device_Session session = nullptr;
+struct tutorial_qdmi_job_impl_d {
   std::string program;
   QDMI_Job_Status status = QDMI_JOB_STATUS_CREATED;
 };
 ```
 
-Then, implement the core job management functions. For this tutorial, we will simulate immediate execution.
+### 2. Implement Job Logic
+The following functions handle creating and executing jobs. In this tutorial, we simulate immediate successful completion.
 
 ```cpp
-int PREFIX_QDMI_device_session_create_device_job(PREFIX_QDMI_Device_Session session,
-                                                PREFIX_QDMI_Device_Job *job) {
+int tutorial_qdmi_device_session_create_device_job(tutorial_qdmi_session session,
+                                                tutorial_qdmi_job *job) {
   if (session == nullptr || job == nullptr) return QDMI_ERROR_INVALIDARGUMENT;
-  if (session->status != DEVICE_SESSION_STATUS::INITIALIZED) return QDMI_ERROR_BADSTATE;
-
-  *job = new PREFIX_QDMI_Device_Job_impl_d();
-  (*job)->session = session;
-  return QDMI_SUCCESS;
+  try {
+    *job = new tutorial_qdmi_job_impl_d();
+    return QDMI_SUCCESS;
+  } catch (const std::bad_alloc&) {
+    return QDMI_ERROR_OUTOFMEM;
+  }
 }
 
-int PREFIX_QDMI_device_job_set_parameter(PREFIX_QDMI_Device_Job job,
+int tutorial_qdmi_device_job_set_parameter(tutorial_qdmi_job job,
                                         QDMI_Device_Job_Parameter param,
                                         size_t size, const void *value) {
-  if (job == nullptr || (value != nullptr && size == 0)) return QDMI_ERROR_INVALIDARGUMENT;
-
-  if (param == QDMI_DEVICE_JOB_PARAMETER_PROGRAM && value != nullptr) {
-    job->program = std::string(static_cast<const char *>(value), size);
+  if (job == nullptr || value == nullptr) return QDMI_ERROR_INVALIDARGUMENT;
+  
+  if (param == QDMI_DEVICE_JOB_PARAMETER_PROGRAM) {
+    job->program = std::string(static_cast<const char*>(value), size);
     return QDMI_SUCCESS;
   }
   return QDMI_ERROR_NOTSUPPORTED;
 }
 
-int PREFIX_QDMI_device_job_submit(PREFIX_QDMI_Device_Job job) {
+int tutorial_qdmi_device_job_submit(tutorial_qdmi_job job) {
   if (job == nullptr) return QDMI_ERROR_INVALIDARGUMENT;
-  if (job->program.empty()) return QDMI_ERROR_BADSTATE; // Must have a program
-
-  // Simulate execution: transition directly to DONE
+  if (job->program.empty()) return QDMI_ERROR_BADSTATE;
+  
+  // Real hardware implementations often use asynchronous execution with 
+  // states like QUEUED or RUNNING. Here, we simulate immediate completion.
   job->status = QDMI_JOB_STATUS_DONE;
   return QDMI_SUCCESS;
 }
 
-int PREFIX_QDMI_device_job_check(PREFIX_QDMI_Device_Job job, QDMI_Job_Status *status) {
+int tutorial_qdmi_device_job_check(tutorial_qdmi_job job, QDMI_Job_Status *status) {
   if (job == nullptr || status == nullptr) return QDMI_ERROR_INVALIDARGUMENT;
   *status = job->status;
   return QDMI_SUCCESS;
 }
 
-int PREFIX_QDMI_device_job_get_results(PREFIX_QDMI_Device_Job job, QDMI_Job_Result result,
+int tutorial_qdmi_device_job_get_results(tutorial_qdmi_job job, QDMI_Job_Result result,
                                       size_t size, void *data, size_t *size_ret) {
-  if (job == nullptr) return QDMI_ERROR_INVALIDARGUMENT;
-  if (job->status != QDMI_JOB_STATUS_DONE) return QDMI_ERROR_INVALIDARGUMENT;
+  if (job == nullptr || job->status != QDMI_JOB_STATUS_DONE) return QDMI_ERROR_BADSTATE;
 
   if (result == QDMI_JOB_RESULT_PROBABILITIES_DENSE) {
-    // Simulate probability results (e.g., 50/50 for a simple circuit)
-    const double probabilities[] = {0.5, 0.5};
-    const size_t res_size = sizeof(probabilities);
-
-    if (size_ret != nullptr) *size_ret = res_size;
+    const double probs[] = {0.5, 0.5};
+    size_t res_size = sizeof(probs);
+    
+    if (size_ret) *size_ret = res_size;
     if (data == nullptr) return QDMI_SUCCESS;
-
+    
     if (size < res_size) return QDMI_ERROR_INVALIDARGUMENT;
-    std::memcpy(data, probabilities, res_size);
+    std::memcpy(data, probs, res_size);
     return QDMI_SUCCESS;
   }
   return QDMI_ERROR_NOTSUPPORTED;
 }
 
-void PREFIX_QDMI_device_job_free(PREFIX_QDMI_Device_Job job) {
-  delete job;
+void tutorial_qdmi_device_job_free(tutorial_qdmi_job job) {
+  if (job != nullptr) delete job;
 }
 ```
 
-### Data Flow: Retrieving Results
+> [!TIP]
+> **Check Now**:
+> The core implementation is now complete. **Checkpoint 4** should pass.
+> `ctest --test-dir build -C Release -R "Submit"`
 
-The following diagram illustrates how the probability data travels from your device logic back to the driver.
+## Test Suite Reference {#tutorial-test-reference}
 
-```mermaid
-graph TD
-    subgraph "Driver"
-    DR["Request Result (prop=PROBABILITIES_DENSE)"]
-    BU["Buffer [0.5, 0.5]"]
-    end
-    subgraph "Your Device (prefix_device.cpp)"
-    IM["PREFIX_QDMI_device_job_get_results"]
-    LO{"Check Status"}
-    DA["Simulated Probabilities: {0.5, 0.5}"]
-    end
-    DR -->|1. Call with data=NULL| IM
-    IM -->|2. Return size_ret=16 bytes| DR
-    DR -->|3. Call with data=BU| IM
-    IM --> LO
-    LO -->|Done| DA
-    DA -->|4. memcpy to BU| BU
-```
-
-## Test Environment {#tutorial-testing}
-
-A key part of implementing your QDMI device is verifying each step as you go. The template comes with a built-in test suite tailored to give you immediate feedback, similar to an interactive coding platform.
-
-```mermaid
-graph LR
-    A["Implement Step"] --> B["Run 'ctest'"]
-    B --> C{Check Result}
-    C -->|Fail| D["Read Feedback (e.g. 'Checkpoint X Failed')"]
-    D --> A
-    C -->|Pass| E["Move to Next Step"]
-```
-
-### Running Verification Tests
-
-The template comes with a basic test suite in `test/test_prefix_device.cpp`. To get the **Checkpoint feedback** described below, update your test suite with the following code. This provides descriptive messages when a specific implementation step is missing or incorrect.
-
-#### Verification Test Suite (`test/test_prefix_device.cpp`)
+This is the full verification suite for `test/test_tutorial_device.cpp`, which provides the checkpoints used in this guide.
 
 ```cpp
-#include "prefix_qdmi/device.h"
+#include "tutorial_qdmi/device.h"
 #include <gtest/gtest.h>
 
-class QDMIImplementationTest : public ::testing::Test {
+class QDMIBaseTest : public ::testing::Test {
 protected:
-  PREFIX_QDMI_Device_Session session = nullptr;
-
   void SetUp() override {
-    ASSERT_EQ(PREFIX_QDMI_device_initialize(), QDMI_SUCCESS)
+    ASSERT_EQ(tutorial_qdmi_device_initialize(), QDMI_SUCCESS)
         << "Checkpoint 0 Failed: Basic device initialization returned an error.";
-
-    ASSERT_EQ(PREFIX_QDMI_device_session_alloc(&session), QDMI_SUCCESS)
-        << "Checkpoint 1 Failed: Could not allocate a session handle.";
-
-    // Provide a dummy token for initialization, reflecting the Session Handling step.
-    const std::string dummy_token = "tutorial_token";
-    ASSERT_EQ(PREFIX_QDMI_device_session_set_parameter(
-                  session, QDMI_DEVICE_SESSION_PARAMETER_TOKEN,
-                  dummy_token.size(), dummy_token.c_str()),
-              QDMI_SUCCESS)
-        << "Checkpoint 2 Failed: Could not set the authentication token. "
-           "Did you implement QDMI_DEVICE_SESSION_PARAMETER_TOKEN?";
-
-    ASSERT_EQ(PREFIX_QDMI_device_session_init(session), QDMI_SUCCESS)
-        << "Checkpoint 2 Failed: Session initialization failed. "
-           "Common causes: Token validation logic error or device is offline.";
   }
-
-  void TearDown() override { PREFIX_QDMI_device_finalize(); }
+  void TearDown() override { tutorial_qdmi_device_finalize(); }
 };
 
-TEST_F(QDMIImplementationTest, QueryDeviceName) {
+class QDMISessionTest : public QDMIBaseTest {
+protected:
+  tutorial_qdmi_session session = nullptr;
+  void SetUp() override {
+    QDMIBaseTest::SetUp();
+    ASSERT_EQ(tutorial_qdmi_device_session_alloc(&session), QDMI_SUCCESS)
+        << "Checkpoint 1 Failed: Could not allocate a session handle.";
+    const std::string token = "tutorial_token";
+    ASSERT_EQ(tutorial_qdmi_device_session_set_parameter(session, QDMI_DEVICE_SESSION_PARAMETER_TOKEN, token.size(), token.c_str()), QDMI_SUCCESS);
+    ASSERT_EQ(tutorial_qdmi_device_session_init(session), QDMI_SUCCESS)
+        << "Checkpoint 2 Failed: Session initialization failed.";
+  }
+  void TearDown() override {
+    if (session) tutorial_qdmi_device_session_free(session);
+    QDMIBaseTest::TearDown();
+  }
+};
+
+TEST_F(QDMISessionTest, QueryProperties) {
   size_t size = 0;
-  ASSERT_EQ(PREFIX_QDMI_device_session_query_device_property(
-                session, QDMI_DEVICE_PROPERTY_NAME, 0, nullptr, &size),
-            QDMI_SUCCESS)
-      << "Checkpoint 3 Failed: Your device must report the size of its name.";
-
-  std::string value(size - 1, '\0');
-  ASSERT_EQ(PREFIX_QDMI_device_session_query_device_property(
-                session, QDMI_DEVICE_PROPERTY_NAME, size, value.data(), nullptr),
-            QDMI_SUCCESS)
-      << "Checkpoint 3 Failed: Your device failed to return its name into the buffer.";
-
-  ASSERT_EQ(value, "MyQDMI-Tutorial-Device")
-      << "Checkpoint 3 Failed: The returned device name does not match the expected tutorial value.";
+  ASSERT_EQ(tutorial_qdmi_device_session_query_device_property(session, QDMI_DEVICE_PROPERTY_NAME, 0, nullptr, &size), QDMI_SUCCESS)
+      << "Checkpoint 3 Failed: Device failed to report name size.";
+  
+  std::string value(size, '\0');
+  ASSERT_EQ(tutorial_qdmi_device_session_query_device_property(session, QDMI_DEVICE_PROPERTY_NAME, size, value.data(), nullptr), QDMI_SUCCESS);
+  EXPECT_STREQ(value.c_str(), "MyTutorialDevice");
 }
 
-TEST_F(QDMIImplementationTest, SubmitAndVerifyJob) {
-  PREFIX_QDMI_Device_Job job = nullptr;
-  ASSERT_EQ(PREFIX_QDMI_device_session_create_device_job(session, &job), QDMI_SUCCESS)
+TEST_F(QDMISessionTest, SubmitAndSimulateJob) {
+  tutorial_qdmi_job job = nullptr;
+  ASSERT_EQ(tutorial_qdmi_device_session_create_device_job(session, &job), QDMI_SUCCESS)
       << "Checkpoint 4 Failed: Could not create a device job.";
 
-  const std::string qasm = "OPENQASM 2.0; qreg q[1]; creg c[1]; h q[0]; measure q[0] -> c[0];";
-  ASSERT_EQ(PREFIX_QDMI_device_job_set_parameter(
-                job, QDMI_DEVICE_JOB_PARAMETER_PROGRAM, qasm.size(), qasm.c_str()),
-            QDMI_SUCCESS)
-      << "Checkpoint 4 Failed: Could not set the QASM program for the job.";
-
-  ASSERT_EQ(PREFIX_QDMI_device_job_submit(job), QDMI_SUCCESS)
+  const std::string qasm = "OPENQASM 2.0; qreg q[1]; h q[0];";
+  ASSERT_EQ(tutorial_qdmi_device_job_set_parameter(job, QDMI_DEVICE_JOB_PARAMETER_PROGRAM, qasm.size(), qasm.c_str()), QDMI_SUCCESS);
+  ASSERT_EQ(tutorial_qdmi_device_job_submit(job), QDMI_SUCCESS)
       << "Checkpoint 4 Failed: Job submission failed.";
 
-  QDMI_Job_Status status = QDMI_JOB_STATUS_CREATED;
-  ASSERT_EQ(PREFIX_QDMI_device_job_check(job, &status), QDMI_SUCCESS);
-  ASSERT_EQ(status, QDMI_JOB_STATUS_DONE)
-      << "Checkpoint 4 Failed: Job status should be DONE after submission in this tutorial.";
+  QDMI_Job_Status status;
+  ASSERT_EQ(tutorial_qdmi_device_job_check(job, &status), QDMI_SUCCESS);
+  EXPECT_EQ(status, QDMI_JOB_STATUS_DONE);
 
   double probs[2];
-  size_t size = 0;
-  ASSERT_EQ(PREFIX_QDMI_device_job_get_results(
-                job, QDMI_JOB_RESULT_PROBABILITIES_DENSE, sizeof(probs), probs, &size),
-            QDMI_SUCCESS)
+  ASSERT_EQ(tutorial_qdmi_device_job_get_results(job, QDMI_JOB_RESULT_PROBABILITIES_DENSE, sizeof(probs), probs, nullptr), QDMI_SUCCESS)
       << "Checkpoint 4 Failed: Could not retrieve simulated job results.";
-
-  EXPECT_EQ(probs[0], 0.5);
-  EXPECT_EQ(probs[1], 0.5);
-
-  PREFIX_QDMI_device_job_free(job);
+  
+  tutorial_qdmi_job_free(job);
 }
 ```
 
-#### Run All Tests
+### Verification Checkpoints
 
-To check your overall progress:
+| Checkpoint | Milestone | Verification Target |
+| :--- | :--- | :--- |
+| **0** | Global Init | `device_initialize` returns `QDMI_SUCCESS`. |
+| **1** | Session Alloc | `session_alloc` creates a valid pointer. |
+| **2** | Session Init | `session_init` accepts token and starts session. |
+| **3** | First Query | `query_device_property` returns the correct name. |
+| **4** | Job Handling | `job_submit` runs and results are returned. |
 
-```sh
-ctest --test-dir build --output-on-failure
+### Status Code Reference
+
+| Status Code | Meaning |
+| :--- | :--- |
+| `QDMI_SUCCESS` | The operation was successful. |
+| `QDMI_ERROR_NOTIMPLEMENTED` | This feature hasn't been implemented yet. Replace the template stubs. |
+| `QDMI_ERROR_INVALIDARGUMENT` | Invalid parameter (e.g., NULL pointer or insufficient buffer). |
+| `QDMI_ERROR_PERMISSIONDENIED` | Authentication failed (e.g., missing or invalid token). |
+| `QDMI_ERROR_NOTSUPPORTED` | The requested property or feature is not supported by this device. |
+| `QDMI_ERROR_BADSTATE` | Function called in an incorrect order (e.g., submitting before initialization). |
+| `QDMI_ERROR_OUTOFMEM` | Memory allocation failed. |
+
+### Debugging Tips
+- **Check failure messages**: Test failures include checkpoint messages pointing to the relevant guide section.
+- **Detailed output**: Use `ctest --output-on-failure` to see full execution logs.
+- **Stub verification**: Ensure you have removed all `QDMI_ERROR_NOTIMPLEMENTED` returns from implemented logic.
+
+## Summary and Next Steps {#tutorial-next-steps}
+
+Congratulations on building your first QDMI device. You've implemented:
+
+1.  **Lifecycle Management**: Handling global and session-level initialization.
+2.  **Opaque Data Retrieval**: Mastering the two-step pattern for variable-sized data.
+3.  **Job Orchestration**: Moving tasks through a standardized lifecycle.
+
+**What's next?**
+- **Hardware Integration**: Replace simulated results with calls to your quantum controller's C/C++ API.
+- **Extended Queries**: Add more device properties such as gate fidelities or coupling maps.
+- **Python Integration**: Test your implementation using the provided Python bindings.
+
+---
+
+## Appendix {#tutorial-appendix}
+
+### Configuring the Template
+We recommend pinning your project to a specific QDMI release for stability. Edit `cmake/ExternalDependencies.cmake`:
+
+```diff
+-   set(QDMI_REV "develop")
++   set(QDMI_REV "v1.3.0")
 ```
 
-#### Verification Checkpoints
+### Troubleshooting Fetch Failures
+- **GitHub Rate Limits**: If you encounter 403 errors, set a `GITHUB_TOKEN` environment variable and CMake will use it for authentication.
+- **SSL Certificates**: Update your system certificates if the HTTPS fetch fails.
+- **Missing Tools**: Ensure `git` and `cmake` are available in your path.
 
-If a test fails, it will provide a descriptive "Checkpoint" message to help you identify what's missing:
-
-| Checkpoint | Target Feature | What it verifies                                                 |
-| :--------- | :------------- | :--------------------------------------------------------------- |
-| **0**      | Device Init    | Basic `QDMI_device_initialize` implementation.                   |
-| **1**      | Session Alloc  | Successful `QDMI_device_session_alloc` and memory management.    |
-| **2**      | Authentication | Implementation of token handling in `set_parameter` and `init`.  |
-| **3**      | First Query    | Retrieval of the device name using the two-step pattern.         |
-| **4**      | Job Handling   | Complete job lifecycle: Create, Set Program, Submit, Get Result. |
-
-### Understanding the Feedback
-
-When a test fails, pay close attention to the custom failure messages. They are designed to point you toward the specific function or logic error in your code. For example:
-
-> `Checkpoint 2 Failed: Could not set the authentication token.`
-> `Did you implement QDMI_DEVICE_SESSION_PARAMETER_TOKEN?`
-
-As you implement each function described in this tutorial, keep the test suite running to ensure you stay on the right track!
-
-## Building the Template and Running the Tests {#tutorial-building}
-
-All following commands are meant to be executed from the root directory of the template. After
-configuring your project (see [Configuring the Template](#tutorial-configure)), you can build your
-project with the following command:
-
-```sh
-cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
-cmake --build build --config Release
-```
-
-If you only want to build a specific target, you can append, for example,
-`--target prefix-qdmi-device-test` to the command above, which will build the tests. If you only want to
-build the device implementation, you can use `--target prefix-qdmi-device`.
-
-To run the tests, perform the following command:
-
-```sh
-ctest --test-dir build
-```
-
-For more details on the development process, also check out the [Development Guide](guide.md).
+### Build Configuration
+- **Debug Configuration**: Use `-DCMAKE_BUILD_TYPE=Debug` during configuration for better stack traces.
+- **Targeted Build**: Build specific components using `--target tutorial-qdmi-device` to save time.
