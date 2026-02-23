@@ -41,7 +41,7 @@ First, we'll generate the project workspace using the QDMI template. This requir
 # Step 1: Generate the project files
 cmake -DQDMI_GENERATE_TEMPLATE=ON \
       -DTEMPLATE_PREFIX="tutorial" \
-      -DTEMPLATE_PATH="my_qdmi_device" \
+      -DTEMPLATE_PATH="tutorial_device" \
       -S . -B build
 
 # Step 2: Actually write the files to disk
