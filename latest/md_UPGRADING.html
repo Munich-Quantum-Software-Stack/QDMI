@@ -186,6 +186,27 @@ $(function(){initNavTree('md_UPGRADING.html','',''); });
 <div class="contents">
 <div class="textblock"><p>This document describes breaking changes and provides guidance for upgrading between versions. For a complete list of changes, including minor and patch releases, please refer to the <a class="el" href="md_CHANGELOG.html">changelog</a>.</p>
 <h1><a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.1...HEAD">Unreleased</a></h1>
+<h2>No need to link devices against the QDMI header-only library</h2>
+<p>As of this release, the QDMI header-only library is no longer required to be linked into QDMI device implementations. Instead, each QDMI device now bundles all necessary headers in its own include directory. This allows distributing any QDMI device implementation in a truly standalone manner. You can remove the <span class="tt">qdmi::qdmi</span> target from the CMake configuration of your device implementation.</p>
+<p>To properly resolve the imports, you will need to adjust the header includes in your device implementation. Any include of the form</p>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="constants_8h.html">qdmi/constants.h</a>&gt;</span></div>
+<div class="ttc" id="aconstants_8h_html"><div class="ttname"><a href="constants_8h.html">constants.h</a></div><div class="ttdoc">Defines all enums used within QDMI across the QDMI Client Interface and the QDMI Device Interface.</div></div>
+</div><!-- fragment --><p>must be replaced with</p>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;my_qdmi/constants.h&gt;</span></div>
+</div><!-- fragment --><p>where <span class="tt">my</span> is the prefix of your device implementation.</p>
+<h2>Updated QDMI device template</h2>
+<p>The QDMI device template has been updated to be compatible with the latest version of the QDMI specification and to include several improvements. Most importantly, as described above, the device implementation no longer needs to link against the QDMI header-only library.</p>
+<p>Beyond that, the template has been extended to include:</p>
+<ul>
+<li>More precise licensing information</li>
+<li>A default <span class="tt">cache-keys</span> setup for <span class="tt">uv</span> to enable automatic rebuilds</li>
+<li>A more user-friendly CLI with exclusive groups for the CLI options</li>
+<li>More default cibuildwheel configuration for broad macOS compatibility and Windows wheel repairs</li>
+<li>Symbol exports on Windows to ensure the device DLL exposes all symbols</li>
+<li>Fixes for the installation instructions so that component-based installation works correctly</li>
+<li>Fixes for running tests on Windows</li>
+<li>Easier coverage collection configuration via the new <span class="tt">qdmi::qdmi_coverage_flags</span> target</li>
+</ul>
 <h1><a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.0...v1.2.1">1.2.1</a> - 2025-12-22</h1>
 <h2>Fix for using Installed Version of QDMI</h2>
 <p>In order to avoid a mismatch in the target name for the <span class="tt">qdmi_project_warnings</span> target between the source and installed versions of QDMI, the target alias has been adjusted. If your project relies on <span class="tt">qdmi::project_warnings</span>, you need to change it to <span class="tt">qdmi::qdmi_project_warnings</span>. More rationale is available in <a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/270">the PR description</a>.</p>
