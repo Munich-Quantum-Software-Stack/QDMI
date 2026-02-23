@@ -1,11 +1,11 @@
-# Copyright (c) 2024 - 2025 Munich Quantum Software Stack Project
+# Copyright (c) 2024 - 2026 QDMI Maintainers
 # All rights reserved.
 #
 # Licensed under the Apache License v2.0 with LLVM Exceptions (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-# https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/develop/LICENSE.md
+# https://llvm.org/LICENSE.txt
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
@@ -47,22 +47,23 @@ def main() -> None:
         make_parser = partial(make_parser, suggest_on_error=True)
 
     parser = make_parser()
-    parser.add_argument(
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument(
         "--version",
         action="version",
         version=f"{__version__}",
     )
-    parser.add_argument(
+    group.add_argument(
         "--include_dir",
         action="store_true",
         help="Print the path to the my-qdmi C/C++ include directory",
     )
-    parser.add_argument(
+    group.add_argument(
         "--cmake_dir",
         action="store_true",
         help="Print the path to the my-qdmi CMake module directory",
     )
-    parser.add_argument(
+    group.add_argument(
         "--lib_path",
         action="store_true",
         help="Print the path to the my-qdmi shared library",

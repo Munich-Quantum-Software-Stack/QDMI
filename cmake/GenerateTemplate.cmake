@@ -135,6 +135,8 @@ foreach(_src IN LISTS _files)
   string(REPLACE "my.qdmi" "${QDMI_TEMPLATE_prefix}.qdmi" _content
                  "${_content}")
   string(REPLACE "\"my\"" "\"${QDMI_TEMPLATE_PREFIX}\"" _content "${_content}")
+  string(REPLACE "--namespace-pkg my" "--namespace-pkg ${QDMI_TEMPLATE_prefix}"
+                 _content "${_content}")
 
   file(WRITE "${_dest}" "${_content}")
 endforeach()
