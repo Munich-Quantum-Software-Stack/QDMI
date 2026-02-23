@@ -13,13 +13,11 @@ clients compiled against a different minor or major version.
 
 ### Added
 
-- 👨‍💻 Add an option to disable installation instructions for QDMI (example and template) device ([#326])
-  ([\@ystade])
+- 👨‍💻 Add an option to disable installation instructions for QDMI (example and template) device ([#326]) ([\@ystade])
 
 ### Changed
 
-- 👨‍💻 Base the example device implementation on the device template ([#326])
-  ([\@ystade])
+- 👨‍💻 Base the example device implementation on the device template ([#326]) ([\@ystade])
 - 🚸 Export _all_ device headers (incl. `constants.h`) as part of device implementations such that they do not need to link against the header-only QDMI library anymore ([#325]) ([\@ystade], [\@burgholzer])
 
 ## [1.2.1] - 2025-12-22
