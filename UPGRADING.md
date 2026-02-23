@@ -41,6 +41,7 @@ Beyond that, the template has been extended to include:
 - More default cibuildwheel configuration for broad macOS compatibility and Windows wheel repairs
 - Symbol exports on Windows to ensure the device DLL exposes all symbols
 - Fixes for the installation instructions so that component-based installation works correctly
+- Fixes for running tests on Windows
 
 ## [1.2.1] - 2025-12-22
 

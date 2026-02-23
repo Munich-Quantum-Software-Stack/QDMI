@@ -41,13 +41,34 @@ target_compile_features(${QDMI_TEST_TARGET_NAME} PRIVATE cxx_std_20)
 
 add_dependencies(${QDMI_TEST_TARGET_NAME} qdmi_test_my_device_defs)
 
-# only discover tests if this is the main project
-if(NOT MY_DEVICE_MASTER_PROJECT)
-  return()
-endif()
+if(WIN32)
+  # On Windows, copy the DLL to the test executable directory
+  add_custom_command(
+    TARGET ${QDMI_TEST_TARGET_NAME}
+    POST_BUILD
+    COMMAND
+      ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:${QDMI_TARGET_NAME}>
+      $<TARGET_FILE_DIR:${QDMI_TEST_TARGET_NAME}>
+    COMMENT "Copying ${QDMI_TARGET_NAME} DLL to test directory")
 
-gtest_discover_tests(
-  ${QDMI_TEST_TARGET_NAME}
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-  PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
-             DISCOVERY_TIMEOUT 60)
+  # Add the directory containing the DLL to the test's PATH environment
+  set(DLL_PATH "$<TARGET_FILE_DIR:${QDMI_TARGET_NAME}>")
+
+  gtest_discover_tests(
+    ${QDMI_TEST_TARGET_NAME}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY
+               "${CMAKE_CURRENT_BINARY_DIR}"
+               ENVIRONMENT
+               "PATH=${DLL_PATH};$ENV{PATH}"
+               DISCOVERY_TIMEOUT
+               60
+               DISCOVERY_MODE
+               PRE_TEST)
+else()
+  gtest_discover_tests(
+    ${QDMI_TEST_TARGET_NAME}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
+               DISCOVERY_TIMEOUT 60)
+endif()
