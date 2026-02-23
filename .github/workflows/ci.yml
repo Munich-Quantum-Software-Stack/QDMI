@@ -74,6 +74,7 @@ jobs:
       - change-detection
       - tests
       - linter
+      - template
       - docs
     runs-on: ubuntu-latest
     steps:
