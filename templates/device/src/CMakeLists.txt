@@ -1,11 +1,11 @@
-# Copyright (c) 2024 - 2025 Munich Quantum Software Stack Project
+# Copyright (c) 2024 - 2026 QDMI Maintainers
 # All rights reserved.
 #
 # Licensed under the Apache License v2.0 with LLVM Exceptions (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-# https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/develop/LICENSE.md
+# https://llvm.org/LICENSE.txt
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
@@ -29,6 +29,8 @@ file(GLOB_RECURSE SRC_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 file(GLOB_RECURSE PUBLIC_HEADER_FILES "${CMAKE_CURRENT_BINARY_DIR}/include/*.h")
 
 add_library(${QDMI_TARGET_NAME} SHARED)
+set_target_properties(${QDMI_TARGET_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS
+                                                     ON)
 target_compile_features(${QDMI_TARGET_NAME} PRIVATE cxx_std_20)
 get_target_property(qdmi_library_VERSION qdmi::qdmi VERSION)
 target_compile_definitions(
@@ -58,19 +60,11 @@ target_sources(
          FILES
          ${PUBLIC_HEADER_FILES})
 
-target_link_libraries(${QDMI_TARGET_NAME} PRIVATE qdmi::qdmi
-                                                  qdmi::qdmi_project_warnings)
+target_link_libraries(${QDMI_TARGET_NAME} PRIVATE qdmi::qdmi_project_warnings)
 
-option(MY_QDMI_COVERAGE "Enable coverage instrumentation" OFF)
-
-if(MY_QDMI_COVERAGE)
-  if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-    message(STATUS "Building with coverage instrumentation")
-    target_compile_options(${QDMI_TARGET_NAME} PUBLIC --coverage -O0 -g)
-    target_link_options(${QDMI_TARGET_NAME} PUBLIC --coverage)
-  else()
-    message(WARNING "Coverage instrumentation is only supported with GCC/Clang")
-  endif()
+option(ENABLE_COVERAGE "Enable coverage reporting" OFF)
+if(ENABLE_COVERAGE)
+  target_link_libraries(${QDMI_TARGET_NAME} PRIVATE qdmi::qdmi_coverage_flags)
 endif()
 
 set(MY_QDMI_CONFIG_INSTALL_DIR
@@ -91,22 +85,22 @@ write_basic_package_version_file(
 install(
   FILES "${CMAKE_CURRENT_BINARY_DIR}/${QDMI_TARGET_NAME}-config.cmake"
         "${CMAKE_CURRENT_BINARY_DIR}/${QDMI_TARGET_NAME}-config-version.cmake"
-  DESTINATION ${MY_QDMI_CONFIG_INSTALL_DIR})
+  DESTINATION ${MY_QDMI_CONFIG_INSTALL_DIR}
+  COMPONENT ${QDMI_TARGET_NAME}_Development)
 
-# cmake-format: off
 install(
-    TARGETS ${QDMI_TARGET_NAME}
-    EXPORT ${QDMI_TARGET_NAME}-targets
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-    COMPONENT ${QDMI_TARGET_NAME}_Runtime
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    COMPONENT ${QDMI_TARGET_NAME}_Runtime
-    NAMELINK_COMPONENT ${QDMI_TARGET_NAME}_Development
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    COMPONENT ${QDMI_TARGET_NAME}_Development
-    FILE_SET public_headers
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-# cmake-format: on
+  TARGETS ${QDMI_TARGET_NAME}
+  EXPORT ${QDMI_TARGET_NAME}-targets
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+          COMPONENT ${QDMI_TARGET_NAME}_Runtime
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+          COMPONENT ${QDMI_TARGET_NAME}_Runtime
+          NAMELINK_COMPONENT ${QDMI_TARGET_NAME}_Development
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+          COMPONENT ${QDMI_TARGET_NAME}_Development
+          FILE_SET public_headers
+          DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+          COMPONENT ${QDMI_TARGET_NAME}_Development)
 
 install(
   EXPORT ${QDMI_TARGET_NAME}-targets
