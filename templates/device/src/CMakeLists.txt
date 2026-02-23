@@ -29,6 +29,8 @@ file(GLOB_RECURSE SRC_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 file(GLOB_RECURSE PUBLIC_HEADER_FILES "${CMAKE_CURRENT_BINARY_DIR}/include/*.h")
 
 add_library(${QDMI_TARGET_NAME} SHARED)
+set_target_properties(${QDMI_TARGET_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS
+                                                     ON)
 target_compile_features(${QDMI_TARGET_NAME} PRIVATE cxx_std_20)
 get_target_property(qdmi_library_VERSION qdmi::qdmi VERSION)
 target_compile_definitions(
