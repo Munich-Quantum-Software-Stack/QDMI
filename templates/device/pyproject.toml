@@ -169,3 +169,11 @@ test-sources = ["test/python"]
 test-command = "pytest test/python"
 build-frontend = "build[uv]"
 enable = ["cpython-freethreading"]
+
+
+[tool.uv]
+cache-keys = [
+    { file = "pyproject.toml" },
+    { git = { commit = true, tags = true } },
+    { file = "src/**/*" },
+]
