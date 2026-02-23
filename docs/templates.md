@@ -28,7 +28,7 @@ cmake -DQDMI_GENERATE_TEMPLATE=ON \
 cmake --build build --target qdmi-template
 ```
 
-If the option `TEMPLATE_PATH` is not given it will be placed in `PREFIX_qdmi_device` relative to the
+If the option `TEMPLATE_PATH` is not given it will be placed in `PREFIX-qdmi-device` relative to the
 parent directory where QDMI was cloned in.
 
 If you want to regenerate into an existing directory, use:
