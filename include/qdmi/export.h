@@ -17,6 +17,10 @@
  * SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
  */
 
+/** @file
+ * @brief Defines macros for controlling the visibility of symbols.
+ */
+
 #pragma once
 
 #ifdef QDMI_STATIC_DEFINE
