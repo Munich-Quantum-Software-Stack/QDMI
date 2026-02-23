@@ -1,11 +1,11 @@
-# Copyright (c) 2024 - 2025 Munich Quantum Software Stack Project
+# Copyright (c) 2024 - 2026 QDMI Maintainers
 # All rights reserved.
 #
 # Licensed under the Apache License v2.0 with LLVM Exceptions (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-# https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/develop/LICENSE.md
+# https://llvm.org/LICENSE.txt
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
@@ -50,15 +50,8 @@ set(CMAKE_VERIFY_INTERFACE_HEADER_SETS
 
 set(QDMI_PREFIX "MY")
 
-# check if this is the master project or used via add_subdirectory
-if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
-  set(MY_QDMI_MASTER_PROJECT ON)
-else()
-  set(MY_QDMI_MASTER_PROJECT OFF)
-endif()
-
 option(BUILD_MY_QDMI_TESTS "Build tests for the MY QDMI device"
-       ${MY_QDMI_MASTER_PROJECT})
+       ${PROJECT_IS_TOP_LEVEL})
 option(BUILD_MY_QDMI_DOCS "Build documentation for the MY QDMI device" OFF)
 
 # Manage external dependencies
