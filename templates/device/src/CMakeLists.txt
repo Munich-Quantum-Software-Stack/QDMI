@@ -58,8 +58,7 @@ target_sources(
          FILES
          ${PUBLIC_HEADER_FILES})
 
-target_link_libraries(${QDMI_TARGET_NAME} PRIVATE qdmi::qdmi
-                                                  qdmi::qdmi_project_warnings)
+target_link_libraries(${QDMI_TARGET_NAME} PRIVATE qdmi::qdmi_project_warnings)
 
 option(MY_QDMI_COVERAGE "Enable coverage instrumentation" OFF)
 
