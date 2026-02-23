@@ -194,8 +194,14 @@ $(function(){initNavTree('md_UPGRADING.html','',''); });
 </div><!-- fragment --><p>must be replaced with</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;my_qdmi/constants.h&gt;</span></div>
 </div><!-- fragment --><p>where <span class="tt">my</span> is the prefix of your device implementation.</p>
+<h2>New header for managing exported symbols of device implementations</h2>
+<p>Device implementations may now be compiled with hidden symbol visibility, which is a common best practice for C++ libraries to reduce symbol clashes and improve load times. To ensure that all necessary symbols are exported, a new header file <span class="tt">my_qdmi/export.h</span> (where <span class="tt">my</span> is the device prefix) is provided as part of the device template. This header defines a macro for marking symbols for export, and you should use this macro to annotate all public symbols in your device implementation. Generally, we do this for you, by marking all QDMI interface functions with <span class="tt">MY_QDMI_EXPORT</span>.</p>
+<p>The only thing that device implementations need to do is to provide a compile-definition for <span class="tt">MY_QDMI_device_EXPORTS</span> and the settings for compiling with hidden symbol visibility:</p>
+<div class="fragment"><div class="line">target_compile_definitions(${QDMI_TARGET_NAME} PRIVATE MY_QDMI_device_EXPORTS)</div>
+<div class="line">set_target_properties(${QDMI_TARGET_NAME} PROPERTIES CXX_VISIBILITY_PRESET hidden VISIBILITY_INLINES_HIDDEN 1)</div>
+</div><!-- fragment --><p>where <span class="tt">MY</span> is, again, the device prefix.</p>
 <h2>Updated QDMI device template</h2>
-<p>The QDMI device template has been updated to be compatible with the latest version of the QDMI specification and to include several improvements. Most importantly, as described above, the device implementation no longer needs to link against the QDMI header-only library.</p>
+<p>The QDMI device template has been updated to be compatible with the latest version of the QDMI specification and to include several improvements. Most importantly, as described above, the device implementation no longer needs to link against the QDMI header-only library and is now built with hidden symbol visibility by default.</p>
 <p>Beyond that, the template has been extended to include:</p>
 <ul>
 <li>More precise licensing information</li>
@@ -342,7 +348,7 @@ $(function(){initNavTree('md_UPGRADING.html','',''); });
 <div class="ttc" id="agroup__client__job__interface_html_ga709a8817f2cda4673175e43fe596ead9"><div class="ttname"><a href="group__client__job__interface.html#ga709a8817f2cda4673175e43fe596ead9">QDMI_job_wait</a></div><div class="ttdeci">int QDMI_job_wait(QDMI_Job job, size_t timeout)</div><div class="ttdoc">Wait for a job to finish.</div></div>
 <div class="ttc" id="agroup__client__job__interface_html_gab63357cf9e4546c7ee86b7378c620981"><div class="ttname"><a href="group__client__job__interface.html#gab63357cf9e4546c7ee86b7378c620981">QDMI_Job</a></div><div class="ttdeci">struct QDMI_Job_impl_d * QDMI_Job</div><div class="ttdoc">A handle for a client-side job.</div><div class="ttdef"><b>Definition</b> client.h:607</div></div>
 <div class="ttc" id="agroup__device__job__interface_html_gaa4f4c5bd68a6116353470de6d9284175"><div class="ttname"><a href="group__device__job__interface.html#gaa4f4c5bd68a6116353470de6d9284175">QDMI_device_job_wait</a></div><div class="ttdeci">int QDMI_device_job_wait(QDMI_Device_Job job, size_t timeout)</div><div class="ttdoc">Wait for a job to finish.</div></div>
-<div class="ttc" id="agroup__device__job__interface_html_gaa9f37f29bc40f719b440a277654789a4"><div class="ttname"><a href="group__device__job__interface.html#gaa9f37f29bc40f719b440a277654789a4">QDMI_Device_Job</a></div><div class="ttdeci">struct QDMI_Device_Job_impl_d * QDMI_Device_Job</div><div class="ttdoc">A handle for a device job.</div><div class="ttdef"><b>Definition</b> device.h:385</div></div>
+<div class="ttc" id="agroup__device__job__interface_html_gaa9f37f29bc40f719b440a277654789a4"><div class="ttname"><a href="group__device__job__interface.html#gaa9f37f29bc40f719b440a277654789a4">QDMI_Device_Job</a></div><div class="ttdeci">struct QDMI_Device_Job_impl_d * QDMI_Device_Job</div><div class="ttdoc">A handle for a device job.</div><div class="ttdef"><b>Definition</b> device.h:384</div></div>
 </div><!-- fragment --><p><b>Timeout Parameter:</b></p>
 <ul>
 <li>Type: <span class="tt">size_t</span></li>
