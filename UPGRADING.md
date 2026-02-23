@@ -28,10 +28,26 @@ must be replaced with
 
 where `my` is the prefix of your device implementation.
 
+### New header for managing exported symbols of device implementations
+
+Device implementations may now be compiled with hidden symbol visibility, which is a common best practice for C++ libraries to reduce symbol clashes and improve load times.
+To ensure that all necessary symbols are exported, a new header file `my_qdmi/export.h` (where `my` is the device prefix) is provided as part of the device template.
+This header defines a macro for marking symbols for export, and you should use this macro to annotate all public symbols in your device implementation.
+Generally, we do this for you, by marking all QDMI interface functions with `MY_QDMI_EXPORT`.
+
+The only thing that device implementations need to do is to provide a compile-definition for `MY_QDMI_device_EXPORTS` and the settings for compiling with hidden symbol visibility:
+
+```cmake
+target_compile_definitions(${QDMI_TARGET_NAME} PRIVATE MY_QDMI_device_EXPORTS)
+set_target_properties(${QDMI_TARGET_NAME} PROPERTIES CXX_VISIBILITY_PRESET hidden VISIBILITY_INLINES_HIDDEN 1)
+```
+
+where `MY` is, again, the device prefix.
+
 ### Updated QDMI device template
 
 The QDMI device template has been updated to be compatible with the latest version of the QDMI specification and to include several improvements.
-Most importantly, as described above, the device implementation no longer needs to link against the QDMI header-only library.
+Most importantly, as described above, the device implementation no longer needs to link against the QDMI header-only library and is now built with hidden symbol visibility by default.
 
 Beyond that, the template has been extended to include:
 

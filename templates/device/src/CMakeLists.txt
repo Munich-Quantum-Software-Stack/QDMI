@@ -29,13 +29,16 @@ file(GLOB_RECURSE SRC_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 file(GLOB_RECURSE PUBLIC_HEADER_FILES "${CMAKE_CURRENT_BINARY_DIR}/include/*.h")
 
 add_library(${QDMI_TARGET_NAME} SHARED)
-set_target_properties(${QDMI_TARGET_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS
-                                                     ON)
 target_compile_features(${QDMI_TARGET_NAME} PRIVATE cxx_std_20)
 get_target_property(qdmi_library_VERSION qdmi::qdmi VERSION)
 target_compile_definitions(
-  ${QDMI_TARGET_NAME} PRIVATE QDMI_VERSION="${qdmi_library_VERSION}"
-                              MY_QDMI_DEVICE_VERSION="${PROJECT_VERSION}")
+  ${QDMI_TARGET_NAME}
+  PRIVATE QDMI_VERSION="${qdmi_library_VERSION}"
+          ${QDMI_PREFIX}_QDMI_DEVICE_VERSION="${PROJECT_VERSION}"
+          ${QDMI_PREFIX}_QDMI_device_EXPORTS)
+set_target_properties(
+  ${QDMI_TARGET_NAME} PROPERTIES CXX_VISIBILITY_PRESET hidden
+                                 CXX_VISIBILITY_INLINES_HIDDEN 1)
 target_sources(${QDMI_TARGET_NAME} PRIVATE ${SRC_FILES})
 
 target_sources(
@@ -67,7 +70,7 @@ if(ENABLE_COVERAGE)
   target_link_libraries(${QDMI_TARGET_NAME} PRIVATE qdmi::qdmi_coverage_flags)
 endif()
 
-set(MY_QDMI_CONFIG_INSTALL_DIR
+set(${QDMI_PREFIX}_QDMI_CONFIG_INSTALL_DIR
     "${CMAKE_INSTALL_DATADIR}/cmake/${QDMI_TARGET_NAME}"
     CACHE INTERNAL "Config install directory")
 
@@ -75,7 +78,7 @@ include(CMakePackageConfigHelpers)
 configure_package_config_file(
   "${PROJECT_SOURCE_DIR}/cmake/${QDMI_TARGET_NAME}-config.cmake.in"
   "${CMAKE_CURRENT_BINARY_DIR}/${QDMI_TARGET_NAME}-config.cmake"
-  INSTALL_DESTINATION ${MY_QDMI_CONFIG_INSTALL_DIR}
+  INSTALL_DESTINATION ${${QDMI_PREFIX}_QDMI_CONFIG_INSTALL_DIR}
   NO_SET_AND_CHECK_MACRO NO_CHECK_REQUIRED_COMPONENTS_MACRO)
 write_basic_package_version_file(
   "${QDMI_TARGET_NAME}-config-version.cmake"
@@ -85,7 +88,7 @@ write_basic_package_version_file(
 install(
   FILES "${CMAKE_CURRENT_BINARY_DIR}/${QDMI_TARGET_NAME}-config.cmake"
         "${CMAKE_CURRENT_BINARY_DIR}/${QDMI_TARGET_NAME}-config-version.cmake"
-  DESTINATION ${MY_QDMI_CONFIG_INSTALL_DIR}
+  DESTINATION ${${QDMI_PREFIX}_QDMI_CONFIG_INSTALL_DIR}
   COMPONENT ${QDMI_TARGET_NAME}_Development)
 
 install(
@@ -105,5 +108,5 @@ install(
 install(
   EXPORT ${QDMI_TARGET_NAME}-targets
   FILE ${QDMI_TARGET_NAME}-targets.cmake
-  DESTINATION ${MY_QDMI_CONFIG_INSTALL_DIR}
+  DESTINATION ${${QDMI_PREFIX}_QDMI_CONFIG_INSTALL_DIR}
   COMPONENT ${QDMI_TARGET_NAME}_Development)
