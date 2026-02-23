@@ -77,6 +77,7 @@ wheel.py-api = "py310"
 wheel.expand-macos-universal-tags = true
 wheel.packages = ["python/my"]
 wheel.install-dir = "my/qdmi/data"
+install.components = ["my-qdmi-device_Runtime", "my-qdmi-device_Development"]
 
 sdist.include = ["python/my/qdmi/_version.py"]
 sdist.exclude = [
