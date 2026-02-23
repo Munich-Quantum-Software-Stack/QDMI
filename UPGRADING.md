@@ -42,6 +42,7 @@ Beyond that, the template has been extended to include:
 - Symbol exports on Windows to ensure the device DLL exposes all symbols
 - Fixes for the installation instructions so that component-based installation works correctly
 - Fixes for running tests on Windows
+- Easier coverage collection configuration via the new `qdmi::qdmi_coverage_flags` target
 
 ## [1.2.1] - 2025-12-22
 
