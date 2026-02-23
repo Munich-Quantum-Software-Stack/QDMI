@@ -32,5 +32,8 @@ target_include_directories(cxx_device
 target_compile_features(cxx_device PRIVATE cxx_std_20)
 get_target_property(qdmi_library_VERSION qdmi::qdmi VERSION)
 target_compile_definitions(
-  cxx_device PRIVATE QDMI_VERSION="${qdmi_library_VERSION}"
-                     DEVICE_VERSION="${PROJECT_VERSION}")
+  cxx_device
+  PRIVATE QDMI_VERSION="${qdmi_library_VERSION}"
+          DEVICE_VERSION="${PROJECT_VERSION}" CXX_QDMI_device_EXPORTS)
+set_target_properties(cxx_device PROPERTIES CXX_VISIBILITY_PRESET hidden
+                                            CXX_VISIBILITY_INLINES_HIDDEN 1)
