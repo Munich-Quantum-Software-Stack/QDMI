@@ -6,6 +6,42 @@ complete list of changes, including minor and patch releases, please refer to th
 
 ## [Unreleased]
 
+### No need to link devices against the QDMI header-only library
+
+As of this release, the QDMI header-only library is no longer required to be linked into QDMI device implementations.
+Instead, each QDMI device now bundles all necessary headers in its own include directory.
+This allows distributing any QDMI device implementation in a truly standalone manner.
+You can remove the `qdmi::qdmi` target from the CMake configuration of your device implementation.
+
+To properly resolve the imports, you will need to adjust the header includes in your device implementation.
+Any include of the form
+
+```c++
+#include <qdmi/constants.h>
+```
+
+must be replaced with
+
+```c++
+#include <my_qdmi/constants.h>
+```
+
+where `my` is the prefix of your device implementation.
+
+### Updated QDMI device template
+
+The QDMI device template has been updated to be compatible with the latest version of the QDMI specification and to include several improvements.
+Most importantly, as described above, the device implementation no longer needs to link against the QDMI header-only library.
+
+Beyond that, the template has been extended to include:
+
+- More precise licensing information
+- A default `cache-keys` setup for `uv` to enable automatic rebuilds
+- A more user-friendly CLI with exclusive groups for the CLI options
+- More default cibuildwheel configuration for broad macOS compatibility and Windows wheel repairs
+- Symbol exports on Windows to ensure the device DLL exposes all symbols
+- Fixes for the installation instructions so that component-based installation works correctly
+
 ## [1.2.1] - 2025-12-22
 
 ### Fix for using Installed Version of QDMI
