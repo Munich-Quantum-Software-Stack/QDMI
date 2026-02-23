@@ -241,12 +241,17 @@ int tutorial_QDMI_device_session_query_device_property(
 
   switch (prop) {
     case QDMI_DEVICE_PROPERTY_NAME: {
+      // `+1` to also include the `\0` at the end of the string
       size_t name_size = DEVICE_NAME.size() + 1;
-      if (size_ret) *size_ret = name_size;
-      if (value == nullptr) return QDMI_SUCCESS; // Step 1: size request
-
-      if (size < name_size) return QDMI_ERROR_INVALIDARGUMENT;
-      std::memcpy(value, DEVICE_NAME.c_str(), name_size);
+      if (size_ret) {
+        *size_ret = name_size;
+      }
+      if (value != nullptr) {
+        if (size < name_size) {
+          return QDMI_ERROR_INVALIDARGUMENT;
+        }
+        std::memcpy(value, DEVICE_NAME.c_str(), name_size);
+      }
       return QDMI_SUCCESS;
     }
     case QDMI_DEVICE_PROPERTY_SITES: {
