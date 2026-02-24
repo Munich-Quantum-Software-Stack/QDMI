@@ -6,6 +6,60 @@ complete list of changes, including minor and patch releases, please refer to th
 
 ## [Unreleased]
 
+### No need to link devices against the QDMI header-only library
+
+As of this release, the QDMI header-only library is no longer required to be linked into QDMI device implementations.
+Instead, each QDMI device now bundles all necessary headers in its own include directory.
+This allows distributing any QDMI device implementation in a truly standalone manner.
+You can remove the `qdmi::qdmi` target from the CMake configuration of your device implementation.
+
+To properly resolve the imports, you will need to adjust the header includes in your device implementation.
+Any include of the form
+
+```c++
+#include <qdmi/constants.h>
+```
+
+must be replaced with
+
+```c++
+#include <my_qdmi/constants.h>
+```
+
+where `my` is the prefix of your device implementation.
+
+### New header for managing exported symbols of device implementations
+
+Device implementations may now be compiled with hidden symbol visibility, which is a common best practice for C++ libraries to reduce symbol clashes and improve load times.
+To ensure that all necessary symbols are exported, a new header file `my_qdmi/export.h` (where `my` is the device prefix) is provided as part of the device template.
+This header defines a macro for marking symbols for export, and you should use this macro to annotate all public symbols in your device implementation.
+Generally, we do this for you, by marking all QDMI interface functions with `MY_QDMI_EXPORT`.
+
+The only thing that device implementations need to do is to provide a compile-definition for `MY_QDMI_device_EXPORTS` and the settings for compiling with hidden symbol visibility:
+
+```cmake
+target_compile_definitions(${QDMI_TARGET_NAME} PRIVATE MY_QDMI_device_EXPORTS)
+set_target_properties(${QDMI_TARGET_NAME} PROPERTIES CXX_VISIBILITY_PRESET hidden VISIBILITY_INLINES_HIDDEN 1)
+```
+
+where `MY` is, again, the device prefix.
+
+### Updated QDMI device template
+
+The QDMI device template has been updated to be compatible with the latest version of the QDMI specification and to include several improvements.
+Most importantly, as described above, the device implementation no longer needs to link against the QDMI header-only library and is now built with hidden symbol visibility by default.
+
+Beyond that, the template has been extended to include:
+
+- More precise licensing information
+- A default `cache-keys` setup for `uv` to enable automatic rebuilds
+- A more user-friendly CLI with exclusive groups for the CLI options
+- More default cibuildwheel configuration for broad macOS compatibility and Windows wheel repairs
+- Symbol exports on Windows to ensure the device DLL exposes all symbols
+- Fixes for the installation instructions so that component-based installation works correctly
+- Fixes for running tests on Windows
+- Easier coverage collection configuration via the new `qdmi::qdmi_coverage_flags` target
+
 ## [1.2.1] - 2025-12-22
 
 ### Fix for using Installed Version of QDMI

@@ -27,7 +27,7 @@ if(QDMI_GENERATE_TEMPLATE)
   string(TOLOWER "${TEMPLATE_PREFIX}" TEMPLATE_prefix)
 
   set(TEMPLATE_PATH
-      "${CMAKE_SOURCE_DIR}/../${TEMPLATE_prefix}_qdmi_device"
+      "${CMAKE_SOURCE_DIR}/../${TEMPLATE_prefix}-qdmi-device"
       CACHE PATH "Path where the instantiated template should be generated")
 
   # file(REAL_PATH ...) fails if the path doesn't (yet) exist on some
