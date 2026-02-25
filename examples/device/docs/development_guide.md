@@ -68,7 +68,7 @@ This tells CMake to
 - the flag `-DCMAKE_BUILD_TYPE=Release` tells CMake to configure a _Release_ build (as opposed to,
   e.g., a _Debug_ build).
 - the flag `-DBUILD_CXX_QDMI_TESTS=ON` enables building the tests.
-- the flag `-DCXX_QDMI_COVERAGE=ON` can be added to enable code coverage support (see below).
+- the flag `-DENABLE_COVERAGE=ON` can be added to enable code coverage support (see below).
 - the flag `-DBUILD_CXX_QDMI_DOCS=ON` can be added to enable building the documentation (see below).
 
 After configuring with CMake, the project can be built by calling
@@ -99,7 +99,7 @@ To run the tests, you can use `ctest` after building the project (as described a
 $ ctest -C Release --test-dir build --output-on-failure
 ```
 
-To generate a code coverage report, you can configure the project with `-DCXX_QDMI_COVERAGE=ON` and
+To generate a code coverage report, you can configure the project with `-DENABLE_COVERAGE=ON` and
 then run `lcov` in the build directory.
 
 ### C++ Code Formatting and Linting

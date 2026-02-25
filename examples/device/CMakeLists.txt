@@ -1,11 +1,11 @@
-# Copyright (c) 2024 - 2025 Munich Quantum Software Stack Project
+# Copyright (c) 2024 - 2026 QDMI Maintainers
 # All rights reserved.
 #
 # Licensed under the Apache License v2.0 with LLVM Exceptions (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-# https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/develop/LICENSE.md
+# https://llvm.org/LICENSE.txt
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
@@ -52,19 +52,12 @@ set(CMAKE_VERIFY_INTERFACE_HEADER_SETS
 
 set(QDMI_PREFIX "CXX")
 
-# check if this is the master project or used via add_subdirectory
-if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
-  set(CXX_QDMI_MASTER_PROJECT ON)
-else()
-  set(CXX_QDMI_MASTER_PROJECT OFF)
-endif()
-
 cmake_dependent_option(
   INSTALL_CXX_QDMI_DEVICE
   "Generate installation instructions for the CXX QDMI Device"
-  ${CXX_QDMI_MASTER_PROJECT} "NOT USE_INSTALLED_CXX_QDMI_DEVICE" OFF)
+  ${PROJECT_IS_TOP_LEVEL} "NOT USE_INSTALLED_CXX_QDMI_DEVICE" OFF)
 option(BUILD_CXX_QDMI_TESTS "Build tests for the CXX QDMI device"
-       ${CXX_QDMI_MASTER_PROJECT})
+       ${PROJECT_IS_TOP_LEVEL})
 option(BUILD_CXX_QDMI_DOCS "Build documentation for the CXX QDMI device" OFF)
 
 # Manage external dependencies

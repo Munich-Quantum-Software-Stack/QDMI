@@ -1,11 +1,11 @@
-# Copyright (c) 2024 - 2025 Munich Quantum Software Stack Project
+# Copyright (c) 2024 - 2026 QDMI Maintainers
 # All rights reserved.
 #
 # Licensed under the Apache License v2.0 with LLVM Exceptions (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-# https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/develop/LICENSE.md
+# https://llvm.org/LICENSE.txt
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
@@ -33,25 +33,25 @@ dist = distribution("cxx-qdmi")
 located_include_dir = dist.locate_file("cxx/qdmi/data/include/cxx_qdmi")
 resolved_include_dir = Path(str(located_include_dir)).resolve(strict=True)
 
-CXX_QDMI_DATA = resolved_include_dir.parents[1]
-assert CXX_QDMI_DATA.exists(), f"CXX_QDMI_DATA does not exist: {CXX_QDMI_DATA}"
+_CXX_QDMI_DATA = resolved_include_dir.parents[1]
+assert _CXX_QDMI_DATA.exists(), f"CXX_QDMI_DATA does not exist: {_CXX_QDMI_DATA}"
 
-CXX_QDMI_LIBRARY_DIR = CXX_QDMI_DATA / "lib"
-if not CXX_QDMI_LIBRARY_DIR.exists():
-    CXX_QDMI_LIBRARY_DIR = CXX_QDMI_DATA / "lib64"
-assert CXX_QDMI_LIBRARY_DIR.exists(), f"CXX_QDMI_LIBRARY_DIR does not exist: {CXX_QDMI_LIBRARY_DIR}"
+_CXX_QDMI_LIBRARY_DIR = _CXX_QDMI_DATA / "lib"
+if not _CXX_QDMI_LIBRARY_DIR.exists():
+    _CXX_QDMI_LIBRARY_DIR = _CXX_QDMI_DATA / "lib64"
+assert _CXX_QDMI_LIBRARY_DIR.exists(), f"CXX_QDMI_LIBRARY_DIR does not exist: {_CXX_QDMI_LIBRARY_DIR}"
 
 # the library is the sole file in the lib directory
-library_files = list(CXX_QDMI_LIBRARY_DIR.glob("*cxx-qdmi-device*"))
+library_files = list(_CXX_QDMI_LIBRARY_DIR.glob("*cxx-qdmi-device*"))
 if not library_files:
-    msg = f"No CXX QDMI library found in: {CXX_QDMI_LIBRARY_DIR}"
+    msg = f"No CXX QDMI library found in: {_CXX_QDMI_LIBRARY_DIR}"
     raise FileNotFoundError(msg)
 CXX_QDMI_LIBRARY_PATH = library_files[0]
 
-CXX_QDMI_INCLUDE_DIR = CXX_QDMI_DATA / "include"
+CXX_QDMI_INCLUDE_DIR = _CXX_QDMI_DATA / "include"
 assert CXX_QDMI_INCLUDE_DIR.exists(), f"CXX_QDMI_INCLUDE_DIR does not exist: {CXX_QDMI_INCLUDE_DIR}"
 
-CXX_QDMI_CMAKE_DIR = CXX_QDMI_DATA / "share" / "cmake"
+CXX_QDMI_CMAKE_DIR = _CXX_QDMI_DATA / "share" / "cmake"
 assert CXX_QDMI_CMAKE_DIR.exists(), f"CXX_QDMI_CMAKE_DIR does not exist: {CXX_QDMI_CMAKE_DIR}"
 
 del dist, located_include_dir, resolved_include_dir
