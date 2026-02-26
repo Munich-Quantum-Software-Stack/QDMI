@@ -26,7 +26,7 @@ set(DOXYGEN_INPUT_DIRS ${PROJECT_SOURCE_DIR}/include)
 # This variable is only needed to setup the dependency tracking of CMake
 # correctly and is not passed to Doxygen. Whenever such a file is modified,
 # CMake detects that change and will rerun the Doxygen command instead of using
-# the cached result when the target `qdmi_docs` is built.
+# the cached result when the target `qdmi-docs` is built.
 file(
   GLOB_RECURSE
   DOXYGEN_INPUT_FILES
@@ -124,4 +124,4 @@ add_custom_command(
   VERBATIM)
 
 # Create a custom target
-add_custom_target(qdmi_docs ALL DEPENDS ${DOXYGEN_OUTPUT_DIR}/html/index.html)
+add_custom_target(qdmi-docs ALL DEPENDS ${DOXYGEN_OUTPUT_DIR}/html/index.html)
