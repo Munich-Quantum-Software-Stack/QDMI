@@ -1,5 +1,6 @@
 ignore:
-  - "**/test/**/*"
+  - "test/**/*"
+  - "examples/device/test/**/*"
 
 coverage:
   range: 60..90
