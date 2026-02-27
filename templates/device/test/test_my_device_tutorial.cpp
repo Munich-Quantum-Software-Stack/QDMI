@@ -19,7 +19,10 @@
 
 #include "my_qdmi/device.h"
 
+#include <array>
+#include <cstddef>
 #include <gtest/gtest.h>
+#include <string>
 
 class QDMIBaseTest : public ::testing::Test {
 protected:
@@ -40,8 +43,9 @@ protected:
         << "Checkpoint 1 Failed: Could not allocate a session handle.";
   }
   void TearDown() override {
-    if (session)
+    if (session != nullptr) {
       MY_QDMI_device_session_free(session);
+    }
     QDMIBaseTest::TearDown();
   }
 };
@@ -165,7 +169,7 @@ TEST_F(QDMIInitializedSessionTest, SubmitAndSimulateJob) {
   // Re-submission after completion must return BADSTATE
   EXPECT_EQ(MY_QDMI_device_job_submit(job), QDMI_ERROR_BADSTATE);
 
-  QDMI_Job_Status status;
+  QDMI_Job_Status status = QDMI_JOB_STATUS_CREATED;
   // Null job must return INVALIDARGUMENT
   EXPECT_EQ(MY_QDMI_device_job_check(nullptr, &status),
             QDMI_ERROR_INVALIDARGUMENT);
@@ -174,25 +178,26 @@ TEST_F(QDMIInitializedSessionTest, SubmitAndSimulateJob) {
   ASSERT_EQ(MY_QDMI_device_job_check(job, &status), QDMI_SUCCESS);
   EXPECT_EQ(status, QDMI_JOB_STATUS_DONE);
 
-  double probs[2];
+  std::array<double, 2> probs{};
   // Null job must return INVALIDARGUMENT
-  EXPECT_EQ(MY_QDMI_device_job_get_results(nullptr,
-                                           QDMI_JOB_RESULT_PROBABILITIES_DENSE,
-                                           sizeof(probs), probs, nullptr),
+  EXPECT_EQ(MY_QDMI_device_job_get_results(
+                nullptr, QDMI_JOB_RESULT_PROBABILITIES_DENSE,
+                probs.size() * sizeof(double), probs.data(), nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
   // Buffer too small must return INVALIDARGUMENT
-  EXPECT_EQ(MY_QDMI_device_job_get_results(job,
-                                           QDMI_JOB_RESULT_PROBABILITIES_DENSE,
-                                           sizeof(probs) - 1, probs, nullptr),
+  EXPECT_EQ(MY_QDMI_device_job_get_results(
+                job, QDMI_JOB_RESULT_PROBABILITIES_DENSE,
+                probs.size() * sizeof(double) - 1, probs.data(), nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
   // Unsupported result type must return NOTSUPPORTED
   EXPECT_EQ(MY_QDMI_device_job_get_results(job, QDMI_JOB_RESULT_MAX,
-                                           sizeof(probs), probs, nullptr),
+                                           probs.size() * sizeof(double),
+                                           probs.data(), nullptr),
             QDMI_ERROR_NOTSUPPORTED);
 
-  ASSERT_EQ(MY_QDMI_device_job_get_results(job,
-                                           QDMI_JOB_RESULT_PROBABILITIES_DENSE,
-                                           sizeof(probs), probs, nullptr),
+  ASSERT_EQ(MY_QDMI_device_job_get_results(
+                job, QDMI_JOB_RESULT_PROBABILITIES_DENSE,
+                probs.size() * sizeof(double), probs.data(), nullptr),
             QDMI_SUCCESS)
       << "Checkpoint 4 Failed: Could not retrieve simulated job results.";
 
