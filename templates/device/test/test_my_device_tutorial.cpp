@@ -187,7 +187,7 @@ TEST_F(QDMIInitializedSessionTest, SubmitAndSimulateJob) {
   // Buffer too small must return INVALIDARGUMENT
   EXPECT_EQ(MY_QDMI_device_job_get_results(
                 job, QDMI_JOB_RESULT_PROBABILITIES_DENSE,
-                probs.size() * sizeof(double) - 1, probs.data(), nullptr),
+                (probs.size() * sizeof(double)) - 1, probs.data(), nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
   // Unsupported result type must return NOTSUPPORTED
   EXPECT_EQ(MY_QDMI_device_job_get_results(job, QDMI_JOB_RESULT_MAX,
