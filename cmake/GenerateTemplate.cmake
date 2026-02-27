@@ -125,10 +125,10 @@ foreach(_src IN LISTS _files)
   # test_my_device.cpp:          only written when QDMI_TEMPLATE_TEST_SUITE=OFF.
   if("${_name}" STREQUAL "test_my_device_tutorial.cpp")
     if(NOT QDMI_TEMPLATE_TEST_SUITE)
-      continue()  # skip tutorial suite when flag is OFF
+      continue() # skip tutorial suite when flag is OFF
     endif()
-    # Override destination name before the normal my_→prefix renaming runs,
-    # so the file lands as test_<prefix>_device.cpp (not _tutorial.cpp).
+    # Override destination name before the normal my_→prefix renaming runs, so
+    # the file lands as test_<prefix>_device.cpp (not _tutorial.cpp).
     set(_dest_name "test_${QDMI_TEMPLATE_prefix}_device.cpp")
     # Recompute the full destination path with the new name.
     set(_dest "${QDMI_TEMPLATE_OUTPUT_DIR}/${_dest_rel_dir}/${_dest_name}")
@@ -136,7 +136,7 @@ foreach(_src IN LISTS _files)
     file(MAKE_DIRECTORY "${_dest_dir}")
   elseif("${_name}" STREQUAL "test_my_device.cpp")
     if(QDMI_TEMPLATE_TEST_SUITE)
-      continue()  # skip default suite when tutorial suite is selected
+      continue() # skip default suite when tutorial suite is selected
     endif()
   endif()
   # --------------------------------------------------------------------------

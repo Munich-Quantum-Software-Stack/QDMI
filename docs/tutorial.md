@@ -71,7 +71,7 @@ The resulting directory (`my_qdmi_device`) follows a standard structure:
 We use a simple verification loop to track progress: you'll set up the tests first, confirm they fail, implement the fix, and then verify the results.
 
 **Action Required**: Copy the full test suite from the [Test Suite Reference](#tutorial-test-reference) section at the bottom of this page and paste it into `test/test_tutorial_device.cpp` now.
-*(Alternatively, you can automatically inject this test suite during project generation by passing `-DTEMPLATE_TEST_SUITE=ON` to the CMake configuration step.)*
+_(Alternatively, you can automatically inject this test suite during project generation by passing `-DTEMPLATE_TEST_SUITE=ON` to the CMake configuration step.)_
 
 Building the tests at this stage should result in failures, which is expected as we haven't implemented the logic yet.
 

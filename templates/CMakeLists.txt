@@ -34,7 +34,8 @@ if(QDMI_GENERATE_TEMPLATE)
   set(QDMI_TEMPLATE_GENERATOR_SCRIPT
       "${CMAKE_SOURCE_DIR}/cmake/GenerateTemplate.cmake")
 
-  option(TEMPLATE_TEST_SUITE "Generate the tutorial test suite instead of the default one" OFF)
+  option(TEMPLATE_TEST_SUITE
+         "Generate the tutorial test suite instead of the default one" OFF)
 
   add_custom_target(
     qdmi-template
