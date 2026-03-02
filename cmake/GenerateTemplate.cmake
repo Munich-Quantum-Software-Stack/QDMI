@@ -42,6 +42,11 @@ if("${QDMI_TEMPLATE_CLEAN}" STREQUAL "")
   set(QDMI_TEMPLATE_CLEAN OFF)
 endif()
 
+set(QDMI_TEMPLATE_TEST_SUITE "${QDMI_TEMPLATE_TEST_SUITE}")
+if("${QDMI_TEMPLATE_TEST_SUITE}" STREQUAL "")
+  set(QDMI_TEMPLATE_TEST_SUITE OFF)
+endif()
+
 file(REAL_PATH "${QDMI_TEMPLATE_SOURCE_DIR}" QDMI_TEMPLATE_SOURCE_DIR)
 file(REAL_PATH "${QDMI_TEMPLATE_OUTPUT_DIR}" QDMI_TEMPLATE_OUTPUT_DIR)
 
@@ -113,6 +118,28 @@ foreach(_src IN LISTS _files)
 
   # Read content and replace placeholders.
   file(READ "${_src}" _content)
+
+  # ---- Tutorial test-suite switching ----------------------------------------
+  # test_my_device_tutorial.cpp: only written when QDMI_TEMPLATE_TEST_SUITE=ON,
+  # and it is written to the same destination as the normal test file would be.
+  # test_my_device.cpp:          only written when QDMI_TEMPLATE_TEST_SUITE=OFF.
+  if("${_name}" STREQUAL "test_my_device_tutorial.cpp")
+    if(NOT QDMI_TEMPLATE_TEST_SUITE)
+      continue() # skip tutorial suite when flag is OFF
+    endif()
+    # Override destination name before the normal my_→prefix renaming runs, so
+    # the file lands as test_<prefix>_device.cpp (not _tutorial.cpp).
+    set(_dest_name "test_${QDMI_TEMPLATE_prefix}_device.cpp")
+    # Recompute the full destination path with the new name.
+    set(_dest "${QDMI_TEMPLATE_OUTPUT_DIR}/${_dest_rel_dir}/${_dest_name}")
+    get_filename_component(_dest_dir "${_dest}" DIRECTORY)
+    file(MAKE_DIRECTORY "${_dest_dir}")
+  elseif("${_name}" STREQUAL "test_my_device.cpp")
+    if(QDMI_TEMPLATE_TEST_SUITE)
+      continue() # skip default suite when tutorial suite is selected
+    endif()
+  endif()
+  # --------------------------------------------------------------------------
 
   # Be conservative: these are all specific placeholders used by the shipped
   # template.
