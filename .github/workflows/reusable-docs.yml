@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Install Doxygen
         if: github.event.action != 'closed'
-        uses: ssciwr/doxygen-install@ad81ff239f3be5262e2577abce2d728c426fcc59 # v2.0.0
+        uses: ssciwr/doxygen-install@329d88f5a303066a5bd006db7516b1925b86350e # v2.0.1
         with:
           version: "1.15.0"
       - name: Install and Build 🔧
