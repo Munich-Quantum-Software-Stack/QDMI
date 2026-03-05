@@ -29,7 +29,7 @@ jobs:
           git checkout origin/develop -- .github/scripts/inject-version-selector.sh .github/scripts/version-selector.html || echo "Scripts not found in develop, will skip version selector"
 
       - name: Install Doxygen
-        uses: ssciwr/doxygen-install@ad81ff239f3be5262e2577abce2d728c426fcc59 # v2.0.0
+        uses: ssciwr/doxygen-install@329d88f5a303066a5bd006db7516b1925b86350e # v2.0.1
         with:
           version: "1.15.0"
 
