@@ -11,6 +11,10 @@ clients compiled against a different minor or major version.
 
 ## [Unreleased]
 
+### Added
+
+- 👷 Add mergify configuration for easier backports and maintenance of release branches ([#355]) ([\@burgholzer])
+
 ### Changed
 
 - 🚸 Export _all_ device headers (incl. `constants.h`) as part of device implementations such that they do not need to link against the header-only QDMI library anymore ([#325]) ([\@ystade], [\@burgholzer])
@@ -118,6 +122,7 @@ changelogs._
 
 <!-- PR links -->
 
+[#355]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/355
 [#334]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/334
 [#333]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/333
 [#325]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/325
