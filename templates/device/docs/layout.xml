@@ -24,11 +24,11 @@
   <!-- Navigation index tabs for HTML output -->
   <navindex>
     <tab type="mainpage" visible="yes" title=""/>
-    <tab type="usergroup" title="User Guides" url="[none]">
+    <tab type="usergroup" title="User Guides" url="index.html">
       <tab type="user" title="Overview" url="index.html"/>
       <tab type="user" title="Dependencies" url="md_docs_2dependencies.html"/>
     </tab>
-    <tab type="usergroup" title="Development" url="[none]">
+    <tab type="usergroup" title="Development" url="md_docs_2contributing.html">
       <tab type="user" title="Contributing" url="md_docs_2contributing.html"/>
     </tab>
     <tab type="topics" visible="yes" title="Interfaces" intro="Here is a list of all interfaces with brief descriptions"/>
