@@ -32,3 +32,7 @@ point.
 
 When you are interested in the details of the semantics of functions and the whole API, the
 [Reference Documentation](files.html) page is the right place to look for.
+
+#### Want to Contribute?
+
+If you plan to contribute to QDMI, start with the [Contributing](contributing.md) page.
