@@ -149,22 +149,21 @@ We will guide you through the process.
 <!-- prettier-ignore-start -->
    <div class="tabbed">
 
-- <b class="tab-title">via `uv`</b> The easiest way to install prek is via
-  [uv](https://docs.astral.sh/uv/).
+   - <b class="tab-title">via `uv`</b> The easiest way to install prek is via [uv](https://docs.astral.sh/uv/).
 
-  \code{.shell} uv tool install prek \endcode
+     \code{.shell} uv tool install prek \endcode
 
-- <b class="tab-title">via `brew`</b> If you use macOS, then prek is in Homebrew, use
+   - <b class="tab-title">via `brew`</b> If you use macOS, then prek is in Homebrew, use
 
-  \code{.shell} brew install prek \endcode
+     \code{.shell} brew install prek \endcode
 
-- <b class="tab-title">via the official installers</b> See <https://prek.j178.dev/installation/> for more details.
+   - <b class="tab-title">via the official installers</b> See <https://prek.j178.dev/installation/> for more details.
 
-  </div>
+   </div>
 <!-- prettier-ignore-end -->
-   Afterwards, you can install the prek hooks with
+   Afterward, you can install the prek hooks with
 
-\code{.shell} prek install \endcode
+   \code{.shell} prek install \endcode
 
 ### Working on Source Code {#working-on-source-code}
 
