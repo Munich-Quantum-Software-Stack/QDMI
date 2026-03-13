@@ -1,13 +1,28 @@
 # MY QDMI Device {#mainpage}
 
-This project is implemented in C++20 and builds on QDMI version 1.2.0.
+<!-- IMPORTANT: Keep the line above as the first line and do not remove the label above. -->
 
-This documentation provides a comprehensive guide for using the MY QDMI device library, including
-detailed C++ API documentation.
+<!-- The label is needed to set this page as the main page in Doxygen. -->
+<!-- This file is a static page and included in the CMakeLists.txt file. -->
 
-## Table of Contents
+<!-- Include the content of README.md between the pair of markers DOXYGEN MAIN. -->
 
-- [Development Guide](development_guide.md)
-- [Dependencies](dependencies.md)
-- [Interfaces](topics.html)
-- [API Reference](classes.html)
+\snippet{doc} README.md DOXYGEN MAIN
+
+## How to Use this Documentation?
+
+This documentation is organized to help you quickly find what you need while implementing and
+maintaining your device.
+
+### Project Guides
+
+Use the [Dependencies](dependencies.md) page for an overview of the third-party packages used by
+this project.
+
+### Development
+
+If you plan to contribute to this project, start with the [Contributing](contributing.md) guide.
+
+### API Details
+
+For C and C++ API details generated from source code comments, use the [Interfaces](topics.html) documentation and the [API Reference](classes.html).

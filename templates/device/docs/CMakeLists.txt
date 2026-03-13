@@ -32,18 +32,23 @@ set(DOXYGEN_INPUT_DIRS ${PROJECT_SOURCE_DIR}/include
 
 file(GLOB_RECURSE DOXYGEN_INPUT_FILES ${PROJECT_SOURCE_DIR}/include/*.hpp
      ${PROJECT_BINARY_DIR}/src/include/my_qdmi/device.h
-     ${CMAKE_CURRENT_SOURCE_DIR}/*.md)
+     ${CMAKE_CURRENT_SOURCE_DIR}/*.md ${PROJECT_SOURCE_DIR}/.github/*.md)
 # After the variable above is correctly initialized, we can add the additional
 # files that are not source code but still part of the documentation. IMPORTANT:
 # The order the files with the static content are added here influences their
 # order in the generated documentation.
 set(DOXYGEN_INPUT_DIRS
     ${DOXYGEN_INPUT_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/index.md
-    ${CMAKE_CURRENT_SOURCE_DIR}/development_guide.md
+    ${CMAKE_CURRENT_SOURCE_DIR}/contributing.md
     ${CMAKE_CURRENT_SOURCE_DIR}/dependencies.md)
 # By default the files are separated by a semicolon. This is not what Doxygen
 # wants, so we replace it with a space.
 string(REPLACE ";" " " DOXYGEN_INPUT_DIRS "${DOXYGEN_INPUT_DIRS}")
+
+# Allow using \snippet{doc} and \include with files outside docs/.
+set(DOXYGEN_EXAMPLE_DIRS ${PROJECT_SOURCE_DIR}/.github
+                         ${PROJECT_SOURCE_DIR}/README.md)
+string(REPLACE ";" " " DOXYGEN_EXAMPLE_DIRS "${DOXYGEN_EXAMPLE_DIRS}")
 
 # Set the output directory for the generated documentation: Place it in the
 # CMake build directory.
@@ -86,7 +91,8 @@ add_custom_command(
           ${CMAKE_CURRENT_SOURCE_DIR}/header.html
           ${CMAKE_CURRENT_SOURCE_DIR}/layout.xml
           ${CMAKE_CURRENT_SOURCE_DIR}/style.css
-          ${CMAKE_SOURCE_DIR}/README.md
+          ${PROJECT_SOURCE_DIR}/README.md
+          ${PROJECT_SOURCE_DIR}/.github/contributing.md
           $<IF:$<TARGET_EXISTS:doxygen>,doxygen,>
   COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_CONFIG_FILE_OUT}
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
