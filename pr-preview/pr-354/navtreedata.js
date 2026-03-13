@@ -25,19 +25,19 @@
 var NAVTREE =
 [
   [ "QDMI", "index.html", [
-    [ "Getting Started", null, [
+    [ "Getting Started", "index.html", [
       [ "Overview", "index.html", null ],
       [ "FAQ", "md_docs_2faq.html", null ],
       [ "Support", "md_docs_2support.html", null ]
     ] ],
-    [ "User Guides", null, [
+    [ "User Guides", "md_docs_2rationale.html", [
       [ "Rationale", "md_docs_2rationale.html", null ],
       [ "Examples", "md_docs_2examples.html", null ],
       [ "Template", "md_docs_2templates.html", null ]
     ] ],
     [ "Changelog", "md_CHANGELOG.html", null ],
     [ "Upgrade Guide", "md_UPGRADING.html", null ],
-    [ "Development", null, [
+    [ "Development", "md_docs_2contributing.html", [
       [ "Contributing Guide", "md_docs_2contributing.html", null ],
       [ "AI Usage", "md_docs_2ai__usage.html", null ]
     ] ],

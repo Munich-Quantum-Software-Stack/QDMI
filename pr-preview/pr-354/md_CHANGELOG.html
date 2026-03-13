@@ -187,11 +187,17 @@ $(function(){initNavTree('md_CHANGELOG.html','',''); });
 <div class="textblock"><p>All notable changes to this project will be described in this document. The format is based on a mixture of <a href="https://keepachangelog.com/en/1.1.0/">Keep a Changelog</a> and <a href="https://common-changelog.org">Common Changelog</a>.</p>
 <p>This project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>, with the exception that minor releases may include breaking changes. Particularly, QDMI device implementations compiled against a particular version <span class="tt">1.x.y</span> of the QDMI headers are expected to be compatible with QDMI drivers and, hence, QDMI clients compiled against any patch release in the <span class="tt">1.x</span> series, but not necessarily with QDMI drivers and clients compiled against a different minor or major version.</p>
 <h1><a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.1...HEAD">Unreleased</a></h1>
+<h2>Added</h2>
+<ul>
+<li>🤖 Add policy for AI usage within the project (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/354">#354</a>) (<a href="https://github.com/burgholzer">@burgholzer</a>)</li>
+</ul>
 <h2>Changed</h2>
 <ul>
 <li>🚸 Export <em>all</em> device headers (incl. <span class="tt"><a class="el" href="constants_8h.html" title="Defines all enums used within QDMI across the QDMI Client Interface and the QDMI Device Interface.">constants.h</a></span>) as part of device implementations such that they do not need to link against the header-only QDMI library anymore (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/325">#325</a>) (<a href="https://github.com/ystade">@ystade</a>, <a href="https://github.com/burgholzer">@burgholzer</a>)</li>
 <li>🚸 Increase robustness of the QDMI device template (complete install instructions, uv caching, code cleanup) (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/333">#333</a>) (<a href="https://github.com/burgholzer">@burgholzer</a>)</li>
 <li>🚸 Add a symbol-export header for compiling devices with hidden symbol visibility (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/334">#334</a>) (<a href="https://github.com/burgholzer">@burgholzer</a>)</li>
+<li>📝 Improve contributing guidelines and documentation (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/354">#354</a>) (<a href="https://github.com/burgholzer">@burgholzer</a>)</li>
+<li>📝 Improve documentation of the QDMI device template (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/354">#354</a>) (<a href="https://github.com/burgholzer">@burgholzer</a>)</li>
 </ul>
 <h1><a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.2.1">1.2.1</a> - 2025-12-22</h1>
 <p><em>If you are upgrading: please see <a href="UPGRADING.md#121"><span class="tt">UPGRADING.md</span></a>.</em></p>

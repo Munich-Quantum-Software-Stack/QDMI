@@ -24,17 +24,17 @@
 */
 var menudata={children:[
 {text:"Main Page",url:"index.html"},
-{text:"Getting Started",url:"",children:[
+{text:"Getting Started",url:"index.html",children:[
 {text:"Overview",url:"index.html"},
 {text:"FAQ",url:"md_docs_2faq.html"},
 {text:"Support",url:"md_docs_2support.html"}]},
-{text:"User Guides",url:"",children:[
+{text:"User Guides",url:"md_docs_2rationale.html",children:[
 {text:"Rationale",url:"md_docs_2rationale.html"},
 {text:"Examples",url:"md_docs_2examples.html"},
 {text:"Template",url:"md_docs_2templates.html"}]},
 {text:"Changelog",url:"md_CHANGELOG.html"},
 {text:"Upgrade Guide",url:"md_UPGRADING.html"},
-{text:"Development",url:"",children:[
+{text:"Development",url:"md_docs_2contributing.html",children:[
 {text:"Contributing Guide",url:"md_docs_2contributing.html"},
 {text:"AI Usage",url:"md_docs_2ai__usage.html"}]},
 {text:"Interfaces",url:"topics.html"},
