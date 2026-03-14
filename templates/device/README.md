@@ -9,11 +9,16 @@
 
 # MY QDMI Device
 
+<!-- [DOXYGEN MAIN] -->
+
 A C++20 library that implements the QDMI Device interface.
+
+<!-- [DOXYGEN MAIN] -->
 
 ## Documentation
 
-The full documentation, including a user guide, development guide, and the C++ API reference, is available in the `docs/` directory and can be built using [Doxygen](https://doxygen.nl/).
+The full documentation, including project guides, a contributing guide, and the C++ API reference,
+is available in the `docs/` directory and can be built using [Doxygen](https://doxygen.nl/).
 
 You can build the documentation by running:
 
