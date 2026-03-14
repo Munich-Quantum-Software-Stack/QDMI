@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['qdmi_0',['QDMI',['../index.html',1,'QDMI'],['../md_docs_2rationale.html#rationale-structure',1,'The structure of QDMI']]],
-  ['qdmi_20not_20define_20individual_20functions_20for_20each_20property_1',['Why does QDMI not define individual functions for each property?',['../md_docs_2rationale.html#rationale-properties',1,'']]],
-  ['qdmi_20use_20opaque_20pointers_2',['Why does QDMI use opaque pointers?',['../md_docs_2rationale.html#rationale-opaque-pointers',1,'']]]
+  ['licensing_20and_20copyright_0',['5. Licensing and Copyright',['../md_docs_2ai__usage.html#licensing-and-copyright',1,'']]],
+  ['links_20and_20resources_1',['Further Links and Resources',['../md_docs_2contributing.html#further-links-and-resources',1,'']]],
+  ['linting_2',['Code Formatting and Linting',['../md_docs_2contributing.html#code-formatting-and-linting',1,'']]],
+  ['list_20properties_3',['List Properties',['../md_docs_2examples.html#device-list',1,'']]],
+  ['loop_4',['2. Human in the Loop',['../md_docs_2ai__usage.html#human-in-the-loop',1,'']]]
 ];

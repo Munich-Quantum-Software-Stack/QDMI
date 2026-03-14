@@ -1,6 +1,25 @@
 var searchData=
 [
-  ['h_20header_20and_20some_20are_20not_0',['Why are some enum definitions placed in the &lt;span class=&quot;tt&quot;&gt;constants.h&lt;/span&gt; header and some are not?',['../md_docs_2rationale.html#rationale-enum-definitions',1,'']]],
-  ['have_20sessions_1',['Why do devices have sessions?',['../md_docs_2rationale.html#device-session',1,'']]],
-  ['header_20and_20some_20are_20not_2',['Why are some enum definitions placed in the &lt;span class=&quot;tt&quot;&gt;constants.h&lt;/span&gt; header and some are not?',['../md_docs_2rationale.html#rationale-enum-definitions',1,'']]]
+  ['c_20tests_20and_20code_20coverage_0',['Running the C++ Tests and Code Coverage',['../md_docs_2contributing.html#running-the-c-tests-and-code-coverage',1,'']]],
+  ['changelog_1',['Changelog',['../md_CHANGELOG.html',1,'']]],
+  ['changelog_20and_20upgrade_20guide_2',['Maintaining the Changelog and Upgrade Guide',['../md_docs_2contributing.html#maintaining-changelog-upgrade-guide',1,'']]],
+  ['clients_3',['Why are there separate kinds of jobs for devices and clients?',['../md_docs_2rationale.html#rationale-job-structs',1,'']]],
+  ['code_4',['Working on Source Code',['../md_docs_2contributing.html#working-on-source-code',1,'']]],
+  ['code_20coverage_5',['Running the C++ Tests and Code Coverage',['../md_docs_2contributing.html#running-the-c-tests-and-code-coverage',1,'']]],
+  ['code_20formatting_20and_20linting_6',['Code Formatting and Linting',['../md_docs_2contributing.html#code-formatting-and-linting',1,'']]],
+  ['comments_7',['Format for Comments',['../md_docs_2contributing.html#format-for-comments',1,'']]],
+  ['communication_8',['3. Communication',['../md_docs_2ai__usage.html#communication',1,'']]],
+  ['complex_20properties_9',['Complex Properties',['../md_docs_2examples.html#device-complex',1,'']]],
+  ['configure_20and_20build_10',['Configure and Build',['../md_docs_2contributing.html#configure-and-build',1,'']]],
+  ['configuring_20the_20template_11',['Configuring the Template',['../md_docs_2templates.html#template-configure',1,'']]],
+  ['constants_20h_20header_20and_20some_20are_20not_12',['Why are some enum definitions placed in the &lt;span class=&quot;tt&quot;&gt;constants.h&lt;/span&gt; header and some are not?',['../md_docs_2rationale.html#rationale-enum-definitions',1,'']]],
+  ['content_13',['Content',['../md_docs_2contributing.html#dynamic-content',1,'Dynamic Content'],['../md_docs_2contributing.html#static-content',1,'Static Content']]],
+  ['contributing_14',['Contributing',['../md_docs_2contributing.html',1,'']]],
+  ['contributions_15',['Contributions',['../md_docs_2ai__usage.html#extractive-contributions',1,'Extractive Contributions'],['../md_docs_2contributing.html#types-of-contributions',1,'Types of Contributions']]],
+  ['contributions_16',['AI-assisted contributions',['../md_docs_2contributing.html#ai-assisted-contributions',1,'']]],
+  ['copyright_17',['5. Licensing and Copyright',['../md_docs_2ai__usage.html#licensing-and-copyright',1,'']]],
+  ['core_20guidelines_18',['Core Guidelines',['../md_docs_2contributing.html#core-guidelines',1,'']]],
+  ['core_20principles_19',['Core Principles',['../md_docs_2ai__usage.html#core-principles',1,'']]],
+  ['coverage_20',['Running the C++ Tests and Code Coverage',['../md_docs_2contributing.html#running-the-c-tests-and-code-coverage',1,'']]],
+  ['creating_20a_20new_20project_21',['Creating a new Project',['../md_docs_2templates.html#template-create',1,'']]]
 ];
