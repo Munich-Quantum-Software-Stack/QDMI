@@ -100,6 +100,7 @@ add_custom_command(
   OUTPUT ${DOXYGEN_OUTPUT_DIR}/html/index.html
   DEPENDS ${DOXYGEN_INPUT_FILES}
           ${DOXYGEN_CONFIG_FILE_IN}
+          ${CMAKE_CURRENT_SOURCE_DIR}/ai_usage.md
           ${CMAKE_CURRENT_SOURCE_DIR}/header.html
           ${CMAKE_CURRENT_SOURCE_DIR}/layout.xml
           ${CMAKE_CURRENT_SOURCE_DIR}/style.css

@@ -327,9 +327,9 @@ is done for all files in the include directory.
 \verbatim
 
 /** @file
-* @brief A brief description of the file.
-* @details Some details about the file.
-  */
+ * @brief A brief description of the file.
+ * @details Some details about the file.
+ */
 
 \endverbatim
 <!-- prettier-ignore-end -->
@@ -343,7 +343,7 @@ is done for all files in the include directory.
 
 ### Maintaining the Changelog and Upgrade Guide {#maintaining-changelog-upgrade-guide}
 
-MQT Core adheres to [Semantic Versioning], with the exception that minor releases may include breaking changes.
+QDMI adheres to [Semantic Versioning], with the exception that minor releases may include breaking changes.
 To inform users about changes to the project, we maintain a {doc}`changelog <CHANGELOG>` and an {doc}`upgrade guide <UPGRADING>`.
 
 If your PR includes noteworthy changes, please update the changelog.
@@ -369,7 +369,7 @@ When updating the changelog, follow these guidelines:
 
 If your PR introduces major or breaking changes, or if you think additional context would help users, please also add a section to the upgrade guide.
 The upgrade guide is intended to provide a general overview of significant changes in a more descriptive and prose-oriented form than the changelog.
-Use it to explain how users may need to adapt their usage of MQT Core, highlight new workflows, or clarify the impact of important updates.
+Use it to explain how users may need to adapt their usage of QDMI, highlight new workflows, or clarify the impact of important updates.
 Feel free to write in a style that is helpful and accessible for users seeking to understand the broader implications of recent changes.
 
 ---
