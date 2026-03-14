@@ -116,4 +116,4 @@ To run the tests, perform the following command:
 ctest --test-dir build
 ```
 
-For more details on the development process, also check out the [Development Guide](guide.md).
+For more details on the development process, also check out the [Contributing Guide](contributing.md).
