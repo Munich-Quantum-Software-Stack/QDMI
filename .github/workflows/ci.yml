@@ -45,7 +45,7 @@ jobs:
       pull-requests: write
     needs: change-detection
     if: fromJSON(needs.change-detection.outputs.run-linter) && github.event.action != 'closed'
-    uses: munich-quantum-toolkit/workflows/.github/workflows/reusable-cpp-linter.yml@1ebbafc839b73f2edc0559d5456bfb8f848043fd # v1.17.14
+    uses: munich-quantum-toolkit/workflows/.github/workflows/reusable-cpp-linter.yml@afe75175d32177a7291bbb7bd11b3276f60fc810 # v1.17.15
     with:
       clang-version: 21
       cpp-linter-extra-args: "-std=c++20"
