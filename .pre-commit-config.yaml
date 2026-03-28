@@ -59,7 +59,7 @@ repos:
 
   # Clang-format the C++ part of the code base automatically
   - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: v22.1.1
+    rev: v22.1.2
     hooks:
       - id: clang-format
         types_or: [c++, c, cuda]
@@ -92,7 +92,7 @@ repos:
 
   # Check JSON schemata
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.37.0
+    rev: 0.37.1
     hooks:
       - id: check-dependabot
       - id: check-github-workflows
