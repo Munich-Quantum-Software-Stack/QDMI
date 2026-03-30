@@ -35,5 +35,8 @@ target_compile_definitions(
   cxx_device
   PRIVATE QDMI_VERSION="${qdmi_library_VERSION}"
           DEVICE_VERSION="${PROJECT_VERSION}" CXX_QDMI_device_EXPORTS)
-set_target_properties(cxx_device PROPERTIES CXX_VISIBILITY_PRESET hidden
-                                            CXX_VISIBILITY_INLINES_HIDDEN 1)
+set_target_properties(
+  cxx_device
+  PROPERTIES C_VISIBILITY_PRESET hidden
+             CXX_VISIBILITY_PRESET hidden
+             CXX_VISIBILITY_INLINES_HIDDEN 1)
