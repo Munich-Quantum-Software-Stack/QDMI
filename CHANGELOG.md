@@ -18,7 +18,7 @@ clients compiled against a different minor or major version.
 
 ### Changed
 
-- 🚸 Export _all_ device headers (incl. `constants.h`) as part of device implementations such that they do not need to link against the header-only QDMI library anymore ([#325]) ([\@ystade], [\@burgholzer])
+- 🚸 Export _all_ device headers (incl. `constants.h`) as part of device implementations such that they do not need to link against the header-only QDMI library anymore ([#325], [#373]) ([\@ystade], [\@burgholzer])
 - 🚸 Increase robustness of the QDMI device template (complete install instructions, uv caching, code cleanup) ([#333]) ([\@burgholzer])
 - 🚸 Add a symbol-export header for compiling devices with hidden symbol visibility ([#334]) ([\@burgholzer])
 - 📝 Improve contributing guidelines and documentation ([#354]) ([\@burgholzer])
@@ -129,6 +129,7 @@ changelogs._
 
 <!-- PR links -->
 
+[#373]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/373
 [#371]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/371
 [#355]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/355
 [#354]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/354

@@ -22,7 +22,8 @@
  * and the @ref device_interface.
  */
 
-#pragma once
+#ifndef QDMI_CONSTANTS_H
+#define QDMI_CONSTANTS_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -1163,3 +1164,5 @@ typedef enum QDMI_DEVICE_PULSE_SUPPORT_LEVEL_T QDMI_Device_Pulse_Support_Level;
 #ifdef __cplusplus
 } // extern "C"
 #endif
+
+#endif // QDMI_CONSTANTS_H
