@@ -39,7 +39,10 @@ The only thing that device implementations need to do is to provide a compile-de
 
 ```cmake
 target_compile_definitions(${QDMI_TARGET_NAME} PRIVATE MY_QDMI_device_EXPORTS)
-set_target_properties(${QDMI_TARGET_NAME} PROPERTIES CXX_VISIBILITY_PRESET hidden VISIBILITY_INLINES_HIDDEN 1)
+set_target_properties(${QDMI_TARGET_NAME} PROPERTIES
+                      C_VISIBILITY_PRESET hidden
+                      CXX_VISIBILITY_PRESET hidden
+                      CXX_VISIBILITY_INLINES_HIDDEN 1)
 ```
 
 where `MY` is, again, the device prefix.
