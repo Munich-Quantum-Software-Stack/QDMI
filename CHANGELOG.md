@@ -24,6 +24,10 @@ clients compiled against a different minor or major version.
 - 📝 Improve contributing guidelines and documentation ([#354]) ([\@burgholzer])
 - 📝 Improve documentation of the QDMI device template ([#354]) ([\@burgholzer])
 
+### Fixed
+
+- 🐛 Install CMake config files as part of the `qdmi_Development` component ([#371]) ([\@burgholzer])
+
 ## [1.2.1] - 2025-12-22
 
 _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#121)._
@@ -125,6 +129,7 @@ changelogs._
 
 <!-- PR links -->
 
+[#371]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/371
 [#355]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/355
 [#354]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/354
 [#334]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/334
