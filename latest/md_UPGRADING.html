@@ -198,7 +198,10 @@ $(function(){initNavTree('md_UPGRADING.html','',''); });
 <p>Device implementations may now be compiled with hidden symbol visibility, which is a common best practice for C++ libraries to reduce symbol clashes and improve load times. To ensure that all necessary symbols are exported, a new header file <span class="tt">my_qdmi/export.h</span> (where <span class="tt">my</span> is the device prefix) is provided as part of the device template. This header defines a macro for marking symbols for export, and you should use this macro to annotate all public symbols in your device implementation. Generally, we do this for you, by marking all QDMI interface functions with <span class="tt">MY_QDMI_EXPORT</span>.</p>
 <p>The only thing that device implementations need to do is to provide a compile-definition for <span class="tt">MY_QDMI_device_EXPORTS</span> and the settings for compiling with hidden symbol visibility:</p>
 <div class="fragment"><div class="line">target_compile_definitions(${QDMI_TARGET_NAME} PRIVATE MY_QDMI_device_EXPORTS)</div>
-<div class="line">set_target_properties(${QDMI_TARGET_NAME} PROPERTIES CXX_VISIBILITY_PRESET hidden VISIBILITY_INLINES_HIDDEN 1)</div>
+<div class="line">set_target_properties(${QDMI_TARGET_NAME} PROPERTIES</div>
+<div class="line">                      C_VISIBILITY_PRESET hidden</div>
+<div class="line">                      CXX_VISIBILITY_PRESET hidden</div>
+<div class="line">                      CXX_VISIBILITY_INLINES_HIDDEN 1)</div>
 </div><!-- fragment --><p>where <span class="tt">MY</span> is, again, the device prefix.</p>
 <h2>Updated QDMI device template</h2>
 <p>The QDMI device template has been updated to be compatible with the latest version of the QDMI specification and to include several improvements. Most importantly, as described above, the device implementation no longer needs to link against the QDMI header-only library and is now built with hidden symbol visibility by default.</p>
