@@ -201,7 +201,7 @@ $(function(){initNavTree('md_UPGRADING.html','',''); });
 <div class="line">set_target_properties(${QDMI_TARGET_NAME} PROPERTIES</div>
 <div class="line">                      C_VISIBILITY_PRESET hidden</div>
 <div class="line">                      CXX_VISIBILITY_PRESET hidden</div>
-<div class="line">                      CXX_VISIBILITY_INLINES_HIDDEN 1)</div>
+<div class="line">                      VISIBILITY_INLINES_HIDDEN 1)</div>
 </div><!-- fragment --><p>where <span class="tt">MY</span> is, again, the device prefix.</p>
 <h2>Updated QDMI device template</h2>
 <p>The QDMI device template has been updated to be compatible with the latest version of the QDMI specification and to include several improvements. Most importantly, as described above, the device implementation no longer needs to link against the QDMI header-only library and is now built with hidden symbol visibility by default.</p>
