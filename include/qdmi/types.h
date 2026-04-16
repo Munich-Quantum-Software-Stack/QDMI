@@ -45,11 +45,11 @@ extern "C" {
  *
  * A simple example of an implementation is a struct that merely contains the
  * site ID, which can be used to identify the site.
- * ```
+ * @code{.cpp}
  * struct QDMI_Site_impl_d {
  *   size_t id;
  * };
- * ```
+ * @endcode
  */
 typedef struct QDMI_Site_impl_d *QDMI_Site;
 
@@ -64,11 +64,11 @@ typedef struct QDMI_Site_impl_d *QDMI_Site;
  *
  * A simple example of an implementation is a struct that merely contains the
  * name of the operation, which can be used to identify the operation.
- * ```
+ * @code{.cpp}
  * struct QDMI_Operation_impl_d {
  *   std::string name;
  * };
- * ```
+ * @endcode
  */
 typedef struct QDMI_Operation_impl_d *QDMI_Operation;
 
