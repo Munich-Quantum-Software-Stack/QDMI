@@ -259,9 +259,7 @@ Functions</h2></td></tr>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a0cf40a28841e7b8bcba223ae28a3713d">QDMI_ERROR_OUTOFMEM</a> if memory space ran out. </dd>
 <dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3">QDMI_ERROR_FATAL</a> if an unexpected error occurred. </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#gaaf2fd0617860189cdbb2cc5c43d77c54" title="Set a parameter for a device session.">QDMI_device_session_set_parameter</a> </dd>
-<dd>
-<a class="el" href="#ga37ea0856259fc946fb45ac0c1dd748f4" title="Initialize a device session.">QDMI_device_session_init</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#gaaf2fd0617860189cdbb2cc5c43d77c54" title="Set a parameter for a device session.">QDMI_device_session_set_parameter</a> <a class="el" href="#ga37ea0856259fc946fb45ac0c1dd748f4" title="Initialize a device session.">QDMI_device_session_init</a> </dd></dl>
 
 </div>
 </div>
@@ -319,7 +317,25 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3">QDMI_ERROR_FATAL</a> if an unexpected error occurred. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#ga37ea0856259fc946fb45ac0c1dd748f4" title="Initialize a device session.">QDMI_device_session_init</a></dd></dl>
-<dl class="section remark"><dt>Remarks</dt><dd>Calling this function with <code class="param">value</code> set to <code>NULL</code> is expected to allow checking if the device supports the specified parameter without setting a value. See the <a class="el" href="group__client__session__interface.html#ga39d34b2a95cd9e2b8d9d6ab551bff078">QDMI_session_set_parameter</a> documentation for an example. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd><p class="startdd">By calling this function with <code class="param">value</code> set to <code>NULL</code>, the function can be used to check if the device supports the specified parameter without setting a value.</p>
+<p class="interdd">For example, to check whether the device supports setting a token for authentication, the following code pattern can be used:</p>
+<div class="fragment"><div class="line"><span class="comment">// Check if the device supports setting a token.</span></div>
+<div class="line"><span class="keyword">auto</span> ret = <a class="code hl_function" href="#gaaf2fd0617860189cdbb2cc5c43d77c54">QDMI_device_session_set_parameter</a>(</div>
+<div class="line">  session, <a class="code hl_enumvalue" href="constants_8h.html#a9f1e467b2b3870263b0e9d7e5d36cea4a497c89c2b59737d70086a54e1958c292">QDMI_DEVICE_SESSION_PARAMETER_TOKEN</a>, 0, <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="keywordflow">if</span> (ret == <a class="code hl_enumvalue" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a>) {</div>
+<div class="line">  <span class="comment">// The device does not support setting a token.</span></div>
+<div class="line">  ...</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Set the token.</span></div>
+<div class="line">std::string token = <span class="stringliteral">&quot;token&quot;</span>;</div>
+<div class="line">ret = <a class="code hl_function" href="#gaaf2fd0617860189cdbb2cc5c43d77c54">QDMI_device_session_set_parameter</a>(</div>
+<div class="line">  session, <a class="code hl_enumvalue" href="constants_8h.html#a9f1e467b2b3870263b0e9d7e5d36cea4a497c89c2b59737d70086a54e1958c292">QDMI_DEVICE_SESSION_PARAMETER_TOKEN</a>, token.size() + 1,</div>
+<div class="line">  token.c_str());</div>
+<div class="ttc" id="aconstants_8h_html_a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651"><div class="ttname"><a href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a></div><div class="ttdeci">@ QDMI_ERROR_NOTSUPPORTED</div><div class="ttdef"><b>Definition</b> constants.h:50</div></div>
+<div class="ttc" id="aconstants_8h_html_a9f1e467b2b3870263b0e9d7e5d36cea4a497c89c2b59737d70086a54e1958c292"><div class="ttname"><a href="constants_8h.html#a9f1e467b2b3870263b0e9d7e5d36cea4a497c89c2b59737d70086a54e1958c292">QDMI_DEVICE_SESSION_PARAMETER_TOKEN</a></div><div class="ttdeci">@ QDMI_DEVICE_SESSION_PARAMETER_TOKEN</div><div class="ttdoc">char* (string) A token to be used in the session initialization for authenticating with the device.</div><div class="ttdef"><b>Definition</b> constants.h:80</div></div>
+<div class="ttc" id="agroup__device__session__interface_html_gaaf2fd0617860189cdbb2cc5c43d77c54"><div class="ttname"><a href="#gaaf2fd0617860189cdbb2cc5c43d77c54">QDMI_device_session_set_parameter</a></div><div class="ttdeci">int QDMI_device_session_set_parameter(QDMI_Device_Session session, QDMI_Device_Session_Parameter param, size_t size, const void *value)</div><div class="ttdoc">Set a parameter for a device session.</div></div>
+</div><!-- fragment --> </dd></dl>
 
 </div>
 </div>
@@ -354,15 +370,7 @@ Functions</h2></td></tr>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a916e0810bf915e2ad67f2c1430c54fec">QDMI_ERROR_BADSTATE</a> if the session is not in a state allowing initialization, for example, because the session is already initialized. </dd>
 <dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3">QDMI_ERROR_FATAL</a> if an unexpected error occurred. </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#gaaf2fd0617860189cdbb2cc5c43d77c54" title="Set a parameter for a device session.">QDMI_device_session_set_parameter</a> </dd>
-<dd>
-<a class="el" href="group__device__query__interface.html#ga9bdebc2bce6e2c6ad9e19096aadf6086" title="Query a device property.">QDMI_device_session_query_device_property</a> </dd>
-<dd>
-<a class="el" href="group__device__query__interface.html#ga953bf947b1efcfaa3fb63dcce61127d5" title="Query a site property.">QDMI_device_session_query_site_property</a> </dd>
-<dd>
-<a class="el" href="group__device__query__interface.html#ga7e15ce0bf5619eb28059fc00d1b9e501" title="Query an operation property.">QDMI_device_session_query_operation_property</a> </dd>
-<dd>
-<a class="el" href="group__device__job__interface.html#ga63f4e17de8a04f7caeeb195f5d276f5c" title="Create a job.">QDMI_device_session_create_device_job</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#gaaf2fd0617860189cdbb2cc5c43d77c54" title="Set a parameter for a device session.">QDMI_device_session_set_parameter</a> <a class="el" href="group__device__query__interface.html#ga9bdebc2bce6e2c6ad9e19096aadf6086" title="Query a device property.">QDMI_device_session_query_device_property</a> <a class="el" href="group__device__query__interface.html#ga953bf947b1efcfaa3fb63dcce61127d5" title="Query a site property.">QDMI_device_session_query_site_property</a> <a class="el" href="group__device__query__interface.html#ga7e15ce0bf5619eb28059fc00d1b9e501" title="Query an operation property.">QDMI_device_session_query_operation_property</a> <a class="el" href="group__device__job__interface.html#ga63f4e17de8a04f7caeeb195f5d276f5c" title="Create a job.">QDMI_device_session_create_device_job</a> </dd></dl>
 
 </div>
 </div>
