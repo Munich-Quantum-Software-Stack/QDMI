@@ -24,22 +24,30 @@
 #pragma once
 
 #ifdef QDMI_STATIC_DEFINE
+/// Mark symbols as visible to other modules (no effect on static library
+/// builds).
 #define QDMI_EXPORT
+/// Mark symbols as not visible to other modules (no effect on static library
+/// builds).
 #define QDMI_NO_EXPORT
 #else
 #ifndef QDMI_EXPORT
 #ifdef QDMI_device_EXPORTS
 /* We are building this library */
 #ifdef _WIN32
+/// Mark symbols as visible to other modules.
 #define QDMI_EXPORT __declspec(dllexport)
 #else
+/// Mark symbols as visible to other modules.
 #define QDMI_EXPORT __attribute__((visibility("default")))
 #endif
 #else
 /* We are using this library */
 #ifdef _WIN32
+/// Mark symbols as visible to other modules.
 #define QDMI_EXPORT __declspec(dllimport)
 #else
+/// Mark symbols as visible to other modules.
 #define QDMI_EXPORT __attribute__((visibility("default")))
 #endif
 #endif
@@ -47,8 +55,10 @@
 
 #ifndef QDMI_NO_EXPORT
 #ifdef _WIN32
+/// Mark symbols as not visible to other modules.
 #define QDMI_NO_EXPORT
 #else
+/// Mark symbols as not visible to other modules.
 #define QDMI_NO_EXPORT __attribute__((visibility("hidden")))
 #endif
 #endif
@@ -56,16 +66,20 @@
 
 #ifndef QDMI_DEPRECATED
 #ifdef _WIN32
+/// Mark symbols as deprecated.
 #define QDMI_DEPRECATED __declspec(deprecated)
 #else
+/// Mark symbols as deprecated.
 #define QDMI_DEPRECATED __attribute__((__deprecated__))
 #endif
 #endif
 
 #ifndef QDMI_DEPRECATED_EXPORT
+/// Mark symbols as deprecated but export them.
 #define QDMI_DEPRECATED_EXPORT QDMI_EXPORT QDMI_DEPRECATED
 #endif
 
 #ifndef QDMI_DEPRECATED_NO_EXPORT
+/// Mark symbols as deprecated but do not export them.
 #define QDMI_DEPRECATED_NO_EXPORT QDMI_NO_EXPORT QDMI_DEPRECATED
 #endif
