@@ -194,9 +194,11 @@ if(INSTALL_QDMI)
     VERSION ${PROJECT_VERSION}
     COMPATIBILITY SameMinorVersion)
 
-  install(FILES "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config.cmake"
-                "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake"
-          DESTINATION ${QDMI_CONFIG_INSTALL_DIR})
+  install(
+    FILES "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config.cmake"
+          "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake"
+    DESTINATION ${QDMI_CONFIG_INSTALL_DIR}
+    COMPONENT ${PROJECT_NAME}_Development)
 
   set(QDMI_INSTALL_TARGETS ${QDMI_INSTALL_TARGETS} qdmi qdmi_project_warnings)
   if(ENABLE_COVERAGE)

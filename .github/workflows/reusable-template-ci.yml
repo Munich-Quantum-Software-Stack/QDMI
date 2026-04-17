@@ -43,7 +43,7 @@ jobs:
           cmake -G Ninja -S . -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_MQSS_QDMI_TESTS=ON
           cmake --build build --config Release
       - name: Install Doxygen
-        uses: ssciwr/doxygen-install@ad81ff239f3be5262e2577abce2d728c426fcc59 # v2.0.0
+        uses: ssciwr/doxygen-install@329d88f5a303066a5bd006db7516b1925b86350e # v2.0.1
         with:
           version: "1.15.0"
       - name: Build docs
@@ -51,16 +51,16 @@ jobs:
           cmake -G Ninja -S . -B build_docs -DCMAKE_BUILD_TYPE=Release -DBUILD_MQSS_QDMI_DOCS=ON -DBUILD_MQSS_QDMI_TESTS=OFF
           cmake --build build_docs --config Release --target mqss_qdmi_device_docs
           rm -rf build_docs
-      - uses: pypa/cibuildwheel@298ed2fb2c105540f5ed055e8a6ad78d82dd3a7e # v3.3.1
+      - uses: pypa/cibuildwheel@8d2b08b68458a16aeb24b64e68a09ab1c8e82084 # v3.4.1
       - name: Verify clean directory
         run: git diff --exit-code
       - name: Upload wheels
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: ${{ github.event_name == 'pull_request' && 'dev-' || '' }}cibw-wheels-${{ runner.runs-on }}
           path: wheelhouse/*.whl
       - name: Install the latest version of uv
-        uses: astral-sh/setup-uv@eac588ad8def6316056a12d4907a9d4d84ff7a3b # v7.3.0
+        uses: astral-sh/setup-uv@cec208311dfd045dd5311c1add060b2062131d57 # v8.0.0
         with:
           enable-cache: true
           save-cache: ${{ github.ref == 'refs/heads/main' }}
@@ -70,7 +70,7 @@ jobs:
         run: uvx twine check dist/*
       - name: Run check-sdist
         run: uvx check-sdist --inject-junk
-      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: ${{ github.event_name == 'pull_request' && 'dev-' || '' }}cibw-sdist
           path: dist/*.tar.gz

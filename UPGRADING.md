@@ -31,18 +31,25 @@ where `my` is the prefix of your device implementation.
 ### New header for managing exported symbols of device implementations
 
 Device implementations may now be compiled with hidden symbol visibility, which is a common best practice for C++ libraries to reduce symbol clashes and improve load times.
-To ensure that all necessary symbols are exported, a new header file `my_qdmi/export.h` (where `my` is the device prefix) is provided as part of the device template.
-This header defines a macro for marking symbols for export, and you should use this macro to annotate all public symbols in your device implementation.
-Generally, we do this for you, by marking all QDMI interface functions with `MY_QDMI_EXPORT`.
+In practice, this means that only symbols explicitly marked for export are accessible from outside the device library.
 
-The only thing that device implementations need to do is to provide a compile-definition for `MY_QDMI_device_EXPORTS` and the settings for compiling with hidden symbol visibility:
+The header `my_qdmi/export.h` (where `my` is your device prefix) provides the export macro `MY_QDMI_EXPORT`.
+Use this header to control which symbols are part of your public API.
+
+All QDMI interface functions are already marked for export in `my_qdmi/device.h`.
+You only need to add `MY_QDMI_EXPORT` manually for additional custom public functions.
+
+To enable this behavior, add the following CMake code to your device target's configuration:
 
 ```cmake
 target_compile_definitions(${QDMI_TARGET_NAME} PRIVATE MY_QDMI_device_EXPORTS)
-set_target_properties(${QDMI_TARGET_NAME} PROPERTIES CXX_VISIBILITY_PRESET hidden VISIBILITY_INLINES_HIDDEN 1)
+set_target_properties(${QDMI_TARGET_NAME} PROPERTIES
+                      C_VISIBILITY_PRESET hidden
+                      CXX_VISIBILITY_PRESET hidden
+                      VISIBILITY_INLINES_HIDDEN 1)
 ```
 
-where `MY` is, again, the device prefix.
+where `MY` is your device prefix.
 
 ### Updated QDMI device template
 

@@ -14,13 +14,21 @@ clients compiled against a different minor or major version.
 ### Added
 
 - 👨‍💻 Add an option to disable installation instructions for QDMI (example and template) device ([#326]) ([\@ystade])
+- 👷 Add mergify configuration for easier backports and maintenance of release branches ([#355]) ([\@burgholzer])
+- 🤖 Add policy for AI usage within the project ([#354]) ([\@burgholzer])
 
 ### Changed
 
-- 👨‍💻 Base the example device implementation on the device template ([#326]) ([\@ystade])
+- 🚸 Export _all_ device headers (incl. `constants.h`) as part of device implementations such that they do not need to link against the header-only QDMI library anymore ([#325], [#373]) ([\@ystade], [\@burgholzer])
 - 🚸 Increase robustness of the QDMI device template (complete install instructions, uv caching, code cleanup) ([#333]) ([\@burgholzer])
-- 🚸 Add a symbol-export header for compiling devices with hidden symbol visibility ([#334]) ([\@burgholzer])
-- 🚸 Export _all_ device headers (incl. `constants.h`) as part of device implementations such that they do not need to link against the header-only QDMI library anymore ([#325]) ([\@ystade], [\@burgholzer])
+- 🚸 Add a symbol-export header for compiling devices with hidden symbol visibility ([#334], [#375], [#377]) ([\@burgholzer])
+- 📝 Improve contributing guidelines and documentation ([#354]) ([\@burgholzer])
+- 📝 Improve documentation of the QDMI device template ([#354]) ([\@burgholzer])
+- 👨‍💻 Base the example device implementation on the device template ([#326]) ([\@ystade])
+
+### Fixed
+
+- 🐛 Install CMake config files as part of the `qdmi_Development` component ([#371]) ([\@burgholzer])
 
 ## [1.2.1] - 2025-12-22
 
@@ -123,6 +131,12 @@ changelogs._
 
 <!-- PR links -->
 
+[#377]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/377
+[#375]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/375
+[#373]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/373
+[#371]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/371
+[#355]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/355
+[#354]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/354
 [#334]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/334
 [#333]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/333
 [#326]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/326
