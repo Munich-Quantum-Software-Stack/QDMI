@@ -257,7 +257,22 @@ Functions</h2></td></tr>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a916e0810bf915e2ad67f2c1430c54fec">QDMI_ERROR_BADSTATE</a> if the property cannot be queried in the current state of the session, for example, because the session is not initialized. </dd>
 <dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3">QDMI_ERROR_FATAL</a> if an unexpected error occurred.</dd></dl>
-<dl class="section remark"><dt>Remarks</dt><dd>Calling this function with <code class="param">value</code> set to <code>NULL</code> is expected to allow checking if the device supports the specified property without retrieving the property and without the need to provide a buffer for it. Additionally, the size of the buffer needed to retrieve the property is returned in <code class="param">size_ret</code> if <code class="param">size_ret</code> is not <code>NULL</code>. See the <a class="el" href="group__client__query__interface.html#ga3ed6ddec5adc23e3b08706807dda8430">QDMI_device_query_device_property</a> documentation for an example.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd><p class="startdd">By calling this function with <code class="param">value</code> set to <code>NULL</code>, the function can be used to check if the device supports the specified property without retrieving the property and without the need to provide a buffer for it. Additionally, the size of the buffer needed to retrieve the property is returned in <code class="param">size_ret</code> if <code class="param">size_ret</code> is not <code>NULL</code>.</p>
+<p class="interdd">For example, to query the name of a device implementation, the following code pattern can be used: </p><div class="fragment"><div class="line"><span class="comment">// Query the size of the property.</span></div>
+<div class="line"><span class="keywordtype">size_t</span> size;</div>
+<div class="line"><a class="code hl_function" href="#ga9bdebc2bce6e2c6ad9e19096aadf6086">QDMI_device_session_query_device_property</a>(</div>
+<div class="line">  session, <a class="code hl_enumvalue" href="constants_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a18d3f183afc4d65c9e368f7cedf2d741">QDMI_DEVICE_PROPERTY_NAME</a>, 0, <span class="keyword">nullptr</span>, &amp;size);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Allocate memory for the property.</span></div>
+<div class="line"><span class="keyword">auto</span> name = std::string(size - 1, <span class="charliteral">&#39;\0&#39;</span>);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Query the property.</span></div>
+<div class="line"><a class="code hl_function" href="#ga9bdebc2bce6e2c6ad9e19096aadf6086">QDMI_device_session_query_device_property</a>(</div>
+<div class="line">  session, <a class="code hl_enumvalue" href="constants_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a18d3f183afc4d65c9e368f7cedf2d741">QDMI_DEVICE_PROPERTY_NAME</a>, size, name.data(), <span class="keyword">nullptr</span>);</div>
+<div class="ttc" id="aconstants_8h_html_ad251d8ae8fbbe9a5c7a10d66b243d526a18d3f183afc4d65c9e368f7cedf2d741"><div class="ttname"><a href="constants_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a18d3f183afc4d65c9e368f7cedf2d741">QDMI_DEVICE_PROPERTY_NAME</a></div><div class="ttdeci">@ QDMI_DEVICE_PROPERTY_NAME</div><div class="ttdoc">char* (string) The name of the device.</div><div class="ttdef"><b>Definition</b> constants.h:281</div></div>
+<div class="ttc" id="agroup__device__query__interface_html_ga9bdebc2bce6e2c6ad9e19096aadf6086"><div class="ttname"><a href="#ga9bdebc2bce6e2c6ad9e19096aadf6086">QDMI_device_session_query_device_property</a></div><div class="ttdeci">int QDMI_device_session_query_device_property(QDMI_Device_Session session, QDMI_Device_Property prop, size_t size, void *value, size_t *size_ret)</div><div class="ttdoc">Query a device property.</div></div>
+</div><!-- fragment --><p class="enddd"></p>
+</dd></dl>
 <dl class="section attention"><dt>Attention</dt><dd>May only be called after the session has been initialized with <a class="el" href="group__device__session__interface.html#ga37ea0856259fc946fb45ac0c1dd748f4">QDMI_device_session_init</a>. </dd></dl>
 
 </div>
@@ -327,7 +342,24 @@ Functions</h2></td></tr>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a916e0810bf915e2ad67f2c1430c54fec">QDMI_ERROR_BADSTATE</a> if the property cannot be queried in the current state of the session, for example, because the session is not initialized. </dd>
 <dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3">QDMI_ERROR_FATAL</a> if an unexpected error occurred.</dd></dl>
-<dl class="section remark"><dt>Remarks</dt><dd>Calling this function with <code class="param">value</code> set to <code>NULL</code> is expected to allow checking if the device supports the specified property without retrieving the property and without the need to provide a buffer for it. Additionally, the size of the buffer needed to retrieve the property is returned in <code class="param">size_ret</code> if <code class="param">size_ret</code> is not <code>NULL</code>. See the <a class="el" href="group__client__query__interface.html#gae6e14d1868412f8e80904377116938bb">QDMI_device_query_site_property</a> documentation for an example.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd><p class="startdd">By calling this function with <code class="param">value</code> set to <code>NULL</code>, the function can be used to check if the device supports the specified property without retrieving the property and without the need to provide a buffer for it. Additionally, the size of the buffer needed to retrieve the property is returned in <code class="param">size_ret</code> if <code class="param">size_ret</code> is not <code>NULL</code>.</p>
+<p class="interdd">For example, to query the T1 time of a site, the following code pattern can be used: </p><div class="fragment"><div class="line"><span class="comment">// Check if the device supports the property.</span></div>
+<div class="line"><span class="keyword">auto</span> ret = <a class="code hl_function" href="#ga953bf947b1efcfaa3fb63dcce61127d5">QDMI_device_session_query_site_property</a>(</div>
+<div class="line">  session, site, <a class="code hl_enumvalue" href="constants_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2a60262ea30467ff3d36cbe4730c4a23f3">QDMI_SITE_PROPERTY_T1</a>, 0, <span class="keyword">nullptr</span>, <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="keywordflow">if</span> (ret == <a class="code hl_enumvalue" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a>) {</div>
+<div class="line">  <span class="comment">// The device does not support the property.</span></div>
+<div class="line">  ...</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Query the property.</span></div>
+<div class="line">uint64_t t1;</div>
+<div class="line"><a class="code hl_function" href="#ga953bf947b1efcfaa3fb63dcce61127d5">QDMI_device_session_query_site_property</a>(</div>
+<div class="line">  session, site, <a class="code hl_enumvalue" href="constants_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2a60262ea30467ff3d36cbe4730c4a23f3">QDMI_SITE_PROPERTY_T1</a>, <span class="keyword">sizeof</span>(uint64_t), &amp;t1, <span class="keyword">nullptr</span>);</div>
+<div class="ttc" id="aconstants_8h_html_a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651"><div class="ttname"><a href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a></div><div class="ttdeci">@ QDMI_ERROR_NOTSUPPORTED</div><div class="ttdef"><b>Definition</b> constants.h:50</div></div>
+<div class="ttc" id="aconstants_8h_html_a69ef10d452cc6f03cac8a917ba48d6e2a60262ea30467ff3d36cbe4730c4a23f3"><div class="ttname"><a href="constants_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2a60262ea30467ff3d36cbe4730c4a23f3">QDMI_SITE_PROPERTY_T1</a></div><div class="ttdeci">@ QDMI_SITE_PROPERTY_T1</div><div class="ttdoc">uint64_t The raw, unscaled T1 time of a site.</div><div class="ttdef"><b>Definition</b> constants.h:484</div></div>
+<div class="ttc" id="agroup__device__query__interface_html_ga953bf947b1efcfaa3fb63dcce61127d5"><div class="ttname"><a href="#ga953bf947b1efcfaa3fb63dcce61127d5">QDMI_device_session_query_site_property</a></div><div class="ttdeci">int QDMI_device_session_query_site_property(QDMI_Device_Session session, QDMI_Site site, QDMI_Site_Property prop, size_t size, void *value, size_t *size_ret)</div><div class="ttdoc">Query a site property.</div></div>
+</div><!-- fragment --><p class="enddd"></p>
+</dd></dl>
 <dl class="section attention"><dt>Attention</dt><dd>May only be called after the session has been initialized with <a class="el" href="group__device__session__interface.html#ga37ea0856259fc946fb45ac0c1dd748f4">QDMI_device_session_init</a>. </dd></dl>
 
 </div>
@@ -421,11 +453,28 @@ Functions</h2></td></tr>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a916e0810bf915e2ad67f2c1430c54fec">QDMI_ERROR_BADSTATE</a> if the property cannot be queried in the current state of the session, for example, because the session is not initialized. </dd>
 <dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3">QDMI_ERROR_FATAL</a> if an unexpected error occurred.</dd></dl>
-<dl class="section remark"><dt>Remarks</dt><dd>Calling this function with <code class="param">sites</code> set to <code>NULL</code> is expected to allow querying properties of the device that are independent of the sites. A device will return <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a> if the queried property is site-dependent and <code class="param">sites</code> is <code>NULL</code>.</dd>
-<dd>
-Calling this function with <code class="param">params</code> set to <code>NULL</code> is expected to allow querying properties of the device that are independent of the values of the parameters. A device will return <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a> if the queried property is parameter-dependent and <code class="param">params</code> is <code>NULL</code>.</dd>
-<dd>
-Calling this function with <code class="param">value</code> set to <code>NULL</code> is expected to allow checking if the device supports the specified property without retrieving the property and without the need to provide a buffer for it. Additionally, the size of the buffer needed to retrieve the property is returned in <code class="param">size_ret</code> if <code class="param">size_ret</code> is not <code>NULL</code>. See the <a class="el" href="group__client__query__interface.html#ga4cac0fe85f5405e58ea4892e7b9080b6">QDMI_device_query_operation_property</a> documentation for an example.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd><p class="startdd">By calling this function with <code class="param">sites</code> set to <code>NULL</code>, the function can be used to query properties of the device that are independent of the sites. A device will return <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a> if the queried property is site-dependent and <code class="param">sites</code> is <code>NULL</code>.</p>
+<p class="interdd">By calling this function with <code class="param">params</code> set to <code>NULL</code>, the function can be used to query properties of the device that are independent of the values of the parameters. A device will return <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a> if the queried property is parameter-dependent and <code class="param">params</code> is <code>NULL</code>.</p>
+<p class="interdd">By calling this function with <code class="param">value</code> set to <code>NULL</code>, the function can be used to check if the device supports the specified property without retrieving the property and without the need to provide a buffer for it. Additionally, the size of the buffer needed to retrieve the property is returned in <code class="param">size_ret</code> if <code class="param">size_ret</code> is not <code>NULL</code>.</p>
+<p class="interdd">For example, to query the site-independent fidelity of an operation without parameters, the following code snippet can be used: </p><div class="fragment"><div class="line"><span class="comment">// Check if the device supports the property.</span></div>
+<div class="line"><span class="keyword">auto</span> ret = <a class="code hl_function" href="#ga7e15ce0bf5619eb28059fc00d1b9e501">QDMI_device_session_query_operation_property</a>(</div>
+<div class="line">  session, operation, 0, <span class="keyword">nullptr</span>, 0, <span class="keyword">nullptr</span>,</div>
+<div class="line">  <a class="code hl_enumvalue" href="constants_8h.html#ab23d5f0c5296e3eab4243e91f1213726aeff33960f7a3da9e17058cf9bf05da77">QDMI_OPERATION_PROPERTY_FIDELITY</a>, 0, <span class="keyword">nullptr</span>, <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="keywordflow">if</span> (ret == <a class="code hl_enumvalue" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a>) {</div>
+<div class="line">  <span class="comment">// The device does not support the site-independent property.</span></div>
+<div class="line">  <span class="comment">// Check if the device supports the site-dependent property.</span></div>
+<div class="line">  ...</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Query the property.</span></div>
+<div class="line"><span class="keywordtype">double</span> fidelity;</div>
+<div class="line"><a class="code hl_function" href="#ga7e15ce0bf5619eb28059fc00d1b9e501">QDMI_device_session_query_operation_property</a>(</div>
+<div class="line">  session, operation, 0, <span class="keyword">nullptr</span>, 0, <span class="keyword">nullptr</span>,</div>
+<div class="line">  <a class="code hl_enumvalue" href="constants_8h.html#ab23d5f0c5296e3eab4243e91f1213726aeff33960f7a3da9e17058cf9bf05da77">QDMI_OPERATION_PROPERTY_FIDELITY</a>, <span class="keyword">sizeof</span>(<span class="keywordtype">double</span>), &amp;fidelity, <span class="keyword">nullptr</span>);</div>
+<div class="ttc" id="aconstants_8h_html_ab23d5f0c5296e3eab4243e91f1213726aeff33960f7a3da9e17058cf9bf05da77"><div class="ttname"><a href="constants_8h.html#ab23d5f0c5296e3eab4243e91f1213726aeff33960f7a3da9e17058cf9bf05da77">QDMI_OPERATION_PROPERTY_FIDELITY</a></div><div class="ttdeci">@ QDMI_OPERATION_PROPERTY_FIDELITY</div><div class="ttdoc">double The fidelity of an operation.</div><div class="ttdef"><b>Definition</b> constants.h:694</div></div>
+<div class="ttc" id="agroup__device__query__interface_html_ga7e15ce0bf5619eb28059fc00d1b9e501"><div class="ttname"><a href="#ga7e15ce0bf5619eb28059fc00d1b9e501">QDMI_device_session_query_operation_property</a></div><div class="ttdeci">int QDMI_device_session_query_operation_property(QDMI_Device_Session session, QDMI_Operation operation, size_t num_sites, const QDMI_Site *sites, size_t num_params, const double *params, QDMI_Operation_Property prop, size_t size, void *value, size_t *size_ret)</div><div class="ttdoc">Query an operation property.</div></div>
+</div><!-- fragment --><p class="enddd"></p>
+</dd></dl>
 <dl class="section attention"><dt>Attention</dt><dd>May only be called after the session has been initialized with <a class="el" href="group__device__session__interface.html#ga37ea0856259fc946fb45ac0c1dd748f4">QDMI_device_session_init</a>. </dd></dl>
 
 </div>

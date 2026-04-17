@@ -338,7 +338,23 @@ Functions</h2></td></tr>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8ab875f28072043ad44f7ee5290bba8d01">QDMI_ERROR_PERMISSIONDENIED</a> if the device does not allow using the <a class="el" href="group__device__job__interface.html">device job interface</a> for the current session. </dd>
 <dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3">QDMI_ERROR_FATAL</a> if setting the parameter failed due to a fatal error.</dd></dl>
-<dl class="section remark"><dt>Remarks</dt><dd>Calling this function with <code class="param">value</code> set to <code>NULL</code> is expected to allow checking if the device supports the specified parameter without setting the parameter and without the need to provide a value. See the <a class="el" href="group__client__job__interface.html#ga94b84ea6efa5e7f2ad1ee65bff04381c">QDMI_job_set_parameter</a> documentation for an example. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd><p class="startdd">By calling this function with <code class="param">value</code> set to <code>NULL</code>, the function can be used to check if the device supports the specified parameter without setting the parameter and without the need to provide a value.</p>
+<p class="enddd">For example, to check whether the device supports setting the number of shots for a quantum circuit job, the following code pattern can be used: </p><div class="fragment"><div class="line"><span class="comment">// Check if the device supports setting the number of shots.</span></div>
+<div class="line"><span class="keyword">auto</span> ret = <a class="code hl_function" href="#ga1ff5eda213c2bd60599efeac2166654d">QDMI_device_job_set_parameter</a>(</div>
+<div class="line">  job, <a class="code hl_enumvalue" href="constants_8h.html#a40dd25c531ebf99fb4b46469083b609ea4ecec990e69afb205f9801433be37b26">QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM</a>, 0, <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="keywordflow">if</span> (ret == <a class="code hl_enumvalue" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a>) {</div>
+<div class="line">  <span class="comment">// The device does not support setting the number of shots.</span></div>
+<div class="line">  ...</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Set the number of shots.</span></div>
+<div class="line"><span class="keywordtype">size_t</span> shots = 8192;</div>
+<div class="line"><a class="code hl_function" href="#ga1ff5eda213c2bd60599efeac2166654d">QDMI_device_job_set_parameter</a>(</div>
+<div class="line">  job, <a class="code hl_enumvalue" href="constants_8h.html#a40dd25c531ebf99fb4b46469083b609ea4ecec990e69afb205f9801433be37b26">QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM</a>, <span class="keyword">sizeof</span>(<span class="keywordtype">size_t</span>), &amp;shots);</div>
+<div class="ttc" id="aconstants_8h_html_a40dd25c531ebf99fb4b46469083b609ea4ecec990e69afb205f9801433be37b26"><div class="ttname"><a href="constants_8h.html#a40dd25c531ebf99fb4b46469083b609ea4ecec990e69afb205f9801433be37b26">QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM</a></div><div class="ttdeci">@ QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM</div><div class="ttdoc">size_t The number of shots to execute for a quantum circuit job.</div><div class="ttdef"><b>Definition</b> constants.h:176</div></div>
+<div class="ttc" id="aconstants_8h_html_a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651"><div class="ttname"><a href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a></div><div class="ttdeci">@ QDMI_ERROR_NOTSUPPORTED</div><div class="ttdef"><b>Definition</b> constants.h:50</div></div>
+<div class="ttc" id="agroup__device__job__interface_html_ga1ff5eda213c2bd60599efeac2166654d"><div class="ttname"><a href="#ga1ff5eda213c2bd60599efeac2166654d">QDMI_device_job_set_parameter</a></div><div class="ttdeci">int QDMI_device_job_set_parameter(QDMI_Device_Job job, QDMI_Device_Job_Parameter param, size_t size, const void *value)</div><div class="ttdoc">Set a parameter for a job.</div></div>
+</div><!-- fragment --> </dd></dl>
 
 </div>
 </div>
@@ -401,7 +417,21 @@ Functions</h2></td></tr>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a916e0810bf915e2ad67f2c1430c54fec">QDMI_ERROR_BADSTATE</a> if the property cannot be queried in the current state of the job, for example, because the job failed or the property is not initialized because it has no default value and was not set. </dd>
 <dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3">QDMI_ERROR_FATAL</a> if an unexpected error occurred.</dd></dl>
-<dl class="section remark"><dt>Remarks</dt><dd>Calling this function with <code class="param">value</code> set to <code>NULL</code> is expected to allow checking if the job supports the specified property without retrieving the property and without the need to provide a buffer for it. Additionally, the size of the buffer needed to retrieve the property is returned in <code class="param">size_ret</code> if <code class="param">size_ret</code> is not <code>NULL</code>. See the <a class="el" href="group__client__query__interface.html#ga3ed6ddec5adc23e3b08706807dda8430">QDMI_device_query_device_property</a> documentation for an example. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd><p class="startdd">By calling this function with <code class="param">value</code> set to <code>NULL</code>, the function can be used to check if the job supports the specified property without retrieving the property and without the need to provide a buffer for it. Additionally, the size of the buffer needed to retrieve the property is returned in <code class="param">size_ret</code> if <code class="param">size_ret</code> is not <code>NULL</code>.</p>
+<p class="enddd">For example, to query the ID of a job, the following code pattern can be used: </p><div class="fragment"><div class="line"><span class="comment">// Query the size of the property.</span></div>
+<div class="line"><span class="keywordtype">size_t</span> size;</div>
+<div class="line"><a class="code hl_function" href="#ga42686f735d112236118b5e033a6c8194">QDMI_device_job_query_property</a>(</div>
+<div class="line">  job, <a class="code hl_enumvalue" href="constants_8h.html#a6e4d18c7fa5d383bbcc1498abe090d4fad991a6a3b0a17e58b59f9180463855ec">QDMI_DEVICE_JOB_PROPERTY_ID</a>, 0, <span class="keyword">nullptr</span>, &amp;size);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Allocate memory for the property.</span></div>
+<div class="line"><span class="keyword">auto</span> <span class="keywordtype">id</span> = std::string(size - 1, <span class="charliteral">&#39;\0&#39;</span>);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Query the property.</span></div>
+<div class="line"><a class="code hl_function" href="#ga42686f735d112236118b5e033a6c8194">QDMI_device_job_query_property</a>(</div>
+<div class="line">  job, <a class="code hl_enumvalue" href="constants_8h.html#a6e4d18c7fa5d383bbcc1498abe090d4fad991a6a3b0a17e58b59f9180463855ec">QDMI_DEVICE_JOB_PROPERTY_ID</a>, size, <span class="keywordtype">id</span>.data(), <span class="keyword">nullptr</span>);</div>
+<div class="ttc" id="aconstants_8h_html_a6e4d18c7fa5d383bbcc1498abe090d4fad991a6a3b0a17e58b59f9180463855ec"><div class="ttname"><a href="constants_8h.html#a6e4d18c7fa5d383bbcc1498abe090d4fad991a6a3b0a17e58b59f9180463855ec">QDMI_DEVICE_JOB_PROPERTY_ID</a></div><div class="ttdeci">@ QDMI_DEVICE_JOB_PROPERTY_ID</div><div class="ttdoc">char* (string) The job&#39;s ID.</div><div class="ttdef"><b>Definition</b> constants.h:224</div></div>
+<div class="ttc" id="agroup__device__job__interface_html_ga42686f735d112236118b5e033a6c8194"><div class="ttname"><a href="#ga42686f735d112236118b5e033a6c8194">QDMI_device_job_query_property</a></div><div class="ttdeci">int QDMI_device_job_query_property(QDMI_Device_Job job, QDMI_Device_Job_Property prop, size_t size, void *value, size_t *size_ret)</div><div class="ttdoc">Query a job property.</div></div>
+</div><!-- fragment --> </dd></dl>
 
 </div>
 </div>
@@ -604,7 +634,21 @@ Functions</h2></td></tr>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8ab875f28072043ad44f7ee5290bba8d01">QDMI_ERROR_PERMISSIONDENIED</a> if the device does not allow using the <a class="el" href="group__device__job__interface.html">device job interface</a> for the current session. </dd>
 <dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3">QDMI_ERROR_FATAL</a> if an error occurred during the retrieval.</dd></dl>
-<dl class="section remark"><dt>Remarks</dt><dd>Calling this function with <code class="param">data</code> set to <code>NULL</code> is expected to allow checking if the device supports the specified result without retrieving the result and without the need to provide a buffer for the result. Additionally, the size of the buffer required to retrieve the result is returned in <code class="param">size_ret</code> if <code class="param">size_ret</code> is not <code>NULL</code>. See the <a class="el" href="group__client__job__interface.html#gaba583321332e0753f5de1764edbd8b7f">QDMI_job_get_results</a> documentation for an example. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd><p class="startdd">By calling this function with <code class="param">data</code> set to <code>NULL</code>, the function can be used to check if the device supports the specified result without retrieving the result and without the need to provide a buffer for the result. Additionally, the size of the buffer needed to retrieve the result is returned in <code class="param">size_ret</code> if <code class="param">size_ret</code> is not <code>NULL</code>.</p>
+<p class="enddd">For example, to query the measurement results of a quantum circuit job, the following code pattern can be used: </p><div class="fragment"><div class="line"><span class="comment">// Query the size of the result.</span></div>
+<div class="line"><span class="keywordtype">size_t</span> size;</div>
+<div class="line"><span class="keyword">auto</span> ret = <a class="code hl_function" href="#ga1b4384e53a1d8fb2d782cd6179664d3b">QDMI_device_job_get_results</a>(</div>
+<div class="line">  job, <a class="code hl_enumvalue" href="constants_8h.html#aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97">QDMI_JOB_RESULT_SHOTS</a>, 0, <span class="keyword">nullptr</span>, &amp;size);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Allocate memory for the result.</span></div>
+<div class="line">std::string shots(size - 1, <span class="charliteral">&#39;\0&#39;</span>);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Query the result.</span></div>
+<div class="line"><a class="code hl_function" href="#ga1b4384e53a1d8fb2d782cd6179664d3b">QDMI_device_job_get_results</a>(</div>
+<div class="line">  job, <a class="code hl_enumvalue" href="constants_8h.html#aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97">QDMI_JOB_RESULT_SHOTS</a>, size, shots.data(), <span class="keyword">nullptr</span>);</div>
+<div class="ttc" id="aconstants_8h_html_aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97"><div class="ttname"><a href="constants_8h.html#aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97">QDMI_JOB_RESULT_SHOTS</a></div><div class="ttdeci">@ QDMI_JOB_RESULT_SHOTS</div><div class="ttdoc">char* (string) The results of the individual shots as a comma-separated list, for example,...</div><div class="ttdef"><b>Definition</b> constants.h:1024</div></div>
+<div class="ttc" id="agroup__device__job__interface_html_ga1b4384e53a1d8fb2d782cd6179664d3b"><div class="ttname"><a href="#ga1b4384e53a1d8fb2d782cd6179664d3b">QDMI_device_job_get_results</a></div><div class="ttdeci">int QDMI_device_job_get_results(QDMI_Device_Job job, QDMI_Job_Result result, size_t size, void *data, size_t *size_ret)</div><div class="ttdoc">Retrieve the results of a job.</div></div>
+</div><!-- fragment --> </dd></dl>
 
 </div>
 </div>

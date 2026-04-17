@@ -56,3 +56,7 @@ html.dark-mode .qdmi-schematic {
 html.dark-mode .qdmi {
   content: url("qdmi_dark.svg");
 }
+
+dl.note .tt {
+  color: var(--primary-dark-color);
+}

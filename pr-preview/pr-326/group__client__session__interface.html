@@ -390,9 +390,7 @@ Functions</h2></td></tr>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a0cf40a28841e7b8bcba223ae28a3713d">QDMI_ERROR_OUTOFMEM</a> if memory space ran out. </dd>
 <dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3">QDMI_ERROR_FATAL</a> if an unexpected error occurred. </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ga39d34b2a95cd9e2b8d9d6ab551bff078" title="Set a parameter for a session.">QDMI_session_set_parameter</a> </dd>
-<dd>
-<a class="el" href="#gafbc8c6031ee98c87d58515eb35b4202b" title="Initialize a session.">QDMI_session_init</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ga39d34b2a95cd9e2b8d9d6ab551bff078" title="Set a parameter for a session.">QDMI_session_set_parameter</a> <a class="el" href="#gafbc8c6031ee98c87d58515eb35b4202b" title="Initialize a session.">QDMI_session_init</a> </dd></dl>
 
 </div>
 </div>
@@ -450,9 +448,8 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3">QDMI_ERROR_FATAL</a> if an unexpected error occurred. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#gafbc8c6031ee98c87d58515eb35b4202b" title="Initialize a session.">QDMI_session_init</a></dd></dl>
-<dl class="section note"><dt>Note</dt><dd>By calling this function with <code class="param">value</code> set to <code>NULL</code>, the function can be used to check if the driver supports the specified parameter without setting a value.</dd>
-<dd>
-For example, to check whether the driver supports setting a token for authentication, the following code pattern can be used: <div class="fragment"><div class="line"><span class="comment">// Check if the driver supports setting a token.</span></div>
+<dl class="section note"><dt>Note</dt><dd><p class="startdd">By calling this function with <code class="param">value</code> set to <code>NULL</code>, the function can be used to check if the driver supports the specified parameter without setting a value.</p>
+<p class="enddd">For example, to check whether the driver supports setting a token for authentication, the following code pattern can be used: </p><div class="fragment"><div class="line"><span class="comment">// Check if the driver supports setting a token.</span></div>
 <div class="line"><span class="keyword">auto</span> ret = <a class="code hl_function" href="#ga39d34b2a95cd9e2b8d9d6ab551bff078">QDMI_session_set_parameter</a>(</div>
 <div class="line">  session, <a class="code hl_enumvalue" href="#ggaac5ae9f0bf8046987569c6f4e75611d3af68e93d8a13dacb31e6bbdf43c9c5283">QDMI_SESSION_PARAMETER_TOKEN</a>, 0, <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="keywordflow">if</span> (ret == <a class="code hl_enumvalue" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a>) {</div>
@@ -463,7 +460,7 @@ For example, to check whether the driver supports setting a token for authentica
 <div class="line">std::string token = <span class="stringliteral">&quot;token&quot;</span>;</div>
 <div class="line">ret = <a class="code hl_function" href="#ga39d34b2a95cd9e2b8d9d6ab551bff078">QDMI_session_set_parameter</a>(</div>
 <div class="line">  session, <a class="code hl_enumvalue" href="#ggaac5ae9f0bf8046987569c6f4e75611d3af68e93d8a13dacb31e6bbdf43c9c5283">QDMI_SESSION_PARAMETER_TOKEN</a>, token.size() + 1, token.c_str());</div>
-<div class="ttc" id="aconstants_8h_html_a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651"><div class="ttname"><a href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a></div><div class="ttdeci">@ QDMI_ERROR_NOTSUPPORTED</div><div class="ttdef"><b>Definition</b> constants.h:49</div></div>
+<div class="ttc" id="aconstants_8h_html_a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651"><div class="ttname"><a href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a></div><div class="ttdeci">@ QDMI_ERROR_NOTSUPPORTED</div><div class="ttdef"><b>Definition</b> constants.h:50</div></div>
 <div class="ttc" id="agroup__client__session__interface_html_ga39d34b2a95cd9e2b8d9d6ab551bff078"><div class="ttname"><a href="#ga39d34b2a95cd9e2b8d9d6ab551bff078">QDMI_session_set_parameter</a></div><div class="ttdeci">int QDMI_session_set_parameter(QDMI_Session session, QDMI_Session_Parameter param, size_t size, const void *value)</div><div class="ttdoc">Set a parameter for a session.</div></div>
 <div class="ttc" id="agroup__client__session__interface_html_ggaac5ae9f0bf8046987569c6f4e75611d3af68e93d8a13dacb31e6bbdf43c9c5283"><div class="ttname"><a href="#ggaac5ae9f0bf8046987569c6f4e75611d3af68e93d8a13dacb31e6bbdf43c9c5283">QDMI_SESSION_PARAMETER_TOKEN</a></div><div class="ttdeci">@ QDMI_SESSION_PARAMETER_TOKEN</div><div class="ttdoc">char* (string) The token to use for the session.</div><div class="ttdef"><b>Definition</b> client.h:122</div></div>
 </div><!-- fragment --> </dd></dl>
@@ -501,9 +498,7 @@ For example, to check whether the driver supports setting a token for authentica
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a916e0810bf915e2ad67f2c1430c54fec">QDMI_ERROR_BADSTATE</a> if the session is not in a state allowing initialization, for example, because the session is already initialized. </dd>
 <dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3">QDMI_ERROR_FATAL</a> if an unexpected error occurred. </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ga39d34b2a95cd9e2b8d9d6ab551bff078" title="Set a parameter for a session.">QDMI_session_set_parameter</a> </dd>
-<dd>
-<a class="el" href="#ga53bf25dd42852f40468b30a47996d1a0" title="Query a property of a session.">QDMI_session_query_session_property</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ga39d34b2a95cd9e2b8d9d6ab551bff078" title="Set a parameter for a session.">QDMI_session_set_parameter</a> <a class="el" href="#ga53bf25dd42852f40468b30a47996d1a0" title="Query a property of a session.">QDMI_session_query_session_property</a> </dd></dl>
 
 </div>
 </div>
@@ -566,9 +561,8 @@ For example, to check whether the driver supports setting a token for authentica
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a916e0810bf915e2ad67f2c1430c54fec">QDMI_ERROR_BADSTATE</a> if the property cannot be queried in the current state of the session, for example, because the session is not initialized. </dd>
 <dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3">QDMI_ERROR_FATAL</a> if an unexpected error occurred.</dd></dl>
-<dl class="section note"><dt>Note</dt><dd>By calling this function with <code class="param">value</code> set to <code>NULL</code>, the function can be used to check if the driver supports the specified property without retrieving the property and without the need to provide a buffer for it. Additionally, the size of the buffer needed to retrieve the property will be returned in <code class="param">size_ret</code> if <code class="param">size_ret</code> is not <code>NULL</code>.</dd>
-<dd>
-For example, to query the devices available in a session, the following code pattern can be used: <div class="fragment"><div class="line"><span class="comment">// Query the size of the property.</span></div>
+<dl class="section note"><dt>Note</dt><dd><p class="startdd">By calling this function with <code class="param">value</code> set to <code>NULL</code>, the function can be used to check if the driver supports the specified property without retrieving the property and without the need to provide a buffer for it. Additionally, the size of the buffer needed to retrieve the property will be returned in <code class="param">size_ret</code> if <code class="param">size_ret</code> is not <code>NULL</code>.</p>
+<p class="interdd">For example, to query the devices available in a session, the following code pattern can be used: </p><div class="fragment"><div class="line"><span class="comment">// Query the size of the property.</span></div>
 <div class="line"><span class="keywordtype">size_t</span> size;</div>
 <div class="line"><span class="keyword">auto</span> ret = <a class="code hl_function" href="#ga53bf25dd42852f40468b30a47996d1a0">QDMI_session_query_session_property</a>(</div>
 <div class="line">  session, <a class="code hl_enumvalue" href="#gga737948251bac10b8cabf745afe82bd09ad18bc8e3c5b4f5ebcef0c81dd09eafe5">QDMI_SESSION_PROPERTY_DEVICES</a>, 0, <span class="keyword">nullptr</span>, &amp;size);</div>
@@ -581,8 +575,9 @@ For example, to query the devices available in a session, the following code pat
 <div class="line">  session, prop, size, <span class="keyword">static_cast&lt;</span><span class="keywordtype">void</span>*<span class="keyword">&gt;</span>(devices.data()), <span class="keyword">nullptr</span>);</div>
 <div class="ttc" id="agroup__client__interface_html_ga2772c94ab19957ce5aaef652b626baec"><div class="ttname"><a href="group__client__interface.html#ga2772c94ab19957ce5aaef652b626baec">QDMI_Device</a></div><div class="ttdeci">struct QDMI_Device_impl_d * QDMI_Device</div><div class="ttdoc">A handle for a device implementing the QDMI Device Interface.</div><div class="ttdef"><b>Definition</b> client.h:64</div></div>
 <div class="ttc" id="agroup__client__session__interface_html_ga53bf25dd42852f40468b30a47996d1a0"><div class="ttname"><a href="#ga53bf25dd42852f40468b30a47996d1a0">QDMI_session_query_session_property</a></div><div class="ttdeci">int QDMI_session_query_session_property(QDMI_Session session, QDMI_Session_Property prop, size_t size, void *value, size_t *size_ret)</div><div class="ttdoc">Query a property of a session.</div></div>
-<div class="ttc" id="agroup__client__session__interface_html_gga737948251bac10b8cabf745afe82bd09ad18bc8e3c5b4f5ebcef0c81dd09eafe5"><div class="ttname"><a href="#gga737948251bac10b8cabf745afe82bd09ad18bc8e3c5b4f5ebcef0c81dd09eafe5">QDMI_SESSION_PROPERTY_DEVICES</a></div><div class="ttdeci">@ QDMI_SESSION_PROPERTY_DEVICES</div><div class="ttdoc">QDMI_Device* (QDMI_Device list) The devices the client has access to.</div><div class="ttdef"><b>Definition</b> client.h:282</div></div>
-</div><!-- fragment --></dd></dl>
+<div class="ttc" id="agroup__client__session__interface_html_gga737948251bac10b8cabf745afe82bd09ad18bc8e3c5b4f5ebcef0c81dd09eafe5"><div class="ttname"><a href="#gga737948251bac10b8cabf745afe82bd09ad18bc8e3c5b4f5ebcef0c81dd09eafe5">QDMI_SESSION_PROPERTY_DEVICES</a></div><div class="ttdeci">@ QDMI_SESSION_PROPERTY_DEVICES</div><div class="ttdoc">QDMI_Device* (QDMI_Device list) The devices the client has access to.</div><div class="ttdef"><b>Definition</b> client.h:283</div></div>
+</div><!-- fragment --><p class="enddd"></p>
+</dd></dl>
 <dl class="section attention"><dt>Attention</dt><dd>May only be called after the session has been successfully initialized with <a class="el" href="#gafbc8c6031ee98c87d58515eb35b4202b">QDMI_session_init</a>. </dd></dl>
 
 </div>
