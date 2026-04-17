@@ -42,8 +42,27 @@ if("${QDMI_TEMPLATE_CLEAN}" STREQUAL "")
   set(QDMI_TEMPLATE_CLEAN OFF)
 endif()
 
-file(REAL_PATH "${QDMI_TEMPLATE_SOURCE_DIR}" QDMI_TEMPLATE_SOURCE_DIR)
-file(REAL_PATH "${QDMI_TEMPLATE_OUTPUT_DIR}" QDMI_TEMPLATE_OUTPUT_DIR)
+set(QDMI_TEMPLATE_TEST_SUITE "${QDMI_TEMPLATE_TEST_SUITE}")
+if("${QDMI_TEMPLATE_TEST_SUITE}" STREQUAL "")
+  set(QDMI_TEMPLATE_TEST_SUITE OFF)
+endif()
+
+# file(REAL_PATH ...) fails if the path doesn't (yet) exist on some
+# platforms/CMakes. Use REAL_PATH only when the path exists; otherwise compute
+# an absolute path which does not require the target to exist.
+if(EXISTS "${QDMI_TEMPLATE_SOURCE_DIR}")
+  file(REAL_PATH "${QDMI_TEMPLATE_SOURCE_DIR}" QDMI_TEMPLATE_SOURCE_DIR)
+else()
+  get_filename_component(QDMI_TEMPLATE_SOURCE_DIR "${QDMI_TEMPLATE_SOURCE_DIR}"
+                         ABSOLUTE)
+endif()
+
+if(EXISTS "${QDMI_TEMPLATE_OUTPUT_DIR}")
+  file(REAL_PATH "${QDMI_TEMPLATE_OUTPUT_DIR}" QDMI_TEMPLATE_OUTPUT_DIR)
+else()
+  get_filename_component(QDMI_TEMPLATE_OUTPUT_DIR "${QDMI_TEMPLATE_OUTPUT_DIR}"
+                         ABSOLUTE)
+endif()
 
 string(TOLOWER "${QDMI_TEMPLATE_PREFIX}" QDMI_TEMPLATE_prefix)
 

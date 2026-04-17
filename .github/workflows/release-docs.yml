@@ -36,7 +36,7 @@ jobs:
       - name: Install and Build 🔧
         run: |
           cmake -S . -B build -DBUILD_QDMI_DOCS=ON
-          cmake --build build --target qdmi_docs
+          cmake --build build --target qdmi-docs
           mv build/docs/html/ static
 
       - name: Set version variable

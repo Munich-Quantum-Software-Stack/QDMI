@@ -1,5 +1,5 @@
 ignore:
-  - "test/**/*"
+  - "**/test/**/*"
 
 coverage:
   range: 60..90
@@ -23,7 +23,10 @@ flag_management:
     - name: cpp
       paths:
         - "include"
-        - "examples"
+        - "examples/device"
+        - "examples/driver"
+        - "examples/fomac"
+        - "examples/tool"
 
 parsers:
   gcov:
