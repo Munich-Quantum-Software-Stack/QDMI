@@ -357,6 +357,9 @@ int QDMI_session_init(QDMI_Session session) {
 }
 
 void QDMI_session_free(QDMI_Session session) {
+  if (session == nullptr) {
+    return;
+  }
   for (auto &device : session->device_list) {
     device->library->device_session_free(device->device_session);
   }

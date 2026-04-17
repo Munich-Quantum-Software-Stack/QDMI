@@ -109,6 +109,10 @@ TEST_P(QDMIImplementationTest, SessionInitImplemented) {
   ASSERT_EQ(QDMI_session_init(nullptr), QDMI_ERROR_INVALIDARGUMENT);
 }
 
+TEST_P(QDMIImplementationTest, SessionFreeNULL) {
+  ASSERT_NO_THROW(QDMI_session_free(nullptr));
+}
+
 TEST_P(QDMIImplementationTest, SessionSetParameterImplemented) {
   QDMI_Session uninitialized_session = nullptr;
   ASSERT_EQ(QDMI_session_alloc(&uninitialized_session), QDMI_SUCCESS);
