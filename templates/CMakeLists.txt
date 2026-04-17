@@ -29,7 +29,6 @@ if(QDMI_GENERATE_TEMPLATE)
   set(TEMPLATE_PATH
       "${CMAKE_SOURCE_DIR}/../${TEMPLATE_prefix}-qdmi-device"
       CACHE PATH "Path where the instantiated template should be generated")
-
   # file(REAL_PATH ...) fails if the path doesn't (yet) exist on some
   # platforms/CMakes. Use REAL_PATH only when the path exists; otherwise compute
   # an absolute path which does not require the target to exist.
