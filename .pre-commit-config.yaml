@@ -79,7 +79,7 @@ repos:
     hooks:
       - id: prettier
         types_or: [yaml, markdown, html, css, scss, javascript, json]
-        exclude: ^docs/header\.html$
+        exclude: docs/header\.html$
 
   # Catch common capitalization mistakes
   - repo: local
