@@ -54,7 +54,7 @@ option(
 
 include(CMakeDependentOption)
 cmake_dependent_option(
-  QDMI_INSTALL "Generate installation instructions for QDMI"
+  INSTALL_QDMI "Generate installation instructions for QDMI"
   ${QDMI_MASTER_PROJECT} "NOT USE_INSTALLED_QDMI" OFF)
 option(BUILD_QDMI_TESTS "Also build tests for the QDMI project"
        ${QDMI_MASTER_PROJECT})
@@ -178,7 +178,7 @@ if(BUILD_QDMI_TESTS)
 endif()
 
 # Installation instructions for the main library
-if(QDMI_INSTALL)
+if(INSTALL_QDMI)
   set(QDMI_CONFIG_INSTALL_DIR
       "${CMAKE_INSTALL_DATADIR}/cmake/${PROJECT_NAME}"
       CACHE INTERNAL "Config install directory")
