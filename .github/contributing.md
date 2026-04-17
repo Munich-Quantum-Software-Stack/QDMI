@@ -300,11 +300,11 @@ configuration is seamlessly integrated into the CMake build system.
 
 #### Building the Documentation {#building-the-documentation}
 
-The documentation can be built with the CMake target `qdmi_docs` via
+The documentation can be built with the CMake target `qdmi-docs` via
 
 ```shell
 cmake -S . -B build
-cmake --build build --target qdmi_docs
+cmake --build build --target qdmi-docs
 ```
 
 The generated web page can be inspected by opening the file in `docs/html/index.html` in the CMake
