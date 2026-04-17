@@ -23,7 +23,7 @@ flag_management:
     - name: cpp
       paths:
         - "include"
-        - "examples/device/src"
+        - "examples/device"
         - "examples/driver"
         - "examples/fomac"
         - "examples/tool"

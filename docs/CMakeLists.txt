@@ -59,7 +59,7 @@ string(REPLACE ";" " " DOXYGEN_INPUT_DIRS "${DOXYGEN_INPUT_DIRS}")
 # can be included with the `\include`or `\snippet` command, we need to add the
 # directories where these files are located.
 set(DOXYGEN_EXAMPLE_DIRS
-    ${PROJECT_SOURCE_DIR}/examples/device/src
+    ${PROJECT_SOURCE_DIR}/examples/device
     ${PROJECT_SOURCE_DIR}/examples/driver
     ${PROJECT_SOURCE_DIR}/examples/fomac
     ${PROJECT_SOURCE_DIR}/examples/tool
