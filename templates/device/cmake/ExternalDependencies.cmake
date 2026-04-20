@@ -24,9 +24,9 @@ if(TARGET qdmi::qdmi)
 else()
   message(STATUS "[qdmi][template] QDMI will be included via FetchContent")
   # cmake-format: off
-  set(QDMI_VERSION 1.2.2
+  set(QDMI_VERSION 1.2.3
           CACHE STRING "QDMI version")
-  set(QDMI_REV "v1.2.2"
+  set(QDMI_REV "v1.2.x"
           CACHE STRING "QDMI identifier (tag, branch or commit hash)")
   set(QDMI_REPO_OWNER "Munich-Quantum-Software-Stack"
           CACHE STRING "QDMI repository owner (change when using a fork)")
