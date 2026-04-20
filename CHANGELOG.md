@@ -11,6 +11,10 @@ clients compiled against a different minor or major version.
 
 ## [Unreleased]
 
+## [1.2.2] - 2026-04-20
+
+_If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#122)._
+
 ### Added
 
 - 👷 Add mergify configuration for easier backports and maintenance of release branches ([#355]) ([\@burgholzer])
@@ -18,9 +22,7 @@ clients compiled against a different minor or major version.
 
 ### Changed
 
-- 🚸 Export _all_ device headers (incl. `constants.h`) as part of device implementations such that they do not need to link against the header-only QDMI library anymore ([#325], [#373]) ([\@ystade], [\@burgholzer])
 - 🚸 Increase robustness of the QDMI device template (complete install instructions, uv caching, code cleanup) ([#333]) ([\@burgholzer])
-- 🚸 Add a symbol-export header for compiling devices with hidden symbol visibility ([#334], [#375], [#377]) ([\@burgholzer])
 - 📝 Improve contributing guidelines and documentation ([#354]) ([\@burgholzer])
 - 📝 Improve documentation of the QDMI device template ([#354]) ([\@burgholzer])
 
@@ -122,22 +124,18 @@ changelogs._
 
 <!-- Version links -->
 
-[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.1...HEAD
+[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.2...HEAD
+[1.2.2]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.1...v1.2.2
 [1.2.1]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.2.1
 [1.2.0]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.2.0
 [1.1.0]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.1.0
 
 <!-- PR links -->
 
-[#377]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/377
-[#375]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/375
-[#373]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/373
 [#371]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/371
 [#355]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/355
 [#354]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/354
-[#334]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/334
 [#333]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/333
-[#325]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/325
 [#285]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/285
 [#275]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/275
 [#274]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/274

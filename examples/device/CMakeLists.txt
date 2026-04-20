@@ -22,7 +22,7 @@ enable_language(CXX)
 # change. Hence, in the test you have to adopt the name of the shared library
 # accordingly.
 add_library(cxx_device SHARED device.cpp)
-target_link_libraries(cxx_device PRIVATE qdmi::qdmi_project_warnings)
+target_link_libraries(cxx_device PRIVATE qdmi::qdmi qdmi::qdmi_project_warnings)
 if(ENABLE_COVERAGE)
   target_link_libraries(cxx_device PRIVATE qdmi::qdmi_coverage_flags)
 endif()
@@ -32,11 +32,5 @@ target_include_directories(cxx_device
 target_compile_features(cxx_device PRIVATE cxx_std_20)
 get_target_property(qdmi_library_VERSION qdmi::qdmi VERSION)
 target_compile_definitions(
-  cxx_device
-  PRIVATE QDMI_VERSION="${qdmi_library_VERSION}"
-          DEVICE_VERSION="${PROJECT_VERSION}" CXX_QDMI_device_EXPORTS)
-set_target_properties(
-  cxx_device
-  PROPERTIES C_VISIBILITY_PRESET hidden
-             CXX_VISIBILITY_PRESET hidden
-             VISIBILITY_INLINES_HIDDEN 1)
+  cxx_device PRIVATE QDMI_VERSION="${qdmi_library_VERSION}"
+                     DEVICE_VERSION="${PROJECT_VERSION}")

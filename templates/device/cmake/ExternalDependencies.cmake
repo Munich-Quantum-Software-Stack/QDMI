@@ -26,7 +26,7 @@ else()
   # cmake-format: off
   set(QDMI_VERSION 1.2.2
           CACHE STRING "QDMI version")
-  set(QDMI_REV "v1.2.x"
+  set(QDMI_REV "v1.2.2"
           CACHE STRING "QDMI identifier (tag, branch or commit hash)")
   set(QDMI_REPO_OWNER "Munich-Quantum-Software-Stack"
           CACHE STRING "QDMI repository owner (change when using a fork)")
@@ -64,17 +64,17 @@ if(BUILD_MY_QDMI_DOCS)
       NEW
       CACHE STRING
             "Set the default CMP0116 policy to NEW for documentation builds")
-  set(DOXYGEN_VERSION
+  set(MIN_DOXYGEN_VERSION
       1.15.0
-      CACHE STRING "Doxygen version")
+      CACHE STRING "Minimum required Doxygen version")
   set(DOXYGEN_REV
-      "7cca38ba5185457e6d9495bf963d4cdeacebc25a"
+      "669aeeefca743c148e2d935b3d3c69535c7491e6" # v1.16.1
       CACHE STRING "Doxygen identifier (tag, branch or commit hash)")
   FetchContent_Declare(
     Doxygen
     GIT_REPOSITORY https://github.com/doxygen/doxygen.git
     GIT_TAG ${DOXYGEN_REV}
-    FIND_PACKAGE_ARGS ${DOXYGEN_VERSION})
+    FIND_PACKAGE_ARGS ${MIN_DOXYGEN_VERSION})
   list(APPEND FETCH_PACKAGES Doxygen)
 
   set(DOXYGEN_AWESOME_VERSION
