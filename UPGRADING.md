@@ -51,6 +51,8 @@ set_target_properties(${QDMI_TARGET_NAME} PROPERTIES
 
 where `MY` is your device prefix.
 
+## [1.2.2] - 2026-04-20
+
 ### Updated QDMI device template
 
 The QDMI device template has been updated to be compatible with the latest version of the QDMI specification and to include several improvements.
@@ -371,6 +373,7 @@ For quick reference, here are all breaking changes in v1.2.0:
 5. **`QDMI_JOB_STATUS` enum**: Reordered to reflect job lifecycle
 6. **CMake**: Minimum version raised to 3.24
 
-[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.1...HEAD
+[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.2...HEAD
+[1.2.2]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.1...v1.2.2
 [1.2.1]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.1.0...v1.2.0
