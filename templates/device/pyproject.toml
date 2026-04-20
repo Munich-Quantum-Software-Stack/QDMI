@@ -54,16 +54,16 @@ my-qdmi = "my.qdmi.__main__:main"
 
 [dependency-groups]
 test = [
-  "pytest>=9.0.1",
+  "pytest>=9.0.3",
   "pytest-console-scripts>=1.4.1",
-  "pytest-cov>=7.0.0",
+  "pytest-cov>=7.1.0",
   "pytest-sugar>=1.1.1",
   "pytest-xdist>=3.8.0",
 ]
 dev = [
   {include-group = "test"},
-  "nox>=2025.11.12",
-  "ty==0.0.18",
+  "nox>=v2026.4.10",
+  "ty==0.0.31",
 ]
 
 
