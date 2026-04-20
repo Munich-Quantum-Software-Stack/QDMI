@@ -24,7 +24,6 @@
 #pragma once
 
 #include "qdmi/constants.h" // IWYU pragma: export
-#include "qdmi/export.h"    // IWYU pragma: export
 #include "qdmi/types.h"     // IWYU pragma: export
 
 #ifdef __cplusplus
@@ -66,7 +65,7 @@ extern "C" {
  * @return @ref QDMI_SUCCESS if the device was initialized successfully.
  * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
  */
-QDMI_EXPORT int QDMI_device_initialize(void);
+int QDMI_device_initialize(void);
 
 /**
  * @brief Finalize a device.
@@ -77,7 +76,7 @@ QDMI_EXPORT int QDMI_device_initialize(void);
  * @return @ref QDMI_ERROR_FATAL if the finalization failed, this could, for
  * example, be due to a job that is still running.
  */
-QDMI_EXPORT int QDMI_device_finalize(void);
+int QDMI_device_finalize(void);
 
 /** @defgroup device_session_interface QDMI Device Session Interface
  *  @brief Provides functions to manage sessions between the driver and device.
@@ -122,7 +121,7 @@ typedef struct QDMI_Device_Session_impl_d *QDMI_Device_Session;
  * @see QDMI_device_session_set_parameter
  *      QDMI_device_session_init
  */
-QDMI_EXPORT int QDMI_device_session_alloc(QDMI_Device_Session *session);
+int QDMI_device_session_alloc(QDMI_Device_Session *session);
 
 /**
  * @brief Set a parameter for a device session.
@@ -176,10 +175,9 @@ QDMI_EXPORT int QDMI_device_session_alloc(QDMI_Device_Session *session);
  * @endcode
  * @endparblock
  */
-QDMI_EXPORT int
-QDMI_device_session_set_parameter(QDMI_Device_Session session,
-                                  QDMI_Device_Session_Parameter param,
-                                  size_t size, const void *value);
+int QDMI_device_session_set_parameter(QDMI_Device_Session session,
+                                      QDMI_Device_Session_Parameter param,
+                                      size_t size, const void *value);
 
 /**
  * @brief Initialize a device session.
@@ -207,7 +205,7 @@ QDMI_device_session_set_parameter(QDMI_Device_Session session,
  *      QDMI_device_session_query_operation_property
  *      QDMI_device_session_create_device_job
  */
-QDMI_EXPORT int QDMI_device_session_init(QDMI_Device_Session session);
+int QDMI_device_session_init(QDMI_Device_Session session);
 
 /**
  * @brief Free a QDMI device session.
@@ -215,7 +213,7 @@ QDMI_EXPORT int QDMI_device_session_init(QDMI_Device_Session session);
  * Using a session handle after it was freed is undefined behavior.
  * @param[in] session The session to free.
  */
-QDMI_EXPORT void QDMI_device_session_free(QDMI_Device_Session session);
+void QDMI_device_session_free(QDMI_Device_Session session);
 
 /** @} */ // end of device_session_interface
 
@@ -281,9 +279,10 @@ QDMI_EXPORT void QDMI_device_session_free(QDMI_Device_Session session);
  * @attention May only be called after the session has been initialized with
  * @ref QDMI_device_session_init.
  */
-QDMI_EXPORT int QDMI_device_session_query_device_property(
-    QDMI_Device_Session session, QDMI_Device_Property prop, size_t size,
-    void *value, size_t *size_ret);
+int QDMI_device_session_query_device_property(QDMI_Device_Session session,
+                                              QDMI_Device_Property prop,
+                                              size_t size, void *value,
+                                              size_t *size_ret);
 
 /**
  * @brief Query a site property.
@@ -339,9 +338,11 @@ QDMI_EXPORT int QDMI_device_session_query_device_property(
  * @attention May only be called after the session has been initialized with
  * @ref QDMI_device_session_init.
  */
-QDMI_EXPORT int QDMI_device_session_query_site_property(
-    QDMI_Device_Session session, QDMI_Site site, QDMI_Site_Property prop,
-    size_t size, void *value, size_t *size_ret);
+int QDMI_device_session_query_site_property(QDMI_Device_Session session,
+                                            QDMI_Site site,
+                                            QDMI_Site_Property prop,
+                                            size_t size, void *value,
+                                            size_t *size_ret);
 
 /**
  * @brief Query an operation property.
@@ -418,7 +419,7 @@ QDMI_EXPORT int QDMI_device_session_query_site_property(
  * @attention May only be called after the session has been initialized with
  * @ref QDMI_device_session_init.
  */
-QDMI_EXPORT int QDMI_device_session_query_operation_property(
+int QDMI_device_session_query_operation_property(
     QDMI_Device_Session session, QDMI_Operation operation, size_t num_sites,
     const QDMI_Site *sites, size_t num_params, const double *params,
     QDMI_Operation_Property prop, size_t size, void *value, size_t *size_ret);
@@ -474,9 +475,8 @@ typedef struct QDMI_Device_Job_impl_d *QDMI_Device_Job;
  * @attention May only be called after the session has been initialized with
  * @ref QDMI_device_session_init.
  */
-QDMI_EXPORT int
-QDMI_device_session_create_device_job(QDMI_Device_Session session,
-                                      QDMI_Device_Job *job);
+int QDMI_device_session_create_device_job(QDMI_Device_Session session,
+                                          QDMI_Device_Job *job);
 
 /**
  * @brief Set a parameter for a job.
@@ -529,9 +529,9 @@ QDMI_device_session_create_device_job(QDMI_Device_Session session,
  * @endcode
  * @endparblock
  */
-QDMI_EXPORT int QDMI_device_job_set_parameter(QDMI_Device_Job job,
-                                              QDMI_Device_Job_Parameter param,
-                                              size_t size, const void *value);
+int QDMI_device_job_set_parameter(QDMI_Device_Job job,
+                                  QDMI_Device_Job_Parameter param, size_t size,
+                                  const void *value);
 
 /**
  * @brief Query a job property.
@@ -583,10 +583,9 @@ QDMI_EXPORT int QDMI_device_job_set_parameter(QDMI_Device_Job job,
  * @endcode
  * @endparblock
  */
-QDMI_EXPORT int QDMI_device_job_query_property(QDMI_Device_Job job,
-                                               QDMI_Device_Job_Property prop,
-                                               size_t size, void *value,
-                                               size_t *size_ret);
+int QDMI_device_job_query_property(QDMI_Device_Job job,
+                                   QDMI_Device_Job_Property prop, size_t size,
+                                   void *value, size_t *size_ret);
 
 /**
  * @brief Submit a job to the device.
@@ -601,7 +600,7 @@ QDMI_EXPORT int QDMI_device_job_query_property(QDMI_Device_Job job,
  * the @ref device_job_interface "device job interface" for the current session.
  * @return @ref QDMI_ERROR_FATAL if the job submission failed.
  */
-QDMI_EXPORT int QDMI_device_job_submit(QDMI_Device_Job job);
+int QDMI_device_job_submit(QDMI_Device_Job job);
 
 /**
  * @brief Cancel an already submitted job.
@@ -615,7 +614,7 @@ QDMI_EXPORT int QDMI_device_job_submit(QDMI_Device_Job job);
  * the @ref device_job_interface "device job interface" for the current session.
  * @return @ref QDMI_ERROR_FATAL if the job could not be canceled.
  */
-QDMI_EXPORT int QDMI_device_job_cancel(QDMI_Device_Job job);
+int QDMI_device_job_cancel(QDMI_Device_Job job);
 
 /**
  * @brief Check the status of a job.
@@ -630,8 +629,7 @@ QDMI_EXPORT int QDMI_device_job_cancel(QDMI_Device_Job job);
  * the @ref device_job_interface "device job interface" for the current session.
  * @return @ref QDMI_ERROR_FATAL if the job status could not be checked.
  */
-QDMI_EXPORT int QDMI_device_job_check(QDMI_Device_Job job,
-                                      QDMI_Job_Status *status);
+int QDMI_device_job_check(QDMI_Device_Job job, QDMI_Job_Status *status);
 
 /**
  * @brief Wait for a job to finish.
@@ -651,7 +649,7 @@ QDMI_EXPORT int QDMI_device_job_check(QDMI_Device_Job job,
  * @return @ref QDMI_ERROR_FATAL if the job could not be waited for and this
  * function returns before the job has finished or has been canceled.
  */
-QDMI_EXPORT int QDMI_device_job_wait(QDMI_Device_Job job, size_t timeout);
+int QDMI_device_job_wait(QDMI_Device_Job job, size_t timeout);
 
 /**
  * @brief Retrieve the results of a job.
@@ -702,9 +700,8 @@ QDMI_EXPORT int QDMI_device_job_wait(QDMI_Device_Job job, size_t timeout);
  * @endcode
  * @endparblock
  */
-QDMI_EXPORT int QDMI_device_job_get_results(QDMI_Device_Job job,
-                                            QDMI_Job_Result result, size_t size,
-                                            void *data, size_t *size_ret);
+int QDMI_device_job_get_results(QDMI_Device_Job job, QDMI_Job_Result result,
+                                size_t size, void *data, size_t *size_ret);
 
 /**
  * @brief Free a job.
@@ -712,7 +709,7 @@ QDMI_EXPORT int QDMI_device_job_get_results(QDMI_Device_Job job,
  * it was freed is undefined behavior.
  * @param[in] job The job to free.
  */
-QDMI_EXPORT void QDMI_device_job_free(QDMI_Device_Job job);
+void QDMI_device_job_free(QDMI_Device_Job job);
 
 /** @} */ // end of device_job_interface
 

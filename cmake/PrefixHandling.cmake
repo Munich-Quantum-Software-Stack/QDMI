@@ -31,8 +31,7 @@ function(generate_prefixed_qdmi_headers prefix)
   endif()
 
   # Get the list of all QDMI device headers.
-  file(GLOB_RECURSE QDMI_DEVICE_HEADERS ${QDMI_INCLUDE_DIR}/qdmi/constants.h
-       ${QDMI_INCLUDE_DIR}/qdmi/device.h ${QDMI_INCLUDE_DIR}/qdmi/export.h
+  file(GLOB_RECURSE QDMI_DEVICE_HEADERS ${QDMI_INCLUDE_DIR}/qdmi/device.h
        ${QDMI_INCLUDE_DIR}/qdmi/types.h)
 
   # Determine the correct CMake directory for prefix_defs.txt
@@ -56,7 +55,7 @@ function(generate_prefixed_qdmi_headers prefix)
     # Replace the include for the device header with the prefixed version.
     string(
       REGEX
-      REPLACE "#include (\"|<)qdmi/(constants|device|export|types).h(\"|>)"
+      REPLACE "#include (\"|<)qdmi/(device|types).h(\"|>)"
               "#include \\1${QDMI_prefix}_qdmi/\\2.h\\3" header_content
               "${header_content}")
     # Replace the prefix definitions.
@@ -113,8 +112,9 @@ function(generate_device_defs_executable prefix)
   # Create the test executable.
   add_executable(qdmi_test_${QDMI_prefix}_device_defs
                  ${CMAKE_CURRENT_BINARY_DIR}/${QDMI_prefix}_test_defs.cpp)
-  target_link_libraries(qdmi_test_${QDMI_prefix}_device_defs
-                        PRIVATE ${DEVICE_TARGET} qdmi::qdmi_project_warnings)
+  target_link_libraries(
+    qdmi_test_${QDMI_prefix}_device_defs PRIVATE qdmi::qdmi ${DEVICE_TARGET}
+                                                 qdmi::qdmi_project_warnings)
   target_compile_features(qdmi_test_${QDMI_prefix}_device_defs
                           PRIVATE cxx_std_20)
 endfunction()
