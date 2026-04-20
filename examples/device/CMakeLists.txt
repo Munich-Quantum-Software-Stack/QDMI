@@ -39,4 +39,4 @@ set_target_properties(
   cxx_device
   PROPERTIES C_VISIBILITY_PRESET hidden
              CXX_VISIBILITY_PRESET hidden
-             VISIBILITY_INLINES_HIDDEN 1)
+             CXX_VISIBILITY_INLINES_HIDDEN 1)

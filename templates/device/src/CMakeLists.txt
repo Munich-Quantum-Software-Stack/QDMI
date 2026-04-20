@@ -40,7 +40,7 @@ set_target_properties(
   ${QDMI_TARGET_NAME}
   PROPERTIES C_VISIBILITY_PRESET hidden
              CXX_VISIBILITY_PRESET hidden
-             VISIBILITY_INLINES_HIDDEN 1)
+             CXX_VISIBILITY_INLINES_HIDDEN 1)
 target_sources(${QDMI_TARGET_NAME} PRIVATE ${SRC_FILES})
 
 target_sources(
