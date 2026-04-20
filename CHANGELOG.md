@@ -11,6 +11,10 @@ clients compiled against a different minor or major version.
 
 ## [Unreleased]
 
+## [1.2.2] - 2026-04-20
+
+_If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#122)._
+
 ### Added
 
 - 👷 Add mergify configuration for easier backports and maintenance of release branches ([#355]) ([\@burgholzer])
@@ -120,7 +124,8 @@ changelogs._
 
 <!-- Version links -->
 
-[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.1...HEAD
+[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.2...HEAD
+[1.2.2]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.1...v1.2.2
 [1.2.1]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.2.1
 [1.2.0]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.2.0
 [1.1.0]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.1.0
