@@ -15,6 +15,7 @@ preferred-citation:
     conference: "IEEE International Conference on Quantum Computing and Engineering (QCE)"
     year: 2024
     month: 9
+    doi: "10.1109/QCE60285.2024.10411"
     authors:
       - given-names: Robert
         family-names: Wille

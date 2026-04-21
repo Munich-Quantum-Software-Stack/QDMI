@@ -15,7 +15,7 @@ jobs:
         if: github.event.action != 'closed'
         uses: ssciwr/doxygen-install@329d88f5a303066a5bd006db7516b1925b86350e # v2.0.1
         with:
-          version: "1.15.0"
+          version: "1.16.1"
       - name: Install and Build 🔧
         if: github.event.action != 'closed'
         run: |

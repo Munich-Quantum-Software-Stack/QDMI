@@ -107,11 +107,12 @@ If you use QDMI in your research, please cite the following paper:
 
 ```bibtex
 @inproceedings{qdmi,
-    title = {{QDMI -- Quantum Device Management Interface: A Standardized Interface for Quantum Computing Platforms}},
+    title = {{QDMI -- Quantum Device Management Interface: Hardware-Software Interface for the Munich Quantum Software Stack}},
     shorttitle = {{QDMI -- Quantum Device Management Interface}},
     booktitle = {IEEE International Conference on Quantum Computing and Engineering (QCE)},
     author = {Wille, Robert and Schmid, Ludwig and Stade, Yannick and Echavarria, Jorge and Schulz, Martin and Schulz, Laura and Burgholzer, Lukas},
     date = {2024},
+    doi = {10.1109/QCE60285.2024.10411},
 }
 ```
 
