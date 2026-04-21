@@ -6,6 +6,8 @@ complete list of changes, including minor and patch releases, please refer to th
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-04-21
+
 ### No need to link devices against the QDMI header-only library
 
 As of this release, the QDMI header-only library is no longer required to be linked into QDMI device implementations.
@@ -34,7 +36,7 @@ Device implementations may now be compiled with hidden symbol visibility, which 
 In practice, this means that only symbols explicitly marked for export are accessible from outside the device library.
 
 The header `my_qdmi/export.h` (where `my` is your device prefix) provides the export macro `MY_QDMI_EXPORT`.
-Use this header to control which symbols are part of your public API.
+Use this header to control, which symbols are part of your public API.
 
 All QDMI interface functions are already marked for export in `my_qdmi/device.h`.
 You only need to add `MY_QDMI_EXPORT` manually for additional custom public functions.
@@ -50,6 +52,8 @@ set_target_properties(${QDMI_TARGET_NAME} PROPERTIES
 ```
 
 where `MY` is your device prefix.
+
+## [1.2.2] - 2026-04-20
 
 ### Updated QDMI device template
 
@@ -371,6 +375,8 @@ For quick reference, here are all breaking changes in v1.2.0:
 5. **`QDMI_JOB_STATUS` enum**: Reordered to reflect job lifecycle
 6. **CMake**: Minimum version raised to 3.24
 
-[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.1...HEAD
+[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.2...v1.3.0
+[1.2.2]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.1...v1.2.2
 [1.2.1]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.1.0...v1.2.0

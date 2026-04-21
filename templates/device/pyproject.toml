@@ -16,7 +16,7 @@
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 [build-system]
-requires = ["scikit-build-core>=0.11.6"]
+requires = ["scikit-build-core>=0.12.2"]
 build-backend = "scikit_build_core.build"
 
 [project]
@@ -54,16 +54,16 @@ my-qdmi = "my.qdmi.__main__:main"
 
 [dependency-groups]
 test = [
-  "pytest>=9.0.1",
+  "pytest>=9.0.3",
   "pytest-console-scripts>=1.4.1",
-  "pytest-cov>=7.0.0",
+  "pytest-cov>=7.1.0",
   "pytest-sugar>=1.1.1",
   "pytest-xdist>=3.8.0",
 ]
 dev = [
   {include-group = "test"},
-  "nox>=2025.11.12",
-  "ty==0.0.29",
+  "nox>=v2026.4.10",
+  "ty==0.0.31",
 ]
 
 
@@ -163,19 +163,17 @@ convention = "google"
 
 [tool.cibuildwheel]
 build = "cp3*"
-skip = ["cp313t-*"]
 archs = "auto64"
 test-groups = ["test"]
 test-sources = ["test/python"]
 test-command = "pytest test/python"
-build-frontend = "build[uv]"
-enable = ["cpython-freethreading"]
+build-frontend = "uv"
 
 [tool.cibuildwheel.macos]
 environment = { MACOSX_DEPLOYMENT_TARGET = "11.0" }
 
 [tool.cibuildwheel.windows]
-before-build = "uv pip install delvewheel>=1.11.2"
+before-build = "uv pip install delvewheel>=1.12.0"
 repair-wheel-command = "delvewheel repair -w {dest_dir} {wheel} --namespace-pkg my"
 
 
