@@ -15,10 +15,15 @@ clients compiled against a different minor or major version.
 
 _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#130)._
 
+### Added
+
+- 👨‍💻 Add an option to disable installation instructions for QDMI (example and template) device ([#326]) ([\@ystade])
+
 ### Changed
 
 - 🚸 Export _all_ device headers (incl. `constants.h`) as part of device implementations such that they do not need to link against the header-only QDMI library anymore ([#325], [#373]) ([\@ystade], [\@burgholzer])
 - 🚸 Add a symbol-export header (`export.h`) for compiling devices with hidden symbol visibility ([#334], [#375], [#377]) ([\@burgholzer])
+- - 👨‍💻 Base the example device implementation on the device template ([#326]) ([\@ystade], [\@burgholzer])
 
 ## [1.2.2] - 2026-04-20
 
@@ -150,6 +155,7 @@ changelogs._
 [#354]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/354
 [#334]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/334
 [#333]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/333
+[#326]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/326
 [#325]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/325
 [#285]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/285
 [#275]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/275

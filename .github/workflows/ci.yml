@@ -49,8 +49,7 @@ jobs:
     with:
       clang-version: 21
       cpp-linter-extra-args: "-std=c++20"
-      # do not try to build docs in linter builds
-      cmake-args: "-DBUILD_QDMI_DOCS=OFF"
+      cmake-args: "-DBUILD_CXX_QDMI_TESTS=ON"
 
   template:
     name: 🏗️ Build and Test Templates

@@ -25,11 +25,6 @@ enable_language(CXX)
 add_subdirectory(utils)
 
 # ------------------------------------------------------------------------------
-# Non-Functional Tests
-# ------------------------------------------------------------------------------
-generate_device_defs_executable("CXX" TARGET cxx_device)
-
-# ------------------------------------------------------------------------------
 # Functional Tests
 # ------------------------------------------------------------------------------
 
@@ -57,12 +52,9 @@ gtest_discover_tests(
   PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
              DISCOVERY_TIMEOUT 60)
 
-# ensure cxx_device are built whenever qdmi_test is built. Those targets build
-# the dynamic libraries that are loaded in the tests.
-add_dependencies(qdmi_test cxx_device)
-# ensure qdmi_test_cxx_device_defs are built whenever qdmi_test is built. Those
-# targets ensure that the respective devices implement all interface functions.
-add_dependencies(qdmi_test qdmi_test_cxx_device_defs)
+# ensure cxx-qdmi-device are built whenever qdmi_test is built. Those targets
+# build the dynamic libraries that are loaded in the tests.
+add_dependencies(qdmi_test cxx-qdmi-device)
 # ensure my_device_test is built whenever qdmi_test is built. That target
 # ensures that there is no compilation error in the templates provided with QDMI
 # and their tests.

@@ -22,10 +22,6 @@ generate_prefixed_qdmi_headers(${QDMI_PREFIX})
 
 # Collect source files
 file(GLOB_RECURSE SRC_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
-# cmake-format: off
-# TODO: Uncomment the following line if you have private headers to include
-# file(GLOB_RECURSE PRIVATE_HEADER_FILES "${PROJECT_SOURCE_DIR}/include/*.hpp")
-# cmake-format: on
 file(GLOB_RECURSE PUBLIC_HEADER_FILES "${CMAKE_CURRENT_BINARY_DIR}/include/*.h")
 
 add_library(${QDMI_TARGET_NAME} SHARED)
@@ -45,17 +41,6 @@ target_sources(${QDMI_TARGET_NAME} PRIVATE ${SRC_FILES})
 
 target_sources(
   ${QDMI_TARGET_NAME}
-  # cmake-format: off
-  # TODO: Uncomment the following block if you have private headers to include
-  #    PRIVATE FILE_SET
-  #    private_headers
-  #    TYPE
-  #    HEADERS
-  #    BASE_DIRS
-  #    ${PROJECT_SOURCE_DIR}/include
-  #    FILES
-  #    ${PRIVATE_HEADER_FILES}
-  # cmake-format: on
   PUBLIC FILE_SET
          public_headers
          TYPE
@@ -87,7 +72,7 @@ write_basic_package_version_file(
   VERSION ${PROJECT_VERSION}
   COMPATIBILITY SameMinorVersion)
 
-if(INSTALL_MY_QDMI_DEVICE)
+if(INSTALL_CXX_QDMI_DEVICE)
   install(
     FILES "${CMAKE_CURRENT_BINARY_DIR}/${QDMI_TARGET_NAME}-config.cmake"
           "${CMAKE_CURRENT_BINARY_DIR}/${QDMI_TARGET_NAME}-config-version.cmake"
