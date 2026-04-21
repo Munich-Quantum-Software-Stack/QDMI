@@ -11,10 +11,14 @@ clients compiled against a different minor or major version.
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-04-21
+
+_If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#130)._
+
 ### Changed
 
 - 🚸 Export _all_ device headers (incl. `constants.h`) as part of device implementations such that they do not need to link against the header-only QDMI library anymore ([#325], [#373]) ([\@ystade], [\@burgholzer])
-- 🚸 Add a symbol-export header for compiling devices with hidden symbol visibility ([#334], [#375], [#377]) ([\@burgholzer])
+- 🚸 Add a symbol-export header (`export.h`) for compiling devices with hidden symbol visibility ([#334], [#375], [#377]) ([\@burgholzer])
 
 ## [1.2.2] - 2026-04-20
 
@@ -129,7 +133,8 @@ changelogs._
 
 <!-- Version links -->
 
-[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.2...HEAD
+[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.3.0
 [1.2.2]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.2.2
 [1.2.1]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.2.1
 [1.2.0]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.2.0
