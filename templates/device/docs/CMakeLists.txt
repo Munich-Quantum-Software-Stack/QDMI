@@ -31,7 +31,7 @@ set(DOXYGEN_INPUT_DIRS ${PROJECT_SOURCE_DIR}/include
 # the cached result when the target `docs` is built.
 
 file(GLOB_RECURSE DOXYGEN_INPUT_FILES ${PROJECT_SOURCE_DIR}/include/*.hpp
-     ${PROJECT_BINARY_DIR}/src/include/my_qdmi/device.h
+     ${PROJECT_BINARY_DIR}/src/include/my_qdmi/*.h
      ${CMAKE_CURRENT_SOURCE_DIR}/*.md ${PROJECT_SOURCE_DIR}/.github/*.md)
 # After the variable above is correctly initialized, we can add the additional
 # files that are not source code but still part of the documentation. IMPORTANT:

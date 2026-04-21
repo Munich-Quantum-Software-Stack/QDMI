@@ -15,10 +15,15 @@ clients compiled against a different minor or major version.
 
 _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#130)._
 
+### Added
+
+- 👨‍💻 Add an option to disable installation instructions for QDMI (example and template) device ([#326]) ([\@ystade])
+
 ### Changed
 
 - 🚸 Export _all_ device headers (incl. `constants.h`) as part of device implementations such that they do not need to link against the header-only QDMI library anymore ([#325], [#373]) ([\@ystade], [\@burgholzer])
 - 🚸 Add a symbol-export header (`export.h`) for compiling devices with hidden symbol visibility ([#334], [#375], [#377]) ([\@burgholzer])
+- - 👨‍💻 Base the example device implementation on the device template ([#326]) ([\@ystade], [\@burgholzer])
 
 ## [1.2.2] - 2026-04-20
 
@@ -26,7 +31,6 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#122)._
 
 ### Added
 
-- 👨‍💻 Add an option to disable installation instructions for QDMI (example and template) device ([#326]) ([\@ystade])
 - 👷 Add mergify configuration for easier backports and maintenance of release branches ([#355]) ([\@burgholzer])
 - 🤖 Add policy for AI usage within the project ([#354]) ([\@burgholzer])
 
@@ -35,7 +39,6 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#122)._
 - 🚸 Increase robustness of the QDMI device template (complete install instructions, uv caching, code cleanup) ([#333]) ([\@burgholzer])
 - 📝 Improve contributing guidelines and documentation ([#354]) ([\@burgholzer])
 - 📝 Improve documentation of the QDMI device template ([#354]) ([\@burgholzer])
-- 👨‍💻 Base the example device implementation on the device template ([#326]) ([\@ystade])
 
 ### Fixed
 
