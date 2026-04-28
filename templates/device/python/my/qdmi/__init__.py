@@ -17,6 +17,7 @@
 
 """Python wrapper for exposing the MY QDMI device library."""
 
+import sys
 from importlib.metadata import distribution
 from pathlib import Path
 
@@ -29,6 +30,34 @@ def __dir__() -> list[str]:
     return __all__
 
 
+def _resolve_library_dir() -> Path:
+    """Return the directory containing the packaged MY QDMI shared library.
+
+    Raises:
+        FileNotFoundError: If the expected library directory does not exist.
+    """
+    if sys.platform == "win32":
+        library_dir = _MY_QDMI_DATA / "bin"
+        if library_dir.exists():
+            return library_dir
+        msg = f"Expected 'bin' directory for MY QDMI library on Windows, but it does not exist: {library_dir}"
+        raise FileNotFoundError(msg)
+
+    library_dir = _MY_QDMI_DATA / "lib"
+    if library_dir.exists():
+        return library_dir
+
+    library_dir = _MY_QDMI_DATA / "lib64"
+    if library_dir.exists():
+        return library_dir
+
+    msg = (
+        "Expected 'lib' or 'lib64' directory for MY QDMI library on Unix-like systems, "
+        f"but neither exists: {library_dir}"
+    )
+    raise FileNotFoundError(msg)
+
+
 dist = distribution("my-qdmi")
 located_include_dir = dist.locate_file("my/qdmi/data/include/my_qdmi")
 resolved_include_dir = Path(str(located_include_dir)).resolve(strict=True)
@@ -36,12 +65,9 @@ resolved_include_dir = Path(str(located_include_dir)).resolve(strict=True)
 _MY_QDMI_DATA = resolved_include_dir.parents[1]
 assert _MY_QDMI_DATA.exists(), f"MY_QDMI_DATA does not exist: {_MY_QDMI_DATA}"
 
-_MY_QDMI_LIBRARY_DIR = _MY_QDMI_DATA / "lib"
-if not _MY_QDMI_LIBRARY_DIR.exists():
-    _MY_QDMI_LIBRARY_DIR = _MY_QDMI_DATA / "lib64"
-assert _MY_QDMI_LIBRARY_DIR.exists(), f"MY_QDMI_LIBRARY_DIR does not exist: {_MY_QDMI_LIBRARY_DIR}"
+_MY_QDMI_LIBRARY_DIR = _resolve_library_dir()
 
-# the library is the sole file in the lib directory
+# the library is the sole file in the packaged library directory
 library_files = list(_MY_QDMI_LIBRARY_DIR.glob("*my-qdmi-device*"))
 if not library_files:
     msg = f"No MY QDMI library found in: {_MY_QDMI_LIBRARY_DIR}"
