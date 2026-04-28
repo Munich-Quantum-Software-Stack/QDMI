@@ -11,6 +11,10 @@ clients compiled against a different minor or major version.
 
 ## [Unreleased]
 
+### Fixed
+
+- 🐛 Fix Windows shared-library detection in the Python wrappers of the example and template device packages by resolving packaged libraries from `bin` instead of only `lib`/`lib64` ([#409]) ([\@marcelwa])
+
 ## [1.3.0] - 2026-04-21
 
 _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#130)._
@@ -147,6 +151,7 @@ changelogs._
 
 <!-- PR links -->
 
+[#409]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/409
 [#377]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/377
 [#375]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/375
 [#373]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/373
@@ -191,6 +196,7 @@ changelogs._
 [\@ystade]: https://github.com/ystade
 [\@mnfarooqi]: https://github.com/mnfarooqi
 [\@rainij]: https://github.com/rainij
+[\@marcelwa]: https://github.com/marcelwa
 
 <!-- General links -->
 
