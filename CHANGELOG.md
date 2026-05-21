@@ -11,6 +11,11 @@ clients compiled against a different minor or major version.
 
 ## [Unreleased]
 
+### Added
+
+- ✨ Add support for child devices to the QDMI device interface to enable multicore architectures ([#230]) ([\@ystade])
+- ✨ Add support for batch jobs to the QDMI job interface ([#230]) ([\@ystade])
+
 ### Fixed
 
 - 🐛 Fix Windows shared-library detection in the Python wrappers of the example and template device packages by resolving packaged libraries from `bin` instead of only `lib`/`lib64` ([#409]) ([\@marcelwa])
@@ -172,6 +177,7 @@ changelogs._
 [#252]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/252
 [#250]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/250
 [#234]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/234
+[#230]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/230
 [#228]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/228
 [#218]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/218
 [#214]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/214

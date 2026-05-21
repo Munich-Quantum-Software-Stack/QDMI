@@ -116,6 +116,18 @@ enum QDMI_DEVICE_SESSION_PARAMETER_T {
    */
   QDMI_DEVICE_SESSION_PARAMETER_PASSWORD = 5,
   /**
+   * @brief `QDMI_Device` The child device to establish the session with.
+   * @details If the device manages child devices, a QDMI driver can establish
+   * a session with those child devices by setting this session parameter to the
+   * respective @ref QDMI_Device handle.
+   * @par
+   * After initialization of this session, the device will forward any function
+   * call on this session to the job or query interface of the child device.
+   * @note This parameter can be unset by setting this parameter to `NULL`.
+   * @see QDMI_DEVICE_PROPERTY_CHILDDEVICES
+   */
+  QDMI_DEVICE_SESSION_PARAMETER_CHILDDEVICE = 6,
+  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -123,7 +135,7 @@ enum QDMI_DEVICE_SESSION_PARAMETER_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_DEVICE_SESSION_PARAMETER_MAX = 6,
+  QDMI_DEVICE_SESSION_PARAMETER_MAX = 7,
   /**
    * @brief This enum value is reserved for a custom parameter.
    * @details The device defines the meaning and the type of this parameter.
@@ -404,6 +416,20 @@ enum QDMI_DEVICE_PROPERTY_T {
    */
   QDMI_DEVICE_PROPERTY_SUPPORTEDPROGRAMFORMATS = 15,
   /**
+   * @brief `QDMI_Device*` (@ref QDMI_Device list) A list of device handles
+   * corresponding to the device's child devices managed by this device.
+   * @details Some devices may manage multiple child devices, e.g., a
+   * multi-device system or a device with multiple processing units. This
+   * property provides access to the child devices as separate @ref QDMI_Device
+   * handles.
+   * @par
+   * The property may yield @ref QDMI_ERROR_NOTSUPPORTED if the device does not
+   * have any child devices.
+   * @note Devices with child devices may have special job submission handling.
+   * Check the concrete device's job interface documentation.
+   */
+  QDMI_DEVICE_PROPERTY_CHILDDEVICES = 16,
+  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -411,7 +437,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_DEVICE_PROPERTY_MAX = 16,
+  QDMI_DEVICE_PROPERTY_MAX = 17,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.
@@ -984,6 +1010,25 @@ enum QDMI_PROGRAM_FORMAT_T {
    */
   QDMI_PROGRAM_FORMAT_IQMJSON = 8,
   /**
+   * @brief `QDMI_Job*`/`QDMI_Device_Job*` (@ref QDMI_Job list / @ref
+   * QDMI_Device_Job list) A list of jobs within a batch job.
+   * @details This program format is used to submit a batch job, i.e., a job
+   * that consists of multiple sub-jobs. The program must be a list of jobs
+   * created via @ref QDMI_device_create_job or @ref
+   * QDMI_device_session_create_device_job. These jobs must be configured
+   * completely but not submitted. If a batch job contains already submitted
+   * jobs, @ref QDMI_job_submit or @ref QDMI_device_job_submit on the batch job
+   * will return @ref QDMI_ERROR_BADSTATE.
+   * @par
+   * Querying results from a batch job directly is not possible and will result
+   * in @ref QDMI_ERROR_NOTSUPPORTED Instead, the results must be queried from
+   * the individual jobs after they finished. If the device supports it, each
+   * job in the batch can be queried for its status or waited for. However,
+   * in any case, individual jobs in a batch cannot be canceled and this will
+   * result in @ref QDMI_ERROR_NOTSUPPORTED.
+   */
+  QDMI_PROGRAM_FORMAT_BATCHJOB = 9,
+  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -991,7 +1036,7 @@ enum QDMI_PROGRAM_FORMAT_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_PROGRAM_FORMAT_MAX = 9,
+  QDMI_PROGRAM_FORMAT_MAX = 10,
   /**
    * @brief This enum value is reserved for a custom program format.
    * @details The device defines the meaning and the type of this value.
