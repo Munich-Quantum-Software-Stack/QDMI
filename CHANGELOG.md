@@ -176,6 +176,7 @@ changelogs._
 [#252]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/252
 [#250]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/250
 [#234]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/234
+[#230]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/230
 [#228]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/228
 [#218]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/218
 [#214]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/214
