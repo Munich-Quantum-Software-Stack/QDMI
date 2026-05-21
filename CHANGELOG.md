@@ -11,6 +11,10 @@ clients compiled against a different minor or major version.
 
 ## [Unreleased]
 
+### Added
+
+- ✨ Added child devices as device property and batch job as another job format to enable multi-core architectures ([#230]) ([\@ystade])
+
 ### Fixed
 
 - 🐛 Fix Windows shared-library detection in the Python wrappers of the example and template device packages by resolving packaged libraries from `bin` instead of only `lib`/`lib64` ([#409]) ([\@marcelwa])
