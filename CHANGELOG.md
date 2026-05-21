@@ -13,7 +13,8 @@ clients compiled against a different minor or major version.
 
 ### Added
 
-- ✨ Added child devices as device property and batch job as another job format to enable multi-core architectures ([#230]) ([\@ystade])
+- ✨ Add support for child devices to the QDMI device interface to enable multicore architectures ([#230]) ([\@ystade])
+- ✨ Add support for batch jobs to the QDMI job interface ([#230]) ([\@ystade])
 
 ### Fixed
 
