@@ -25,39 +25,21 @@
 var NAVTREE =
 [
   [ "QDMI", "index.html", [
-    [ "User Guide", null, [
+    [ "Getting Started", "index.html", [
+      [ "Overview", "index.html", null ],
       [ "FAQ", "md_docs_2faq.html", null ],
-      [ "Support", "md_docs_2support.html", null ],
-      [ "Rationale", "md_docs_2rationale.html", [
-        [ "The structure of QDMI", "md_docs_2rationale.html#rationale-structure", null ],
-        [ "Why does QDMI use opaque pointers?", "md_docs_2rationale.html#rationale-opaque-pointers", null ],
-        [ "Why does QDMI not define individual functions for each property?", "md_docs_2rationale.html#rationale-properties", null ],
-        [ "Why do device implementations use a prefix?", "md_docs_2rationale.html#rationale-prefix", null ],
-        [ "Why do devices have sessions?", "md_docs_2rationale.html#device-session", null ],
-        [ "Why do sessions need to be initialized after allocation?", "md_docs_2rationale.html#rationale-session-init", null ],
-        [ "Why are there separate kinds of jobs for devices and clients?", "md_docs_2rationale.html#rationale-job-structs", null ],
-        [ "Why are some enum definitions placed in the constants.h header and some are not?", "md_docs_2rationale.html#rationale-enum-definitions", null ],
-        [ "Why are there different kinds of sites?", "md_docs_2rationale.html#rationale-site-types", null ]
-      ] ],
-      [ "Examples", "md_docs_2examples.html", [
-        [ "Implementing a Device", "md_docs_2examples.html#device", [
-          [ "Basic String Properties", "md_docs_2examples.html#device-string", null ],
-          [ "Auxiliary Macros", "md_docs_2examples.html#device-macros", null ],
-          [ "Integer or Enumeration Properties", "md_docs_2examples.html#device-int-enumeration", null ],
-          [ "List Properties", "md_docs_2examples.html#device-list", null ],
-          [ "Complex Properties", "md_docs_2examples.html#device-complex", null ],
-          [ "Submitting a Job", "md_docs_2examples.html#device-submit", null ]
-        ] ]
-      ] ],
-      [ "Template", "md_docs_2templates.html", [
-        [ "Creating a new Project", "md_docs_2templates.html#template-create", null ],
-        [ "Configuring the Template", "md_docs_2templates.html#template-configure", null ],
-        [ "Working with the Template", "md_docs_2templates.html#template-working", null ],
-        [ "Building the Template and Running the Tests", "md_docs_2templates.html#template-building", null ]
-      ] ],
-      [ "Changelog", "md_CHANGELOG.html", null ],
-      [ "Upgrade Guide", "md_UPGRADING.html", null ],
-      [ "Development Guide", "md_docs_2guide.html", null ]
+      [ "Support", "md_docs_2support.html", null ]
+    ] ],
+    [ "User Guides", "md_docs_2rationale.html", [
+      [ "Rationale", "md_docs_2rationale.html", null ],
+      [ "Examples", "md_docs_2examples.html", null ],
+      [ "Template", "md_docs_2templates.html", null ]
+    ] ],
+    [ "Changelog", "md_CHANGELOG.html", null ],
+    [ "Upgrade Guide", "md_UPGRADING.html", null ],
+    [ "Development", "md_docs_2contributing.html", [
+      [ "Contributing Guide", "md_docs_2contributing.html", null ],
+      [ "AI Usage", "md_docs_2ai__usage.html", null ]
     ] ],
     [ "Interfaces", "topics.html", "topics" ],
     [ "API Reference", "files.html", [
@@ -76,8 +58,9 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "client_8h.html",
-"group__client__session__interface.html#ggaac5ae9f0bf8046987569c6f4e75611d3a3e125af4fb52d626a4ff73d81f22cf46"
+"group__client__session__interface.html#gga737948251bac10b8cabf745afe82bd09a73ae64441e44bf03513ab956921c7dbd"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';
 var SYNCOFFMSG = 'click to enable panel synchronization';
+var LISTOFALLMEMBERS = 'List of all members';

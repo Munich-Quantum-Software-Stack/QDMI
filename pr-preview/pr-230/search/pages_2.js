@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['examples_0',['Examples',['../md_docs_2examples.html',1,'']]]
+  ['3_20communication_0',['3. Communication',['../md_docs_2ai__usage.html#communication',1,'']]]
 ];

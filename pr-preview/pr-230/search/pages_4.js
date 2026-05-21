@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['guide_0',['Guide',['../md_docs_2guide.html',1,'Development Guide'],['../md_UPGRADING.html',1,'Upgrade Guide']]]
+  ['5_20licensing_20and_20copyright_0',['5. Licensing and Copyright',['../md_docs_2ai__usage.html#licensing-and-copyright',1,'']]]
 ];
