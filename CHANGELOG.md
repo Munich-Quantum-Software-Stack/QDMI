@@ -11,6 +11,8 @@ clients compiled against a different minor or major version.
 
 ## [Unreleased]
 
+## [1.3.1] - 2026-05-21
+
 ### Added
 
 - ✨ Add support for child devices to the QDMI device interface to enable multicore architectures ([#230]) ([\@ystade])
@@ -147,7 +149,8 @@ changelogs._
 
 <!-- Version links -->
 
-[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.0...HEAD
+[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.1...HEAD
+[1.3.1]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.3.1
 [1.3.0]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.3.0
 [1.2.2]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.2.2
 [1.2.1]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.2.1

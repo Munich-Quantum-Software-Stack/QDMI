@@ -6,6 +6,8 @@ complete list of changes, including minor and patch releases, please refer to th
 
 ## [Unreleased]
 
+## [1.3.1] - 2026-05-21
+
 ### Support for multicore architectures
 
 This release adds three new properties and parameters to the interface to enable support for multicore architectures:
@@ -385,7 +387,8 @@ For quick reference, here are all breaking changes in v1.2.0:
 5. **`QDMI_JOB_STATUS` enum**: Reordered to reflect job lifecycle
 6. **CMake**: Minimum version raised to 3.24
 
-[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.0...HEAD
+[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.1...HEAD
+[1.3.1]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.2...v1.3.0
 [1.2.2]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.1...v1.2.2
 [1.2.1]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.0...v1.2.1
