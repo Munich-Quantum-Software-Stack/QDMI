@@ -11,9 +11,15 @@ on:
       run-linter:
         description: Whether to run the linter
         value: ${{ jobs.change-detection.outputs.run-linter || false }}
+      run-template:
+        description: Whether to run the template job
+        value: ${{ jobs.change-detection.outputs.run-template || false }}
       run-docs:
         description: Whether to run the documentation job
         value: ${{ jobs.change-detection.outputs.run-docs || false }}
+
+permissions:
+  contents: read
 
 jobs:
   change-detection:
@@ -23,13 +29,14 @@ jobs:
     outputs:
       run-tests: ${{ steps.tests-changes.outputs.run-tests || false }}
       run-linter: ${{ steps.linter-changes.outputs.run-linter || false }}
+      run-template: ${{ steps.template-changes.outputs.run-template || false }}
       run-docs: ${{ steps.docs-changes.outputs.run-docs || false }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Get a list of the changed files relevant for the tests
         if: github.event_name == 'pull_request'
         id: changed-testable-files
-        uses: Ana06/get-changed-files@v2.3.0
+        uses: Ana06/get-changed-files@25f79e676e7ea1868813e21465014798211fad8c # v2.3.0
         with:
           filter: |
             include/**
@@ -50,7 +57,7 @@ jobs:
       - name: Get a list of the changed files relevant for the linter
         if: github.event_name == 'pull_request'
         id: changed-linter-files
-        uses: Ana06/get-changed-files@v2.3.0
+        uses: Ana06/get-changed-files@25f79e676e7ea1868813e21465014798211fad8c # v2.3.0
         with:
           filter: |
             include/**
@@ -66,10 +73,28 @@ jobs:
         id: linter-changes
         run: >-
           echo "run-linter=true" >> "${GITHUB_OUTPUT}"
+      - name: Get a list of the changed files relevant for the template job
+        if: github.event_name == 'pull_request'
+        id: changed-template-files
+        uses: Ana06/get-changed-files@25f79e676e7ea1868813e21465014798211fad8c # v2.3.0
+        with:
+          filter: |
+            include/**
+            examples/**
+            templates/**
+            .github/workflows/reusable-template-ci.yml
+            .github/workflows/ci.yml
+      - name: Set a flag for running the template job
+        if: >-
+          github.event_name != 'pull_request' ||
+          steps.changed-template-files.outputs.added_modified_renamed != ''
+        id: template-changes
+        run: >-
+          echo "run-template=true" >> "${GITHUB_OUTPUT}"
       - name: Get a list of the changed files relevant for documentation build
         if: github.event_name == 'pull_request'
         id: changed-docs-files
-        uses: Ana06/get-changed-files@v2.3.0
+        uses: Ana06/get-changed-files@25f79e676e7ea1868813e21465014798211fad8c # v2.3.0
         with:
           filter: |
             include/**

@@ -1,0 +1,185 @@
+# Copyright (c) 2024 - 2026 QDMI Maintainers
+# All rights reserved.
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# https://llvm.org/LICENSE.txt
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations under
+# the License.
+#
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+[build-system]
+requires = ["scikit-build-core>=0.12.2"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "cxx-qdmi"
+version = "0.1.0"
+requires-python = ">=3.10"
+
+description = "Implementation of a CXX QDMI device"
+readme = "README.md"
+authors = [
+  { name = "John Doe", email = "john.doe@example.com" },
+  { name = "Jane Smith", email = "jane.smith@example.com" }
+]
+
+license = "Apache-2.0 WITH LLVM-exception"
+license-files = ["LICENSE"]
+
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Science/Research",
+  "Natural Language :: English",
+  "Operating System :: POSIX :: Linux",
+  "Programming Language :: C++",
+  "Programming Language :: Python",
+  "Typing :: Typed",
+]
+
+[project.urls]
+Homepage = "https://github.com/cxx-org/cxx-qdmi"
+Issues = "https://github.com/cxx-org/cxx-qdmi/issues"
+Discussions = "https://github.com/cxx-org/cxx-qdmi/discussions"
+
+[project.scripts]
+cxx-qdmi = "cxx.qdmi.__main__:main"
+
+[dependency-groups]
+test = [
+  "pytest>=9.0.3",
+  "pytest-console-scripts>=1.4.1",
+  "pytest-cov>=7.1.0",
+  "pytest-sugar>=1.1.1",
+  "pytest-xdist>=3.8.0",
+]
+dev = [
+  {include-group = "test"},
+  "nox>=v2026.4.10",
+  "ty==0.0.31",
+]
+
+
+[tool.scikit-build]
+minimum-version = "build-system.requires"
+cmake.version = "CMakeLists.txt"
+ninja.make-fallback = true
+build-dir = "build/{wheel_tag}/{build_type}"
+build.targets = ["cxx-qdmi-device"]
+wheel.py-api = "py310"
+wheel.expand-macos-universal-tags = true
+wheel.packages = ["python/cxx"]
+wheel.install-dir = "cxx/qdmi/data"
+install.components = ["cxx-qdmi-device_Runtime", "cxx-qdmi-device_Development"]
+
+sdist.include = ["python/cxx/qdmi/_version.py"]
+sdist.exclude = [
+  "**/docs",
+  "**/test",
+  "sitecustomize.py",
+  ".*",
+]
+
+[tool.scikit-build.cmake.define]
+BUILD_CXX_QDMI_DOCS = "OFF"
+BUILD_CXX_QDMI_TESTS = "OFF"
+
+[[tool.scikit-build.generate]]
+path = "cxx/qdmi/_version.py"
+template = '''
+version = "${version}"
+'''
+
+
+[tool.pytest]
+minversion = "9.0"
+strict = true
+addopts = [
+  "-ra",
+  "--numprocesses=auto", # Automatically use all available CPU cores for parallel testing
+]
+filterwarnings = [
+  "error",
+]
+log_level = "INFO"
+testpaths = ["test/python"]
+
+
+[tool.coverage]
+run.source = ["cxx.qdmi"]
+run.disable_warnings = [
+  "no-sysmon",
+]
+report.exclude_also = [
+  '\.\.\.',
+  'if TYPE_CHECKING:',
+  'raise AssertionError',
+  'raise NotImplementedError',
+  'def __dir__()',  # Ignore __dir__ method that exists mainly for better IDE support
+  '@overload'  # Overloads are only for static typing
+]
+
+
+[tool.ruff]
+line-length = 120
+namespace-packages = ["cxx"]
+preview = true
+fix = true
+unsafe-fixes = true
+show-fixes = true
+src = ["python"]
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+  "C90",     # <...> too complex
+  "COM812",  # Conflicts with formatter
+  "PLR09",   # Too many <...>
+  "PLR2004", # Magic value used in comparison
+  "RUF067",  # `__init__` module should only contain docstrings and re-exports
+  "S101",    # Use of assert detected
+  "S404",    # `subprocess` module is possibly insecure
+  "TID252"   # Prefer absolute imports over relative imports from parent modules
+]
+future-annotations = true
+
+[tool.ruff.lint.isort]
+known-first-party = ["cxx.qdmi"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"python/cxx/qdmi/__main__.py" = ["T201"]
+"test/python/**" = ["T20", "INP001"]
+
+
+[tool.cibuildwheel]
+build = "cp3*"
+archs = "auto64"
+test-groups = ["test"]
+test-sources = ["test/python"]
+test-command = "pytest test/python"
+build-frontend = "uv"
+
+[tool.cibuildwheel.macos]
+environment = { MACOSX_DEPLOYMENT_TARGET = "11.0" }
+
+[tool.cibuildwheel.windows]
+before-build = "uv pip install delvewheel>=1.12.0"
+repair-wheel-command = "delvewheel repair -w {dest_dir} {wheel} --namespace-pkg cxx"
+
+
+[tool.uv]
+cache-keys = [
+    { file = "pyproject.toml" },
+    { git = { commit = true, tags = true } },
+    { file = "src/**/*" },
+]

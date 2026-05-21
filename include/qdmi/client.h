@@ -1,20 +1,21 @@
-/*------------------------------------------------------------------------------
-Copyright 2024 Munich Quantum Software Stack Project
-
-Licensed under the Apache License, Version 2.0 with LLVM Exceptions (the
-"License"); you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/develop/LICENSE
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
-License for the specific language governing permissions and limitations under
-the License.
-
-SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
-------------------------------------------------------------------------------*/
+/*
+ * Copyright (c) 2024 - 2026 QDMI Maintainers
+ * All rights reserved.
+ *
+ * Licensed under the Apache License v2.0 with LLVM Exceptions (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://llvm.org/LICENSE.txt
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ *
+ * SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+ */
 
 /** @file
  * @brief Defines the @ref client_interface.
@@ -101,7 +102,7 @@ typedef struct QDMI_Session_impl_d *QDMI_Session;
  * @return @ref QDMI_ERROR_OUTOFMEM if memory space ran out.
  * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
  * @see QDMI_session_set_parameter
- * @see QDMI_session_init
+ *      QDMI_session_init
  */
 int QDMI_session_alloc(QDMI_Session *session);
 
@@ -221,13 +222,13 @@ typedef enum QDMI_SESSION_PARAMETER_T QDMI_Session_Parameter;
  * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
  * @see QDMI_session_init
  *
- * @note By calling this function with @p value set to @c NULL, the function can
- * be used to check if the driver supports the specified parameter without
- * setting a value.
+ * @note @parblock By calling this function with @p value set to @c NULL, the
+ * function can be used to check if the driver supports the specified parameter
+ * without setting a value.
  *
- * @note For example, to check whether the driver supports setting a token for
+ * For example, to check whether the driver supports setting a token for
  * authentication, the following code pattern can be used:
- * ```
+ * @code{.cpp}
  * // Check if the driver supports setting a token.
  * auto ret = QDMI_session_set_parameter(
  *   session, QDMI_SESSION_PARAMETER_TOKEN, 0, nullptr);
@@ -239,7 +240,8 @@ typedef enum QDMI_SESSION_PARAMETER_T QDMI_Session_Parameter;
  * std::string token = "token";
  * ret = QDMI_session_set_parameter(
  *   session, QDMI_SESSION_PARAMETER_TOKEN, token.size() + 1, token.c_str());
- * ```
+ * @endcode
+ * @endparblock
  */
 int QDMI_session_set_parameter(QDMI_Session session,
                                QDMI_Session_Parameter param, size_t size,
@@ -263,7 +265,7 @@ int QDMI_session_set_parameter(QDMI_Session session,
  * initialization, for example, because the session is already initialized.
  * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
  * @see QDMI_session_set_parameter
- * @see QDMI_session_query_session_property
+ *      QDMI_session_query_session_property
  */
 int QDMI_session_init(QDMI_Session session);
 
@@ -334,16 +336,16 @@ typedef enum QDMI_SESSION_PROPERTY_T QDMI_Session_Property;
  * initialized.
  * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
  *
- * @note By calling this function with @p value set to @c NULL, the function
- * can be used to check if the driver supports the specified property without
- * retrieving the property and without the need to provide a buffer for it.
- * Additionally, the size of the buffer needed to retrieve the property will be
- * returned in @p size_ret if @p size_ret is not @c NULL.
+ * @note @parblock By calling this function with @p value set to @c NULL, the
+ * function can be used to check if the driver supports the specified property
+ * without retrieving the property and without the need to provide a buffer for
+ * it. Additionally, the size of the buffer needed to retrieve the property will
+ * be returned in @p size_ret if @p size_ret is not @c NULL.
  *
- * @note
+ *
  * For example, to query the devices available in a session, the following code
  * pattern can be used:
- * ```c
+ * @code{.c}
  * // Query the size of the property.
  * size_t size;
  * auto ret = QDMI_session_query_session_property(
@@ -355,8 +357,9 @@ typedef enum QDMI_SESSION_PROPERTY_T QDMI_Session_Property;
  * // Query the property.
  * ret = QDMI_session_query_session_property(
  *   session, prop, size, static_cast<void*>(devices.data()), nullptr);
- * ```
+ * @endcode
  *
+ * @endparblock
  * @attention May only be called after the session has been successfully
  * initialized with @ref QDMI_session_init.
  */
@@ -408,15 +411,15 @@ void QDMI_session_free(QDMI_Session session);
  *    being queried.
  * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
  *
- * @note By calling this function with @p value set to @c NULL, the function can
- * be used to check if the device supports the specified property without
- * retrieving the property and without the need to provide a buffer for it.
- * Additionally, the size of the buffer needed to retrieve the property is
+ * @note @parblock By calling this function with @p value set to @c NULL, the
+ * function can be used to check if the device supports the specified property
+ * without retrieving the property and without the need to provide a buffer for
+ * it. Additionally, the size of the buffer needed to retrieve the property is
  * returned in @p size_ret if @p size_ret is not @c NULL.
  *
- * @note For example, to query the name of a device, the following code pattern
+ * For example, to query the name of a device, the following code pattern
  * can be used:
- * ```
+ * @code{.cpp}
  * // Query the size of the property.
  * size_t size;
  * QDMI_device_query_device_property(
@@ -428,7 +431,8 @@ void QDMI_session_free(QDMI_Session session);
  * // Query the property.
  * QDMI_device_query_device_property(
  *   device, QDMI_DEVICE_PROPERTY_NAME, size, name.data(), nullptr);
- * ```
+ * @endcode
+ * @endparblock
  */
 int QDMI_device_query_device_property(QDMI_Device device,
                                       QDMI_Device_Property prop, size_t size,
@@ -458,15 +462,15 @@ int QDMI_device_query_device_property(QDMI_Device device,
  *    being queried.
  * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
  *
- * @note By calling this function with @p value set to @c NULL, the function can
- * be used to check if the device supports the specified property without
- * retrieving the property and without the need to provide a buffer for it.
- * Additionally, the size of the buffer needed to retrieve the property is
+ * @note @parblock By calling this function with @p value set to @c NULL, the
+ * function can be used to check if the device supports the specified property
+ * without retrieving the property and without the need to provide a buffer for
+ * it. Additionally, the size of the buffer needed to retrieve the property is
  * returned in @p size_ret if @p size_ret is not @c NULL.
  *
- * @note For example, to query the T1 time of a site, the following code pattern
+ * For example, to query the T1 time of a site, the following code pattern
  * can be used:
- * ```
+ * @code{.cpp}
  * // Check if the device supports the property.
  * auto ret = QDMI_device_query_site_property(
  *   device, site, QDMI_SITE_PROPERTY_T1, 0, nullptr, nullptr);
@@ -479,8 +483,9 @@ int QDMI_device_query_device_property(QDMI_Device device,
  * uint64_t t1;
  * QDMI_device_query_site_property(
  *   device, site, QDMI_SITE_PROPERTY_T1, sizeof(uint64_t), &t1, nullptr);
- * ```
+ * @endcode
  *
+ * @endparblock
  * @remark @ref QDMI_Site handles may be queried via @ref
  * QDMI_device_query_device_property with @ref QDMI_DEVICE_PROPERTY_SITES.
  */
@@ -523,25 +528,25 @@ int QDMI_device_query_site_property(QDMI_Device device, QDMI_Site site,
  *    being queried.
  * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
  *
- * @note By calling this function with @p sites set to @c NULL, the function can
- * be used to query properties of the device that are independent of the sites.
- * A device will return @ref QDMI_ERROR_NOTSUPPORTED if the queried property is
- * site-dependent and @p sites is @c NULL.
+ * @note @parblock By calling this function with @p sites set to @c NULL, the
+ * function can be used to query properties of the device that are independent
+ * of the sites. A device will return @ref QDMI_ERROR_NOTSUPPORTED if the
+ * queried property is site-dependent and @p sites is @c NULL.
  *
- * @note By calling this function with @p params set to @c NULL, the function
+ * By calling this function with @p params set to @c NULL, the function
  * can be used to query properties of the device that are independent of the
  * values of the parameters. A device will return @ref QDMI_ERROR_NOTSUPPORTED
  * if the queried property is parameter-dependent and @p params is @c NULL.
  *
- * @note By calling this function with @p value set to @c NULL, the function can
+ * By calling this function with @p value set to @c NULL, the function can
  * be used to check if the device supports the specified property without
  * retrieving the property and without the need to provide a buffer for it.
  * Additionally, the size of the buffer needed to retrieve the property is
  * returned in @p size_ret if @p size_ret is not @c NULL.
  *
- * @note For example, to query the site-independent fidelity of an operation
+ * For example, to query the site-independent fidelity of an operation
  * without parameters, the following code snippet can be used:
- * ```
+ * @code{.cpp}
  * // Check if the device supports the property.
  * auto ret = QDMI_device_query_operation_property(
  *   device, operation, 0, nullptr, 0, nullptr,
@@ -557,8 +562,9 @@ int QDMI_device_query_site_property(QDMI_Device device, QDMI_Site site,
  * QDMI_device_query_operation_property(
  *   device, operation, 0, nullptr, 0, nullptr,
  *   QDMI_OPERATION_PROPERTY_FIDELITY, sizeof(double), &fidelity, nullptr);
- * ```
+ * @endcode
  *
+ * @endparblock
  * @remark @ref QDMI_Operation and @ref QDMI_Site handles may be queried via
  * @ref QDMI_device_query_device_property with @ref
  * QDMI_DEVICE_PROPERTY_OPERATIONS and @ref QDMI_DEVICE_PROPERTY_SITES,
@@ -709,13 +715,13 @@ typedef enum QDMI_JOB_PARAMETER_T QDMI_Job_Parameter;
  * @return @ref QDMI_ERROR_FATAL if setting the parameter failed due to a fatal
  * error.
  *
- * @note By calling this function with @p value set to @c NULL, the function can
- * be used to check if the driver supports the specified parameter without
- * setting the parameter and without the need to provide a value.
+ * @note @parblock By calling this function with @p value set to @c NULL, the
+ * function can be used to check if the driver supports the specified parameter
+ * without setting the parameter and without the need to provide a value.
  *
- * @note For example, to check whether the device supports setting the number of
+ * For example, to check whether the device supports setting the number of
  * shots for a quantum circuit job, the following code pattern can be used:
- * ```
+ * @code{.cpp}
  * // Check if the device supports setting the number of shots.
  * auto ret = QDMI_job_set_parameter(
  *   job, QDMI_JOB_PARAMETER_SHOTSNUM, 0, nullptr);
@@ -728,7 +734,8 @@ typedef enum QDMI_JOB_PARAMETER_T QDMI_Job_Parameter;
  * size_t shots = 8192;
  * QDMI_job_set_parameter(
  *   job, QDMI_JOB_PARAMETER_SHOTSNUM, sizeof(size_t), &shots);
- * ```
+ * @endcode
+ * @endparblock
  */
 int QDMI_job_set_parameter(QDMI_Job job, QDMI_Job_Parameter param, size_t size,
                            const void *value);
@@ -824,15 +831,15 @@ typedef enum QDMI_JOB_PROPERTY_T QDMI_Job_Property;
  * is not initialized because it has no default value and was not set.
  * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
  *
- * @note By calling this function with @p value set to @c NULL, the function can
- * be used to check if the job supports the specified property without
- * retrieving the property and without the need to provide a buffer for it.
- * Additionally, the size of the buffer needed to retrieve the property is
+ * @note @parblock By calling this function with @p value set to @c NULL, the
+ * function can be used to check if the job supports the specified property
+ * without retrieving the property and without the need to provide a buffer for
+ * it. Additionally, the size of the buffer needed to retrieve the property is
  * returned in @p size_ret if @p size_ret is not @c NULL.
  *
- * @note For example, to query the id of a job, the following code pattern
+ * For example, to query the id of a job, the following code pattern
  * can be used:
- * ```
+ * @code{.cpp}
  * // Query the size of the property.
  * size_t size;
  * QDMI_job_query_property(
@@ -844,7 +851,8 @@ typedef enum QDMI_JOB_PROPERTY_T QDMI_Job_Property;
  * // Query the property.
  * QDMI_job_query_property(
  *   job, QDMI_JOB_PROPERTY_NAME, size, name.data(), nullptr);
- * ```
+ * @endcode
+ * @endparblock
  */
 int QDMI_job_query_property(QDMI_Job job, QDMI_Job_Property prop, size_t size,
                             void *value, size_t *size_ret);
@@ -945,16 +953,15 @@ int QDMI_job_wait(QDMI_Job job, size_t timeout);
  * current session.
  * @return @ref QDMI_ERROR_FATAL if an error occurred during the retrieval.
  *
- * @note By calling this function with @p data set to @c NULL, the function can
- * be used to check if the device supports the specified result without
- * retrieving the result and without the need to provide a buffer for the
- * result.
- * Additionally, the size of the buffer needed to retrieve the result is
- * returned in @p size_ret if @p size_ret is not @c NULL.
+ * @note @parblock By calling this function with @p data set to @c NULL, the
+ * function can be used to check if the device supports the specified result
+ * without retrieving the result and without the need to provide a buffer for
+ * the result. Additionally, the size of the buffer needed to retrieve the
+ * result is returned in @p size_ret if @p size_ret is not @c NULL.
  *
- * @note For example, to query the measurement results of a quantum circuit job,
+ * For example, to query the measurement results of a quantum circuit job,
  * the following code pattern can be used:
- * ```
+ * @code{.cpp}
  * // Query the size of the result.
  * size_t size;
  * auto ret = QDMI_job_get_results(
@@ -966,7 +973,8 @@ int QDMI_job_wait(QDMI_Job job, size_t timeout);
  * // Query the result.
  * QDMI_job_get_results(
  *   job, QDMI_JOB_RESULT_SHOTS, size, shots.data(), nullptr);
- * ```
+ * @endcode
+ * @endparblock
  */
 int QDMI_job_get_results(QDMI_Job job, QDMI_Job_Result result, size_t size,
                          void *data, size_t *size_ret);

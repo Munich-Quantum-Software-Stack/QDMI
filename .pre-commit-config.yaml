@@ -9,6 +9,7 @@
 
 ci:
   autoupdate_commit_msg: "⬆️🪝 update pre-commit hooks"
+  autoupdate_schedule: quarterly
   autofix_commit_msg: "🎨 pre-commit fixes"
 
 repos:
@@ -44,15 +45,21 @@ repos:
       - id: rst-directive-colons
       - id: rst-inline-touching-normal
 
+  # Check for license headers
+  - repo: https://github.com/emzeat/mz-lictools
+    rev: v2.9.0
+    hooks:
+      - id: license-tools
+
   # Check for spelling
   - repo: https://github.com/crate-ci/typos
-    rev: v1.38.0
+    rev: v1.46.2
     hooks:
       - id: typos
 
   # Clang-format the C++ part of the code base automatically
   - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: v21.1.2
+    rev: v22.1.5
     hooks:
       - id: clang-format
         types_or: [c++, c, cuda]
@@ -68,15 +75,11 @@ repos:
 
   # Format configuration files with prettier
   - repo: https://github.com/rbubley/mirrors-prettier
-    rev: v3.6.2
+    rev: v3.8.3
     hooks:
       - id: prettier
         types_or: [yaml, markdown, html, css, scss, javascript, json]
-        args:
-          - --print-width=100
-          - --prose-wrap=always
-          - --tab-width=2
-        exclude: ^docs/header\.html$
+        exclude: docs/header\.html$
 
   # Catch common capitalization mistakes
   - repo: local
@@ -89,7 +92,7 @@ repos:
 
   # Check JSON schemata
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.34.0
+    rev: 0.37.2
     hooks:
       - id: check-dependabot
       - id: check-github-workflows

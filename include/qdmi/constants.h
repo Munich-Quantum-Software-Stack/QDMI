@@ -1,27 +1,29 @@
-/*------------------------------------------------------------------------------
-Copyright 2024 Munich Quantum Software Stack Project
-
-Licensed under the Apache License, Version 2.0 with LLVM Exceptions (the
-"License"); you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/develop/LICENSE
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
-License for the specific language governing permissions and limitations under
-the License.
-
-SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
-------------------------------------------------------------------------------*/
+/*
+ * Copyright (c) 2024 - 2026 QDMI Maintainers
+ * All rights reserved.
+ *
+ * Licensed under the Apache License v2.0 with LLVM Exceptions (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://llvm.org/LICENSE.txt
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ *
+ * SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+ */
 
 /** @file
  * @brief Defines all enums used within QDMI across the @ref client_interface
  * and the @ref device_interface.
  */
 
-#pragma once
+#ifndef QDMI_CONSTANTS_H
+#define QDMI_CONSTANTS_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -402,9 +404,17 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @note Primarily relevant for neutral atom devices supporting dynamic atom
    * arrangement.
    * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
-   * @see QDMI_DEVICE_PROPERTY_LENGTSCALEFACTOR
+   *      QDMI_DEVICE_PROPERTY_LENGTSCALEFACTOR
    */
   QDMI_DEVICE_PROPERTY_MINATOMDISTANCE = 14,
+  /**
+   * @brief `QDMI_Program_Format*` (@ref QDMI_Program_Format list) The program
+   * formats supported by the device.
+   * @details The returned list contains all program formats that the device
+   * supports for execution. A client can use this information to determine
+   * which program formats can be used when submitting jobs to the device.
+   */
+  QDMI_DEVICE_PROPERTY_SUPPORTEDPROGRAMFORMATS = 15,
   /**
    * @brief `QDMI_Device*` (@ref QDMI_Device list) A list of device handles
    * corresponding to the device's child devices managed by this device.
@@ -418,7 +428,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @note Devices with child devices may have special job submission handling.
    * Check the concrete device's job interface documentation.
    */
-  QDMI_DEVICE_PROPERTY_CHILDDEVICES = 15,
+  QDMI_DEVICE_PROPERTY_CHILDDEVICES = 16,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
@@ -427,7 +437,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_DEVICE_PROPERTY_MAX = 16,
+  QDMI_DEVICE_PROPERTY_MAX = 17,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.
@@ -495,7 +505,7 @@ enum QDMI_SITE_PROPERTY_T {
    * @ref QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR property. The resulting value
    * is in units of @ref QDMI_DEVICE_PROPERTY_DURATIONUNIT.
    * @see QDMI_DEVICE_PROPERTY_DURATIONUNIT
-   * @see QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR
+   *      QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR
    */
   QDMI_SITE_PROPERTY_T1 = 1,
   /**
@@ -506,7 +516,7 @@ enum QDMI_SITE_PROPERTY_T {
    * @ref QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR property. The resulting value
    * is in units of @ref QDMI_DEVICE_PROPERTY_DURATIONUNIT.
    * @see QDMI_DEVICE_PROPERTY_DURATIONUNIT
-   * @see QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR
+   *      QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR
    */
   QDMI_SITE_PROPERTY_T2 = 2,
   /**
@@ -528,10 +538,10 @@ enum QDMI_SITE_PROPERTY_T {
    * @note This property is mainly required for neutral atom devices to report
    * the location of sites.
    * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
-   * @see QDMI_DEVICE_PROPERTY_LENGTSCALEFACTOR
-   * @see QDMI_SITE_PROPERTY_XCOORDINATE
-   * @see QDMI_SITE_PROPERTY_YCOORDINATE
-   * @see QDMI_SITE_PROPERTY_ZCOORDINATE
+   *      QDMI_DEVICE_PROPERTY_LENGTSCALEFACTOR
+   *      QDMI_SITE_PROPERTY_XCOORDINATE
+   *      QDMI_SITE_PROPERTY_YCOORDINATE
+   *      QDMI_SITE_PROPERTY_ZCOORDINATE
    */
   QDMI_SITE_PROPERTY_XCOORDINATE = 4,
   /**
@@ -548,10 +558,10 @@ enum QDMI_SITE_PROPERTY_T {
    * @note This property is mainly required for neutral atom devices to report
    * the location of sites.
    * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
-   * @see QDMI_DEVICE_PROPERTY_LENGTSCALEFACTOR
-   * @see QDMI_SITE_PROPERTY_XCOORDINATE
-   * @see QDMI_SITE_PROPERTY_YCOORDINATE
-   * @see QDMI_SITE_PROPERTY_ZCOORDINATE
+   *      QDMI_DEVICE_PROPERTY_LENGTSCALEFACTOR
+   *      QDMI_SITE_PROPERTY_XCOORDINATE
+   *      QDMI_SITE_PROPERTY_YCOORDINATE
+   *      QDMI_SITE_PROPERTY_ZCOORDINATE
    */
   QDMI_SITE_PROPERTY_YCOORDINATE = 5,
   /**
@@ -568,10 +578,10 @@ enum QDMI_SITE_PROPERTY_T {
    * @note This property is mainly required for neutral atom devices to report
    * the location of sites.
    * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
-   * @see QDMI_DEVICE_PROPERTY_LENGTSCALEFACTOR
-   * @see QDMI_SITE_PROPERTY_XCOORDINATE
-   * @see QDMI_SITE_PROPERTY_YCOORDINATE
-   * @see QDMI_SITE_PROPERTY_ZCOORDINATE
+   *      QDMI_DEVICE_PROPERTY_LENGTSCALEFACTOR
+   *      QDMI_SITE_PROPERTY_XCOORDINATE
+   *      QDMI_SITE_PROPERTY_YCOORDINATE
+   *      QDMI_SITE_PROPERTY_ZCOORDINATE
    */
   QDMI_SITE_PROPERTY_ZCOORDINATE = 6,
   /**
@@ -580,15 +590,15 @@ enum QDMI_SITE_PROPERTY_T {
    * just a point in space as a regular site. These kind of sites, namely zones,
    * are required to adequately represent global operations that act on all
    * qubits within a certain area, i.e., a zone.
-   * @note Zones are typically used in neutral atom devices, where the atoms are
-   * arranged in a 2D or 3D lattice, and operations can be applied to all
-   * atoms within a certain zone.
-   * @note This property defaults to `false`, i.e., if a device reports @ref
-   * QDMI_ERROR_NOTSUPPORTED for this property, it is assumed that the site is
-   * a regular site and not a zone.
+   * @note @parblock Zones are typically used in neutral atom devices, where the
+   * atoms are arranged in a 2D or 3D lattice, and operations can be applied to
+   * all atoms within a certain zone. This property defaults to `false`, i.e.,
+   * if a device reports @ref QDMI_ERROR_NOTSUPPORTED for this property, it is
+   * assumed that the site is a regular site and not a zone.
+   * @endparblock
    * @see QDMI_SITE_PROPERTY_XEXTENT
-   * @see QDMI_SITE_PROPERTY_YEXTENT
-   * @see QDMI_SITE_PROPERTY_ZEXTENT
+   *      QDMI_SITE_PROPERTY_YEXTENT
+   *      QDMI_SITE_PROPERTY_ZEXTENT
    */
   QDMI_SITE_PROPERTY_ISZONE = 7,
   /**
@@ -599,12 +609,12 @@ enum QDMI_SITE_PROPERTY_T {
    * `scale_factor` is the value of the @ref
    * QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR property. The resulting value is in
    * units of @ref QDMI_DEVICE_PROPERTY_LENGTHUNIT.
-   * @note This property is mainly required for neutral atom devices to
-   * report the extent of zones, see @ref QDMI_SITE_PROPERTY_ISZONE.
-   * @note If the site is not a zone, this property must return @ref
-   * QDMI_ERROR_NOTSUPPORTED.
+   * @note @parblock This property is mainly required for neutral atom devices
+   * to report the extent of zones, see @ref QDMI_SITE_PROPERTY_ISZONE. If the
+   * site is not a zone, this property must return @ref QDMI_ERROR_NOTSUPPORTED.
+   * @endparblock
    * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
-   * @see QDMI_DEVICE_PROPERTY_LENGTSCALEFACTOR
+   *      QDMI_DEVICE_PROPERTY_LENGTSCALEFACTOR
    */
   QDMI_SITE_PROPERTY_XEXTENT = 8,
   /**
@@ -615,12 +625,12 @@ enum QDMI_SITE_PROPERTY_T {
    * `scale_factor` is the value of the @ref
    * QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR property. The resulting value is in
    * units of @ref QDMI_DEVICE_PROPERTY_LENGTHUNIT.
-   * @note This property is mainly required for neutral atom devices to
-   * report the extent of zones, see @ref QDMI_SITE_PROPERTY_ISZONE.
-   * @note If the site is not a zone, this property must return @ref
-   * QDMI_ERROR_NOTSUPPORTED.
+   * @note @parblock This property is mainly required for neutral atom devices
+   * to report the extent of zones, see @ref QDMI_SITE_PROPERTY_ISZONE. If the
+   * site is not a zone, this property must return @ref QDMI_ERROR_NOTSUPPORTED.
+   * @endparblock
    * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
-   * @see QDMI_DEVICE_PROPERTY_LENGTSCALEFACTOR
+   *      QDMI_DEVICE_PROPERTY_LENGTSCALEFACTOR
    */
   QDMI_SITE_PROPERTY_YEXTENT = 9,
   /**
@@ -631,12 +641,12 @@ enum QDMI_SITE_PROPERTY_T {
    * `scale_factor` is the value of the @ref
    * QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR property. The resulting value is in
    * units of @ref QDMI_DEVICE_PROPERTY_LENGTHUNIT.
-   * @note This property is mainly required for neutral atom devices to
-   * report the extent of zones, see @ref QDMI_SITE_PROPERTY_ISZONE.
-   * @note If the site is not a zone, this property must return @ref
-   * QDMI_ERROR_NOTSUPPORTED.
+   * @note @parblock This property is mainly required for neutral atom devices
+   * to report the extent of zones, see @ref QDMI_SITE_PROPERTY_ISZONE. If the
+   * site is not a zone, this property must return @ref QDMI_ERROR_NOTSUPPORTED.
+   * @endparblock
    * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
-   * @see QDMI_DEVICE_PROPERTY_LENGTSCALEFACTOR
+   *      QDMI_DEVICE_PROPERTY_LENGTSCALEFACTOR
    */
   QDMI_SITE_PROPERTY_ZEXTENT = 10,
   /**
@@ -703,7 +713,7 @@ enum QDMI_OPERATION_PROPERTY_T {
    * @ref QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR property. The resulting value
    * is in units of @ref QDMI_DEVICE_PROPERTY_DURATIONUNIT.
    * @see QDMI_DEVICE_PROPERTY_DURATIONUNIT
-   * @see QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR
+   *      QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR
    */
   QDMI_OPERATION_PROPERTY_DURATION = 3,
   /// `double` The fidelity of an operation.
@@ -724,7 +734,7 @@ enum QDMI_OPERATION_PROPERTY_T {
    * infeasible to define a coupling map. Instead, the coupling of atoms is
    * defined by the interaction radius of the operation.
    * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
-   * @see QDMI_DEVICE_PROPERTY_LENGTSCALEFACTOR
+   *      QDMI_DEVICE_PROPERTY_LENGTSCALEFACTOR
    */
   QDMI_OPERATION_PROPERTY_INTERACTIONRADIUS = 5,
   /**
@@ -743,7 +753,7 @@ enum QDMI_OPERATION_PROPERTY_T {
    * crosstalk, the blocking radius of the operation must be respected when
    * scheduling operations.
    * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
-   * @see QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR
+   *      QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR
    */
   QDMI_OPERATION_PROPERTY_BLOCKINGRADIUS = 6,
   /**
@@ -770,7 +780,7 @@ enum QDMI_OPERATION_PROPERTY_T {
    * @note This property is primarily relevant for neutral atom devices, where a
    * laser can illuminate an entire array of atoms representing qubits.
    * @see QDMI_SITE_PROPERTY_ISZONE
-   * @see QDMI_OPERATION_PROPERTY_SITES
+   *      QDMI_OPERATION_PROPERTY_SITES
    */
   QDMI_OPERATION_PROPERTY_ISZONED = 8,
   /**
@@ -799,9 +809,9 @@ enum QDMI_OPERATION_PROPERTY_T {
    * @note This property is mainly required for neutral atom devices where atoms
    * representing qubits can be moved to different sites.
    * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
-   * @see QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR
-   * @see QDMI_DEVICE_PROPERTY_DURATIONUNIT
-   * @see QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR
+   *      QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR
+   *      QDMI_DEVICE_PROPERTY_DURATIONUNIT
+   *      QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR
    */
   QDMI_OPERATION_PROPERTY_MEANSHUTTLINGSPEED = 10,
   /**
@@ -983,6 +993,23 @@ enum QDMI_PROGRAM_FORMAT_T {
    */
   QDMI_PROGRAM_FORMAT_CALIBRATION = 6,
   /**
+   * @brief `void*` A QPY program.
+   * @details A binary representation of a Qiskit `QuantumCircuit` in the
+   * [QPY format](https://quantum.cloud.ibm.com/docs/en/api/qiskit/qpy).
+   *
+   * @see QDMI_PROGRAM_FORMAT_QASM3 for more information on the expected
+   * behavior of devices supporting this format.
+   */
+  QDMI_PROGRAM_FORMAT_QPY = 7,
+  /**
+   * @brief `char*` (string) A program in the IQM data transfer format.
+   * @details A text-based, proprietary representation of a quantum circuit in
+   * the [IQM data transfer
+   * format](https://docs.meetiqm.com/iqm-client/api/iqm.iqm_client.models.html),
+   * encoded as a JSON string.
+   */
+  QDMI_PROGRAM_FORMAT_IQMJSON = 8,
+  /**
    * @brief `QDMI_Job*`/`QDMI_Device_Job*` (@ref QDMI_Job list / @ref
    * QDMI_Device_Job list) A list of jobs within a batch job.
    * @details This program format is used to submit a batch job, i.e., a job
@@ -1000,7 +1027,7 @@ enum QDMI_PROGRAM_FORMAT_T {
    * in any case, individual jobs in a batch cannot be canceled and this will
    * result in @ref QDMI_ERROR_NOTSUPPORTED.
    */
-  QDMI_PROGRAM_FORMAT_BATCHJOB = 7,
+  QDMI_PROGRAM_FORMAT_BATCHJOB = 9,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
@@ -1009,7 +1036,7 @@ enum QDMI_PROGRAM_FORMAT_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_PROGRAM_FORMAT_MAX = 8,
+  QDMI_PROGRAM_FORMAT_MAX = 10,
   /**
    * @brief This enum value is reserved for a custom program format.
    * @details The device defines the meaning and the type of this value.
@@ -1088,7 +1115,7 @@ enum QDMI_JOB_RESULT_T {
    * @details The complex amplitudes are stored in the same way as the dense
    * state vector, but only for the non-zero amplitudes.
    * @see QDMI_JOB_RESULT_STATEVECTOR_DENSE
-   * @see QDMI_JOB_RESULT_STATEVECTOR_SPARSE_KEYS
+   *      QDMI_JOB_RESULT_STATEVECTOR_SPARSE_KEYS
    */
   QDMI_JOB_RESULT_STATEVECTOR_SPARSE_VALUES = 6,
   /**
@@ -1106,7 +1133,7 @@ enum QDMI_JOB_RESULT_T {
    * @details The probabilities are stored in the same way as the dense
    * probabilities, but only for the non-zero probabilities.
    * @see QDMI_JOB_RESULT_PROBABILITIES_DENSE
-   * @see QDMI_JOB_RESULT_PROBABILITIES_SPARSE_KEYS
+   *      QDMI_JOB_RESULT_PROBABILITIES_SPARSE_KEYS
    */
   QDMI_JOB_RESULT_PROBABILITIES_SPARSE_VALUES = 8,
   /**
@@ -1182,3 +1209,5 @@ typedef enum QDMI_DEVICE_PULSE_SUPPORT_LEVEL_T QDMI_Device_Pulse_Support_Level;
 #ifdef __cplusplus
 } // extern "C"
 #endif
+
+#endif // QDMI_CONSTANTS_H

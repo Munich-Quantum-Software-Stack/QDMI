@@ -1,25 +1,26 @@
-/*------------------------------------------------------------------------------
-Copyright 2024 Munich Quantum Software Stack Project
-
-Licensed under the Apache License, Version 2.0 with LLVM Exceptions (the
-"License"); you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/develop/LICENSE
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
-License for the specific language governing permissions and limitations under
-the License.
-
-SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
-------------------------------------------------------------------------------*/
+/*
+ * Copyright (c) 2024 - 2026 QDMI Maintainers
+ * All rights reserved.
+ *
+ * Licensed under the Apache License v2.0 with LLVM Exceptions (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://llvm.org/LICENSE.txt
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ *
+ * SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+ */
 
 /** @file
  * @brief A simple example of a device implementation in C++.
  * @details This file can be used as a template for implementing a device in
- * C++. For more implemented functions, see also the \ref device5.c file.
+ * C++.
  */
 
 #include "cxx_qdmi/device.h"
@@ -28,6 +29,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include <array>
 #include <cmath>
 #include <complex>
+#include <cstddef>
 #include <cstdint>
 #include <cstring>
 #include <functional>
@@ -35,19 +37,29 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #include <limits>
 #include <map>
 #include <random>
+#include <ranges>
 #include <string>
 #include <unordered_map>
 #include <utility>
 #include <vector>
 
-enum class CXX_QDMI_DEVICE_SESSION_STATUS : uint8_t { ALLOCATED, INITIALIZED };
+// NOLINTBEGIN(*-pro-bounds-avoid-unchecked-container-access,*-throwing-static-initialization)
 
+/**
+ * @brief Implementation of the CXX_QDMI_Device_Session structure.
+ * @details This structure can, e.g., be used to store a token to access an API.
+ */
+enum class CXX_QDMI_DEVICE_SESSION_STATUS : uint8_t { ALLOCATED, INITIALIZED };
 struct CXX_QDMI_Device_Session_impl_d {
   std::string token;
   CXX_QDMI_DEVICE_SESSION_STATUS status =
       CXX_QDMI_DEVICE_SESSION_STATUS::ALLOCATED;
 };
 
+/**
+ * @brief Implementation of the CXX_QDMI_Device_Job structure.
+ * @details This structure can, e.g., be used to store the job id.
+ */
 struct CXX_QDMI_Device_Job_impl_d {
   CXX_QDMI_Device_Session session = nullptr;
   int id = 0;
@@ -69,10 +81,18 @@ struct CXX_QDMI_Device_State {
       std::uniform_real_distribution<>(-1.0, 1.0);
 };
 
+/**
+ * @brief Implementation of the CXX_QDMI_Site structure.
+ * @details This structure can, e.g., be used to store the site id.
+ */
 struct CXX_QDMI_Site_impl_d {
   size_t id;
 };
 
+/**
+ * @brief Implementation of the CXX_QDMI_Operation structure.
+ * @details This structure can, e.g., be used to store the operation id.
+ */
 struct CXX_QDMI_Operation_impl_d {
   std::string name;
 };
@@ -211,6 +231,10 @@ const std::unordered_map<
           {{CXX_DEVICE_SITES[0], CXX_DEVICE_SITES[4]}, 0.95}}},
         // No need to specify single-qubit fidelities here
 };
+
+constexpr std::array SUPPORTED_PROGRAM_FORMATS = {
+    QDMI_PROGRAM_FORMAT_QASM2, QDMI_PROGRAM_FORMAT_QIRBASESTRING,
+    QDMI_PROGRAM_FORMAT_QIRBASEMODULE, QDMI_PROGRAM_FORMAT_CALIBRATION};
 } // namespace
 
 // NOLINTBEGIN(bugprone-macro-parentheses)
@@ -459,8 +483,8 @@ int CXX_QDMI_device_job_submit(CXX_QDMI_Device_Job job) {
   for (size_t i = 0; i < job->num_shots; ++i) {
     // generate random bitstring
     std::string result(num_qubits, '0');
-    std::generate(result.begin(), result.end(),
-                  [&]() { return CXX_QDMI_generate_bit() ? '1' : '0'; });
+    std::ranges::generate(
+        result, [&]() { return CXX_QDMI_generate_bit() ? '1' : '0'; });
     job->results.emplace_back(std::move(result));
   }
   // Generate random complex numbers and calculate the norm
@@ -526,7 +550,7 @@ int CXX_QDMI_device_job_get_results_shots(CXX_QDMI_Device_Job job,
     }
     auto *data_ptr = static_cast<char *>(data);
     for (auto it = job->results.begin(); it != job->results.end(); ++it) {
-      data_ptr = std::copy(it->begin(), it->end(), data_ptr);
+      data_ptr = std::ranges::copy(*it, data_ptr).out;
       if (std::next(it) != job->results.end()) {
         *data_ptr++ = ','; // Add comma separator
       } else {
@@ -561,8 +585,8 @@ int CXX_QDMI_device_job_get_results_hist(CXX_QDMI_Device_Job job,
         return QDMI_ERROR_INVALIDARGUMENT;
       }
       char *data_ptr = static_cast<char *>(data);
-      for (const auto &[bitstring, count] : hist) {
-        std::copy(bitstring.begin(), bitstring.end(), data_ptr);
+      for (const auto &bitstring : hist | std::views::keys) {
+        std::ranges::copy(bitstring, data_ptr);
         data_ptr += bitstring.length();
         *data_ptr++ = ',';
       }
@@ -579,7 +603,7 @@ int CXX_QDMI_device_job_get_results_hist(CXX_QDMI_Device_Job job,
         return QDMI_ERROR_INVALIDARGUMENT;
       }
       auto *data_ptr = static_cast<size_t *>(data);
-      for (const auto &[_, count] : hist) {
+      for (const auto &count : hist | std::views::values) {
         *data_ptr++ = count;
       }
     }
@@ -753,10 +777,12 @@ int CXX_QDMI_device_session_query_device_property(
   }
   ADD_STRING_PROPERTY(QDMI_DEVICE_PROPERTY_NAME, "C++ Device with 5 qubits",
                       prop, size, value, size_ret)
-  ADD_STRING_PROPERTY(QDMI_DEVICE_PROPERTY_VERSION, "0.1.0", prop, size, value,
-                      size_ret)
-  ADD_STRING_PROPERTY(QDMI_DEVICE_PROPERTY_LIBRARYVERSION, "1.1.0", prop, size,
-                      value, size_ret)
+  // NOLINTNEXTLINE(misc-include-cleaner)
+  ADD_STRING_PROPERTY(QDMI_DEVICE_PROPERTY_VERSION, CXX_QDMI_DEVICE_VERSION,
+                      prop, size, value, size_ret)
+  // NOLINTNEXTLINE(misc-include-cleaner)
+  ADD_STRING_PROPERTY(QDMI_DEVICE_PROPERTY_LIBRARYVERSION, QDMI_VERSION, prop,
+                      size, value, size_ret)
   ADD_SINGLE_VALUE_PROPERTY(QDMI_DEVICE_PROPERTY_STATUS, QDMI_Device_Status,
                             CXX_QDMI_get_device_status(), prop, size, value,
                             size_ret)
@@ -786,6 +812,10 @@ int CXX_QDMI_device_session_query_device_property(
                       value, size_ret)
   ADD_SINGLE_VALUE_PROPERTY(QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR, double,
                             0.001, prop, size, value, size_ret)
+
+  ADD_LIST_PROPERTY(QDMI_DEVICE_PROPERTY_SUPPORTEDPROGRAMFORMATS,
+                    QDMI_Program_Format, SUPPORTED_PROGRAM_FORMATS, prop, size,
+                    value, size_ret)
 
   return QDMI_ERROR_NOTSUPPORTED;
 } /// [DOXYGEN FUNCTION END]
@@ -889,3 +919,5 @@ int CXX_QDMI_device_session_query_operation_property(
   }
   return QDMI_ERROR_NOTSUPPORTED;
 } /// [DOXYGEN FUNCTION END]
+
+// NOLINTEND(*-pro-bounds-avoid-unchecked-container-access,*-throwing-static-initialization)

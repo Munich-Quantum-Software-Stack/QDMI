@@ -1,20 +1,21 @@
-/*------------------------------------------------------------------------------
-Copyright 2024 Munich Quantum Software Stack Project
-
-Licensed under the Apache License, Version 2.0 with LLVM Exceptions (the
-"License"); you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/develop/LICENSE
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
-License for the specific language governing permissions and limitations under
-the License.
-
-SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
-------------------------------------------------------------------------------*/
+/*
+ * Copyright (c) 2024 - 2026 QDMI Maintainers
+ * All rights reserved.
+ *
+ * Licensed under the Apache License v2.0 with LLVM Exceptions (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://llvm.org/LICENSE.txt
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ *
+ * SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+ */
 
 /** @file
  * @brief Defines all types used within QDMI across the @ref client_interface
@@ -44,11 +45,11 @@ extern "C" {
  *
  * A simple example of an implementation is a struct that merely contains the
  * site ID, which can be used to identify the site.
- * ```
+ * @code{.cpp}
  * struct QDMI_Site_impl_d {
  *   size_t id;
  * };
- * ```
+ * @endcode
  */
 typedef struct QDMI_Site_impl_d *QDMI_Site;
 
@@ -63,11 +64,11 @@ typedef struct QDMI_Site_impl_d *QDMI_Site;
  *
  * A simple example of an implementation is a struct that merely contains the
  * name of the operation, which can be used to identify the operation.
- * ```
+ * @code{.cpp}
  * struct QDMI_Operation_impl_d {
  *   std::string name;
  * };
- * ```
+ * @endcode
  */
 typedef struct QDMI_Operation_impl_d *QDMI_Operation;
 

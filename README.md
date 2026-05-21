@@ -1,21 +1,3 @@
-<!----------------------------------------------------------------------------
-Copyright 2024 Munich Quantum Software Stack Project
-
-Licensed under the Apache License, Version 2.0 with LLVM Exceptions (the
-"License"); you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/develop/LICENSE
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
-License for the specific language governing permissions and limitations under
-the License.
-
-SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
--------------------------------------------------------------------------- -->
-
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Munich-Quantum-Software-Stack/QDMI/develop/docs/_static/mqss_logo_dark.svg" width="20%">
@@ -101,7 +83,7 @@ The code is publicly available and hosted on GitHub at
 ### Under which license is QDMI released?
 
 QDMI is released under the Apache License v2.0 with LLVM Exceptions. See
-[LICENSE](https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/develop/LICENSE) for more
+[LICENSE](https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/develop/LICENSE.md) for more
 information. Any contribution to the project is assumed to be under the same license.
 
 ### Why is it written in C and not in Python?
@@ -125,11 +107,12 @@ If you use QDMI in your research, please cite the following paper:
 
 ```bibtex
 @inproceedings{qdmi,
-    title = {{QDMI -- Quantum Device Management Interface: A Standardized Interface for Quantum Computing Platforms}},
+    title = {{QDMI -- Quantum Device Management Interface: Hardware-Software Interface for the Munich Quantum Software Stack}},
     shorttitle = {{QDMI -- Quantum Device Management Interface}},
     booktitle = {IEEE International Conference on Quantum Computing and Engineering (QCE)},
     author = {Wille, Robert and Schmid, Ludwig and Stade, Yannick and Echavarria, Jorge and Schulz, Martin and Schulz, Laura and Burgholzer, Lukas},
     date = {2024},
+    doi = {10.1109/QCE60285.2024.10411},
 }
 ```
 
@@ -137,10 +120,9 @@ If you use QDMI in your research, please cite the following paper:
 
 ## Contact
 
-The development of this project is led by [Laura Schulz](mailto:laura.schulz@lrz.de) (LRZ),
-[Martin Schulz](mailto:martin.w.j.schulz@tum.de) (TUM CAPS), and
-[Robert Wille](mailto:robert.wille@tum.de) (TUM CDA) on the management side and
-[Lukas Burgholzer](mailto:lukas.burgholzer@tum.de) (TUM CDA) as well as
+The development of this project is led by [Martin Schulz](mailto:martin.w.j.schulz@tum.de) (TUM
+CAPS), and [Robert Wille](mailto:robert.wille@tum.de) (TUM CDA / MQSC) on the management side and
+[Lukas Burgholzer](mailto:lukas.burgholzer@tum.de) (TUM CDA / MQSC) as well as
 [Jorge Echavarria](mailto:jorge.echavarria@lrz.de) (LRZ) from the technical side.
 
 Please try to use the publicly accessible GitHub channels

@@ -16,6 +16,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   change-detection:
     name: 🔍 Change
@@ -25,6 +28,9 @@ jobs:
     name: 🇨‌ Test
     needs: change-detection
     if: fromJSON(needs.change-detection.outputs.run-tests) && github.event.action != 'closed'
+    permissions:
+      contents: read
+      id-token: write
     uses: ./.github/workflows/reusable-cpp-ci.yml
     with:
       # do not try to build docs in test builds
@@ -34,14 +40,22 @@ jobs:
 
   linter:
     name: 🇨‌ Lint
+    permissions:
+      contents: read
+      pull-requests: write
     needs: change-detection
     if: fromJSON(needs.change-detection.outputs.run-linter) && github.event.action != 'closed'
-    uses: munich-quantum-toolkit/workflows/.github/workflows/reusable-cpp-linter.yml@v1.17.0
+    uses: munich-quantum-toolkit/workflows/.github/workflows/reusable-cpp-linter.yml@b59d15aa4f266e713afad51e132bde6e3a28a6b3 # v1.18.1
     with:
-      clang-version: 19
-      cpp-linter-extra-args: ""
-      # do not try to build docs in linter builds
-      cmake-args: "-DBUILD_QDMI_DOCS=OFF"
+      clang-version: 21
+      cpp-linter-extra-args: "-std=c++20"
+      cmake-args: "-DBUILD_CXX_QDMI_TESTS=ON"
+
+  template:
+    name: 🏗️ Build and Test Templates
+    needs: change-detection
+    if: fromJSON(needs.change-detection.outputs.run-template) && github.event.action != 'closed'
+    uses: ./.github/workflows/reusable-template-ci.yml
 
   docs:
     name: 📝 Build and Deploy Docs
@@ -59,11 +73,12 @@ jobs:
       - change-detection
       - tests
       - linter
+      - template
       - docs
     runs-on: ubuntu-latest
     steps:
       - name: Decide whether the needed jobs succeeded or failed
-        uses: re-actors/alls-green@release/v1
+        uses: re-actors/alls-green@05ac9388f0aebcb5727afa17fcccfecd6f8ec5fe # v1.2.2
         with:
           allowed-skips: >-
             ${{
@@ -73,7 +88,10 @@ jobs:
               fromJSON(needs.change-detection.outputs.run-linter)
               && '' || 'linter,'
             }} ${{
-              fromJSON(needs.change-detection.outputs.run-docs)
+              fromJSON(needs.change-detection.outputs.run-template)
+              && '' || 'template,'
+            }} ${{
+             fromJSON(needs.change-detection.outputs.run-docs)
               && '' || 'docs,'
             }}
           jobs: ${{ toJSON(needs) }}

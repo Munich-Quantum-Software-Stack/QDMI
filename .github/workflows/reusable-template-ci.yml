@@ -1,0 +1,76 @@
+name: 🏗️ Build and Test Templates
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  device-template:
+    name: Build Device Template
+    runs-on: ubuntu-24.04
+    env:
+      CMAKE_BUILD_PARALLEL_LEVEL: 4
+      CTEST_PARALLEL_LEVEL: 4
+      FORCE_COLOR: 3
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          path: qdmi
+      - name: Configure template
+        working-directory: qdmi
+        run: >
+          cmake -DQDMI_GENERATE_TEMPLATE=ON \
+                -DTEMPLATE_PREFIX="MQSS" \
+                -DTEMPLATE_PATH="$GITHUB_WORKSPACE" \
+                -S . -B build
+      - name: Generate template
+        working-directory: qdmi
+        run: cmake --build build --target qdmi-template
+      - name: Delete source repository and build directory
+        run: |
+          rm -rf qdmi build
+      - name: Initialize as git repository (with main as branch name) and commit
+        run: |
+          git config --global init.defaultBranch main
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git init
+          git add .
+          git commit -m "🎉 Initial commit"
+      - name: Build template
+        run: |
+          cmake -G Ninja -S . -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_MQSS_QDMI_TESTS=ON
+          cmake --build build --config Release
+      - name: Install Doxygen
+        uses: ssciwr/doxygen-install@329d88f5a303066a5bd006db7516b1925b86350e # v2.0.1
+        with:
+          version: "1.15.0"
+      - name: Build docs
+        run: |
+          cmake -G Ninja -S . -B build_docs -DCMAKE_BUILD_TYPE=Release -DBUILD_MQSS_QDMI_DOCS=ON -DBUILD_MQSS_QDMI_TESTS=OFF
+          cmake --build build_docs --config Release --target mqss_qdmi_device_docs
+          rm -rf build_docs
+      - uses: pypa/cibuildwheel@8d2b08b68458a16aeb24b64e68a09ab1c8e82084 # v3.4.1
+      - name: Verify clean directory
+        run: git diff --exit-code
+      - name: Upload wheels
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ${{ github.event_name == 'pull_request' && 'dev-' || '' }}cibw-wheels-${{ runner.runs-on }}
+          path: wheelhouse/*.whl
+      - name: Install the latest version of uv
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+        with:
+          enable-cache: true
+          save-cache: ${{ github.ref == 'refs/heads/main' }}
+      - name: Build SDist
+        run: uv build --sdist
+      - name: Check metadata
+        run: uvx twine check dist/*
+      - name: Run check-sdist
+        run: uvx check-sdist --inject-junk
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ${{ github.event_name == 'pull_request' && 'dev-' || '' }}cibw-sdist
+          path: dist/*.tar.gz

@@ -7,6 +7,9 @@ on:
         default: ""
         type: string
 
+permissions:
+  contents: read
+
 jobs:
   cpp-tests-install:
     name: ${{ matrix.name }} ${{ matrix.os }}
@@ -17,7 +20,7 @@ jobs:
           - name: 🐧
             os: ubuntu-latest
           - name: 🍎
-            os: macos-13
+            os: macos-15-intel
           - name: 🍎
             os: macos-14
       fail-fast: false
@@ -27,37 +30,39 @@ jobs:
       FORCE_COLOR: 3
     steps:
       # check out the repository (including submodules and all history)
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           submodules: recursive
           fetch-depth: 0
       # set up ccache for faster C++ builds
       - name: Setup ccache
-        uses: Chocobo1/setup-ccache-action@v1
+        uses: Chocobo1/setup-ccache-action@7e813cbdf161f77737576f5c370b2810dbae058c # v1.5.7
         with:
           prepend_symlinks_to_path: false
           override_cache_key: c++-tests-install-${{ matrix.os }}
       # set up mold as linker for faster C++ builds
       - name: Set up mold as linker
-        uses: rui314/setup-mold@v1
+        uses: rui314/setup-mold@9c9c13bf4c3f1adef0cc596abc155580bcb04444 # v1
       # make sure ninja is installed
       - name: Install Ninja
         run: pipx install ninja
       # configure CMake
       - name: Configure CMake for QDMI Installation
         run: cmake -S . -B install-build -DCMAKE_BUILD_TYPE=Release ${{ inputs.cmake-args }}
+      # build the project
+      - name: Build the project
+        run: cmake --build install-build --config Release
       # install the project
       - name: Install QDMI
         run: cmake --install install-build --prefix install-dir
       # configure CMake for using the installed QDMI
       - name: Configure CMake for use of installed QDMI
         run:
-          cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DUSE_INSTALLED_QDMI=ON
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DUSE_INSTALLED_QDMI=ON -DBUILD_CXX_QDMI_TESTS=ON
           -DCMAKE_PREFIX_PATH=install-dir ${{ inputs.cmake-args }}
       # build the project
       - name: Build QDMI examples, templates, and tests with installed QDMI
         run: cmake --build build --config Release
       # run the tests
       - name: Test
-        run:
-          ctest -C Release --output-on-failure --test-dir build --repeat until-pass:3 --timeout 600
+        run: ctest -C Release --output-on-failure --test-dir build --repeat until-pass:3 --timeout 600

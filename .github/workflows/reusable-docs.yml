@@ -10,27 +10,33 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v5
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Install Doxygen
         if: github.event.action != 'closed'
-        uses: ssciwr/doxygen-install@v1
+        uses: ssciwr/doxygen-install@329d88f5a303066a5bd006db7516b1925b86350e # v2.0.1
         with:
-          version: "1.13.2"
+          version: "1.16.1"
       - name: Install and Build 🔧
         if: github.event.action != 'closed'
         run: |
           cmake -S . -B build -DBUILD_QDMI_DOCS=ON
-          cmake --build build --target qdmi_docs
+          cmake --build build --target qdmi-docs
           mv build/docs/html/ static
+      - name: Inject version selector
+        if: github.event.action != 'closed'
+        run: |
+          chmod +x .github/scripts/inject-version-selector.sh
+          .github/scripts/inject-version-selector.sh static
       - name: Deploy preview 🚀 (for PRs; not for forks)
         if: github.event.pull_request.head.repo.full_name == github.repository
-        uses: rossjrw/pr-preview-action@v1
+        uses: rossjrw/pr-preview-action@ffa7509e91a3ec8dfc2e5536c4d5c1acdf7a6de9 # v1.8.1
         with:
           source-dir: ./static/
       - name: Deploy 🚀
         if: github.ref == 'refs/heads/develop' && github.event.action != 'closed'
-        uses: JamesIves/github-pages-deploy-action@v4
+        uses: JamesIves/github-pages-deploy-action@d92aa235d04922e8f08b40ce78cc5442fcfbfa2f # v4.8.0
         with:
           folder: static
+          target-folder: latest
           clean-exclude: pr-preview/
           force: false

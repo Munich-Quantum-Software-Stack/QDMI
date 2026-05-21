@@ -1,20 +1,21 @@
-/*------------------------------------------------------------------------------
-Copyright 2024 Munich Quantum Software Stack Project
-
-Licensed under the Apache License, Version 2.0 with LLVM Exceptions (the
-"License"); you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/develop/LICENSE
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
-License for the specific language governing permissions and limitations under
-the License.
-
-SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
-------------------------------------------------------------------------------*/
+/*
+ * Copyright (c) 2024 - 2026 QDMI Maintainers
+ * All rights reserved.
+ *
+ * Licensed under the Apache License v2.0 with LLVM Exceptions (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://llvm.org/LICENSE.txt
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ *
+ * SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+ */
 
 /** @file
  * @brief An example driver implementation in C++.
@@ -47,7 +48,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
  * @note The values of this enum are meant to be used as bitflags. Hence, their
  * values must be powers of 2.
  */
-enum QDMI_DEVICE_MODE : uint8_t {
+enum class QDMI_DEVICE_MODE : uint8_t {
   /// Only gives read access to the device.
   QDMI_DEVICE_MODE_READONLY = 0b0,
   /// Gives read and write access to the device.
@@ -230,19 +231,37 @@ void QDMI_library_load(const std::string &lib_name, const std::string &prefix) {
 }
 
 bool Is_path_allowed(const std::filesystem::path &path) {
-  // Define the allowlist of allowed directories
-  const std::vector<std::filesystem::path> allowlist = {
-      std::filesystem::current_path(),
-      std::filesystem::path(std::getenv("HOME"))};
+  // Construct the allowlist of canonical allowed directories, skipping any
+  // nullptr "HOME" values.
+  std::vector allowlist{
+      std::filesystem::canonical(std::filesystem::current_path())};
+  if (const char *home_env = std::getenv("HOME"); home_env != nullptr) {
+    // Only add HOME to the allowlist if it is set and points to a valid
+    // directory
+    try {
+      allowlist.emplace_back(
+          std::filesystem::canonical(std::filesystem::path(home_env)));
+    } catch (const std::filesystem::filesystem_error &) {
+      std::cerr << "Ignoring invalid HOME environment variable: " << home_env
+                << '\n';
+    }
+  }
 
-  // Resolve the provided path to its absolute form
-  std::filesystem::path resolved_path = std::filesystem::absolute(path);
+  // Canonicalize the provided path, but only if it exists.
+  std::filesystem::path resolved_path;
+  try {
+    resolved_path = std::filesystem::canonical(path);
+  } catch (const std::filesystem::filesystem_error &) {
+    // If it doesn't exist, deny access
+    return false;
+  }
 
   // Check if the resolved path starts with any of the allowlisted directories.
-  return std::any_of(
-      allowlist.begin(), allowlist.end(), [&](const auto &allowed_path) {
-        return resolved_path.string().rfind(allowed_path.string(), 0) == 0;
-      });
+  return std::ranges::any_of(allowlist, [&](const auto &allowed_path) {
+    return std::mismatch(allowed_path.begin(), allowed_path.end(),
+                         resolved_path.begin(), resolved_path.end())
+               .first == allowed_path.end();
+  });
 }
 } // namespace
 
@@ -314,8 +333,9 @@ int QDMI_session_init(QDMI_Session session) {
   if (!session->token.has_value()) {
     return QDMI_ERROR_PERMISSIONDENIED;
   }
-  session->mode = session->token->empty() ? QDMI_DEVICE_MODE_READONLY
-                                          : QDMI_SESSION_MODE_READWRITE;
+  session->mode = session->token->empty()
+                      ? QDMI_DEVICE_MODE::QDMI_DEVICE_MODE_READONLY
+                      : QDMI_DEVICE_MODE::QDMI_SESSION_MODE_READWRITE;
 
   // Create a session for every device and initialize it.
   for (const auto &[_, lib] : QDMI_get_driver_state()->libraries) {
@@ -337,6 +357,9 @@ int QDMI_session_init(QDMI_Session session) {
 }
 
 void QDMI_session_free(QDMI_Session session) {
+  if (session == nullptr) {
+    return;
+  }
   for (auto &device : session->device_list) {
     device->library->device_session_free(device->device_session);
   }
@@ -424,7 +447,7 @@ int QDMI_device_create_job(QDMI_Device dev, QDMI_Job *job) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
 
-  if ((dev->session->mode & QDMI_SESSION_MODE_READWRITE) == 0) {
+  if (dev->session->mode != QDMI_DEVICE_MODE::QDMI_SESSION_MODE_READWRITE) {
     return QDMI_ERROR_PERMISSIONDENIED;
   }
 
