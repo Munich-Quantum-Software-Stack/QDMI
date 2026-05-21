@@ -6,6 +6,16 @@ complete list of changes, including minor and patch releases, please refer to th
 
 ## [Unreleased]
 
+### Support for multicore architectures
+
+This release adds three new properties and parameters to the interface to enable support for multicore architectures:
+
+- **`QDMI_DEVICE_PROPERTY_CHILDDEVICES`**: A device property that allows clients to query the child devices (cores, processing units, etc.) of a top-level device. This enables clients to retrieve relevant information about each child device, such as its status and fidelity data.
+- **`QDMI_DEVICE_SESSION_PARAMETER_CHILDDEVICE`**: A session parameter that allows clients to specify the child device to use when creating a session. This ensures correct handling of the child device handle in the QDMI driver.
+- **`QDMI_PROGRAM_FORMAT_BATCHJOB`**: A new program format that allows clients to submit a batch job that combines multiple jobs for different child devices into a single batch via the top-level device. This enables the top-level device to manage and synchronize job execution across all child devices.
+
+The respective changes are additive and non-breaking, but device implementations that want to support multicore architectures will need to implement the new properties and parameters.
+
 ## [1.3.0] - 2026-04-21
 
 ### No need to link devices against the QDMI header-only library
