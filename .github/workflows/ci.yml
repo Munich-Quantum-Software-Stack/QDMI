@@ -32,9 +32,6 @@ jobs:
       contents: read
       id-token: write
     uses: ./.github/workflows/reusable-cpp-ci.yml
-    with:
-      # do not try to build docs in test builds
-      cmake-args: "-DBUILD_QDMI_DOCS=OFF -G Ninja"
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
@@ -49,7 +46,6 @@ jobs:
     with:
       clang-version: 21
       cpp-linter-extra-args: "-std=c++20"
-      cmake-args: "-DBUILD_CXX_QDMI_TESTS=ON"
 
   template:
     name: 🏗️ Build and Test Templates
