@@ -6,6 +6,21 @@ complete list of changes, including minor and patch releases, please refer to th
 
 ## [Unreleased]
 
+### CMake presets
+
+[CMake presets] have been added to provide a standardized and reproducible way to configure builds across different platforms.
+These presets are also used in our CI.
+
+On Unix systems, the `debug`, `release`, and `coverage` presets can be used to configure, build, and test MQT DDSIM.
+
+```console
+cmake --preset release
+cmake --build --preset release
+ctest --preset release
+```
+
+Additionally, the `lint` preset can be used to configure and build MQT DDSIM in preparation for a `clang-tidy` run.
+
 ## [1.3.1] - 2026-05-21
 
 ### Support for multicore architectures
@@ -387,9 +402,15 @@ For quick reference, here are all breaking changes in v1.2.0:
 5. **`QDMI_JOB_STATUS` enum**: Reordered to reflect job lifecycle
 6. **CMake**: Minimum version raised to 3.24
 
+<!-- Version links -->
+
 [unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.1...HEAD
 [1.3.1]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.2...v1.3.0
 [1.2.2]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.1...v1.2.2
 [1.2.1]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.1.0...v1.2.0
+
+<!-- Other links -->
+
+[CMake presets]: https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html
