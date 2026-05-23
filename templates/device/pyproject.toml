@@ -63,7 +63,7 @@ test = [
 dev = [
   {include-group = "test"},
   "nox>=v2026.4.10",
-  "ty==0.0.37",
+  "ty==0.0.39",
 ]
 
 
