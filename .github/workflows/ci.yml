@@ -32,9 +32,6 @@ jobs:
       contents: read
       id-token: write
     uses: ./.github/workflows/reusable-cpp-ci.yml
-    with:
-      # do not try to build docs in test builds
-      cmake-args: "-DBUILD_QDMI_DOCS=OFF -G Ninja"
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
@@ -45,11 +42,10 @@ jobs:
       pull-requests: write
     needs: change-detection
     if: fromJSON(needs.change-detection.outputs.run-linter) && github.event.action != 'closed'
-    uses: munich-quantum-toolkit/workflows/.github/workflows/reusable-cpp-linter.yml@b59d15aa4f266e713afad51e132bde6e3a28a6b3 # v1.18.1
+    uses: munich-quantum-toolkit/workflows/.github/workflows/reusable-cpp-linter.yml@143bf51e7192c31e76abafe58e3732c5aff9c69b # v2.0.1
     with:
       clang-version: 21
       cpp-linter-extra-args: "-std=c++20"
-      cmake-args: "-DBUILD_CXX_QDMI_TESTS=ON"
 
   template:
     name: 🏗️ Build and Test Templates

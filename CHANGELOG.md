@@ -11,6 +11,14 @@ clients compiled against a different minor or major version.
 
 ## [Unreleased]
 
+### Added
+
+- 🚸 Add [CMake presets] to provide a standardized and reproducible way to configure builds ([#426]) ([\@denialhaag])
+
+### Changed
+
+- ⬆️ Update [munich-quantum-toolkit/workflows] to version `v2.0.1` ([#426]) ([\@denialhaag])
+
 ## [1.3.1] - 2026-05-21
 
 ### Added
@@ -159,6 +167,7 @@ changelogs._
 
 <!-- PR links -->
 
+[#426]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/426
 [#409]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/409
 [#377]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/377
 [#375]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/375
@@ -206,6 +215,7 @@ changelogs._
 [\@mnfarooqi]: https://github.com/mnfarooqi
 [\@rainij]: https://github.com/rainij
 [\@marcelwa]: https://github.com/marcelwa
+[\@denialhaag]: https://github.com/denialhaag
 
 <!-- General links -->
 
@@ -213,3 +223,5 @@ changelogs._
 [Common Changelog]: https://common-changelog.org
 [Semantic Versioning]: https://semver.org/spec/v2.0.0.html
 [GitHub Release Notes]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases
+[CMake presets]: https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html
+[munich-quantum-toolkit/workflows]: https://github.com/munich-quantum-toolkit/workflows
