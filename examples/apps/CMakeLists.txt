@@ -15,14 +15,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
-set(QDMI_EXAMPLES_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
-
-add_subdirectory(src)
-add_subdirectory(apps)
-
-# add test code
-if(QDMI_BUILD_TESTS)
-  include(GoogleTest)
-  # include the tests itself
-  add_subdirectory(test)
-endif()
+add_subdirectory(1_bootstrapping)
+add_subdirectory(2_job_lifecycle)
+add_subdirectory(3_stack-as-a-device)
+add_subdirectory(BONUS_end-to-end)
