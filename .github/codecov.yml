@@ -25,7 +25,6 @@ flag_management:
         - "include"
         - "examples/device/src"
         - "examples/driver"
-        - "examples/fomac"
 
 parsers:
   gcov:

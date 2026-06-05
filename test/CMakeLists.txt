@@ -33,14 +33,8 @@ add_executable(qdmi_test test_qdmi.cpp)
 
 # link the Google test infrastructure to the test executable.
 target_link_libraries(
-  qdmi_test
-  PRIVATE qdmi::qdmi
-          qdmi::test_impl
-          qdmi::example_fomac
-          qdmi::example_driver
-          qdmi::qdmi_project_warnings
-          GTest::gtest_main
-          GTest::gmock)
+  qdmi_test PRIVATE qdmi::qdmi qdmi::test_impl qdmi::example_driver
+                    qdmi::qdmi_project_warnings GTest::gtest_main GTest::gmock)
 
 target_compile_features(qdmi_test PRIVATE cxx_std_20)
 

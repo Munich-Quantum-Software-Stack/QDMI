@@ -60,7 +60,6 @@ string(REPLACE ";" " " DOXYGEN_INPUT_DIRS "${DOXYGEN_INPUT_DIRS}")
 set(DOXYGEN_EXAMPLE_DIRS
     ${PROJECT_SOURCE_DIR}/examples/device/src
     ${PROJECT_SOURCE_DIR}/examples/driver
-    ${PROJECT_SOURCE_DIR}/examples/fomac
     ${PROJECT_SOURCE_DIR}/.github
     ${PROJECT_SOURCE_DIR}/CHANGELOG.md
     ${PROJECT_SOURCE_DIR}/UPGRADING.md
