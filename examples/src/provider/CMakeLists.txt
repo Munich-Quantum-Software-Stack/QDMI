@@ -49,9 +49,10 @@ foreach(identifier IN ITEMS "p1")
   qdmi_make_version(qdmi_packed_version ${qdmi_library_VERSION})
   target_compile_definitions(
     ${TARGET_NAME}
-    PRIVATE QDMI_VERSION=${qdmi_packed_version}
-            "QDMI_DYN_LIBS=std::array{ \"$<TARGET_FILE:qdmi::qpu_q2>\" }"
-            QDMI_DEVICE_ID="${identifier}")
+    PRIVATE
+      QDMI_VERSION=${qdmi_packed_version}
+      "QDMI_DYN_LIBS=std::array{ \"$<TARGET_FILE:qdmi::qpu_q2>\", \"$<TARGET_FILE:qdmi::adapter>\" }"
+      QDMI_DEVICE_ID="${identifier}")
 
   # add sources to target
   target_sources(${TARGET_NAME} PRIVATE provider.cpp core_bindings.cpp
@@ -101,7 +102,7 @@ foreach(identifier IN ITEMS "p1")
   # add qdmi::qpu_q1 as a dependencies to ensure they are built before the
   # executable
   if("${identifier}" STREQUAL "p1")
-    add_dependencies(${TARGET_NAME} qdmi::qpu_q2)
+    add_dependencies(${TARGET_NAME} qdmi::qpu_q2 qdmi::adapter)
   else()
     message(FATAL_ERROR "Unknown provider identifier: ${identifier}")
   endif()
