@@ -15,15 +15,28 @@
 #
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
+# Set target name
+set(TARGET_NAME test_qpu)
+
 # Create a shared library that contains a test suite that can be used to test
-# whether all functions are implemented in the device.
-add_library(qdmi_test_impl SHARED test_impl.cpp test_impl.hpp)
+# whether all functions are implemented in the device. Note: Using GTest,
+# linking these libraries statically will not pull in the TEST_P definitions, so
+# they are linked dynamically.
+add_library(${TARGET_NAME} SHARED)
+target_sources(${TARGET_NAME} PRIVATE test_qpu.cpp)
+target_sources(
+  ${TARGET_NAME} PUBLIC FILE_SET HEADERS BASE_DIRS
+                        ${CMAKE_CURRENT_SOURCE_DIR}/../.. FILES test_qpu.hpp)
 target_link_libraries(
-  qdmi_test_impl PRIVATE GTest::gtest GTest::gmock qdmi::qdmi
-                         qdmi::example_driver qdmi::qdmi_project_warnings)
-target_include_directories(qdmi_test_impl PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-target_compile_features(qdmi_test_impl PRIVATE cxx_std_20)
-add_library(qdmi::test_impl ALIAS qdmi_test_impl)
+  ${TARGET_NAME}
+  PUBLIC qdmi::test_core
+  PRIVATE qdmi::qdmi_project_warnings)
+target_include_directories(${TARGET_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_compile_features(${TARGET_NAME} PRIVATE cxx_std_20)
+add_library(qdmi::${TARGET_NAME} ALIAS ${TARGET_NAME})
 
 # build gtest as position independent code to link it with the shared library
 set_target_properties(gtest PROPERTIES POSITION_INDEPENDENT_CODE ON)
+
+# set the folder of the target for IDEs
+set_target_properties(${TARGET_NAME} PROPERTIES FOLDER "examples/test")

@@ -15,6 +15,9 @@
 #
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
-add_subdirectory(common)
-add_subdirectory(device)
-add_subdirectory(driver)
+add_subdirectory(core)
+add_subdirectory(qpu)
+add_subdirectory(job)
+add_subdirectory(superconducting)
+add_subdirectory(provider)
+add_subdirectory(orchestration_layer)

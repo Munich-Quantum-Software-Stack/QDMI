@@ -157,17 +157,12 @@ if(QDMI_BUILD_DOCS)
   add_subdirectory(docs)
 endif()
 
-# add examples (used by tests)
-if(QDMI_BUILD_EXAMPLES OR QDMI_BUILD_TESTS)
+# add examples (incl. opt. tests)
+if(QDMI_BUILD_EXAMPLES)
+  if(QDMI_BUILD_TESTS)
+    enable_testing()
+  endif()
   add_subdirectory(examples)
-endif()
-
-# add test code
-if(QDMI_BUILD_TESTS)
-  enable_testing()
-  include(GoogleTest)
-  # include the tests itself
-  add_subdirectory(test)
 endif()
 
 # Installation instructions for the main library

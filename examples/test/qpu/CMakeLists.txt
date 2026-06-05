@@ -15,36 +15,45 @@
 #
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
-if(TARGET qdmi_test)
+if(TARGET qdmi_test_qpu)
   return()
 endif()
 
-# add CXX language support
-enable_language(CXX)
-
-add_subdirectory(utils)
+# ------------------------------------------------------------------------------
+# Non-Functional Tests
+# ------------------------------------------------------------------------------
+generate_device_defs_executable("Q" TARGET qdmi::qpu_q1)
+# set the folder of the target for IDEs
+set_target_properties(qdmi_test_q_device_defs PROPERTIES FOLDER "examples/test")
 
 # ------------------------------------------------------------------------------
 # Functional Tests
 # ------------------------------------------------------------------------------
 
 # create an executable in which the tests will be stored
-add_executable(qdmi_test test_qdmi.cpp)
+add_executable(qdmi_test_qpu test_qpu.cpp)
 
 # link the Google test infrastructure to the test executable.
 target_link_libraries(
-  qdmi_test PRIVATE qdmi::qdmi qdmi::test_impl qdmi::example_driver
-                    qdmi::qdmi_project_warnings GTest::gtest_main GTest::gmock)
+  qdmi_test_qpu PRIVATE qdmi::test_qpu qdmi::test_job qdmi::test_sc
+                        qdmi::qdmi_project_warnings GTest::gtest_main)
 
-target_compile_features(qdmi_test PRIVATE cxx_std_20)
+target_compile_features(qdmi_test_qpu PRIVATE cxx_std_20)
+
+target_compile_definitions(
+  qdmi_test_qpu PRIVATE QDMI_EXAMPLE_DEVICE_PATH="$<TARGET_FILE:qdmi::qpu_q1>")
 
 # discover tests
 gtest_discover_tests(
-  qdmi_test
+  qdmi_test_qpu
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
   PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
              DISCOVERY_TIMEOUT 60)
 
-# ensure cxx-qdmi-device are built whenever qdmi_test is built. Those targets
-# build the dynamic libraries that are loaded in the tests.
-add_dependencies(qdmi_test cxx-qdmi-device)
+# ensure qdmi::qpu_q1 are built whenever qdmi_test_qpu is built.
+add_dependencies(qdmi_test_qpu qdmi::qpu_q1)
+# ensure qdmi_test_qpu_q_device_defs are built whenever qdmi_test_qpu is built.
+add_dependencies(qdmi_test_qpu qdmi_test_q_device_defs)
+
+# set the folder of the target for IDEs
+set_target_properties(qdmi_test_qpu PROPERTIES FOLDER "examples/test")
