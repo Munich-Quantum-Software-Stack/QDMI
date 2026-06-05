@@ -18,7 +18,6 @@
  */
 
 #include "example_fomac.hpp"
-#include "example_tool.hpp"
 #include "qdmi/client.h"
 #include "qdmi_example_driver.h"
 #include "utils/test_impl.hpp"
@@ -564,27 +563,6 @@ TEST_P(QDMIImplementationTest, JobLifecycle) {
                                    sizeof(size_t), &shots),
             QDMI_ERROR_BADSTATE);
   QDMI_job_free(job);
-}
-
-TEST_P(QDMIImplementationTest, ToolCompile) {
-  Tool tool(device);
-  const auto fomac = FoMaC(device);
-  const auto num_qubits = fomac.get_qubits_num();
-
-  const std::string input = "OPENQASM 2.0;\n"
-                            "include \"qelib1.inc\";\n"
-                            "qreg q[2];\n"
-                            "h q[0];\n"
-                            "cx q[0], q[1];\n";
-  const std::string expected = "OPENQASM 2.0;\n"
-                               "include \"qelib1.inc\";\n"
-                               "qreg q[" +
-                               std::to_string(num_qubits) +
-                               "];\n"
-                               "h q[0];\n"
-                               "cx q[0], q[1];\n";
-  const std::string actual = tool.compile(input);
-  ASSERT_EQ(actual, expected);
 }
 
 namespace {

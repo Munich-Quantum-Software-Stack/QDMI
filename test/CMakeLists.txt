@@ -36,7 +36,6 @@ target_link_libraries(
   qdmi_test
   PRIVATE qdmi::qdmi
           qdmi::test_impl
-          qdmi::example_tool
           qdmi::example_fomac
           qdmi::example_driver
           qdmi::qdmi_project_warnings
