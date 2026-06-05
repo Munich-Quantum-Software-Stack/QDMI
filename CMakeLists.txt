@@ -20,7 +20,7 @@ cmake_minimum_required(VERSION 3.24...4.2)
 project(
   qdmi
   LANGUAGES C
-  VERSION 1.3.2
+  VERSION 2.0.0
   DESCRIPTION "QDMI –– Quantum Device Management Interface")
 
 set(PROJECT_VERSION_PRERELEASE "-dev")
