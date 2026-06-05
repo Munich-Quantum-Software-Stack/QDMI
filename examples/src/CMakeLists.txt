@@ -18,3 +18,4 @@
 add_subdirectory(common)
 add_subdirectory(qpu)
 add_subdirectory(provider)
+add_subdirectory(orchestration_layer)
