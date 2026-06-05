@@ -28,7 +28,7 @@ Checks: |
   readability-*,
   -readability-identifier-length,
   -readability-magic-numbers,
-  -readability-function-cognitive-complexity
+  -readability-redundant-member-init
 
 CheckOptions:
   - key: readability-identifier-naming.ClassCase
@@ -51,6 +51,10 @@ CheckOptions:
     value: lower_case
   - key: readability-identifier-naming.MemberCase
     value: lower_case
+  - key: readability-identifier-naming.PrivateMemberSuffix
+    value: _
+  - key: readability-identifier-naming.ProtectedMemberSuffix
+    value: _
   - key: readability-identifier-naming.MemberIgnoredRegexp
     value: ".*QDMI.*"
   - key: readability-identifier-naming.MethodCase
@@ -67,3 +71,5 @@ CheckOptions:
     value: ".*QDMI.*"
   - key: readability-identifier-naming.VariableCase
     value: lower_case
+  - key: readability-identifier-naming.VariableIgnoredRegexp
+    value: ".*QDMI.*"
