@@ -17,4 +17,4 @@
 
 add_subdirectory(common)
 add_subdirectory(qpu)
-add_subdirectory(driver)
+add_subdirectory(provider)
