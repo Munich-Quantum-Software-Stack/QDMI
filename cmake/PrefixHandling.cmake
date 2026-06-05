@@ -55,7 +55,7 @@ function(generate_prefixed_qdmi_headers prefix)
     string(
       REGEX
       REPLACE
-        "#include (\"|<)qdmi/(core|job|orchestration_layer|provider|qpu|superconducting)(/[A-Za-z_]+)?\.h(\"|>)"
+        "#include (\"|<)qdmi/(core|export|job|orchestration_layer|provider|qpu|superconducting)(/[A-Za-z_]+)?\.h(\"|>)"
         "#include \\1${QDMI_prefix}_qdmi/\\2\\3.h\\4"
         header_content
         "${header_content}")

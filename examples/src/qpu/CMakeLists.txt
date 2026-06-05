@@ -51,7 +51,9 @@ foreach(identifier IN ITEMS "q1" "q2" "q3")
   qdmi_make_version(qdmi_packed_version ${qdmi_library_VERSION})
   target_compile_definitions(
     ${TARGET_NAME} PRIVATE QDMI_VERSION=${qdmi_packed_version}
-                           QDMI_DEVICE_ID="${identifier}")
+                           QDMI_DEVICE_ID="${identifier}" Q_QDMI_device_EXPORTS)
+  set_target_properties(${TARGET_NAME} PROPERTIES Q_VISIBILITY_PRESET hidden
+                                                  Q_VISIBILITY_INLINES_HIDDEN 1)
 
   # add sources to target
   target_sources(

@@ -26,6 +26,7 @@
 #include "qdmi/core/constants.h" // IWYU pragma: export
 #include "qdmi/core/functions.h" // IWYU pragma: export
 #include "qdmi/core/types.h"     // IWYU pragma: export
+#include "qdmi/export.h"         // IWYU pragma: export
 
 #ifdef __cplusplus
 #include <cstddef>
@@ -88,7 +89,7 @@ extern "C" {
 typedef int QDMI_initialize_t(size_t version, QDMI_Log_Callback callback,
                               void *user_data, QDMI_Context *context,
                               QDMI_Library const **interface_ptr);
-extern QDMI_initialize_t QDMI_initialize;
+QDMI_EXPORT extern QDMI_initialize_t QDMI_initialize;
 
 // only define the get_prefix function if this is not a static library, as it is
 // only necessary for dynamic libraries to retrieve the prefix for name-shifting
@@ -103,7 +104,7 @@ extern QDMI_initialize_t QDMI_initialize;
 /// function.
 // NOLINTNEXTLINE(modernize-redundant-void-arg)
 typedef const char *QDMI_get_prefix_t(void);
-extern QDMI_get_prefix_t QDMI_get_prefix;
+QDMI_EXPORT extern QDMI_get_prefix_t QDMI_get_prefix;
 #endif // QDMI_STATIC_DEFINE
 
 // NOLINTEND(modernize-use-using)

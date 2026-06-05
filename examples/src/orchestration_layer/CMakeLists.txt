@@ -56,7 +56,9 @@ foreach(identifier IN ITEMS "o1" "o2")
   qdmi_make_version(qdmi_packed_version ${qdmi_library_VERSION})
   target_compile_definitions(
     ${TARGET_NAME} PRIVATE QDMI_VERSION=${qdmi_packed_version}
-                           QDMI_DEVICE_ID="${identifier}")
+                           QDMI_DEVICE_ID="${identifier}" O_QDMI_device_EXPORTS)
+  set_target_properties(${TARGET_NAME} PROPERTIES O_VISIBILITY_PRESET hidden
+                                                  O_VISIBILITY_INLINES_HIDDEN 1)
   if("${identifier}" STREQUAL "o1")
     target_compile_definitions(
       ${TARGET_NAME}

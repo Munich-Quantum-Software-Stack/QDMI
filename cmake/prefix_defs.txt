@@ -101,3 +101,10 @@ QDMI_session_query_sc_operation_qubit_count
 QDMI_session_query_sc_operation_qubits
 QDMI_session_query_sc_operation_duration
 QDMI_session_query_sc_operation_fidelity
+QDMI_STATIC_DEFINE
+QDMI_EXPORT
+QDMI_NO_EXPORT
+QDMI_device_EXPORTS
+QDMI_DEPRECATED
+QDMI_DEPRECATED_EXPORT
+QDMI_DEPRECATED_NO_EXPORT

@@ -53,7 +53,9 @@ target_compile_definitions(
     QDMI_VERSION=${qdmi_packed_version}
     QDMI_DEVICE_ID="ad"
     "QDMI_DYN_LIBS=std::array{ std::pair{ \"$<TARGET_FILE:qdmi::qpu_v1>\", \"V1\"} }"
-)
+    AD_QDMI_device_EXPORTS)
+set_target_properties(${TARGET_NAME} PROPERTIES AD_VISIBILITY_PRESET hidden
+                                                AD_VISIBILITY_INLINES_HIDDEN 1)
 
 # add sources to target
 target_sources(

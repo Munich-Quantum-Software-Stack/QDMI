@@ -44,8 +44,11 @@ set_target_properties(
 # define version macros
 get_target_property(qdmi_library_VERSION qdmi::qdmi VERSION)
 target_compile_definitions(
-  ${TARGET_NAME} PRIVATE QDMI_VERSION="${qdmi_library_VERSION}"
-                         V1_QDMI_DEVICE_VERSION="${PROJECT_VERSION}")
+  ${TARGET_NAME}
+  PRIVATE QDMI_VERSION="${qdmi_library_VERSION}"
+          V1_QDMI_DEVICE_VERSION="${PROJECT_VERSION}" V1_QDMI_device_EXPORTS)
+set_target_properties(${TARGET_NAME} PROPERTIES V1_VISIBILITY_PRESET hidden
+                                                V1_VISIBILITY_INLINES_HIDDEN 1)
 
 # add sources to target
 target_sources(${TARGET_NAME} PRIVATE device.cpp)

@@ -52,7 +52,10 @@ foreach(identifier IN ITEMS "p1")
     PRIVATE
       QDMI_VERSION=${qdmi_packed_version}
       "QDMI_DYN_LIBS=std::array{ \"$<TARGET_FILE:qdmi::qpu_q2>\", \"$<TARGET_FILE:qdmi::adapter>\" }"
-      QDMI_DEVICE_ID="${identifier}")
+      QDMI_DEVICE_ID="${identifier}"
+      P_QDMI_device_EXPORTS)
+  set_target_properties(${TARGET_NAME} PROPERTIES P_VISIBILITY_PRESET hidden
+                                                  P_VISIBILITY_INLINES_HIDDEN 1)
 
   # add sources to target
   target_sources(${TARGET_NAME} PRIVATE provider.cpp core_bindings.cpp
