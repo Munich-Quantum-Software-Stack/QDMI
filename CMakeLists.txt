@@ -47,10 +47,8 @@ else()
   set(QDMI_MASTER_PROJECT OFF)
 endif()
 
-option(
-  USE_INSTALLED_QDMI
-  "Use an installed version of QDMI to build examples, templates, and tests"
-  OFF)
+option(USE_INSTALLED_QDMI
+       "Use an installed version of QDMI to build examples and tests" OFF)
 
 include(CMakeDependentOption)
 cmake_dependent_option(
@@ -61,8 +59,6 @@ option(BUILD_QDMI_TESTS "Also build tests for the QDMI project"
 option(BUILD_QDMI_EXAMPLES "Also build examples for the QDMI project"
        ${QDMI_MASTER_PROJECT})
 option(BUILD_QDMI_DOCS "Also build documentation for the QDMI project" OFF)
-option(BUILD_QDMI_TEMPLATES "Also build templates for the QDMI project"
-       ${QDMI_MASTER_PROJECT})
 
 # Generate compile_commands.json to make it easier to work with clang-based
 # tools
@@ -158,15 +154,6 @@ endif()
 # add examples (used by tests)
 if(BUILD_QDMI_EXAMPLES OR BUILD_QDMI_TESTS)
   add_subdirectory(examples)
-endif()
-
-# add templates
-if(BUILD_QDMI_TEMPLATES OR BUILD_QDMI_TESTS)
-  # if testing is enabled, also enable building the tests in the templates
-  set(BUILD_MY_QDMI_TESTS
-      ${BUILD_QDMI_TESTS}
-      CACHE BOOL "Build tests for my-qdmi-device" FORCE)
-  add_subdirectory(templates)
 endif()
 
 # add test code

@@ -55,7 +55,3 @@ gtest_discover_tests(
 # ensure cxx-qdmi-device are built whenever qdmi_test is built. Those targets
 # build the dynamic libraries that are loaded in the tests.
 add_dependencies(qdmi_test cxx-qdmi-device)
-# ensure my_device_test is built whenever qdmi_test is built. That target
-# ensures that there is no compilation error in the templates provided with QDMI
-# and their tests.
-add_dependencies(qdmi_test my-qdmi-device-test)

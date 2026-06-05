@@ -32,7 +32,6 @@
     <tab type="usergroup" title="User Guides" url="md_docs_2rationale.html">
       <tab type="user" title="Rationale" url="md_docs_2rationale.html"/>
       <tab type="user" title="Examples" url="md_docs_2examples.html"/>
-      <tab type="user" title="Template" url="md_docs_2templates.html"/>
     </tab>
     <tab type="user" title="Changelog" url="md_CHANGELOG.html"/>
     <tab type="user" title="Upgrade Guide" url="md_UPGRADING.html"/>
