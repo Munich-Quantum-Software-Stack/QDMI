@@ -17,6 +17,12 @@
 
 include(GNUInstallDirs)
 
+# Define the target name for the device library
+set(QDMI_PREFIX "CXX")
+
+# Set target name
+set(QDMI_TARGET_NAME "cxx-qdmi-device")
+
 # Generate QDMI headers with the specified prefix
 generate_prefixed_qdmi_headers(${QDMI_PREFIX})
 
@@ -55,49 +61,4 @@ target_link_libraries(${QDMI_TARGET_NAME} PRIVATE qdmi::qdmi_project_warnings)
 option(QDMI_ENABLE_COVERAGE "Enable coverage reporting" OFF)
 if(QDMI_ENABLE_COVERAGE)
   target_link_libraries(${QDMI_TARGET_NAME} PRIVATE qdmi::qdmi_coverage_flags)
-endif()
-
-set(${QDMI_PREFIX}_QDMI_CONFIG_INSTALL_DIR
-    "${CMAKE_INSTALL_DATADIR}/cmake/${QDMI_TARGET_NAME}"
-    CACHE INTERNAL "Config install directory")
-
-include(CMakePackageConfigHelpers)
-configure_package_config_file(
-  "${PROJECT_SOURCE_DIR}/cmake/${QDMI_TARGET_NAME}-config.cmake.in"
-  "${CMAKE_CURRENT_BINARY_DIR}/${QDMI_TARGET_NAME}-config.cmake"
-  INSTALL_DESTINATION ${${QDMI_PREFIX}_QDMI_CONFIG_INSTALL_DIR}
-  NO_SET_AND_CHECK_MACRO NO_CHECK_REQUIRED_COMPONENTS_MACRO)
-write_basic_package_version_file(
-  "${QDMI_TARGET_NAME}-config-version.cmake"
-  VERSION ${PROJECT_VERSION}
-  COMPATIBILITY SameMinorVersion)
-
-if(INSTALL_CXX_QDMI_DEVICE)
-  install(
-    FILES "${CMAKE_CURRENT_BINARY_DIR}/${QDMI_TARGET_NAME}-config.cmake"
-          "${CMAKE_CURRENT_BINARY_DIR}/${QDMI_TARGET_NAME}-config-version.cmake"
-    DESTINATION ${${QDMI_PREFIX}_QDMI_CONFIG_INSTALL_DIR}
-    COMPONENT ${QDMI_TARGET_NAME}_Development)
-
-  # cmake-format: off
-  install(
-    TARGETS ${QDMI_TARGET_NAME}
-    EXPORT ${QDMI_TARGET_NAME}-targets
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-            COMPONENT ${QDMI_TARGET_NAME}_Runtime
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-            COMPONENT ${QDMI_TARGET_NAME}_Runtime
-            NAMELINK_COMPONENT ${QDMI_TARGET_NAME}_Development
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-            COMPONENT ${QDMI_TARGET_NAME}_Development
-    FILE_SET public_headers
-            DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-            COMPONENT ${QDMI_TARGET_NAME}_Development)
-  # cmake-format: on
-
-  install(
-    EXPORT ${QDMI_TARGET_NAME}-targets
-    FILE ${QDMI_TARGET_NAME}-targets.cmake
-    DESTINATION ${${QDMI_PREFIX}_QDMI_CONFIG_INSTALL_DIR}
-    COMPONENT ${QDMI_TARGET_NAME}_Development)
 endif()

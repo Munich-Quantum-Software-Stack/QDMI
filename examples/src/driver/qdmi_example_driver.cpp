@@ -21,7 +21,7 @@
  * @brief An example driver implementation in C++.
  */
 
-#include "qdmi_example_driver.h"
+#include "../../driver/qdmi_example_driver.h"
 
 #include "qdmi/client.h"
 #include "qdmi/device.h"

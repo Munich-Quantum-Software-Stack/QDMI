@@ -19,13 +19,13 @@
 # Non-Functional Tests
 # ------------------------------------------------------------------------------
 
-generate_device_defs_executable(${QDMI_PREFIX} TARGET ${QDMI_TARGET_NAME})
+generate_device_defs_executable("CXX" TARGET cxx-qdmi-device)
 
 # ------------------------------------------------------------------------------
 # Functional Tests
 # ------------------------------------------------------------------------------
 
-set(QDMI_TEST_TARGET_NAME "${QDMI_TARGET_NAME}-test")
+set(QDMI_TEST_TARGET_NAME "cxx-qdmi-device-test")
 
 # create an executable in which the tests will be stored
 add_executable(${QDMI_TEST_TARGET_NAME} test_cxx_device.cpp)

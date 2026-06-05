@@ -1,3 +1,0 @@
-BasedOnStyle: LLVM
-IncludeBlocks: Regroup
-Standard: c++20
