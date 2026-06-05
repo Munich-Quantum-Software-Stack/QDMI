@@ -19,7 +19,7 @@
 cmake_minimum_required(VERSION 3.24...4.2)
 project(
   qdmi
-  LANGUAGES C CXX
+  LANGUAGES C
   VERSION 1.3.2
   DESCRIPTION "QDMI –– Quantum Device Management Interface")
 
@@ -47,18 +47,18 @@ else()
   set(QDMI_MASTER_PROJECT OFF)
 endif()
 
-option(USE_INSTALLED_QDMI
+option(QDMI_USE_INSTALLED
        "Use an installed version of QDMI to build examples and tests" OFF)
-
+option(QDMI_BUILD_DOCS "Build documentation for the QDMI project" OFF)
 include(CMakeDependentOption)
 cmake_dependent_option(
-  INSTALL_QDMI "Generate installation instructions for QDMI"
-  ${QDMI_MASTER_PROJECT} "NOT USE_INSTALLED_QDMI" OFF)
-option(BUILD_QDMI_TESTS "Also build tests for the QDMI project"
+  QDMI_INSTALL "Generate installation instructions for QDMI"
+  ${QDMI_MASTER_PROJECT} "NOT QDMI_USE_INSTALLED" OFF)
+option(QDMI_BUILD_EXAMPLES "Also build examples for the QDMI project"
        ${QDMI_MASTER_PROJECT})
-option(BUILD_QDMI_EXAMPLES "Also build examples for the QDMI project"
-       ${QDMI_MASTER_PROJECT})
-option(BUILD_QDMI_DOCS "Also build documentation for the QDMI project" OFF)
+cmake_dependent_option(
+  QDMI_BUILD_TESTS "Also build tests for the QDMI examples"
+  ${QDMI_BUILD_EXAMPLES} "QDMI_BUILD_EXAMPLES" OFF)
 
 # Generate compile_commands.json to make it easier to work with clang-based
 # tools
@@ -73,7 +73,7 @@ set(CMAKE_C_EXTENSIONS False)
 
 include(cmake/ExternalDependencies.cmake)
 
-if(NOT USE_INSTALLED_QDMI)
+if(NOT QDMI_USE_INSTALLED)
   # set some important directories
   set(QDMI_INCLUDE_BUILD_DIR
       "${CMAKE_CURRENT_SOURCE_DIR}/include"
@@ -86,6 +86,11 @@ if(NOT USE_INSTALLED_QDMI)
   list(APPEND CMAKE_MODULE_PATH ${QDMI_CMAKE_DIR})
 
   include(cmake/Cache.cmake)
+
+  # enable C++ only when building examples (C++ implementations, tests, spdlog)
+  if(QDMI_BUILD_EXAMPLES)
+    enable_language(CXX)
+  endif()
 
   include(cmake/PrefixHandling.cmake)
   include(GNUInstallDirs)
@@ -124,13 +129,13 @@ if(NOT USE_INSTALLED_QDMI)
     endif()
 
     # enable coverage collection options
-    option(ENABLE_COVERAGE "Enable coverage reporting" FALSE)
-    if(ENABLE_COVERAGE)
+    option(QDMI_ENABLE_COVERAGE "Enable coverage reporting for gcc/clang" FALSE)
+    if(QDMI_ENABLE_COVERAGE)
       add_library(qdmi_coverage_flags INTERFACE)
       target_compile_options(
         qdmi_coverage_flags INTERFACE --coverage -fprofile-arcs -ftest-coverage
                                       -O0)
-      target_link_libraries(qdmi_coverage_flags INTERFACE gcov --coverage)
+      target_link_libraries(qdmi_coverage_flags INTERFACE --coverage)
       add_library(qdmi::qdmi_coverage_flags ALIAS qdmi_coverage_flags)
       target_link_libraries(qdmi INTERFACE qdmi::qdmi_coverage_flags)
     endif()
@@ -139,7 +144,8 @@ if(NOT USE_INSTALLED_QDMI)
     set_target_properties(
       qdmi
       PROPERTIES VERSION ${PROJECT_VERSION}
-                 SOVERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR})
+                 SOVERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
+                 FOLDER "qdmi")
 
     # add alias
     add_library(qdmi::qdmi ALIAS qdmi)
@@ -147,17 +153,17 @@ if(NOT USE_INSTALLED_QDMI)
 endif()
 
 # add documentation
-if(BUILD_QDMI_DOCS)
+if(QDMI_BUILD_DOCS)
   add_subdirectory(docs)
 endif()
 
 # add examples (used by tests)
-if(BUILD_QDMI_EXAMPLES OR BUILD_QDMI_TESTS)
+if(QDMI_BUILD_EXAMPLES OR QDMI_BUILD_TESTS)
   add_subdirectory(examples)
 endif()
 
 # add test code
-if(BUILD_QDMI_TESTS)
+if(QDMI_BUILD_TESTS)
   enable_testing()
   include(GoogleTest)
   # include the tests itself
@@ -165,7 +171,7 @@ if(BUILD_QDMI_TESTS)
 endif()
 
 # Installation instructions for the main library
-if(INSTALL_QDMI)
+if(QDMI_INSTALL)
   set(QDMI_CONFIG_INSTALL_DIR
       "${CMAKE_INSTALL_DATADIR}/cmake/${PROJECT_NAME}"
       CACHE INTERNAL "Config install directory")
@@ -188,7 +194,7 @@ if(INSTALL_QDMI)
     COMPONENT ${PROJECT_NAME}_Development)
 
   set(QDMI_INSTALL_TARGETS ${QDMI_INSTALL_TARGETS} qdmi qdmi_project_warnings)
-  if(ENABLE_COVERAGE)
+  if(QDMI_ENABLE_COVERAGE)
     list(APPEND QDMI_INSTALL_TARGETS qdmi_coverage_flags)
   endif()
 

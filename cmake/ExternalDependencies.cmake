@@ -19,7 +19,7 @@ include(FetchContent)
 include(CMakeDependentOption)
 set(FETCH_PACKAGES "")
 
-if(BUILD_QDMI_DOCS)
+if(QDMI_BUILD_DOCS)
   set(CMAKE_POLICY_DEFAULT_CMP0116
       NEW
       CACHE STRING
@@ -72,6 +72,6 @@ endif()
 # Make all declared dependencies available.
 FetchContent_MakeAvailable(${FETCH_PACKAGES})
 
-if(USE_INSTALLED_QDMI)
+if(QDMI_USE_INSTALLED)
   find_package(QDMI ${PROJECT_VERSION} REQUIRED)
 endif()

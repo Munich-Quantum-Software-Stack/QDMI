@@ -52,8 +52,8 @@ target_sources(
 
 target_link_libraries(${QDMI_TARGET_NAME} PRIVATE qdmi::qdmi_project_warnings)
 
-option(ENABLE_COVERAGE "Enable coverage reporting" OFF)
-if(ENABLE_COVERAGE)
+option(QDMI_ENABLE_COVERAGE "Enable coverage reporting" OFF)
+if(QDMI_ENABLE_COVERAGE)
   target_link_libraries(${QDMI_TARGET_NAME} PRIVATE qdmi::qdmi_coverage_flags)
 endif()
 
