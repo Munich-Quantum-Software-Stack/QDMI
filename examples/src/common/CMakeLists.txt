@@ -18,3 +18,5 @@
 add_subdirectory(dynamic_library)
 add_subdirectory(library_wrapper)
 add_subdirectory(session_wrapper)
+add_subdirectory(logger)
+add_subdirectory(singleton)
