@@ -16,7 +16,6 @@
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 include(FetchContent)
-include(CMakeDependentOption)
 set(FETCH_PACKAGES "")
 
 if(QDMI_BUILD_DOCS)
@@ -51,7 +50,22 @@ if(QDMI_BUILD_DOCS)
   list(APPEND FETCH_PACKAGES doxygen-awesome-css)
 endif()
 
-if(BUILD_QDMI_TESTS)
+if(QDMI_BUILD_EXAMPLES)
+  set(SPDLOG_VERSION
+      1.17.0
+      CACHE STRING "spdlog version")
+  set(SPDLOG_URL
+      https://github.com/gabime/spdlog/archive/refs/tags/v${SPDLOG_VERSION}.tar.gz
+  )
+  set(SPDLOG_SYSTEM_INCLUDES
+      ON
+      CACHE INTERNAL "Treat the library headers like system headers")
+  FetchContent_Declare(spdlog URL ${SPDLOG_URL} FIND_PACKAGE_ARGS
+                                  ${SPDLOG_VERSION})
+  list(APPEND FETCH_PACKAGES spdlog)
+endif()
+
+if(QDMI_BUILD_TESTS)
   set(gtest_force_shared_crt
       ON
       CACHE BOOL "" FORCE)
@@ -71,6 +85,15 @@ endif()
 
 # Make all declared dependencies available.
 FetchContent_MakeAvailable(${FETCH_PACKAGES})
+
+# Group fetched targets into IDE folders (must be after MakeAvailable)
+if(QDMI_BUILD_EXAMPLES AND TARGET spdlog)
+  set_target_properties(spdlog PROPERTIES FOLDER "external/spdlog")
+endif()
+if(QDMI_BUILD_TESTS AND TARGET gtest)
+  set_target_properties(gtest gtest_main gmock gmock_main
+                        PROPERTIES FOLDER "external/googletest")
+endif()
 
 if(QDMI_USE_INSTALLED)
   find_package(QDMI ${PROJECT_VERSION} REQUIRED)

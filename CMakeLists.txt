@@ -225,7 +225,7 @@ if(QDMI_INSTALL)
     FILES ${PROJECT_SOURCE_DIR}/cmake/Cache.cmake
           ${PROJECT_SOURCE_DIR}/cmake/prefix_defs.txt
           ${PROJECT_SOURCE_DIR}/cmake/PrefixHandling.cmake
-          ${PROJECT_SOURCE_DIR}/cmake/test_defs.cpp.in
+          ${PROJECT_SOURCE_DIR}/cmake/test_defs.c.in
     DESTINATION ${QDMI_CONFIG_INSTALL_DIR}
     COMPONENT ${PROJECT_NAME}_Development)
 endif()
