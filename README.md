@@ -123,7 +123,7 @@ If you use QDMI in your research, please cite the following paper:
 The development of this project is led by [Martin Schulz](mailto:martin.w.j.schulz@tum.de) (TUM
 CAPS), and [Robert Wille](mailto:robert.wille@tum.de) (TUM CDA / MQSC) on the management side and
 [Lukas Burgholzer](mailto:lukas.burgholzer@tum.de) (TUM CDA / MQSC) as well as
-[Jorge Echavarria](mailto:jorge.echavarria@lrz.de) (LRZ) from the technical side.
+[Jorge Echavarria](mailto:jorge.echavarria@munich-quantum-valley.de) (MQv gGmbH) from the technical side.
 
 Please try to use the publicly accessible GitHub channels
 ([issues](https://github.com/Munich-Quantum-Software-Stack/QDMI/issues),
