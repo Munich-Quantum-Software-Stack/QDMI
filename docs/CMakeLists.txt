@@ -41,12 +41,8 @@ file(
 # order in the generated documentation.
 set(DOXYGEN_INPUT_DIRS
     ${DOXYGEN_INPUT_DIRS}
-    ${CMAKE_CURRENT_SOURCE_DIR}/index.md
     ${CMAKE_CURRENT_SOURCE_DIR}/faq.md
     ${CMAKE_CURRENT_SOURCE_DIR}/support.md
-    ${CMAKE_CURRENT_SOURCE_DIR}/rationale.md
-    ${CMAKE_CURRENT_SOURCE_DIR}/examples.md
-    ${CMAKE_CURRENT_SOURCE_DIR}/templates.md
     ${PROJECT_SOURCE_DIR}/CHANGELOG.md
     ${PROJECT_SOURCE_DIR}/UPGRADING.md
     ${CMAKE_CURRENT_SOURCE_DIR}/contributing.md
@@ -59,14 +55,8 @@ string(REPLACE ";" " " DOXYGEN_INPUT_DIRS "${DOXYGEN_INPUT_DIRS}")
 # can be included with the `\include`or `\snippet` command, we need to add the
 # directories where these files are located.
 set(DOXYGEN_EXAMPLE_DIRS
-    ${PROJECT_SOURCE_DIR}/examples/device/src
-    ${PROJECT_SOURCE_DIR}/examples/driver
-    ${PROJECT_SOURCE_DIR}/examples/fomac
-    ${PROJECT_SOURCE_DIR}/examples/tool
-    ${PROJECT_SOURCE_DIR}/.github
-    ${PROJECT_SOURCE_DIR}/CHANGELOG.md
-    ${PROJECT_SOURCE_DIR}/UPGRADING.md
-    ${PROJECT_SOURCE_DIR}/README.md)
+    ${PROJECT_SOURCE_DIR}/.github ${PROJECT_SOURCE_DIR}/CHANGELOG.md
+    ${PROJECT_SOURCE_DIR}/UPGRADING.md ${PROJECT_SOURCE_DIR}/README.md)
 # Again, replace the semicolon with a space such that Doxygen can handle it.
 string(REPLACE ";" " " DOXYGEN_EXAMPLE_DIRS "${DOXYGEN_EXAMPLE_DIRS}")
 

@@ -30,10 +30,8 @@ function(generate_prefixed_qdmi_headers prefix)
     set(QDMI_INCLUDE_DIR "${qdmi_INCLUDE_DIR}")
   endif()
 
-  # Get the list of all QDMI device headers.
-  file(GLOB_RECURSE QDMI_DEVICE_HEADERS ${QDMI_INCLUDE_DIR}/qdmi/constants.h
-       ${QDMI_INCLUDE_DIR}/qdmi/device.h ${QDMI_INCLUDE_DIR}/qdmi/export.h
-       ${QDMI_INCLUDE_DIR}/qdmi/types.h)
+  # Get the list of all QDMI headers.
+  file(GLOB_RECURSE QDMI_HEADERS ${QDMI_INCLUDE_DIR}/qdmi/**.h)
 
   # Determine the correct CMake directory for prefix_defs.txt
   set(QDMI_PREFIX_DIR "${QDMI_CMAKE_DIR}")
@@ -44,7 +42,7 @@ function(generate_prefixed_qdmi_headers prefix)
   # Read the prefix definitions.
   file(READ ${QDMI_PREFIX_DIR}/prefix_defs.txt replacements)
   string(REPLACE "\n" ";" replacements "${replacements}")
-  foreach(header ${QDMI_DEVICE_HEADERS})
+  foreach(header ${QDMI_HEADERS})
     # Get the relative path of the header.
     file(RELATIVE_PATH rel_header ${QDMI_INCLUDE_DIR}/qdmi ${header})
     get_filename_component(rel_dir ${rel_header} DIRECTORY)
@@ -56,9 +54,11 @@ function(generate_prefixed_qdmi_headers prefix)
     # Replace the include for the device header with the prefixed version.
     string(
       REGEX
-      REPLACE "#include (\"|<)qdmi/(constants|device|export|types).h(\"|>)"
-              "#include \\1${QDMI_prefix}_qdmi/\\2.h\\3" header_content
-              "${header_content}")
+      REPLACE
+        "#include (\"|<)qdmi/(core|export|job|orchestration_layer|provider|qpu|superconducting)(/[A-Za-z_]+)?\.h(\"|>)"
+        "#include \\1${QDMI_prefix}_qdmi/\\2\\3.h\\4"
+        header_content
+        "${header_content}")
     # Replace the prefix definitions.
     foreach(replacement ${replacements})
       string(
@@ -67,6 +67,29 @@ function(generate_prefixed_qdmi_headers prefix)
                 "\\1${prefix}_${replacement}\\2" header_content
                 "${header_content}")
     endforeach()
+    # revert changes in lines preceded by a // NONAMESHIFTNEXTLINE comment
+    string(REGEX
+           REPLACE "(// NONAMESHIFTNEXTLINE\n[^\n]*)(${prefix}|${QDMI_prefix})_"
+                   "\\1" header_content "${header_content}")
+    if(ARGN) # ARGN holds args after the declared params
+      list(GET ARGN 0 subprefix) # take first extra arg if provided
+      # make changes in lines preceded by a // EXTRANAMESHIFTNEXTLINE comment
+      string(REGEX
+             REPLACE "(// EXTRANAMESHIFTNEXTLINE\n[^\n]*)(${prefix})_"
+                     "\\1${subprefix}_" header_content "${header_content}")
+      # Get the lowercase version of the prefix.
+      string(TOLOWER ${subprefix} QDMI_subprefix)
+      string(REGEX
+             REPLACE "(// EXTRANAMESHIFTNEXTLINE\n[^\n]*)(${QDMI_prefix})_"
+                     "\\1${QDMI_subprefix}_" header_content "${header_content}")
+    else()
+      # treat lines preceded by a // EXTRANAMESHIFTNEXTLINE comment the same as
+      # // NONAMESHIFTNEXTLINE if no subprefix is provided
+      string(
+        REGEX
+        REPLACE "(// EXTRANAMESHIFTNEXTLINE\n[^\n]*)(${prefix}|${QDMI_prefix})_"
+                "\\1" header_content "${header_content}")
+    endif()
     # Write the prefixed header.
     file(WRITE
          ${CMAKE_CURRENT_BINARY_DIR}/include/${QDMI_prefix}_qdmi/${rel_header}
@@ -108,13 +131,12 @@ function(generate_device_defs_executable prefix)
   endif()
 
   # Create the test definitions file.
-  configure_file(${QDMI_PREFIX_DIR}/test_defs.cpp.in
-                 ${CMAKE_CURRENT_BINARY_DIR}/${QDMI_prefix}_test_defs.cpp @ONLY)
+  configure_file(${QDMI_PREFIX_DIR}/test_defs.c.in
+                 ${CMAKE_CURRENT_BINARY_DIR}/${QDMI_prefix}_test_defs.c @ONLY)
   # Create the test executable.
   add_executable(qdmi_test_${QDMI_prefix}_device_defs
-                 ${CMAKE_CURRENT_BINARY_DIR}/${QDMI_prefix}_test_defs.cpp)
+                 ${CMAKE_CURRENT_BINARY_DIR}/${QDMI_prefix}_test_defs.c)
   target_link_libraries(qdmi_test_${QDMI_prefix}_device_defs
                         PRIVATE ${DEVICE_TARGET} qdmi::qdmi_project_warnings)
-  target_compile_features(qdmi_test_${QDMI_prefix}_device_defs
-                          PRIVATE cxx_std_20)
+  target_compile_features(qdmi_test_${QDMI_prefix}_device_defs PRIVATE c_std_11)
 endfunction()

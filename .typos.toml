@@ -1,5 +1,2 @@
 [default.extend-words]
 wille = "wille"
-
-[default.extend-identifiers]
-FoMaC = "FoMaC"

@@ -47,12 +47,6 @@ jobs:
       clang-version: 21
       cpp-linter-extra-args: "-std=c++20"
 
-  template:
-    name: 🏗️ Build and Test Templates
-    needs: change-detection
-    if: fromJSON(needs.change-detection.outputs.run-template) && github.event.action != 'closed'
-    uses: ./.github/workflows/reusable-template-ci.yml
-
   docs:
     name: 📝 Build and Deploy Docs
     needs: change-detection
@@ -69,7 +63,6 @@ jobs:
       - change-detection
       - tests
       - linter
-      - template
       - docs
     runs-on: ubuntu-latest
     steps:
@@ -83,9 +76,6 @@ jobs:
             }} ${{
               fromJSON(needs.change-detection.outputs.run-linter)
               && '' || 'linter,'
-            }} ${{
-              fromJSON(needs.change-detection.outputs.run-template)
-              && '' || 'template,'
             }} ${{
              fromJSON(needs.change-detection.outputs.run-docs)
               && '' || 'docs,'

@@ -35,6 +35,11 @@ CMake handles fetching all other dependencies, such as the QDMI core interface a
 
 ## Phase 1 — Project Setup {#tutorial-create}
 
+> [!WARNING]
+>
+> The template does not exist anymore and, hence, this section is outdated.
+> It mus be updated to reflect the current state.
+
 First, we'll generate the project workspace using the QDMI template. This requires setting a prefix that is used within the template. For this guide, we'll use `tutorial` as our project prefix.
 
 ```sh
