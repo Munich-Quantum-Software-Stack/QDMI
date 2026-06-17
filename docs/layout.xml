@@ -24,6 +24,7 @@
   <!-- Navigation index tabs for HTML output -->
   <navindex>
     <tab type="mainpage" visible="yes" title=""/>
+    <!--
     <tab type="usergroup" title="Getting Started" url="index.html">
       <tab type="user" title="Overview" url="index.html"/>
       <tab type="user" title="FAQ" url="md_docs_2faq.html"/>
@@ -39,6 +40,7 @@
       <tab type="user" title="Contributing Guide" url="md_docs_2contributing.html"/>
       <tab type="user" title="AI Usage" url="md_docs_2ai__usage.html"/>
     </tab>
+    -->
     <tab type="topics" visible="yes" title="Interfaces" intro="Here is a list of all interfaces with brief descriptions"/>
     <tab type="modules" visible="no" title="" intro="">
       <tab type="modulelist" visible="yes" title="" intro=""/>
