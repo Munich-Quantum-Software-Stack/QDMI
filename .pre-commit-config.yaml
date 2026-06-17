@@ -53,7 +53,7 @@ repos:
 
   # Check for spelling
   - repo: https://github.com/crate-ci/typos
-    rev: v1.47.0
+    rev: v1.47.2
     hooks:
       - id: typos
 
@@ -75,7 +75,7 @@ repos:
 
   # Format configuration files with prettier
   - repo: https://github.com/rbubley/mirrors-prettier
-    rev: v3.8.3
+    rev: v3.8.4
     hooks:
       - id: prettier
         types_or: [yaml, markdown, html, css, scss, javascript, json]
@@ -92,7 +92,7 @@ repos:
 
   # Check JSON schemata
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.37.2
+    rev: 0.37.3
     hooks:
       - id: check-dependabot
       - id: check-github-workflows
