@@ -210,12 +210,12 @@ changelogs._
 
 <!-- Contributors -->
 
-[\@burgholzer]: https://github.com/burgholzer
-[\@ystade]: https://github.com/ystade
-[\@mnfarooqi]: https://github.com/mnfarooqi
-[\@rainij]: https://github.com/rainij
-[\@marcelwa]: https://github.com/marcelwa
-[\@denialhaag]: https://github.com/denialhaag
+[@burgholzer]: https://github.com/burgholzer
+[@ystade]: https://github.com/ystade
+[@mnfarooqi]: https://github.com/mnfarooqi
+[@rainij]: https://github.com/rainij
+[@marcelwa]: https://github.com/marcelwa
+[@denialhaag]: https://github.com/denialhaag
 
 <!-- General links -->
 
