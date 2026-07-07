@@ -75,8 +75,8 @@ typedef struct QDMI_Operation_impl_d *QDMI_Operation;
 /**
  * @brief A handle for a child device.
  * @details An opaque pointer to an implementation of the QDMI child device
- * concept. A child device generally represents a core or processing unit 
- * of a multi-core device. 
+ * concept. A child device generally represents a core or processing unit
+ * of a multi-core device.
  * Each implementation of the @ref device_interface "QDMI Device Interface"
  * defines the actual implementation of the concept.
  *

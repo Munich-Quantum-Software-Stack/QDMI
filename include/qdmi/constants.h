@@ -416,11 +416,11 @@ enum QDMI_DEVICE_PROPERTY_T {
    */
   QDMI_DEVICE_PROPERTY_SUPPORTEDPROGRAMFORMATS = 15,
   /**
-   * @brief `QDMI_Child_Device*` (@ref QDMI_Child_Device list) A list of device 
+   * @brief `QDMI_Child_Device*` (@ref QDMI_Child_Device list) A list of device
    * handles corresponding to the device's child devices managed by this device.
    * @details Some devices may manage multiple child devices, e.g., a
    * multi-device system or a device with multiple processing units. This
-   * property provides access to the child devices as separate 
+   * property provides access to the child devices as separate
    * @ref QDMI_Child_Device handles.
    * @par
    * The property may yield @ref QDMI_ERROR_NOTSUPPORTED if the device does not
