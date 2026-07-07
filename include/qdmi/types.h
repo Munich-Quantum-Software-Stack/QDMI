@@ -87,6 +87,8 @@ typedef struct QDMI_Operation_impl_d *QDMI_Operation;
  *   size_t id;
  * };
  * @endcode
+ * @see QDMI_DEVICE_PROPERTY_CHILDDEVICES 
+ * @see QDMI_DEVICE_SESSION_PARAMETER_CHILDDEVICE 
  */
 typedef struct QDMI_Child_Device_impl_d *QDMI_Child_Device;
 
