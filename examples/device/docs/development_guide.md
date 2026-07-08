@@ -38,10 +38,9 @@ Ready to contribute to the project? This guide will get you started.
 
    Now you can make your changes locally.
 
-4. We highly recommend to install and set up
-   [`prek`](https://prek.j178.dev/) to automatically run a set of checks
-   before each commit. You can install it via your favorite package manager
-   (e.g., `pip`, `brew`, `conda`, etc.).
+4. We highly recommend to install and set up [`prek`](https://prek.j178.dev/) to
+   automatically run a set of checks before each commit. You can install it via
+   your favorite package manager (e.g., `pip`, `brew`, `conda`, etc.).
 
    Afterwards, you can install the pre-commit hooks with
 

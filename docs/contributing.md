@@ -165,8 +165,8 @@ perfect. We will guide you through the process.
 
    Now you can make your changes locally.
 
-5. (Optional, **highly recommended**) Install [`prek`](https://prek.j178.dev/) to
-   automatically run a set of checks before each commit.
+5. (Optional, **highly recommended**) Install [`prek`](https://prek.j178.dev/)
+   to automatically run a set of checks before each commit.
 
    <div class="tabbed">
 

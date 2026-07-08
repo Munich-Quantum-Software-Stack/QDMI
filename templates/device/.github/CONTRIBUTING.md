@@ -140,8 +140,8 @@ iterate with reviewer feedback.
 
    Now you can make your changes locally.
 
-4. (Optional, highly recommended) Install [`prek`](https://prek.j178.dev/) to run
-   checks before each commit.
+4. (Optional, highly recommended) Install [`prek`](https://prek.j178.dev/) to
+   run checks before each commit.
 
    ```bash
    uv tool install prek
