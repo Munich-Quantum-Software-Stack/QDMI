@@ -1,11 +1,13 @@
 # Dependencies
 
-This project relies on several third-party libraries and tools.
-Below is a comprehensive list of these dependencies along with their purposes, versions, and licenses.
+This project relies on several third-party libraries and tools. Below is a
+comprehensive list of these dependencies along with their purposes, versions,
+and licenses.
 
 ## Core Runtime Dependencies
 
-These dependencies are linked into the shared library and **shipped with every built wheel or binary**.
+These dependencies are linked into the shared library and
+**shipped with every built wheel or binary**.
 
 | Dependency | Version   | License                        | Purpose                                  |
 | :--------- | :-------- | :----------------------------- | :--------------------------------------- |
@@ -41,13 +43,15 @@ Used to generate the API documentation, **not shipped** in any binary or wheel.
 | [doxygen-awesome-css] | 2.4.1   | MIT License | Modern Doxygen theme         |
 
 > [!NOTE]
-> Doxygen is licensed under GNU GPL v2, but [documents produced by Doxygen are derivative works of the input, not of Doxygen itself](https://www.doxygen.nl/manual/), and are therefore not affected by the GPL. The generated documentation remains under the project's own license terms.
+> Doxygen is licensed under GNU GPL v2, but
+> [documents produced by Doxygen are derivative works of the input, not of Doxygen itself](https://www.doxygen.nl/manual/),
+> and are therefore not affected by the GPL. The generated documentation remains
+> under the project's own license terms.
 
 [QDMI]: https://github.com/Munich-Quantum-Software-Stack/qdmi
 [googletest]: https://github.com/google/googletest
 [pytest]: https://github.com/pytest-dev/pytest
 [pytest-console-scripts]: https://github.com/pytest-dev/pytest-console-scripts
-[pytest-cov]: https://github.com/pytest-dev/pyte
 [pytest-cov]: https://github.com/pytest-dev/pytest-cov
 [pytest-sugar]: https://github.com/Teemu/pytest-sugar
 [pytest-xdist]: https://github.com/pytest-dev/pytest-xdist

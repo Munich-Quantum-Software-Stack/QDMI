@@ -4,8 +4,8 @@
 
 <!-- This file is a static page and included in the CMakeLists.txt file. -->
 
-<!-- Include the content of .github/contributing.md between the pair of markers DOXYGEN. -->
+<!-- Include the content of .github/CONTRIBUTING.md between the pair of markers DOXYGEN. -->
 
 \tableofcontents
 
-\snippet{doc} .github/contributing.md DOXYGEN
+\snippet{doc} .github/CONTRIBUTING.md DOXYGEN

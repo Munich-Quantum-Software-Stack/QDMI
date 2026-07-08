@@ -2,12 +2,12 @@
 
 This project is implemented in C++20 and builds on QDMI version 1.3.2-dev.
 
-This documentation provides a comprehensive guide for using the CXX QDMI device library, including
-detailed C++ API documentation.
+This documentation provides a comprehensive guide for using the CXX QDMI device
+library, including detailed C++ API documentation.
 
 ## Table of Contents
 
 - [Development Guide](development_guide.md)
 - [Dependencies](dependencies.md)
-- [Interfaces](topics.html)
-- [API Reference](classes.html)
+- [Interfaces](topics.html) <!-- rumdl-disable-line MD057 -->
+- [API Reference](classes.html) <!-- rumdl-disable-line MD057 -->

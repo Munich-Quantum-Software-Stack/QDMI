@@ -5,7 +5,7 @@ motivation and context. List any dependencies that are required for this change.
 
 Fixes #(issue) <!--- Replace (issue) with the issue number that is fixed by this pull request. -->
 
-## Checklist:
+## Checklist
 
 <!---
 This checklist serves as a reminder of a couple of things that ensure your pull request will be merged swiftly.
