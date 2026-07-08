@@ -12,6 +12,7 @@ ci:
   autoupdate_commit_msg: "⬆️🪝 update pre-commit hooks"
   autoupdate_schedule: quarterly
   autofix_commit_msg: "🎨 pre-commit fixes"
+  skip: [ty]
 
 repos:
   ## Standard hooks
@@ -119,3 +120,11 @@ repos:
       - id: ruff-check
         require_serial: true
         priority: 7
+
+  ## Check Python types with ty
+  - repo: https://github.com/astral-sh/ty-pre-commit
+    rev: v0.0.55
+    hooks:
+      - id: ty
+        args: [--isolated, --only-dev]
+        priority: 8

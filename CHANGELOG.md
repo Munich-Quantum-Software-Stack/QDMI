@@ -22,6 +22,7 @@ clients compiled against a different minor or major version.
 - 📝 Move contribution guide to documentation ([#457]) ([\@denialhaag])
 - 🔧 Set up `rumdl` for linting and formatting Markdown files ([#457])
   ([\@denialhaag])
+- 🔧 Set up `ty` as a pre-commit hook ([#457]) ([\@denialhaag])
 - ✨ Introduce new **device library** type `QDMI_Child_Device` intended to store
   core / processing-unit related data in a multicore architecture ([#456])
   ([\@kabu-planqc])
