@@ -716,6 +716,26 @@ QDMI_EXPORT void QDMI_device_job_free(QDMI_Device_Job job);
 
 /** @} */ // end of device_job_interface
 
+/**
+ * @brief A handle for a child device.
+ * @details An opaque pointer to an implementation of the QDMI child device
+ * concept. A child device generally represents a core or processing unit
+ * of a multi-core device.
+ * Each implementation of the @ref device_interface "QDMI Device Interface"
+ * defines the actual implementation of the concept.
+ *
+ * A simple example of an implementation is a struct that merely contains an
+ * index, which can be used to identify the respective core / processing unit.
+ * @code{.cpp}
+ * struct QDMI_Child_Device_impl_d {
+ *   size_t id;
+ * };
+ * @endcode
+ * @see QDMI_DEVICE_PROPERTY_CHILDDEVICES
+ * @see QDMI_DEVICE_SESSION_PARAMETER_CHILDDEVICE
+ */
+typedef struct QDMI_Child_Device_impl_d *QDMI_Child_Device;
+
 /** @} */ // end of device_interface
 
 // NOLINTEND(performance-enum-size,modernize-use-using,modernize-redundant-void-arg)
