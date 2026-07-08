@@ -202,6 +202,11 @@ Interfaces</h2></td></tr>
 <tr class="memitem:device_5Fjob_5Finterface" id="r_device_5Fjob_5Finterface"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="group__device__job__interface.html">QDMI Device Job Interface</a></td></tr>
 <tr class="memdesc:group__device__job__interface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides functions to manage jobs on a device. <br /></td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-typedef-members" class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:ga112235355550f0b2defb14e3e49323c4" id="r_ga112235355550f0b2defb14e3e49323c4"><td class="memItemLeft">typedef struct QDMI_Child_Device_impl_d *&#160;</td><td class="memItemRight"><a class="el" href="#ga112235355550f0b2defb14e3e49323c4">QDMI_Child_Device</a></td></tr>
+<tr class="memdesc:ga112235355550f0b2defb14e3e49323c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">A handle for a child device.  <br /></td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ga99e892052f2a14ae1da53f171649abc2" id="r_ga99e892052f2a14ae1da53f171649abc2"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#ga99e892052f2a14ae1da53f171649abc2">QDMI_device_initialize</a> (void)</td></tr>
@@ -209,6 +214,31 @@ Functions</h2></td></tr>
 <tr class="memitem:gacea756e5f8d7cb2940252ed6d4e80571" id="r_gacea756e5f8d7cb2940252ed6d4e80571"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#gacea756e5f8d7cb2940252ed6d4e80571">QDMI_device_finalize</a> (void)</td></tr>
 <tr class="memdesc:gacea756e5f8d7cb2940252ed6d4e80571"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finalize a device.  <br /></td></tr>
 </table>
+<a name="doc-typedef-members" id="doc-typedef-members"></a><h2 id="header-doc-typedef-members" class="groupheader">Typedef Documentation</h2>
+<a id="ga112235355550f0b2defb14e3e49323c4" name="ga112235355550f0b2defb14e3e49323c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga112235355550f0b2defb14e3e49323c4">&#9670;&#160;</a></span>QDMI_Child_Device</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef struct QDMI_Child_Device_impl_d* <a class="el" href="#ga112235355550f0b2defb14e3e49323c4">QDMI_Child_Device</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A handle for a child device. </p>
+<p>An opaque pointer to an implementation of the QDMI child device concept. A child device generally represents a core or processing unit of a multicore device. Each implementation of the <a class="el" href="group__device__interface.html" title="QDMI Device Interface">QDMI Device Interface</a> may define the actual implementation of the concept.</p>
+<dl class="section note"><dt>Note</dt><dd>Only authors of a multicore device library that want to facilitate job execution on a dedicated core and/or need to expose device properties on a child device level must implement the concept.</dd></dl>
+<p>A simple example of an implementation is a struct that merely contains an index, which can be used to identify the respective core / processing unit. </p><div class="fragment"><div class="line"><span class="keyword">struct </span>QDMI_Child_Device_impl_d {</div>
+<div class="line">  <span class="keywordtype">size_t</span> id;</div>
+<div class="line">};</div>
+</div><!-- fragment --> <dl class="section see"><dt>See also</dt><dd><a class="el" href="constants_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a223cba616b016a4b33e06b53854a18f6" title="QDMI_Child_Device* (QDMI_Child_Device list) A list of device handles corresponding to the device&#39;s ch...">QDMI_DEVICE_PROPERTY_CHILDDEVICES</a> </dd>
+<dd>
+<a class="el" href="constants_8h.html#a9f1e467b2b3870263b0e9d7e5d36cea4ac137dfd9d9edc8d822bc7bfb9d574fcb" title="QDMI_Child_Device The child device to establish the session with.">QDMI_DEVICE_SESSION_PARAMETER_CHILDDEVICE</a> </dd></dl>
+
+</div>
+</div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
 <a id="ga99e892052f2a14ae1da53f171649abc2" name="ga99e892052f2a14ae1da53f171649abc2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga99e892052f2a14ae1da53f171649abc2">&#9670;&#160;</a></span>QDMI_device_initialize()</h2>

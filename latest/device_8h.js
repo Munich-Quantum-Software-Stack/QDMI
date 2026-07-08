@@ -2,6 +2,7 @@ var device_8h =
 [
     [ "QDMI_Device_Session", "group__device__session__interface.html#ga37fbde9aae43a9462e57ec8234201c91", null ],
     [ "QDMI_Device_Job", "group__device__job__interface.html#gaa9f37f29bc40f719b440a277654789a4", null ],
+    [ "QDMI_Child_Device", "group__device__interface.html#ga112235355550f0b2defb14e3e49323c4", null ],
     [ "QDMI_device_initialize", "group__device__interface.html#ga99e892052f2a14ae1da53f171649abc2", null ],
     [ "QDMI_device_finalize", "group__device__interface.html#gacea756e5f8d7cb2940252ed6d4e80571", null ],
     [ "QDMI_device_session_alloc", "group__device__session__interface.html#gaca794102ee39b8de60c12ea91c4b1a05", null ],

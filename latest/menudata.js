@@ -42,7 +42,8 @@ var menudata={children:[
 {text:"Files",url:"files.html"},
 {text:"Index",url:"globals.html",children:[
 {text:"All",url:"globals.html",children:[
-{text:"d",url:"globals.html#index_d"},
+{text:"c",url:"globals.html#index_c"},
+{text:"d",url:"globals_d.html#index_d"},
 {text:"e",url:"globals_e.html#index_e"},
 {text:"j",url:"globals_j.html#index_j"},
 {text:"o",url:"globals_o.html#index_o"},
