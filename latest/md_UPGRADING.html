@@ -199,7 +199,7 @@ $(function(){initNavTree('md_UPGRADING.html','',''); });
 <li>Authors of a multicore device library must change the internal type used to represent child devices accordingly.</li>
 <li>Authors of a driver library are now free to implement the client related type <span class="tt"><a class="el" href="group__client__interface.html#ga2772c94ab19957ce5aaef652b626baec" title="A handle for a device implementing the QDMI Device Interface.">QDMI_Device</a></span> without device library related constraints.</li>
 </ul>
-<h1><a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.0...v1.3.1">1.3.1</a> - 2026-05-21</h1>
+<h1><a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.0...v1.3.1">1.3.1</a></h1>
 <h2>Support for multicore architectures</h2>
 <p>This release adds three new properties and parameters to the interface to enable support for multicore architectures:</p>
 <ul>
@@ -208,7 +208,7 @@ $(function(){initNavTree('md_UPGRADING.html','',''); });
 <li><b><span class="tt"><a class="el" href="constants_8h.html#a3eff3252203fcad146d5896e4466ec09a07a8f396e623368210fac5d2e0ea10a8" title="QDMI_Job*/QDMI_Device_Job* (QDMI_Job list / QDMI_Device_Job list) A list of jobs within a batch job.">QDMI_PROGRAM_FORMAT_BATCHJOB</a></span></b>: A new program format that allows clients to submit a batch job that combines multiple jobs for different child devices into a single batch via the top-level device. This enables the top-level device to manage and synchronize job execution across all child devices.</li>
 </ul>
 <p>The respective changes are additive and non-breaking, but device implementations that want to support multicore architectures will need to implement the new properties and parameters.</p>
-<h1><a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.2...v1.3.0">1.3.0</a> - 2026-04-21</h1>
+<h1><a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.2...v1.3.0">1.3.0</a></h1>
 <h2>No need to link devices against the QDMI header-only library</h2>
 <p>As of this release, the QDMI header-only library is no longer required to be linked into QDMI device implementations. Instead, each QDMI device now bundles all necessary headers in its own include directory. This allows distributing any QDMI device implementation in a truly standalone manner. You can remove the <span class="tt">qdmi::qdmi</span> target from the CMake configuration of your device implementation.</p>
 <p>To properly resolve the imports, you will need to adjust the header includes in your device implementation. Any include of the form</p>
@@ -228,7 +228,7 @@ $(function(){initNavTree('md_UPGRADING.html','',''); });
 <div class="line">                      CXX_VISIBILITY_PRESET hidden</div>
 <div class="line">                      VISIBILITY_INLINES_HIDDEN 1)</div>
 </div><!-- fragment --><p>where <span class="tt">MY</span> is your device prefix.</p>
-<h1><a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.1...v1.2.2">1.2.2</a> - 2026-04-20</h1>
+<h1><a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.1...v1.2.2">1.2.2</a></h1>
 <h2>Updated QDMI device template</h2>
 <p>The QDMI device template has been updated to be compatible with the latest version of the QDMI specification and to include several improvements. Most importantly, as described above, the device implementation no longer needs to link against the QDMI header-only library and is now built with hidden symbol visibility by default.</p>
 <p>Beyond that, the template has been extended to include:</p>
@@ -242,7 +242,7 @@ $(function(){initNavTree('md_UPGRADING.html','',''); });
 <li>Fixes for running tests on Windows</li>
 <li>Easier coverage collection configuration via the new <span class="tt">qdmi::qdmi_coverage_flags</span> target</li>
 </ul>
-<h1><a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.0...v1.2.1">1.2.1</a> - 2025-12-22</h1>
+<h1><a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.0...v1.2.1">1.2.1</a></h1>
 <h2>Fix for using Installed Version of QDMI</h2>
 <p>In order to avoid a mismatch in the target name for the <span class="tt">qdmi_project_warnings</span> target between the source and installed versions of QDMI, the target alias has been adjusted. If your project relies on <span class="tt">qdmi::project_warnings</span>, you need to change it to <span class="tt">qdmi::qdmi_project_warnings</span>. More rationale is available in <a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/270">the PR description</a>.</p>
 <h2>Changes to Prefix Handling</h2>
@@ -262,7 +262,7 @@ $(function(){initNavTree('md_UPGRADING.html','',''); });
 </ul>
 <p>The corresponding documentation has been updated to reflect these changes.</p>
 <p>In addition, the template instantiation workflow has changed: the template files are no longer written as a side effect of the CMake configure step. Instead, configuration only defines the prefix and output path, and the actual file generation happens when the explicit build target <span class="tt">qdmi-template</span> is invoked (use <span class="tt">qdmi-template-clean</span> to overwrite an existing output directory).</p>
-<h1><a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.1.0...v1.2.0">1.2.0</a> - 2025-12-01</h1>
+<h1><a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.1.0...v1.2.0">1.2.0</a></h1>
 <p>Version 1.2.0 introduces several breaking changes, primarily related to type system improvements, duration/length unit handling, and API enhancements for neutral atom devices. Please review all sections carefully when upgrading.</p>
 <h2>New Program Formats (Non-Breaking)</h2>
 <p>Two new program formats were added to the <span class="tt"><a class="el" href="constants_8h.html#a475336f0c08bd0218dd76a6016098231" title="Program format type.">QDMI_Program_Format</a></span> enum to support additional quantum programming frameworks:</p>

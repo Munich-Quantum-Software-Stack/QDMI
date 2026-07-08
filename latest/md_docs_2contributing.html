@@ -266,20 +266,18 @@ Initial Setup</h2>
 <div class="fragment"><div class="line">git checkout -b name-of-your-bugfix-or-feature</div>
 </div><!-- fragment --><p class="startli">Now you can make your changes locally.</p>
 </li>
-<li><p class="startli">(Optional, <b>highly recommended</b>) Install <a href="https://prek.j178.dev/">prek</a> to automatically run a set of checks before each commit.</p>
-<div class="tabbed"><ul>
-<li><p class="startli"><b class="tab-title">via <span class="tt">uv</span></b> The easiest way to install prek is via <a href="https://docs.astral.sh/uv/">uv</a>.</p>
-<div class="fragment"><div class="line">uv tool install prek </div>
-</div><!-- fragment --></li>
-<li><p class="startli"><b class="tab-title">via <span class="tt">brew</span></b> If you use macOS, then prek is in Homebrew, use</p>
-<div class="fragment"><div class="line">brew install prek </div>
-</div><!-- fragment --></li>
-<li><b class="tab-title">via the official installers</b> See <a href="https://prek.j178.dev/installation/">https://prek.j178.dev/installation/</a> for more details.</li>
-</ul>
-</div><div class="tabbed"> </div><p class="startli">Afterward, you can install the prek hooks with</p>
+<li><p class="startli">(Optional, <b>highly recommended</b>) Install <a href="https://prek.j178.dev/"><span class="tt">prek</span></a> to automatically run a set of checks before each commit.</p>
+<div class="tabbed"></div></li>
+</ol>
+<ul>
+<li><div class="tabbed"><b class="tab-title">via <span class="tt">uv</span></b> The easiest way to install <span class="tt">prek</span> is via <a href="https://docs.astral.sh/uv/">uv</a>.</div><div class="tabbed"> <div class="fragment"><div class="line">uv tool install prek </div>
+</div><!-- fragment --></div></li>
+<li><div class="tabbed"><b class="tab-title">via <span class="tt">brew</span></b> If you use macOS, then prek is in Homebrew, use</div><div class="tabbed"> <div class="fragment"><div class="line">brew install prek </div>
+</div><!-- fragment --></div></li>
+<li><div class="tabbed"><b class="tab-title">via the official installers</b> See <a href="https://prek.j178.dev/installation/">https://prek.j178.dev/installation/</a> for more details.</div><div class="tabbed"> </div><p class="startli">Afterward, you can install the prek hooks with</p>
 <div class="fragment"><div class="line">prek install </div>
 </div><!-- fragment --></li>
-</ol>
+</ul>
 <h2 class="doxsection"><a class="anchor" id="working-on-source-code"></a>
 Working on Source Code</h2>
 <p>Building the project requires a C compiler supporting <em>C11</em> and a minimum CMake version of <em>3.24</em>. The example devices and the tests require a C++ compiler supporting <em>C++20</em>.</p>
@@ -287,7 +285,7 @@ Working on Source Code</h2>
 Configure and Build</h3>
 <dl class="section note"><dt>Note</dt><dd>We recommend using an IDE like <a href="https://www.jetbrains.com/clion/">CLion</a> or <a href="https://code.visualstudio.com/">Visual Studio Code</a> for development. Both IDEs have excellent support for CMake projects and provide a convenient way to run CMake and build the project. If you prefer to work on the command line, the following instructions will guide you through the process.</dd></dl>
 <p>Our projects use CMake as the main build configuration tool. Building a project using CMake is a two-stage process. First, CMake needs to be <em>configured</em> by calling:</p>
-<div class="fragment"><div class="line">$ cmake -S . -B build -DCMAKE_BUILD_TYPE=Release</div>
+<div class="fragment"><div class="line">cmake -S . -B build -DCMAKE_BUILD_TYPE=Release</div>
 </div><!-- fragment --><p>This tells CMake to</p>
 <ul>
 <li>search the current directory <span class="tt">.</span> (passed via <span class="tt">-S</span>) for a <span class="tt">CMakeLists.txt</span> file,</li>
@@ -295,7 +293,7 @@ Configure and Build</h3>
 <li>configure a <span class="tt">Release</span> build (passed via <span class="tt">-DCMAKE_BUILD_TYPE</span>) as opposed to, e.g., a <span class="tt">Debug</span> build.</li>
 </ul>
 <p>After configuring CMake, the project can be <em>built</em> by calling:</p>
-<div class="fragment"><div class="line">$ cmake --build build --config Release</div>
+<div class="fragment"><div class="line">cmake --build build --config Release</div>
 </div><!-- fragment --><p>This builds the project in the <span class="tt">build</span> directory (passed via <span class="tt">--build</span>). Some operating systems and development environments explicitly require a configuration to be set, which is why the <span class="tt">--config</span> flag is also passed to the build command. The flag <span class="tt">--parallel &lt;NUMBER_OF_THREADS&gt;</span> may be added to trigger a parallel build.</p>
 <p>Building the project this way generates</p>
 <ul>
@@ -315,7 +313,7 @@ Configure and Build</h3>
 Running the C++ Tests and Code Coverage</h3>
 <p>We use the <a href="https://google.github.io/googletest/primer.html">GoogleTest</a> framework for unit testing of the C++ library. All tests are contained in the <span class="tt">test</span> directory, which is further divided into subdirectories for different parts of the library. You are expected to write tests for any new features you implement and ensure that all tests pass. Our CI pipeline on GitHub will also run the tests and check for any failures. It will also collect code coverage information and upload it to <a href="https://codecov.io/gh/munich-quantum-toolkit/core">Codecov</a>. Our goal is to have new contributions at least maintain the current code coverage level, while striving for covering as much of the code as possible. Try to write meaningful tests that actually test the correctness of the code and not just exercise the code paths.</p>
 <p>Most IDEs like <a href="https://www.jetbrains.com/clion/">CLion</a> or <a href="https://code.visualstudio.com/">Visual Studio Code</a> provide a convenient way to run the tests directly from the IDE. If you prefer to run the tests from the command line, you can use CMake's test runner <a href="https://cmake.org/cmake/help/latest/manual/ctest.1.html">CTest</a>. To run the tests, run the following command from the main project directory after building the project as described above:</p>
-<div class="fragment"><div class="line">$ ctest -C Release --test-dir build</div>
+<div class="fragment"><div class="line">ctest -C Release --test-dir build</div>
 </div><!-- fragment --><dl class="section note"><dt>Note</dt><dd>If you want to disable configuring and building the C++ tests, you can pass <span class="tt">-DBUILD_QDMI_TESTS=OFF</span> to the CMake configure step.</dd></dl>
 <h3 class="doxsection"><a class="anchor" id="code-formatting-and-linting"></a>
 Code Formatting and Linting</h3>
@@ -361,9 +359,11 @@ Static Content</h3>
 Dynamic Content</h3>
 <p>To include source files to be listed among the menu item <span class="tt">API Reference/Files</span>, these files must be marked as documented by adding a comment like the following to the top of the file. Right now, this is done for all files in the include directory.</p>
 <pre class="fragment">/** @file
- * @brief A brief description of the file.
- * @details Some details about the file.
- */
+
+- @brief A brief description of the file.
+- @details Some details about the file.
+
+  */
 </pre><h3 class="doxsection"><a class="anchor" id="further-links-and-resources"></a>
 Further Links and Resources</h3>
 <ul>
@@ -385,7 +385,8 @@ Maintaining the Changelog and Upgrade Guide</h2>
 <p>When updating the changelog, follow these guidelines:</p>
 <ul>
 <li>Add a changelog entry for every user-facing change in your PR.</li>
-<li>Write entries in the imperative mood (e.g., "Add support for X" or "Fix bug in Y").</li>
+<li>Write entries in the imperative mood (e.g., "Add support for X" or "Fix bug in
+  Y").</li>
 <li>A single PR may result in multiple changelog entries.</li>
 <li>Entries in each category are sorted by merge time, with the latest PR appearing first.</li>
 <li>Each entry links to the PR and all contributing authors. The links are defined at the bottom of the file. If this is your first contribution to this project, do not forget to add a link to your GitHub profile.</li>
@@ -394,11 +395,11 @@ Maintaining the Changelog and Upgrade Guide</h2>
 <hr  />
 <p>This document was inspired by and partially adapted from</p>
 <ul>
-<li><a href="https://github.com/munich-quantum-toolkit/core/blob/main/.github/contributing.md">https://github.com/munich-quantum-toolkit/core/blob/main/.github/contributing.md</a></li>
+<li><a href="https://mqt.readthedocs.io/projects/core/en/latest/contributing.html">https://mqt.readthedocs.io/projects/core/en/latest/contributing.html</a></li>
 <li><a href="https://matplotlib.org/stable/devel/coding_guide.html">https://matplotlib.org/stable/devel/coding_guide.html</a></li>
 <li><a href="https://opensource.creativecommons.org/contributing-code/pr-guidelines/">https://opensource.creativecommons.org/contributing-code/pr-guidelines/</a></li>
 <li><a href="https://yeoman.io/contributing/pull-request.html">https://yeoman.io/contributing/pull-request.html</a></li>
-<li><a href="https://github.com/scikit-build/scikit-build">https://github.com/scikit-build/scikit-build</a></li>
+<li><a href="https://github.com/scikit-build/scikit-build">https://github.com/scikit-build/scikit-build</a> </li>
 </ul>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
