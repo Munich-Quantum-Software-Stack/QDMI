@@ -21,6 +21,13 @@ ctest --preset release
 
 Additionally, the `lint` preset can be used to configure and build MQT DDSIM in preparation for a `clang-tidy` run.
 
+### Child device representations in a multicore architecture
+
+The type used to represent core / processing-unit related information has been changed. A new device library implementation specific opaque pointer type named `QDMI_Child_Device` has been introduced for the `QDMI_DEVICE_PROPERTY_CHILDDEVICES` data queried via the _device_query_interface_.
+
+- Authors of a multicore device library must change the internal type used to represent child devices accordingly.
+- Authors of a driver library are now free to implement the client related type `QDMI_Device` without device library related constraints.
+
 ## [1.3.1] - 2026-05-21
 
 ### Support for multicore architectures

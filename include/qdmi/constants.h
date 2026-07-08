@@ -116,10 +116,10 @@ enum QDMI_DEVICE_SESSION_PARAMETER_T {
    */
   QDMI_DEVICE_SESSION_PARAMETER_PASSWORD = 5,
   /**
-   * @brief `QDMI_Device` The child device to establish the session with.
+   * @brief `QDMI_Child_Device` The child device to establish the session with.
    * @details If the device manages child devices, a QDMI driver can establish
    * a session with those child devices by setting this session parameter to the
-   * respective @ref QDMI_Device handle.
+   * respective @ref QDMI_Child_Device handle.
    * @par
    * After initialization of this session, the device will forward any function
    * call on this session to the job or query interface of the child device.
@@ -416,12 +416,12 @@ enum QDMI_DEVICE_PROPERTY_T {
    */
   QDMI_DEVICE_PROPERTY_SUPPORTEDPROGRAMFORMATS = 15,
   /**
-   * @brief `QDMI_Device*` (@ref QDMI_Device list) A list of device handles
-   * corresponding to the device's child devices managed by this device.
+   * @brief `QDMI_Child_Device*` (@ref QDMI_Child_Device list) A list of device
+   * handles corresponding to the device's child devices managed by this device.
    * @details Some devices may manage multiple child devices, e.g., a
    * multi-device system or a device with multiple processing units. This
-   * property provides access to the child devices as separate @ref QDMI_Device
-   * handles.
+   * property provides access to the child devices as separate
+   * @ref QDMI_Child_Device handles.
    * @par
    * The property may yield @ref QDMI_ERROR_NOTSUPPORTED if the device does not
    * have any child devices.

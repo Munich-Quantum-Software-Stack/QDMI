@@ -19,6 +19,10 @@ clients compiled against a different minor or major version.
 
 - ⬆️ Update [munich-quantum-toolkit/workflows] to version `v2.0.1` ([#426]) ([\@denialhaag])
 
+### Changed
+
+- ✨ Introduce new **device library** type `QDMI_Child_Device` intended to store core / processing-unit related data in a multicore architecture ([#456]) ([\@kabu-planqc])
+
 ## [1.3.1] - 2026-05-21
 
 ### Added
@@ -167,6 +171,7 @@ changelogs._
 
 <!-- PR links -->
 
+[#456]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/456
 [#426]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/426
 [#409]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/409
 [#377]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/377
@@ -216,6 +221,7 @@ changelogs._
 [@rainij]: https://github.com/rainij
 [@marcelwa]: https://github.com/marcelwa
 [@denialhaag]: https://github.com/denialhaag
+[@kabu-planqc]: https://github.com/kabu-planqc
 
 <!-- General links -->
 

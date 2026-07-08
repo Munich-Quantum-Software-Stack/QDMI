@@ -24,6 +24,8 @@ QDMI_Site
 QDMI_Site_impl_d
 QDMI_Operation
 QDMI_Operation_impl_d
+QDMI_Child_Device
+QDMI_Child_Device_impl_d
 QDMI_STATIC_DEFINE
 QDMI_EXPORT
 QDMI_NO_EXPORT
