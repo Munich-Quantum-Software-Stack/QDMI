@@ -20,10 +20,10 @@ cmake_minimum_required(VERSION 3.24...4.2)
 project(
   qdmi
   LANGUAGES C CXX
-  VERSION 1.3.2
+  VERSION 1.3.3
   DESCRIPTION "QDMI –– Quantum Device Management Interface")
 
-set(PROJECT_VERSION_PRERELEASE "")
+set(PROJECT_VERSION_PRERELEASE "-dev")
 set(PROJECT_VERSION_FULL "${PROJECT_VERSION}${PROJECT_VERSION_PRERELEASE}")
 
 # enable organization of targets into folders
