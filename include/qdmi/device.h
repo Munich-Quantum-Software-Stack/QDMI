@@ -723,8 +723,8 @@ QDMI_EXPORT void QDMI_device_job_free(QDMI_Device_Job job);
  * of a multicore device.
  * Each implementation of the @ref device_interface "QDMI Device Interface"
  * may define the actual implementation of the concept.
- * 
- * @note Only authors of a multicore device library that want to facilitate 
+ *
+ * @note Only authors of a multicore device library that want to facilitate
  * job execution on a dedicated core and/or need to expose device properties on
  * a child device level must implement the concept.
  *
