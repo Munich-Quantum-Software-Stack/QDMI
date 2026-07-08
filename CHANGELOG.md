@@ -12,6 +12,8 @@ clients compiled against a different minor or major version.
 
 ## [Unreleased]
 
+## [1.3.2] - 2026-07-08
+
 ### Added
 
 - 🚸 Add [CMake presets] to provide a standardized and reproducible way to
@@ -191,7 +193,8 @@ previous changelogs._
 
 <!-- Version links -->
 
-[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.1...HEAD
+[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.2...HEAD
+[1.3.2]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.3.2
 [1.3.1]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.3.1
 [1.3.0]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.3.0
 [1.2.2]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.2.2
