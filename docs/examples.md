@@ -31,12 +31,14 @@ of the device, they are returned by the @ref
 QDMI_device_session_query_device_property function. Below you find the
 respective implementation in C++.
 
-<!-- prettier-ignore-start -->
-\dontinclude cxx_device.cpp \skip int
-CXX_QDMI_device_session_query_device_property \until
-QDMI_DEVICE_PROPERTY_LIBRARYVERSION \until size_ret) \skip
-QDMI_ERROR_NOTSUPPORTED \until DOXYGEN FUNCTION END
-<!-- prettier-ignore-end -->
+<!-- rumdl-disable -->
+\dontinclude cxx_device.cpp
+\skip int CXX_QDMI_device_session_query_device_property
+\until QDMI_DEVICE_PROPERTY_LIBRARYVERSION
+\until size_ret)
+\skip QDMI_ERROR_NOTSUPPORTED
+\until DOXYGEN FUNCTION END
+<!-- rumdl-enable -->
 
 Both implementations use an auxiliary macro to add the string properties to the
 device. For an explanation of the macro, see the next section
@@ -48,25 +50,28 @@ The following macro is used to add string properties to the device. The macro is
 used, e.g., in the implementation of the @ref
 QDMI_device_session_query_device_property function.
 
-<!-- prettier-ignore-start -->
-\dontinclude cxx_device.cpp \skip #define ADD_STRING_PROPERTY \until DOXYGEN
-MACRO END
-<!-- prettier-ignore-end -->
+<!-- rumdl-disable -->
+\dontinclude cxx_device.cpp
+\skip #define ADD_STRING_PROPERTY
+\until DOXYGEN MACRO END
+<!-- rumdl-enable -->
 
 A similar macro is defined for other (fixed length) data types, for example,
 `int`, `double`.
 
-<!-- prettier-ignore-start -->
-\dontinclude cxx_device.cpp \skip #define ADD_SINGLE_VALUE_PROPERTY \until
-DOXYGEN MACRO END
-<!-- prettier-ignore-end -->
+<!-- rumdl-disable -->
+\dontinclude cxx_device.cpp
+\skip #define ADD_SINGLE_VALUE_PROPERTY
+\until DOXYGEN MACRO END
+<!-- rumdl-enable -->
 
 Another macro is defined for list properties of the data types above.
 
-<!-- prettier-ignore-start -->
-\dontinclude cxx_device.cpp \skip #define ADD_LIST_PROPERTY \until DOXYGEN MACRO
-END
-<!-- prettier-ignore-end -->
+<!-- rumdl-disable -->
+\dontinclude cxx_device.cpp
+\skip #define ADD_LIST_PROPERTY
+\until DOXYGEN MACRO END
+<!-- rumdl-enable -->
 
 The usage of the two latter macros is demonstrated in the following sections.
 
@@ -75,12 +80,16 @@ The usage of the two latter macros is demonstrated in the following sections.
 The following two examples demonstrate how to return integer or enumeration
 properties of the device.
 
-<!-- prettier-ignore-start -->
-\dontinclude cxx_device.cpp \skip int
-CXX_QDMI_device_session_query_device_property \until { \skip
-QDMI_DEVICE_PROPERTY_STATUS \until QDMI_DEVICE_PROPERTY_QUBITSNUM \until
-size_ret) \skip QDMI_ERROR_NOTSUPPORTED \until DOXYGEN FUNCTION END
-<!-- prettier-ignore-end -->
+<!-- rumdl-disable -->
+\dontinclude cxx_device.cpp
+\skip int CXX_QDMI_device_session_query_device_property
+\until {
+\skip QDMI_DEVICE_PROPERTY_STATUS
+\until QDMI_DEVICE_PROPERTY_QUBITSNUM
+\until size_ret)
+\skip QDMI_ERROR_NOTSUPPORTED
+\until DOXYGEN FUNCTION END
+<!-- rumdl-enable -->
 
 ### List Properties {#device-list}
 
@@ -88,12 +97,16 @@ Some properties are returned as a list of various data types. The following
 example shows how to return the coupling map of the device as a list of @ref
 QDMI_Site pairs. The pairs are flattened into a single list of @ref QDMI_Site's.
 
-<!-- prettier-ignore-start -->
-\dontinclude cxx_device.cpp \skipline constexpr
-std::array<const CXX_QDMI_Site_impl_d *, 20> \skip DEVICE_COUPLING_MAP \until;
-\skip int CXX_QDMI_device_session_query_device_property \until { \skip
-ADD_LIST_PROPERTY \until DOXYGEN FUNCTION END
-<!-- prettier-ignore-end -->
+<!-- rumdl-disable -->
+\dontinclude cxx_device.cpp
+\skipline constexpr std::array<const CXX_QDMI_Site_impl_d *, 20>
+\skip DEVICE_COUPLING_MAP
+\until ;
+\skip int CXX_QDMI_device_session_query_device_property
+\until {
+\skip ADD_LIST_PROPERTY
+\until DOXYGEN FUNCTION END
+<!-- rumdl-enable -->
 
 ### Complex Properties {#device-complex}
 
@@ -105,11 +118,14 @@ handles for a @ref QDMI_Operation and @ref QDMI_Site, corresponding properties
 can be queried. The following example demonstrates how different properties of
 operations, for example, varying fidelities of two-qubit gates can be returned.
 
-<!-- prettier-ignore-start -->
-\dontinclude cxx_device.cpp \skip QDMI_Pair_hash \until OPERATION_FIDELITIES
-\until; \skip QDMI_device_session_query_operation_property \until DOXYGEN
-FUNCTION END
-<!-- prettier-ignore-end -->
+<!-- rumdl-disable -->
+\dontinclude cxx_device.cpp
+\skip QDMI_Pair_hash
+\until OPERATION_FIDELITIES
+\until ;
+\skip QDMI_device_session_query_operation_property
+\until DOXYGEN FUNCTION END
+<!-- rumdl-enable -->
 
 ### Submitting a Job {#device-submit}
 
@@ -118,27 +134,30 @@ execution. The following example provides a mock implementation of the necessary
 functions to submit a job. The first example shows a mock implementation of @ref
 QDMI_device_session_create_device_job.
 
-<!-- prettier-ignore-start -->
-\dontinclude cxx_device.cpp \skip QDMI_device_session_create_device_job \until
-DOXYGEN FUNCTION END
-<!-- prettier-ignore-end -->
+<!-- rumdl-disable -->
+\dontinclude cxx_device.cpp
+\skip QDMI_device_session_create_device_job
+\until DOXYGEN FUNCTION END
+<!-- rumdl-enable -->
 
 The function @ref QDMI_device_job_set_parameter allows setting different
 parameters for the job, for example, the number of shots (@ref
 QDMI_JOB_PARAMETER_SHOTSNUM).
 
-<!-- prettier-ignore-start -->
-\dontinclude cxx_device.cpp \skip QDMI_device_job_set_parameter \until DOXYGEN
-FUNCTION END
-<!-- prettier-ignore-end -->
+<!-- rumdl-disable -->
+\dontinclude cxx_device.cpp
+\skip QDMI_device_job_set_parameter
+\until DOXYGEN FUNCTION END
+<!-- rumdl-enable -->
 
 After the job is set up, it can be submitted to the device. The following
 example shows a mock implementation of @ref QDMI_device_job_submit.
 
-<!-- prettier-ignore-start -->
-\dontinclude cxx_device.cpp \skip QDMI_device_job_submit \until DOXYGEN FUNCTION
-END
-<!-- prettier-ignore-end -->
+<!-- rumdl-disable -->
+\dontinclude cxx_device.cpp
+\skip QDMI_device_job_submit
+\until DOXYGEN FUNCTION END
+<!-- rumdl-enable -->
 
 For the full implementation of the example devices we refer to the respective
 source files in the QDMI repository, that is,
