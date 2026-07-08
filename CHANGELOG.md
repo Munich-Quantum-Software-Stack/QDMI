@@ -21,7 +21,7 @@ clients compiled against a different minor or major version.
 
 ### Changed
 
-- ✨ Introduce new **device library** type `QDMI_Child_Device` intended to store core / processing-unit related data in a multicore architecture. In contrast to the proposed specifications in [#230] where the **client library** related type `QDMI_Device` is used to store such information, this new opaque type is introduced to avoid unnecessary coupling across library boundaries. ([#456]) ([\@kabu-planqc])
+- ✨ Introduce new **device library** type `QDMI_Child_Device` intended to store core / processing-unit related data in a multicore architecture ([#456]) ([\@kabu-planqc])
 
 ## [1.3.1] - 2026-05-21
 
