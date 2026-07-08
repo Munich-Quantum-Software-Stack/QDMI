@@ -7,23 +7,7 @@ releases, please refer to the
 
 ## [Unreleased]
 
-### CMake presets
-
-[CMake presets] have been added to provide a standardized and reproducible way
-to configure builds across different platforms. These presets are also used in
-our CI.
-
-On Unix systems, the `debug`, `release`, and `coverage` presets can be used to
-configure, build, and test MQT DDSIM.
-
-```console
-cmake --preset release
-cmake --build --preset release
-ctest --preset release
-```
-
-Additionally, the `lint` preset can be used to configure and build MQT DDSIM in
-preparation for a `clang-tidy` run.
+## [1.3.2]
 
 ### Child device representations in a multicore architecture
 
@@ -37,6 +21,24 @@ _device_query_interface_.
   represent child devices accordingly.
 - Authors of a driver library are now free to implement the client related type
   `QDMI_Device` without device library related constraints.
+
+### CMake presets
+
+[CMake presets] have been added to provide a standardized and reproducible way
+to configure builds across different platforms. These presets are also used in
+our CI.
+
+On Unix systems, the `debug`, `release`, and `coverage` presets can be used to
+configure, build, and test QDMI.
+
+```console
+cmake --preset release
+cmake --build --preset release
+ctest --preset release
+```
+
+Additionally, the `lint` preset can be used to configure and build QDMI in
+preparation for a `clang-tidy` run.
 
 ## [1.3.1]
 
@@ -474,7 +476,8 @@ For quick reference, here are all breaking changes in v1.2.0:
 
 <!-- Version links -->
 
-[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.1...HEAD
+[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.2...HEAD
+[1.3.2]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.1...v1.3.2
 [1.3.1]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.2...v1.3.0
 [1.2.2]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.1...v1.2.2
