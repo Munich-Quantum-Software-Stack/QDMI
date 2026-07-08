@@ -92,7 +92,7 @@ add_custom_command(
           ${CMAKE_CURRENT_SOURCE_DIR}/layout.xml
           ${CMAKE_CURRENT_SOURCE_DIR}/style.css
           ${PROJECT_SOURCE_DIR}/README.md
-          ${PROJECT_SOURCE_DIR}/.github/contributing.md
+          ${PROJECT_SOURCE_DIR}/.github/CONTRIBUTING.md
           $<IF:$<TARGET_EXISTS:doxygen>,doxygen,>
   COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_CONFIG_FILE_OUT}
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}

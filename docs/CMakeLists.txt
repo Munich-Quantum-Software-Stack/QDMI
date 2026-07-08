@@ -118,8 +118,7 @@ add_custom_command(
           ${CMAKE_SOURCE_DIR}/README.md
           ${CMAKE_SOURCE_DIR}/CHANGELOG.md
           ${CMAKE_SOURCE_DIR}/UPGRADING.md
-          ${CMAKE_SOURCE_DIR}/.github/support.md
-          ${CMAKE_SOURCE_DIR}/.github/contributing.md
+          ${CMAKE_SOURCE_DIR}/.github/SUPPORT.md
           $<IF:$<TARGET_EXISTS:doxygen>,doxygen,>
   COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_CONFIG_FILE_OUT}
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}

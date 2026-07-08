@@ -17,14 +17,16 @@ A C++20 library that implements the QDMI Device interface.
 
 ## Documentation
 
-The full documentation, including project guides, a contributing guide, and the C++ API reference,
-is available in the `docs/` directory and can be built using [Doxygen](https://doxygen.nl/).
+The full documentation, including project guides, a contributing guide, and the
+C++ API reference, is available in the `docs/` directory and can be built using
+[Doxygen](https://doxygen.nl/).
 
 You can build the documentation by running:
 
 ```console
-$ cmake -S . -B build -DBUILD_MY_QDMI_DOCS=ON
-$ cmake --build build --target my_qdmi_device_docs
+cmake -S . -B build -DBUILD_MY_QDMI_DOCS=ON
+cmake --build build --target my_qdmi_device_docs
 ```
 
-The documentation will be generated in the `build/docs/` directory. You can view the HTML documentation by opening the `index.html` file in a web browser.
+The documentation will be generated in the `build/docs/` directory. You can view
+the HTML documentation by opening the `index.html` file in a web browser.

@@ -16,7 +16,7 @@
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 [build-system]
-requires = ["scikit-build-core>=0.12.2"]
+requires = ["scikit-build-core>=1.0.1"]
 build-backend = "scikit_build_core.build"
 
 [project]
@@ -63,7 +63,6 @@ test = [
 dev = [
   {include-group = "test"},
   "nox>=v2026.4.10",
-  "ty==0.0.31",
 ]
 
 
@@ -182,4 +181,14 @@ cache-keys = [
     { file = "pyproject.toml" },
     { git = { commit = true, tags = true } },
     { file = "src/**/*" },
+]
+
+
+[tool.ty.terminal]
+# Error if ty emits any warning-level diagnostics.
+error-on-warning = true
+
+[tool.ty.src]
+exclude = [
+    "docs/**",
 ]

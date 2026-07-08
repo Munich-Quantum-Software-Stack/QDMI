@@ -15,7 +15,7 @@
   enabledManagers: ["cargo", "github-actions", "npm", "pep621", "pre-commit"],
   lockFileMaintenance: {
     enabled: true,
-    automerge: true
+    automerge: true,
   },
   labels: ["dependencies"],
   schedule: ["every weekend"],
@@ -23,28 +23,28 @@
     {
       matchManagers: ["cargo"],
       addLabels: ["rust"],
-      commitMessagePrefix: "⬆\uFE0F\uD83E\uDD80"
+      commitMessagePrefix: "⬆\uFE0F\uD83E\uDD80",
     },
     {
       matchManagers: ["github-actions"],
       addLabels: ["github-actions"],
-      commitMessagePrefix: "⬆\uFE0F\uD83D\uDC68\u200D\uD83D\uDCBB"
+      commitMessagePrefix: "⬆\uFE0F\uD83D\uDC68\u200D\uD83D\uDCBB",
     },
     {
       matchManagers: ["npm"],
       addLabels: ["javascript"],
-      commitMessagePrefix: "⬆\uFE0F\uD83D\uDCDC"
+      commitMessagePrefix: "⬆\uFE0F\uD83D\uDCDC",
     },
     {
       matchManagers: ["pep621"],
       addLabels: ["python"],
-      commitMessagePrefix: "⬆\uFE0F\uD83D\uDC0D"
+      commitMessagePrefix: "⬆\uFE0F\uD83D\uDC0D",
     },
     {
       matchManagers: ["pre-commit"],
       addLabels: ["pre-commit"],
       commitMessagePrefix: "⬆\uFE0F\uD83E\uDE9D",
-      versioning: "pep440"
+      versioning: "pep440",
     },
     {
       matchUpdateTypes: ["lockFileMaintenance"],
@@ -55,7 +55,7 @@
       groupName: "patch updates",
       groupSlug: "all-patch",
       matchUpdateTypes: ["patch"],
-      automerge: true
+      automerge: true,
     },
-  ]
+  ],
 }
