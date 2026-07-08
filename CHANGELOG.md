@@ -19,6 +19,9 @@ clients compiled against a different minor or major version.
 
 ### Changed
 
+- 📝 Move contribution guide to documentation ([#457]) ([\@denialhaag])
+- 🔧 Set up `rumdl` for linting and formatting Markdown files ([#457])
+  ([\@denialhaag])
 - ✨ Introduce new **device library** type `QDMI_Child_Device` intended to store
   core / processing-unit related data in a multicore architecture ([#456])
   ([\@kabu-planqc])
@@ -197,6 +200,7 @@ previous changelogs._
 
 <!-- PR links -->
 
+[#457]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/457
 [#456]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/456
 [#426]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/426
 [#409]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/409
