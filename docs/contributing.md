@@ -168,26 +168,30 @@ perfect. We will guide you through the process.
 5. (Optional, **highly recommended**) Install [`prek`](https://prek.j178.dev/)
    to automatically run a set of checks before each commit.
 
+<!-- rumdl-disable -->
+
    <div class="tabbed">
 
-- <b class="tab-title">via `uv`</b> The easiest way to install `prek` is via
-  [uv](https://docs.astral.sh/uv/).
+   - <b class="tab-title">via `uv`</b> The easiest way to install `prek` is
+     via [uv](https://docs.astral.sh/uv/).
 
-  \code{.shell} uv tool install prek \endcode
+     \code{.shell} uv tool install prek \endcode
 
-- <b class="tab-title">via `brew`</b> If you use macOS, then prek is in
-  Homebrew, use
+   - <b class="tab-title">via `brew`</b> If you use macOS, `prek` is also
+     available via Homebrew.
 
-  \code{.shell} brew install prek \endcode
+     \code{.shell} brew install prek \endcode
 
-- <b class="tab-title">via the official installers</b> See
-  <https://prek.j178.dev/installation/> for more details.
+   - <b class="tab-title">via the official installers</b> See
+     <https://prek.j178.dev/installation/> for more details.
 
-  </div>
+   </div>
 
-  Afterward, you can install the prek hooks with
+<!-- rumdl-enable -->
 
-  \code{.shell} prek install \endcode
+   Afterward, you can install the prek hooks with
+
+   \code{.shell} prek install \endcode
 
 ### Working on Source Code {#working-on-source-code}
 
