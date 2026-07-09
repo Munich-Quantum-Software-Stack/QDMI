@@ -390,16 +390,16 @@ these files must be marked as documented by adding a comment like the following
 to the top of the file. Right now, this is done for all files in the include
 directory.
 
+<!-- rumdl-disable -->
 \verbatim
 
 /** @file
-
-- @brief A brief description of the file.
-- @details Some details about the file.
-
-  */
+ * @brief A brief description of the file.
+ * @details Some details about the file.
+ */
 
 \endverbatim
+<!-- rumdl-enable -->
 
 #### Further Links and Resources {#further-links-and-resources}
 
