@@ -22,6 +22,7 @@ jobs:
           cmake -S . -B build -DBUILD_QDMI_DOCS=ON
           cmake --build build --target qdmi-docs
           mv build/docs/html/ static
+          cp build/docs/qdmi.tag static/qdmi.tag
       - name: Inject version selector
         if: github.event.action != 'closed'
         run: |
