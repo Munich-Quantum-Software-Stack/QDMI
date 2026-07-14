@@ -21,12 +21,13 @@ jobs:
         with:
           ref: ${{ github.event.release.tag_name || inputs.version }}
 
-      - name: Fetch version selector scripts from develop 📝
+      - name: Fetch documentation tooling from develop 📝
         run: |
-          # Fetch and checkout the scripts from develop branch
+          # Fetch tag-file generation and version-selector tooling from develop.
+          # This also allows existing releases to be rebuilt with tag files.
           git fetch origin develop
           mkdir -p .github/scripts
-          git checkout origin/develop -- .github/scripts/inject-version-selector.sh .github/scripts/version-selector.html || echo "Scripts not found in develop, will skip version selector"
+          git checkout origin/develop -- docs/CMakeLists.txt docs/Doxyfile.in .github/scripts/inject-version-selector.sh .github/scripts/version-selector.html || echo "Documentation tooling not found in develop"
 
       - name: Install Doxygen
         uses: ssciwr/doxygen-install@329d88f5a303066a5bd006db7516b1925b86350e # v2.0.1
@@ -38,6 +39,7 @@ jobs:
           cmake -S . -B build -DBUILD_QDMI_DOCS=ON
           cmake --build build --target qdmi-docs
           mv build/docs/html/ static
+          cp build/docs/qdmi.tag static/qdmi.tag
 
       - name: Set version variable
         id: version

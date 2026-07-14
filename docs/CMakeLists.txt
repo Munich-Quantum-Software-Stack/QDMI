@@ -73,6 +73,7 @@ string(REPLACE ";" " " DOXYGEN_EXAMPLE_DIRS "${DOXYGEN_EXAMPLE_DIRS}")
 # Set the output directory for the generated documentation: Place it in the
 # CMake build directory.
 set(DOXYGEN_OUTPUT_DIR ${CMAKE_CURRENT_BINARY_DIR})
+set(DOXYGEN_TAG_FILE ${DOXYGEN_OUTPUT_DIR}/qdmi.tag)
 
 # Set the Doxygen configured configuration file. This will point to the Doxyfile
 # that is written out by CMake with all placeholders substituted.
@@ -108,7 +109,7 @@ endif()
 
 # Create a custom command to run Doxygen
 add_custom_command(
-  OUTPUT ${DOXYGEN_OUTPUT_DIR}/html/index.html
+  OUTPUT ${DOXYGEN_OUTPUT_DIR}/html/index.html ${DOXYGEN_TAG_FILE}
   DEPENDS ${DOXYGEN_INPUT_FILES}
           ${DOXYGEN_CONFIG_FILE_IN}
           ${CMAKE_CURRENT_SOURCE_DIR}/ai_usage.md
@@ -126,4 +127,5 @@ add_custom_command(
   VERBATIM)
 
 # Create a custom target
-add_custom_target(qdmi-docs ALL DEPENDS ${DOXYGEN_OUTPUT_DIR}/html/index.html)
+add_custom_target(qdmi-docs ALL DEPENDS ${DOXYGEN_OUTPUT_DIR}/html/index.html
+                                        ${DOXYGEN_TAG_FILE})
