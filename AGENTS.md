@@ -38,13 +38,14 @@ with CMake `FetchContent`.
 
 ### General
 
+- MUST read and follow `docs/contributing.md` before making a contribution.
 - MUST run `uvx prek run -a` after every batch of changes. All hooks from
   `.pre-commit-config.yaml` must pass before submitting.
 - MUST add or update tests for every code change, including bug fixes.
 - MUST follow existing patterns in neighboring files and keep changes focused on
-  one feature or bug.
-- MUST update `CHANGELOG.md` for noteworthy or user-facing changes and
-  `UPGRADING.md` for breaking changes.
+  one feature or bug; avoid unrelated refactors or formatting changes.
+- MUST document new user-facing behavior, update `CHANGELOG.md` for noteworthy
+  changes, and update `UPGRADING.md` for breaking changes.
 - MUST follow `docs/ai_usage.md`: a human must review and understand all
   AI-assisted work, and AI assistance must not be used for `good first issue`
   contributions, issue descriptions, PR comments, or code reviews.
@@ -53,9 +54,18 @@ with CMake `FetchContent`.
   commit.
 - MUST preserve the Apache-2.0-with-LLVM-exception license headers used by the
   surrounding source files.
+- NEVER expose, print, store, or commit credentials, tokens, or other secrets.
 - PREFER targeted builds and tests during development, then run the full
   relevant preset before handoff.
 - NEVER edit generated build output or dependency source trees under `build/`.
+
+### GitHub Pull Requests
+
+- MAY create or edit a pull request only when the user explicitly requests it;
+  the human remains responsible for reviewing all submitted work.
+- MUST use the repository's pull request template when one is present.
+- MUST NOT use AI tools to generate issue descriptions, pull request comments,
+  or code reviews, as required by `docs/ai_usage.md`.
 
 ### C and C++
 
