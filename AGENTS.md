@@ -41,8 +41,8 @@ with CMake `FetchContent`.
 - MUST run `uvx prek run -a` after every batch of changes. All hooks from
   `.pre-commit-config.yaml` must pass before submitting.
 - MUST add or update tests for every code change, including bug fixes.
-- MUST follow existing patterns in neighboring files and keep changes focused
-  on one feature or bug.
+- MUST follow existing patterns in neighboring files and keep changes focused on
+  one feature or bug.
 - MUST update `CHANGELOG.md` for noteworthy or user-facing changes and
   `UPGRADING.md` for breaking changes.
 - MUST follow `docs/ai_usage.md`: a human must review and understand all
@@ -78,8 +78,8 @@ with CMake `FetchContent`.
   `cmake/GenerateTemplate.cmake`.
 - When changing the template, build and test its instantiated targets as well as
   the main QDMI test suite.
-- Keep example implementations representative of the public interface and
-  update them when interface changes require it.
+- Keep example implementations representative of the public interface and update
+  them when interface changes require it.
 
 ## Self-Review Checklist
 
