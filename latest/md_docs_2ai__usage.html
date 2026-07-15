@@ -200,24 +200,28 @@ Core Principles</h1>
 <p><b>Do not blindly copy-paste AI-generated code.</b> If you cannot explain it, do not submit it.</p>
 <h2 class="doxsection"><a class="anchor" id="human-in-the-loop"></a>
 2. Human in the Loop</h2>
-<p><b>Autonomous contributions from AI agents are not allowed.</b></p>
-<p>When using AI tools, you must be the driver. The AI is the assistant.</p>
+<p><b>Humans remain accountable for AI-assisted contributions.</b></p>
+<p>AI agents may implement changes and manage issue and pull request workflows when a human explicitly authorizes the scope and relevant external actions. The human remains the driver and is responsible for the resulting contribution.</p>
 <ul>
-<li><b>Review:</b> You must read and review all AI-generated code or text before submitting it.</li>
+<li><b>Review:</b> You must read and review all AI-generated code or public text before submitting it, merging it, or otherwise representing it as your own work.</li>
 <li><b>Edit:</b> AI-generated code often requires significant editing to meet project standards and correctness.</li>
 <li><b>Verify:</b> Ensure the code actually solves the problem and doesn't introduce subtle bugs or security vulnerabilities.</li>
+<li><b>Authorize:</b> Explicitly authorize agents before they create, edit, submit, or comment on issues and pull requests. Remain accountable for all external communication that they submit on your behalf.</li>
 </ul>
 <h2 class="doxsection"><a class="anchor" id="communication"></a>
 3. Communication</h2>
-<p><b>Do not use AI tools to generate issue descriptions, pull request comments, or code reviews.</b></p>
-<p>We value your personal input and communication. LLMs are notoriously unreliable and can produce "smart-sounding" but incorrect or irrelevant claims ("hallucinations"). Phrase your communications in your own words. It is more important that we can follow your reasoning than that the text sounds "perfect".</p>
+<p><b>AI tools may be used to prepare and manage issue and pull request workflows, including descriptions, comments, and code reviews, when a human has authorized the action and remains responsible for the result.</b></p>
+<p>AI-generated communication can be incorrect, irrelevant, or overly generic. Keep it accurate, specific, and useful to reviewers and contributors. Do not post low-quality, repetitive, or unsolicited messages.</p>
+<p>Every agent-authored or agent-edited public text body must begin with the following visible disclosure:</p>
+<p><span class="tt">🤖 *AI text below* 🤖</span></p>
+<p>This requirement applies to issue and pull request descriptions, review bodies, inline review comments, issue-style comments, replies, and other submitted text bodies. Pull request and issue titles are exempt. When editing existing human-authored text, preserve the original content and add the disclosure at the beginning of the edited field.</p>
 <h2 class="doxsection"><a class="anchor" id="transparency-and-disclosure"></a>
 4. Transparency and Disclosure</h2>
 <p>Transparency helps the community understand the role of these tools and develop best practices.</p>
-<p><b>We encourage you to disclose any AI assistance.</b> This helps us understand how these tools are being used and identify potential issues. You can disclose this information in the following ways:</p>
+<p><b>You must disclose AI assistance.</b> This helps us understand how the tools are being used and identify potential issues. Disclose it in the following ways:</p>
 <ul>
 <li><b>Commit Messages</b>: Add a trailer to your commit message in the form <span class="tt">Assisted-by: [Model Name] via [Tool Name]</span> (example: <span class="tt">Assisted-by: Claude Sonnet 4.6 via GitHub Copilot</span>)</li>
-<li><b>PR Description</b>: Mention the tool (name and version) and how it was used in the PR description.</li>
+<li><b>Public issue and pull request text</b>: Use the visible disclosure required in the <a class="el" href="#communication" title="3. Communication">communication policy</a>.</li>
 </ul>
 <h2 class="doxsection"><a class="anchor" id="licensing-and-copyright"></a>
 5. Licensing and Copyright</h2>
@@ -250,7 +254,7 @@ Prohibited Uses</h1>
 <ul>
 <li><b>"Good First Issues"</b>: Do not use AI tools to solve issues labeled as "good
   first issue". These are intended as learning opportunities for new contributors. Automating them defeats the purpose.</li>
-<li><b>Spam</b>: Do not use AI to generate low-quality or repetitive comments/reviews ("AI Slop").</li>
+<li><b>Spam</b>: Do not use AI to generate low-quality, repetitive, or unsolicited comments or reviews ("AI Slop").</li>
 <li><b>Unreviewed Code</b>: Submitting code that you, as a human, have not reviewed and tested yourself.</li>
 </ul>
 <h1 class="doxsection"><a class="anchor" id="summary"></a>
