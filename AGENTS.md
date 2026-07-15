@@ -47,8 +47,8 @@ with CMake `FetchContent`.
 - MUST document new user-facing behavior, update `CHANGELOG.md` for noteworthy
   changes, and update `UPGRADING.md` for breaking changes.
 - MUST follow `docs/ai_usage.md`: a human must review and understand all
-  AI-assisted work, and AI assistance must not be used for `good first issue`
-  contributions, issue descriptions, PR comments, or code reviews.
+  AI-assisted work. AI assistance must not be used for `good first issue`
+  contributions.
 - MUST include a commit footer attribution in the form
   `Assisted-by: [Model Name] via [Tool Name]` when AI tools helped prepare a
   commit.
@@ -59,13 +59,21 @@ with CMake `FetchContent`.
   relevant preset before handoff.
 - NEVER edit generated build output or dependency source trees under `build/`.
 
-### GitHub Pull Requests
+### GitHub Issues and Pull Requests
 
-- MAY create or edit a pull request only when the user explicitly requests it;
-  the human remains responsible for reviewing all submitted work.
+- MAY create, submit, and edit pull requests; create and manage issues; and
+  comment on issues or pull requests when the task explicitly authorizes that
+  external action. The human remains responsible for reviewing all submitted
+  work.
 - MUST use the repository's pull request template when one is present.
-- MUST NOT use AI tools to generate issue descriptions, pull request comments,
-  or code reviews, as required by `docs/ai_usage.md`.
+- Every agent-authored or agent-edited public text MUST begin with
+  `🤖 *AI text below* 🤖` on its first line. This applies to issue and pull
+  request descriptions, review bodies, inline review comments, issue comments,
+  replies, and other submitted text bodies; titles are exempt.
+- When editing human-authored public text, preserve its original content and add
+  the disclosure at the beginning of the edited field.
+- MUST keep external communication accurate, specific, and non-repetitive; do
+  not post low-quality or unsolicited comments.
 
 ### C and C++
 
@@ -102,3 +110,5 @@ with CMake `FetchContent`.
 - Were `CHANGELOG.md` and `UPGRADING.md` updated when appropriate?
 - Were template and example consumers updated and tested when the interface or
   generation behavior changed?
+- Were any agent-authored issue or pull request texts explicitly authorized and
+  marked with the required visible disclosure?
