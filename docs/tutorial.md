@@ -84,9 +84,8 @@ first, confirm they fail, implement the fix, and then verify the results.
 
 **Action Required**: Copy the full test suite from the
 [Test Suite Reference](#tutorial-test-reference) section at the bottom of this
-page and paste it into `test/test_tutorial_device.cpp` now. _(Alternatively, you
-can automatically inject this test suite during project generation by passing
-`-DTEMPLATE_TEST_SUITE=ON` to the CMake configuration step.)_
+page and paste it into `test/test_tutorial_device.cpp` now.
+_(Alternatively, you can automatically inject this test suite during project generation by passing `-DTEMPLATE_TEST_SUITE=ON` to the CMake configuration step.)_
 
 Building the tests at this stage should result in failures, which is expected as
 we haven't implemented the logic yet.
