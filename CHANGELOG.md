@@ -187,9 +187,9 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#120)._
 
 ## [1.1.0] - 2025-01-10
 
-_📚 Refer to the [GitHub Release
-Notes](https://github.com/Munich-Quantum-Software-Stack/QDMI/releases) for
-previous changelogs._
+_📚 Refer to the
+[GitHub Release Notes](https://github.com/Munich-Quantum-Software-Stack/QDMI/releases)
+for previous changelogs._
 
 <!-- Version links -->
 
