@@ -32,7 +32,7 @@ jobs:
       run-template: ${{ steps.template-changes.outputs.run-template || false }}
       run-docs: ${{ steps.docs-changes.outputs.run-docs || false }}
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Get a list of the changed files relevant for the tests
         if: github.event_name == 'pull_request'
         id: changed-testable-files

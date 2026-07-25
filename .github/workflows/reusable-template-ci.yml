@@ -14,7 +14,7 @@ jobs:
       CTEST_PARALLEL_LEVEL: 4
       FORCE_COLOR: 3
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           path: qdmi
       - name: Configure template
@@ -43,7 +43,7 @@ jobs:
           cmake -G Ninja -S . -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_MQSS_QDMI_TESTS=ON
           cmake --build build --config Release
       - name: Install Doxygen
-        uses: ssciwr/doxygen-install@329d88f5a303066a5bd006db7516b1925b86350e # v2.0.1
+        uses: ssciwr/doxygen-install@b5b80f5a60852f72d3c33f47fee9ddfb84a25929 # v2.0.2
         with:
           version: "1.15.0"
       - name: Build docs
@@ -51,7 +51,7 @@ jobs:
           cmake -G Ninja -S . -B build_docs -DCMAKE_BUILD_TYPE=Release -DBUILD_MQSS_QDMI_DOCS=ON -DBUILD_MQSS_QDMI_TESTS=OFF
           cmake --build build_docs --config Release --target mqss_qdmi_device_docs
           rm -rf build_docs
-      - uses: pypa/cibuildwheel@294735312765b09d24a2fbec22660ce817587d55 # v4.1.0
+      - uses: pypa/cibuildwheel@4726cd35bb13f7bde50cf2761f2499ac7b3aa32c # v4.1.1
       - name: Verify clean directory
         run: git diff --exit-code
       - name: Upload wheels
