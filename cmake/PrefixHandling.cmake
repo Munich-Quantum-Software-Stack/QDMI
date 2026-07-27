@@ -74,6 +74,30 @@ function(generate_prefixed_qdmi_headers prefix)
   endforeach()
 endfunction()
 
+# Publish the metadata that build-system consumers need to identify a QDMI
+# device target.
+function(configure_qdmi_device_target)
+  cmake_parse_arguments(ARG "" "TARGET;ID;PREFIX" "" ${ARGN})
+  foreach(required_argument IN ITEMS TARGET ID PREFIX)
+    if(NOT ARG_${required_argument})
+      message(
+        FATAL_ERROR
+          "configure_qdmi_device_target requires TARGET, ID, and PREFIX")
+    endif()
+  endforeach()
+  if(NOT TARGET ${ARG_TARGET})
+    message(FATAL_ERROR "Unknown QDMI device target: ${ARG_TARGET}")
+  endif()
+
+  set_target_properties(
+    ${ARG_TARGET} PROPERTIES QDMI_DEVICE_ID "${ARG_ID}" QDMI_DEVICE_PREFIX
+                                                        "${ARG_PREFIX}")
+  set_property(
+    TARGET ${ARG_TARGET}
+    APPEND
+    PROPERTY EXPORT_PROPERTIES QDMI_DEVICE_ID QDMI_DEVICE_PREFIX)
+endfunction()
+
 # A function for generating test executables that check if all functions are
 # implemented by a device.
 #

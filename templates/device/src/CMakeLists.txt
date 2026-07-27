@@ -41,6 +41,8 @@ set_target_properties(
   PROPERTIES C_VISIBILITY_PRESET hidden
              CXX_VISIBILITY_PRESET hidden
              VISIBILITY_INLINES_HIDDEN 1)
+configure_qdmi_device_target(TARGET ${QDMI_TARGET_NAME} ID ${MY_QDMI_DEVICE_ID}
+                             PREFIX ${QDMI_PREFIX})
 target_sources(${QDMI_TARGET_NAME} PRIVATE ${SRC_FILES})
 
 target_sources(
