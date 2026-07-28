@@ -10,6 +10,10 @@ jobs:
     name: Build Device Template
     runs-on: ubuntu-24.04
     env:
+      CIBW_ENVIRONMENT_PASS_LINUX: CMAKE_ARGS
+      CMAKE_ARGS: >-
+        -DQDMI_REPO_OWNER=${{ github.event.pull_request.head.repo.owner.login || github.repository_owner }}
+        -DQDMI_REV=${{ github.event.pull_request.head.sha || github.sha }}
       CMAKE_BUILD_PARALLEL_LEVEL: 4
       CTEST_PARALLEL_LEVEL: 4
       FORCE_COLOR: 3
@@ -40,7 +44,7 @@ jobs:
           git commit -m "🎉 Initial commit"
       - name: Build template
         run: |
-          cmake -G Ninja -S . -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_MQSS_QDMI_TESTS=ON
+          cmake -G Ninja -S . -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_MQSS_QDMI_TESTS=ON $CMAKE_ARGS
           cmake --build build --config Release
       - name: Install Doxygen
         uses: ssciwr/doxygen-install@b5b80f5a60852f72d3c33f47fee9ddfb84a25929 # v2.0.2
@@ -48,7 +52,7 @@ jobs:
           version: "1.15.0"
       - name: Build docs
         run: |
-          cmake -G Ninja -S . -B build_docs -DCMAKE_BUILD_TYPE=Release -DBUILD_MQSS_QDMI_DOCS=ON -DBUILD_MQSS_QDMI_TESTS=OFF
+          cmake -G Ninja -S . -B build_docs -DCMAKE_BUILD_TYPE=Release -DBUILD_MQSS_QDMI_DOCS=ON -DBUILD_MQSS_QDMI_TESTS=OFF $CMAKE_ARGS
           cmake --build build_docs --config Release --target mqss_qdmi_device_docs
           rm -rf build_docs
       - uses: pypa/cibuildwheel@4726cd35bb13f7bde50cf2761f2499ac7b3aa32c # v4.1.1
