@@ -51,6 +51,9 @@ set(CMAKE_VERIFY_INTERFACE_HEADER_SETS
     CACHE BOOL "Verify interface header sets" FORCE)
 
 set(QDMI_PREFIX "CXX")
+set(CXX_QDMI_DEVICE_ID
+    "cxx.default"
+    CACHE STRING "Stable identifier for the CXX QDMI Device")
 
 cmake_dependent_option(
   INSTALL_CXX_QDMI_DEVICE
@@ -78,6 +81,17 @@ endif()
 
 # Add the tests
 if(BUILD_CXX_QDMI_TESTS)
+  get_target_property(EXPORTED_QDMI_DEVICE_ID ${QDMI_TARGET_NAME}
+                      QDMI_DEVICE_ID)
+  get_target_property(EXPORTED_QDMI_DEVICE_PREFIX ${QDMI_TARGET_NAME}
+                      QDMI_DEVICE_PREFIX)
+  if(NOT EXPORTED_QDMI_DEVICE_ID STREQUAL "${CXX_QDMI_DEVICE_ID}")
+    message(FATAL_ERROR "The CXX QDMI target does not export its stable ID")
+  endif()
+  if(NOT EXPORTED_QDMI_DEVICE_PREFIX STREQUAL "${QDMI_PREFIX}")
+    message(FATAL_ERROR "The CXX QDMI target does not export its symbol prefix")
+  endif()
+
   enable_testing()
   include(GoogleTest)
   add_subdirectory(test)

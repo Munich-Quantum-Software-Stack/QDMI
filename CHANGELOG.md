@@ -12,6 +12,11 @@ clients compiled against a different minor or major version.
 
 ## [Unreleased]
 
+### Added
+
+- 👨‍💻 Add stable device IDs and symbol-prefix metadata to exported device targets
+  and generated projects ([#475]) ([\@burgholzer])
+
 ## [1.3.2] - 2026-07-08
 
 ### Added
@@ -204,6 +209,7 @@ for previous changelogs._
 
 <!-- PR links -->
 
+[#475]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/475
 [#457]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/457
 [#456]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/456
 [#426]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/426

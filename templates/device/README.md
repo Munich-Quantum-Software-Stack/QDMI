@@ -15,6 +15,12 @@ A C++20 library that implements the QDMI Device interface.
 
 <!-- [DOXYGEN MAIN] -->
 
+The exported CMake target publishes the stable device ID configured through
+`MY_QDMI_DEVICE_ID` and the QDMI symbol prefix through
+`configure_qdmi_device_target`. Consumers such as MQT Core can use this metadata
+to package and register the device without project-specific loader code. This
+metadata does not add MQT Core as a dependency.
+
 ## Documentation
 
 The full documentation, including project guides, a contributing guide, and the
