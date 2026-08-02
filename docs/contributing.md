@@ -404,10 +404,9 @@ directory.
 #### Further Links and Resources {#further-links-and-resources}
 
 - For more details, see the official documentation of Doxygen that can be found
-  here:
-  [https://www.doxygen.nl/manual/docblocks.html](https://www.doxygen.nl/manual/docblocks.html).
+  here: <https://www.doxygen.nl/manual/docblocks.html>.
 - More tags and commands can be found in the list provided here:
-  [https://www.doxygen.nl/manual/commands.html#cmd_intro](https://www.doxygen.nl/manual/commands.html#cmd_intro)
+  <https://www.doxygen.nl/manual/commands.html#cmd_intro>
 
 ### Maintaining the Changelog and Upgrade Guide {#maintaining-changelog-upgrade-guide}
 
