@@ -25,7 +25,7 @@ jobs:
     uses: ./.github/workflows/reusable-change-detection.yml
 
   tests:
-    name: 🇨‌ Test
+    name: 🇨 Test
     needs: change-detection
     if: fromJSON(needs.change-detection.outputs.run-tests) && github.event.action != 'closed'
     permissions:
@@ -36,7 +36,7 @@ jobs:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   linter:
-    name: 🇨‌ Lint
+    name: 🇨 Lint
     permissions:
       contents: read
       pull-requests: write
