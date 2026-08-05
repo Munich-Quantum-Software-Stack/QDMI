@@ -387,7 +387,7 @@ int CXX_QDMI_device_session_create_device_job(CXX_QDMI_Device_Session session,
 
   auto *state = CXX_QDMI_get_device_state();
   if (state->next_job_id == std::numeric_limits<uint64_t>::max()) {
-    return QDMI_ERROR_OUTOFMEM;
+    return QDMI_ERROR_FATAL;
   }
   auto remote_job = std::make_shared<CXX_QDMI_Remote_Job>();
   remote_job->id = ++state->next_job_id;
