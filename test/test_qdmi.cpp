@@ -1180,16 +1180,6 @@ TEST_P(QDMIImplementationTest, OpenJob) {
 
   QDMI_Job job = nullptr;
   ASSERT_EQ(QDMI_device_create_job(device, &job), QDMI_SUCCESS);
-  const QDMI_Program_Format format = QDMI_PROGRAM_FORMAT_QASM2;
-  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
-                                   sizeof(format), &format),
-            QDMI_SUCCESS);
-  const size_t shots = 2;
-  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_SHOTSNUM,
-                                   sizeof(shots), &shots),
-            QDMI_SUCCESS);
-  ASSERT_EQ(QDMI_job_submit(job), QDMI_SUCCESS);
-
   size_t id_size = 0;
   ASSERT_EQ(
       QDMI_job_query_property(job, QDMI_JOB_PROPERTY_ID, 0, nullptr, &id_size),
@@ -1199,6 +1189,18 @@ TEST_P(QDMIImplementationTest, OpenJob) {
   ASSERT_EQ(QDMI_job_query_property(job, QDMI_JOB_PROPERTY_ID, id.size(),
                                     id.data(), nullptr),
             QDMI_SUCCESS);
+  EXPECT_EQ(QDMI_device_open_job(device, id.c_str(), &opened_job),
+            QDMI_ERROR_NOTFOUND);
+
+  const QDMI_Program_Format format = QDMI_PROGRAM_FORMAT_QASM2;
+  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
+                                   sizeof(format), &format),
+            QDMI_SUCCESS);
+  const size_t shots = 2;
+  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_SHOTSNUM,
+                                   sizeof(shots), &shots),
+            QDMI_SUCCESS);
+  ASSERT_EQ(QDMI_job_submit(job), QDMI_SUCCESS);
   QDMI_job_free(job);
 
   ASSERT_EQ(QDMI_device_open_job(device, id.c_str(), &opened_job),
