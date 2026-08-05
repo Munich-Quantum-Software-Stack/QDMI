@@ -117,11 +117,18 @@ TEST(QDMIOptionalDeviceFunctionTest, MissingOpenSymbolReturnsNotSupported) {
             QDMI_SUCCESS);
   ASSERT_EQ(QDMI_session_init(test_session), QDMI_SUCCESS);
 
-  QDMI_Device test_device = nullptr;
-  ASSERT_EQ(QDMI_session_query_session_property(
-                test_session, QDMI_SESSION_PROPERTY_DEVICES,
-                sizeof(test_device), &test_device, nullptr),
+  size_t devices_size = 0;
+  ASSERT_EQ(QDMI_session_query_session_property(test_session,
+                                                QDMI_SESSION_PROPERTY_DEVICES,
+                                                0, nullptr, &devices_size),
             QDMI_SUCCESS);
+  ASSERT_GE(devices_size, sizeof(QDMI_Device));
+  std::vector<QDMI_Device> devices(devices_size / sizeof(QDMI_Device));
+  ASSERT_EQ(QDMI_session_query_session_property(
+                test_session, QDMI_SESSION_PROPERTY_DEVICES, devices_size,
+                static_cast<void *>(devices.data()), nullptr),
+            QDMI_SUCCESS);
+  const auto test_device = devices.front();
   QDMI_Job job = nullptr;
   EXPECT_EQ(QDMI_device_open_job(test_device, "job-id", &job),
             QDMI_ERROR_NOTSUPPORTED);
