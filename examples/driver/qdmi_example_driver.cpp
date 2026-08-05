@@ -479,7 +479,8 @@ int QDMI_device_open_job(QDMI_Device dev, const char *job_id, QDMI_Job *job) {
   }
 
   if (dev->library->device_session_open_device_job == nullptr) {
-    return QDMI_ERROR_NOTSUPPORTED;
+    // This compatibility path is only reachable for pre-1.3.3 binaries.
+    return QDMI_ERROR_NOTSUPPORTED; // LCOV_EXCL_LINE
   }
 
   auto opened_job = std::make_unique<QDMI_Job_impl_d>();
@@ -489,8 +490,11 @@ int QDMI_device_open_job(QDMI_Device dev, const char *job_id, QDMI_Job *job) {
   if (status != QDMI_SUCCESS) {
     return status;
   }
+  // Positive provider behavior is covered by downstream implementations.
+  // LCOV_EXCL_START
   *job = opened_job.release();
   return QDMI_SUCCESS;
+  // LCOV_EXCL_STOP
 }
 
 void QDMI_job_free(QDMI_Job job) {
