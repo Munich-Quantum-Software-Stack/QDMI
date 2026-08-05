@@ -15,7 +15,7 @@ clients compiled against a different minor or major version.
 ### Added
 
 - 🚸 Add support for opening existing jobs by their IDs. This feature is
-  optional for device implementations.
+  optional for device implementations ([#485]) ([\@burgholzer])
 - 👨‍💻 Add stable device IDs and symbol-prefix metadata to exported device targets
   and generated projects ([#475]) ([\@burgholzer])
 
@@ -211,6 +211,7 @@ for previous changelogs._
 
 <!-- PR links -->
 
+[#485]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/485
 [#475]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/475
 [#457]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/457
 [#456]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/456
