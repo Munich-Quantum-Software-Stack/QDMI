@@ -14,8 +14,8 @@ clients compiled against a different minor or major version.
 
 ### Added
 
-- 🚸 Add support for opening existing jobs by their IDs. This feature is
-  optional for device implementations ([#485]) ([\@burgholzer])
+- 🚸 Add support for opening existing jobs by their IDs ([#485])
+  ([\@burgholzer])
 - 👨‍💻 Add stable device IDs and symbol-prefix metadata to exported device targets
   and generated projects ([#475]) ([\@burgholzer])
 

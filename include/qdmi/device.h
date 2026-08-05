@@ -514,8 +514,8 @@ QDMI_device_session_create_device_job(QDMI_Device_Session session,
  * @return @ref QDMI_ERROR_FATAL if opening the job failed due to a fatal
  * error.
  *
- * @attention This function is optional for device implementations. Drivers
- * must continue loading devices that do not export it and report
+ * @attention Drivers must continue loading device implementations built
+ * against QDMI versions that predate this function and report
  * @ref QDMI_ERROR_NOTSUPPORTED when opening a job is requested.
  */
 QDMI_EXPORT int QDMI_device_session_open_device_job(QDMI_Device_Session session,
@@ -641,9 +641,8 @@ QDMI_EXPORT int QDMI_device_job_query_property(QDMI_Device_Job job,
  * @param[in] job The job to submit. Must not be @c NULL.
  * @return @ref QDMI_SUCCESS if the job was successfully submitted.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p job is @c NULL.
- * @return @ref QDMI_ERROR_BADSTATE if the job cannot be submitted in its
- * current state, for example, because it has already been submitted or was
- * opened with @ref QDMI_device_session_open_device_job.
+ * @return @ref QDMI_ERROR_BADSTATE if the job was opened with @ref
+ * QDMI_device_session_open_device_job.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the device does not allow using
  * the @ref device_job_interface "device job interface" for the current session.
  * @return @ref QDMI_ERROR_FATAL if the job submission failed.

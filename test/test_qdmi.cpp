@@ -96,48 +96,6 @@ INSTANTIATE_TEST_SUITE_P(
       }
     });
 
-TEST(QDMIOptionalDeviceFunctionTest, MissingOpenSymbolReturnsNotSupported) {
-  const std::filesystem::path config_file =
-      "qdmi_optional_device_function.conf";
-  {
-    std::ofstream config(config_file);
-    config << QDMI_TEMPLATE_DEVICE_LIBRARY << " MY\n";
-  }
-#ifdef _WIN32
-  ASSERT_EQ(_putenv_s("QDMI_CONF", config_file.string().c_str()), 0);
-#else
-  ASSERT_EQ(setenv("QDMI_CONF", config_file.string().c_str(), 1), 0);
-#endif
-
-  ASSERT_EQ(QDMI_driver_init(), QDMI_SUCCESS);
-  QDMI_Session test_session = nullptr;
-  ASSERT_EQ(QDMI_session_alloc(&test_session), QDMI_SUCCESS);
-  ASSERT_EQ(QDMI_session_set_parameter(
-                test_session, QDMI_SESSION_PARAMETER_TOKEN, 6, "token"),
-            QDMI_SUCCESS);
-  ASSERT_EQ(QDMI_session_init(test_session), QDMI_SUCCESS);
-
-  size_t devices_size = 0;
-  ASSERT_EQ(QDMI_session_query_session_property(test_session,
-                                                QDMI_SESSION_PROPERTY_DEVICES,
-                                                0, nullptr, &devices_size),
-            QDMI_SUCCESS);
-  ASSERT_GE(devices_size, sizeof(QDMI_Device));
-  std::vector<QDMI_Device> devices(devices_size / sizeof(QDMI_Device));
-  ASSERT_EQ(QDMI_session_query_session_property(
-                test_session, QDMI_SESSION_PROPERTY_DEVICES, devices_size,
-                static_cast<void *>(devices.data()), nullptr),
-            QDMI_SUCCESS);
-  auto *const test_device = devices.front();
-  QDMI_Job job = nullptr;
-  EXPECT_EQ(QDMI_device_open_job(test_device, "job-id", &job),
-            QDMI_ERROR_NOTSUPPORTED);
-
-  QDMI_session_free(test_session);
-  EXPECT_EQ(QDMI_driver_shutdown(), QDMI_SUCCESS);
-  std::filesystem::remove(config_file);
-}
-
 TEST_P(QDMIImplementationTest, QueryNumQubits) {
   const auto fomac = FoMaC(device);
   ASSERT_GT(fomac.get_qubits_num(), 0);
@@ -586,7 +544,7 @@ TEST_P(QDMIImplementationTest, JobLifecycle) {
             QDMI_SUCCESS);
   EXPECT_EQ(shots, 5);
   ASSERT_EQ(QDMI_job_submit(job), QDMI_SUCCESS);
-  EXPECT_EQ(QDMI_job_submit(job), QDMI_ERROR_BADSTATE);
+  EXPECT_EQ(QDMI_job_submit(job), QDMI_ERROR_INVALIDARGUMENT);
   EXPECT_EQ(QDMI_job_submit(nullptr), QDMI_ERROR_INVALIDARGUMENT);
   // Cannot get results from a job that is not done yet.
   EXPECT_EQ(
@@ -1102,6 +1060,22 @@ TEST_P(QDMIImplementationTest, SessionInit) {
   EXPECT_EQ(QDMI_session_init(session2), QDMI_SUCCESS);
 }
 
+TEST_P(QDMIImplementationTest, OpenJob) {
+  QDMI_Job job = nullptr;
+  EXPECT_EQ(QDMI_device_open_job(nullptr, "job-id", &job),
+            QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_EQ(QDMI_device_open_job(device, nullptr, &job),
+            QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_EQ(QDMI_device_open_job(device, "", &job), QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_EQ(QDMI_device_open_job(device, "job-id", nullptr),
+            QDMI_ERROR_INVALIDARGUMENT);
+
+  const auto expected = mode == TEST_SESSION_MODE::READONLY
+                            ? QDMI_ERROR_PERMISSIONDENIED
+                            : QDMI_ERROR_NOTSUPPORTED;
+  EXPECT_EQ(QDMI_device_open_job(device, "job-id", &job), expected);
+}
+
 TEST_P(QDMIImplementationTest, SessionQuerySessionProperty) {
   // `session == nullptr` is not a valid argument
   EXPECT_EQ(QDMI_session_query_session_property(
@@ -1156,71 +1130,6 @@ TEST_P(QDMIImplementationTest, SessionQuerySessionProperty) {
                 session, QDMI_SESSION_PROPERTY_DEVICES, devices_size,
                 static_cast<void *>(devices_vec.data()), nullptr),
             QDMI_SUCCESS);
-}
-
-TEST_P(QDMIImplementationTest, OpenJob) {
-  QDMI_Job opened_job = nullptr;
-  EXPECT_EQ(QDMI_device_open_job(nullptr, "job-id", &opened_job),
-            QDMI_ERROR_INVALIDARGUMENT);
-  EXPECT_EQ(QDMI_device_open_job(device, nullptr, &opened_job),
-            QDMI_ERROR_INVALIDARGUMENT);
-  EXPECT_EQ(QDMI_device_open_job(device, "", &opened_job),
-            QDMI_ERROR_INVALIDARGUMENT);
-  EXPECT_EQ(QDMI_device_open_job(device, "job-id", nullptr),
-            QDMI_ERROR_INVALIDARGUMENT);
-
-  if (mode == TEST_SESSION_MODE::READONLY) {
-    EXPECT_EQ(QDMI_device_open_job(device, "job-id", &opened_job),
-              QDMI_ERROR_PERMISSIONDENIED);
-    return;
-  }
-
-  EXPECT_EQ(QDMI_device_open_job(device, "unknown", &opened_job),
-            QDMI_ERROR_NOTFOUND);
-
-  QDMI_Job job = nullptr;
-  ASSERT_EQ(QDMI_device_create_job(device, &job), QDMI_SUCCESS);
-  size_t id_size = 0;
-  ASSERT_EQ(
-      QDMI_job_query_property(job, QDMI_JOB_PROPERTY_ID, 0, nullptr, &id_size),
-      QDMI_SUCCESS);
-  ASSERT_GT(id_size, 1);
-  std::string id(id_size, '\0');
-  ASSERT_EQ(QDMI_job_query_property(job, QDMI_JOB_PROPERTY_ID, id.size(),
-                                    id.data(), nullptr),
-            QDMI_SUCCESS);
-  EXPECT_EQ(QDMI_device_open_job(device, id.c_str(), &opened_job),
-            QDMI_ERROR_NOTFOUND);
-
-  const QDMI_Program_Format format = QDMI_PROGRAM_FORMAT_QASM2;
-  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
-                                   sizeof(format), &format),
-            QDMI_SUCCESS);
-  const size_t shots = 2;
-  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_SHOTSNUM,
-                                   sizeof(shots), &shots),
-            QDMI_SUCCESS);
-  ASSERT_EQ(QDMI_job_submit(job), QDMI_SUCCESS);
-  QDMI_job_free(job);
-
-  ASSERT_EQ(QDMI_device_open_job(device, id.c_str(), &opened_job),
-            QDMI_SUCCESS);
-  EXPECT_EQ(QDMI_job_set_parameter(opened_job, QDMI_JOB_PARAMETER_SHOTSNUM,
-                                   sizeof(shots), &shots),
-            QDMI_ERROR_BADSTATE);
-  EXPECT_EQ(QDMI_job_submit(opened_job), QDMI_ERROR_BADSTATE);
-  ASSERT_EQ(QDMI_job_wait(opened_job, 0), QDMI_SUCCESS);
-
-  QDMI_Job_Status status = QDMI_JOB_STATUS_RUNNING;
-  ASSERT_EQ(QDMI_job_check(opened_job, &status), QDMI_SUCCESS);
-  EXPECT_EQ(status, QDMI_JOB_STATUS_DONE);
-
-  size_t result_size = 0;
-  EXPECT_EQ(QDMI_job_get_results(opened_job, QDMI_JOB_RESULT_SHOTS, 0, nullptr,
-                                 &result_size),
-            QDMI_SUCCESS);
-  EXPECT_GT(result_size, 0);
-  QDMI_job_free(opened_job);
 }
 
 TEST_P(QDMIImplementationTest, SupportsCalibration) {

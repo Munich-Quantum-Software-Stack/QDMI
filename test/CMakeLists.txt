@@ -44,9 +44,6 @@ target_link_libraries(
           GTest::gmock)
 
 target_compile_features(qdmi_test PRIVATE cxx_std_20)
-target_compile_definitions(
-  qdmi_test
-  PRIVATE "QDMI_TEMPLATE_DEVICE_LIBRARY=\"$<TARGET_FILE:my-qdmi-device>\"")
 
 # discover tests
 gtest_discover_tests(

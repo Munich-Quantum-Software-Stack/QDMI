@@ -92,6 +92,12 @@ int MY_QDMI_device_session_create_device_job(MY_QDMI_Device_Session session,
   return QDMI_ERROR_NOTIMPLEMENTED;
 }
 
+int MY_QDMI_device_session_open_device_job(MY_QDMI_Device_Session session,
+                                           const char *job_id,
+                                           MY_QDMI_Device_Job *job) {
+  return QDMI_ERROR_NOTSUPPORTED;
+}
+
 void MY_QDMI_device_job_free(MY_QDMI_Device_Job job) {}
 
 int MY_QDMI_device_job_set_parameter(MY_QDMI_Device_Job job,
