@@ -128,7 +128,7 @@ TEST(QDMIOptionalDeviceFunctionTest, MissingOpenSymbolReturnsNotSupported) {
                 test_session, QDMI_SESSION_PROPERTY_DEVICES, devices_size,
                 static_cast<void *>(devices.data()), nullptr),
             QDMI_SUCCESS);
-  const auto test_device = devices.front();
+  auto *const test_device = devices.front();
   QDMI_Job job = nullptr;
   EXPECT_EQ(QDMI_device_open_job(test_device, "job-id", &job),
             QDMI_ERROR_NOTSUPPORTED);
