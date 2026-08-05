@@ -27,6 +27,7 @@
 
 #include <algorithm>
 #include <array>
+#include <charconv>
 #include <cmath>
 #include <complex>
 #include <cstddef>
@@ -36,6 +37,7 @@
 #include <iterator>
 #include <limits>
 #include <map>
+#include <memory>
 #include <random>
 #include <ranges>
 #include <string>
@@ -56,12 +58,7 @@ struct CXX_QDMI_Device_Session_impl_d {
       CXX_QDMI_DEVICE_SESSION_STATUS::ALLOCATED;
 };
 
-/**
- * @brief Implementation of the CXX_QDMI_Device_Job structure.
- * @details This structure can, e.g., be used to store the job id.
- */
-struct CXX_QDMI_Device_Job_impl_d {
-  CXX_QDMI_Device_Session session = nullptr;
+struct CXX_QDMI_Remote_Job {
   int id = 0;
   QDMI_Program_Format format = QDMI_PROGRAM_FORMAT_MAX;
   void *program = nullptr;
@@ -69,6 +66,35 @@ struct CXX_QDMI_Device_Job_impl_d {
   size_t num_shots = 0;
   std::vector<std::string> results;
   std::vector<std::complex<double>> state_vec;
+
+  ~CXX_QDMI_Remote_Job() { delete[] static_cast<char *>(program); }
+};
+
+/**
+ * @brief Implementation of the CXX_QDMI_Device_Job structure.
+ * @details Each handle refers to durable remote state owned by the example
+ * device. This allows multiple local handles to refer to the same job.
+ */
+struct CXX_QDMI_Device_Job_impl_d {
+  CXX_QDMI_Device_Session session;
+  std::shared_ptr<CXX_QDMI_Remote_Job> remote_job;
+  bool opened;
+  int &id;
+  QDMI_Program_Format &format;
+  void *&program;
+  QDMI_Job_Status &status;
+  size_t &num_shots;
+  std::vector<std::string> &results;
+  std::vector<std::complex<double>> &state_vec;
+
+  CXX_QDMI_Device_Job_impl_d(CXX_QDMI_Device_Session current_session,
+                             std::shared_ptr<CXX_QDMI_Remote_Job> remote,
+                             const bool was_opened)
+      : session(current_session), remote_job(std::move(remote)),
+        opened(was_opened), id(remote_job->id), format(remote_job->format),
+        program(remote_job->program), status(remote_job->status),
+        num_shots(remote_job->num_shots), results(remote_job->results),
+        state_vec(remote_job->state_vec) {}
 };
 
 struct CXX_QDMI_Device_State {
@@ -79,6 +105,7 @@ struct CXX_QDMI_Device_State {
   std::bernoulli_distribution dis_bin{0.5};
   std::uniform_real_distribution<> dis_real =
       std::uniform_real_distribution<>(-1.0, 1.0);
+  std::unordered_map<int, std::shared_ptr<CXX_QDMI_Remote_Job>> jobs;
 };
 
 /**
@@ -367,16 +394,44 @@ int CXX_QDMI_device_session_create_device_job(CXX_QDMI_Device_Session session,
     return QDMI_ERROR_BADSTATE;
   }
 
-  *job = new CXX_QDMI_Device_Job_impl_d;
-  (*job)->session = session;
-  // set job id to random number for demonstration purposes
-  (*job)->id = CXX_QDMI_generate_job_id();
-  (*job)->status = QDMI_JOB_STATUS_CREATED;
+  auto remote_job = std::make_shared<CXX_QDMI_Remote_Job>();
+  remote_job->id = CXX_QDMI_generate_job_id();
+  remote_job->status = QDMI_JOB_STATUS_CREATED;
+  CXX_QDMI_get_device_state()->jobs.insert_or_assign(remote_job->id,
+                                                     remote_job);
+  *job = new CXX_QDMI_Device_Job_impl_d(session, std::move(remote_job), false);
+  return QDMI_SUCCESS;
+} /// [DOXYGEN FUNCTION END]
+
+int CXX_QDMI_device_session_open_device_job(CXX_QDMI_Device_Session session,
+                                            const char *job_id,
+                                            CXX_QDMI_Device_Job *job) {
+  if (session == nullptr || job_id == nullptr || job_id[0] == '\0' ||
+      job == nullptr) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  if (session->status != CXX_QDMI_DEVICE_SESSION_STATUS::INITIALIZED) {
+    return QDMI_ERROR_BADSTATE;
+  }
+
+  int id = 0;
+  const auto *end = job_id + std::char_traits<char>::length(job_id);
+  const auto [position, error] = std::from_chars(job_id, end, id);
+  if (error != std::errc{} || position != end) {
+    return QDMI_ERROR_NOTFOUND;
+  }
+
+  const auto &jobs = CXX_QDMI_get_device_state()->jobs;
+  const auto found = jobs.find(id);
+  if (found == jobs.end()) {
+    return QDMI_ERROR_NOTFOUND;
+  }
+
+  *job = new CXX_QDMI_Device_Job_impl_d(session, found->second, true);
   return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]
 
 void CXX_QDMI_device_job_free(CXX_QDMI_Device_Job job) {
-  delete[] static_cast<char *>(job->program);
   delete job;
 } /// [DOXYGEN FUNCTION END]
 
@@ -392,7 +447,7 @@ int CXX_QDMI_device_job_set_parameter(CXX_QDMI_Device_Job job,
        param != QDMI_DEVICE_JOB_PARAMETER_CUSTOM5)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
-  if (job->status != QDMI_JOB_STATUS_CREATED) {
+  if (job->opened || job->status != QDMI_JOB_STATUS_CREATED) {
     return QDMI_ERROR_BADSTATE;
   }
   switch (param) {
@@ -457,8 +512,11 @@ int CXX_QDMI_device_job_query_property(CXX_QDMI_Device_Job job,
 } /// [DOXYGEN FUNCTION END]
 
 int CXX_QDMI_device_job_submit(CXX_QDMI_Device_Job job) {
-  if (job == nullptr || job->status != QDMI_JOB_STATUS_CREATED) {
+  if (job == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  if (job->opened || job->status != QDMI_JOB_STATUS_CREATED) {
+    return QDMI_ERROR_BADSTATE;
   }
 
   // Calibration jobs complete immediately

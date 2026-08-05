@@ -440,6 +440,10 @@ QDMI_EXPORT int QDMI_device_session_query_operation_property(
  *  - Retrieve the results of the job with @ref QDMI_device_job_get_results.
  *  - Free the job with @ref QDMI_device_job_free when it is no longer used.
  *
+ *  Alternatively, a driver may open a previously submitted job with @ref
+ *  QDMI_device_session_open_device_job and continue managing it through the
+ *  same interface.
+ *
  *  @{
  */
 
@@ -477,6 +481,46 @@ typedef struct QDMI_Device_Job_impl_d *QDMI_Device_Job;
 QDMI_EXPORT int
 QDMI_device_session_create_device_job(QDMI_Device_Session session,
                                       QDMI_Device_Job *job);
+
+/**
+ * @brief Open an existing device job.
+ * @details Creates a new local device-job handle for the existing remote job
+ * identified by @p job_id. Opening a job does not submit, clone, or otherwise
+ * modify the remote job. The returned handle can be used to query properties,
+ * check or wait for completion, cancel the job, and retrieve results.
+ *
+ * The job is accessed with the credentials and configuration of @p session.
+ * The job ID is an opaque identifier, not an authentication credential.
+ * Parameters cannot be set on an opened job, and an opened job cannot be
+ * submitted again.
+ *
+ * @param[in] session The initialized session with which to open the job. Must
+ * not be @c NULL.
+ * @param[in] job_id The nonempty, null-terminated ID returned by
+ * @ref QDMI_DEVICE_JOB_PROPERTY_ID. Must not be @c NULL.
+ * @param[out] job A pointer to a handle that will store the opened job. Must
+ * not be @c NULL. The handle must be freed by calling @ref
+ * QDMI_device_job_free when it is no longer used. Freeing the handle does not
+ * cancel or delete the remote job.
+ * @return @ref QDMI_SUCCESS if the job was successfully opened.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p session, @p job_id, or @p job
+ * is @c NULL, or if @p job_id is empty.
+ * @return @ref QDMI_ERROR_NOTSUPPORTED if the device does not support opening
+ * existing jobs.
+ * @return @ref QDMI_ERROR_NOTFOUND if no accessible job with @p job_id exists.
+ * @return @ref QDMI_ERROR_BADSTATE if @p session is not initialized.
+ * @return @ref QDMI_ERROR_PERMISSIONDENIED if @p session is not permitted to
+ * access the job.
+ * @return @ref QDMI_ERROR_FATAL if opening the job failed due to a fatal
+ * error.
+ *
+ * @attention This function is optional for device implementations. Drivers
+ * must continue loading devices that do not export it and report
+ * @ref QDMI_ERROR_NOTSUPPORTED when opening a job is requested.
+ */
+QDMI_EXPORT int QDMI_device_session_open_device_job(QDMI_Device_Session session,
+                                                    const char *job_id,
+                                                    QDMI_Device_Job *job);
 
 /**
  * @brief Set a parameter for a job.

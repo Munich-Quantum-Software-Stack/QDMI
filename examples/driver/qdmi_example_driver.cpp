@@ -78,6 +78,9 @@ struct QDMI_Library {
   /// Function pointer to @ref QDMI_device_session_create_device_job.
   decltype(QDMI_device_session_create_device_job)
       *device_session_create_device_job{};
+  /// Function pointer to @ref QDMI_device_session_open_device_job.
+  decltype(QDMI_device_session_open_device_job)
+      *device_session_open_device_job{};
   /// Function pointer to @ref QDMI_device_job_free.
   decltype(QDMI_device_job_free) *device_job_free{};
   /// Function pointer to @ref QDMI_device_job_set_parameter.
@@ -178,6 +181,13 @@ QDMI_Driver_State *QDMI_get_driver_state() {
     }                                                                          \
   }
 
+#define LOAD_OPTIONAL_SYMBOL(device, prefix, symbol)                           \
+  {                                                                            \
+    const std::string symbol_name = std::string(prefix) + "_QDMI_" + #symbol;  \
+    (device).symbol = reinterpret_cast<decltype((device).symbol)>(             \
+        dlsym((device).lib_handle, symbol_name.c_str()));                      \
+  }
+
 void QDMI_library_load(const std::string &lib_name, const std::string &prefix) {
   auto *lib_handle = dlopen(lib_name.c_str(), RTLD_NOW | RTLD_LOCAL);
   if (lib_handle == nullptr) {
@@ -208,6 +218,7 @@ void QDMI_library_load(const std::string &lib_name, const std::string &prefix) {
     LOAD_SYMBOL(library, prefix, device_session_set_parameter)
     // device job interface
     LOAD_SYMBOL(library, prefix, device_session_create_device_job)
+    LOAD_OPTIONAL_SYMBOL(library, prefix, device_session_open_device_job)
     LOAD_SYMBOL(library, prefix, device_job_free)
     LOAD_SYMBOL(library, prefix, device_job_set_parameter)
     LOAD_SYMBOL(library, prefix, device_job_query_property)
@@ -455,6 +466,31 @@ int QDMI_device_create_job(QDMI_Device dev, QDMI_Job *job) {
   (*job)->device = dev;
   return dev->library->device_session_create_device_job(dev->device_session,
                                                         &(*job)->device_job);
+}
+
+int QDMI_device_open_job(QDMI_Device dev, const char *job_id, QDMI_Job *job) {
+  if (dev == nullptr || job_id == nullptr || job_id[0] == '\0' ||
+      job == nullptr) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+
+  if (dev->session->mode != QDMI_DEVICE_MODE::QDMI_SESSION_MODE_READWRITE) {
+    return QDMI_ERROR_PERMISSIONDENIED;
+  }
+
+  if (dev->library->device_session_open_device_job == nullptr) {
+    return QDMI_ERROR_NOTSUPPORTED;
+  }
+
+  auto opened_job = std::make_unique<QDMI_Job_impl_d>();
+  opened_job->device = dev;
+  const auto status = dev->library->device_session_open_device_job(
+      dev->device_session, job_id, &opened_job->device_job);
+  if (status != QDMI_SUCCESS) {
+    return status;
+  }
+  *job = opened_job.release();
+  return QDMI_SUCCESS;
 }
 
 void QDMI_job_free(QDMI_Job job) {
