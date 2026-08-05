@@ -503,18 +503,14 @@ Submitting a Job</h2>
 <div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a916e0810bf915e2ad67f2c1430c54fec">QDMI_ERROR_BADSTATE</a>;</div>
 <div class="line">  }</div>
 <div class="line"> </div>
-<div class="line">  <span class="keyword">auto</span> *state = CXX_QDMI_get_device_state();</div>
-<div class="line">  <span class="keywordflow">if</span> (state-&gt;next_job_id == std::numeric_limits&lt;uint64_t&gt;::max()) {</div>
-<div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3">QDMI_ERROR_FATAL</a>;</div>
-<div class="line">  }</div>
-<div class="line">  <span class="keyword">auto</span> remote_job = std::make_shared&lt;CXX_QDMI_Remote_Job&gt;();</div>
-<div class="line">  remote_job-&gt;id = ++state-&gt;next_job_id;</div>
-<div class="line">  remote_job-&gt;status = <a class="code hl_enumvalue" href="constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6a2d985c815c2e1024b9eb5605e8825df5">QDMI_JOB_STATUS_CREATED</a>;</div>
-<div class="line">  *job = <span class="keyword">new</span> CXX_QDMI_Device_Job_impl_d(session, std::move(remote_job), <span class="keyword">false</span>);</div>
+<div class="line">  *job = <span class="keyword">new</span> CXX_QDMI_Device_Job_impl_d;</div>
+<div class="line">  (*job)-&gt;session = session;</div>
+<div class="line">  <span class="comment">// set job id to random number for demonstration purposes</span></div>
+<div class="line">  (*job)-&gt;id = CXX_QDMI_generate_job_id();</div>
+<div class="line">  (*job)-&gt;status = <a class="code hl_enumvalue" href="constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6a2d985c815c2e1024b9eb5605e8825df5">QDMI_JOB_STATUS_CREATED</a>;</div>
 <div class="line">  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a8039f5cd8202553b2a91a1c0b01d6751">QDMI_SUCCESS</a>;</div>
 <div class="line">} </div>
 <div class="ttc" id="aconstants_8h_html_a04e5c793bcbe8b354a9223bb60f828a6a2d985c815c2e1024b9eb5605e8825df5"><div class="ttname"><a href="constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6a2d985c815c2e1024b9eb5605e8825df5">QDMI_JOB_STATUS_CREATED</a></div><div class="ttdeci">@ QDMI_JOB_STATUS_CREATED</div><div class="ttdoc">The job was created and can be configured via QDMI_job_set_parameter.</div><div class="ttdef"><b>Definition</b> constants.h:856</div></div>
-<div class="ttc" id="aconstants_8h_html_a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3"><div class="ttname"><a href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3">QDMI_ERROR_FATAL</a></div><div class="ttdeci">@ QDMI_ERROR_FATAL</div><div class="ttdoc">A fatal error.</div><div class="ttdef"><b>Definition</b> constants.h:42</div></div>
 <div class="ttc" id="aconstants_8h_html_a450b1adf81abc6f0accbf0ce4abe92f8a8039f5cd8202553b2a91a1c0b01d6751"><div class="ttname"><a href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a8039f5cd8202553b2a91a1c0b01d6751">QDMI_SUCCESS</a></div><div class="ttdeci">@ QDMI_SUCCESS</div><div class="ttdoc">The operation was successful.</div><div class="ttdef"><b>Definition</b> constants.h:41</div></div>
 </div><!-- fragment --><p>The function <a class="el" href="group__device__job__interface.html#ga1ff5eda213c2bd60599efeac2166654d" title="QDMI_device_job_set_parameter">QDMI_device_job_set_parameter</a> allows setting different parameters for the job, for example, the number of shots (<a class="el" href="group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5a21a7c498f22ef05c9a72f354f6f89a81" title="QDMI_JOB_PARAMETER_SHOTSNUM">QDMI_JOB_PARAMETER_SHOTSNUM</a>).</p>
  <div class="fragment"><div class="line"><span class="keywordtype">int</span> CXX_QDMI_device_job_set_parameter(CXX_QDMI_Device_Job job,</div>
@@ -529,7 +525,7 @@ Submitting a Job</h2>
 <div class="line">       param != <a class="code hl_enumvalue" href="constants_8h.html#a40dd25c531ebf99fb4b46469083b609ead04b984fe78deafa5c507101da54ad32">QDMI_DEVICE_JOB_PARAMETER_CUSTOM5</a>)) {</div>
 <div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642">QDMI_ERROR_INVALIDARGUMENT</a>;</div>
 <div class="line">  }</div>
-<div class="line">  <span class="keywordflow">if</span> (job-&gt;opened || job-&gt;remote_job-&gt;status != <a class="code hl_enumvalue" href="constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6a2d985c815c2e1024b9eb5605e8825df5">QDMI_JOB_STATUS_CREATED</a>) {</div>
+<div class="line">  <span class="keywordflow">if</span> (job-&gt;status != <a class="code hl_enumvalue" href="constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6a2d985c815c2e1024b9eb5605e8825df5">QDMI_JOB_STATUS_CREATED</a>) {</div>
 <div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a916e0810bf915e2ad67f2c1430c54fec">QDMI_ERROR_BADSTATE</a>;</div>
 <div class="line">  }</div>
 <div class="line">  <span class="keywordflow">switch</span> (param) {</div>
@@ -550,18 +546,18 @@ Submitting a Job</h2>
 <div class="line">          format != <a class="code hl_enumvalue" href="constants_8h.html#a3eff3252203fcad146d5896e4466ec09a250ddcb8393b04b08471c5fe7abb3d27">QDMI_PROGRAM_FORMAT_CALIBRATION</a>) {</div>
 <div class="line">        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a>;</div>
 <div class="line">      }</div>
-<div class="line">      job-&gt;remote_job-&gt;format = format;</div>
+<div class="line">      job-&gt;format = format;</div>
 <div class="line">    }</div>
 <div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a8039f5cd8202553b2a91a1c0b01d6751">QDMI_SUCCESS</a>;</div>
 <div class="line">  <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="constants_8h.html#a40dd25c531ebf99fb4b46469083b609ea7ef134726b7ec6f0855c0d8171e44dd3">QDMI_DEVICE_JOB_PARAMETER_PROGRAM</a>:</div>
 <div class="line">    <span class="keywordflow">if</span> (value != <span class="keyword">nullptr</span>) {</div>
-<div class="line">      job-&gt;remote_job-&gt;program.resize(size);</div>
-<div class="line">      memcpy(job-&gt;remote_job-&gt;program.data(), value, size);</div>
+<div class="line">      job-&gt;program = <span class="keyword">new</span> <span class="keywordtype">char</span>[size];</div>
+<div class="line">      memcpy(job-&gt;program, value, size);</div>
 <div class="line">    }</div>
 <div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a8039f5cd8202553b2a91a1c0b01d6751">QDMI_SUCCESS</a>;</div>
 <div class="line">  <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="constants_8h.html#a40dd25c531ebf99fb4b46469083b609ea4ecec990e69afb205f9801433be37b26">QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM</a>:</div>
 <div class="line">    <span class="keywordflow">if</span> (value != <span class="keyword">nullptr</span>) {</div>
-<div class="line">      job-&gt;remote_job-&gt;num_shots = *<span class="keyword">static_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">size_t</span> *<span class="keyword">&gt;</span>(value);</div>
+<div class="line">      job-&gt;num_shots = *<span class="keyword">static_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">size_t</span> *<span class="keyword">&gt;</span>(value);</div>
 <div class="line">    }</div>
 <div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a8039f5cd8202553b2a91a1c0b01d6751">QDMI_SUCCESS</a>;</div>
 <div class="line">  <span class="keywordflow">default</span>:</div>
@@ -590,57 +586,50 @@ Submitting a Job</h2>
 <div class="ttc" id="aconstants_8h_html_a65db59774d7c61601159d00d505d835c"><div class="ttname"><a href="constants_8h.html#a65db59774d7c61601159d00d505d835c">QDMI_Device_Job_Parameter</a></div><div class="ttdeci">enum QDMI_DEVICE_JOB_PARAMETER_T QDMI_Device_Job_Parameter</div><div class="ttdoc">Device job parameter type.</div><div class="ttdef"><b>Definition</b> constants.h:216</div></div>
 </div><!-- fragment --><p>After the job is set up, it can be submitted to the device. The following example shows a mock implementation of <a class="el" href="group__device__job__interface.html#gaaa70ea915b442e15907106911e0e5a0a" title="QDMI_device_job_submit">QDMI_device_job_submit</a>.</p>
  <div class="fragment"><div class="line"><span class="keywordtype">int</span> CXX_QDMI_device_job_submit(CXX_QDMI_Device_Job job) {</div>
-<div class="line">  <span class="keywordflow">if</span> (job == <span class="keyword">nullptr</span>) {</div>
+<div class="line">  <span class="keywordflow">if</span> (job == <span class="keyword">nullptr</span> || job-&gt;status != <a class="code hl_enumvalue" href="constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6a2d985c815c2e1024b9eb5605e8825df5">QDMI_JOB_STATUS_CREATED</a>) {</div>
 <div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642">QDMI_ERROR_INVALIDARGUMENT</a>;</div>
-<div class="line">  }</div>
-<div class="line">  <span class="keywordflow">if</span> (job-&gt;opened || job-&gt;remote_job-&gt;status != <a class="code hl_enumvalue" href="constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6a2d985c815c2e1024b9eb5605e8825df5">QDMI_JOB_STATUS_CREATED</a>) {</div>
-<div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a916e0810bf915e2ad67f2c1430c54fec">QDMI_ERROR_BADSTATE</a>;</div>
 <div class="line">  }</div>
 <div class="line"> </div>
 <div class="line">  <span class="comment">// Calibration jobs complete immediately</span></div>
-<div class="line">  <span class="keywordflow">if</span> (job-&gt;remote_job-&gt;format == <a class="code hl_enumvalue" href="constants_8h.html#a3eff3252203fcad146d5896e4466ec09a250ddcb8393b04b08471c5fe7abb3d27">QDMI_PROGRAM_FORMAT_CALIBRATION</a>) {</div>
-<div class="line">    job-&gt;remote_job-&gt;status = <a class="code hl_enumvalue" href="constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6ad3dad6dd89491e223f42ff9cd9bdade2">QDMI_JOB_STATUS_DONE</a>;</div>
-<div class="line">    CXX_QDMI_get_device_state()-&gt;jobs.emplace(job-&gt;remote_job-&gt;id,</div>
-<div class="line">                                              job-&gt;remote_job);</div>
+<div class="line">  <span class="keywordflow">if</span> (job-&gt;format == <a class="code hl_enumvalue" href="constants_8h.html#a3eff3252203fcad146d5896e4466ec09a250ddcb8393b04b08471c5fe7abb3d27">QDMI_PROGRAM_FORMAT_CALIBRATION</a>) {</div>
+<div class="line">    job-&gt;status = <a class="code hl_enumvalue" href="constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6ad3dad6dd89491e223f42ff9cd9bdade2">QDMI_JOB_STATUS_DONE</a>;</div>
 <div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a8039f5cd8202553b2a91a1c0b01d6751">QDMI_SUCCESS</a>;</div>
 <div class="line">  }</div>
 <div class="line"> </div>
 <div class="line">  CXX_QDMI_set_device_status(<a class="code hl_enumvalue" href="constants_8h.html#aa13ac5e1c93a4b358d84bb9fd1f5fd99aedb7fbd4f25c108ab71385aec61e4409">QDMI_DEVICE_STATUS_BUSY</a>);</div>
-<div class="line">  job-&gt;remote_job-&gt;status = <a class="code hl_enumvalue" href="constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6a3c531c6a92164cfb31a6c4c1a6cc5dfe">QDMI_JOB_STATUS_SUBMITTED</a>;</div>
+<div class="line">  job-&gt;status = <a class="code hl_enumvalue" href="constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6a3c531c6a92164cfb31a6c4c1a6cc5dfe">QDMI_JOB_STATUS_SUBMITTED</a>;</div>
 <div class="line">  <span class="comment">// here, the actual submission of the problem to the device would happen</span></div>
 <div class="line">  <span class="comment">// ...</span></div>
 <div class="line">  <span class="comment">// set job status to running for demonstration purposes</span></div>
-<div class="line">  job-&gt;remote_job-&gt;status = <a class="code hl_enumvalue" href="constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6ac1203df2c0360fafd873b42cdcbe9cc5">QDMI_JOB_STATUS_RUNNING</a>;</div>
+<div class="line">  job-&gt;status = <a class="code hl_enumvalue" href="constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6ac1203df2c0360fafd873b42cdcbe9cc5">QDMI_JOB_STATUS_RUNNING</a>;</div>
 <div class="line">  <span class="comment">// generate random result data</span></div>
 <div class="line">  <span class="keywordtype">size_t</span> num_qubits = 0;</div>
 <div class="line">  CXX_QDMI_device_session_query_device_property(</div>
 <div class="line">      job-&gt;session, <a class="code hl_enumvalue" href="constants_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a7ada8f720629c4cac8d74ac4270a1c46">QDMI_DEVICE_PROPERTY_QUBITSNUM</a>, <span class="keyword">sizeof</span>(<span class="keywordtype">size_t</span>), &amp;num_qubits,</div>
 <div class="line">      <span class="keyword">nullptr</span>);</div>
-<div class="line">  job-&gt;remote_job-&gt;results.clear();</div>
-<div class="line">  job-&gt;remote_job-&gt;results.reserve(job-&gt;remote_job-&gt;num_shots);</div>
-<div class="line">  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; job-&gt;remote_job-&gt;num_shots; ++i) {</div>
+<div class="line">  job-&gt;results.clear();</div>
+<div class="line">  job-&gt;results.reserve(job-&gt;num_shots);</div>
+<div class="line">  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; job-&gt;num_shots; ++i) {</div>
 <div class="line">    <span class="comment">// generate random bitstring</span></div>
 <div class="line">    std::string result(num_qubits, <span class="charliteral">&#39;0&#39;</span>);</div>
 <div class="line">    std::ranges::generate(</div>
 <div class="line">        result, [&amp;]() { <span class="keywordflow">return</span> CXX_QDMI_generate_bit() ? <span class="charliteral">&#39;1&#39;</span> : <span class="charliteral">&#39;0&#39;</span>; });</div>
-<div class="line">    job-&gt;remote_job-&gt;results.emplace_back(std::move(result));</div>
+<div class="line">    job-&gt;results.emplace_back(std::move(result));</div>
 <div class="line">  }</div>
 <div class="line">  <span class="comment">// Generate random complex numbers and calculate the norm</span></div>
-<div class="line">  job-&gt;remote_job-&gt;state_vec.clear();</div>
-<div class="line">  job-&gt;remote_job-&gt;state_vec.reserve(1U &lt;&lt; num_qubits);</div>
+<div class="line">  job-&gt;state_vec.clear();</div>
+<div class="line">  job-&gt;state_vec.reserve(1U &lt;&lt; num_qubits);</div>
 <div class="line">  <span class="keywordtype">double</span> norm = 0.0;</div>
 <div class="line">  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; 1U &lt;&lt; num_qubits; ++i) {</div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;c = job-&gt;remote_job-&gt;state_vec.emplace_back(</div>
-<div class="line">        CXX_QDMI_generate_real(), CXX_QDMI_generate_real());</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;c = job-&gt;state_vec.emplace_back(CXX_QDMI_generate_real(),</div>
+<div class="line">                                                CXX_QDMI_generate_real());</div>
 <div class="line">    norm += std::norm(c);</div>
 <div class="line">  }</div>
 <div class="line">  <span class="comment">// Normalize the vector</span></div>
 <div class="line">  norm = std::sqrt(norm);</div>
-<div class="line">  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;c : job-&gt;remote_job-&gt;state_vec) {</div>
+<div class="line">  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;c : job-&gt;state_vec) {</div>
 <div class="line">    c /= norm;</div>
 <div class="line">  }</div>
-<div class="line">  CXX_QDMI_get_device_state()-&gt;jobs.emplace(job-&gt;remote_job-&gt;id,</div>
-<div class="line">                                            job-&gt;remote_job);</div>
 <div class="line">  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a8039f5cd8202553b2a91a1c0b01d6751">QDMI_SUCCESS</a>;</div>
 <div class="line">} </div>
 <div class="ttc" id="aconstants_8h_html_a04e5c793bcbe8b354a9223bb60f828a6a3c531c6a92164cfb31a6c4c1a6cc5dfe"><div class="ttname"><a href="constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6a3c531c6a92164cfb31a6c4c1a6cc5dfe">QDMI_JOB_STATUS_SUBMITTED</a></div><div class="ttdeci">@ QDMI_JOB_STATUS_SUBMITTED</div><div class="ttdoc">The job was submitted.</div><div class="ttdef"><b>Definition</b> constants.h:858</div></div>
