@@ -81,12 +81,23 @@ TEST_F(QDMIImplementationTest, JobOpenById) {
   ASSERT_EQ(CXX_QDMI_device_job_query_property(job, QDMI_DEVICE_JOB_PROPERTY_ID,
                                                id.size(), id.data(), nullptr),
             QDMI_SUCCESS);
+  CXX_QDMI_Device_Job opened_job = nullptr;
+  EXPECT_EQ(
+      CXX_QDMI_device_session_open_device_job(session, id.c_str(), &opened_job),
+      QDMI_ERROR_NOTFOUND);
+  const auto format = QDMI_PROGRAM_FORMAT_CALIBRATION;
+  ASSERT_EQ(CXX_QDMI_device_job_set_parameter(
+                job, QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT, sizeof(format),
+                &format),
+            QDMI_SUCCESS);
+  ASSERT_EQ(CXX_QDMI_device_job_submit(job), QDMI_SUCCESS);
   CXX_QDMI_device_job_free(job);
 
-  ASSERT_EQ(CXX_QDMI_device_session_open_device_job(session, id.c_str(), &job),
-            QDMI_SUCCESS);
-  EXPECT_EQ(CXX_QDMI_device_job_submit(job), QDMI_ERROR_BADSTATE);
-  CXX_QDMI_device_job_free(job);
+  ASSERT_EQ(
+      CXX_QDMI_device_session_open_device_job(session, id.c_str(), &opened_job),
+      QDMI_SUCCESS);
+  EXPECT_EQ(CXX_QDMI_device_job_submit(opened_job), QDMI_ERROR_BADSTATE);
+  CXX_QDMI_device_job_free(opened_job);
 }
 
 TEST_F(QDMIImplementationTest, JobSetParameterImplemented) {

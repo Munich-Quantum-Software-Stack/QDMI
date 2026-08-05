@@ -641,6 +641,9 @@ QDMI_EXPORT int QDMI_device_job_query_property(QDMI_Device_Job job,
  * @param[in] job The job to submit. Must not be @c NULL.
  * @return @ref QDMI_SUCCESS if the job was successfully submitted.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p job is @c NULL.
+ * @return @ref QDMI_ERROR_BADSTATE if the job cannot be submitted in its
+ * current state, for example, because it has already been submitted or was
+ * opened with @ref QDMI_device_session_open_device_job.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the device does not allow using
  * the @ref device_job_interface "device job interface" for the current session.
  * @return @ref QDMI_ERROR_FATAL if the job submission failed.

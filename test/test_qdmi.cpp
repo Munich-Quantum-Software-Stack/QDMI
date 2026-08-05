@@ -96,6 +96,41 @@ INSTANTIATE_TEST_SUITE_P(
       }
     });
 
+TEST(QDMIOptionalDeviceFunctionTest, MissingOpenSymbolReturnsNotSupported) {
+  const std::filesystem::path config_file =
+      "qdmi_optional_device_function.conf";
+  {
+    std::ofstream config(config_file);
+    config << QDMI_TEMPLATE_DEVICE_LIBRARY << " MY\n";
+  }
+#ifdef _WIN32
+  ASSERT_EQ(_putenv_s("QDMI_CONF", config_file.string().c_str()), 0);
+#else
+  ASSERT_EQ(setenv("QDMI_CONF", config_file.string().c_str(), 1), 0);
+#endif
+
+  ASSERT_EQ(QDMI_driver_init(), QDMI_SUCCESS);
+  QDMI_Session test_session = nullptr;
+  ASSERT_EQ(QDMI_session_alloc(&test_session), QDMI_SUCCESS);
+  ASSERT_EQ(QDMI_session_set_parameter(
+                test_session, QDMI_SESSION_PARAMETER_TOKEN, 6, "token"),
+            QDMI_SUCCESS);
+  ASSERT_EQ(QDMI_session_init(test_session), QDMI_SUCCESS);
+
+  QDMI_Device test_device = nullptr;
+  ASSERT_EQ(QDMI_session_query_session_property(
+                test_session, QDMI_SESSION_PROPERTY_DEVICES,
+                sizeof(test_device), &test_device, nullptr),
+            QDMI_SUCCESS);
+  QDMI_Job job = nullptr;
+  EXPECT_EQ(QDMI_device_open_job(test_device, "job-id", &job),
+            QDMI_ERROR_NOTSUPPORTED);
+
+  QDMI_session_free(test_session);
+  EXPECT_EQ(QDMI_driver_shutdown(), QDMI_SUCCESS);
+  std::filesystem::remove(config_file);
+}
+
 TEST_P(QDMIImplementationTest, QueryNumQubits) {
   const auto fomac = FoMaC(device);
   ASSERT_GT(fomac.get_qubits_num(), 0);
