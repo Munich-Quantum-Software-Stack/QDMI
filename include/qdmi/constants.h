@@ -430,6 +430,21 @@ enum QDMI_DEVICE_PROPERTY_T {
    */
   QDMI_DEVICE_PROPERTY_CHILDDEVICES = 16,
   /**
+   * @brief `size_t` The current number of jobs waiting to access the device.
+   * @details This property is a snapshot of the device's queue depth and does
+   * not include jobs that are currently executing. If a provider exposes
+   * multiple queues for the device, the implementation reports the sum of the
+   * waiting jobs across those queues.
+   * @par
+   * If the provider only exposes a lower bound, the implementation reports
+   * that lower bound. For example, a provider value of `>50` is reported as
+   * `50`.
+   * @par
+   * The property may yield @ref QDMI_ERROR_NOTSUPPORTED if the implementation
+   * cannot obtain a trustworthy queue depth.
+   */
+  QDMI_DEVICE_PROPERTY_QUEUEDEPTH = 17,
+  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -437,7 +452,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_DEVICE_PROPERTY_MAX = 17,
+  QDMI_DEVICE_PROPERTY_MAX = 18,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.

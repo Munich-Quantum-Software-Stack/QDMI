@@ -413,6 +413,11 @@ TEST_P(QDMIImplementationTest, QueryDeviceProperties) {
           device, QDMI_DEVICE_PROPERTY_MINATOMDISTANCE, 0, nullptr, nullptr),
       QDMI_ERROR_NOTSUPPORTED);
 
+  // Queue depth is optional and is not supported by the example device
+  EXPECT_EQ(QDMI_device_query_device_property(
+                device, QDMI_DEVICE_PROPERTY_QUEUEDEPTH, 0, nullptr, nullptr),
+            QDMI_ERROR_NOTSUPPORTED);
+
   // The MAX property is not a valid value for any device.
   EXPECT_EQ(QDMI_device_query_device_property(device, QDMI_DEVICE_PROPERTY_MAX,
                                               0, nullptr, nullptr),
