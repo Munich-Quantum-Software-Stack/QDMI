@@ -513,10 +513,6 @@ QDMI_device_session_create_device_job(QDMI_Device_Session session,
  * access the job.
  * @return @ref QDMI_ERROR_FATAL if opening the job failed due to a fatal
  * error.
- *
- * @attention Drivers must continue loading device implementations built
- * against QDMI versions that predate this function and report
- * @ref QDMI_ERROR_NOTSUPPORTED when opening a job is requested.
  */
 QDMI_EXPORT int QDMI_device_session_open_device_job(QDMI_Device_Session session,
                                                     const char *job_id,
