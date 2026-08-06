@@ -640,7 +640,7 @@ int QDMI_device_create_job(QDMI_Device device, QDMI_Job *job);
  * check or wait for completion, cancel the job, and retrieve results.
  *
  * The job is accessed with the credentials and configuration of the current
- * session. The job ID is an opaque identifier, not an authentication
+ * session. The job ID is an identifier, not an authentication
  * credential. Parameters cannot be set on an opened job, and an opened job
  * cannot be submitted again.
  *

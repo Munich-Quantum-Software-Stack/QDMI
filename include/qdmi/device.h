@@ -490,7 +490,7 @@ QDMI_device_session_create_device_job(QDMI_Device_Session session,
  * check or wait for completion, cancel the job, and retrieve results.
  *
  * The job is accessed with the credentials and configuration of @p session.
- * The job ID is an opaque identifier, not an authentication credential.
+ * The job ID is an identifier, not an authentication credential.
  * Parameters cannot be set on an opened job, and an opened job cannot be
  * submitted again.
  *
