@@ -1060,20 +1060,21 @@ TEST_P(QDMIImplementationTest, SessionInit) {
   EXPECT_EQ(QDMI_session_init(session2), QDMI_SUCCESS);
 }
 
-TEST_P(QDMIImplementationTest, OpenJob) {
+TEST_P(QDMIImplementationTest, RetrieveJobById) {
   QDMI_Job job = nullptr;
-  EXPECT_EQ(QDMI_device_open_job(nullptr, "job-id", &job),
+  EXPECT_EQ(QDMI_session_retrieve_job_by_id(nullptr, "job-id", &job),
             QDMI_ERROR_INVALIDARGUMENT);
-  EXPECT_EQ(QDMI_device_open_job(device, nullptr, &job),
+  EXPECT_EQ(QDMI_session_retrieve_job_by_id(device, nullptr, &job),
             QDMI_ERROR_INVALIDARGUMENT);
-  EXPECT_EQ(QDMI_device_open_job(device, "", &job), QDMI_ERROR_INVALIDARGUMENT);
-  EXPECT_EQ(QDMI_device_open_job(device, "job-id", nullptr),
+  EXPECT_EQ(QDMI_session_retrieve_job_by_id(device, "", &job),
+            QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_EQ(QDMI_session_retrieve_job_by_id(device, "job-id", nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
 
   const auto expected = mode == TEST_SESSION_MODE::READONLY
                             ? QDMI_ERROR_PERMISSIONDENIED
                             : QDMI_ERROR_NOTSUPPORTED;
-  EXPECT_EQ(QDMI_device_open_job(device, "job-id", &job), expected);
+  EXPECT_EQ(QDMI_session_retrieve_job_by_id(device, "job-id", &job), expected);
 }
 
 TEST_P(QDMIImplementationTest, SessionQuerySessionProperty) {
