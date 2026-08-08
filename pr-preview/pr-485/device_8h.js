@@ -13,7 +13,7 @@ var device_8h =
     [ "QDMI_device_session_query_site_property", "group__device__query__interface.html#ga953bf947b1efcfaa3fb63dcce61127d5", null ],
     [ "QDMI_device_session_query_operation_property", "group__device__query__interface.html#ga7e15ce0bf5619eb28059fc00d1b9e501", null ],
     [ "QDMI_device_session_create_device_job", "group__device__job__interface.html#ga63f4e17de8a04f7caeeb195f5d276f5c", null ],
-    [ "QDMI_device_session_open_device_job", "group__device__job__interface.html#ga5aa29919fd46c208a3193c20e9926486", null ],
+    [ "QDMI_device_session_retrieve_device_job_by_id", "group__device__job__interface.html#ga936ccc97552a744032edbeb840aaccba", null ],
     [ "QDMI_device_job_set_parameter", "group__device__job__interface.html#ga1ff5eda213c2bd60599efeac2166654d", null ],
     [ "QDMI_device_job_query_property", "group__device__job__interface.html#ga42686f735d112236118b5e033a6c8194", null ],
     [ "QDMI_device_job_submit", "group__device__job__interface.html#gaaa70ea915b442e15907106911e0e5a0a", null ],

@@ -376,9 +376,9 @@
     </member>
     <member kind="function">
       <type>int</type>
-      <name>QDMI_device_open_job</name>
+      <name>QDMI_session_retrieve_job_by_id</name>
       <anchorfile>group__client__job__interface.html</anchorfile>
-      <anchor>ga70a49f3a0112734a50d0717d37517ccc</anchor>
+      <anchor>ga6b766aceef8ef65a84cc4cd196ce5e2f</anchor>
       <arglist>(QDMI_Device device, const char *job_id, QDMI_Job *job)</arglist>
     </member>
     <member kind="function">
@@ -1622,9 +1622,9 @@
     </member>
     <member kind="function">
       <type>int</type>
-      <name>QDMI_device_session_open_device_job</name>
+      <name>QDMI_device_session_retrieve_device_job_by_id</name>
       <anchorfile>group__device__job__interface.html</anchorfile>
-      <anchor>ga5aa29919fd46c208a3193c20e9926486</anchor>
+      <anchor>ga936ccc97552a744032edbeb840aaccba</anchor>
       <arglist>(QDMI_Device_Session session, const char *job_id, QDMI_Device_Job *job)</arglist>
     </member>
     <member kind="function">
@@ -2100,9 +2100,9 @@
     </member>
     <member kind="function">
       <type>int</type>
-      <name>QDMI_device_open_job</name>
+      <name>QDMI_session_retrieve_job_by_id</name>
       <anchorfile>group__client__job__interface.html</anchorfile>
-      <anchor>ga70a49f3a0112734a50d0717d37517ccc</anchor>
+      <anchor>ga6b766aceef8ef65a84cc4cd196ce5e2f</anchor>
       <arglist>(QDMI_Device device, const char *job_id, QDMI_Job *job)</arglist>
     </member>
     <member kind="function">
@@ -2277,9 +2277,9 @@
     </member>
     <member kind="function">
       <type>int</type>
-      <name>QDMI_device_session_open_device_job</name>
+      <name>QDMI_device_session_retrieve_device_job_by_id</name>
       <anchorfile>group__device__job__interface.html</anchorfile>
-      <anchor>ga5aa29919fd46c208a3193c20e9926486</anchor>
+      <anchor>ga936ccc97552a744032edbeb840aaccba</anchor>
       <arglist>(QDMI_Device_Session session, const char *job_id, QDMI_Device_Job *job)</arglist>
     </member>
     <member kind="function">

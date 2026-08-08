@@ -196,7 +196,7 @@ $(function(){initNavTree('group__device__job__interface.html','',''); });
 <li>Retrieve the results of the job with <a class="el" href="#ga1b4384e53a1d8fb2d782cd6179664d3b" title="QDMI_device_job_get_results">QDMI_device_job_get_results</a>.</li>
 <li>Free the job with <a class="el" href="#gafe9253bc113ae8ce95dda8942a9f983f" title="QDMI_device_job_free">QDMI_device_job_free</a> when it is no longer used.</li>
 </ul>
-<p>Alternatively, a driver may open a previously submitted job with <a class="el" href="#ga5aa29919fd46c208a3193c20e9926486" title="QDMI_device_session_open_device_job">QDMI_device_session_open_device_job</a> and continue managing it through the same interface. </p>
+<p>Alternatively, a driver may retrieve a previously submitted job with <a class="el" href="#ga936ccc97552a744032edbeb840aaccba" title="QDMI_device_session_retrieve_device_job_by_id">QDMI_device_session_retrieve_device_job_by_id</a> and continue managing it through the same interface. </p>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-typedef-members" class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -207,8 +207,8 @@ Typedefs</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:ga63f4e17de8a04f7caeeb195f5d276f5c" id="r_ga63f4e17de8a04f7caeeb195f5d276f5c"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#ga63f4e17de8a04f7caeeb195f5d276f5c">QDMI_device_session_create_device_job</a> (<a class="el" href="group__device__session__interface.html#ga37fbde9aae43a9462e57ec8234201c91">QDMI_Device_Session</a> session, <a class="el" href="#gaa9f37f29bc40f719b440a277654789a4">QDMI_Device_Job</a> *job)</td></tr>
 <tr class="memdesc:ga63f4e17de8a04f7caeeb195f5d276f5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a job.  <br /></td></tr>
-<tr class="memitem:ga5aa29919fd46c208a3193c20e9926486" id="r_ga5aa29919fd46c208a3193c20e9926486"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#ga5aa29919fd46c208a3193c20e9926486">QDMI_device_session_open_device_job</a> (<a class="el" href="group__device__session__interface.html#ga37fbde9aae43a9462e57ec8234201c91">QDMI_Device_Session</a> session, const char *job_id, <a class="el" href="#gaa9f37f29bc40f719b440a277654789a4">QDMI_Device_Job</a> *job)</td></tr>
-<tr class="memdesc:ga5aa29919fd46c208a3193c20e9926486"><td class="mdescLeft">&#160;</td><td class="mdescRight">Open an existing device job.  <br /></td></tr>
+<tr class="memitem:ga936ccc97552a744032edbeb840aaccba" id="r_ga936ccc97552a744032edbeb840aaccba"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#ga936ccc97552a744032edbeb840aaccba">QDMI_device_session_retrieve_device_job_by_id</a> (<a class="el" href="group__device__session__interface.html#ga37fbde9aae43a9462e57ec8234201c91">QDMI_Device_Session</a> session, const char *job_id, <a class="el" href="#gaa9f37f29bc40f719b440a277654789a4">QDMI_Device_Job</a> *job)</td></tr>
+<tr class="memdesc:ga936ccc97552a744032edbeb840aaccba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve an existing device job by its ID.  <br /></td></tr>
 <tr class="memitem:ga1ff5eda213c2bd60599efeac2166654d" id="r_ga1ff5eda213c2bd60599efeac2166654d"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#ga1ff5eda213c2bd60599efeac2166654d">QDMI_device_job_set_parameter</a> (<a class="el" href="#gaa9f37f29bc40f719b440a277654789a4">QDMI_Device_Job</a> job, <a class="el" href="constants_8h.html#a65db59774d7c61601159d00d505d835c">QDMI_Device_Job_Parameter</a> param, size_t size, const void *value)</td></tr>
 <tr class="memdesc:ga1ff5eda213c2bd60599efeac2166654d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a parameter for a job.  <br /></td></tr>
 <tr class="memitem:ga42686f735d112236118b5e033a6c8194" id="r_ga42686f735d112236118b5e033a6c8194"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#ga42686f735d112236118b5e033a6c8194">QDMI_device_job_query_property</a> (<a class="el" href="#gaa9f37f29bc40f719b440a277654789a4">QDMI_Device_Job</a> job, <a class="el" href="constants_8h.html#a9962b2d3a2ebb0791c8c6196069e499e">QDMI_Device_Job_Property</a> prop, size_t size, void *value, size_t *size_ret)</td></tr>
@@ -286,14 +286,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ga5aa29919fd46c208a3193c20e9926486" name="ga5aa29919fd46c208a3193c20e9926486"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga5aa29919fd46c208a3193c20e9926486">&#9670;&#160;</a></span>QDMI_device_session_open_device_job()</h2>
+<a id="ga936ccc97552a744032edbeb840aaccba" name="ga936ccc97552a744032edbeb840aaccba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga936ccc97552a744032edbeb840aaccba">&#9670;&#160;</a></span>QDMI_device_session_retrieve_device_job_by_id()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int QDMI_device_session_open_device_job </td>
+          <td class="memname">int QDMI_device_session_retrieve_device_job_by_id </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="group__device__session__interface.html#ga37fbde9aae43a9462e57ec8234201c91">QDMI_Device_Session</a></td>          <td class="paramname"><span class="paramname"><em>session</em></span>, </td>
         </tr>
@@ -310,22 +310,22 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Open an existing device job. </p>
-<p>Creates a new local device-job handle for the existing remote job identified by <code class="param">job_id</code>. Opening a job does not submit, clone, or otherwise modify the remote job. The returned handle can be used to query properties, check or wait for completion, cancel the job, and retrieve results.</p>
-<p>The job is accessed with the credentials and configuration of <code class="param">session</code>. The job ID is an opaque identifier, not an authentication credential. Parameters cannot be set on an opened job, and an opened job cannot be submitted again.</p>
+<p>Retrieve an existing device job by its ID. </p>
+<p>Creates a new local device-job handle for the existing remote job identified by <code class="param">job_id</code>. Retrieving a job does not submit, clone, or otherwise modify the remote job. The returned handle can be used to query properties, check or wait for completion, cancel the job, and retrieve results.</p>
+<p>The job is accessed with the credentials and configuration of <code class="param">session</code>. The job ID is an identifier, not an authentication credential. Parameters cannot be set on a retrieved job, and a retrieved job cannot be submitted again.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">session</td><td>The initialized session with which to open the job. Must not be <code>NULL</code>. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">session</td><td>The initialized session with which to retrieve the job. Must not be <code>NULL</code>. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">job_id</td><td>The nonempty, null-terminated ID returned by <a class="el" href="constants_8h.html#a6e4d18c7fa5d383bbcc1498abe090d4fad991a6a3b0a17e58b59f9180463855ec" title="QDMI_DEVICE_JOB_PROPERTY_ID">QDMI_DEVICE_JOB_PROPERTY_ID</a>. Must not be <code>NULL</code>. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">job</td><td>A pointer to a handle that will store the opened job. Must not be <code>NULL</code>. The handle must be freed by calling <a class="el" href="#gafe9253bc113ae8ce95dda8942a9f983f" title="QDMI_device_job_free">QDMI_device_job_free</a> when it is no longer used. Freeing the handle does not cancel or delete the remote job. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">job</td><td>A pointer to a handle that will store the retrieved job. Must not be <code>NULL</code>. The handle must be freed by calling <a class="el" href="#gafe9253bc113ae8ce95dda8942a9f983f" title="QDMI_device_job_free">QDMI_device_job_free</a> when it is no longer used. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a8039f5cd8202553b2a91a1c0b01d6751" title="QDMI_SUCCESS">QDMI_SUCCESS</a> if the job was successfully opened. </dd>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a8039f5cd8202553b2a91a1c0b01d6751" title="QDMI_SUCCESS">QDMI_SUCCESS</a> if the job was successfully retrieved. </dd>
 <dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642" title="QDMI_ERROR_INVALIDARGUMENT">QDMI_ERROR_INVALIDARGUMENT</a> if <code class="param">session</code>, <code class="param">job_id</code>, or <code class="param">job</code> is <code>NULL</code>, or if <code class="param">job_id</code> is empty. </dd>
 <dd>
-<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651" title="QDMI_ERROR_NOTSUPPORTED">QDMI_ERROR_NOTSUPPORTED</a> if the device does not support opening existing jobs. </dd>
+<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651" title="QDMI_ERROR_NOTSUPPORTED">QDMI_ERROR_NOTSUPPORTED</a> if the device does not support retrieving existing jobs. </dd>
 <dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a03b271eb2b26780e3152e13e3e7ef7be" title="QDMI_ERROR_NOTFOUND">QDMI_ERROR_NOTFOUND</a> if no accessible job with <code class="param">job_id</code> exists. </dd>
 <dd>
@@ -333,7 +333,7 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8ab875f28072043ad44f7ee5290bba8d01" title="QDMI_ERROR_PERMISSIONDENIED">QDMI_ERROR_PERMISSIONDENIED</a> if <code class="param">session</code> is not permitted to access the job. </dd>
 <dd>
-<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3" title="QDMI_ERROR_FATAL">QDMI_ERROR_FATAL</a> if opening the job failed due to a fatal error. </dd></dl>
+<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3" title="QDMI_ERROR_FATAL">QDMI_ERROR_FATAL</a> if retrieving the job failed due to a fatal error. </dd></dl>
 
 </div>
 </div>
@@ -515,7 +515,7 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642" title="QDMI_ERROR_INVALIDARGUMENT">QDMI_ERROR_INVALIDARGUMENT</a> if <code class="param">job</code> is <code>NULL</code>. </dd>
 <dd>
-<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a916e0810bf915e2ad67f2c1430c54fec" title="QDMI_ERROR_BADSTATE">QDMI_ERROR_BADSTATE</a> if the job was opened with <a class="el" href="#ga5aa29919fd46c208a3193c20e9926486" title="QDMI_device_session_open_device_job">QDMI_device_session_open_device_job</a>. </dd>
+<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a916e0810bf915e2ad67f2c1430c54fec" title="QDMI_ERROR_BADSTATE">QDMI_ERROR_BADSTATE</a> if the job was retrieved with <a class="el" href="#ga936ccc97552a744032edbeb840aaccba" title="QDMI_device_session_retrieve_device_job_by_id">QDMI_device_session_retrieve_device_job_by_id</a>. </dd>
 <dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8ab875f28072043ad44f7ee5290bba8d01" title="QDMI_ERROR_PERMISSIONDENIED">QDMI_ERROR_PERMISSIONDENIED</a> if the device does not allow using the <a class="el" href="group__device__job__interface.html" title="QDMI Device Job Interface">device job interface</a> for the current session. </dd>
 <dd>
@@ -724,7 +724,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Free a job. </p>
-<p>Free the resources associated with a job. Using a job handle after it was freed is undefined behavior. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Free the resources associated with a job. Using a job handle after it was freed is undefined behavior. Freeing a job handle does not necessarily cancel or delete the underlying job; this behavior is device-specific. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">job</td><td>The job to free. </td></tr>
   </table>
