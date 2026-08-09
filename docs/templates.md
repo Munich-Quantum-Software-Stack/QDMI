@@ -101,6 +101,13 @@ computation path at the end that returns \ref QDMI_ERROR_NOTIMPLEMENTED.
 Instead, some other error code from \ref QDMI_STATUS should be returned in case
 of an erroneous state.
 
+QDMI entry points have C linkage, so exceptions must not escape them. Catch
+exceptions directly at entry points that call throwing C++ code, map
+`std::bad_alloc` to \ref QDMI_ERROR_OUTOFMEM, and map unexpected exceptions to
+\ref QDMI_ERROR_FATAL. Catch provider-specific exceptions first when a more
+precise QDMI status applies. A function-try-block keeps this boundary local and
+does not require wrapping non-throwing entry points.
+
 The implementation in the `src/` directory is complemented with a testing
 framework in `test/`. The `.cpp` source file already contains some examples for
 tests. They are meant to serve as an inspiration, and more tests should be
