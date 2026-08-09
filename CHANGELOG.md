@@ -14,8 +14,8 @@ clients compiled against a different minor or major version.
 
 ### Added
 
-- ✨ Add an optional device property for querying the current queue depth
-  ([#486]) ([\@burgholzer])
+- ✨ Add optional properties for querying a device's current queue length and a
+  queued job's current queue position ([#486]) ([\@burgholzer])
 - 👨‍💻 Add stable device IDs and symbol-prefix metadata to exported device targets
   and generated projects ([#475]) ([\@burgholzer])
 

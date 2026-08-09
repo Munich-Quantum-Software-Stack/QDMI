@@ -776,6 +776,21 @@ enum QDMI_JOB_PROPERTY_T {
    */
   QDMI_JOB_PROPERTY_SHOTSNUM = 3,
   /**
+   * @brief `size_t` The current number of jobs ahead of this job in its queue.
+   * @details Querying this property must refresh the job's status and queue
+   * position. The property can only be queried while the refreshed status is
+   * @ref QDMI_JOB_STATUS_QUEUED; otherwise, the query must return @ref
+   * QDMI_ERROR_BADSTATE.
+   * @par
+   * If the provider only exposes a lower bound, the implementation reports
+   * that lower bound. For example, a provider value of `>50` is reported as
+   * `50`.
+   * @par
+   * The property may yield @ref QDMI_ERROR_NOTSUPPORTED if the implementation
+   * cannot obtain a trustworthy queue position.
+   */
+  QDMI_JOB_PROPERTY_QUEUEPOSITION = 4,
+  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -783,7 +798,7 @@ enum QDMI_JOB_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_JOB_PROPERTY_MAX = 4,
+  QDMI_JOB_PROPERTY_MAX = 5,
   /**
    * @brief This enum value is reserved for a custom parameter.
    * @details The driver defines the meaning and the type of this parameter.
