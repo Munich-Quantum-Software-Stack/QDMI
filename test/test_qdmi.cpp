@@ -413,6 +413,11 @@ TEST_P(QDMIImplementationTest, QueryDeviceProperties) {
           device, QDMI_DEVICE_PROPERTY_MINATOMDISTANCE, 0, nullptr, nullptr),
       QDMI_ERROR_NOTSUPPORTED);
 
+  // Queue length is optional and is not supported by the example device
+  EXPECT_EQ(QDMI_device_query_device_property(
+                device, QDMI_DEVICE_PROPERTY_QUEUELENGTH, 0, nullptr, nullptr),
+            QDMI_ERROR_NOTSUPPORTED);
+
   // The MAX property is not a valid value for any device.
   EXPECT_EQ(QDMI_device_query_device_property(device, QDMI_DEVICE_PROPERTY_MAX,
                                               0, nullptr, nullptr),
@@ -543,6 +548,10 @@ TEST_P(QDMIImplementationTest, JobLifecycle) {
                                     sizeof(size_t), &shots, nullptr),
             QDMI_SUCCESS);
   EXPECT_EQ(shots, 5);
+  // Queue position is optional and is not supported by the example device.
+  EXPECT_EQ(QDMI_job_query_property(job, QDMI_JOB_PROPERTY_QUEUEPOSITION, 0,
+                                    nullptr, nullptr),
+            QDMI_ERROR_NOTSUPPORTED);
   ASSERT_EQ(QDMI_job_submit(job), QDMI_SUCCESS);
   EXPECT_EQ(QDMI_job_submit(job), QDMI_ERROR_INVALIDARGUMENT);
   EXPECT_EQ(QDMI_job_submit(nullptr), QDMI_ERROR_INVALIDARGUMENT);
