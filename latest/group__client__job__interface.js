@@ -19,6 +19,7 @@ var group__client__job__interface =
       [ "QDMI_JOB_PROPERTY_PROGRAMFORMAT", "group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba8e604c9e0271a5fb9a0e94a190d6fe8a", null ],
       [ "QDMI_JOB_PROPERTY_PROGRAM", "group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba461ddd5f5f9b393f955fc05540d91f2c", null ],
       [ "QDMI_JOB_PROPERTY_SHOTSNUM", "group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba63b4303048a3617aa06ac9ccb1795f23", null ],
+      [ "QDMI_JOB_PROPERTY_QUEUEPOSITION", "group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bbaa9dc7b2d271978db909921a417b223d9", null ],
       [ "QDMI_JOB_PROPERTY_MAX", "group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba14db954932a0e76a751f89e75eda5351", null ],
       [ "QDMI_JOB_PROPERTY_CUSTOM1", "group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba016257118753c19a5a86da3310be27cc", null ],
       [ "QDMI_JOB_PROPERTY_CUSTOM2", "group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba95c21c814e579b6ac1d736ba57d69287", null ],

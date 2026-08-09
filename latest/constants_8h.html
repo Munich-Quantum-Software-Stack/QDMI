@@ -288,12 +288,13 @@ Enumerations</h2></td></tr>
 , <a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4fa1215ae3034ffc3c9e6207253b81fa649">QDMI_DEVICE_JOB_PROPERTY_PROGRAM</a> = 2
 , <a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4faad5344a33a120865b1c6f987b9fe023c">QDMI_DEVICE_JOB_PROPERTY_SHOTSNUM</a> = 3
 , <br />
-&#160;&#160;<a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4fac476c098fa8050146b00c2857a151303">QDMI_DEVICE_JOB_PROPERTY_MAX</a> = 4
+&#160;&#160;<a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4fa4fdb1643973913aeb1f201e3484e7f79">QDMI_DEVICE_JOB_PROPERTY_QUEUEPOSITION</a> = 4
+, <a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4fac476c098fa8050146b00c2857a151303">QDMI_DEVICE_JOB_PROPERTY_MAX</a> = 5
 , <a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4fa19282bf485e4af273b4cfff5290540d6">QDMI_DEVICE_JOB_PROPERTY_CUSTOM1</a> = 999999995
 , <a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4fad86d4edb36e54ab09f6c3a424d5bc8e4">QDMI_DEVICE_JOB_PROPERTY_CUSTOM2</a> = 999999996
-, <a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4faa7144a601ca05f6f3e0d4155dbc6a08e">QDMI_DEVICE_JOB_PROPERTY_CUSTOM3</a> = 999999997
 , <br />
-&#160;&#160;<a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4fa7f324d6c1468d7c14608e1ffad230c3c">QDMI_DEVICE_JOB_PROPERTY_CUSTOM4</a> = 999999998
+&#160;&#160;<a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4faa7144a601ca05f6f3e0d4155dbc6a08e">QDMI_DEVICE_JOB_PROPERTY_CUSTOM3</a> = 999999997
+, <a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4fa7f324d6c1468d7c14608e1ffad230c3c">QDMI_DEVICE_JOB_PROPERTY_CUSTOM4</a> = 999999998
 , <a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4fa08224f2da22d71f598bf27aa85ac9bd4">QDMI_DEVICE_JOB_PROPERTY_CUSTOM5</a> = 999999999
 <br />
  }</td></tr>
@@ -320,11 +321,12 @@ Enumerations</h2></td></tr>
 , <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a6cc7734ed9ab8493aa2d6256ed9a8468">QDMI_DEVICE_PROPERTY_SUPPORTEDPROGRAMFORMATS</a> = 15
 , <br />
 &#160;&#160;<a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a223cba616b016a4b33e06b53854a18f6">QDMI_DEVICE_PROPERTY_CHILDDEVICES</a> = 16
-, <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526afe696a25133fa887276e666460981688">QDMI_DEVICE_PROPERTY_MAX</a> = 17
+, <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a11b4157c54d33e972a56e327defab279">QDMI_DEVICE_PROPERTY_QUEUELENGTH</a> = 17
+, <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526afe696a25133fa887276e666460981688">QDMI_DEVICE_PROPERTY_MAX</a> = 18
 , <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a994b8261b6addc3f56993c467641b122">QDMI_DEVICE_PROPERTY_CUSTOM1</a> = 999999995
-, <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a36730bc67d1fd3c7578a352adf47745e">QDMI_DEVICE_PROPERTY_CUSTOM2</a> = 999999996
 , <br />
-&#160;&#160;<a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a32e4c833c31ffb4add4245a722d70e88">QDMI_DEVICE_PROPERTY_CUSTOM3</a> = 999999997
+&#160;&#160;<a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a36730bc67d1fd3c7578a352adf47745e">QDMI_DEVICE_PROPERTY_CUSTOM2</a> = 999999996
+, <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a32e4c833c31ffb4add4245a722d70e88">QDMI_DEVICE_PROPERTY_CUSTOM3</a> = 999999997
 , <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526ac8f6978f4bf1ad2e263b74bb3bb98aef">QDMI_DEVICE_PROPERTY_CUSTOM4</a> = 999999998
 , <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526adb994f1dc9dfee2910261951f7e4b39f">QDMI_DEVICE_PROPERTY_CUSTOM5</a> = 999999999
 <br />
@@ -628,7 +630,11 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="a6e4d18c7fa5d383bbcc1498abe090d4faad5344a33a120865b1c6f987b9fe023c" name="a6e4d18c7fa5d383bbcc1498abe090d4faad5344a33a120865b1c6f987b9fe023c"></a>QDMI_DEVICE_JOB_PROPERTY_SHOTSNUM&#160;</td><td class="fieldinit">3&#160;</td><td class="fielddoc"><p><span class="tt">size_t</span> The number of shots to execute for a quantum circuit job. </p>
 <dl class="section note"><dt>Note</dt><dd>This property returns the value of the <a class="el" href="#a40dd25c531ebf99fb4b46469083b609ea4ecec990e69afb205f9801433be37b26" title="QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM">QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM</a> parameter. </dd></dl>
 </td></tr>
-<tr><td class="fieldname"><a id="a6e4d18c7fa5d383bbcc1498abe090d4fac476c098fa8050146b00c2857a151303" name="a6e4d18c7fa5d383bbcc1498abe090d4fac476c098fa8050146b00c2857a151303"></a>QDMI_DEVICE_JOB_PROPERTY_MAX&#160;</td><td class="fieldinit">4&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
+<tr><td class="fieldname"><a id="a6e4d18c7fa5d383bbcc1498abe090d4fa4fdb1643973913aeb1f201e3484e7f79" name="a6e4d18c7fa5d383bbcc1498abe090d4fa4fdb1643973913aeb1f201e3484e7f79"></a>QDMI_DEVICE_JOB_PROPERTY_QUEUEPOSITION&#160;</td><td class="fieldinit">4&#160;</td><td class="fielddoc"><p><span class="tt">size_t</span> The current number of jobs ahead of this job in its queue. </p>
+<p>Querying this property must refresh the job's status and queue position. The property can only be queried while the refreshed status is <a class="el" href="#a04e5c793bcbe8b354a9223bb60f828a6a8af19691cae44fb6816555b1c087e6e8" title="QDMI_JOB_STATUS_QUEUED">QDMI_JOB_STATUS_QUEUED</a>; otherwise, the query must return <a class="el" href="#a450b1adf81abc6f0accbf0ce4abe92f8a916e0810bf915e2ad67f2c1430c54fec" title="QDMI_ERROR_BADSTATE">QDMI_ERROR_BADSTATE</a>. </p><dl class="section user"><dt></dt><dd>If the provider only exposes a lower bound, the implementation reports that lower bound. For example, a provider value of <span class="tt">&gt;50</span> is reported as <span class="tt">50</span>. </dd></dl>
+<dl class="section user"><dt></dt><dd>The property may yield <a class="el" href="#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651" title="QDMI_ERROR_NOTSUPPORTED">QDMI_ERROR_NOTSUPPORTED</a> if the implementation cannot obtain a trustworthy queue position. </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="a6e4d18c7fa5d383bbcc1498abe090d4fac476c098fa8050146b00c2857a151303" name="a6e4d18c7fa5d383bbcc1498abe090d4fac476c098fa8050146b00c2857a151303"></a>QDMI_DEVICE_JOB_PROPERTY_MAX&#160;</td><td class="fieldinit">5&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
 <p>It can be used by devices for bounds checking and validation of function parameters.</p>
 <dl class="section attention"><dt>Attention</dt><dd>This value must remain the last regular member of the enum besides the custom members and must be updated when new members are added. </dd></dl>
 </td></tr>
@@ -711,7 +717,11 @@ Enumerations</h2></td></tr>
 <p>Some devices may manage multiple child devices, e.g., a multi-device system or a device with multiple processing units. This property provides access to the child devices as separate <a class="el" href="group__device__interface.html#ga112235355550f0b2defb14e3e49323c4" title="QDMI_Child_Device">QDMI_Child_Device</a> handles. </p><dl class="section user"><dt></dt><dd>The property may yield <a class="el" href="#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651" title="QDMI_ERROR_NOTSUPPORTED">QDMI_ERROR_NOTSUPPORTED</a> if the device does not have any child devices. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Devices with child devices may have special job submission handling. Check the concrete device's job interface documentation. </dd></dl>
 </td></tr>
-<tr><td class="fieldname"><a id="ad251d8ae8fbbe9a5c7a10d66b243d526afe696a25133fa887276e666460981688" name="ad251d8ae8fbbe9a5c7a10d66b243d526afe696a25133fa887276e666460981688"></a>QDMI_DEVICE_PROPERTY_MAX&#160;</td><td class="fieldinit">17&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
+<tr><td class="fieldname"><a id="ad251d8ae8fbbe9a5c7a10d66b243d526a11b4157c54d33e972a56e327defab279" name="ad251d8ae8fbbe9a5c7a10d66b243d526a11b4157c54d33e972a56e327defab279"></a>QDMI_DEVICE_PROPERTY_QUEUELENGTH&#160;</td><td class="fieldinit">17&#160;</td><td class="fielddoc"><p><span class="tt">size_t</span> The current number of jobs waiting to access the device. </p>
+<p>This property is a snapshot of the device's queue length and does not include jobs that are currently executing. If a provider exposes multiple queues for the device, the implementation reports the sum of the waiting jobs across those queues. </p><dl class="section user"><dt></dt><dd>If the provider only exposes a lower bound, the implementation reports that lower bound. For example, a provider value of <span class="tt">&gt;50</span> is reported as <span class="tt">50</span>. </dd></dl>
+<dl class="section user"><dt></dt><dd>The property may yield <a class="el" href="#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651" title="QDMI_ERROR_NOTSUPPORTED">QDMI_ERROR_NOTSUPPORTED</a> if the implementation cannot obtain a trustworthy queue length. </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="ad251d8ae8fbbe9a5c7a10d66b243d526afe696a25133fa887276e666460981688" name="ad251d8ae8fbbe9a5c7a10d66b243d526afe696a25133fa887276e666460981688"></a>QDMI_DEVICE_PROPERTY_MAX&#160;</td><td class="fieldinit">18&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
 <p>It can be used by devices for bounds checking and validation of function parameters.</p>
 <dl class="section attention"><dt>Attention</dt><dd>This value must remain the last regular member of the enum besides the custom members and must be updated when new members are added. </dd></dl>
 </td></tr>
