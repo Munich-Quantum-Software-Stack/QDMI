@@ -276,6 +276,12 @@
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
+      <name>QDMI_JOB_PROPERTY_QUEUEPOSITION</name>
+      <anchorfile>group__client__job__interface.html</anchorfile>
+      <anchor>gga8f2f468604e24bab4c86cdb781b879bbaa9dc7b2d271978db909921a417b223d9</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
       <name>QDMI_JOB_PROPERTY_MAX</name>
       <anchorfile>group__client__job__interface.html</anchorfile>
       <anchor>gga8f2f468604e24bab4c86cdb781b879bba14db954932a0e76a751f89e75eda5351</anchor>
@@ -782,6 +788,12 @@
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
+      <name>QDMI_DEVICE_JOB_PROPERTY_QUEUEPOSITION</name>
+      <anchorfile>constants_8h.html</anchorfile>
+      <anchor>a6e4d18c7fa5d383bbcc1498abe090d4fa4fdb1643973913aeb1f201e3484e7f79</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
       <name>QDMI_DEVICE_JOB_PROPERTY_MAX</name>
       <anchorfile>constants_8h.html</anchorfile>
       <anchor>a6e4d18c7fa5d383bbcc1498abe090d4fac476c098fa8050146b00c2857a151303</anchor>
@@ -924,6 +936,12 @@
       <name>QDMI_DEVICE_PROPERTY_CHILDDEVICES</name>
       <anchorfile>constants_8h.html</anchorfile>
       <anchor>ad251d8ae8fbbe9a5c7a10d66b243d526a223cba616b016a4b33e06b53854a18f6</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>QDMI_DEVICE_PROPERTY_QUEUELENGTH</name>
+      <anchorfile>constants_8h.html</anchorfile>
+      <anchor>ad251d8ae8fbbe9a5c7a10d66b243d526a11b4157c54d33e972a56e327defab279</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
@@ -2053,6 +2071,12 @@
       <name>QDMI_JOB_PROPERTY_SHOTSNUM</name>
       <anchorfile>group__client__job__interface.html</anchorfile>
       <anchor>gga8f2f468604e24bab4c86cdb781b879bba63b4303048a3617aa06ac9ccb1795f23</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>QDMI_JOB_PROPERTY_QUEUEPOSITION</name>
+      <anchorfile>group__client__job__interface.html</anchorfile>
+      <anchor>gga8f2f468604e24bab4c86cdb781b879bbaa9dc7b2d271978db909921a417b223d9</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
