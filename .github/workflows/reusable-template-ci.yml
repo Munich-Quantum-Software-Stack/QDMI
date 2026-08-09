@@ -55,7 +55,7 @@ jobs:
           cmake -G Ninja -S . -B build_docs -DCMAKE_BUILD_TYPE=Release -DBUILD_MQSS_QDMI_DOCS=ON -DBUILD_MQSS_QDMI_TESTS=OFF $CMAKE_ARGS
           cmake --build build_docs --config Release --target mqss_qdmi_device_docs
           rm -rf build_docs
-      - uses: pypa/cibuildwheel@4726cd35bb13f7bde50cf2761f2499ac7b3aa32c # v4.1.1
+      - uses: pypa/cibuildwheel@1828c10ab37f080699c7b81cea34097c684a7074 # v4.2.0
       - name: Verify clean directory
         run: git diff --exit-code
       - name: Upload wheels
