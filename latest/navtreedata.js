@@ -58,7 +58,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "client_8h.html",
-"group__client__session__interface.html#gacf251f306f595e62f34afbf2977115fe"
+"group__client__session__interface.html#gaae2a513b3364705ca75f709215d912f5"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

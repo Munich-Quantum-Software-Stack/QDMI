@@ -382,6 +382,13 @@
     </member>
     <member kind="function">
       <type>int</type>
+      <name>QDMI_session_retrieve_job_by_id</name>
+      <anchorfile>group__client__job__interface.html</anchorfile>
+      <anchor>ga6b766aceef8ef65a84cc4cd196ce5e2f</anchor>
+      <arglist>(QDMI_Device device, const char *job_id, QDMI_Job *job)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
       <name>QDMI_job_set_parameter</name>
       <anchorfile>group__client__job__interface.html</anchorfile>
       <anchor>ga94b84ea6efa5e7f2ad1ee65bff04381c</anchor>
@@ -1633,6 +1640,13 @@
     </member>
     <member kind="function">
       <type>int</type>
+      <name>QDMI_device_session_retrieve_device_job_by_id</name>
+      <anchorfile>group__device__job__interface.html</anchorfile>
+      <anchor>ga936ccc97552a744032edbeb840aaccba</anchor>
+      <arglist>(QDMI_Device_Session session, const char *job_id, QDMI_Device_Job *job)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
       <name>QDMI_device_job_set_parameter</name>
       <anchorfile>group__device__job__interface.html</anchorfile>
       <anchor>ga1ff5eda213c2bd60599efeac2166654d</anchor>
@@ -2110,6 +2124,13 @@
     </member>
     <member kind="function">
       <type>int</type>
+      <name>QDMI_session_retrieve_job_by_id</name>
+      <anchorfile>group__client__job__interface.html</anchorfile>
+      <anchor>ga6b766aceef8ef65a84cc4cd196ce5e2f</anchor>
+      <arglist>(QDMI_Device device, const char *job_id, QDMI_Job *job)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
       <name>QDMI_job_set_parameter</name>
       <anchorfile>group__client__job__interface.html</anchorfile>
       <anchor>ga94b84ea6efa5e7f2ad1ee65bff04381c</anchor>
@@ -2277,6 +2298,13 @@
       <anchorfile>group__device__job__interface.html</anchorfile>
       <anchor>ga63f4e17de8a04f7caeeb195f5d276f5c</anchor>
       <arglist>(QDMI_Device_Session session, QDMI_Device_Job *job)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>QDMI_device_session_retrieve_device_job_by_id</name>
+      <anchorfile>group__device__job__interface.html</anchorfile>
+      <anchor>ga936ccc97552a744032edbeb840aaccba</anchor>
+      <arglist>(QDMI_Device_Session session, const char *job_id, QDMI_Device_Job *job)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
