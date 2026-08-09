@@ -1069,6 +1069,23 @@ TEST_P(QDMIImplementationTest, SessionInit) {
   EXPECT_EQ(QDMI_session_init(session2), QDMI_SUCCESS);
 }
 
+TEST_P(QDMIImplementationTest, RetrieveJobById) {
+  QDMI_Job job = nullptr;
+  EXPECT_EQ(QDMI_session_retrieve_job_by_id(nullptr, "job-id", &job),
+            QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_EQ(QDMI_session_retrieve_job_by_id(device, nullptr, &job),
+            QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_EQ(QDMI_session_retrieve_job_by_id(device, "", &job),
+            QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_EQ(QDMI_session_retrieve_job_by_id(device, "job-id", nullptr),
+            QDMI_ERROR_INVALIDARGUMENT);
+
+  const auto expected = mode == TEST_SESSION_MODE::READONLY
+                            ? QDMI_ERROR_PERMISSIONDENIED
+                            : QDMI_ERROR_NOTSUPPORTED;
+  EXPECT_EQ(QDMI_session_retrieve_job_by_id(device, "job-id", &job), expected);
+}
+
 TEST_P(QDMIImplementationTest, SessionQuerySessionProperty) {
   // `session == nullptr` is not a valid argument
   EXPECT_EQ(QDMI_session_query_session_property(

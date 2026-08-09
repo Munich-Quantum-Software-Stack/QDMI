@@ -375,6 +375,13 @@ int CXX_QDMI_device_session_create_device_job(CXX_QDMI_Device_Session session,
   return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]
 
+int CXX_QDMI_device_session_retrieve_device_job_by_id(
+    [[maybe_unused]] CXX_QDMI_Device_Session session,
+    [[maybe_unused]] const char *job_id,
+    [[maybe_unused]] CXX_QDMI_Device_Job *job) {
+  return QDMI_ERROR_NOTSUPPORTED;
+} /// [DOXYGEN FUNCTION END]
+
 void CXX_QDMI_device_job_free(CXX_QDMI_Device_Job job) {
   delete[] static_cast<char *>(job->program);
   delete job;

@@ -14,6 +14,8 @@ clients compiled against a different minor or major version.
 
 ### Added
 
+- 🚸 Add support for retrieving existing jobs by their IDs ([#485])
+  ([\@burgholzer])
 - ✨ Add optional properties for querying a device's current queue length and a
   queued job's current queue position ([#486]) ([\@burgholzer])
 - 👨‍💻 Add stable device IDs and symbol-prefix metadata to exported device targets
@@ -212,6 +214,7 @@ for previous changelogs._
 <!-- PR links -->
 
 [#486]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/486
+[#485]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/485
 [#475]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/475
 [#457]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/457
 [#456]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/456
