@@ -21,6 +21,12 @@ The exported CMake target publishes the stable device ID configured through
 to package and register the device without project-specific loader code. This
 metadata does not add MQT Core as a dependency.
 
+Do not allow C++ exceptions to escape the device's C entry points. Contain them
+directly at entry points that call throwing code, for example with a
+function-try-block. Map allocation failures to `QDMI_ERROR_OUTOFMEM`, unexpected
+exceptions to `QDMI_ERROR_FATAL`, and provider-specific failures to the most
+precise available status. Non-throwing entry points need no wrapper.
+
 ## Documentation
 
 The full documentation, including project guides, a contributing guide, and the
