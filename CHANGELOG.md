@@ -12,6 +12,8 @@ clients compiled against a different minor or major version.
 
 ## [Unreleased]
 
+## [1.3.3] - 2026-08-19
+
 ### Added
 
 - 🚸 Add support for retrieving existing jobs by their IDs ([#485])
@@ -202,7 +204,8 @@ for previous changelogs._
 
 <!-- Version links -->
 
-[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.2...HEAD
+[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.3...HEAD
+[1.3.3]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.3.3
 [1.3.2]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.3.2
 [1.3.1]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.3.1
 [1.3.0]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.3.0
