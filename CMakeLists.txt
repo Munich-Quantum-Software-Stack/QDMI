@@ -16,7 +16,7 @@
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 # set required cmake version
-cmake_minimum_required(VERSION 3.24...4.2)
+cmake_minimum_required(VERSION 3.24...4.4)
 project(
   qdmi
   LANGUAGES C CXX

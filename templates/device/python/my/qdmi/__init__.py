@@ -17,6 +17,8 @@
 
 """Python wrapper for exposing the MY QDMI device library."""
 
+# ruff: file-ignore[non-empty-init-module]
+
 import sys
 from importlib.metadata import distribution
 from pathlib import Path

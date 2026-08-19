@@ -31,7 +31,21 @@ repos:
   - repo: https://github.com/python-jsonschema/check-jsonschema
     rev: 0.38.0
     hooks:
+      - id: check-codecov
+        priority: 0
       - id: check-github-workflows
+        priority: 0
+      - id: check-mergify
+        priority: 0
+      - id: check-renovate
+        additional_dependencies: [json5]
+        priority: 0
+
+  ## Check for security issues in GitHub Actions workflows
+  - repo: https://github.com/zizmorcore/zizmor-pre-commit
+    rev: v1.29.0
+    hooks:
+      - id: zizmor
         priority: 0
 
   ## Check for common capitalization mistakes
