@@ -1,4 +1,4 @@
-name: 🇨‌ • Install and Test
+name: 🇨 • Install and Test
 on:
   workflow_call:
     inputs:
