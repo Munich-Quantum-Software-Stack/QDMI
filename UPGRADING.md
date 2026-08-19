@@ -7,6 +7,50 @@ releases, please refer to the
 
 ## [Unreleased]
 
+## [1.3.3]
+
+### Retrieving existing jobs by ID
+
+Jobs can now be retrieved by their ID via the new functions
+`QDMI_session_retrieve_job_by_id` (client interface) and
+`QDMI_device_session_retrieve_device_job_by_id` (device interface). The ID is
+the one reported by `QDMI_JOB_PROPERTY_ID` and `QDMI_DEVICE_JOB_PROPERTY_ID`,
+respectively.
+
+A retrieved job can be queried, waited for, cancelled, and used to fetch
+results, but its parameters cannot be set and it cannot be submitted again.
+Devices that do not support this must return `QDMI_ERROR_NOTSUPPORTED`.
+
+### Optional queue properties
+
+Two optional properties have been added:
+
+- `QDMI_DEVICE_PROPERTY_QUEUELENGTH` reports the number of jobs waiting for a
+  device, excluding the jobs that are currently executing.
+- `QDMI_DEVICE_JOB_PROPERTY_QUEUEPOSITION` and `QDMI_JOB_PROPERTY_QUEUEPOSITION`
+  report the number of jobs ahead of a queued job. Querying them must refresh
+  the job's status and position, and must return `QDMI_ERROR_BADSTATE` if the
+  job is not queued.
+
+Both are optional; implementations that cannot provide a trustworthy value
+return `QDMI_ERROR_NOTSUPPORTED`.
+
+### Stable device IDs and symbol prefixes exported from device targets
+
+Device targets can now publish their stable ID and symbol prefix via the new
+`configure_qdmi_device_target` CMake function, which sets and exports the
+`QDMI_DEVICE_ID` and `QDMI_DEVICE_PREFIX` target properties.
+
+```cmake
+configure_qdmi_device_target(TARGET my_device ID "my.default" PREFIX "MY")
+```
+
+Newly generated projects use this by default and expose an overridable
+`<PREFIX>_QDMI_DEVICE_ID` cache variable that defaults to
+`<lowercase-prefix>.default`. Existing device implementations can adopt it by
+calling the function for their device target. Once distributed, the ID should
+remain stable so that applications can keep referring to the same device.
+
 ## [1.3.2]
 
 ### Child device representations in a multicore architecture
@@ -476,7 +520,8 @@ For quick reference, here are all breaking changes in v1.2.0:
 
 <!-- Version links -->
 
-[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.2...HEAD
+[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.3...HEAD
+[1.3.3]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.2...v1.3.3
 [1.3.2]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.1...v1.3.2
 [1.3.1]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.2.2...v1.3.0
