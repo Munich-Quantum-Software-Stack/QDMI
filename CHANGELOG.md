@@ -14,6 +14,8 @@ clients compiled against a different minor or major version.
 
 ## [1.3.3] - 2026-08-19
 
+_If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#133)._
+
 ### Added
 
 - 🚸 Add support for retrieving existing jobs by their IDs ([#485])
