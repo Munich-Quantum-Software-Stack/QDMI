@@ -20,6 +20,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ github.event.release.tag_name || inputs.version }}
+          persist-credentials: false
 
       - name: Fetch documentation tooling from develop 📝
         run: |
@@ -43,11 +44,15 @@ jobs:
 
       - name: Set version variable
         id: version
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          INPUT_VERSION: ${{ inputs.version }}
         run: |
-          if [ "${{ github.event_name }}" == "release" ]; then
-            VERSION="${{ github.event.release.tag_name }}"
+          if [ "$EVENT_NAME" == "release" ]; then
+            VERSION="$RELEASE_TAG"
           else
-            VERSION="${{ inputs.version }}"
+            VERSION="$INPUT_VERSION"
           fi
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
 

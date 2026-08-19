@@ -34,6 +34,7 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
+          persist-credentials: false
       # set up ccache for faster C++ builds
       - name: Setup ccache
         uses: Chocobo1/setup-ccache-action@a4d08616f5b614053bce228ddf881592f69d61d4 # v1.5.9
@@ -48,7 +49,9 @@ jobs:
         run: pipx install ninja
       # configure CMake
       - name: Configure CMake for QDMI Installation
-        run: cmake -S . -B install-build -DCMAKE_BUILD_TYPE=Release ${{ inputs.cmake-args }}
+        env:
+          CMAKE_ARGS: ${{ inputs.cmake-args }}
+        run: cmake -S . -B install-build -DCMAKE_BUILD_TYPE=Release $CMAKE_ARGS
       # build the project
       - name: Build the project
         run: cmake --build install-build --config Release
@@ -57,9 +60,11 @@ jobs:
         run: cmake --install install-build --prefix install-dir
       # configure CMake for using the installed QDMI
       - name: Configure CMake for use of installed QDMI
+        env:
+          CMAKE_ARGS: ${{ inputs.cmake-args }}
         run:
           cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DUSE_INSTALLED_QDMI=ON -DBUILD_CXX_QDMI_TESTS=ON
-          -DCMAKE_PREFIX_PATH=install-dir ${{ inputs.cmake-args }}
+          -DCMAKE_PREFIX_PATH=install-dir $CMAKE_ARGS
       # build the project
       - name: Build QDMI examples, templates, and tests with installed QDMI
         run: cmake --build build --config Release
