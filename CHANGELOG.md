@@ -15,7 +15,8 @@ clients compiled against a different minor or major version.
 ### Added
 
 - ✨ Add optional, per-program-format atomic execution-feature metadata for QDMI
-  1.4 that preserves incomplete and known-empty feature sets.
+  1.4 that preserves incomplete and known-empty feature sets ([#508])
+  ([\@simon1hofmann]).
 
 ## [1.3.3] - 2026-08-19
 
@@ -223,6 +224,7 @@ for previous changelogs._
 
 <!-- PR links -->
 
+[#508]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/508
 [#486]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/486
 [#485]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/485
 [#475]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/475
@@ -271,6 +273,7 @@ for previous changelogs._
 
 <!-- Contributors -->
 
+[@simon1hofmann]: https://github.com/simon1hofmann
 [@burgholzer]: https://github.com/burgholzer
 [@ystade]: https://github.com/ystade
 [@mnfarooqi]: https://github.com/mnfarooqi
