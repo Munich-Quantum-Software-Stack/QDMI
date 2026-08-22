@@ -108,6 +108,34 @@ QDMI_Site pairs. The pairs are flattened into a single list of @ref QDMI_Site's.
 \until DOXYGEN FUNCTION END
 <!-- rumdl-enable -->
 
+### Program-Format Execution Features {#device-program-format-features}
+
+The optional @ref QDMI_DEVICE_PROPERTY_PROGRAMFORMATFEATURES property reports
+atomic execution features separately for every supported program format. The
+following example device reports two known OpenQASM 2 features while leaving the
+optional-feature set incomplete. It reports no optional features beyond the
+guarantees of either QIR Base encoding and omits its calibration format, so
+optional-feature metadata for that format remains unknown.
+
+<!-- rumdl-disable -->
+\dontinclude cxx_device.cpp
+\skipline constexpr std::array PROGRAM_FORMAT_FEATURES
+\until };
+\skip int CXX_QDMI_device_session_query_device_property
+\until {
+\skip QDMI_DEVICE_PROPERTY_PROGRAMFORMATFEATURES
+\until size_ret)
+<!-- rumdl-enable -->
+
+Each @ref QDMI_Program_Format_Feature record carries one atomic feature and a
+`optional_features_complete` flag. A format with no listed optional feature uses
+@ref QDMI_PROGRAM_FEATURE_NONE. For that sentinel record, a non-zero flag
+denotes a known-empty optional-feature set; a zero flag says that additional
+optional features may be supported. A nonzero flag on a real feature instead
+denotes a complete nonempty set. A format without any record has unknown
+optional-feature metadata. Requirements guaranteed by a standardized format
+remain implicit and need not be repeated.
+
 ### Complex Properties {#device-complex}
 
 The properties that are returned by @ref

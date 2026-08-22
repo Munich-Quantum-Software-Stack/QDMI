@@ -7,6 +7,50 @@ releases, please refer to the
 
 ## [Unreleased]
 
+### Program-format execution features
+
+This public-interface addition is intended for QDMI 1.4. Device plugins and
+clients must use matching minor-version headers; a client must not query the new
+property on a device implementation built against QDMI 1.3 headers.
+
+Devices may now expose atomic execution features for each supported program
+format through the optional `QDMI_DEVICE_PROPERTY_PROGRAMFORMATFEATURES`
+property. The property returns a list of `QDMI_Program_Format_Feature` records.
+Existing devices may leave the property unsupported; clients must then treat
+feature metadata as unknown.
+
+Each record contains a program format, one `QDMI_Program_Feature`, and an
+`optional_features_complete` flag. Records with the same format form one feature
+set and must agree on the flag. Every listed feature is supported. A zero flag
+means the device may support additional optional features. A non-zero flag means
+all features beyond those guaranteed by the program format are listed, so every
+unlisted optional feature is unsupported. Format-inherent requirements remain
+implicit and need not be repeated.
+
+Use `QDMI_PROGRAM_FEATURE_NONE` when the set has no listed feature. Together
+with the completeness flag, this distinguishes incomplete metadata from a
+known-empty feature set:
+
+```c
+const QDMI_Program_Format_Feature unknown_qasm3 = {
+    QDMI_PROGRAM_FORMAT_QASM3, QDMI_PROGRAM_FEATURE_NONE, 0};
+const QDMI_Program_Format_Feature empty_qir_base = {
+    QDMI_PROGRAM_FORMAT_QIRBASESTRING, QDMI_PROGRAM_FEATURE_NONE, 1};
+```
+
+A supported program format omitted from the returned records, a property query
+returning `QDMI_ERROR_NOTSUPPORTED`, and a `QDMI_PROGRAM_FEATURE_NONE` record
+with a zero completeness flag all denote unknown optional-feature metadata.
+Clients must combine returned records with the requirements inherent to a
+standardized format even when optional-feature metadata is incomplete or
+unavailable. Text and binary enumerators have independent profiles; records for
+one never apply to the other.
+
+Every standard format has an empty inherent feature baseline except QIR Adaptive
+string and module programs. Both QIR Adaptive encodings inherently require
+mid-circuit measurement, measured-qubit reuse, measurement-result use, Boolean
+computation, and forward branching. Custom formats define their own baseline.
+
 ## [1.3.3]
 
 ### Retrieving existing jobs by ID

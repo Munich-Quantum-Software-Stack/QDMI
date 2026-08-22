@@ -12,6 +12,11 @@ clients compiled against a different minor or major version.
 
 ## [Unreleased]
 
+### Added
+
+- ✨ Add optional, per-program-format atomic execution-feature metadata for QDMI
+  1.4 that preserves incomplete and known-empty feature sets.
+
 ## [1.3.3] - 2026-08-19
 
 _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#133)._

@@ -407,6 +407,43 @@ TEST_P(QDMIImplementationTest, QueryDeviceProperties) {
             QDMI_SUCCESS);
   EXPECT_GE(scale_factor, 0.0);
 
+  // Query the format-scoped execution features. The example device reports an
+  // incomplete pair of OpenQASM 2 features, known-empty optional profiles for
+  // QIR Base, and no calibration metadata.
+  size = 0;
+  ASSERT_EQ(QDMI_device_query_device_property(
+                device, QDMI_DEVICE_PROPERTY_PROGRAMFORMATFEATURES, 0, nullptr,
+                &size),
+            QDMI_SUCCESS);
+  std::vector<QDMI_Program_Format_Feature> format_features(
+      size / sizeof(QDMI_Program_Format_Feature));
+  ASSERT_EQ(QDMI_device_query_device_property(
+                device, QDMI_DEVICE_PROPERTY_PROGRAMFORMATFEATURES, size,
+                format_features.data(), nullptr),
+            QDMI_SUCCESS);
+  ASSERT_EQ(format_features.size(), 4);
+  EXPECT_EQ(format_features[0].format, QDMI_PROGRAM_FORMAT_QASM2);
+  EXPECT_EQ(format_features[0].feature,
+            QDMI_PROGRAM_FEATURE_MIDCIRCUITMEASUREMENT);
+  EXPECT_EQ(format_features[0].optional_features_complete, 0);
+  EXPECT_EQ(format_features[1].format, QDMI_PROGRAM_FORMAT_QASM2);
+  EXPECT_EQ(format_features[1].feature,
+            QDMI_PROGRAM_FEATURE_MEASUREDQUBITREUSE);
+  EXPECT_EQ(format_features[1].optional_features_complete, 0);
+  EXPECT_EQ(format_features[2].format, QDMI_PROGRAM_FORMAT_QIRBASESTRING);
+  EXPECT_EQ(format_features[3].format, QDMI_PROGRAM_FORMAT_QIRBASEMODULE);
+  EXPECT_EQ(format_features[2].feature, QDMI_PROGRAM_FEATURE_NONE);
+  EXPECT_NE(format_features[2].optional_features_complete, 0);
+  EXPECT_EQ(format_features[3].feature, QDMI_PROGRAM_FEATURE_NONE);
+  EXPECT_NE(format_features[3].optional_features_complete, 0);
+  EXPECT_TRUE(std::ranges::none_of(format_features, [](const auto &feature) {
+    return feature.format == QDMI_PROGRAM_FORMAT_CALIBRATION;
+  }));
+  EXPECT_EQ(QDMI_device_query_device_property(
+                device, QDMI_DEVICE_PROPERTY_PROGRAMFORMATFEATURES, size - 1,
+                format_features.data(), nullptr),
+            QDMI_ERROR_INVALIDARGUMENT);
+
   // The example device does not support neutral atom-specific properties
   EXPECT_EQ(
       QDMI_device_query_device_property(
