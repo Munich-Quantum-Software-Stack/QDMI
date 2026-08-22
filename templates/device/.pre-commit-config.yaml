@@ -84,7 +84,7 @@ repos:
 
     ## Format Markdown files with rumdl
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: v0.2.57
+    rev: v0.2.60
     hooks:
       - id: rumdl
         args: [--fix]
@@ -112,7 +112,7 @@ repos:
 
   ## Format and lint Python files with ruff
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.16.3
+    rev: v0.16.4
     hooks:
       - id: ruff-format
         types_or: [python, pyi, jupyter, markdown]
@@ -123,7 +123,7 @@ repos:
 
   ## Check Python types with ty
   - repo: https://github.com/astral-sh/ty-pre-commit
-    rev: v0.0.73
+    rev: v0.0.74
     hooks:
       - id: ty
         args: [--isolated, --only-dev]
