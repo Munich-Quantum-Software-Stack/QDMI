@@ -235,6 +235,16 @@ const std::unordered_map<
 constexpr std::array SUPPORTED_PROGRAM_FORMATS = {
     QDMI_PROGRAM_FORMAT_QASM2, QDMI_PROGRAM_FORMAT_QIRBASESTRING,
     QDMI_PROGRAM_FORMAT_QIRBASEMODULE, QDMI_PROGRAM_FORMAT_CALIBRATION};
+
+constexpr std::array PROGRAM_FORMAT_FEATURES = {
+    QDMI_Program_Format_Feature{QDMI_PROGRAM_FORMAT_QASM2,
+                                QDMI_PROGRAM_FEATURE_MIDCIRCUITMEASUREMENT, 0},
+    QDMI_Program_Format_Feature{QDMI_PROGRAM_FORMAT_QASM2,
+                                QDMI_PROGRAM_FEATURE_MEASUREDQUBITREUSE, 0},
+    QDMI_Program_Format_Feature{QDMI_PROGRAM_FORMAT_QIRBASESTRING,
+                                QDMI_PROGRAM_FEATURE_NONE, 1},
+    QDMI_Program_Format_Feature{QDMI_PROGRAM_FORMAT_QIRBASEMODULE,
+                                QDMI_PROGRAM_FEATURE_NONE, 1}};
 } // namespace
 
 // NOLINTBEGIN(bugprone-macro-parentheses)
@@ -823,6 +833,9 @@ int CXX_QDMI_device_session_query_device_property(
   ADD_LIST_PROPERTY(QDMI_DEVICE_PROPERTY_SUPPORTEDPROGRAMFORMATS,
                     QDMI_Program_Format, SUPPORTED_PROGRAM_FORMATS, prop, size,
                     value, size_ret)
+  ADD_LIST_PROPERTY(QDMI_DEVICE_PROPERTY_PROGRAMFORMATFEATURES,
+                    QDMI_Program_Format_Feature, PROGRAM_FORMAT_FEATURES, prop,
+                    size, value, size_ret)
 
   return QDMI_ERROR_NOTSUPPORTED;
 } /// [DOXYGEN FUNCTION END]

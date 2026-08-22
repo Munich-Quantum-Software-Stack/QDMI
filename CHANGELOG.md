@@ -14,6 +14,11 @@ clients compiled against a different minor or major version.
 
 _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 
+### Added
+
+- ✨ Add optional, per-program-format atomic execution-feature metadata for QDMI
+  1.4 that preserves incomplete and known-empty feature sets.
+
 ### Changed
 
 - 💥 Drop x86 macOS from QDMI's tested platforms ([#515]) ([\@denialhaag])
