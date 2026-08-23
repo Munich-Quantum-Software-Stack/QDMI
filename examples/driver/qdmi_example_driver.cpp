@@ -100,6 +100,9 @@ struct QDMI_Library {
   /// Function pointer to @ref QDMI_device_session_query_device_property.
   decltype(QDMI_device_session_query_device_property)
       *device_session_query_device_property{};
+  /// Function pointer to @ref QDMI_device_session_query_program_features.
+  decltype(QDMI_device_session_query_program_features)
+      *device_session_query_program_features{};
   /// Function pointer to @ref QDMI_device_session_query_site_property.
   decltype(QDMI_device_session_query_site_property)
       *device_session_query_site_property{};
@@ -181,13 +184,6 @@ QDMI_Driver_State *QDMI_get_driver_state() {
     }                                                                          \
   }
 
-#define LOAD_OPTIONAL_SYMBOL(device, prefix, symbol)                           \
-  {                                                                            \
-    const std::string symbol_name = std::string(prefix) + "_QDMI_" + #symbol;  \
-    (device).symbol = reinterpret_cast<decltype((device).symbol)>(             \
-        dlsym((device).lib_handle, symbol_name.c_str()));                      \
-  }
-
 void QDMI_library_load(const std::string &lib_name, const std::string &prefix) {
   auto *lib_handle = dlopen(lib_name.c_str(), RTLD_NOW | RTLD_LOCAL);
   if (lib_handle == nullptr) {
@@ -218,8 +214,7 @@ void QDMI_library_load(const std::string &lib_name, const std::string &prefix) {
     LOAD_SYMBOL(library, prefix, device_session_set_parameter)
     // device job interface
     LOAD_SYMBOL(library, prefix, device_session_create_device_job)
-    LOAD_OPTIONAL_SYMBOL(library, prefix,
-                         device_session_retrieve_device_job_by_id)
+    LOAD_SYMBOL(library, prefix, device_session_retrieve_device_job_by_id)
     LOAD_SYMBOL(library, prefix, device_job_free)
     LOAD_SYMBOL(library, prefix, device_job_set_parameter)
     LOAD_SYMBOL(library, prefix, device_job_query_property)
@@ -230,6 +225,7 @@ void QDMI_library_load(const std::string &lib_name, const std::string &prefix) {
     LOAD_SYMBOL(library, prefix, device_job_get_results)
     // device query interface
     LOAD_SYMBOL(library, prefix, device_session_query_device_property)
+    LOAD_SYMBOL(library, prefix, device_session_query_program_features)
     LOAD_SYMBOL(library, prefix, device_session_query_site_property)
     LOAD_SYMBOL(library, prefix, device_session_query_operation_property)
 
@@ -480,11 +476,6 @@ int QDMI_session_retrieve_job_by_id(QDMI_Device dev, const char *job_id,
     return QDMI_ERROR_PERMISSIONDENIED;
   }
 
-  if (dev->library->device_session_retrieve_device_job_by_id == nullptr) {
-    // This compatibility path is only reachable for pre-1.3.3 binaries.
-    return QDMI_ERROR_NOTSUPPORTED; // LCOV_EXCL_LINE
-  }
-
   auto retrieved_job = std::make_unique<QDMI_Job_impl_d>();
   retrieved_job->device = dev;
   const auto status = dev->library->device_session_retrieve_device_job_by_id(
@@ -572,6 +563,18 @@ int QDMI_device_query_device_property(QDMI_Device device,
   }
   return device->library->device_session_query_device_property(
       device->device_session, prop, size, value, size_ret);
+}
+
+int QDMI_device_query_program_features(QDMI_Device device,
+                                       const QDMI_Program_Format *format,
+                                       const size_t size,
+                                       QDMI_Program_Feature *value,
+                                       size_t *size_ret) {
+  if (device == nullptr || format == nullptr) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  return device->library->device_session_query_program_features(
+      device->device_session, format, size, value, size_ret);
 }
 
 int QDMI_device_query_site_property(QDMI_Device device, QDMI_Site site,
