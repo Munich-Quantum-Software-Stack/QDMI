@@ -16,6 +16,8 @@ clients compiled against a different minor or major version.
 
 - ✨ Add descriptor-scoped execution-feature queries and a format-defined
   program-output result ([#508]) ([\@simon1hofmann], [\@burgholzer]).
+- ✨ Add ordered multi-program jobs with one aggregate lifecycle, indexed
+  results, and required device entry points ([#509]) ([\@burgholzer]).
 
 ### Changed
 
@@ -239,6 +241,7 @@ for previous changelogs._
 
 <!-- PR links -->
 
+[#509]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/509
 [#508]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/508
 [#486]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/486
 [#485]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/485

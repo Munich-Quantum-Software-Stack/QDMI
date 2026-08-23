@@ -28,20 +28,20 @@ Vendor formats use namespaced IDs such as `com.vendor.format`.
 
 Use the following replacements for the removed enum values:
 
-| Removed value                                   | `QDMI_Program_Format` replacement                                                                            |
-| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| `QDMI_PROGRAM_FORMAT_QASM2`                     | `{QDMI_MAKE_VERSION(2, 0, 0), QDMI_PROGRAM_ENCODING_TEXT, "openqasm", ""}`                                   |
-| `QDMI_PROGRAM_FORMAT_QASM3`                     | `{QDMI_MAKE_VERSION(3, 0, 0), QDMI_PROGRAM_ENCODING_TEXT, "openqasm", ""}`                                   |
-| `QDMI_PROGRAM_FORMAT_QIRBASESTRING`             | `{QDMI_MAKE_VERSION(1, 0, 0), QDMI_PROGRAM_ENCODING_TEXT, "qir", "base"}`                                    |
-| `QDMI_PROGRAM_FORMAT_QIRBASEMODULE`             | `{QDMI_MAKE_VERSION(1, 0, 0), QDMI_PROGRAM_ENCODING_BINARY, "qir", "base"}`                                  |
-| `QDMI_PROGRAM_FORMAT_QIRADAPTIVESTRING`         | `{QDMI_MAKE_VERSION(1, 0, 0), QDMI_PROGRAM_ENCODING_TEXT, "qir", "adaptive"}`                                |
-| `QDMI_PROGRAM_FORMAT_QIRADAPTIVEMODULE`         | `{QDMI_MAKE_VERSION(1, 0, 0), QDMI_PROGRAM_ENCODING_BINARY, "qir", "adaptive"}`                              |
-| `QDMI_PROGRAM_FORMAT_QPY`                       | No standard replacement; providers must document a vendor-namespaced descriptor                              |
-| `QDMI_PROGRAM_FORMAT_IQMJSON`                   | A provider-defined descriptor with a namespaced ID                                                           |
-| `QDMI_PROGRAM_FORMAT_CALIBRATION`               | No descriptor; use a provider extension to trigger calibration                                               |
-| `QDMI_PROGRAM_FORMAT_BATCHJOB`                  | No descriptor; QDMI v1 has no portable multi-program submission API                                          |
-| `QDMI_PROGRAM_FORMAT_CUSTOM1` through `CUSTOM5` | A provider-defined descriptor with a namespaced ID                                                           |
-| `QDMI_PROGRAM_FORMAT_MAX`                       | No replacement                                                                                               |
+| Removed value                                   | `QDMI_Program_Format` replacement                                               |
+| ----------------------------------------------- | ------------------------------------------------------------------------------- |
+| `QDMI_PROGRAM_FORMAT_QASM2`                     | `{QDMI_MAKE_VERSION(2, 0, 0), QDMI_PROGRAM_ENCODING_TEXT, "openqasm", ""}`      |
+| `QDMI_PROGRAM_FORMAT_QASM3`                     | `{QDMI_MAKE_VERSION(3, 0, 0), QDMI_PROGRAM_ENCODING_TEXT, "openqasm", ""}`      |
+| `QDMI_PROGRAM_FORMAT_QIRBASESTRING`             | `{QDMI_MAKE_VERSION(1, 0, 0), QDMI_PROGRAM_ENCODING_TEXT, "qir", "base"}`       |
+| `QDMI_PROGRAM_FORMAT_QIRBASEMODULE`             | `{QDMI_MAKE_VERSION(1, 0, 0), QDMI_PROGRAM_ENCODING_BINARY, "qir", "base"}`     |
+| `QDMI_PROGRAM_FORMAT_QIRADAPTIVESTRING`         | `{QDMI_MAKE_VERSION(1, 0, 0), QDMI_PROGRAM_ENCODING_TEXT, "qir", "adaptive"}`   |
+| `QDMI_PROGRAM_FORMAT_QIRADAPTIVEMODULE`         | `{QDMI_MAKE_VERSION(1, 0, 0), QDMI_PROGRAM_ENCODING_BINARY, "qir", "adaptive"}` |
+| `QDMI_PROGRAM_FORMAT_QPY`                       | No standard replacement; providers must document a vendor-namespaced descriptor |
+| `QDMI_PROGRAM_FORMAT_IQMJSON`                   | A provider-defined descriptor with a namespaced ID                              |
+| `QDMI_PROGRAM_FORMAT_CALIBRATION`               | No descriptor; use a provider extension to trigger calibration                  |
+| `QDMI_PROGRAM_FORMAT_BATCHJOB`                  | No descriptor; use `QDMI_job_set_programs`                                      |
+| `QDMI_PROGRAM_FORMAT_CUSTOM1` through `CUSTOM5` | A provider-defined descriptor with a namespaced ID                              |
+| `QDMI_PROGRAM_FORMAT_MAX`                       | No replacement                                                                  |
 
 QDMI defines no version, profile, wire, or result semantics for the removed QPY
 and IQM JSON values. A provider can expose either format with a
@@ -90,8 +90,12 @@ must not call the new query on a QDMI 1.3 device.
 
 Calibration and batch submission are no longer program formats.
 `QDMI_DEVICE_PROPERTY_NEEDSCALIBRATION` remains available, but QDMI does not
-define a portable calibration trigger. QDMI v1 currently has no portable
-multi-program submission API.
+define a portable calibration trigger. Use `QDMI_job_set_programs` to submit an
+ordered program list as one job. One exact format, shot count, lifecycle, and
+job ID apply to the complete list. Retrieve each result with
+`QDMI_job_get_results_for_program`; its program index matches the input order.
+The existing `QDMI_JOB_PARAMETER_PROGRAM` parameter and result getter remain the
+single-program API.
 
 `QDMI_JOB_RESULT_SHOTS` and histogram keys now describe payload-declared flat
 bit outputs. OpenQASM 2 uses `creg` declarations in source order. OpenQASM 3
@@ -106,13 +110,14 @@ that defines an output schema uses a complete output-schema stream for every
 shot. Older QIR or provider-defined descriptors can return
 `QDMI_ERROR_NOTSUPPORTED`. The byte sequence need not be NUL-terminated.
 
-### Required device job retrieval symbol
+### Required device job symbols
 
 Every QDMI 1.4 device library must export
-`QDMI_device_session_retrieve_device_job_by_id`. A device that cannot retrieve
-jobs by ID returns `QDMI_ERROR_NOTSUPPORTED` from the function. Drivers no
-longer accept a missing symbol. Add a stub implementation before rebuilding an
-older device library against the QDMI 1.4 headers.
+`QDMI_device_session_retrieve_device_job_by_id`, `QDMI_device_job_set_programs`,
+and `QDMI_device_job_get_results_for_program`. A device can return
+`QDMI_ERROR_NOTSUPPORTED` from a function when it does not support that
+operation. Drivers no longer accept missing symbols. Add stub implementations
+before rebuilding an older device library against the QDMI 1.4 headers.
 
 ## [1.3.3]
 
