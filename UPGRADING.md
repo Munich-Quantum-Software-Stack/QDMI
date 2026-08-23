@@ -99,6 +99,12 @@ The `QDMI_PROGRAM_FORMAT_CALIBRATION` program format is removed. Use a
 provider-specific function to submit calibration jobs, if the provider offers
 one. Its numeric value (6) remains reserved. `QDMI_DEVICE_STATUS_CALIBRATION`
 remains available to report device status.
+### Multi-program jobs
+
+Use `QDMI_job_set_programs` to submit an ordered list as one job, with one
+aggregate lifecycle and indexed results. Program-format enum values remain
+unchanged. Providers that cannot preserve the aggregate contract must reject
+the list instead of manufacturing native multi-program support.
 
 ## [1.3.3]
 
