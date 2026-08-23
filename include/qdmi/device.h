@@ -286,6 +286,31 @@ QDMI_EXPORT int QDMI_device_session_query_device_property(
     void *value, size_t *size_ret);
 
 /**
+ * @brief Query the complete optional feature guarantees for one exact program
+ * format.
+ * @param[in] session The initialized session used for the query. Must not be
+ * @c NULL.
+ * @param[in] format A descriptor returned by @ref
+ * QDMI_DEVICE_PROPERTY_SUPPORTEDPROGRAMFORMATS. Must not be @c NULL.
+ * @param[in] size The size of @p value in bytes. Ignored when @p value is
+ * @c NULL.
+ * @param[out] value Storage for a list of @ref QDMI_Program_Feature records,
+ * including all constraints, or @c NULL to query the required size.
+ * @param[out] size_ret The required list size in bytes, or @c NULL.
+ * @return @ref QDMI_SUCCESS when the complete optional set is available. A
+ * zero-byte result means that the format supports only its normative baseline.
+ * @return @ref QDMI_ERROR_NOTSUPPORTED when optional feature metadata is
+ * unknown for @p format.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT for a null handle or descriptor, an
+ * invalid descriptor, or an insufficient output buffer.
+ * @return @ref QDMI_ERROR_BADSTATE when @p session is not initialized.
+ * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
+ */
+QDMI_EXPORT int QDMI_device_session_query_program_features(
+    QDMI_Device_Session session, const QDMI_Program_Format *format, size_t size,
+    QDMI_Program_Feature *value, size_t *size_ret);
+
+/**
  * @brief Query a site property.
  * @param[in] session The session used for the query. Must not be @c NULL.
  * @param[in] site The site to query. Must not be @c NULL.

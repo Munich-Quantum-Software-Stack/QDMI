@@ -16,9 +16,24 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 
 ### Added
 
-- ✨ Add optional, per-program-format atomic execution-feature metadata for QDMI
-  1.4 that preserves incomplete and known-empty feature sets ([#508])
-  ([\@simon1hofmann]).
+- ✨ Add descriptor-scoped execution-feature queries and a format-defined
+  program-output result ([#508]) ([\@simon1hofmann], [\@burgholzer]).
+
+### Changed
+
+- 💥 Replace program-format enums with exact format descriptors and define the
+  flat-bit order of shot and histogram results ([#508]) ([\@simon1hofmann],
+  [\@burgholzer]).
+- 💥 Require device libraries to export
+  `QDMI_device_session_retrieve_device_job_by_id`, while allowing the function
+  to return `QDMI_ERROR_NOTSUPPORTED` ([#508]) ([\@simon1hofmann],
+  [\@burgholzer]).
+
+### Removed
+
+- 💥 Remove calibration, batch-job, QPY, and IQM JSON values from the standard
+  program-format vocabulary. Providers can expose proprietary formats with a
+  namespaced descriptor ID ([#508]) ([\@simon1hofmann], [\@burgholzer]).
 
 ### Changed
 

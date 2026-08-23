@@ -38,15 +38,75 @@
 #include <sstream>
 extern "C" {
 #include <stdlib.h>
+QDMI_Program_Feature QDMI_test_unconstrained_program_feature(void);
 }
 #include <string>
+#include <string_view>
 #include <tuple>
-#include <unordered_map>
 #include <unordered_set>
 #include <utility>
 #include <vector>
 
 namespace {
+static_assert(sizeof(QDMI_Program_Format) == 136U);
+static_assert(sizeof(QDMI_Program_Feature) == 144U);
+static_assert(QDMI_VERSION_MAJOR(QDMI_MAKE_VERSION(2, 1, 3)) == 2U);
+static_assert(QDMI_VERSION_MINOR(QDMI_MAKE_VERSION(2, 1, 3)) == 1U);
+static_assert(QDMI_VERSION_PATCH(QDMI_MAKE_VERSION(2, 1, 3)) == 3U);
+
+constexpr QDMI_Program_Feature CPP_UNCONSTRAINED_FEATURE =
+    QDMI_PROGRAM_FEATURE_UNCONSTRAINED(
+        QDMI_PROGRAM_FEATURE_MID_CIRCUIT_MEASUREMENT, 0);
+static_assert(CPP_UNCONSTRAINED_FEATURE.value == 0U);
+static_assert(CPP_UNCONSTRAINED_FEATURE.constraint_id[0] == '\0');
+static_assert(CPP_UNCONSTRAINED_FEATURE.constraint_value == 0U);
+
+constexpr std::string_view FLAT_SHOT_OUTPUT{"01"};
+constexpr std::string_view EXPECTED_QIR_PROGRAM_OUTPUT =
+    "HEADER\tschema_id\tordered\n"
+    "HEADER\tschema_version\t2.1\n"
+    "START\n"
+    "METADATA\tentry_point\n"
+    "METADATA\tqir_profiles\tbase_profile\n"
+    "METADATA\toutput_labeling_schema\tschema_id\n"
+    "METADATA\trequired_num_qubits\t2\n"
+    "METADATA\trequired_num_results\t2\n"
+    "OUTPUT\tRESULT\t0\n"
+    "OUTPUT\tRESULT\t1\n"
+    "END\t0\n"
+    "START\n"
+    "METADATA\tentry_point\n"
+    "METADATA\tqir_profiles\tbase_profile\n"
+    "METADATA\toutput_labeling_schema\tschema_id\n"
+    "METADATA\trequired_num_qubits\t2\n"
+    "METADATA\trequired_num_results\t2\n"
+    "OUTPUT\tRESULT\t0\n"
+    "OUTPUT\tRESULT\t1\n"
+    "END\t0\n";
+
+constexpr QDMI_Program_Format QASM2_FORMAT{
+    .version = QDMI_MAKE_VERSION(2, 0, 0),
+    .encoding = QDMI_PROGRAM_ENCODING_TEXT,
+    .id = "openqasm",
+    .profile = ""};
+constexpr QDMI_Program_Format QIR_BASE_TEXT_FORMAT{
+    .version = QDMI_MAKE_VERSION(2, 1, 0),
+    .encoding = QDMI_PROGRAM_ENCODING_TEXT,
+    .id = "qir",
+    .profile = "base"};
+constexpr QDMI_Program_Format QIR_BASE_BINARY_FORMAT{
+    .version = QDMI_MAKE_VERSION(2, 1, 0),
+    .encoding = QDMI_PROGRAM_ENCODING_BINARY,
+    .id = "qir",
+    .profile = "base"};
+
+bool Same_format(const QDMI_Program_Format &lhs,
+                 const QDMI_Program_Format &rhs) {
+  return lhs.version == rhs.version && lhs.encoding == rhs.encoding &&
+         std::ranges::equal(lhs.id, rhs.id) &&
+         std::ranges::equal(lhs.profile, rhs.profile);
+}
+
 /// Hash function for a pair
 struct Pair_hash {
   template <class T, class U>
@@ -56,6 +116,14 @@ struct Pair_hash {
   }
 };
 } // namespace
+
+TEST(QDMIConstantsTest, UnconstrainedProgramFeatureMacroIsCCompatible) {
+  const auto feature = QDMI_test_unconstrained_program_feature();
+  EXPECT_STREQ(feature.id, QDMI_PROGRAM_FEATURE_INTEGER_COMPUTATION);
+  EXPECT_EQ(feature.value, 64U);
+  EXPECT_STREQ(feature.constraint_id, "");
+  EXPECT_EQ(feature.constraint_value, 0U);
+}
 
 // Instantiate the test suite with different parameters
 INSTANTIATE_TEST_SUITE_P(
@@ -407,42 +475,66 @@ TEST_P(QDMIImplementationTest, QueryDeviceProperties) {
             QDMI_SUCCESS);
   EXPECT_GE(scale_factor, 0.0);
 
-  // Query the format-scoped execution features. The example device reports an
-  // incomplete pair of OpenQASM 2 features, known-empty optional profiles for
-  // QIR Base, and no calibration metadata.
+  // Query exact format-scoped execution features.
   size = 0;
-  ASSERT_EQ(QDMI_device_query_device_property(
-                device, QDMI_DEVICE_PROPERTY_PROGRAMFORMATFEATURES, 0, nullptr,
-                &size),
+  ASSERT_EQ(QDMI_device_query_program_features(device, &QASM2_FORMAT, 0,
+                                               nullptr, &size),
             QDMI_SUCCESS);
-  std::vector<QDMI_Program_Format_Feature> format_features(
-      size / sizeof(QDMI_Program_Format_Feature));
-  ASSERT_EQ(QDMI_device_query_device_property(
-                device, QDMI_DEVICE_PROPERTY_PROGRAMFORMATFEATURES, size,
-                format_features.data(), nullptr),
+  std::vector<QDMI_Program_Feature> format_features(
+      size / sizeof(QDMI_Program_Feature));
+  ASSERT_EQ(QDMI_device_query_program_features(device, &QASM2_FORMAT, size,
+                                               format_features.data(), nullptr),
             QDMI_SUCCESS);
-  ASSERT_EQ(format_features.size(), 4);
-  EXPECT_EQ(format_features[0].format, QDMI_PROGRAM_FORMAT_QASM2);
-  EXPECT_EQ(format_features[0].feature,
-            QDMI_PROGRAM_FEATURE_MIDCIRCUITMEASUREMENT);
-  EXPECT_EQ(format_features[0].optional_features_complete, 0);
-  EXPECT_EQ(format_features[1].format, QDMI_PROGRAM_FORMAT_QASM2);
-  EXPECT_EQ(format_features[1].feature,
-            QDMI_PROGRAM_FEATURE_MEASUREDQUBITREUSE);
-  EXPECT_EQ(format_features[1].optional_features_complete, 0);
-  EXPECT_EQ(format_features[2].format, QDMI_PROGRAM_FORMAT_QIRBASESTRING);
-  EXPECT_EQ(format_features[3].format, QDMI_PROGRAM_FORMAT_QIRBASEMODULE);
-  EXPECT_EQ(format_features[2].feature, QDMI_PROGRAM_FEATURE_NONE);
-  EXPECT_NE(format_features[2].optional_features_complete, 0);
-  EXPECT_EQ(format_features[3].feature, QDMI_PROGRAM_FEATURE_NONE);
-  EXPECT_NE(format_features[3].optional_features_complete, 0);
-  EXPECT_TRUE(std::ranges::none_of(format_features, [](const auto &feature) {
-    return feature.format == QDMI_PROGRAM_FORMAT_CALIBRATION;
-  }));
-  EXPECT_EQ(QDMI_device_query_device_property(
-                device, QDMI_DEVICE_PROPERTY_PROGRAMFORMATFEATURES, size - 1,
-                format_features.data(), nullptr),
+  ASSERT_EQ(format_features.size(), 3);
+  EXPECT_STREQ(format_features.at(0).id,
+               QDMI_PROGRAM_FEATURE_MID_CIRCUIT_MEASUREMENT);
+  EXPECT_STREQ(format_features.at(0).constraint_id, "");
+  EXPECT_EQ(format_features.at(0).constraint_value, 0U);
+  EXPECT_STREQ(format_features.at(1).id,
+               QDMI_PROGRAM_FEATURE_MEASURED_QUBIT_REUSE);
+  EXPECT_STREQ(format_features.at(2).id,
+               QDMI_PROGRAM_FEATURE_FORWARD_BRANCHING);
+  EXPECT_STREQ(format_features.at(2).constraint_id,
+               QDMI_PROGRAM_CONSTRAINT_MAX_CONTROL_FLOW_NESTING_DEPTH);
+  EXPECT_EQ(format_features.at(2).constraint_value, 1U);
+  EXPECT_EQ(QDMI_device_query_program_features(device, &QASM2_FORMAT, size - 1,
+                                               format_features.data(), nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
+
+  size = 1;
+  EXPECT_EQ(QDMI_device_query_program_features(device, &QIR_BASE_TEXT_FORMAT, 0,
+                                               nullptr, &size),
+            QDMI_SUCCESS);
+  EXPECT_EQ(size, 0);
+  auto unsupported = QASM2_FORMAT;
+  unsupported.version = QDMI_MAKE_VERSION(3, 0, 0);
+  EXPECT_EQ(QDMI_device_query_program_features(device, &unsupported, 0, nullptr,
+                                               nullptr),
+            QDMI_ERROR_NOTSUPPORTED);
+  auto invalid_qir = QIR_BASE_TEXT_FORMAT;
+  std::ranges::fill(invalid_qir.profile, '\0');
+  EXPECT_EQ(QDMI_device_query_program_features(device, &invalid_qir, 0, nullptr,
+                                               nullptr),
+            QDMI_ERROR_INVALIDARGUMENT);
+  constexpr QDMI_Program_Format invalid_qpy{
+      .version = QDMI_MAKE_VERSION(1, 0, 0),
+      .encoding = QDMI_PROGRAM_ENCODING_BINARY,
+      .id = "qpy",
+      .profile = ""};
+  EXPECT_EQ(QDMI_device_query_program_features(device, &invalid_qpy, 0, nullptr,
+                                               nullptr),
+            QDMI_ERROR_INVALIDARGUMENT);
+  constexpr QDMI_Program_Format vendor_qpy{
+      .version = QDMI_MAKE_VERSION(1, 0, 0),
+      .encoding = QDMI_PROGRAM_ENCODING_BINARY,
+      .id = "com.vendor.qpy",
+      .profile = ""};
+  EXPECT_EQ(QDMI_device_query_program_features(device, &vendor_qpy, 0, nullptr,
+                                               nullptr),
+            QDMI_ERROR_NOTSUPPORTED);
+  EXPECT_EQ(
+      QDMI_device_query_program_features(device, nullptr, 0, nullptr, nullptr),
+      QDMI_ERROR_INVALIDARGUMENT);
 
   // The example device does not support neutral atom-specific properties
   EXPECT_EQ(
@@ -492,14 +584,13 @@ TEST_P(QDMIImplementationTest, JobLifecycle) {
   EXPECT_EQ(
       QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT, 0, nullptr),
       QDMI_SUCCESS);
-  QDMI_Program_Format format = QDMI_PROGRAM_FORMAT_MAX;
+  QDMI_Program_Format format{};
   EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
                                    sizeof(QDMI_Program_Format), &format),
             QDMI_ERROR_INVALIDARGUMENT);
 
-  constexpr std::array supported_formats = {
-      QDMI_PROGRAM_FORMAT_QASM2, QDMI_PROGRAM_FORMAT_QIRBASESTRING,
-      QDMI_PROGRAM_FORMAT_QIRBASEMODULE, QDMI_PROGRAM_FORMAT_CALIBRATION};
+  constexpr std::array supported_formats = {QASM2_FORMAT, QIR_BASE_TEXT_FORMAT,
+                                            QIR_BASE_BINARY_FORMAT};
 
   for (const auto &supported_format : supported_formats) {
     ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
@@ -518,16 +609,14 @@ TEST_P(QDMIImplementationTest, JobLifecycle) {
   }
 
   constexpr std::array unsupported_formats = {
-      QDMI_PROGRAM_FORMAT_QASM3,
-      QDMI_PROGRAM_FORMAT_QIRADAPTIVESTRING,
-      QDMI_PROGRAM_FORMAT_QIRADAPTIVEMODULE,
-      QDMI_PROGRAM_FORMAT_QPY,
-      QDMI_PROGRAM_FORMAT_IQMJSON,
-      QDMI_PROGRAM_FORMAT_CUSTOM1,
-      QDMI_PROGRAM_FORMAT_CUSTOM2,
-      QDMI_PROGRAM_FORMAT_CUSTOM3,
-      QDMI_PROGRAM_FORMAT_CUSTOM4,
-      QDMI_PROGRAM_FORMAT_CUSTOM5};
+      QDMI_Program_Format{.version = QDMI_MAKE_VERSION(3, 0, 0),
+                          .encoding = QDMI_PROGRAM_ENCODING_TEXT,
+                          .id = "openqasm",
+                          .profile = ""},
+      QDMI_Program_Format{.version = QDMI_MAKE_VERSION(2, 1, 0),
+                          .encoding = QDMI_PROGRAM_ENCODING_TEXT,
+                          .id = "qir",
+                          .profile = "adaptive"}};
 
   for (const auto &unsupported_format : unsupported_formats) {
     EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
@@ -552,7 +641,7 @@ TEST_P(QDMIImplementationTest, JobLifecycle) {
   EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_CUSTOM5, 0, nullptr),
             QDMI_ERROR_NOTSUPPORTED);
 
-  format = QDMI_PROGRAM_FORMAT_QASM2;
+  format = QASM2_FORMAT;
   EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
                                    sizeof(QDMI_Program_Format), &format),
             QDMI_SUCCESS);
@@ -564,7 +653,7 @@ TEST_P(QDMIImplementationTest, JobLifecycle) {
                                     &size),
             QDMI_SUCCESS);
   EXPECT_EQ(size, sizeof(QDMI_Program_Format));
-  EXPECT_EQ(format, QDMI_PROGRAM_FORMAT_QASM2);
+  EXPECT_TRUE(Same_format(format, QASM2_FORMAT));
 
   size_t shots = 5;
   EXPECT_EQ(QDMI_job_set_parameter(nullptr, QDMI_JOB_PARAMETER_SHOTSNUM,
@@ -640,13 +729,13 @@ OPENQASM 2.0;
 include "qelib1.inc";
 qreg q[2];
 creg c[2];
-h q[0];
+rx(pi/2) q[0];
 cx q[0], q[1];
 measure q -> c;
   )";
   QDMI_Job job = nullptr;
   EXPECT_EQ(QDMI_device_create_job(dev, &job), QDMI_SUCCESS);
-  const auto format = QDMI_PROGRAM_FORMAT_QASM2;
+  const auto format = QASM2_FORMAT;
   EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
                                    sizeof(QDMI_Program_Format), &format),
             QDMI_SUCCESS);
@@ -691,13 +780,15 @@ TEST_P(QDMIImplementationTest, GetResultsCornerCases) {
   EXPECT_EQ(
       QDMI_job_get_results(job, QDMI_JOB_RESULT_CUSTOM5, 0, nullptr, nullptr),
       QDMI_ERROR_NOTSUPPORTED);
+  EXPECT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_PROGRAMOUTPUT, 0, nullptr,
+                                 nullptr),
+            QDMI_ERROR_NOTSUPPORTED);
 }
 
 TEST_P(QDMIImplementationTest, GetShots) {
   if (mode == TEST_SESSION_MODE::READONLY) {
     GTEST_SKIP() << "Skipping test for read-only session";
   }
-  const auto fomac = FoMaC(device);
   const size_t shots_num = 64;
   QDMI_Job job = Submit_test_job(device, shots_num);
   size_t size = 0;
@@ -707,14 +798,14 @@ TEST_P(QDMIImplementationTest, GetShots) {
   ASSERT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_SHOTS, size, shots.data(),
                                  nullptr),
             QDMI_SUCCESS);
-  std::vector<std::string> shots_vec;
+  size_t shots_seen = 0;
   std::string token;
   std::stringstream ss(shots);
   while (std::getline(ss, token, ',')) {
-    shots_vec.emplace_back(token);
-    ASSERT_EQ(token.size(), fomac.get_qubits_num());
+    EXPECT_EQ(token, FLAT_SHOT_OUTPUT);
+    ++shots_seen;
   }
-  ASSERT_EQ(shots_vec.size(), shots_num);
+  EXPECT_EQ(shots_seen, shots_num);
   QDMI_job_free(job);
 }
 
@@ -722,7 +813,6 @@ TEST_P(QDMIImplementationTest, GetHistogram) {
   if (mode == TEST_SESSION_MODE::READONLY) {
     GTEST_SKIP() << "Skipping test for read-only session";
   }
-  const auto fomac = FoMaC(device);
   const size_t shots_num = 64;
   QDMI_Job job = Submit_test_job(device, shots_num);
 
@@ -738,14 +828,9 @@ TEST_P(QDMIImplementationTest, GetHistogram) {
   std::string token;
   std::stringstream ss(key_list);
   while (std::getline(ss, token, ',')) {
-    ASSERT_EQ(token.size(), fomac.get_qubits_num());
     key_vec.emplace_back(token);
   }
-
-  // keys should be sorted
-  for (size_t i = 1; i < key_vec.size(); ++i) {
-    ASSERT_LT(key_vec[i - 1], key_vec[i]);
-  }
+  EXPECT_THAT(key_vec, testing::ElementsAre(FLAT_SHOT_OUTPUT));
 
   size_t val_size = 0;
   ASSERT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_HIST_VALUES, 0, nullptr,
@@ -758,18 +843,78 @@ TEST_P(QDMIImplementationTest, GetHistogram) {
                                  val_vec.data(), nullptr),
             QDMI_SUCCESS);
 
-  size_t sum = 0;
-  for (const auto &val : val_vec) {
-    sum += val;
-  }
-  ASSERT_EQ(sum, shots_num);
+  EXPECT_THAT(val_vec, testing::ElementsAre(shots_num));
 
-  std::unordered_map<std::string, size_t> results;
-  for (size_t i = 0; i < key_vec.size(); ++i) {
-    results[key_vec[i]] = val_vec[i];
-  }
-  ASSERT_EQ(results.size(), key_vec.size());
+  QDMI_job_free(job);
+}
 
+TEST_P(QDMIImplementationTest, GetProgramOutput) {
+  if (mode == TEST_SESSION_MODE::READONLY) {
+    GTEST_SKIP() << "Skipping test for read-only session";
+  }
+  constexpr auto qir_program = std::to_array(R"(
+@0 = internal constant [3 x i8] c"r0\00"
+@1 = internal constant [3 x i8] c"r1\00"
+
+define i64 @main() #0 {
+entry:
+  call void @__quantum__rt__initialize(ptr null)
+  br label %body
+body:
+  br label %measurements
+measurements:
+  call void @__quantum__qis__mz__body(ptr null, ptr writeonly null)
+  call void @__quantum__qis__mz__body(ptr inttoptr (i64 1 to ptr), ptr writeonly inttoptr (i64 1 to ptr))
+  br label %output
+output:
+  call void @__quantum__rt__result_record_output(ptr null, ptr @0)
+  call void @__quantum__rt__result_record_output(ptr inttoptr (i64 1 to ptr), ptr @1)
+  ret i64 0
+}
+
+declare void @__quantum__rt__initialize(ptr)
+declare void @__quantum__qis__mz__body(ptr, ptr writeonly) #1
+declare void @__quantum__rt__result_record_output(ptr, ptr)
+
+attributes #0 = { "entry_point" "qir_profiles"="base_profile" "output_labeling_schema"="schema_id" "required_num_qubits"="2" "required_num_results"="2" }
+attributes #1 = { "irreversible" }
+
+!llvm.module.flags = !{!0, !1, !2, !3}
+!0 = !{i32 1, !"qir_major_version", i32 2}
+!1 = !{i32 7, !"qir_minor_version", i32 1}
+!2 = !{i32 1, !"dynamic_qubit_management", i1 false}
+!3 = !{i32 1, !"dynamic_result_management", i1 false}
+)");
+  QDMI_Job job = nullptr;
+  ASSERT_EQ(QDMI_device_create_job(device, &job), QDMI_SUCCESS);
+  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
+                                   sizeof(QDMI_Program_Format),
+                                   &QIR_BASE_TEXT_FORMAT),
+            QDMI_SUCCESS);
+  constexpr size_t shots_num = 2U;
+  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_SHOTSNUM,
+                                   sizeof(shots_num), &shots_num),
+            QDMI_SUCCESS);
+  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAM,
+                                   sizeof(qir_program), qir_program.data()),
+            QDMI_SUCCESS);
+  ASSERT_EQ(QDMI_job_submit(job), QDMI_SUCCESS);
+  ASSERT_EQ(QDMI_job_wait(job, 0), QDMI_SUCCESS);
+
+  size_t size = 0;
+  ASSERT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_PROGRAMOUTPUT, 0, nullptr,
+                                 &size),
+            QDMI_SUCCESS);
+  ASSERT_EQ(size, EXPECTED_QIR_PROGRAM_OUTPUT.size());
+  std::vector<char> output(size);
+  EXPECT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_PROGRAMOUTPUT, size - 1,
+                                 output.data(), nullptr),
+            QDMI_ERROR_INVALIDARGUMENT);
+  ASSERT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_PROGRAMOUTPUT, size,
+                                 output.data(), nullptr),
+            QDMI_SUCCESS);
+  EXPECT_EQ(std::string_view(output.data(), output.size()),
+            EXPECTED_QIR_PROGRAM_OUTPUT);
   QDMI_job_free(job);
 }
 
@@ -1179,26 +1324,13 @@ TEST_P(QDMIImplementationTest, SessionQuerySessionProperty) {
             QDMI_SUCCESS);
 }
 
-TEST_P(QDMIImplementationTest, SupportsCalibration) {
-  if (mode == TEST_SESSION_MODE::READONLY) {
-    GTEST_SKIP() << "Skipping test for read-only session";
-  }
-  QDMI_Job job = nullptr;
-  QDMI_Program_Format format = QDMI_PROGRAM_FORMAT_CALIBRATION;
-  QDMI_device_create_job(device, &job);
-  const auto ret = QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
-                                          sizeof(QDMI_Program_Format), &format);
-  EXPECT_EQ(ret, QDMI_SUCCESS);
-  EXPECT_EQ(QDMI_job_submit(job), QDMI_SUCCESS);
-}
-
 TEST_P(QDMIImplementationTest, NeedsCalibration) {
-  size_t needs_calibration = 0;
-  const auto ret = QDMI_device_query_device_property(
-      device, QDMI_DEVICE_PROPERTY_NEEDSCALIBRATION, sizeof(size_t),
-      &needs_calibration, nullptr);
-  EXPECT_EQ(ret, QDMI_SUCCESS);
-  EXPECT_EQ(needs_calibration, 0);
+  size_t needs_calibration = 1;
+  ASSERT_EQ(QDMI_device_query_device_property(
+                device, QDMI_DEVICE_PROPERTY_NEEDSCALIBRATION, sizeof(size_t),
+                &needs_calibration, nullptr),
+            QDMI_SUCCESS);
+  EXPECT_EQ(needs_calibration, 0U);
 }
 
 TEST_P(QDMIImplementationTest, QueryPulseSupportLevel) {

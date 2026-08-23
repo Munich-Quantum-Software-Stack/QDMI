@@ -20,47 +20,110 @@ their Python metadata and wheel configuration when adopting these changes.
 
 ### Program-format execution features
 
-This public-interface addition is intended for QDMI 1.4. Device plugins and
-clients must use matching minor-version headers; a client must not query the new
-property on a device implementation built against QDMI 1.3 headers.
-
-Devices may now expose atomic execution features for each supported program
-format through the optional `QDMI_DEVICE_PROPERTY_PROGRAMFORMATFEATURES`
-property. The property returns a list of `QDMI_Program_Format_Feature` records.
-Existing devices may leave the property unsupported; clients must then treat
-feature metadata as unknown.
-
-Each record contains a program format, one `QDMI_Program_Feature`, and an
-`optional_features_complete` flag. Records with the same format form one feature
-set and must agree on the flag. Every listed feature is supported. A zero flag
-means the device may support additional optional features. A non-zero flag means
-all features beyond those guaranteed by the program format are listed, so every
-unlisted optional feature is unsupported. Format-inherent requirements remain
-implicit and need not be repeated.
-
-Use `QDMI_PROGRAM_FEATURE_NONE` when the set has no listed feature. Together
-with the completeness flag, this distinguishes incomplete metadata from a
-known-empty feature set:
+QDMI replaces the program-format enum with an exact `QDMI_Program_Format`
+descriptor. The descriptor contains an ID, packed Semantic Versioning release,
+profile, and text or binary encoding. Devices list every accepted descriptor in
+`QDMI_DEVICE_PROPERTY_SUPPORTEDPROGRAMFORMATS`. Clients must submit one of those
+exact values and must not infer version compatibility.
 
 ```c
-const QDMI_Program_Format_Feature unknown_qasm3 = {
-    QDMI_PROGRAM_FORMAT_QASM3, QDMI_PROGRAM_FEATURE_NONE, 0};
-const QDMI_Program_Format_Feature empty_qir_base = {
-    QDMI_PROGRAM_FORMAT_QIRBASESTRING, QDMI_PROGRAM_FEATURE_NONE, 1};
+const QDMI_Program_Format qasm3 = {
+    QDMI_MAKE_VERSION(3, 0, 0), QDMI_PROGRAM_ENCODING_TEXT, "openqasm", ""};
 ```
 
-A supported program format omitted from the returned records, a property query
-returning `QDMI_ERROR_NOTSUPPORTED`, and a `QDMI_PROGRAM_FEATURE_NONE` record
-with a zero completeness flag all denote unknown optional-feature metadata.
-Clients must combine returned records with the requirements inherent to a
-standardized format even when optional-feature metadata is incomplete or
-unavailable. Text and binary enumerators have independent profiles; records for
-one never apply to the other.
+The size of a text payload includes its terminating NUL. Binary payloads remain
+arbitrary byte sequences.
 
-Every standard format has an empty inherent feature baseline except QIR Adaptive
-string and module programs. Both QIR Adaptive encodings inherently require
-mid-circuit measurement, measured-qubit reuse, measurement-result use, Boolean
-computation, and forward branching. Custom formats define their own baseline.
+QDMI reserves the unqualified IDs `openqasm` and `qir` for standard formats.
+Vendor formats use namespaced IDs such as `com.vendor.format`.
+
+Use the following replacements for the removed enum values:
+
+| Removed value                                   | `QDMI_Program_Format` replacement                                                                            |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `QDMI_PROGRAM_FORMAT_QASM2`                     | `{QDMI_MAKE_VERSION(2, 0, 0), QDMI_PROGRAM_ENCODING_TEXT, "openqasm", ""}`                                   |
+| `QDMI_PROGRAM_FORMAT_QASM3`                     | `{QDMI_MAKE_VERSION(3, 0, 0), QDMI_PROGRAM_ENCODING_TEXT, "openqasm", ""}`                                   |
+| `QDMI_PROGRAM_FORMAT_QIRBASESTRING`             | `{QDMI_MAKE_VERSION(1, 0, 0), QDMI_PROGRAM_ENCODING_TEXT, "qir", "base"}`                                    |
+| `QDMI_PROGRAM_FORMAT_QIRBASEMODULE`             | `{QDMI_MAKE_VERSION(1, 0, 0), QDMI_PROGRAM_ENCODING_BINARY, "qir", "base"}`                                  |
+| `QDMI_PROGRAM_FORMAT_QIRADAPTIVESTRING`         | `{QDMI_MAKE_VERSION(1, 0, 0), QDMI_PROGRAM_ENCODING_TEXT, "qir", "adaptive"}`                                |
+| `QDMI_PROGRAM_FORMAT_QIRADAPTIVEMODULE`         | `{QDMI_MAKE_VERSION(1, 0, 0), QDMI_PROGRAM_ENCODING_BINARY, "qir", "adaptive"}`                              |
+| `QDMI_PROGRAM_FORMAT_QPY`                       | No standard replacement; providers must document a vendor-namespaced descriptor                              |
+| `QDMI_PROGRAM_FORMAT_IQMJSON`                   | A provider-defined descriptor with a namespaced ID                                                           |
+| `QDMI_PROGRAM_FORMAT_CALIBRATION`               | No descriptor; use a provider extension to trigger calibration                                               |
+| `QDMI_PROGRAM_FORMAT_BATCHJOB`                  | No descriptor; QDMI v1 has no portable multi-program submission API                                          |
+| `QDMI_PROGRAM_FORMAT_CUSTOM1` through `CUSTOM5` | A provider-defined descriptor with a namespaced ID                                                           |
+| `QDMI_PROGRAM_FORMAT_MAX`                       | No replacement                                                                                               |
+
+QDMI defines no version, profile, wire, or result semantics for the removed QPY
+and IQM JSON values. A provider can expose either format with a
+vendor-namespaced descriptor and must document that descriptor and its payload
+and result contract.
+
+The QIR replacements above preserve the QIR 1.0 meaning of the removed enum
+values. A current QIR 2.1 descriptor instead uses `QDMI_MAKE_VERSION(2, 1, 0)`.
+The descriptor version identifies the QIR specification and is independent of
+the version in a QIR output-schema stream.
+
+Standard descriptors define exact mappings. They filter zone sites from
+`QDMI_DEVICE_PROPERTY_SITES` and preserve the provider order of the remaining
+regular sites. OpenQASM quantum instructions match a reported local operation by
+name, qubit arity, and parameter arity. OpenQASM `q[i]` maps to the i-th regular
+site, while OpenQASM 3 `$i` maps by `QDMI_SITE_PROPERTY_INDEX` to a regular
+site. A QIR function named `__quantum__qis__NAME__body` matches the reported
+local operation named `NAME`, with the same qubit and parameter arity.
+Statically identified QIR qubits map by `QDMI_SITE_PROPERTY_INDEX` to regular
+sites. A device that advertises QIR must assign the regular sites exactly the
+index set `[0, N)`, where `N` is `QDMI_DEVICE_PROPERTY_QUBITSNUM`. Format- or
+profile-mandated measurement, output, and runtime primitives do not need
+corresponding operation records. The standard mappings do not define how a
+payload selects a zoned operation.
+
+The new `QDMI_device_session_query_program_features` device function and
+`QDMI_device_query_program_features` client function query optional execution
+features for one exact descriptor. A successful query returns the complete list
+of optional `QDMI_Program_Feature` records. A successful empty query means that
+only the format's normative baseline is supported. `QDMI_ERROR_NOTSUPPORTED`
+means that feature metadata is unknown. Boolean features use value zero. Width
+features, such as integer computation, use one feature group per supported
+width. A standard descriptor does not imply support for every construct that its
+source format can express.
+
+Use `QDMI_PROGRAM_FEATURE_UNCONSTRAINED(id, value)` to initialize an
+unrestricted feature without naming the constraint fields. Repeated records for
+one feature and value add conjunctive typed constraints. QDMI initially defines
+maximum control-flow nesting depth, loop iteration count, and multiway case
+count. A client must treat a known feature group as unusable if any constraint
+is unknown, malformed, duplicated, or not defined for that feature.
+
+Device plugins and clients must use matching minor-version headers. A QDMI 1.3
+client must not pass an enum value to a QDMI 1.4 device, and a QDMI 1.4 client
+must not call the new query on a QDMI 1.3 device.
+
+Calibration and batch submission are no longer program formats.
+`QDMI_DEVICE_PROPERTY_NEEDSCALIBRATION` remains available, but QDMI does not
+define a portable calibration trigger. QDMI v1 currently has no portable
+multi-program submission API.
+
+`QDMI_JOB_RESULT_SHOTS` and histogram keys now describe payload-declared flat
+bit outputs. OpenQASM 2 uses `creg` declarations in source order. OpenQASM 3
+uses explicit bit-valued outputs, or the language's implicit outputs when none
+are declared. Both use increasing bit indices within each declaration. QIR uses
+primitive result-recording call order. The result width is independent of the
+device site count. A provider returns `QDMI_ERROR_NOTSUPPORTED` when an output
+cannot be represented losslessly as a fixed-width bit string.
+`QDMI_JOB_RESULT_PROGRAMOUTPUT` returns a format-defined output byte sequence
+when a flat bit result cannot represent the payload result. A QIR specification
+that defines an output schema uses a complete output-schema stream for every
+shot. Older QIR or provider-defined descriptors can return
+`QDMI_ERROR_NOTSUPPORTED`. The byte sequence need not be NUL-terminated.
+
+### Required device job retrieval symbol
+
+Every QDMI 1.4 device library must export
+`QDMI_device_session_retrieve_device_job_by_id`. A device that cannot retrieve
+jobs by ID returns `QDMI_ERROR_NOTSUPPORTED` from the function. Drivers no
+longer accept a missing symbol. Add a stub implementation before rebuilding an
+older device library against the QDMI 1.4 headers.
 
 ## [1.3.3]
 

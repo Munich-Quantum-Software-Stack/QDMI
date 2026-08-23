@@ -25,6 +25,8 @@
 #ifndef QDMI_CONSTANTS_H
 #define QDMI_CONSTANTS_H
 
+#include <stdint.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -347,14 +349,10 @@ enum QDMI_DEVICE_PROPERTY_T {
   QDMI_DEVICE_PROPERTY_COUPLINGMAP = 7,
   /**
    * @brief `size_t` Whether the device needs calibration.
-   * @details This flag indicates whether the device needs calibration.
-   * A value of zero indicates that the device does not need calibration, while
-   * any non-zero value indicates that the device needs calibration. It is up
-   * to the device to assign a specific meaning to the non-zero value.
-   *
-   * If a device reports that it needs calibration, a calibration run can be
-   * triggered by submitting a job with the @ref QDMI_Program_Format set to @ref
-   * QDMI_PROGRAM_FORMAT_CALIBRATION.
+   * @details Zero means that the device does not need calibration. A nonzero
+   * value means that the device needs calibration. The device defines the
+   * meaning of each nonzero value. QDMI does not define a portable way to
+   * trigger calibration.
    */
   QDMI_DEVICE_PROPERTY_NEEDSCALIBRATION = 8,
   /**
@@ -423,11 +421,12 @@ enum QDMI_DEVICE_PROPERTY_T {
    */
   QDMI_DEVICE_PROPERTY_MINATOMDISTANCE = 14,
   /**
-   * @brief `QDMI_Program_Format*` (@ref QDMI_Program_Format list) The program
-   * formats supported by the device.
-   * @details The returned list contains all program formats that the device
-   * supports for execution. A client can use this information to determine
-   * which program formats can be used when submitting jobs to the device.
+   * @brief `QDMI_Program_Format*` (@ref QDMI_Program_Format list) The exact
+   * program formats supported by the device.
+   * @details Every returned descriptor can be passed unchanged as the job's
+   * program-format parameter. Descriptors with different versions, profiles,
+   * or encodings are independent formats. The list is ordered from most to
+   * least preferred by the device provider.
    */
   QDMI_DEVICE_PROPERTY_SUPPORTEDPROGRAMFORMATS = 15,
   /**
@@ -460,42 +459,6 @@ enum QDMI_DEVICE_PROPERTY_T {
    */
   QDMI_DEVICE_PROPERTY_QUEUELENGTH = 17,
   /**
-   * @brief `QDMI_Program_Format_Feature*` (@ref
-   * QDMI_Program_Format_Feature list) Atomic execution features explicitly
-   * supported for individual program formats.
-   * @details Each record associates one @ref QDMI_Program_Feature with one
-   * format from @ref QDMI_DEVICE_PROPERTY_SUPPORTEDPROGRAMFORMATS. Records for
-   * the same format collectively describe that format's explicitly advertised
-   * execution profile. Their `optional_features_complete` fields must agree,
-   * and duplicate feature records are not allowed.
-   * @par
-   * Each @ref QDMI_Program_Format enumerator has an independent profile. In
-   * particular, records for a text representation do not apply to the
-   * corresponding binary representation, or vice versa.
-   * @par
-   * The execution semantics guaranteed by a standardized program format are
-   * inherent and need not be repeated in this property. Completeness applies
-   * only to additional features not guaranteed by the format. A format without
-   * a record has unknown optional-feature metadata. This is distinct from a
-   * known-empty optional-feature set, which is represented by exactly one
-   * record whose feature is @ref QDMI_PROGRAM_FEATURE_NONE and whose
-   * `optional_features_complete` field is non-zero. A record with
-   * @ref QDMI_PROGRAM_FEATURE_NONE and a zero `optional_features_complete`
-   * field explicitly reports that no optional feature is known while
-   * additional features may still be supported.
-   * @par
-   * When `optional_features_complete` is non-zero, an optional feature not
-   * listed for that exact format is unsupported. Format-inherent features
-   * remain supported even when they are not listed.
-   * @par
-   * If querying this property returns @ref QDMI_ERROR_NOTSUPPORTED,
-   * optional-feature metadata is unknown for every supported program format.
-   * Clients must combine the reported features with the requirements inherent
-   * to the program format regardless of whether optional-feature metadata is
-   * complete or available.
-   */
-  QDMI_DEVICE_PROPERTY_PROGRAMFORMATFEATURES = 18,
-  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -503,7 +466,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_DEVICE_PROPERTY_MAX = 19,
+  QDMI_DEVICE_PROPERTY_MAX = 18,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.
@@ -937,323 +900,254 @@ enum QDMI_JOB_STATUS_T {
 /// Job status type.
 typedef enum QDMI_JOB_STATUS_T QDMI_Job_Status;
 
+/// Maximum bytes, including the terminating NUL, in a format or profile ID.
+#define QDMI_PROGRAM_ID_SIZE 64U
+
 /**
- * @brief Enum of formats that can be submitted to the device.
- * @details The inherent atomic execution-feature baseline is empty for every
- * standard format below except @ref QDMI_PROGRAM_FORMAT_QIRADAPTIVESTRING and
- * @ref QDMI_PROGRAM_FORMAT_QIRADAPTIVEMODULE. Each custom format defines its
- * own baseline. Optional features are reported per exact enumerator through
- * @ref QDMI_DEVICE_PROPERTY_PROGRAMFORMATFEATURES.
+ * @brief Pack a Semantic Versioning major, minor, and patch release into a
+ * 32-bit exact version value.
+ * @details The major and minor components must each fit in 10 bits. The patch
+ * component must fit in 12 bits. Prerelease and build metadata are not part of
+ * a program-format descriptor.
  */
-enum QDMI_PROGRAM_FORMAT_T {
-  /**
-   * @brief `char*` (string) An OpenQASM 2.0 program.
-   * @details A text-based representation of a quantum circuit in the
-   * [OpenQASM 2.0 language](https://arxiv.org/abs/1707.03429). Devices that
-   * claim to support this format must accept programs conforming to the
-   * following rules and requiring only its inherent execution-feature baseline
-   * plus features advertised for @ref QDMI_PROGRAM_FORMAT_QASM2. The rules
-   * are:
-   * - The program contains exactly one quantum register named `q`.
-   * - The number of qubits in the quantum register `q` matches the number of
-   *   sites in the device.
-   * - The program only contains gate identifiers that are reported by the
-   *   @ref QDMI_OPERATION_PROPERTY_NAME property of the device's operations.
-   *
-   * @par
-   * Given a program following these rules, the operations in the program
-   * are expected to be performed on the physical sites of the device as queried
-   * via @ref QDMI_DEVICE_PROPERTY_SITES.
-   * Specifically, an operation on `q[i]` is performed on the i-th site in the
-   * list of sites returned by the device.
-   *
-   * @note
-   * Devices may decide to support more general OpenQASM 2.0 programs that
-   * do not follow these rules, for example, using multiple qubit registers or
-   * arbitrary gates. However, in that case, no guarantees can be made about the
-   * mapping of qubits in the program to the physical sites of the device.
-   */
-  QDMI_PROGRAM_FORMAT_QASM2 = 0,
-  /**
-   * @brief `char*` (string) An OpenQASM 3 program.
-   * @details A text-based representation of a quantum circuit in the
-   * [OpenQASM 3 language](https://openqasm.com/). Devices that claim to support
-   * this format must accept programs conforming to the same rules as for @ref
-   * QDMI_PROGRAM_FORMAT_QASM2 and requiring only its inherent
-   * execution-feature baseline plus features advertised for @ref
-   * QDMI_PROGRAM_FORMAT_QASM3.
-   *
-   * @par
-   * Besides the rules for OpenQASM 2.0 programs, OpenQASM 3 programs may
-   * be written using physical qubits, which are denoted by `$[NUM]`, with
-   * `[NUM]` being a non-negative integer denoting the physical qubit's index.
-   * If a program uses physical qubits, the operations in the program must be
-   * performed on the sites with indices corresponding to the physical qubits in
-   * the program.
-   *
-   * @note
-   * Devices may decide to support more general OpenQASM 3 programs that
-   * do not follow these rules, for example, using multiple qubit registers or
-   * arbitrary gates. However, in that case, no guarantees can be made about the
-   * mapping of qubits in the program to the physical sites of the device.
-   */
-  QDMI_PROGRAM_FORMAT_QASM3 = 1,
-  /**
-   * @brief `char*` (string) A text-based QIR program complying to the QIR base
-   * profile.
-   * @details A text-based representation of a quantum circuit in the Quantum
-   * Intermediate Representation (QIR) format; specifically, the [QIR base
-   * profile](https://github.com/qir-alliance/qir-spec/blob/8b3fd47b7b70122a104e24733ef9de911576f7d6/specification/under_development/profiles/Base_Profile.md).
-   * Devices that claim to support this format must accept programs that follow
-   * the rules for the QIR base profile, require only its empty inherent
-   * execution-feature baseline plus features advertised for @ref
-   * QDMI_PROGRAM_FORMAT_QIRBASESTRING, and only contain operations that are
-   * reported by the @ref QDMI_OPERATION_PROPERTY_NAME property of the device's
-   * operations (for example, `@__quantum__qis__[NAME]__body`, where `[NAME]` is
-   * the name of the operation).
-   *
-   * @par
-   * QIR has a similar distinction between dynamically allocated and static
-   * hardware qubits as @ref QDMI_PROGRAM_FORMAT_QASM3. The same rules apply for
-   * the mapping of qubits in the program to the physical sites of the device.
-   * Specifically, if the program only allocates a single register named `q`
-   * with as many qubits as there are sites in the device, the operations in the
-   * program are expected to be performed on the physical sites of the device as
-   * queried via @ref QDMI_DEVICE_PROPERTY_SITES. If the program uses static
-   * qubit addresses (for example, `ptr inttoptr (i64 1 to ptr)`), the
-   * operations in the program must be performed on the sites with indices
-   * corresponding to the static qubit addresses in the program.
-   *
-   * @note Devices may decide to support more general QIR programs that do not
-   * follow these rules, for example, using multiple qubit registers or
-   * arbitrary gates. However, in that case, no guarantees can be made about the
-   * mapping of qubits in the program to the physical sites of the device.
-   */
-  QDMI_PROGRAM_FORMAT_QIRBASESTRING = 2,
-  /**
-   * @brief `void*` A QIR binary complying to the QIR base profile.
-   * @details A binary representation of a quantum circuit in the Quantum
-   * Intermediate Representation (QIR) format; specifically, the [QIR base
-   * profile](https://github.com/qir-alliance/qir-spec/blob/8b3fd47b7b70122a104e24733ef9de911576f7d6/specification/under_development/profiles/Base_Profile.md).
-   * Its inherent execution-feature baseline is empty, as for @ref
-   * QDMI_PROGRAM_FORMAT_QIRBASESTRING, while optional features are advertised
-   * independently for @ref QDMI_PROGRAM_FORMAT_QIRBASEMODULE.
-   *
-   * @see
-   * QDMI_PROGRAM_FORMAT_QIRBASESTRING for more information on the QIR base
-   * profile and the expected behavior of devices supporting this format.
-   */
-  QDMI_PROGRAM_FORMAT_QIRBASEMODULE = 3,
-  /**
-   * @brief `char*` (string) A text-based QIR program complying to the QIR
-   * adaptive profile.
-   * @details A text-based representation of a quantum circuit in the Quantum
-   * Intermediate Representation (QIR) format; specifically, the [QIR adaptive
-   * profile](https://github.com/qir-alliance/qir-spec/blob/8b3fd47b7b70122a104e24733ef9de911576f7d6/specification/under_development/profiles/Adaptive_Profile.md).
-   * Its inherent execution-feature baseline consists of @ref
-   * QDMI_PROGRAM_FEATURE_MIDCIRCUITMEASUREMENT, @ref
-   * QDMI_PROGRAM_FEATURE_MEASUREDQUBITREUSE, @ref
-   * QDMI_PROGRAM_FEATURE_MEASUREMENTRESULTUSE, @ref
-   * QDMI_PROGRAM_FEATURE_BOOLEANCOMPUTATION, and @ref
-   * QDMI_PROGRAM_FEATURE_FORWARDBRANCHING. Devices must accept programs that
-   * follow the QIR adaptive profile, only contain reported operations, and
-   * require only that baseline plus features advertised for @ref
-   * QDMI_PROGRAM_FORMAT_QIRADAPTIVESTRING.
-   *
-   * @see QDMI_PROGRAM_FORMAT_QIRBASESTRING for more information on the QIR base
-   * profile and the expected behavior of devices supporting this format.
-   */
-  QDMI_PROGRAM_FORMAT_QIRADAPTIVESTRING = 4,
-  /**
-   * @brief `void*` A QIR binary complying to the QIR adaptive profile.
-   * @details A binary representation of a quantum circuit in the Quantum
-   * Intermediate Representation (QIR) format; specifically, the [QIR adaptive
-   * profile](https://github.com/qir-alliance/qir-spec/blob/8b3fd47b7b70122a104e24733ef9de911576f7d6/specification/under_development/profiles/Adaptive_Profile.md).
-   * Its inherent execution-feature baseline is the same as for @ref
-   * QDMI_PROGRAM_FORMAT_QIRADAPTIVESTRING, while optional features are
-   * advertised independently for @ref QDMI_PROGRAM_FORMAT_QIRADAPTIVEMODULE.
-   *
-   * @see QDMI_PROGRAM_FORMAT_QIRBASESTRING for more information on the QIR base
-   * profile and the expected behavior of devices supporting this format.
-   */
-  QDMI_PROGRAM_FORMAT_QIRADAPTIVEMODULE = 5,
-  /**
-   * @brief `void*` A calibration program.
-   * @details This program format is used to request the device to perform a
-   * calibration run. Triggering a calibration run does not require a program to
-   * be set via @ref QDMI_DEVICE_JOB_PARAMETER_PROGRAM.
-   */
-  QDMI_PROGRAM_FORMAT_CALIBRATION = 6,
-  /**
-   * @brief `void*` A QPY program.
-   * @details A binary representation of a Qiskit `QuantumCircuit` in the
-   * [QPY format](https://quantum.cloud.ibm.com/docs/en/api/qiskit/qpy).
-   * Devices must accept circuits satisfying the structural rules described for
-   * @ref QDMI_PROGRAM_FORMAT_QASM3 and requiring only QPY's empty inherent
-   * execution-feature baseline plus features advertised for @ref
-   * QDMI_PROGRAM_FORMAT_QPY.
-   *
-   * @see QDMI_PROGRAM_FORMAT_QASM3 for more information on the expected
-   * behavior of devices supporting this format.
-   */
-  QDMI_PROGRAM_FORMAT_QPY = 7,
-  /**
-   * @brief `char*` (string) A program in the IQM data transfer format.
-   * @details A text-based, proprietary representation of a quantum circuit in
-   * the [IQM data transfer
-   * format](https://docs.meetiqm.com/iqm-client/api/iqm.iqm_client.models.html),
-   * encoded as a JSON string.
-   */
-  QDMI_PROGRAM_FORMAT_IQMJSON = 8,
-  /**
-   * @brief `QDMI_Job*`/`QDMI_Device_Job*` (@ref QDMI_Job list / @ref
-   * QDMI_Device_Job list) A list of jobs within a batch job.
-   * @details This program format is used to submit a batch job, i.e., a job
-   * that consists of multiple sub-jobs. The program must be a list of jobs
-   * created via @ref QDMI_device_create_job or @ref
-   * QDMI_device_session_create_device_job. These jobs must be configured
-   * completely but not submitted. If a batch job contains already submitted
-   * jobs, @ref QDMI_job_submit or @ref QDMI_device_job_submit on the batch job
-   * will return @ref QDMI_ERROR_BADSTATE.
-   * @par
-   * Querying results from a batch job directly is not possible and will result
-   * in @ref QDMI_ERROR_NOTSUPPORTED Instead, the results must be queried from
-   * the individual jobs after they finished. If the device supports it, each
-   * job in the batch can be queried for its status or waited for. However,
-   * in any case, individual jobs in a batch cannot be canceled and this will
-   * result in @ref QDMI_ERROR_NOTSUPPORTED.
-   */
-  QDMI_PROGRAM_FORMAT_BATCHJOB = 9,
-  /**
-   * @brief The maximum value of the enum.
-   * @details It can be used by devices for bounds checking and validation of
-   * function parameters.
-   *
-   * @attention This value must remain the last regular member of the enum
-   * besides the custom members and must be updated when new members are added.
-   */
-  QDMI_PROGRAM_FORMAT_MAX = 10,
-  /**
-   * @brief This enum value is reserved for a custom program format.
-   * @details The device defines the meaning and the type of this value.
-   * @attention The value of this enum member must not be changed to maintain
-   * binary compatibility.
-   */
-  QDMI_PROGRAM_FORMAT_CUSTOM1 = 999999995,
-  /// @see QDMI_PROGRAM_FORMAT_CUSTOM1
-  QDMI_PROGRAM_FORMAT_CUSTOM2 = 999999996,
-  /// @see QDMI_PROGRAM_FORMAT_CUSTOM1
-  QDMI_PROGRAM_FORMAT_CUSTOM3 = 999999997,
-  /// @see QDMI_PROGRAM_FORMAT_CUSTOM1
-  QDMI_PROGRAM_FORMAT_CUSTOM4 = 999999998,
-  /// @see QDMI_PROGRAM_FORMAT_CUSTOM1
-  QDMI_PROGRAM_FORMAT_CUSTOM5 = 999999999
+#define QDMI_MAKE_VERSION(major, minor, patch)                                 \
+  ((((uint32_t)(major) & 0x3FFU) << 22U) |                                     \
+   (((uint32_t)(minor) & 0x3FFU) << 12U) | ((uint32_t)(patch) & 0xFFFU))
+
+/// Extract the Semantic Versioning major component of a packed version.
+#define QDMI_VERSION_MAJOR(version) (((uint32_t)(version) >> 22U) & 0x3FFU)
+/// Extract the Semantic Versioning minor component of a packed version.
+#define QDMI_VERSION_MINOR(version) (((uint32_t)(version) >> 12U) & 0x3FFU)
+/// Extract the Semantic Versioning patch component of a packed version.
+#define QDMI_VERSION_PATCH(version) ((uint32_t)(version) & 0xFFFU)
+
+/** @brief Encoding of a submitted payload. */
+enum QDMI_PROGRAM_ENCODING_T {
+  QDMI_PROGRAM_ENCODING_TEXT = 1,  ///< NUL-terminated text.
+  QDMI_PROGRAM_ENCODING_BINARY = 2 ///< Arbitrary bytes.
 };
 
-/// Program format type.
-typedef enum QDMI_PROGRAM_FORMAT_T QDMI_Program_Format;
+/// Program encoding type.
+typedef enum QDMI_PROGRAM_ENCODING_T QDMI_Program_Encoding;
 
 /**
- * @brief Enum of atomic execution features that a device can support for a
- * program format.
- * @details These features describe runtime semantics independently of the
- * program syntax. A program may require several features, and a device
- * advertises each optional feature separately for the applicable program
- * format through @ref QDMI_DEVICE_PROPERTY_PROGRAMFORMATFEATURES. Features
- * guaranteed by a standardized format remain implicit and need not be
- * repeated. Support for one optional feature does not imply support for any
- * other feature.
+ * @brief Exact program format accepted by a device.
+ * @details All fields take part in identity. `version` is the nonzero, exact
+ * packed major, minor, and patch release of the payload specification. Devices
+ * list every accepted descriptor separately. Clients must not infer
+ * compatibility between versions, profiles, or encodings.
+ *
+ * The `id` and `profile` arrays must be NUL-terminated, and every byte after
+ * the first NUL must be zero. IDs are case-sensitive. QDMI reserves
+ * unqualified IDs for standard formats. The standard IDs are `openqasm` and
+ * `qir`. Vendor formats must use a namespaced ID such as `com.vendor.format`.
+ * QDMI does not define vendor-format versions, profiles, wire formats, or
+ * result semantics. Providers must document each vendor descriptor and its
+ * payload and result contract. An empty profile identifies a format without a
+ * named profile. QIR uses `base` and `adaptive`; OpenQASM uses an empty
+ * profile.
+ *
+ * In the following mappings, the regular-site list is the subsequence of @ref
+ * QDMI_DEVICE_PROPERTY_SITES for which @ref QDMI_SITE_PROPERTY_ISZONE is false,
+ * in provider order. Zone sites are not program-addressable qubits. Standard
+ * descriptors require the regular-site list size to equal @ref
+ * QDMI_DEVICE_PROPERTY_QUBITSNUM. Standard mappings cover local operations
+ * only; a vendor extension must define how a payload selects a zoned operation.
+ *
+ * Standard descriptors have the following portable mappings:
+ * - OpenQASM descriptors use text encoding and an empty profile. A program has
+ *   exactly one quantum register named `q`, with one qubit for each regular
+ *   site. `q[i]` maps to the i-th regular site. OpenQASM 3 physical qubit `$i`
+ *   maps to the regular site whose @ref QDMI_SITE_PROPERTY_INDEX is `i`.
+ *   Except for format-mandated measurement and output primitives, each quantum
+ *   instruction name, number of quantum operands, and number of parameters must
+ *   equal @ref QDMI_OPERATION_PROPERTY_NAME,
+ *   @ref QDMI_OPERATION_PROPERTY_QUBITSNUM, and
+ *   @ref QDMI_OPERATION_PROPERTY_PARAMETERSNUM for one reported local
+ *   operation.
+ * - QIR descriptors use LLVM assembly for text encoding and LLVM bitcode for
+ *   binary encoding. They use the `base` or `adaptive` profile. Descriptor
+ *   version `N.M.P` identifies the QIR specification release and is independent
+ *   of the output-schema version in @ref QDMI_JOB_RESULT_PROGRAMOUTPUT. Except
+ *   for profile-mandated measurement, output, and runtime functions, a QIS
+ *   function named `__quantum__qis__NAME__body` maps to the reported local
+ *   operation whose name is `NAME`; its qubit and parameter operands must match
+ *   that operation's qubit and parameter counts. A statically identified qubit
+ *   with integer value `i` maps to the regular site whose @ref
+ *   QDMI_SITE_PROPERTY_INDEX is `i`. A device that advertises QIR must assign
+ *   the regular-site index set to `[0, N)`, where `N` is @ref
+ *   QDMI_DEVICE_PROPERTY_QUBITSNUM. Dynamic qubit allocation has no portable
+ *   site mapping.
+ * A provider may accept a wider format subset, but clients must not rely on a
+ * portable mapping outside these rules.
+ * Advertising a standard descriptor guarantees only its normative baseline and
+ * its reported optional program features, not every construct expressible in
+ * the format.
+ *
+ * The QIR Adaptive baseline includes mid-circuit measurement, measured-qubit
+ * reuse, measurement-result use, Boolean computation, and forward branching.
+ * Devices report optional QIR module flags as program features. Other standard
+ * descriptors have an empty program-feature baseline.
  */
-enum QDMI_PROGRAM_FEATURE_T {
-  /**
-   * @brief No execution feature.
-   * @details This value is a metadata marker, not an execution feature. It
-   * allows a @ref QDMI_Program_Format_Feature record to carry completeness
-   * information when no supported feature is listed.
-   */
-  QDMI_PROGRAM_FEATURE_NONE = 0,
-  /**
-   * @brief Measurement followed by further quantum execution or adaptive use
-   * of the result.
-   */
-  QDMI_PROGRAM_FEATURE_MIDCIRCUITMEASUREMENT = 1,
-  /// Continued use of a qubit after it has been measured.
-  QDMI_PROGRAM_FEATURE_MEASUREDQUBITREUSE = 2,
-  /**
-   * @brief Runtime use of a measurement result beyond terminal reporting or
-   * return.
-   */
-  QDMI_PROGRAM_FEATURE_MEASUREMENTRESULTUSE = 3,
-  /// Runtime Boolean computation.
-  QDMI_PROGRAM_FEATURE_BOOLEANCOMPUTATION = 4,
-  /// Runtime integer computation.
-  QDMI_PROGRAM_FEATURE_INTEGERCOMPUTATION = 5,
-  /// Runtime floating-point computation.
-  QDMI_PROGRAM_FEATURE_FLOATCOMPUTATION = 6,
-  /// Runtime conditional forward branching.
-  QDMI_PROGRAM_FEATURE_FORWARDBRANCHING = 7,
-  /// Runtime counted iteration.
-  QDMI_PROGRAM_FEATURE_COUNTEDITERATION = 8,
-  /// Runtime condition-terminated looping.
-  QDMI_PROGRAM_FEATURE_CONDITIONALLOOP = 9,
-  /// Runtime multiway branching.
-  QDMI_PROGRAM_FEATURE_MULTIWAYBRANCHING = 10,
-  /// Runtime definitions of and calls to IR-defined functions.
-  QDMI_PROGRAM_FEATURE_IRDEFINEDFUNCTIONS = 11,
-  /// Multiple return points in an entry point or IR-defined function.
-  QDMI_PROGRAM_FEATURE_MULTIPLERETURNPOINTS = 12,
-  /**
-   * @brief The maximum value of the enum.
-   * @details It can be used by devices for bounds checking and validation of
-   * feature records.
-   *
-   * @attention This value must remain the last regular member of the enum
-   * besides the custom members and must be updated when new members are added.
-   */
-  QDMI_PROGRAM_FEATURE_MAX = 13,
-  /**
-   * @brief This enum value is reserved for a custom program feature.
-   * @details The device defines the meaning of this feature.
-   * @attention The value of this enum member must not be changed to maintain
-   * binary compatibility.
-   */
-  QDMI_PROGRAM_FEATURE_CUSTOM1 = 999999995,
-  /// @see QDMI_PROGRAM_FEATURE_CUSTOM1
-  QDMI_PROGRAM_FEATURE_CUSTOM2 = 999999996,
-  /// @see QDMI_PROGRAM_FEATURE_CUSTOM1
-  QDMI_PROGRAM_FEATURE_CUSTOM3 = 999999997,
-  /// @see QDMI_PROGRAM_FEATURE_CUSTOM1
-  QDMI_PROGRAM_FEATURE_CUSTOM4 = 999999998,
-  /// @see QDMI_PROGRAM_FEATURE_CUSTOM1
-  QDMI_PROGRAM_FEATURE_CUSTOM5 = 999999999
-};
+typedef struct QDMI_PROGRAM_FORMAT_T {
+  uint32_t version;  ///< Exact version packed with @ref QDMI_MAKE_VERSION.
+  uint32_t encoding; ///< One @ref QDMI_Program_Encoding value.
+  char id[QDMI_PROGRAM_ID_SIZE];      ///< NUL-terminated format ID.
+  char profile[QDMI_PROGRAM_ID_SIZE]; ///< NUL-terminated profile ID.
+} QDMI_Program_Format;
 
-/// Program feature type.
-typedef enum QDMI_PROGRAM_FEATURE_T QDMI_Program_Feature;
+/// Maximum bytes, including the terminating NUL, in a feature ID.
+#define QDMI_PROGRAM_FEATURE_ID_SIZE 64U
+
+/// Maximum bytes, including the terminating NUL, in a constraint ID.
+#define QDMI_PROGRAM_CONSTRAINT_ID_SIZE 64U
 
 /**
- * @brief One atomic execution-feature record for a program format.
- * @details All records for the same format must use the same value for @ref
- * optional_features_complete. Every listed feature is known to be supported.
- * A zero value means that additional optional features may also be supported.
- * A non-zero value means that the records describe every supported feature not
- * already guaranteed by the program format.
- * @par
- * When no feature is listed, a device may return one record with @ref feature
- * set to @ref QDMI_PROGRAM_FEATURE_NONE. Together with @ref
- * optional_features_complete, this distinguishes unknown optional-feature
- * metadata from a known-empty optional-feature set. @ref
- * QDMI_PROGRAM_FEATURE_NONE must not be combined with another record for the
- * same format.
+ * @brief One optional feature guarantee for an exact program format.
+ * @details `id` and `constraint_id` must be NUL-terminated, and every byte
+ * after the first NUL must be zero. QDMI reserves unqualified IDs for standard
+ * features and constraints. Vendor-defined IDs must be namespaced.
+ *
+ * Records with the same `id` and `value` describe one feature group. An empty
+ * `constraint_id` means that the group is unrestricted and
+ * `constraint_value` must be zero. An unrestricted group contains exactly one
+ * record. Otherwise, every record in the group is one constraint and all
+ * constraints are conjunctive. A constrained group must not repeat a
+ * constraint ID. Different values for the same feature ID are alternatives,
+ * such as supported integer widths.
+ *
+ * A client that does not understand a feature ignores it. A client that
+ * understands a feature must treat a group as unusable if it contains an
+ * unknown constraint or if any record violates a representation or grouping
+ * rule above. A group is also unusable if it applies a known constraint to a
+ * feature for which that constraint is not defined, or if a constraint
+ * documented as positive has value zero. Future QDMI revisions can add new
+ * typed constraints without weakening this fail-closed rule.
  */
-typedef struct QDMI_PROGRAM_FORMAT_FEATURE_T {
-  /// Program format to which the feature metadata applies.
-  QDMI_Program_Format format;
-  /// Atomic execution feature, or @ref QDMI_PROGRAM_FEATURE_NONE.
-  QDMI_Program_Feature feature;
-  /// Whether all optional features for @ref format have been reported.
-  int optional_features_complete;
-} QDMI_Program_Format_Feature;
+typedef struct QDMI_PROGRAM_FEATURE_T {
+  char id[QDMI_PROGRAM_FEATURE_ID_SIZE]; ///< NUL-terminated feature ID.
+  uint64_t value;                        ///< Feature-specific value.
+  char constraint_id[QDMI_PROGRAM_CONSTRAINT_ID_SIZE];
+  ///< NUL-terminated constraint ID, or empty for no constraint.
+  uint64_t constraint_value; ///< Constraint-specific value.
+} QDMI_Program_Feature;
+
+/**
+ * @brief Initialize an unrestricted program feature for C or C++.
+ * @param feature_id String-literal feature ID.
+ * @param feature_value Feature-specific value.
+ */
+#define QDMI_PROGRAM_FEATURE_UNCONSTRAINED(feature_id, feature_value)          \
+  {feature_id, feature_value, "", 0U}
+
+/**
+ * @brief Measure a qubit before the end of one execution.
+ * @details This Boolean feature uses value zero. It does not by itself
+ * guarantee same-execution use of the result or reuse of the measured qubit.
+ */
+#define QDMI_PROGRAM_FEATURE_MID_CIRCUIT_MEASUREMENT "mid-circuit-measurement"
+/**
+ * @brief Apply a quantum operation to a measured qubit in the same execution.
+ * @details This Boolean feature uses value zero.
+ */
+#define QDMI_PROGRAM_FEATURE_MEASURED_QUBIT_REUSE "measured-qubit-reuse"
+/**
+ * @brief Read a measurement result during the same execution.
+ * @details This Boolean feature uses value zero. Control flow based on the
+ * result also requires the relevant branching or loop feature.
+ */
+#define QDMI_PROGRAM_FEATURE_MEASUREMENT_RESULT_USE "measurement-result-use"
+/**
+ * @brief Compute Boolean values during execution.
+ * @details This Boolean feature uses value zero. It includes Boolean logic and
+ * comparisons whose operand types are otherwise supported by the descriptor.
+ */
+#define QDMI_PROGRAM_FEATURE_BOOLEAN_COMPUTATION "boolean-computation"
+/**
+ * @brief Select a later program region from a value computed during execution.
+ * @details This Boolean feature uses value zero and does not include a backward
+ * branch.
+ */
+#define QDMI_PROGRAM_FEATURE_FORWARD_BRANCHING "forward-branching"
+/**
+ * @brief Repeat a program region a known finite number of times.
+ * @details This Boolean feature uses value zero. The trip count does not depend
+ * on a value produced by the repeated region.
+ */
+#define QDMI_PROGRAM_FEATURE_COUNTED_ITERATION "counted-iteration"
+/**
+ * @brief Repeat a program region based on a value computed during execution.
+ * @details This Boolean feature uses value zero and includes a backward branch.
+ */
+#define QDMI_PROGRAM_FEATURE_CONDITIONAL_LOOP "conditional-loop"
+/**
+ * @brief Select one of more than two program regions during execution.
+ * @details This Boolean feature uses value zero. The selector type requires its
+ * corresponding computation feature.
+ */
+#define QDMI_PROGRAM_FEATURE_MULTIWAY_BRANCHING "multiway-branching"
+/**
+ * @brief Compute integer values during execution.
+ * @details The feature value is one exact supported integer width in bits.
+ * Devices return one feature group for each supported width.
+ */
+#define QDMI_PROGRAM_FEATURE_INTEGER_COMPUTATION "integer-computation"
+/**
+ * @brief Compute floating-point values during execution.
+ * @details The feature value is one exact supported floating-point width in
+ * bits. Devices return one feature group for each supported width.
+ */
+#define QDMI_PROGRAM_FEATURE_FLOAT_COMPUTATION "float-computation"
+/**
+ * @brief Define and call functions beyond the entry point and format-mandated
+ * declarations or runtime calls.
+ * @details This Boolean feature uses value zero.
+ */
+#define QDMI_PROGRAM_FEATURE_IR_FUNCTIONS "ir-functions"
+/**
+ * @brief Use more than one return point in one function or entry point.
+ * @details This Boolean feature uses value zero.
+ */
+#define QDMI_PROGRAM_FEATURE_MULTIPLE_RETURN_POINTS "multiple-return-points"
+/**
+ * @brief Allocate and release qubits during execution.
+ * @details This Boolean feature uses value zero.
+ */
+#define QDMI_PROGRAM_FEATURE_DYNAMIC_QUBIT_MANAGEMENT "dynamic-qubit-management"
+/**
+ * @brief Allocate and release result handles during execution.
+ * @details This Boolean feature uses value zero.
+ */
+#define QDMI_PROGRAM_FEATURE_DYNAMIC_RESULT_MANAGEMENT                         \
+  "dynamic-result-management"
+/**
+ * @brief Create and access arrays during execution.
+ * @details This Boolean feature uses value zero. Element types must be
+ * supported by the descriptor or another reported computation feature.
+ */
+#define QDMI_PROGRAM_FEATURE_ARRAYS "arrays"
+
+/**
+ * @brief Limit lexical control-flow nesting depth.
+ * @details The positive constraint value is the maximum number of enclosing
+ * branch and loop constructs, counting the outermost construct as depth one.
+ * This constraint applies to branching and iteration features.
+ */
+#define QDMI_PROGRAM_CONSTRAINT_MAX_CONTROL_FLOW_NESTING_DEPTH                 \
+  "max-control-flow-nesting-depth"
+/**
+ * @brief Limit the trip count of each loop.
+ * @details The positive constraint value is the inclusive maximum number of
+ * times one loop body may execute. A compiler must prove this upper bound. This
+ * constraint applies to counted iteration and conditional loops.
+ */
+#define QDMI_PROGRAM_CONSTRAINT_MAX_ITERATION_COUNT "max-iteration-count"
+/**
+ * @brief Limit the number of explicit cases in each multiway branch.
+ * @details The positive constraint value counts explicit cases and excludes a
+ * default case. This constraint applies to multiway branching.
+ */
+#define QDMI_PROGRAM_CONSTRAINT_MAX_CASE_COUNT "max-case-count"
 
 /**
  * @brief Enum of the formats the results can be returned in.
@@ -1261,8 +1155,26 @@ typedef struct QDMI_PROGRAM_FORMAT_FEATURE_T {
 enum QDMI_JOB_RESULT_T {
   /**
    * @brief `char*` (string) The results of the individual shots as a
-   * comma-separated list, for example, "0010,1101,0101,1100,1001,1100" for four
-   * qubits and six shots.
+   * comma-separated list.
+   * @details Each bit string contains every flat bit output declared by the
+   * submitted payload. The first output in the order below is the leftmost bit:
+   * - OpenQASM 2 uses `creg` declarations in source order and increasing bit
+   *   index within each declaration.
+   * - OpenQASM 3 uses bit-valued output declarations in source order and
+   *   increasing bit index within each declaration. If the program has no
+   *   explicit output declaration, the OpenQASM 3 implicit-output rules select
+   *   the outputs before this ordering is applied.
+   * - QIR uses primitive result-recording calls in execution order. A result
+   *   array contributes its elements in memory order. Container recording
+   *   calls do not add bits.
+   * If the payload output cannot be represented losslessly as one fixed-width
+   * bit string per shot, queries for shots and histogram results return @ref
+   * QDMI_ERROR_NOTSUPPORTED. Clients can query @ref
+   * QDMI_JOB_RESULT_PROGRAMOUTPUT when the submitted descriptor defines a
+   * native output representation.
+   *
+   * The width is independent of the number of device sites. For example,
+   * "0010,1101,0101" represents three shots of four declared bit outputs.
    */
   QDMI_JOB_RESULT_SHOTS = 0,
   /**
@@ -1270,7 +1182,8 @@ enum QDMI_JOB_RESULT_T {
    * @details The histogram of the measurement results is represented as a
    * key-value mapping. This mapping is returned as a list of keys and an
    * equal-length list of values. The corresponding partners of keys and values
-   * can be found at the same index in the lists.
+   * can be found at the same index in the lists. Each key uses the same
+   * payload-declared logical bit order as @ref QDMI_JOB_RESULT_SHOTS.
    *
    * This constant denotes the list of keys, @ref QDMI_JOB_RESULT_HIST_VALUES
    * denotes the list of values.
@@ -1335,6 +1248,17 @@ enum QDMI_JOB_RESULT_T {
    */
   QDMI_JOB_RESULT_PROBABILITIES_SPARSE_VALUES = 8,
   /**
+   * @brief `void*` The complete format-native program output.
+   * @details The exact descriptor defines the byte representation. The output
+   * is an arbitrary byte sequence and need not be NUL-terminated. For a QIR
+   * specification that defines an output schema, the sequence is a complete
+   * output-schema stream, including its required headers and every shot record.
+   * Devices that accept such a QIR descriptor must support this result. A
+   * device may return @ref QDMI_ERROR_NOTSUPPORTED when the submitted
+   * descriptor does not define a native output representation.
+   */
+  QDMI_JOB_RESULT_PROGRAMOUTPUT = 9,
+  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -1342,7 +1266,7 @@ enum QDMI_JOB_RESULT_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_JOB_RESULT_MAX = 9,
+  QDMI_JOB_RESULT_MAX = 10,
   /**
    * @brief This enum value is reserved for a custom result.
    * @details The device defines the meaning and the type of this result.

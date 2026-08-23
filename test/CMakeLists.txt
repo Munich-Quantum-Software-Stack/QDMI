@@ -29,7 +29,7 @@ add_subdirectory(utils)
 # ------------------------------------------------------------------------------
 
 # create an executable in which the tests will be stored
-add_executable(qdmi_test test_qdmi.cpp)
+add_executable(qdmi_test test_program_feature.c test_qdmi.cpp)
 
 # link the Google test infrastructure to the test executable.
 target_link_libraries(
