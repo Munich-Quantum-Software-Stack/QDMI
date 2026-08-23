@@ -376,6 +376,13 @@ int tutorial_QDMI_device_job_set_parameter(tutorial_QDMI_Device_Job job,
   return QDMI_ERROR_NOTSUPPORTED;
 }
 
+int tutorial_QDMI_device_job_set_programs(
+    tutorial_QDMI_Device_Job job, const QDMI_Program_Format *format,
+    size_t, const size_t *, const void *const *) {
+  if (job == nullptr || format == nullptr) return QDMI_ERROR_INVALIDARGUMENT;
+  return QDMI_ERROR_NOTSUPPORTED;
+}
+
 int tutorial_QDMI_device_job_submit(tutorial_QDMI_Device_Job job) {
   if (job == nullptr) return QDMI_ERROR_INVALIDARGUMENT;
   if (job->program.empty()) return QDMI_ERROR_BADSTATE;
@@ -412,6 +419,14 @@ int tutorial_QDMI_device_job_get_results(tutorial_QDMI_Device_Job job,
     return QDMI_SUCCESS;
   }
   return QDMI_ERROR_NOTSUPPORTED;
+}
+
+int tutorial_QDMI_device_job_get_results_for_program(
+    tutorial_QDMI_Device_Job job, size_t program_index,
+    QDMI_Job_Result result, size_t size, void *data, size_t *size_ret) {
+  if (job == nullptr) return QDMI_ERROR_INVALIDARGUMENT;
+  if (program_index != 0) return QDMI_ERROR_OUTOFRANGE;
+  return tutorial_QDMI_device_job_get_results(job, result, size, data, size_ret);
 }
 
 void tutorial_QDMI_device_job_free(tutorial_QDMI_Device_Job job) {

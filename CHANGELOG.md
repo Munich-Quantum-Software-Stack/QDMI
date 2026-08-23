@@ -26,6 +26,8 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
   ([\@burgholzer], [\@ystade]).
 - ✨ Add optional target-specific export control for device and client libraries
   ([#559]) ([\@marcelwa])
+- ✨ Add ordered multi-program jobs with one aggregate lifecycle, indexed
+  results, and required device entry points ([#509]) ([\@burgholzer]).
 
 ### Changed
 
@@ -280,6 +282,7 @@ for previous changelogs._
 [#513]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/513
 [#512]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/512
 [#511]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/511
+[#509]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/509
 [#486]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/486
 [#485]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/485
 [#475]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/475
