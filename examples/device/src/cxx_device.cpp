@@ -36,8 +36,10 @@
 #include <iterator>
 #include <limits>
 #include <map>
+#include <new>
 #include <random>
 #include <ranges>
+#include <stdexcept>
 #include <string>
 #include <unordered_map>
 #include <utility>
@@ -61,14 +63,18 @@ struct CXX_QDMI_Device_Session_impl_d {
  * @details This structure can, e.g., be used to store the job id.
  */
 struct CXX_QDMI_Device_Job_impl_d {
+  struct Result_data {
+    std::vector<std::string> shots;
+    std::vector<std::complex<double>> state_vec;
+  };
+
   CXX_QDMI_Device_Session session = nullptr;
   int id = 0;
   QDMI_Program_Format format = QDMI_PROGRAM_FORMAT_MAX;
-  void *program = nullptr;
+  std::vector<std::vector<char>> programs;
   QDMI_Job_Status status = QDMI_JOB_STATUS_SUBMITTED;
   size_t num_shots = 0;
-  std::vector<std::string> results;
-  std::vector<std::complex<double>> state_vec;
+  std::vector<Result_data> results;
 };
 
 struct CXX_QDMI_Device_State {
@@ -383,7 +389,6 @@ int CXX_QDMI_device_session_retrieve_device_job_by_id(
 } /// [DOXYGEN FUNCTION END]
 
 void CXX_QDMI_device_job_free(CXX_QDMI_Device_Job job) {
-  delete[] static_cast<char *>(job->program);
   delete job;
 } /// [DOXYGEN FUNCTION END]
 
@@ -425,8 +430,9 @@ int CXX_QDMI_device_job_set_parameter(CXX_QDMI_Device_Job job,
     return QDMI_SUCCESS;
   case QDMI_DEVICE_JOB_PARAMETER_PROGRAM:
     if (value != nullptr) {
-      job->program = new char[size];
-      memcpy(job->program, value, size);
+      std::vector<char> program(size);
+      memcpy(program.data(), value, size);
+      job->programs = {std::move(program)};
     }
     return QDMI_SUCCESS;
   case QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM:
@@ -437,6 +443,51 @@ int CXX_QDMI_device_job_set_parameter(CXX_QDMI_Device_Job job,
   default:
     return QDMI_ERROR_NOTSUPPORTED;
   }
+} /// [DOXYGEN FUNCTION END]
+
+int CXX_QDMI_device_job_set_programs(CXX_QDMI_Device_Job job,
+                                     const QDMI_Program_Format *format,
+                                     const size_t count, const size_t *sizes,
+                                     const void *const *programs) {
+  if (job == nullptr || format == nullptr || !Valid_format(*format)) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  if (job->status != QDMI_JOB_STATUS_CREATED) {
+    return QDMI_ERROR_BADSTATE;
+  }
+  if (!Supported_format(*format)) {
+    return QDMI_ERROR_NOTSUPPORTED;
+  }
+  if (programs == nullptr) {
+    return QDMI_SUCCESS;
+  }
+  if (count == 0 || sizes == nullptr) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+
+  std::vector<std::vector<char>> new_programs;
+  try {
+    new_programs.reserve(count);
+    for (size_t i = 0; i < count; ++i) {
+      if (sizes[i] == 0 || programs[i] == nullptr) {
+        return QDMI_ERROR_INVALIDARGUMENT;
+      }
+      const auto *bytes = static_cast<const char *>(programs[i]);
+      if (format->encoding == QDMI_PROGRAM_ENCODING_TEXT &&
+          bytes[sizes[i] - 1] != '\0') {
+        return QDMI_ERROR_INVALIDARGUMENT;
+      }
+      new_programs.emplace_back(bytes, bytes + sizes[i]);
+    }
+  } catch (const std::bad_alloc &) {
+    return QDMI_ERROR_OUTOFMEM;
+  } catch (const std::length_error &) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+
+  job->format = *format;
+  job->programs = std::move(new_programs);
+  return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]
 
 int CXX_QDMI_device_job_query_property(CXX_QDMI_Device_Job job,
@@ -460,12 +511,20 @@ int CXX_QDMI_device_job_query_property(CXX_QDMI_Device_Job job,
                             size_ret)
   ADD_SINGLE_VALUE_PROPERTY(QDMI_DEVICE_JOB_PROPERTY_SHOTSNUM, size_t,
                             job->num_shots, prop, size, value, size_ret)
+  if (prop == QDMI_DEVICE_JOB_PROPERTY_PROGRAMSNUM && job->programs.empty()) {
+    return QDMI_ERROR_BADSTATE;
+  }
+  ADD_SINGLE_VALUE_PROPERTY(QDMI_DEVICE_JOB_PROPERTY_PROGRAMSNUM, size_t,
+                            job->programs.size(), prop, size, value, size_ret)
   return QDMI_ERROR_NOTSUPPORTED;
 } /// [DOXYGEN FUNCTION END]
 
 int CXX_QDMI_device_job_submit(CXX_QDMI_Device_Job job) {
   if (job == nullptr || job->status != QDMI_JOB_STATUS_CREATED) {
     return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  if (job->programs.empty() || !Valid_format(job->format)) {
+    return QDMI_ERROR_BADSTATE;
   }
 
   // Calibration jobs complete immediately
@@ -485,28 +544,39 @@ int CXX_QDMI_device_job_submit(CXX_QDMI_Device_Job job) {
   CXX_QDMI_device_session_query_device_property(
       job->session, QDMI_DEVICE_PROPERTY_QUBITSNUM, sizeof(size_t), &num_qubits,
       nullptr);
+  constexpr std::array<std::string_view, 4> shot_outputs{FLAT_SHOT_OUTPUT, "10",
+                                                         "11", "00"};
   job->results.clear();
-  job->results.reserve(job->num_shots);
-  for (size_t i = 0; i < job->num_shots; ++i) {
-    // generate random bitstring
-    std::string result(num_qubits, '0');
-    std::ranges::generate(
-        result, [&]() { return CXX_QDMI_generate_bit() ? '1' : '0'; });
-    job->results.emplace_back(std::move(result));
-  }
-  // Generate random complex numbers and calculate the norm
-  job->state_vec.clear();
-  job->state_vec.reserve(1U << num_qubits);
-  double norm = 0.0;
-  for (size_t i = 0; i < 1U << num_qubits; ++i) {
-    const auto &c = job->state_vec.emplace_back(CXX_QDMI_generate_real(),
-                                                CXX_QDMI_generate_real());
-    norm += std::norm(c);
-  }
-  // Normalize the vector
-  norm = std::sqrt(norm);
-  for (auto &c : job->state_vec) {
-    c /= norm;
+  job->results.resize(job->programs.size());
+  for (size_t program_index = 0; program_index < job->results.size();
+       ++program_index) {
+    auto &result = job->results[program_index];
+    size_t output_index = 0;
+    if (job->programs.size() > 1) {
+      const auto &program = job->programs.at(program_index);
+      const auto marker =
+          program.at(program.size() -
+                     (job->format.encoding == QDMI_PROGRAM_ENCODING_TEXT &&
+                              program.size() > 1
+                          ? 2
+                          : 1));
+      output_index = static_cast<unsigned char>(marker) % shot_outputs.size();
+    }
+    result.shots.assign(job->num_shots,
+                        std::string{shot_outputs.at(output_index)});
+    // Generate random complex numbers and calculate the norm
+    result.state_vec.reserve(1U << num_qubits);
+    double norm = 0.0;
+    for (size_t i = 0; i < 1U << num_qubits; ++i) {
+      const auto &c = result.state_vec.emplace_back(CXX_QDMI_generate_real(),
+                                                    CXX_QDMI_generate_real());
+      norm += std::norm(c);
+    }
+    // Normalize the vector
+    norm = std::sqrt(norm);
+    for (auto &c : result.state_vec) {
+      c /= norm;
+    }
   }
   return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]
@@ -546,19 +616,25 @@ int CXX_QDMI_device_job_wait(CXX_QDMI_Device_Job job,
 } /// [DOXYGEN FUNCTION END]
 
 namespace {
-int CXX_QDMI_device_job_get_results_shots(CXX_QDMI_Device_Job job,
-                                          const size_t size, void *data,
-                                          size_t *size_ret) {
+int CXX_QDMI_device_job_get_results_shots(
+    const CXX_QDMI_Device_Job_impl_d::Result_data &result, const size_t size,
+    void *data, size_t *size_ret) {
+  if (result.shots.empty()) {
+    if (size_ret != nullptr) {
+      *size_ret = 0;
+    }
+    return QDMI_SUCCESS;
+  }
   const size_t req_size =
-      job->results.size() * (job->results.front().length() + 1);
+      result.shots.size() * (result.shots.front().length() + 1);
   if (data != nullptr) {
     if (size < req_size) {
       return QDMI_ERROR_INVALIDARGUMENT;
     }
     auto *data_ptr = static_cast<char *>(data);
-    for (auto it = job->results.begin(); it != job->results.end(); ++it) {
+    for (auto it = result.shots.begin(); it != result.shots.end(); ++it) {
       data_ptr = std::ranges::copy(*it, data_ptr).out;
-      if (std::next(it) != job->results.end()) {
+      if (std::next(it) != result.shots.end()) {
         *data_ptr++ = ','; // Add comma separator
       } else {
         *data_ptr++ = '\0'; // Add null terminator at the end
@@ -571,23 +647,23 @@ int CXX_QDMI_device_job_get_results_shots(CXX_QDMI_Device_Job job,
   return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]
 
-int CXX_QDMI_device_job_get_results_hist(CXX_QDMI_Device_Job job,
-                                         const QDMI_Job_Result result,
-                                         const size_t size, void *data,
-                                         size_t *size_ret) {
+int CXX_QDMI_device_job_get_results_hist(
+    const CXX_QDMI_Device_Job_impl_d::Result_data &job_result,
+    const QDMI_Job_Result result, const size_t size, void *data,
+    size_t *size_ret) {
   // Count unique elements
   std::map<std::string, size_t> hist;
-  for (const auto &shot : job->results) {
+  for (const auto &shot : job_result.shots) {
     hist[shot]++;
   }
   if (result == QDMI_JOB_RESULT_HIST_KEYS) {
     const size_t bitstring_size =
-        job->results.empty() ? 0 : job->results.front().length();
+        job_result.shots.empty() ? 0 : job_result.shots.front().length();
     const size_t req_size = hist.size() * (bitstring_size + 1);
     if (size_ret != nullptr) {
       *size_ret = req_size;
     }
-    if (data != nullptr) {
+    if (data != nullptr && !hist.empty()) {
       if (size < req_size) {
         return QDMI_ERROR_INVALIDARGUMENT;
       }
@@ -618,15 +694,15 @@ int CXX_QDMI_device_job_get_results_hist(CXX_QDMI_Device_Job job,
   return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]
 
-int CXX_QDMI_device_job_get_results_statevector(CXX_QDMI_Device_Job job,
-                                                const size_t size, void *data,
-                                                size_t *size_ret) {
-  const size_t req_size = job->state_vec.size() * 2 * sizeof(double);
+int CXX_QDMI_device_job_get_results_statevector(
+    const CXX_QDMI_Device_Job_impl_d::Result_data &result, const size_t size,
+    void *data, size_t *size_ret) {
+  const size_t req_size = result.state_vec.size() * 2 * sizeof(double);
   if (data != nullptr) {
     if (size < req_size) {
       return QDMI_ERROR_INVALIDARGUMENT;
     }
-    std::memcpy(data, job->state_vec.data(), req_size);
+    std::memcpy(data, result.state_vec.data(), req_size);
   }
   if (size_ret != nullptr) {
     *size_ret = req_size;
@@ -634,18 +710,19 @@ int CXX_QDMI_device_job_get_results_statevector(CXX_QDMI_Device_Job job,
   return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]
 
-int CXX_QDMI_device_job_get_results_sparse(CXX_QDMI_Device_Job job,
-                                           const QDMI_Job_Result result,
-                                           const size_t size, void *data,
-                                           size_t *size_ret) {
+int CXX_QDMI_device_job_get_results_sparse(
+    const CXX_QDMI_Device_Job_impl_d::Result_data &job_result,
+    const QDMI_Job_Result result, const size_t size, void *data,
+    size_t *size_ret) {
   // count non-zero elements
   size_t count = 0;
-  for (const auto &c : job->state_vec) {
+  for (const auto &c : job_result.state_vec) {
     if (c != 0.) {
       ++count;
     }
   }
-  const auto num_qubits = static_cast<size_t>(std::log2(job->state_vec.size()));
+  const auto num_qubits =
+      static_cast<size_t>(std::log2(job_result.state_vec.size()));
 
   switch (result) {
   case QDMI_JOB_RESULT_STATEVECTOR_SPARSE_KEYS:
@@ -656,8 +733,8 @@ int CXX_QDMI_device_job_get_results_sparse(CXX_QDMI_Device_Job job,
         return QDMI_ERROR_INVALIDARGUMENT;
       }
       auto *data_ptr = static_cast<char *>(data);
-      for (size_t i = 0; i < job->state_vec.size(); ++i) {
-        if (job->state_vec[i] != 0.0) {
+      for (size_t i = 0; i < job_result.state_vec.size(); ++i) {
+        if (job_result.state_vec[i] != 0.0) {
           for (size_t j = 0; j < num_qubits; ++j) {
             *data_ptr++ = ((i & (1 << (num_qubits - j - 1))) != 0U) ? '1' : '0';
           }
@@ -679,7 +756,7 @@ int CXX_QDMI_device_job_get_results_sparse(CXX_QDMI_Device_Job job,
         return QDMI_ERROR_INVALIDARGUMENT;
       }
       auto *data_ptr = static_cast<double *>(data);
-      for (auto c : job->state_vec) {
+      for (auto c : job_result.state_vec) {
         if (c != 0.) {
           *data_ptr++ = c.real();
           *data_ptr++ = c.imag();
@@ -699,7 +776,7 @@ int CXX_QDMI_device_job_get_results_sparse(CXX_QDMI_Device_Job job,
         return QDMI_ERROR_INVALIDARGUMENT;
       }
       auto *data_ptr = static_cast<double *>(data);
-      for (const auto &c : job->state_vec) {
+      for (const auto &c : job_result.state_vec) {
         *data_ptr++ = std::norm(c);
       }
     }
@@ -711,16 +788,16 @@ int CXX_QDMI_device_job_get_results_sparse(CXX_QDMI_Device_Job job,
   return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]
 
-int CXX_QDMI_device_job_get_results_probabilities(CXX_QDMI_Device_Job job,
-                                                  const size_t size, void *data,
-                                                  size_t *size_ret) {
-  const size_t req_size = job->state_vec.size() * sizeof(double);
+int CXX_QDMI_device_job_get_results_probabilities(
+    const CXX_QDMI_Device_Job_impl_d::Result_data &result, const size_t size,
+    void *data, size_t *size_ret) {
+  const size_t req_size = result.state_vec.size() * sizeof(double);
   if (data != nullptr) {
     if (size < req_size) {
       return QDMI_ERROR_INVALIDARGUMENT;
     }
     auto *data_ptr = static_cast<double *>(data);
-    for (const auto &c : job->state_vec) {
+    for (const auto &c : result.state_vec) {
       *data_ptr++ = std::norm(c);
     }
   }
@@ -730,6 +807,50 @@ int CXX_QDMI_device_job_get_results_probabilities(CXX_QDMI_Device_Job job,
   return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]
 } // namespace
+
+int CXX_QDMI_device_job_get_results_for_program(CXX_QDMI_Device_Job job,
+                                                const size_t program_index,
+                                                const QDMI_Job_Result result,
+                                                const size_t size, void *data,
+                                                size_t *size_ret) {
+  if (job == nullptr || job->status != QDMI_JOB_STATUS_DONE ||
+      (data != nullptr && size == 0) ||
+      (result >= QDMI_JOB_RESULT_MAX && result != QDMI_JOB_RESULT_CUSTOM1 &&
+       result != QDMI_JOB_RESULT_CUSTOM2 && result != QDMI_JOB_RESULT_CUSTOM3 &&
+       result != QDMI_JOB_RESULT_CUSTOM4 &&
+       result != QDMI_JOB_RESULT_CUSTOM5)) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  if (program_index >= job->results.size()) {
+    return QDMI_ERROR_OUTOFRANGE;
+  }
+  const auto &program_result = job->results[program_index];
+  switch (result) {
+  case QDMI_JOB_RESULT_SHOTS:
+    return CXX_QDMI_device_job_get_results_shots(program_result, size, data,
+                                                 size_ret);
+  case QDMI_JOB_RESULT_HIST_KEYS:
+  case QDMI_JOB_RESULT_HIST_VALUES:
+    return CXX_QDMI_device_job_get_results_hist(program_result, result, size,
+                                                data, size_ret);
+  case QDMI_JOB_RESULT_STATEVECTOR_DENSE:
+    return CXX_QDMI_device_job_get_results_statevector(program_result, size,
+                                                       data, size_ret);
+  case QDMI_JOB_RESULT_STATEVECTOR_SPARSE_KEYS:
+  case QDMI_JOB_RESULT_STATEVECTOR_SPARSE_VALUES:
+  case QDMI_JOB_RESULT_PROBABILITIES_SPARSE_KEYS:
+  case QDMI_JOB_RESULT_PROBABILITIES_SPARSE_VALUES:
+    return CXX_QDMI_device_job_get_results_sparse(program_result, result, size,
+                                                  data, size_ret);
+  case QDMI_JOB_RESULT_PROBABILITIES_DENSE:
+    return CXX_QDMI_device_job_get_results_probabilities(program_result, size,
+                                                         data, size_ret);
+  case QDMI_JOB_RESULT_PROGRAMOUTPUT:
+    return CXX_QDMI_device_job_get_program_output(job, size, data, size_ret);
+  default:
+    return QDMI_ERROR_NOTSUPPORTED;
+  }
+} /// [DOXYGEN FUNCTION END]
 
 int CXX_QDMI_device_job_get_results(CXX_QDMI_Device_Job job,
                                     const QDMI_Job_Result result,
@@ -743,28 +864,11 @@ int CXX_QDMI_device_job_get_results(CXX_QDMI_Device_Job job,
        result != QDMI_JOB_RESULT_CUSTOM5)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
-  switch (result) {
-  case QDMI_JOB_RESULT_SHOTS:
-    return CXX_QDMI_device_job_get_results_shots(job, size, data, size_ret);
-  case QDMI_JOB_RESULT_HIST_KEYS:
-  case QDMI_JOB_RESULT_HIST_VALUES:
-    return CXX_QDMI_device_job_get_results_hist(job, result, size, data,
-                                                size_ret);
-  case QDMI_JOB_RESULT_STATEVECTOR_DENSE:
-    return CXX_QDMI_device_job_get_results_statevector(job, size, data,
-                                                       size_ret);
-  case QDMI_JOB_RESULT_STATEVECTOR_SPARSE_KEYS:
-  case QDMI_JOB_RESULT_STATEVECTOR_SPARSE_VALUES:
-  case QDMI_JOB_RESULT_PROBABILITIES_SPARSE_KEYS:
-  case QDMI_JOB_RESULT_PROBABILITIES_SPARSE_VALUES:
-    return CXX_QDMI_device_job_get_results_sparse(job, result, size, data,
-                                                  size_ret);
-  case QDMI_JOB_RESULT_PROBABILITIES_DENSE:
-    return CXX_QDMI_device_job_get_results_probabilities(job, size, data,
-                                                         size_ret);
-  default:
+  if (job->results.size() != 1) {
     return QDMI_ERROR_NOTSUPPORTED;
   }
+  return CXX_QDMI_device_job_get_results_for_program(job, 0, result, size, data,
+                                                     size_ret);
 } /// [DOXYGEN FUNCTION END]
 
 int CXX_QDMI_device_session_query_device_property(

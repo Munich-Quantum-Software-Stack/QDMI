@@ -548,6 +548,10 @@ TEST_P(QDMIImplementationTest, JobLifecycle) {
                                     sizeof(size_t), &shots, nullptr),
             QDMI_SUCCESS);
   EXPECT_EQ(shots, 5);
+  constexpr std::string_view program{"OPENQASM 2.0;\nqreg q[1];\n"};
+  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAM,
+                                   program.size() + 1, program.data()),
+            QDMI_SUCCESS);
   // Queue position is optional and is not supported by the example device.
   EXPECT_EQ(QDMI_job_query_property(job, QDMI_JOB_PROPERTY_QUEUEPOSITION, 0,
                                     nullptr, nullptr),
@@ -572,6 +576,181 @@ TEST_P(QDMIImplementationTest, JobLifecycle) {
   EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_SHOTSNUM,
                                    sizeof(size_t), &shots),
             QDMI_ERROR_BADSTATE);
+  QDMI_job_free(job);
+}
+
+TEST_P(QDMIImplementationTest, MultiProgramJob) {
+  if (mode == TEST_SESSION_MODE::READONLY) {
+    GTEST_SKIP() << "Skipping test for read-only session";
+  }
+
+  QDMI_Job job = nullptr;
+  ASSERT_EQ(QDMI_device_create_job(device, &job), QDMI_SUCCESS);
+  EXPECT_EQ(QDMI_job_query_property(job, QDMI_JOB_PROPERTY_PROGRAMSNUM, 0,
+                                    nullptr, nullptr),
+            QDMI_ERROR_BADSTATE);
+  EXPECT_EQ(QDMI_job_submit(job), QDMI_ERROR_BADSTATE);
+
+  std::array<std::string, 3> programs{"OPENQASM 2.0;\nqreg q[1]; // 0",
+                                      "OPENQASM 2.0;\nqreg q[2]; // 1",
+                                      "OPENQASM 2.0;\nqreg q[3]; // 2"};
+  std::array<size_t, 3> sizes{};
+  std::array<const void *, 3> program_ptrs{};
+  for (size_t i = 0; i < programs.size(); ++i) {
+    sizes.at(i) = programs.at(i).size() + 1;
+    program_ptrs.at(i) = programs.at(i).c_str();
+  }
+
+  EXPECT_EQ(QDMI_job_set_programs(nullptr, &QASM2_FORMAT, programs.size(),
+                                  sizes.data(), program_ptrs.data()),
+            QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_EQ(QDMI_job_set_programs(job, nullptr, programs.size(), sizes.data(),
+                                  program_ptrs.data()),
+            QDMI_ERROR_INVALIDARGUMENT);
+  constexpr QDMI_Program_Format invalid_format{};
+  EXPECT_EQ(QDMI_job_set_programs(job, &invalid_format, programs.size(),
+                                  sizes.data(), program_ptrs.data()),
+            QDMI_ERROR_INVALIDARGUMENT);
+  constexpr QDMI_Program_Format unsupported_format{
+      .version = QDMI_MAKE_VERSION(3, 0, 0),
+      .encoding = QDMI_PROGRAM_ENCODING_TEXT,
+      .id = "openqasm",
+      .profile = ""};
+  EXPECT_EQ(QDMI_job_set_programs(job, &unsupported_format, programs.size(),
+                                  sizes.data(), program_ptrs.data()),
+            QDMI_ERROR_NOTSUPPORTED);
+
+  EXPECT_EQ(
+      QDMI_job_set_programs(job, &QASM2_FORMAT, 42, sizes.data(), nullptr),
+      QDMI_SUCCESS);
+  EXPECT_EQ(QDMI_job_query_property(job, QDMI_JOB_PROPERTY_PROGRAMSNUM, 0,
+                                    nullptr, nullptr),
+            QDMI_ERROR_BADSTATE);
+  EXPECT_EQ(QDMI_job_set_programs(job, &QASM2_FORMAT, 0, sizes.data(),
+                                  program_ptrs.data()),
+            QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_EQ(QDMI_job_set_programs(job, &QASM2_FORMAT, programs.size(), nullptr,
+                                  program_ptrs.data()),
+            QDMI_ERROR_INVALIDARGUMENT);
+
+  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAM,
+                                   programs.at(0).size() + 1,
+                                   programs.at(0).c_str()),
+            QDMI_SUCCESS);
+  EXPECT_EQ(QDMI_job_submit(job), QDMI_ERROR_BADSTATE);
+
+  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
+                                   sizeof(QDMI_Program_Format), &QASM2_FORMAT),
+            QDMI_SUCCESS);
+  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAM,
+                                   programs.front().size() + 1,
+                                   programs.front().c_str()),
+            QDMI_SUCCESS);
+  size_t program_count = 0;
+  ASSERT_EQ(QDMI_job_query_property(job, QDMI_JOB_PROPERTY_PROGRAMSNUM,
+                                    sizeof(size_t), &program_count, nullptr),
+            QDMI_SUCCESS);
+  EXPECT_EQ(program_count, 1);
+
+  EXPECT_EQ(QDMI_job_set_programs(job, &QIR_BASE_TEXT_FORMAT, 42, sizes.data(),
+                                  nullptr),
+            QDMI_SUCCESS);
+  QDMI_Program_Format format{};
+  ASSERT_EQ(QDMI_job_query_property(job, QDMI_JOB_PROPERTY_PROGRAMFORMAT,
+                                    sizeof(QDMI_Program_Format), &format,
+                                    nullptr),
+            QDMI_SUCCESS);
+  EXPECT_TRUE(Same_format(format, QASM2_FORMAT));
+
+  auto invalid_programs = program_ptrs;
+  invalid_programs.at(1) = nullptr;
+  EXPECT_EQ(QDMI_job_set_programs(job, &QIR_BASE_TEXT_FORMAT, programs.size(),
+                                  sizes.data(), invalid_programs.data()),
+            QDMI_ERROR_INVALIDARGUMENT);
+  auto invalid_sizes = sizes;
+  invalid_sizes.at(1) = programs.at(1).size();
+  EXPECT_EQ(QDMI_job_set_programs(job, &QIR_BASE_TEXT_FORMAT, programs.size(),
+                                  invalid_sizes.data(), program_ptrs.data()),
+            QDMI_ERROR_INVALIDARGUMENT);
+  ASSERT_EQ(QDMI_job_query_property(job, QDMI_JOB_PROPERTY_PROGRAMSNUM,
+                                    sizeof(size_t), &program_count, nullptr),
+            QDMI_SUCCESS);
+  EXPECT_EQ(program_count, 1);
+  ASSERT_EQ(QDMI_job_query_property(job, QDMI_JOB_PROPERTY_PROGRAMFORMAT,
+                                    sizeof(QDMI_Program_Format), &format,
+                                    nullptr),
+            QDMI_SUCCESS);
+  EXPECT_TRUE(Same_format(format, QASM2_FORMAT));
+
+  ASSERT_EQ(QDMI_job_set_programs(job, &QASM2_FORMAT, programs.size(),
+                                  sizes.data(), program_ptrs.data()),
+            QDMI_SUCCESS);
+  ASSERT_EQ(QDMI_job_query_property(job, QDMI_JOB_PROPERTY_PROGRAMSNUM,
+                                    sizeof(size_t), &program_count, nullptr),
+            QDMI_SUCCESS);
+  EXPECT_EQ(program_count, programs.size());
+
+  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAM,
+                                   programs.at(0).size() + 1,
+                                   programs.at(0).c_str()),
+            QDMI_SUCCESS);
+  ASSERT_EQ(QDMI_job_query_property(job, QDMI_JOB_PROPERTY_PROGRAMSNUM,
+                                    sizeof(size_t), &program_count, nullptr),
+            QDMI_SUCCESS);
+  EXPECT_EQ(program_count, 1);
+  ASSERT_EQ(QDMI_job_set_programs(job, &QASM2_FORMAT, programs.size(),
+                                  sizes.data(), program_ptrs.data()),
+            QDMI_SUCCESS);
+
+  for (auto &program : programs) {
+    program.back() = '3';
+  }
+  auto rejected_programs = program_ptrs;
+  rejected_programs.at(1) = nullptr;
+  EXPECT_EQ(QDMI_job_set_programs(job, &QASM2_FORMAT, programs.size(),
+                                  sizes.data(), rejected_programs.data()),
+            QDMI_ERROR_INVALIDARGUMENT);
+
+  constexpr size_t shots = 1;
+  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_SHOTSNUM,
+                                   sizeof(size_t), &shots),
+            QDMI_SUCCESS);
+  ASSERT_EQ(QDMI_job_submit(job), QDMI_SUCCESS);
+  EXPECT_EQ(QDMI_job_set_programs(job, &QASM2_FORMAT, programs.size(),
+                                  sizes.data(), program_ptrs.data()),
+            QDMI_ERROR_BADSTATE);
+  EXPECT_EQ(QDMI_job_get_results_for_program(job, 0, QDMI_JOB_RESULT_SHOTS, 0,
+                                             nullptr, nullptr),
+            QDMI_ERROR_INVALIDARGUMENT);
+  ASSERT_EQ(QDMI_job_wait(job, 0), QDMI_SUCCESS);
+
+  EXPECT_EQ(
+      QDMI_job_get_results(job, QDMI_JOB_RESULT_SHOTS, 0, nullptr, nullptr),
+      QDMI_ERROR_NOTSUPPORTED);
+  EXPECT_EQ(QDMI_job_get_results_for_program(nullptr, 0, QDMI_JOB_RESULT_SHOTS,
+                                             0, nullptr, nullptr),
+            QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_EQ(QDMI_job_get_results_for_program(job, 0, QDMI_JOB_RESULT_MAX, 0,
+                                             nullptr, nullptr),
+            QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_EQ(QDMI_job_get_results_for_program(job, programs.size(),
+                                             QDMI_JOB_RESULT_SHOTS, 0, nullptr,
+                                             nullptr),
+            QDMI_ERROR_OUTOFRANGE);
+
+  constexpr std::array<std::string_view, 3> expected_shots{"01", "10", "11"};
+  for (size_t i = 0; i < programs.size(); ++i) {
+    size_t size = 0;
+    ASSERT_EQ(QDMI_job_get_results_for_program(job, i, QDMI_JOB_RESULT_SHOTS, 0,
+                                               nullptr, &size),
+              QDMI_SUCCESS);
+    std::string actual(size - 1, '\0');
+    ASSERT_EQ(QDMI_job_get_results_for_program(job, i, QDMI_JOB_RESULT_SHOTS,
+                                               size, actual.data(), nullptr),
+              QDMI_SUCCESS);
+    EXPECT_EQ(actual, expected_shots.at(i));
+  }
+
   QDMI_job_free(job);
 }
 

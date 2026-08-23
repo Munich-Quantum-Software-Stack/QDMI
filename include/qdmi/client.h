@@ -590,11 +590,13 @@ int QDMI_device_query_operation_property(
  *
  *  The typical workflow for a client job is as follows:
  *  - Create a job with @ref QDMI_device_create_job.
- *  - Set parameters for the job with @ref QDMI_job_set_parameter.
+ *  - Set one program and other parameters with @ref QDMI_job_set_parameter, or
+ *  set a program list with @ref QDMI_job_set_programs.
  *  - Submit the job to the device with @ref QDMI_job_submit.
  *  - Check the status of the job with @ref QDMI_job_check.
  *  - Wait for the job to finish with @ref QDMI_job_wait.
- *  - Retrieve the results of the job with @ref QDMI_job_get_results.
+ *  - Retrieve a single program's results with @ref QDMI_job_get_results or
+ *  @ref QDMI_job_get_results_for_program.
  *  - Free the job with @ref QDMI_job_free when it is no longer used.
  *
  *  Alternatively, a client may retrieve a previously submitted job with @ref
@@ -685,6 +687,8 @@ enum QDMI_JOB_PARAMETER_T {
    * @brief `void*` The program to be executed.
    * @details This parameter is required. The program must be in the format
    * specified by the @ref QDMI_JOB_PARAMETER_PROGRAMFORMAT parameter.
+   * Setting a value replaces a list set with @ref QDMI_job_set_programs with
+   * one program.
    * If the program is invalid, the @ref QDMI_job_set_parameter function
    * must return @ref QDMI_ERROR_INVALIDARGUMENT. If the program is valid, but
    * the device cannot execute it, the @ref QDMI_job_set_parameter function must
@@ -779,6 +783,56 @@ int QDMI_job_set_parameter(QDMI_Job job, QDMI_Job_Parameter param, size_t size,
                            const void *value);
 
 /**
+ * @brief Set one or more programs for a job.
+ * @details All programs use the same exact @p format descriptor and the same
+ * shot count. On success, the driver replaces the complete program list with a
+ * deep copy of @p format, @p sizes, and the program bytes. If validation or
+ * copying fails, the existing program list remains unchanged. A driver may
+ * convert the programs to a format supported by the device. A driver that
+ * accepts a list must report its size through @ref
+ * QDMI_JOB_PROPERTY_PROGRAMSNUM and expose each result through @ref
+ * QDMI_job_get_results_for_program. A result's index equals its input program's
+ * index; execution order is unspecified. The list has one status and
+ * cancellation operation. The job is done only after all programs succeed, and
+ * one program failure fails the job. QDMI exposes no partial results.
+ * @param[in] job A handle to the job. Must not be @c NULL.
+ * @param[in] format The exact format of every program. Must point to a valid
+ * @ref QDMI_Program_Format when the driver supports program lists. It must not
+ * be @c NULL, including for a support check.
+ * @param[in] count The number of programs. Must be greater than zero when
+ * @p programs is not @c NULL. Otherwise ignored.
+ * @param[in] sizes An array of @p count program sizes in bytes. Must not be
+ * @c NULL and each size must be greater than zero when @p programs is not
+ * @c NULL. A text program's size includes its terminating NUL. Otherwise
+ * ignored.
+ * @param[in] programs An array of @p count program pointers. Each pointer must
+ * not be @c NULL. The device copies all input data before returning. If this is
+ * @c NULL, the function only checks support and does not change the job.
+ * @return @ref QDMI_SUCCESS if the driver supports program lists in @p format
+ * and, when @p programs is not @c NULL, set the complete list.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if
+ *  - @p job or @p format is @c NULL,
+ *  - the driver supports program lists and @p format is not a valid descriptor,
+ *    or
+ *  - the driver supports program lists, @p programs is not @c NULL, and @p
+ *    count is zero, @p sizes is @c NULL, an element of @p programs is @c NULL,
+ *    an element of @p sizes is zero, or a text program is not NUL-terminated.
+ * @return @ref QDMI_ERROR_NOTSUPPORTED if the arguments are valid but the
+ * driver cannot accept program lists, @p format, or one of the programs.
+ * @return @ref QDMI_ERROR_BADSTATE if programs cannot be set in the current
+ * state of the job, for example, because the job is already submitted.
+ * @return @ref QDMI_ERROR_PERMISSIONDENIED if the driver does not allow using
+ * the @ref client_job_interface "client job interface" for the device in the
+ * current session.
+ * @return @ref QDMI_ERROR_OUTOFMEM if the driver cannot copy the program list.
+ * @return @ref QDMI_ERROR_FATAL if setting the programs failed due to a fatal
+ * error.
+ */
+int QDMI_job_set_programs(QDMI_Job job, const QDMI_Program_Format *format,
+                          size_t count, const size_t *sizes,
+                          const void *const *programs);
+
+/**
  * @brief Enum of the job properties that can be queried via @ref
  * QDMI_job_query_property as part of the @ref client_interface
  * "client interface".
@@ -798,14 +852,16 @@ enum QDMI_JOB_PROPERTY_T {
   QDMI_JOB_PROPERTY_ID = 0,
   /**
    * @brief @ref QDMI_Program_Format The format of the program to be executed.
-   * @note This property returns the value of the @ref
-   * QDMI_JOB_PARAMETER_PROGRAMFORMAT parameter.
+   * @note This property returns the format set through @ref
+   * QDMI_JOB_PARAMETER_PROGRAMFORMAT or @ref QDMI_job_set_programs.
    */
   QDMI_JOB_PROPERTY_PROGRAMFORMAT = 1,
   /**
    * @brief `void*` The program to be executed.
    * @note This property returns the value of the @ref
    * QDMI_JOB_PARAMETER_PROGRAM parameter.
+   * @note A query for a multi-program job returns @ref
+   * QDMI_ERROR_NOTSUPPORTED.
    */
   QDMI_JOB_PROPERTY_PROGRAM = 2,
   /**
@@ -830,6 +886,13 @@ enum QDMI_JOB_PROPERTY_T {
    */
   QDMI_JOB_PROPERTY_QUEUEPOSITION = 4,
   /**
+   * @brief `size_t` The number of programs in the job.
+   * @details A single-program job reports one. A job has no program count until
+   * its program payload has been set; a query before that returns @ref
+   * QDMI_ERROR_BADSTATE.
+   */
+  QDMI_JOB_PROPERTY_PROGRAMSNUM = 5,
+  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -837,7 +900,7 @@ enum QDMI_JOB_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_JOB_PROPERTY_MAX = 5,
+  QDMI_JOB_PROPERTY_MAX = 6,
   /**
    * @brief This enum value is reserved for a custom parameter.
    * @details The driver defines the meaning and the type of this parameter.
@@ -920,7 +983,8 @@ int QDMI_job_query_property(QDMI_Job job, QDMI_Job_Property prop, size_t size,
  * @param[in] job The job to submit. Must not be @c NULL.
  * @return @ref QDMI_SUCCESS if the job was successfully submitted.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p job is @c NULL.
- * @return @ref QDMI_ERROR_BADSTATE if the job is in an invalid state.
+ * @return @ref QDMI_ERROR_BADSTATE if a required program or format is missing
+ * or the job was retrieved.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the driver does not allow using
  * the @ref client_job_interface "client job interface" for the device in the
  * current session.
@@ -981,7 +1045,10 @@ int QDMI_job_check(QDMI_Job job, QDMI_Job_Status *status);
 int QDMI_job_wait(QDMI_Job job, size_t timeout);
 
 /**
- * @brief Retrieve the results of a job.
+ * @brief Retrieve the results of a single-program job.
+ * @details This function returns @ref QDMI_ERROR_NOTSUPPORTED for a job that
+ * contains more than one program. Use @ref QDMI_job_get_results_for_program
+ * for a multi-program job.
  * @param[in] job The job to retrieve the results from. Must not be @c NULL.
  * @param[in] result The result to retrieve. Must be one of the values specified
  * for @ref QDMI_Job_Result.
@@ -995,6 +1062,8 @@ int QDMI_job_wait(QDMI_Job job, size_t timeout);
  * this is @c NULL, it is ignored.
  * @return @ref QDMI_SUCCESS if the device supports the specified result and,
  * when @p data is not @c NULL, the results were successfully retrieved.
+ * @return @ref QDMI_ERROR_NOTSUPPORTED if the job contains more than one
+ * program or the device does not support the specified result.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if
  *  - @p job is @c NULL,
  *  - @p job has not finished,
@@ -1032,6 +1101,44 @@ int QDMI_job_wait(QDMI_Job job, size_t timeout);
  */
 int QDMI_job_get_results(QDMI_Job job, QDMI_Job_Result result, size_t size,
                          void *data, size_t *size_ret);
+
+/**
+ * @brief Retrieve one program's results from a job.
+ * @param[in] job The job to retrieve the results from. Must not be @c NULL.
+ * @param[in] program_index The zero-based program index. Must be less than
+ * @ref QDMI_JOB_PROPERTY_PROGRAMSNUM.
+ * @param[in] result The result to retrieve. Must be one of the values specified
+ * for @ref QDMI_Job_Result.
+ * @param[in] size The size of the buffer pointed to by @p data in bytes. Must
+ * be greater than or equal to the size of the requested result, except when
+ * @p data is @c NULL, in which case it is ignored.
+ * @param[out] data The buffer in which to store the result. If this is @c NULL,
+ * it is ignored.
+ * @param[out] size_ret The required buffer size in bytes. If this is @c NULL,
+ * it is ignored.
+ * @return @ref QDMI_SUCCESS if the device supports the specified result and,
+ * when @p data is not @c NULL, retrieved it successfully.
+ * @return @ref QDMI_ERROR_NOTSUPPORTED if the driver does not support indexed
+ * retrieval or the device does not support the specified result.
+ * @return @ref QDMI_ERROR_OUTOFRANGE if @p program_index is greater than or
+ * equal to the number of programs in the job.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if
+ *  - @p job is @c NULL,
+ *  - @p job has not finished,
+ *  - @p job was canceled,
+ *  - @p result is invalid, or
+ *  - @p data is not @c NULL and @p size is too small.
+ * @return @ref QDMI_ERROR_PERMISSIONDENIED if the driver does not allow using
+ * the @ref client_job_interface "client job interface" for the device in the
+ * current session.
+ * @return @ref QDMI_ERROR_FATAL if an error occurred during retrieval.
+ *
+ * @note Calling this function with @p data set to @c NULL checks support and
+ * returns the required buffer size in @p size_ret when it is not @c NULL.
+ */
+int QDMI_job_get_results_for_program(QDMI_Job job, size_t program_index,
+                                     QDMI_Job_Result result, size_t size,
+                                     void *data, size_t *size_ret);
 
 /**
  * @brief Free a job.
