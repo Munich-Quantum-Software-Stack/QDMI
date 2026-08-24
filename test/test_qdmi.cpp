@@ -54,6 +54,8 @@ static_assert(QDMI_CUSTOM_ENUM_VALUE_MIN == 999999995);
 static_assert(QDMI_CUSTOM_ENUM_VALUE_MAX == INT32_MAX);
 static_assert(QDMI_JOB_RESULT_CUSTOM1 == QDMI_CUSTOM_ENUM_VALUE_MIN);
 static_assert(QDMI_JOB_RESULT_CUSTOM5 == QDMI_CUSTOM_ENUM_VALUE_MIN + 4);
+static_assert(QDMI_JOB_RESULT_CUSTOM_MAX == QDMI_CUSTOM_ENUM_VALUE_MAX);
+static_assert(QDMI_SESSION_PARAMETER_CUSTOM_MAX == QDMI_CUSTOM_ENUM_VALUE_MAX);
 static_assert(QDMI_VERSION_MAJOR(QDMI_MAKE_VERSION(2, 1, 3)) == 2U);
 static_assert(QDMI_VERSION_MINOR(QDMI_MAKE_VERSION(2, 1, 3)) == 1U);
 static_assert(QDMI_VERSION_PATCH(QDMI_MAKE_VERSION(2, 1, 3)) == 3U);
@@ -1068,12 +1070,11 @@ TEST_P(QDMIImplementationTest, MultiProgramJob) {
   QDMI_job_free(job);
 
   ASSERT_EQ(QDMI_device_create_job(device, &job), QDMI_SUCCESS);
-  constexpr std::array<std::string_view, 2> qir_programs{"program 0",
-                                                         "program 1"};
-  constexpr std::array<size_t, 2> qir_sizes{qir_programs[0].size() + 1,
-                                            qir_programs[1].size() + 1};
-  constexpr std::array<const void *, 2> qir_program_ptrs{
-      qir_programs[0].data(), qir_programs[1].data()};
+  const std::array<std::string, 2> qir_programs{"program 0", "program 1"};
+  const std::array<size_t, 2> qir_sizes{qir_programs[0].size() + 1,
+                                        qir_programs[1].size() + 1};
+  const std::array<const void *, 2> qir_program_ptrs{qir_programs[0].c_str(),
+                                                     qir_programs[1].c_str()};
   ASSERT_EQ(QDMI_job_set_programs(job, &QIR_BASE_TEXT_FORMAT,
                                   qir_programs.size(), qir_sizes.data(),
                                   qir_program_ptrs.data()),
