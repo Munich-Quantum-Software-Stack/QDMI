@@ -180,7 +180,7 @@ enum QDMI_SESSION_PARAMETER_T {
    * @attention The value of this enum member must not be changed to maintain
    * binary compatibility.
    */
-  QDMI_SESSION_PARAMETER_CUSTOM1 = 999999995,
+  QDMI_SESSION_PARAMETER_CUSTOM1 = QDMI_CUSTOM_ENUM_VALUE_MIN,
   /// @see QDMI_SESSION_PARAMETER_CUSTOM1
   QDMI_SESSION_PARAMETER_CUSTOM2 = 999999996,
   /// @see QDMI_SESSION_PARAMETER_CUSTOM1
@@ -295,7 +295,7 @@ enum QDMI_SESSION_PROPERTY_T {
    * @attention The value of this enum member must not be changed to maintain
    * binary compatibility.
    */
-  QDMI_SESSION_PROPERTY_CUSTOM1 = 999999995,
+  QDMI_SESSION_PROPERTY_CUSTOM1 = QDMI_CUSTOM_ENUM_VALUE_MIN,
   /// @see QDMI_SESSION_PROPERTY_CUSTOM1
   QDMI_SESSION_PROPERTY_CUSTOM2 = 999999996,
   /// @see QDMI_SESSION_PROPERTY_CUSTOM1
@@ -442,8 +442,9 @@ int QDMI_device_query_device_property(QDMI_Device device,
  * @brief Query the complete optional feature guarantees for one exact program
  * format.
  * @param[in] device The device to query. Must not be @c NULL.
- * @param[in] format A descriptor returned by @ref
- * QDMI_DEVICE_PROPERTY_SUPPORTEDPROGRAMFORMATS. Must not be @c NULL.
+ * @param[in] format A canonical descriptor equal to one returned by @ref
+ * QDMI_DEVICE_PROPERTY_SUPPORTEDPROGRAMFORMATS. The value may be reconstructed
+ * by the caller. Must not be @c NULL.
  * @param[in] size The size of @p value in bytes. Ignored when @p value is
  * @c NULL.
  * @param[out] value Storage for a list of @ref QDMI_Program_Feature records,
@@ -610,7 +611,6 @@ int QDMI_device_query_operation_property(
  *  @brief Provides functions to manage client-side jobs.
  *  @details A job is a task submitted by a client to a device for execution.
  *  Most jobs are quantum circuits to be executed on a quantum device.
- *  However, jobs can also be a different type of task, such as calibration.
  *
  *  The typical workflow for a client job is as follows:
  *  - Create a job with @ref QDMI_device_create_job.
@@ -675,6 +675,12 @@ int QDMI_device_create_job(QDMI_Device device, QDMI_Job *job);
  * historical descriptor is no longer advertised. The driver must return @ref
  * QDMI_ERROR_NOTSUPPORTED if it cannot reconstruct all of this information.
  *
+ * A translating driver must restore the exact client-submitted descriptor and
+ * its mapping to the executed descriptor. The client descriptor may no longer
+ * appear in the device's current supported-format list. A driver that cannot
+ * reconstruct this information losslessly returns @ref
+ * QDMI_ERROR_NOTSUPPORTED.
+ *
  * @param[in] device The device from which to retrieve the job. Must not be @c
  * NULL.
  * @param[in] job_id The nonempty, null-terminated ID returned by
@@ -708,8 +714,10 @@ enum QDMI_JOB_PARAMETER_T {
    * @details This parameter is required. If the device does not support the
    * specified program format, it is up to the driver to decide whether to
    * return @ref QDMI_ERROR_NOTSUPPORTED from @ref QDMI_job_set_parameter or to
-   * convert the program to a supported format. Setting the same exact
-   * descriptor keeps an existing program payload. Setting a different
+   * convert the program to a supported format. A translating driver retains the
+   * client-submitted descriptor so that properties and retrieved jobs report
+   * the client value rather than the executed device value. Setting the same
+   * exact descriptor keeps an existing program payload. Setting a different
    * supported descriptor clears the payload. Every error leaves the descriptor
    * and payload unchanged.
    */
@@ -722,6 +730,9 @@ enum QDMI_JOB_PARAMETER_T {
    * Setting a value replaces a list set with @ref QDMI_job_set_programs with
    * one deep-copied program. Every error leaves the existing program list
    * unchanged.
+   * A text program contains exactly one trailing NUL and no earlier NUL; @c
+   * size includes that NUL. A binary program is a nonempty arbitrary byte
+   * sequence. The driver validates this representation before any conversion.
    * If the program is invalid, the @ref QDMI_job_set_parameter function
    * must return @ref QDMI_ERROR_INVALIDARGUMENT. If the program is valid, but
    * the device cannot execute it, the @ref QDMI_job_set_parameter function must
@@ -747,7 +758,7 @@ enum QDMI_JOB_PARAMETER_T {
    * @attention The value of this enum member must not be changed to maintain
    * binary compatibility.
    */
-  QDMI_JOB_PARAMETER_CUSTOM1 = 999999995,
+  QDMI_JOB_PARAMETER_CUSTOM1 = QDMI_CUSTOM_ENUM_VALUE_MIN,
   /// @see QDMI_JOB_PARAMETER_CUSTOM1
   QDMI_JOB_PARAMETER_CUSTOM2 = 999999996,
   /// @see QDMI_JOB_PARAMETER_CUSTOM1
@@ -897,6 +908,9 @@ enum QDMI_JOB_PROPERTY_T {
    * @details A query returns @ref QDMI_ERROR_BADSTATE until a format is set.
    * This property returns the format set through @ref
    * QDMI_JOB_PARAMETER_PROGRAMFORMAT or @ref QDMI_job_set_programs.
+   * @note This property returns the exact client-submitted value of @ref
+   * QDMI_JOB_PARAMETER_PROGRAMFORMAT, including on a translated or retrieved
+   * job. The executed device descriptor can differ.
    */
   QDMI_JOB_PROPERTY_PROGRAMFORMAT = 1,
   /**
@@ -950,7 +964,7 @@ enum QDMI_JOB_PROPERTY_T {
    * @attention The value of this enum member must not be changed to maintain
    * binary compatibility.
    */
-  QDMI_JOB_PROPERTY_CUSTOM1 = 999999995,
+  QDMI_JOB_PROPERTY_CUSTOM1 = QDMI_CUSTOM_ENUM_VALUE_MIN,
   /// @see QDMI_JOB_PROPERTY_CUSTOM1
   QDMI_JOB_PROPERTY_CUSTOM2 = 999999996,
   /// @see QDMI_JOB_PROPERTY_CUSTOM1

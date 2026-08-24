@@ -14,8 +14,9 @@ clients compiled against a different minor or major version.
 
 ### Added
 
-- ✨ Add descriptor-scoped execution-feature queries and a format-defined
-  program-output result ([#508]) ([\@simon1hofmann], [\@burgholzer]).
+- ✨ Add descriptor-scoped execution-feature queries, exact descriptor equality,
+  and a format-defined program-output result ([#508]) ([\@simon1hofmann],
+  [\@burgholzer]).
 - ✨ Add ordered multi-program jobs with one aggregate lifecycle, indexed
   results, and required device entry points ([#509]) ([\@burgholzer]).
 
@@ -24,9 +25,12 @@ clients compiled against a different minor or major version.
 - 💥 Add a program index to `QDMI_job_get_results` and
   `QDMI_device_job_get_results`, and define atomic legacy-setter and
   multi-program retrieval semantics ([#509]) ([\@burgholzer]).
-- 💥 Replace program-format enums with exact format descriptors and define the
-  flat-bit order of shot and histogram results ([#508]) ([\@simon1hofmann],
-  [\@burgholzer]).
+- 💥 Replace program-format enums with exact format descriptors, validate text
+  and binary payload framing, and place logical output slot zero at the right of
+  shot and histogram strings ([#508]) ([\@simon1hofmann], [\@burgholzer]).
+- 💥 Treat every enum value from `999999995` through `INT32_MAX` as a valid
+  provider-defined value while keeping the intervening gap invalid ([#508])
+  ([\@simon1hofmann], [\@burgholzer]).
 - 💥 Require device libraries to export
   `QDMI_device_session_retrieve_device_job_by_id`, while allowing the function
   to return `QDMI_ERROR_NOTSUPPORTED` ([#508]) ([\@simon1hofmann],

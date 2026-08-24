@@ -290,8 +290,9 @@ QDMI_EXPORT int QDMI_device_session_query_device_property(
  * format.
  * @param[in] session The initialized session used for the query. Must not be
  * @c NULL.
- * @param[in] format A descriptor returned by @ref
- * QDMI_DEVICE_PROPERTY_SUPPORTEDPROGRAMFORMATS. Must not be @c NULL.
+ * @param[in] format A canonical descriptor equal to one returned by @ref
+ * QDMI_DEVICE_PROPERTY_SUPPORTEDPROGRAMFORMATS. The value may be reconstructed
+ * by the caller. Must not be @c NULL.
  * @param[in] size The size of @p value in bytes. Ignored when @p value is
  * @c NULL.
  * @param[out] value Storage for a list of @ref QDMI_Program_Feature records,
@@ -454,7 +455,6 @@ QDMI_EXPORT int QDMI_device_session_query_operation_property(
  *  @brief Provides functions to manage jobs on a device.
  *  @details A job is a task submitted to a device for execution.
  *  Most jobs are quantum circuits to be executed on a quantum device.
- *  However, jobs can also be a different type of task, such as calibration.
  *
  *  The typical workflow for a device job is as follows:
  *  - Create a job with @ref QDMI_device_session_create_device_job.
@@ -526,6 +526,11 @@ QDMI_device_session_create_device_job(QDMI_Device_Session session,
  * from each input index to its results. This also applies when the historical
  * descriptor is no longer advertised. The device must return @ref
  * QDMI_ERROR_NOTSUPPORTED if it cannot reconstruct all of this information.
+ *
+ * The retrieved job's properties describe the historical execution. Its exact
+ * program descriptor may no longer appear in the device's current
+ * supported-format list. A device that cannot reconstruct the historical
+ * descriptor losslessly returns @ref QDMI_ERROR_NOTSUPPORTED.
  *
  * @param[in] session The initialized session with which to retrieve the job.
  * Must not be @c NULL.
