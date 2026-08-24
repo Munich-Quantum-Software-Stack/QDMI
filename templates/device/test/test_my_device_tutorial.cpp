@@ -181,22 +181,22 @@ TEST_F(QDMIInitializedSessionTest, SubmitAndSimulateJob) {
   std::array<double, 2> probs{};
   // Null job must return INVALIDARGUMENT
   EXPECT_EQ(MY_QDMI_device_job_get_results(
-                nullptr, QDMI_JOB_RESULT_PROBABILITIES_DENSE,
+                nullptr, 0, QDMI_JOB_RESULT_PROBABILITIES_DENSE,
                 probs.size() * sizeof(double), probs.data(), nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
   // Buffer too small must return INVALIDARGUMENT
   EXPECT_EQ(MY_QDMI_device_job_get_results(
-                job, QDMI_JOB_RESULT_PROBABILITIES_DENSE,
+                job, 0, QDMI_JOB_RESULT_PROBABILITIES_DENSE,
                 (probs.size() * sizeof(double)) - 1, probs.data(), nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
   // Unsupported result type must return NOTSUPPORTED
-  EXPECT_EQ(MY_QDMI_device_job_get_results(job, QDMI_JOB_RESULT_MAX,
+  EXPECT_EQ(MY_QDMI_device_job_get_results(job, 0, QDMI_JOB_RESULT_MAX,
                                            probs.size() * sizeof(double),
                                            probs.data(), nullptr),
             QDMI_ERROR_NOTSUPPORTED);
 
   ASSERT_EQ(MY_QDMI_device_job_get_results(
-                job, QDMI_JOB_RESULT_PROBABILITIES_DENSE,
+                job, 0, QDMI_JOB_RESULT_PROBABILITIES_DENSE,
                 probs.size() * sizeof(double), probs.data(), nullptr),
             QDMI_SUCCESS)
       << "Checkpoint 4 Failed: Could not retrieve simulated job results.";

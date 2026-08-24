@@ -619,8 +619,7 @@ int QDMI_device_query_operation_property(
  *  - Submit the job to the device with @ref QDMI_job_submit.
  *  - Check the status of the job with @ref QDMI_job_check.
  *  - Wait for the job to finish with @ref QDMI_job_wait.
- *  - Retrieve a single program's results with @ref QDMI_job_get_results or
- *  @ref QDMI_job_get_results_for_program.
+ *  - Retrieve each program's results with @ref QDMI_job_get_results.
  *  - Free the job with @ref QDMI_job_free when it is no longer used.
  *
  *  Alternatively, a client may retrieve a previously submitted job with @ref
@@ -670,7 +669,11 @@ int QDMI_device_create_job(QDMI_Device device, QDMI_Job *job);
  * The job is accessed with the credentials and configuration of the current
  * session. The job ID is an identifier, not an authentication
  * credential. Parameters cannot be set on a retrieved job, and a retrieved
- * job cannot be submitted again.
+ * job cannot be submitted again. Retrieval is all-or-nothing: the driver must
+ * reconstruct the exact historical format descriptor, program count, status,
+ * and mapping from each input index to its results. This also applies when the
+ * historical descriptor is no longer advertised. The driver must return @ref
+ * QDMI_ERROR_NOTSUPPORTED if it cannot reconstruct all of this information.
  *
  * @param[in] device The device from which to retrieve the job. Must not be @c
  * NULL.
@@ -683,7 +686,8 @@ int QDMI_device_create_job(QDMI_Device device, QDMI_Job *job);
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p device, @p job_id, or @p job
  * is @c NULL, or if @p job_id is empty.
  * @return @ref QDMI_ERROR_NOTSUPPORTED if the driver or device does not
- * support retrieving existing jobs.
+ * support retrieving existing jobs or cannot reconstruct all required job
+ * metadata and result-index mappings.
  * @return @ref QDMI_ERROR_NOTFOUND if no accessible job with @p job_id exists.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the current session is not
  * permitted to access the job.
@@ -704,15 +708,20 @@ enum QDMI_JOB_PARAMETER_T {
    * @details This parameter is required. If the device does not support the
    * specified program format, it is up to the driver to decide whether to
    * return @ref QDMI_ERROR_NOTSUPPORTED from @ref QDMI_job_set_parameter or to
-   * convert the program to a supported format.
+   * convert the program to a supported format. Setting the same exact
+   * descriptor keeps an existing program payload. Setting a different
+   * supported descriptor clears the payload. Every error leaves the descriptor
+   * and payload unchanged.
    */
   QDMI_JOB_PARAMETER_PROGRAMFORMAT = 0,
   /**
    * @brief `void*` The program to be executed.
    * @details This parameter is required. The program must be in the format
    * specified by the @ref QDMI_JOB_PARAMETER_PROGRAMFORMAT parameter.
+   * Setting a program before its format returns @ref QDMI_ERROR_BADSTATE.
    * Setting a value replaces a list set with @ref QDMI_job_set_programs with
-   * one program.
+   * one deep-copied program. Every error leaves the existing program list
+   * unchanged.
    * If the program is invalid, the @ref QDMI_job_set_parameter function
    * must return @ref QDMI_ERROR_INVALIDARGUMENT. If the program is valid, but
    * the device cannot execute it, the @ref QDMI_job_set_parameter function must
@@ -775,6 +784,7 @@ typedef enum QDMI_JOB_PARAMETER_T QDMI_Job_Parameter;
  *  the parameter (if specified by the @ref QDMI_Job_Parameter documentation).
  * @return @ref QDMI_ERROR_BADSTATE if the parameter cannot be set in the
  * current state of the job, for example, because the job is already submitted.
+ * @return @ref QDMI_ERROR_OUTOFMEM if a program cannot be copied.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the driver does not allow using
  * the @ref client_job_interface "client job interface" for the device in the
  * current session.
@@ -809,38 +819,46 @@ int QDMI_job_set_parameter(QDMI_Job job, QDMI_Job_Parameter param, size_t size,
 /**
  * @brief Set one or more programs for a job.
  * @details All programs use the same exact @p format descriptor and the same
- * shot count. On success, the driver replaces the complete program list with a
- * deep copy of @p format, @p sizes, and the program bytes. If validation or
- * copying fails, the existing program list remains unchanged. A driver may
- * convert the programs to a format supported by the device. A driver that
- * accepts a list must report its size through @ref
+ * job parameters, including the shot count. On success, the driver replaces
+ * the complete program list with a deep copy of @p format, @p sizes, and the
+ * program bytes. If validation or copying fails, the existing program list
+ * remains unchanged. A driver may convert the programs to a format supported
+ * by the device. A driver may use separate underlying jobs only if it preserves
+ * the single aggregate ID, lifecycle, cancellation, and retrieval contract. A
+ * driver that accepts a list must report its size through @ref
  * QDMI_JOB_PROPERTY_PROGRAMSNUM and expose each result through @ref
- * QDMI_job_get_results_for_program. A result's index equals its input program's
- * index; execution order is unspecified. The list has one status and
- * cancellation operation. The job is done only after all programs succeed, and
- * one program failure fails the job. QDMI exposes no partial results.
+ * QDMI_job_get_results. A result's index equals its input program's index;
+ * execution order is unspecified. The list has one ID, status, wait operation,
+ * and cancellation operation. The job reaches @ref QDMI_JOB_STATUS_DONE only
+ * after all programs succeed. One program failure sets the aggregate status to
+ * @ref QDMI_JOB_STATUS_FAILED. Cancellation sets it to @ref
+ * QDMI_JOB_STATUS_CANCELED. Results are available only for a job with status
+ * @ref QDMI_JOB_STATUS_DONE; QDMI exposes no partial results.
  * @param[in] job A handle to the job. Must not be @c NULL.
  * @param[in] format The exact format of every program. Must point to a valid
  * @ref QDMI_Program_Format when the driver supports program lists. It must not
  * be @c NULL, including for a support check.
- * @param[in] count The number of programs. Must be greater than zero when
- * @p programs is not @c NULL. Otherwise ignored.
+ * @param[in] count The number of programs. Must be greater than zero. A support
+ * check succeeds only if the driver supports this exact cardinality.
  * @param[in] sizes An array of @p count program sizes in bytes. Must not be
  * @c NULL and each size must be greater than zero when @p programs is not
- * @c NULL. A text program's size includes its terminating NUL. Otherwise
- * ignored.
+ * @c NULL. A text program contains exactly one NUL, as its final byte. Binary
+ * programs are arbitrary nonempty byte sequences. When @p programs is @c NULL,
+ * @p sizes is ignored.
  * @param[in] programs An array of @p count program pointers. Each pointer must
- * not be @c NULL. The device copies all input data before returning. If this is
- * @c NULL, the function only checks support and does not change the job.
+ * not be @c NULL. The driver copies all input data before returning. If this is
+ * @c NULL, the function checks support for the exact descriptor and cardinality
+ * and does not change the job.
  * @return @ref QDMI_SUCCESS if the driver supports program lists in @p format
  * and, when @p programs is not @c NULL, set the complete list.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if
- *  - @p job or @p format is @c NULL,
+ *  - @p job or @p format is @c NULL, or @p count is zero,
  *  - the driver supports program lists and @p format is not a valid descriptor,
  *    or
  *  - the driver supports program lists, @p programs is not @c NULL, and @p
- *    count is zero, @p sizes is @c NULL, an element of @p programs is @c NULL,
- *    an element of @p sizes is zero, or a text program is not NUL-terminated.
+ *    sizes is @c NULL, an element of @p programs is @c NULL, an element of @p
+ *    sizes is zero, or a text program does not contain exactly one trailing
+ *    NUL.
  * @return @ref QDMI_ERROR_NOTSUPPORTED if the arguments are valid but the
  * driver cannot accept program lists, @p format, or one of the programs.
  * @return @ref QDMI_ERROR_BADSTATE if programs cannot be set in the current
@@ -876,7 +894,8 @@ enum QDMI_JOB_PROPERTY_T {
   QDMI_JOB_PROPERTY_ID = 0,
   /**
    * @brief @ref QDMI_Program_Format The format of the program to be executed.
-   * @note This property returns the format set through @ref
+   * @details A query returns @ref QDMI_ERROR_BADSTATE until a format is set.
+   * This property returns the format set through @ref
    * QDMI_JOB_PARAMETER_PROGRAMFORMAT or @ref QDMI_job_set_programs.
    */
   QDMI_JOB_PROPERTY_PROGRAMFORMAT = 1,
@@ -913,7 +932,7 @@ enum QDMI_JOB_PROPERTY_T {
    * @brief `size_t` The number of programs in the job.
    * @details A single-program job reports one. A job has no program count until
    * its program payload has been set; a query before that returns @ref
-   * QDMI_ERROR_BADSTATE.
+   * QDMI_ERROR_BADSTATE. The count remains stable after submission.
    */
   QDMI_JOB_PROPERTY_PROGRAMSNUM = 5,
   /**
@@ -1049,82 +1068,26 @@ int QDMI_job_check(QDMI_Job job, QDMI_Job_Status *status);
 
 /**
  * @brief Wait for a job to finish.
- * @details This function blocks until the job has either finished, has been
- * canceled, or the timeout has been reached.
+ * @details This function blocks until the job reaches @ref
+ * QDMI_JOB_STATUS_DONE, @ref QDMI_JOB_STATUS_CANCELED, or @ref
+ * QDMI_JOB_STATUS_FAILED, or until the timeout is reached. Call @ref
+ * QDMI_job_check after a successful wait to distinguish terminal states.
  * If @p timeout is not zero, this function returns latest after the specified
  * number of seconds.
  * @param[in] job The job to wait for. Must not be @c NULL.
  * @param[in] timeout The timeout in seconds.
- * If this is zero, the function waits indefinitely until the job has finished.
- * @return @ref QDMI_SUCCESS if the job is finished or canceled.
+ * If this is zero, the function waits indefinitely for a terminal state.
+ * @return @ref QDMI_SUCCESS if the job reached any terminal state.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p job is @c NULL.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the driver does not allow using
  * the @ref client_job_interface "client job interface" for the device in the
  * current session.
  * @return @ref QDMI_ERROR_TIMEOUT if @p timeout is not zero and the job did not
- *   finish within the specified time.
+ * reach a terminal state within the specified time.
  * @return @ref QDMI_ERROR_FATAL if the job could not be waited for and this
- * function returns before the job has finished or has been canceled.
+ * function returns before the job reached a terminal state.
  */
 int QDMI_job_wait(QDMI_Job job, size_t timeout);
-
-/**
- * @brief Retrieve the results of a single-program job.
- * @details This function returns @ref QDMI_ERROR_NOTSUPPORTED for a job that
- * contains more than one program. Use @ref QDMI_job_get_results_for_program
- * for a multi-program job.
- * @param[in] job The job to retrieve the results from. Must not be @c NULL.
- * @param[in] result The result to retrieve. Must be one of the values specified
- * for @ref QDMI_Job_Result.
- * @param[in] size The size of the buffer pointed to by @p data in bytes. Must
- * be greater or equal to the size of the return type specified for the @ref
- * QDMI_Job_Result @p result, except when @p data is @c NULL, in which case it
- * is ignored.
- * @param[out] data A pointer to the memory location where the results will be
- * stored. If this is @c NULL, it is ignored.
- * @param[out] size_ret The actual size of the data being queried in bytes. If
- * this is @c NULL, it is ignored.
- * @return @ref QDMI_SUCCESS if the device supports the specified result and,
- * when @p data is not @c NULL, the results were successfully retrieved.
- * @return @ref QDMI_ERROR_NOTSUPPORTED if the job contains more than one
- * program or the device does not support the specified result.
- * @return @ref QDMI_ERROR_INVALIDARGUMENT if
- *  - @p job is @c NULL,
- *  - @p job has not finished,
- *  - @p job was canceled,
- *  - @p result is invalid, or
- *  - @p data is not @c NULL and @p size is smaller than the size of the data
- *    being queried.
- * @return @ref QDMI_ERROR_PERMISSIONDENIED if the driver does not allow using
- * the @ref client_job_interface "client job interface" for the device in the
- * current session.
- * @return @ref QDMI_ERROR_FATAL if an error occurred during the retrieval.
- *
- * @note @parblock By calling this function with @p data set to @c NULL, the
- * function can be used to check if the device supports the specified result
- * without retrieving the result and without the need to provide a buffer for
- * the result. Additionally, the size of the buffer needed to retrieve the
- * result is returned in @p size_ret if @p size_ret is not @c NULL.
- *
- * For example, to query the measurement results of a quantum circuit job,
- * the following code pattern can be used:
- * @code{.cpp}
- * // Query the size of the result.
- * size_t size;
- * auto ret = QDMI_job_get_results(
- *   job, QDMI_JOB_RESULT_SHOTS, 0, nullptr, &size);
- *
- * // Allocate memory for the result.
- * std::string shots(size-1, '\0');
- *
- * // Query the result.
- * QDMI_job_get_results(
- *   job, QDMI_JOB_RESULT_SHOTS, size, shots.data(), nullptr);
- * @endcode
- * @endparblock
- */
-int QDMI_job_get_results(QDMI_Job job, QDMI_Job_Result result, size_t size,
-                         void *data, size_t *size_ret);
 
 /**
  * @brief Retrieve one program's results from a job.
@@ -1142,14 +1105,13 @@ int QDMI_job_get_results(QDMI_Job job, QDMI_Job_Result result, size_t size,
  * it is ignored.
  * @return @ref QDMI_SUCCESS if the device supports the specified result and,
  * when @p data is not @c NULL, retrieved it successfully.
- * @return @ref QDMI_ERROR_NOTSUPPORTED if the driver does not support indexed
- * retrieval or the device does not support the specified result.
+ * @return @ref QDMI_ERROR_NOTSUPPORTED if the device does not support the
+ * specified result.
  * @return @ref QDMI_ERROR_OUTOFRANGE if @p program_index is greater than or
  * equal to the number of programs in the job.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if
  *  - @p job is @c NULL,
- *  - @p job has not finished,
- *  - @p job was canceled,
+ *  - @p job does not have status @ref QDMI_JOB_STATUS_DONE,
  *  - @p result is invalid, or
  *  - @p data is not @c NULL and @p size is too small.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the driver does not allow using
@@ -1157,12 +1119,25 @@ int QDMI_job_get_results(QDMI_Job job, QDMI_Job_Result result, size_t size,
  * current session.
  * @return @ref QDMI_ERROR_FATAL if an error occurred during retrieval.
  *
- * @note Calling this function with @p data set to @c NULL checks support and
- * returns the required buffer size in @p size_ret when it is not @c NULL.
+ * @note @parblock Calling this function with @p data set to @c NULL checks
+ * support and returns the required buffer size in @p size_ret when it is not @c
+ * NULL.
+ *
+ * For example, to query the first program's measurement results:
+ * @code{.cpp}
+ * size_t size;
+ * auto ret = QDMI_job_get_results(
+ *   job, 0, QDMI_JOB_RESULT_SHOTS, 0, nullptr, &size);
+ * std::string shots(size, '\0');
+ * QDMI_job_get_results(
+ *   job, 0, QDMI_JOB_RESULT_SHOTS, size, shots.data(), nullptr);
+ * shots.pop_back();
+ * @endcode
+ * @endparblock
  */
-int QDMI_job_get_results_for_program(QDMI_Job job, size_t program_index,
-                                     QDMI_Job_Result result, size_t size,
-                                     void *data, size_t *size_ret);
+int QDMI_job_get_results(QDMI_Job job, size_t program_index,
+                         QDMI_Job_Result result, size_t size, void *data,
+                         size_t *size_ret);
 
 /**
  * @brief Free a job.

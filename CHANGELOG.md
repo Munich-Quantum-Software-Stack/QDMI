@@ -21,6 +21,9 @@ clients compiled against a different minor or major version.
 
 ### Changed
 
+- 💥 Add a program index to `QDMI_job_get_results` and
+  `QDMI_device_job_get_results`, and define atomic legacy-setter and
+  multi-program retrieval semantics ([#509]) ([\@burgholzer]).
 - 💥 Replace program-format enums with exact format descriptors and define the
   flat-bit order of shot and histogram results ([#508]) ([\@simon1hofmann],
   [\@burgholzer]).

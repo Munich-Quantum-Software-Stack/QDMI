@@ -93,9 +93,31 @@ Calibration and batch submission are no longer program formats.
 define a portable calibration trigger. Use `QDMI_job_set_programs` to submit an
 ordered program list as one job. One exact format, shot count, lifecycle, and
 job ID apply to the complete list. Retrieve each result with
-`QDMI_job_get_results_for_program`; its program index matches the input order.
-The existing `QDMI_JOB_PARAMETER_PROGRAM` parameter and result getter remain the
-single-program API.
+`QDMI_job_get_results`; its program index matches the input order. A support
+probe passes `programs == NULL` and a nonzero count. It succeeds only for that
+exact descriptor and cardinality and does not change the job. Text programs
+contain exactly one trailing NUL. Binary programs are arbitrary nonempty byte
+sequences.
+
+`QDMI_JOB_PARAMETER_PROGRAM` remains the single-program setter. It requires an
+existing format and replaces the payload with one program. Setting the same
+`QDMI_JOB_PARAMETER_PROGRAMFORMAT` keeps the payload. Setting a different
+supported format clears the payload. Failed setters leave the complete prior
+state unchanged. `QDMI_JOB_PROPERTY_PROGRAMSNUM` returns `QDMI_ERROR_BADSTATE`
+until a payload is set and then reports the exact count.
+
+The result getter now takes a zero-based program index:
+
+```c
+int QDMI_job_get_results(QDMI_Job job, size_t program_index,
+                         QDMI_Job_Result result, size_t size, void *data,
+                         size_t *size_ret);
+```
+
+Use index zero for a single-program job. A multi-program job exposes no partial
+results. Retrieval by job ID succeeds only when the implementation can restore
+the exact historical descriptor, program count, aggregate status, and result
+index mapping. Otherwise, it returns `QDMI_ERROR_NOTSUPPORTED`.
 
 `QDMI_JOB_RESULT_SHOTS` and histogram keys now describe payload-declared flat
 bit outputs. OpenQASM 2 uses `creg` declarations in source order. OpenQASM 3
@@ -113,11 +135,13 @@ shot. Older QIR or provider-defined descriptors can return
 ### Required device job symbols
 
 Every QDMI 1.4 device library must export
-`QDMI_device_session_retrieve_device_job_by_id`, `QDMI_device_job_set_programs`,
-and `QDMI_device_job_get_results_for_program`. A device can return
-`QDMI_ERROR_NOTSUPPORTED` from a function when it does not support that
-operation. Drivers no longer accept missing symbols. Add stub implementations
-before rebuilding an older device library against the QDMI 1.4 headers.
+`QDMI_device_session_retrieve_device_job_by_id` and
+`QDMI_device_job_set_programs`. The existing `QDMI_device_job_get_results`
+export now takes a program index. A device can return `QDMI_ERROR_NOTSUPPORTED`
+from retrieval or a program-list support probe when it cannot provide the
+complete contract. Drivers no longer accept missing symbols. Add stubs and
+update the result-getter signature before rebuilding an older device library
+against the QDMI 1.4 headers.
 
 ## [1.3.3]
 
