@@ -40,6 +40,9 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
   ([\@burgholzer])
 - 🔧 Leave compiler launchers and debug flags to CMake package consumers
   ([#538]) ([\@burgholzer])
+- 💥 Add a program index to `QDMI_job_get_results` and
+  `QDMI_device_job_get_results`, and define atomic legacy-setter and
+  multi-program retrieval semantics ([#509]) ([\@burgholzer]).
 - 💥 Drop x86 macOS from QDMI's tested platforms ([#515]) ([\@denialhaag])
 - ⬆️ Raise generated device projects' macOS deployment target to 13.3 ([#515])
   ([\@denialhaag])
