@@ -27,7 +27,8 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 - ✨ Add optional target-specific export control for device and client libraries
   ([#559]) ([\@marcelwa])
 - ✨ Add ordered multi-program jobs with one aggregate lifecycle, indexed
-  results, and required device entry points ([#509]) ([\@burgholzer]).
+  results, and required device entry points ([#509]) ([\@ystade],
+  [\@burgholzer]).
 
 ### Changed
 
@@ -41,8 +42,9 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 - 🔧 Leave compiler launchers and debug flags to CMake package consumers
   ([#538]) ([\@burgholzer])
 - 💥 Add a program index to `QDMI_job_get_results` and
-  `QDMI_device_job_get_results`, and define atomic legacy-setter and
-  multi-program retrieval semantics ([#509]) ([\@burgholzer]).
+  `QDMI_device_job_get_results`; remove the single-program job parameters; and
+  define atomic multi-program retrieval semantics ([#509]) ([\@ystade],
+  [\@burgholzer]).
 - 💥 Drop x86 macOS from QDMI's tested platforms ([#515]) ([\@denialhaag])
 - ⬆️ Raise generated device projects' macOS deployment target to 13.3 ([#515])
   ([\@denialhaag])
