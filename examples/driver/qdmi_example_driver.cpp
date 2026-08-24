@@ -228,7 +228,8 @@ void QDMI_library_load(
   LOAD_SYMBOL(*library, prefix, device_session_free)
   LOAD_SYMBOL(*library, prefix, device_session_set_parameter)
   LOAD_SYMBOL(*library, prefix, device_session_create_device_job)
-  LOAD_OPTIONAL_SYMBOL(*library, prefix, device_session_retrieve_device_job_by_id)
+  LOAD_OPTIONAL_SYMBOL(*library, prefix,
+                       device_session_retrieve_device_job_by_id)
   LOAD_SYMBOL(*library, prefix, device_job_free)
   LOAD_SYMBOL(*library, prefix, device_job_set_parameter)
   LOAD_SYMBOL(*library, prefix, device_job_query_property)

@@ -23,9 +23,10 @@
 
 #pragma once
 
-#include "qdmi/constants.h" // IWYU pragma: export
-#include "qdmi/export.h"    // IWYU pragma: export
-#include "qdmi/types.h"     // IWYU pragma: export
+#include "qdmi/client_version.h" // IWYU pragma: export
+#include "qdmi/constants.h"      // IWYU pragma: export
+#include "qdmi/export.h"         // IWYU pragma: export
+#include "qdmi/types.h"          // IWYU pragma: export
 
 #ifdef __cplusplus
 #include <cstddef>
@@ -66,8 +67,11 @@ extern "C" {
  * @{
  */
 
-/** Client Interface ABI implemented by compatible QDMI 1.4 drivers. */
-#define QDMI_CLIENT_ABI_VERSION QDMI_MAKE_VERSION(1, 4, 0)
+/**
+ * @def QDMI_CLIENT_ABI_VERSION
+ * @brief Client Interface ABI implemented by compatible QDMI drivers.
+ * @details CMake derives this value from the QDMI release version.
+ */
 
 /**
  * @brief Return the Client Interface ABI implemented by the driver.
@@ -75,9 +79,8 @@ extern "C" {
  * and does not initialize global driver state. A returned ABI is compatible
  * with @ref QDMI_CLIENT_ABI_VERSION if and only if both versions have the same
  * major and minor fields. A loader must ignore the patch field when it decides
- * compatibility. A different major or minor field is incompatible. This ABI
- * version is independent of the QDMI release version and of device library
- * versions.
+ * compatibility. A different major or minor field is incompatible. Device
+ * library versions remain independent of this version.
  * @return The packed Client Interface ABI version.
  */
 QDMI_DRIVER_EXPORT uint32_t QDMI_driver_get_client_abi_version(void);
@@ -1076,8 +1079,9 @@ QDMI_DRIVER_EXPORT int QDMI_job_wait(QDMI_Job job, size_t timeout);
  * @endcode
  * @endparblock
  */
-QDMI_DRIVER_EXPORT int QDMI_job_get_results(QDMI_Job job, QDMI_Job_Result result, size_t size,
-                         void *data, size_t *size_ret);
+QDMI_DRIVER_EXPORT int QDMI_job_get_results(QDMI_Job job,
+                                            QDMI_Job_Result result, size_t size,
+                                            void *data, size_t *size_ret);
 
 /**
  * @brief Free a job.

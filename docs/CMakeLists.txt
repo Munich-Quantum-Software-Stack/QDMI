@@ -22,7 +22,8 @@ set(DOXYGEN_CONFIG_FILE_IN ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in)
 
 # Set the input directories for doxygen, i.e., all files that contain source
 # code with documentation.
-set(DOXYGEN_INPUT_DIRS ${PROJECT_SOURCE_DIR}/include)
+set(DOXYGEN_INPUT_DIRS ${PROJECT_SOURCE_DIR}/include
+                       ${QDMI_GENERATED_INCLUDE_BUILD_DIR})
 # This variable is only needed to setup the dependency tracking of CMake
 # correctly and is not passed to Doxygen. Whenever such a file is modified,
 # CMake detects that change and will rerun the Doxygen command instead of using
@@ -31,6 +32,7 @@ file(
   GLOB_RECURSE
   DOXYGEN_INPUT_FILES
   ${PROJECT_SOURCE_DIR}/include/*.h
+  ${QDMI_GENERATED_INCLUDE_BUILD_DIR}/*.h
   ${CMAKE_CURRENT_SOURCE_DIR}/*.md
   ${PROJECT_SOURCE_DIR}/CHANGELOG.md
   ${PROJECT_SOURCE_DIR}/UPGRADING.md

@@ -24,7 +24,6 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 - 💥 Make Client session allocation initialize drivers lazily and remove the
   example driver's separate initialization and shutdown functions ([#511])
   ([\@burgholzer]).
-
 - 💥 Drop x86 macOS from QDMI's tested platforms ([#515]) ([\@denialhaag])
 - ⬆️ Raise generated device projects' macOS deployment target to 13.3 ([#515])
   ([\@denialhaag])

@@ -17,8 +17,8 @@ Interface before it allocates a session. The returned ABI is compatible if and
 only if its packed major and minor fields equal those of
 `QDMI_CLIENT_ABI_VERSION`. Ignore the patch field when checking compatibility. A
 different major or minor field is incompatible. QDMI 1.4 defines
-`QDMI_CLIENT_ABI_VERSION` as 1.4.0. The ABI version is separate from the QDMI
-release and device library versions.
+`QDMI_CLIENT_ABI_VERSION` as 1.4.0. CMake derives the ABI version from the QDMI
+release version. Device library versions remain independent.
 
 The ABI version query does not initialize the driver. `QDMI_session_alloc` is
 the first stateful Client call. It initializes the driver lazily, sets its
