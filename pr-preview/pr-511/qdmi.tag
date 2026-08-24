@@ -7,13 +7,6 @@
     <includes id="constants_8h" name="constants.h" local="yes" import="no" module="no" objc="no">qdmi/constants.h</includes>
     <includes id="export_8h" name="export.h" local="yes" import="no" module="no" objc="no">qdmi/export.h</includes>
     <includes id="types_8h" name="types.h" local="yes" import="no" module="no" objc="no">qdmi/types.h</includes>
-    <member kind="define">
-      <type>#define</type>
-      <name>QDMI_CLIENT_ABI_VERSION</name>
-      <anchorfile>group__client__interface.html</anchorfile>
-      <anchor>gadf3d2c0eb6fa2315db6ff6f82e08b113</anchor>
-      <arglist></arglist>
-    </member>
     <member kind="typedef">
       <type>struct QDMI_Device_impl_d *</type>
       <name>QDMI_Device</name>
@@ -214,12 +207,6 @@
       <name>QDMI_JOB_PARAMETER_PROGRAMFORMAT</name>
       <anchorfile>group__client__job__interface.html</anchorfile>
       <anchor>gga1e7131664b094eb409d0f44d731f51f5ad0b4fad39ff9935e76bcd888cfca908b</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>QDMI_JOB_PARAMETER_PROGRAM</name>
-      <anchorfile>group__client__job__interface.html</anchorfile>
-      <anchor>gga1e7131664b094eb409d0f44d731f51f5ac44c5d28aada4f1a1628c45805747998</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
@@ -969,12 +956,6 @@
       <name>QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT</name>
       <anchorfile>constants_8h.html</anchorfile>
       <anchor>a40dd25c531ebf99fb4b46469083b609ea5ee9218fc51cbd01765619467b90056f</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>QDMI_DEVICE_JOB_PARAMETER_PROGRAM</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>a40dd25c531ebf99fb4b46469083b609ea7ef134726b7ec6f0855c0d8171e44dd3</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
@@ -2336,12 +2317,6 @@
       <name>QDMI_JOB_PARAMETER_PROGRAMFORMAT</name>
       <anchorfile>group__client__job__interface.html</anchorfile>
       <anchor>gga1e7131664b094eb409d0f44d731f51f5ad0b4fad39ff9935e76bcd888cfca908b</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>QDMI_JOB_PARAMETER_PROGRAM</name>
-      <anchorfile>group__client__job__interface.html</anchorfile>
-      <anchor>gga1e7131664b094eb409d0f44d731f51f5ac44c5d28aada4f1a1628c45805747998</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">

@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=11" />
     <meta name="generator" content="Doxygen 1.16.1" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>QDMI: types.h File Reference</title>
+    <title>QDMI: build/include/qdmi Directory Reference</title>
     <link href="tabs.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="jquery.js"></script>
     <script type="text/javascript" src="dynsections.js"></script>
@@ -155,7 +155,7 @@ $(function() {
   </div>
 </div>
 <script type="text/javascript">
-$(function(){initNavTree('types_8h.html','',''); });
+$(function(){initNavTree('dir_9cd947fdfc01699634c8a2ccc8255bf3.html','',''); });
 </script>
 <div id="container">
 <div id="doc-content">
@@ -181,62 +181,14 @@ $(function(){initNavTree('types_8h.html','',''); });
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">types.h File Reference</div></div>
+  <div class="headertitle"><div class="title">qdmi Directory Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Description</h2>
-<div class="textblock"><p>Defines all types used within QDMI across the <a class="el" href="group__client__interface.html" title="QDMI Client Interface">QDMI Client Interface</a> and the <a class="el" href="group__device__interface.html" title="QDMI Device Interface">QDMI Device Interface</a>. </p>
-</div>
-<p><a href="types_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 id="header-typedef-members" class="groupheader"><a id="typedef-members" name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:ab26279159380e378f258cb663968b9ec" id="r_ab26279159380e378f258cb663968b9ec"><td class="memItemLeft">typedef struct QDMI_Site_impl_d *&#160;</td><td class="memItemRight"><a class="el" href="#ab26279159380e378f258cb663968b9ec">QDMI_Site</a></td></tr>
-<tr class="memdesc:ab26279159380e378f258cb663968b9ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">A handle for a site.  <br /></td></tr>
-<tr class="memitem:ae777e8f92186c1e6f836eeaa53b149d7" id="r_ae777e8f92186c1e6f836eeaa53b149d7"><td class="memItemLeft">typedef struct QDMI_Operation_impl_d *&#160;</td><td class="memItemRight"><a class="el" href="#ae777e8f92186c1e6f836eeaa53b149d7">QDMI_Operation</a></td></tr>
-<tr class="memdesc:ae777e8f92186c1e6f836eeaa53b149d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">A handle for an operation.  <br /></td></tr>
+<tr class="heading"><td colspan="2"><h2 id="header-files" class="groupheader"><a id="files" name="files"></a>
+Files</h2></td></tr>
+<tr class="memitem:client_5Fversion_2Eh" id="r_client_5Fversion_2Eh"><td class="memItemLeft"><a href="client__version_8h_source.html"><span class="icondoc"><div class="doc-icon"></div></span></a>&#160;</td><td class="memItemRight"><b>client_version.h</b></td></tr>
 </table>
-<a name="doc-typedef-members" id="doc-typedef-members"></a><h2 id="header-doc-typedef-members" class="groupheader">Typedef Documentation</h2>
-<a id="ab26279159380e378f258cb663968b9ec" name="ab26279159380e378f258cb663968b9ec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab26279159380e378f258cb663968b9ec">&#9670;&#160;</a></span>QDMI_Site</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct QDMI_Site_impl_d* <a class="el" href="#ab26279159380e378f258cb663968b9ec">QDMI_Site</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>A handle for a site. </p>
-<p>An opaque pointer to an implementation of the QDMI site concept. A site is a place that can potentially hold a qubit. In case of superconducting qubits, sites can be used synonymously with qubits. In case of neutral atoms, sites represent individual traps that can confine atoms. Those atoms are then used as qubits. To this end, sites are generalizations of qubits that denote locations where qubits can be placed on a device. Each implementation of the <a class="el" href="group__device__interface.html" title="QDMI Device Interface">QDMI Device Interface</a> defines the actual implementation of the concept.</p>
-<p>A simple example of an implementation is a struct that merely contains the site ID, which can be used to identify the site. </p><div class="fragment"><div class="line"><span class="keyword">struct </span>QDMI_Site_impl_d {</div>
-<div class="line">  <span class="keywordtype">size_t</span> id;</div>
-<div class="line">};</div>
-</div><!-- fragment --> 
-</div>
-</div>
-<a id="ae777e8f92186c1e6f836eeaa53b149d7" name="ae777e8f92186c1e6f836eeaa53b149d7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae777e8f92186c1e6f836eeaa53b149d7">&#9670;&#160;</a></span>QDMI_Operation</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct QDMI_Operation_impl_d* <a class="el" href="#ae777e8f92186c1e6f836eeaa53b149d7">QDMI_Operation</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>A handle for an operation. </p>
-<p>An opaque pointer to an implementation of the QDMI operation concept. An operation generally represents any instruction that can be executed on a device. This includes gates, measurements, classical control flow elements, movement of qubits, pulse-level instructions, etc. Each implementation of the <a class="el" href="group__device__interface.html" title="QDMI Device Interface">QDMI Device Interface</a> defines the actual implementation of the concept.</p>
-<p>A simple example of an implementation is a struct that merely contains the name of the operation, which can be used to identify the operation. </p><div class="fragment"><div class="line"><span class="keyword">struct </span>QDMI_Operation_impl_d {</div>
-<div class="line">  std::string name;</div>
-<div class="line">};</div>
-</div><!-- fragment --> 
-</div>
-</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <div id="page-nav" class="page-nav-panel">
@@ -250,7 +202,7 @@ Typedefs</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a href="types_8h.html">types.h</a></li>
+    <li class="navelem"><b>build</b></li><li class="navelem"><b>include</b></li><li class="navelem"><b>qdmi</b></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.16.1 </li>
   </ul>
 </div>

@@ -117,7 +117,7 @@
                 <td id="projectalign">
                   <div id="projectname">
                     QDMI<span id="projectnumber"
-                      >&#160;v1.3.4-dev</span
+                      >&#160;v1.4.0-dev</span
                     >
                   </div>
                   <div id="projectbrief">Quantum Device Management Interface</div>
@@ -206,6 +206,7 @@ Interfaces</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 id="header-define-members" class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:gadf3d2c0eb6fa2315db6ff6f82e08b113" id="r_gadf3d2c0eb6fa2315db6ff6f82e08b113"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#gadf3d2c0eb6fa2315db6ff6f82e08b113">QDMI_CLIENT_ABI_VERSION</a>&#160;&#160;&#160;<a class="el" href="constants_8h.html#a6afe2f84f9b78688ebcb684424b81319">QDMI_MAKE_VERSION</a>(1, 4, 0)</td></tr>
+<tr class="memdesc:gadf3d2c0eb6fa2315db6ff6f82e08b113"><td class="mdescLeft">&#160;</td><td class="mdescRight">Client Interface ABI implemented by compatible QDMI drivers.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-typedef-members" class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -229,7 +230,9 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Client Interface ABI implemented by compatible QDMI 1.4 drivers. </p>
+
+<p>Client Interface ABI implemented by compatible QDMI drivers. </p>
+<p>CMake derives this value from the QDMI release version. </p>
 
 </div>
 </div>
@@ -268,7 +271,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Return the Client Interface ABI implemented by the driver. </p>
-<p>This function has no side effects, is safe to call concurrently, and does not initialize global driver state. A returned ABI is compatible with <a class="el" href="#gadf3d2c0eb6fa2315db6ff6f82e08b113" title="QDMI_CLIENT_ABI_VERSION">QDMI_CLIENT_ABI_VERSION</a> if and only if both versions have the same major and minor fields. A loader must ignore the patch field when it decides compatibility. A different major or minor field is incompatible. This ABI version is independent of the QDMI release version and of device library versions. </p><dl class="section return"><dt>Returns</dt><dd>The packed Client Interface ABI version. </dd></dl>
+<p>This function has no side effects, is safe to call concurrently, and does not initialize global driver state. A returned ABI is compatible with <a class="el" href="#gadf3d2c0eb6fa2315db6ff6f82e08b113" title="QDMI_CLIENT_ABI_VERSION">QDMI_CLIENT_ABI_VERSION</a> if and only if both versions have the same major and minor fields. A loader must ignore the patch field when it decides compatibility. A different major or minor field is incompatible. Device library versions remain independent of this version. </p><dl class="section return"><dt>Returns</dt><dd>The packed Client Interface ABI version. </dd></dl>
 
 </div>
 </div>

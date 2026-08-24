@@ -1,6 +1,5 @@
 var client_8h =
 [
-    [ "QDMI_CLIENT_ABI_VERSION", "group__client__interface.html#gadf3d2c0eb6fa2315db6ff6f82e08b113", null ],
     [ "QDMI_Device", "group__client__interface.html#ga2772c94ab19957ce5aaef652b626baec", null ],
     [ "QDMI_Session", "group__client__session__interface.html#ga4dd0162b0321d12934f815f29504106e", null ],
     [ "QDMI_Session_Parameter", "group__client__session__interface.html#gaae2a513b3364705ca75f709215d912f5", null ],
@@ -35,7 +34,6 @@ var client_8h =
     ] ],
     [ "QDMI_JOB_PARAMETER_T", "group__client__job__interface.html#ga1e7131664b094eb409d0f44d731f51f5", [
       [ "QDMI_JOB_PARAMETER_PROGRAMFORMAT", "group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5ad0b4fad39ff9935e76bcd888cfca908b", null ],
-      [ "QDMI_JOB_PARAMETER_PROGRAM", "group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5ac44c5d28aada4f1a1628c45805747998", null ],
       [ "QDMI_JOB_PARAMETER_SHOTSNUM", "group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5a21a7c498f22ef05c9a72f354f6f89a81", null ],
       [ "QDMI_JOB_PARAMETER_MAX", "group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5aa94ff18351f57072ad1e9223583ff978", null ],
       [ "QDMI_JOB_PARAMETER_CUSTOM1", "group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5a06fddbae216743659f3268c0e31554c8", null ],
