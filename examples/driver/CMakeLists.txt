@@ -18,12 +18,14 @@
 # add C++ language support
 enable_language(CXX)
 
-add_library(qdmi_example_driver qdmi_example_driver.cpp qdmi_example_driver.h)
+add_library(qdmi_example_driver SHARED qdmi_example_driver.cpp)
 target_link_libraries(qdmi_example_driver PRIVATE qdmi::qdmi
                                                   qdmi::qdmi_project_warnings)
-target_include_directories(qdmi_example_driver
-                           PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_compile_definitions(qdmi_example_driver PRIVATE QDMI_driver_EXPORTS)
 target_compile_features(qdmi_example_driver PRIVATE cxx_std_20)
-set_target_properties(qdmi_example_driver PROPERTIES POSITION_INDEPENDENT_CODE
-                                                     ON)
+set_target_properties(
+  qdmi_example_driver
+  PROPERTIES CXX_VISIBILITY_PRESET hidden
+             VISIBILITY_INLINES_HIDDEN 1
+             POSITION_INDEPENDENT_CODE ON)
 add_library(qdmi::example_driver ALIAS qdmi_example_driver)
