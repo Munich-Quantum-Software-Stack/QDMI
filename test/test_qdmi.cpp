@@ -40,6 +40,7 @@ extern "C" {
 #include <stdlib.h>
 }
 #include <string>
+#include <string_view>
 #include <tuple>
 #include <unordered_map>
 #include <unordered_set>
@@ -47,6 +48,9 @@ extern "C" {
 #include <vector>
 
 namespace {
+constexpr auto QASM2_FORMAT = QDMI_PROGRAM_FORMAT_QASM2;
+constexpr auto QIR_BASE_TEXT_FORMAT = QDMI_PROGRAM_FORMAT_QIRBASESTRING;
+constexpr auto QIR_BASE_BINARY_FORMAT = QDMI_PROGRAM_FORMAT_QIRBASEMODULE;
 /// Hash function for a pair
 struct Pair_hash {
   template <class T, class U>
@@ -549,8 +553,10 @@ TEST_P(QDMIImplementationTest, JobLifecycle) {
             QDMI_SUCCESS);
   EXPECT_EQ(shots, 5);
   constexpr std::string_view program{"OPENQASM 2.0;\nqreg q[1];\n"};
-  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAM,
-                                   program.size() + 1, program.data()),
+  const size_t program_size = program.size() + 1;
+  const void *program_data = program.data();
+  ASSERT_EQ(QDMI_job_set_programs(job, &QASM2_FORMAT, 1, &program_size,
+                                  &program_data),
             QDMI_SUCCESS);
   // Queue position is optional and is not supported by the example device.
   EXPECT_EQ(QDMI_job_query_property(job, QDMI_JOB_PROPERTY_QUEUEPOSITION, 0,
@@ -610,15 +616,11 @@ TEST_P(QDMIImplementationTest, MultiProgramJob) {
   EXPECT_EQ(QDMI_job_set_programs(job, nullptr, programs.size(), sizes.data(),
                                   program_ptrs.data()),
             QDMI_ERROR_INVALIDARGUMENT);
-  constexpr QDMI_Program_Format invalid_format{};
+  constexpr QDMI_Program_Format invalid_format = QDMI_PROGRAM_FORMAT_MAX;
   EXPECT_EQ(QDMI_job_set_programs(job, &invalid_format, programs.size(),
                                   sizes.data(), program_ptrs.data()),
             QDMI_ERROR_INVALIDARGUMENT);
-  constexpr QDMI_Program_Format unsupported_format{
-      .version = QDMI_MAKE_VERSION(3, 0, 0),
-      .encoding = QDMI_PROGRAM_ENCODING_TEXT,
-      .id = "openqasm",
-      .profile = ""};
+  constexpr QDMI_Program_Format unsupported_format = QDMI_PROGRAM_FORMAT_QASM3;
   EXPECT_EQ(QDMI_job_set_programs(job, &unsupported_format, programs.size(),
                                   sizes.data(), program_ptrs.data()),
             QDMI_ERROR_NOTSUPPORTED);
@@ -637,18 +639,10 @@ TEST_P(QDMIImplementationTest, MultiProgramJob) {
                                   program_ptrs.data()),
             QDMI_ERROR_INVALIDARGUMENT);
 
-  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAM,
-                                   programs.at(0).size() + 1,
-                                   programs.at(0).c_str()),
-            QDMI_ERROR_BADSTATE);
   EXPECT_EQ(QDMI_job_submit(job), QDMI_ERROR_BADSTATE);
 
-  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
-                                   sizeof(QDMI_Program_Format), &QASM2_FORMAT),
-            QDMI_SUCCESS);
-  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAM,
-                                   programs.front().size() + 1,
-                                   programs.front().c_str()),
+  ASSERT_EQ(QDMI_job_set_programs(job, &QASM2_FORMAT, 1, sizes.data(),
+                                  program_ptrs.data()),
             QDMI_SUCCESS);
   size_t program_count = 0;
   ASSERT_EQ(QDMI_job_query_property(job, QDMI_JOB_PROPERTY_PROGRAMSNUM,
@@ -676,14 +670,10 @@ TEST_P(QDMIImplementationTest, MultiProgramJob) {
                                     sizeof(QDMI_Program_Format), &format,
                                     nullptr),
             QDMI_SUCCESS);
-  EXPECT_TRUE(Same_format(format, QIR_BASE_TEXT_FORMAT));
+  EXPECT_EQ(format, QIR_BASE_TEXT_FORMAT);
 
-  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
-                                   sizeof(QDMI_Program_Format), &QASM2_FORMAT),
-            QDMI_SUCCESS);
-  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAM,
-                                   programs.front().size() + 1,
-                                   programs.front().c_str()),
+  ASSERT_EQ(QDMI_job_set_programs(job, &QASM2_FORMAT, 1, sizes.data(),
+                                  program_ptrs.data()),
             QDMI_SUCCESS);
 
   EXPECT_EQ(
@@ -693,7 +683,7 @@ TEST_P(QDMIImplementationTest, MultiProgramJob) {
                                     sizeof(QDMI_Program_Format), &format,
                                     nullptr),
             QDMI_SUCCESS);
-  EXPECT_TRUE(Same_format(format, QASM2_FORMAT));
+  EXPECT_EQ(format, QASM2_FORMAT);
 
   auto invalid_programs = program_ptrs;
   invalid_programs.at(1) = nullptr;
@@ -720,7 +710,7 @@ TEST_P(QDMIImplementationTest, MultiProgramJob) {
                                     sizeof(QDMI_Program_Format), &format,
                                     nullptr),
             QDMI_SUCCESS);
-  EXPECT_TRUE(Same_format(format, QASM2_FORMAT));
+  EXPECT_EQ(format, QASM2_FORMAT);
 
   ASSERT_EQ(QDMI_job_set_programs(job, &QASM2_FORMAT, programs.size(),
                                   sizes.data(), program_ptrs.data()),
@@ -730,9 +720,8 @@ TEST_P(QDMIImplementationTest, MultiProgramJob) {
             QDMI_SUCCESS);
   EXPECT_EQ(program_count, programs.size());
 
-  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAM,
-                                   programs.at(0).size() + 1,
-                                   programs.at(0).c_str()),
+  ASSERT_EQ(QDMI_job_set_programs(job, &QASM2_FORMAT, 1, sizes.data(),
+                                  program_ptrs.data()),
             QDMI_SUCCESS);
   ASSERT_EQ(QDMI_job_query_property(job, QDMI_JOB_PROPERTY_PROGRAMSNUM,
                                     sizeof(size_t), &program_count, nullptr),
@@ -779,6 +768,7 @@ TEST_P(QDMIImplementationTest, MultiProgramJob) {
             QDMI_ERROR_OUTOFRANGE);
 
   constexpr std::array<std::string_view, 3> expected_shots{"01", "10", "11"};
+  const FoMaC fomac(device);
   for (size_t i = 0; i < programs.size(); ++i) {
     size_t size = 0;
     ASSERT_EQ(
@@ -789,7 +779,8 @@ TEST_P(QDMIImplementationTest, MultiProgramJob) {
                                    actual.data(), nullptr),
               QDMI_SUCCESS);
     actual.pop_back();
-    EXPECT_EQ(actual, expected_shots.at(i));
+    EXPECT_EQ(actual, std::string(fomac.get_qubits_num() - 2, '0') +
+                          std::string(expected_shots.at(i)));
   }
 
   QDMI_job_free(job);
@@ -812,12 +803,12 @@ TEST_P(QDMIImplementationTest, MultiProgramJob) {
   std::array<std::vector<char>, qir_programs.size()> outputs;
   for (size_t i = 0; i < qir_programs.size(); ++i) {
     size_t output_size = 0;
-    ASSERT_EQ(QDMI_job_get_results(job, i, QDMI_JOB_RESULT_PROGRAMOUTPUT, 0,
-                                   nullptr, &output_size),
+    ASSERT_EQ(QDMI_job_get_results(job, i, QDMI_JOB_RESULT_SHOTS, 0, nullptr,
+                                   &output_size),
               QDMI_SUCCESS);
     outputs[i].resize(output_size);
-    ASSERT_EQ(QDMI_job_get_results(job, i, QDMI_JOB_RESULT_PROGRAMOUTPUT,
-                                   output_size, outputs[i].data(), nullptr),
+    ASSERT_EQ(QDMI_job_get_results(job, i, QDMI_JOB_RESULT_SHOTS, output_size,
+                                   outputs[i].data(), nullptr),
               QDMI_SUCCESS);
   }
   EXPECT_NE(outputs[0], outputs[1]);
@@ -839,10 +830,53 @@ TEST_P(QDMIImplementationTest, MultiProgramJob) {
   QDMI_Job_Status canceled_status{};
   ASSERT_EQ(QDMI_job_check(job, &canceled_status), QDMI_SUCCESS);
   EXPECT_EQ(canceled_status, QDMI_JOB_STATUS_CANCELED);
-  EXPECT_EQ(QDMI_job_get_results(job, 0, QDMI_JOB_RESULT_PROGRAMOUTPUT, 0,
-                                 nullptr, nullptr),
-            QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_EQ(
+      QDMI_job_get_results(job, 0, QDMI_JOB_RESULT_SHOTS, 0, nullptr, nullptr),
+      QDMI_ERROR_INVALIDARGUMENT);
   QDMI_job_free(job);
+}
+
+TEST_P(QDMIImplementationTest, ValidatesProgramPayloadEncoding) {
+  if (mode == TEST_SESSION_MODE::READONLY) {
+    GTEST_SKIP() << "Skipping test for read-only session";
+  }
+
+  QDMI_Job text_job = nullptr;
+  ASSERT_EQ(QDMI_device_create_job(device, &text_job), QDMI_SUCCESS);
+  constexpr std::array<char, 3> valid_text{'x', 'y', '\0'};
+  const void *valid_text_data = valid_text.data();
+  const size_t valid_text_size = valid_text.size();
+  constexpr std::array<char, 2> unterminated_text{'x', 'y'};
+  const void *unterminated_text_data = unterminated_text.data();
+  const size_t unterminated_text_size = unterminated_text.size();
+  EXPECT_EQ(QDMI_job_set_programs(text_job, &QASM2_FORMAT, 1,
+                                  &unterminated_text_size,
+                                  &unterminated_text_data),
+            QDMI_ERROR_INVALIDARGUMENT);
+  constexpr std::array<char, 4> embedded_nul{'x', '\0', 'y', '\0'};
+  const void *embedded_nul_data = embedded_nul.data();
+  const size_t embedded_nul_size = embedded_nul.size();
+  EXPECT_EQ(QDMI_job_set_programs(text_job, &QASM2_FORMAT, 1,
+                                  &embedded_nul_size, &embedded_nul_data),
+            QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_EQ(QDMI_job_set_programs(text_job, &QASM2_FORMAT, 1, &valid_text_size,
+                                  &valid_text_data),
+            QDMI_SUCCESS);
+  QDMI_job_free(text_job);
+
+  QDMI_Job binary_job = nullptr;
+  ASSERT_EQ(QDMI_device_create_job(device, &binary_job), QDMI_SUCCESS);
+  constexpr std::array<unsigned char, 3> binary{0U, 0xFFU, 0U};
+  const void *binary_data = binary.data();
+  constexpr size_t empty_binary_size = 0;
+  EXPECT_EQ(QDMI_job_set_programs(binary_job, &QIR_BASE_BINARY_FORMAT, 1,
+                                  &empty_binary_size, &binary_data),
+            QDMI_ERROR_INVALIDARGUMENT);
+  const size_t binary_size = binary.size();
+  EXPECT_EQ(QDMI_job_set_programs(binary_job, &QIR_BASE_BINARY_FORMAT, 1,
+                                  &binary_size, &binary_data),
+            QDMI_SUCCESS);
+  QDMI_job_free(binary_job);
 }
 
 TEST_P(QDMIImplementationTest, ToolCompile) {
@@ -879,14 +913,11 @@ measure q -> c;
   )";
   QDMI_Job job = nullptr;
   EXPECT_EQ(QDMI_device_create_job(dev, &job), QDMI_SUCCESS);
-  const auto format = QDMI_PROGRAM_FORMAT_QASM2;
-  EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
-                                   sizeof(QDMI_Program_Format), &format),
-            QDMI_SUCCESS);
-  EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAM,
-                                   TEST_CIRCUIT.size() + 1,
-                                   TEST_CIRCUIT.c_str()),
-            QDMI_SUCCESS);
+  const size_t program_size = TEST_CIRCUIT.size() + 1;
+  const void *program = TEST_CIRCUIT.c_str();
+  EXPECT_EQ(
+      QDMI_job_set_programs(job, &QASM2_FORMAT, 1, &program_size, &program),
+      QDMI_SUCCESS);
   if (num_shots > 0) {
     EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_SHOTSNUM,
                                      sizeof(size_t), &num_shots),

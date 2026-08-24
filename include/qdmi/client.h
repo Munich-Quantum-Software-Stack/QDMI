@@ -646,9 +646,9 @@ int QDMI_device_create_job(QDMI_Device device, QDMI_Job *job);
  * session. The job ID is an identifier, not an authentication
  * credential. Parameters cannot be set on a retrieved job, and a retrieved
  * job cannot be submitted again. Retrieval is all-or-nothing: the driver must
- * reconstruct the exact historical format descriptor, program count, status,
+ * reconstruct the exact historical format enum value, program count, status,
  * and mapping from each input index to its results. This also applies when the
- * historical descriptor is no longer advertised. The driver must return @ref
+ * historical format is no longer advertised. The driver must return @ref
  * QDMI_ERROR_NOTSUPPORTED if it cannot reconstruct all of this information.
  *
  * @param[in] device The device from which to retrieve the job. Must not be @c
@@ -685,30 +685,16 @@ enum QDMI_JOB_PARAMETER_T {
    * specified program format, it is up to the driver to decide whether to
    * return @ref QDMI_ERROR_NOTSUPPORTED from @ref QDMI_job_set_parameter or to
    * convert the program to a supported format. Setting the same exact
-   * descriptor keeps an existing program payload. Setting a different
-   * supported descriptor clears the payload. Every error leaves the descriptor
+   * format keeps an existing program payload. Setting a different
+   * supported format clears the payload. Every error leaves the format
    * and payload unchanged.
    */
   QDMI_JOB_PARAMETER_PROGRAMFORMAT = 0,
   /**
-   * @brief `void*` The program to be executed.
-   * @details This parameter is required. The program must be in the format
-   * specified by the @ref QDMI_JOB_PARAMETER_PROGRAMFORMAT parameter.
-   * Setting a program before its format returns @ref QDMI_ERROR_BADSTATE.
-   * Setting a value replaces a list set with @ref QDMI_job_set_programs with
-   * one deep-copied program. Every error leaves the existing program list
-   * unchanged.
-   * If the program is invalid, the @ref QDMI_job_set_parameter function
-   * must return @ref QDMI_ERROR_INVALIDARGUMENT. If the program is valid, but
-   * the device cannot execute it, the @ref QDMI_job_set_parameter function must
-   * return @ref QDMI_ERROR_NOTSUPPORTED.
-   */
-  QDMI_JOB_PARAMETER_PROGRAM = 1,
-  /**
    * @brief `size_t` The number of shots to execute for a quantum circuit job.
    * @details If this parameter is not set, a device-specific default is used.
    */
-  QDMI_JOB_PARAMETER_SHOTSNUM = 2,
+  QDMI_JOB_PARAMETER_SHOTSNUM = 1,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by drivers for bounds checking and validation of
@@ -716,7 +702,7 @@ enum QDMI_JOB_PARAMETER_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_JOB_PARAMETER_MAX = 3,
+  QDMI_JOB_PARAMETER_MAX = 2,
   /**
    * @brief This enum value is reserved for a custom parameter.
    * @details The driver defines the meaning and the type of this parameter.
@@ -794,7 +780,7 @@ int QDMI_job_set_parameter(QDMI_Job job, QDMI_Job_Parameter param, size_t size,
 
 /**
  * @brief Set one or more programs for a job.
- * @details All programs use the same exact @p format descriptor and the same
+ * @details All programs use the same @p format and the same
  * job parameters, including the shot count. On success, the driver replaces
  * the complete program list with a deep copy of @p format, @p sizes, and the
  * program bytes. If validation or copying fails, the existing program list
@@ -823,13 +809,13 @@ int QDMI_job_set_parameter(QDMI_Job job, QDMI_Job_Parameter param, size_t size,
  * @p sizes is ignored.
  * @param[in] programs An array of @p count program pointers. Each pointer must
  * not be @c NULL. The driver copies all input data before returning. If this is
- * @c NULL, the function checks support for the exact descriptor and cardinality
+ * @c NULL, the function checks support for the format and cardinality
  * and does not change the job.
  * @return @ref QDMI_SUCCESS if the driver supports program lists in @p format
  * and, when @p programs is not @c NULL, set the complete list.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if
  *  - @p job or @p format is @c NULL, or @p count is zero,
- *  - the driver supports program lists and @p format is not a valid descriptor,
+ *  - the driver supports program lists and @p format is not a valid format,
  *    or
  *  - the driver supports program lists, @p programs is not @c NULL, and @p
  *    sizes is @c NULL, an element of @p programs is @c NULL, an element of @p
@@ -877,8 +863,8 @@ enum QDMI_JOB_PROPERTY_T {
   QDMI_JOB_PROPERTY_PROGRAMFORMAT = 1,
   /**
    * @brief `void*` The program to be executed.
-   * @note This property returns the value of the @ref
-   * QDMI_JOB_PARAMETER_PROGRAM parameter.
+   * @note This property returns the program set through @ref
+   * QDMI_job_set_programs when the job contains one program.
    * @note A query for a multi-program job returns @ref
    * QDMI_ERROR_NOTSUPPORTED.
    */

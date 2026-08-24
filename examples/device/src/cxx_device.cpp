@@ -41,6 +41,7 @@
 #include <ranges>
 #include <stdexcept>
 #include <string>
+#include <string_view>
 #include <unordered_map>
 #include <utility>
 #include <vector>
@@ -241,6 +242,31 @@ const std::unordered_map<
 constexpr std::array SUPPORTED_PROGRAM_FORMATS = {
     QDMI_PROGRAM_FORMAT_QASM2, QDMI_PROGRAM_FORMAT_QIRBASESTRING,
     QDMI_PROGRAM_FORMAT_QIRBASEMODULE, QDMI_PROGRAM_FORMAT_CALIBRATION};
+
+[[nodiscard]] bool Valid_format(const QDMI_Program_Format format) {
+  return (format >= 0 && format < QDMI_PROGRAM_FORMAT_MAX) ||
+         (format >= QDMI_PROGRAM_FORMAT_CUSTOM1 &&
+          format <= QDMI_PROGRAM_FORMAT_CUSTOM5);
+}
+
+[[nodiscard]] bool Supported_format(const QDMI_Program_Format format) {
+  return std::ranges::find(SUPPORTED_PROGRAM_FORMATS, format) !=
+         SUPPORTED_PROGRAM_FORMATS.end();
+}
+
+[[nodiscard]] bool Valid_program(const QDMI_Program_Format format,
+                                 const size_t size, const void *program) {
+  if (program == nullptr || size == 0) {
+    return false;
+  }
+  if (format != QDMI_PROGRAM_FORMAT_QASM2 &&
+      format != QDMI_PROGRAM_FORMAT_QIRBASESTRING) {
+    return true;
+  }
+  const auto *bytes = static_cast<const char *>(program);
+  return bytes[size - 1] == '\0' &&
+         std::memchr(bytes, '\0', size - 1) == nullptr;
+}
 } // namespace
 
 // NOLINTBEGIN(bugprone-macro-parentheses)
@@ -410,45 +436,20 @@ int CXX_QDMI_device_job_set_parameter(CXX_QDMI_Device_Job job,
   switch (param) {
   case QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT:
     if (value != nullptr) {
-      const auto format = *static_cast<const QDMI_Program_Format *>(value);
-      if (format >= QDMI_PROGRAM_FORMAT_MAX &&
-          format != QDMI_PROGRAM_FORMAT_CUSTOM1 &&
-          format != QDMI_PROGRAM_FORMAT_CUSTOM2 &&
-          format != QDMI_PROGRAM_FORMAT_CUSTOM3 &&
-          format != QDMI_PROGRAM_FORMAT_CUSTOM4 &&
-          format != QDMI_PROGRAM_FORMAT_CUSTOM5) {
+      if (size != sizeof(QDMI_Program_Format)) {
         return QDMI_ERROR_INVALIDARGUMENT;
       }
-      if (format != QDMI_PROGRAM_FORMAT_QASM2 &&
-          format != QDMI_PROGRAM_FORMAT_QIRBASESTRING &&
-          format != QDMI_PROGRAM_FORMAT_QIRBASEMODULE &&
-          format != QDMI_PROGRAM_FORMAT_CALIBRATION) {
+      const auto format = *static_cast<const QDMI_Program_Format *>(value);
+      if (!Valid_format(format)) {
+        return QDMI_ERROR_INVALIDARGUMENT;
+      }
+      if (!Supported_format(format)) {
         return QDMI_ERROR_NOTSUPPORTED;
       }
-      if (!Same_format(job->format, format)) {
+      if (job->format != format) {
         job->programs.clear();
       }
       job->format = format;
-    }
-    return QDMI_SUCCESS;
-  case QDMI_DEVICE_JOB_PARAMETER_PROGRAM:
-    if (value != nullptr) {
-      if (!Valid_format(job->format)) {
-        return QDMI_ERROR_BADSTATE;
-      }
-      if (!Valid_program(job->format, size, value)) {
-        return QDMI_ERROR_INVALIDARGUMENT;
-      }
-      std::vector<std::vector<char>> new_programs;
-      try {
-        new_programs.emplace_back(static_cast<const char *>(value),
-                                  static_cast<const char *>(value) + size);
-      } catch (const std::bad_alloc &) {
-        return QDMI_ERROR_OUTOFMEM;
-      } catch (const std::length_error &) {
-        return QDMI_ERROR_INVALIDARGUMENT;
-      }
-      job->programs = std::move(new_programs);
     }
     return QDMI_SUCCESS;
   case QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM:
@@ -540,7 +541,9 @@ int CXX_QDMI_device_job_submit(CXX_QDMI_Device_Job job) {
   if (job == nullptr || job->status != QDMI_JOB_STATUS_CREATED) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
-  if (job->programs.empty() || !Valid_format(job->format)) {
+  if (!Valid_format(job->format) ||
+      (job->programs.empty() &&
+       job->format != QDMI_PROGRAM_FORMAT_CALIBRATION)) {
     return QDMI_ERROR_BADSTATE;
   }
 
@@ -561,8 +564,8 @@ int CXX_QDMI_device_job_submit(CXX_QDMI_Device_Job job) {
   CXX_QDMI_device_session_query_device_property(
       job->session, QDMI_DEVICE_PROPERTY_QUBITSNUM, sizeof(size_t), &num_qubits,
       nullptr);
-  constexpr std::array<std::string_view, 4> shot_outputs{FLAT_SHOT_OUTPUT, "10",
-                                                         "11", "00"};
+  constexpr std::array<std::string_view, 4> shot_outputs{"01", "10", "11",
+                                                         "00"};
   job->results.clear();
   job->results.resize(job->programs.size());
   for (size_t program_index = 0; program_index < job->results.size();
@@ -571,16 +574,16 @@ int CXX_QDMI_device_job_submit(CXX_QDMI_Device_Job job) {
     size_t output_index = 0;
     if (job->programs.size() > 1) {
       const auto &program = job->programs.at(program_index);
-      const auto marker =
-          program.at(program.size() -
-                     (job->format.encoding == QDMI_PROGRAM_ENCODING_TEXT &&
-                              program.size() > 1
-                          ? 2
-                          : 1));
+      const auto marker = program.at(
+          program.size() - (job->format != QDMI_PROGRAM_FORMAT_QIRBASEMODULE &&
+                                    program.size() > 1
+                                ? 2
+                                : 1));
       output_index = static_cast<unsigned char>(marker) % shot_outputs.size();
     }
-    result.shots.assign(job->num_shots,
-                        std::string{shot_outputs.at(output_index)});
+    auto shot = std::string{shot_outputs.at(output_index)};
+    shot.insert(0, num_qubits - shot.size(), '0');
+    result.shots.assign(job->num_shots, shot);
     // Generate random complex numbers and calculate the norm
     result.state_vec.reserve(1U << num_qubits);
     double norm = 0.0;
@@ -867,9 +870,6 @@ int CXX_QDMI_device_job_get_results(CXX_QDMI_Device_Job job,
   case QDMI_JOB_RESULT_PROBABILITIES_DENSE:
     return CXX_QDMI_device_job_get_results_probabilities(program_result, size,
                                                          data, size_ret);
-  case QDMI_JOB_RESULT_PROGRAMOUTPUT:
-    return CXX_QDMI_device_job_get_program_output(job, program_index, size,
-                                                  data, size_ret);
   default:
     return QDMI_ERROR_NOTSUPPORTED;
   }

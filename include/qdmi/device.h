@@ -497,9 +497,9 @@ QDMI_device_session_create_device_job(QDMI_Device_Session session,
  * The job ID is an identifier, not an authentication credential.
  * Parameters cannot be set on a retrieved job, and a retrieved job cannot be
  * submitted again. Retrieval is all-or-nothing: the device must reconstruct
- * the exact historical format descriptor, program count, status, and mapping
+ * the exact historical format enum value, program count, status, and mapping
  * from each input index to its results. This also applies when the historical
- * descriptor is no longer advertised. The device must return @ref
+ * format is no longer advertised. The device must return @ref
  * QDMI_ERROR_NOTSUPPORTED if it cannot reconstruct all of this information.
  *
  * @param[in] session The initialized session with which to retrieve the job.
@@ -583,7 +583,7 @@ QDMI_EXPORT int QDMI_device_job_set_parameter(QDMI_Device_Job job,
 
 /**
  * @brief Set one or more programs for a job.
- * @details All programs use the same exact @p format descriptor and the same
+ * @details All programs use the same @p format and the same
  * job parameters, including the shot count. On success, the device replaces
  * the complete program list with a deep copy of @p format, @p sizes, and the
  * program bytes. If validation or copying fails, the existing program list
@@ -609,13 +609,13 @@ QDMI_EXPORT int QDMI_device_job_set_parameter(QDMI_Device_Job job,
  * @p sizes is ignored.
  * @param[in] programs An array of @p count program pointers. Each pointer must
  * not be @c NULL. The device copies all input data before returning. If this is
- * @c NULL, the function checks support for the exact descriptor and cardinality
+ * @c NULL, the function checks support for the format and cardinality
  * and does not change the job.
  * @return @ref QDMI_SUCCESS if the device supports program lists in @p format
  * and, when @p programs is not @c NULL, set the complete list.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if
  *  - @p job or @p format is @c NULL, or @p count is zero,
- *  - the device supports program lists and @p format is not a valid descriptor,
+ *  - the device supports program lists and @p format is not a valid format,
  *    or
  *  - the device supports program lists, @p programs is not @c NULL, and @p
  *    sizes is @c NULL, an element of @p programs is @c NULL, an element of @p
