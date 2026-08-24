@@ -25,6 +25,8 @@
 #include <string_view>
 #include <vector>
 
+namespace {
+
 class QDMIImplementationTest : public ::testing::Test {
 protected:
   CXX_QDMI_Device_Session session = nullptr;
@@ -242,3 +244,4 @@ TEST_F(QDMIImplementationTest, QueryStableDeviceId) {
             QDMI_ERROR_INVALIDARGUMENT);
   EXPECT_STREQ(id.data(), CXX_QDMI_DEVICE_ID);
 }
+} // namespace
