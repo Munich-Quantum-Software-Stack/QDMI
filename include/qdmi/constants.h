@@ -29,8 +29,8 @@
 
 /// Pack a Semantic Versioning release into 32 bits.
 /// Major and minor must fit in 10 bits each, and patch must fit in 12 bits.
-#define QDMI_MAKE_VERSION(major, minor, patch) \
-  ((((uint32_t)(major) & 0x3FFU) << 22U) | \
+#define QDMI_MAKE_VERSION(major, minor, patch)                                 \
+  ((((uint32_t)(major) & 0x3FFU) << 22U) |                                     \
    (((uint32_t)(minor) & 0x3FFU) << 12U) | ((uint32_t)(patch) & 0xFFFU))
 
 /// Extract the major component of a packed version.

@@ -38,6 +38,7 @@
     "py\\.typed",
     "Dockerfile",
     "prefix_defs.txt",
+    "client_version.h.in",
     "test_defs.cpp.in",
     "LICENSE"
   ]
