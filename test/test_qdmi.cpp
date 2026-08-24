@@ -795,12 +795,11 @@ TEST_P(QDMIImplementationTest, MultiProgramJob) {
   QDMI_job_free(job);
 
   ASSERT_EQ(QDMI_device_create_job(device, &job), QDMI_SUCCESS);
-  constexpr std::array<std::string_view, 2> qir_programs{"program 0",
-                                                         "program 1"};
-  constexpr std::array<size_t, 2> qir_sizes{qir_programs[0].size() + 1,
-                                            qir_programs[1].size() + 1};
-  constexpr std::array<const void *, 2> qir_program_ptrs{
-      qir_programs[0].data(), qir_programs[1].data()};
+  const std::array<std::string, 2> qir_programs{"program 0", "program 1"};
+  const std::array<size_t, 2> qir_sizes{qir_programs[0].size() + 1,
+                                        qir_programs[1].size() + 1};
+  const std::array<const void *, 2> qir_program_ptrs{qir_programs[0].c_str(),
+                                                     qir_programs[1].c_str()};
   ASSERT_EQ(QDMI_job_set_programs(job, &QIR_BASE_TEXT_FORMAT,
                                   qir_programs.size(), qir_sizes.data(),
                                   qir_program_ptrs.data()),
