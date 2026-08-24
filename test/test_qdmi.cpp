@@ -1155,13 +1155,23 @@ TEST_P(QDMIImplementationTest, SupportsCalibration) {
   EXPECT_EQ(QDMI_job_submit(job), QDMI_SUCCESS);
 }
 
-TEST_P(QDMIImplementationTest, NeedsCalibration) {
-  size_t needs_calibration = 0;
-  const auto ret = QDMI_device_query_device_property(
-      device, QDMI_DEVICE_PROPERTY_NEEDSCALIBRATION, sizeof(size_t),
-      &needs_calibration, nullptr);
-  EXPECT_EQ(ret, QDMI_SUCCESS);
-  EXPECT_EQ(needs_calibration, 0);
+TEST_P(QDMIImplementationTest, RemovedCalibrationAdvisoryUnsupported) {
+  EXPECT_EQ(
+      QDMI_device_query_device_property(
+          device, static_cast<QDMI_Device_Property>(8), 0, nullptr, nullptr),
+      QDMI_ERROR_NOTSUPPORTED);
+}
+
+TEST(QDMIConstantsTest, DevicePropertyValuesRemainStable) {
+  EXPECT_EQ(QDMI_DEVICE_PROPERTY_LENGTHUNIT, 10);
+  EXPECT_EQ(QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR, 11);
+  EXPECT_EQ(QDMI_DEVICE_PROPERTY_DURATIONUNIT, 12);
+  EXPECT_EQ(QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR, 13);
+  EXPECT_EQ(QDMI_DEVICE_PROPERTY_MINATOMDISTANCE, 14);
+  EXPECT_EQ(QDMI_DEVICE_PROPERTY_SUPPORTEDPROGRAMFORMATS, 15);
+  EXPECT_EQ(QDMI_DEVICE_PROPERTY_CHILDDEVICES, 16);
+  EXPECT_EQ(QDMI_DEVICE_PROPERTY_QUEUELENGTH, 17);
+  EXPECT_EQ(QDMI_DEVICE_PROPERTY_MAX, 18);
 }
 
 TEST_P(QDMIImplementationTest, QueryPulseSupportLevel) {
