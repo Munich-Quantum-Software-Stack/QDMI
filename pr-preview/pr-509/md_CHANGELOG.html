@@ -189,12 +189,14 @@ $(function(){initNavTree('md_CHANGELOG.html','',''); });
 <h1><a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.3...HEAD">Unreleased</a></h1>
 <h2>Added</h2>
 <ul>
-<li>✨ Add descriptor-scoped execution-feature queries and a format-defined program-output result (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/508">#508</a>) ([@simon1hofmann], [@burgholzer]).</li>
+<li>✨ Add descriptor-scoped execution-feature queries, exact descriptor equality, and a format-defined program-output result (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/508">#508</a>) ([@simon1hofmann], [@burgholzer]).</li>
 <li>✨ Add ordered multi-program jobs with one aggregate lifecycle, indexed results, and required device entry points (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/509">#509</a>) ([@burgholzer]).</li>
 </ul>
 <h2>Changed</h2>
 <ul>
-<li>💥 Replace program-format enums with exact format descriptors and define the flat-bit order of shot and histogram results (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/508">#508</a>) ([@simon1hofmann], [@burgholzer]).</li>
+<li>💥 Add a program index to <span class="tt"><a class="el" href="group__client__job__interface.html#ga1a07533166af439c2fa62edafec4d99e" title="Retrieve one program&#39;s results from a job.">QDMI_job_get_results</a></span> and <span class="tt"><a class="el" href="group__device__job__interface.html#gaaefb46a6d128a080329759ad21425c5e" title="Retrieve one program&#39;s results from a job.">QDMI_device_job_get_results</a></span>, and define atomic legacy-setter and multi-program retrieval semantics (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/509">#509</a>) ([@burgholzer]).</li>
+<li>💥 Replace program-format enums with exact format descriptors, validate text and binary payload framing, and place logical output slot zero at the right of shot and histogram strings (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/508">#508</a>) ([@simon1hofmann], [@burgholzer]).</li>
+<li>💥 Treat every enum value from <span class="tt">999999995</span> through <span class="tt">INT32_MAX</span> as a valid provider-defined value while keeping the intervening gap invalid (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/508">#508</a>) ([@simon1hofmann], [@burgholzer]).</li>
 <li>💥 Require device libraries to export <span class="tt"><a class="el" href="group__device__job__interface.html#ga936ccc97552a744032edbeb840aaccba" title="Retrieve an existing device job by its ID.">QDMI_device_session_retrieve_device_job_by_id</a></span>, while allowing the function to return <span class="tt"><a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a></span> (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/508">#508</a>) ([@simon1hofmann], [@burgholzer]).</li>
 </ul>
 <h2>Removed</h2>

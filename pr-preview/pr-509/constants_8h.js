@@ -2,6 +2,8 @@ var constants_8h =
 [
     [ "QDMI_Program_Format", "structQDMI__Program__Format.html", "structQDMI__Program__Format" ],
     [ "QDMI_Program_Feature", "structQDMI__Program__Feature.html", "structQDMI__Program__Feature" ],
+    [ "QDMI_CUSTOM_ENUM_VALUE_MIN", "constants_8h.html#a8491b4a773d45e8fe067326b532bec03", null ],
+    [ "QDMI_CUSTOM_ENUM_VALUE_MAX", "constants_8h.html#a7e1f6ebee2981970f891339435655e84", null ],
     [ "QDMI_PROGRAM_ID_SIZE", "constants_8h.html#a4955653c3a1bd0a3b3ec66a1dbc82c4f", null ],
     [ "QDMI_MAKE_VERSION", "constants_8h.html#a6afe2f84f9b78688ebcb684424b81319", null ],
     [ "QDMI_VERSION_MAJOR", "constants_8h.html#a8e8caa8cb8dfb5c515321c3700c40152", null ],

@@ -73,7 +73,6 @@ var client_8h =
     [ "QDMI_job_cancel", "group__client__job__interface.html#gae5c530accc67d1ac8f5fada1ad914cfc", null ],
     [ "QDMI_job_check", "group__client__job__interface.html#gae9a7cba893885c8fcfe4bec030071d2f", null ],
     [ "QDMI_job_wait", "group__client__job__interface.html#ga709a8817f2cda4673175e43fe596ead9", null ],
-    [ "QDMI_job_get_results", "group__client__job__interface.html#gaba583321332e0753f5de1764edbd8b7f", null ],
-    [ "QDMI_job_get_results_for_program", "group__client__job__interface.html#gad4e8d9369a65a504f1f42ec37332ac38", null ],
+    [ "QDMI_job_get_results", "group__client__job__interface.html#ga1a07533166af439c2fa62edafec4d99e", null ],
     [ "QDMI_job_free", "group__client__job__interface.html#ga9e9de68a558361018974e954ddead940", null ]
 ];

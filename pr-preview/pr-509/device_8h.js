@@ -22,7 +22,6 @@ var device_8h =
     [ "QDMI_device_job_cancel", "group__device__job__interface.html#ga95a8e2c63727d079ef37a8171ba275e8", null ],
     [ "QDMI_device_job_check", "group__device__job__interface.html#ga9170cd3f690b2ed7df4c2e0b24734138", null ],
     [ "QDMI_device_job_wait", "group__device__job__interface.html#gaa4f4c5bd68a6116353470de6d9284175", null ],
-    [ "QDMI_device_job_get_results", "group__device__job__interface.html#ga1b4384e53a1d8fb2d782cd6179664d3b", null ],
-    [ "QDMI_device_job_get_results_for_program", "group__device__job__interface.html#ga30aa05fec5aae19c4ab76446262c70d3", null ],
+    [ "QDMI_device_job_get_results", "group__device__job__interface.html#gaaefb46a6d128a080329759ad21425c5e", null ],
     [ "QDMI_device_job_free", "group__device__job__interface.html#gafe9253bc113ae8ce95dda8942a9f983f", null ]
 ];

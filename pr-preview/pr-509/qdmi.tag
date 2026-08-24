@@ -453,14 +453,7 @@
       <type>int</type>
       <name>QDMI_job_get_results</name>
       <anchorfile>group__client__job__interface.html</anchorfile>
-      <anchor>gaba583321332e0753f5de1764edbd8b7f</anchor>
-      <arglist>(QDMI_Job job, QDMI_Job_Result result, size_t size, void *data, size_t *size_ret)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>QDMI_job_get_results_for_program</name>
-      <anchorfile>group__client__job__interface.html</anchorfile>
-      <anchor>gad4e8d9369a65a504f1f42ec37332ac38</anchor>
+      <anchor>ga1a07533166af439c2fa62edafec4d99e</anchor>
       <arglist>(QDMI_Job job, size_t program_index, QDMI_Job_Result result, size_t size, void *data, size_t *size_ret)</arglist>
     </member>
     <member kind="function">
@@ -477,6 +470,20 @@
     <filename>constants_8h.html</filename>
     <class kind="struct">QDMI_Program_Format</class>
     <class kind="struct">QDMI_Program_Feature</class>
+    <member kind="define">
+      <type>#define</type>
+      <name>QDMI_CUSTOM_ENUM_VALUE_MIN</name>
+      <anchorfile>constants_8h.html</anchorfile>
+      <anchor>a8491b4a773d45e8fe067326b532bec03</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>QDMI_CUSTOM_ENUM_VALUE_MAX</name>
+      <anchorfile>constants_8h.html</anchorfile>
+      <anchor>a7e1f6ebee2981970f891339435655e84</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="define">
       <type>#define</type>
       <name>QDMI_PROGRAM_ID_SIZE</name>
@@ -1844,14 +1851,7 @@
       <type>int</type>
       <name>QDMI_device_job_get_results</name>
       <anchorfile>group__device__job__interface.html</anchorfile>
-      <anchor>ga1b4384e53a1d8fb2d782cd6179664d3b</anchor>
-      <arglist>(QDMI_Device_Job job, QDMI_Job_Result result, size_t size, void *data, size_t *size_ret)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>QDMI_device_job_get_results_for_program</name>
-      <anchorfile>group__device__job__interface.html</anchorfile>
-      <anchor>ga30aa05fec5aae19c4ab76446262c70d3</anchor>
+      <anchor>gaaefb46a6d128a080329759ad21425c5e</anchor>
       <arglist>(QDMI_Device_Job job, size_t program_index, QDMI_Job_Result result, size_t size, void *data, size_t *size_ret)</arglist>
     </member>
     <member kind="function">
@@ -2419,14 +2419,7 @@
       <type>int</type>
       <name>QDMI_job_get_results</name>
       <anchorfile>group__client__job__interface.html</anchorfile>
-      <anchor>gaba583321332e0753f5de1764edbd8b7f</anchor>
-      <arglist>(QDMI_Job job, QDMI_Job_Result result, size_t size, void *data, size_t *size_ret)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>QDMI_job_get_results_for_program</name>
-      <anchorfile>group__client__job__interface.html</anchorfile>
-      <anchor>gad4e8d9369a65a504f1f42ec37332ac38</anchor>
+      <anchor>ga1a07533166af439c2fa62edafec4d99e</anchor>
       <arglist>(QDMI_Job job, size_t program_index, QDMI_Job_Result result, size_t size, void *data, size_t *size_ret)</arglist>
     </member>
     <member kind="function">
@@ -2617,14 +2610,7 @@
       <type>int</type>
       <name>QDMI_device_job_get_results</name>
       <anchorfile>group__device__job__interface.html</anchorfile>
-      <anchor>ga1b4384e53a1d8fb2d782cd6179664d3b</anchor>
-      <arglist>(QDMI_Device_Job job, QDMI_Job_Result result, size_t size, void *data, size_t *size_ret)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>QDMI_device_job_get_results_for_program</name>
-      <anchorfile>group__device__job__interface.html</anchorfile>
-      <anchor>ga30aa05fec5aae19c4ab76446262c70d3</anchor>
+      <anchor>gaaefb46a6d128a080329759ad21425c5e</anchor>
       <arglist>(QDMI_Device_Job job, size_t program_index, QDMI_Job_Result result, size_t size, void *data, size_t *size_ret)</arglist>
     </member>
     <member kind="function">
