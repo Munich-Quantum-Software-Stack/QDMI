@@ -25,6 +25,7 @@
 #ifndef QDMI_CONSTANTS_H
 #define QDMI_CONSTANTS_H
 
+#include <stddef.h>
 #include <stdint.h>
 
 #ifdef __cplusplus
@@ -54,6 +55,19 @@ enum QDMI_STATUS {
   QDMI_ERROR_BADSTATE = -10,
   QDMI_ERROR_TIMEOUT = -11, ///< Operation timed out.
 };
+
+/**
+ * @brief First value in every provider-defined enum range.
+ * @details Every value from @ref QDMI_CUSTOM_ENUM_VALUE_MIN through @ref
+ * QDMI_CUSTOM_ENUM_VALUE_MAX is syntactically valid. The `CUSTOM1` through
+ * `CUSTOM5` members of each extensible enum preserve names for the first five
+ * values. Values from such an enum's regular `MAX` member up to, but excluding,
+ * @ref QDMI_CUSTOM_ENUM_VALUE_MIN are invalid. An implementation returns @ref
+ * QDMI_ERROR_NOTSUPPORTED for a valid custom value that it does not support.
+ */
+#define QDMI_CUSTOM_ENUM_VALUE_MIN 999999995
+/** @brief Last value in every provider-defined enum range. */
+#define QDMI_CUSTOM_ENUM_VALUE_MAX INT32_MAX
 
 /**
  * @brief Enum of the device session parameters that can be set via @ref
@@ -144,7 +158,7 @@ enum QDMI_DEVICE_SESSION_PARAMETER_T {
    * @attention The value of this enum member must not be changed to maintain
    * binary compatibility.
    */
-  QDMI_DEVICE_SESSION_PARAMETER_CUSTOM1 = 999999995,
+  QDMI_DEVICE_SESSION_PARAMETER_CUSTOM1 = QDMI_CUSTOM_ENUM_VALUE_MIN,
   /// @see QDMI_DEVICE_SESSION_PARAMETER_CUSTOM1
   QDMI_DEVICE_SESSION_PARAMETER_CUSTOM2 = 999999996,
   /// @see QDMI_DEVICE_SESSION_PARAMETER_CUSTOM1
@@ -177,6 +191,9 @@ enum QDMI_DEVICE_JOB_PARAMETER_T {
    * @brief `void*` The program to be executed.
    * @details This parameter is required. The program must be in the format
    * specified by the @ref QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT parameter.
+   * A text program contains exactly one trailing NUL and no earlier NUL; @c
+   * size includes that NUL. A binary program is a nonempty arbitrary byte
+   * sequence.
    * If the program is invalid, the @ref QDMI_device_job_set_parameter function
    * must return @ref QDMI_ERROR_INVALIDARGUMENT. If the program is valid, but
    * the device cannot execute it, the @ref QDMI_device_job_set_parameter
@@ -203,7 +220,7 @@ enum QDMI_DEVICE_JOB_PARAMETER_T {
    * @attention The value of this enum member must not be changed to maintain
    * binary compatibility.
    */
-  QDMI_DEVICE_JOB_PARAMETER_CUSTOM1 = 999999995,
+  QDMI_DEVICE_JOB_PARAMETER_CUSTOM1 = QDMI_CUSTOM_ENUM_VALUE_MIN,
   /// @see QDMI_DEVICE_JOB_PARAMETER_CUSTOM1
   QDMI_DEVICE_JOB_PARAMETER_CUSTOM2 = 999999996,
   /// @see QDMI_DEVICE_JOB_PARAMETER_CUSTOM1
@@ -238,8 +255,9 @@ enum QDMI_DEVICE_JOB_PROPERTY_T {
   QDMI_DEVICE_JOB_PROPERTY_ID = 0,
   /**
    * @brief @ref QDMI_Program_Format The format of the program to be executed.
-   * @note This property returns the value of the @ref
-   * QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT parameter.
+   * @note This property returns the descriptor executed by the device. A driver
+   * can expose a different client-submitted descriptor when it converts the
+   * payload before setting @ref QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT.
    */
   QDMI_DEVICE_JOB_PROPERTY_PROGRAMFORMAT = 1,
   /**
@@ -284,7 +302,7 @@ enum QDMI_DEVICE_JOB_PROPERTY_T {
    * @attention The value of this enum member must not be changed to maintain
    * binary compatibility.
    */
-  QDMI_DEVICE_JOB_PROPERTY_CUSTOM1 = 999999995,
+  QDMI_DEVICE_JOB_PROPERTY_CUSTOM1 = QDMI_CUSTOM_ENUM_VALUE_MIN,
   /// @see QDMI_DEVICE_JOB_PROPERTY_CUSTOM1
   QDMI_DEVICE_JOB_PROPERTY_CUSTOM2 = 999999996,
   /// @see QDMI_DEVICE_JOB_PROPERTY_CUSTOM1
@@ -473,7 +491,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @attention The value of this enum member must not be changed to maintain
    * binary compatibility.
    */
-  QDMI_DEVICE_PROPERTY_CUSTOM1 = 999999995,
+  QDMI_DEVICE_PROPERTY_CUSTOM1 = QDMI_CUSTOM_ENUM_VALUE_MIN,
   /// @see QDMI_DEVICE_PROPERTY_CUSTOM1
   QDMI_DEVICE_PROPERTY_CUSTOM2 = 999999996,
   /// @see QDMI_DEVICE_PROPERTY_CUSTOM1
@@ -708,7 +726,7 @@ enum QDMI_SITE_PROPERTY_T {
    * @attention The value of this enum member must not be changed to maintain
    * binary compatibility.
    */
-  QDMI_SITE_PROPERTY_CUSTOM1 = 999999995,
+  QDMI_SITE_PROPERTY_CUSTOM1 = QDMI_CUSTOM_ENUM_VALUE_MIN,
   /// @see QDMI_SITE_PROPERTY_CUSTOM1
   QDMI_SITE_PROPERTY_CUSTOM2 = 999999996,
   /// @see QDMI_SITE_PROPERTY_CUSTOM1
@@ -858,7 +876,7 @@ enum QDMI_OPERATION_PROPERTY_T {
    * @attention The value of this enum member must not be changed to maintain
    * binary compatibility.
    */
-  QDMI_OPERATION_PROPERTY_CUSTOM1 = 999999995,
+  QDMI_OPERATION_PROPERTY_CUSTOM1 = QDMI_CUSTOM_ENUM_VALUE_MIN,
   /// @see QDMI_OPERATION_PROPERTY_CUSTOM1
   QDMI_OPERATION_PROPERTY_CUSTOM2 = 999999996,
   /// @see QDMI_OPERATION_PROPERTY_CUSTOM1
@@ -923,8 +941,10 @@ typedef enum QDMI_JOB_STATUS_T QDMI_Job_Status;
 
 /** @brief Encoding of a submitted payload. */
 enum QDMI_PROGRAM_ENCODING_T {
-  QDMI_PROGRAM_ENCODING_TEXT = 1,  ///< NUL-terminated text.
-  QDMI_PROGRAM_ENCODING_BINARY = 2 ///< Arbitrary bytes.
+  /// Text with exactly one trailing NUL and no earlier NUL.
+  QDMI_PROGRAM_ENCODING_TEXT = 1,
+  /// A nonempty arbitrary byte sequence.
+  QDMI_PROGRAM_ENCODING_BINARY = 2
 };
 
 /// Program encoding type.
@@ -938,9 +958,14 @@ typedef enum QDMI_PROGRAM_ENCODING_T QDMI_Program_Encoding;
  * compatibility between versions, profiles, or encodings.
  *
  * The `id` and `profile` arrays must be NUL-terminated, and every byte after
- * the first NUL must be zero. IDs are case-sensitive. QDMI reserves
+ * the first NUL must be zero. Every API compares descriptor values, not their
+ * addresses. A caller may reconstruct a canonical value from its fields; use
+ * @c QDMI_program_format_equal to compare two values. IDs are case-sensitive.
+ * QDMI reserves
  * unqualified IDs for standard formats. The standard IDs are `openqasm` and
- * `qir`. Vendor formats must use a namespaced ID such as `com.vendor.format`.
+ * `qir`. Vendor formats use `<vendor>.<custom-format-identifier>` IDs, such as
+ * `iqm.circuit`. The vendor component is an identifier, not a reverse domain
+ * name.
  * QDMI does not define vendor-format versions, profiles, wire formats, or
  * result semantics. Providers must document each vendor descriptor and its
  * payload and result contract. An empty profile identifies a format without a
@@ -995,6 +1020,50 @@ typedef struct QDMI_PROGRAM_FORMAT_T {
   char id[QDMI_PROGRAM_ID_SIZE];      ///< NUL-terminated format ID.
   char profile[QDMI_PROGRAM_ID_SIZE]; ///< NUL-terminated profile ID.
 } QDMI_Program_Format;
+
+#ifdef __cplusplus
+static_assert(sizeof(QDMI_Program_Format) == 136U);
+static_assert(alignof(QDMI_Program_Format) == 4U);
+static_assert(offsetof(QDMI_Program_Format, version) == 0U);
+static_assert(offsetof(QDMI_Program_Format, encoding) == 4U);
+static_assert(offsetof(QDMI_Program_Format, id) == 8U);
+static_assert(offsetof(QDMI_Program_Format, profile) == 72U);
+#else
+_Static_assert(sizeof(QDMI_Program_Format) == 136U,
+               "QDMI_Program_Format must be 136 bytes");
+_Static_assert(_Alignof(QDMI_Program_Format) == 4U,
+               "QDMI_Program_Format must have four-byte alignment");
+_Static_assert(offsetof(QDMI_Program_Format, version) == 0U,
+               "QDMI_Program_Format.version must start at byte 0");
+_Static_assert(offsetof(QDMI_Program_Format, encoding) == 4U,
+               "QDMI_Program_Format.encoding must start at byte 4");
+_Static_assert(offsetof(QDMI_Program_Format, id) == 8U,
+               "QDMI_Program_Format.id must start at byte 8");
+_Static_assert(offsetof(QDMI_Program_Format, profile) == 72U,
+               "QDMI_Program_Format.profile must start at byte 72");
+#endif
+
+/**
+ * @brief Compare two exact program-format values.
+ * @param[in] lhs The first descriptor, or @c NULL.
+ * @param[in] rhs The second descriptor, or @c NULL.
+ * @return Nonzero if every field and array byte is equal; otherwise, zero.
+ */
+static inline int
+QDMI_program_format_equal(const QDMI_Program_Format *const lhs,
+                          const QDMI_Program_Format *const rhs) {
+  if (lhs == NULL || rhs == NULL || lhs->version != rhs->version ||
+      lhs->encoding != rhs->encoding) {
+    return 0;
+  }
+  for (size_t index = 0U; index < QDMI_PROGRAM_ID_SIZE; ++index) {
+    if (lhs->id[index] != rhs->id[index] ||
+        lhs->profile[index] != rhs->profile[index]) {
+      return 0;
+    }
+  }
+  return 1;
+}
 
 /// Maximum bytes, including the terminating NUL, in a feature ID.
 #define QDMI_PROGRAM_FEATURE_ID_SIZE 64U
@@ -1157,7 +1226,8 @@ enum QDMI_JOB_RESULT_T {
    * @brief `char*` (string) The results of the individual shots as a
    * comma-separated list.
    * @details Each bit string contains every flat bit output declared by the
-   * submitted payload. The first output in the order below is the leftmost bit:
+   * submitted payload. The following rules assign logical output slots starting
+   * at zero:
    * - OpenQASM 2 uses `creg` declarations in source order and increasing bit
    *   index within each declaration.
    * - OpenQASM 3 uses bit-valued output declarations in source order and
@@ -1167,14 +1237,17 @@ enum QDMI_JOB_RESULT_T {
    * - QIR uses primitive result-recording calls in execution order. A result
    *   array contributes its elements in memory order. Container recording
    *   calls do not add bits.
+   * The string writes the highest-numbered slot first and slot zero at the
+   * right. For example, logical slot values `[1, 0, 0]` produce `"001"`.
    * If the payload output cannot be represented losslessly as one fixed-width
    * bit string per shot, queries for shots and histogram results return @ref
    * QDMI_ERROR_NOTSUPPORTED. Clients can query @ref
    * QDMI_JOB_RESULT_PROGRAMOUTPUT when the submitted descriptor defines a
    * native output representation.
    *
-   * The width is independent of the number of device sites. For example,
-   * "0010,1101,0101" represents three shots of four declared bit outputs.
+   * The payload output schema owns the slots. Their width and order are
+   * independent of the device sites and physical-site order. For example,
+   * `"0010,1101,0101"` represents three shots of four declared bit outputs.
    */
   QDMI_JOB_RESULT_SHOTS = 0,
   /**
@@ -1198,16 +1271,18 @@ enum QDMI_JOB_RESULT_T {
   /**
    * @brief `double*` (`double` list) The state vector of the result.
    * @details The complex amplitudes are stored as a list of real and imaginary
-   * parts. The real part of the amplitude is at index `2n` and the imaginary
-   * part is at index `2n+1`. For example, the state vector of a 2-qubit system
+   * parts. Logical qubit zero is the least-significant bit of basis index `n`.
+   * The real part of the amplitude is at index `2n` and the imaginary part is
+   * at index `2n+1`. For example, the state vector of a 2-qubit system
    * with amplitudes `(0.5, 0.5), (0.5, -0.5), (-0.5, 0.5), (-0.5, -0.5)` would
    * be represented as `{0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5}`.
    */
   QDMI_JOB_RESULT_STATEVECTOR_DENSE = 3,
   /**
    * @brief `double*` (`double` list) The probabilities of the result.
-   * @details The probabilities are stored as a list of real numbers. The
-   * probability of the state with index `n` is at index `n` in the list. For
+   * @details The probabilities are stored as a list of real numbers. Logical
+   * qubit zero is the least-significant bit of basis index `n`. The probability
+   * of that state is at index `n` in the list. For
    * example, the probabilities of a 2-qubit system with states `00, 01, 10, 11`
    * would be represented as `{0.25, 0.25, 0.25, 0.25}`.
    */
@@ -1217,7 +1292,8 @@ enum QDMI_JOB_RESULT_T {
    * @details The sparse state vector is represented as a key-value mapping.
    * This mapping is returned as a list of keys and an equal-length list of
    * values. The corresponding partners of keys and values can be found at the
-   * same index in the lists.
+   * same index in the lists. Keys write the highest-numbered logical qubit at
+   * the left and logical qubit zero at the right.
    */
   QDMI_JOB_RESULT_STATEVECTOR_SPARSE_KEYS = 5,
   /**
@@ -1235,7 +1311,8 @@ enum QDMI_JOB_RESULT_T {
    * @details The sparse probabilities are represented as a key-value mapping.
    * This mapping is returned as a list of keys and an equal-length list of
    * values. The corresponding partners of keys and values can be found at the
-   * same index in the lists.
+   * same index in the lists. Keys write the highest-numbered logical qubit at
+   * the left and logical qubit zero at the right.
    */
   QDMI_JOB_RESULT_PROBABILITIES_SPARSE_KEYS = 7,
   /**
@@ -1273,7 +1350,7 @@ enum QDMI_JOB_RESULT_T {
    * @attention The value of this enum member must not be changed to maintain
    * binary compatibility.
    */
-  QDMI_JOB_RESULT_CUSTOM1 = 999999995,
+  QDMI_JOB_RESULT_CUSTOM1 = QDMI_CUSTOM_ENUM_VALUE_MIN,
   /// @see QDMI_JOB_RESULT_CUSTOM1
   QDMI_JOB_RESULT_CUSTOM2 = 999999996,
   /// @see QDMI_JOB_RESULT_CUSTOM1

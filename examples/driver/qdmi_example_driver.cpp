@@ -381,11 +381,7 @@ int QDMI_session_set_parameter(QDMI_Session session,
                                const void *value) {
   if (session == nullptr || (value != nullptr && size == 0) ||
       (param >= QDMI_SESSION_PARAMETER_MAX &&
-       param != QDMI_SESSION_PARAMETER_CUSTOM1 &&
-       param != QDMI_SESSION_PARAMETER_CUSTOM2 &&
-       param != QDMI_SESSION_PARAMETER_CUSTOM3 &&
-       param != QDMI_SESSION_PARAMETER_CUSTOM4 &&
-       param != QDMI_SESSION_PARAMETER_CUSTOM5)) {
+       param < QDMI_SESSION_PARAMETER_CUSTOM1)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   if (session->status != QDMI_SESSION_STATUS::ALLOCATED) {
@@ -406,11 +402,7 @@ int QDMI_session_query_session_property(QDMI_Session session,
                                         void *value, size_t *size_ret) {
   if (session == nullptr || (value != nullptr && size == 0) ||
       (prop >= QDMI_SESSION_PROPERTY_MAX &&
-       prop != QDMI_SESSION_PROPERTY_CUSTOM1 &&
-       prop != QDMI_SESSION_PROPERTY_CUSTOM2 &&
-       prop != QDMI_SESSION_PROPERTY_CUSTOM3 &&
-       prop != QDMI_SESSION_PROPERTY_CUSTOM4 &&
-       prop != QDMI_SESSION_PROPERTY_CUSTOM5)) {
+       prop < QDMI_SESSION_PROPERTY_CUSTOM1)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
 
