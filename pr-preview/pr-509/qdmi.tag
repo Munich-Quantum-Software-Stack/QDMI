@@ -209,12 +209,6 @@
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
-      <name>QDMI_JOB_PARAMETER_PROGRAM</name>
-      <anchorfile>group__client__job__interface.html</anchorfile>
-      <anchor>gga1e7131664b094eb409d0f44d731f51f5ac44c5d28aada4f1a1628c45805747998</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
       <name>QDMI_JOB_PARAMETER_SHOTSNUM</name>
       <anchorfile>group__client__job__interface.html</anchorfile>
       <anchor>gga1e7131664b094eb409d0f44d731f51f5a21a7c498f22ef05c9a72f354f6f89a81</anchor>
@@ -954,12 +948,6 @@
       <name>QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT</name>
       <anchorfile>constants_8h.html</anchorfile>
       <anchor>a40dd25c531ebf99fb4b46469083b609ea5ee9218fc51cbd01765619467b90056f</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>QDMI_DEVICE_JOB_PARAMETER_PROGRAM</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>a40dd25c531ebf99fb4b46469083b609ea7ef134726b7ec6f0855c0d8171e44dd3</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
@@ -2301,12 +2289,6 @@
       <name>QDMI_JOB_PARAMETER_PROGRAMFORMAT</name>
       <anchorfile>group__client__job__interface.html</anchorfile>
       <anchor>gga1e7131664b094eb409d0f44d731f51f5ad0b4fad39ff9935e76bcd888cfca908b</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>QDMI_JOB_PARAMETER_PROGRAM</name>
-      <anchorfile>group__client__job__interface.html</anchorfile>
-      <anchor>gga1e7131664b094eb409d0f44d731f51f5ac44c5d28aada4f1a1628c45805747998</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">

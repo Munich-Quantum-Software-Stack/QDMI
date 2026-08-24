@@ -74,7 +74,6 @@ var constants_8h =
     ] ],
     [ "QDMI_DEVICE_JOB_PARAMETER_T", "constants_8h.html#a40dd25c531ebf99fb4b46469083b609e", [
       [ "QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT", "constants_8h.html#a40dd25c531ebf99fb4b46469083b609ea5ee9218fc51cbd01765619467b90056f", null ],
-      [ "QDMI_DEVICE_JOB_PARAMETER_PROGRAM", "constants_8h.html#a40dd25c531ebf99fb4b46469083b609ea7ef134726b7ec6f0855c0d8171e44dd3", null ],
       [ "QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM", "constants_8h.html#a40dd25c531ebf99fb4b46469083b609ea4ecec990e69afb205f9801433be37b26", null ],
       [ "QDMI_DEVICE_JOB_PARAMETER_MAX", "constants_8h.html#a40dd25c531ebf99fb4b46469083b609ea535c764f6d9b057069cc2f98e5e3731d", null ],
       [ "QDMI_DEVICE_JOB_PARAMETER_CUSTOM1", "constants_8h.html#a40dd25c531ebf99fb4b46469083b609ea59a7b1b3e9da8f9b71b0aec5fd1eb0d9", null ],
