@@ -20,7 +20,6 @@
 #include "test_impl.hpp"
 
 #include "qdmi/client.h"
-#include "qdmi_example_driver.h"
 
 #include <algorithm>
 #include <cstddef>
@@ -37,7 +36,8 @@ void QDMIImplementationTest::SetUp() {
   auto params = GetParam();
   const std::string &library_name = std::get<0>(params);
   const std::string &prefix = std::get<1>(params);
-  mode = std::get<2>(params);
+  const std::string &device_id = std::get<2>(params);
+  mode = std::get<3>(params);
 
   // Get the current test info
   const ::testing::TestInfo *test_info =
@@ -50,7 +50,7 @@ void QDMIImplementationTest::SetUp() {
   config_file_name = "qdmi_" + test_name + ".conf";
   std::ofstream conf_file(config_file_name);
   conf_file << library_name << Shared_library_file_extension() << " " << prefix
-            << "\n";
+            << " " << device_id << "\n";
   conf_file.close();
 
 #ifdef _WIN32
@@ -59,9 +59,6 @@ void QDMIImplementationTest::SetUp() {
   // NOLINTNEXTLINE(misc-include-cleaner) already included from `<cstdlib>`
   setenv("QDMI_CONF", config_file_name.c_str(), 1);
 #endif
-
-  ASSERT_EQ(QDMI_driver_init(), QDMI_SUCCESS)
-      << "Failed to initialize the driver";
 
   ASSERT_EQ(QDMI_session_alloc(&session), QDMI_SUCCESS)
       << "Failed to allocate session";
@@ -97,7 +94,6 @@ void QDMIImplementationTest::SetUp() {
 
 void QDMIImplementationTest::TearDown() {
   QDMI_session_free(session);
-  QDMI_driver_shutdown();
   std::filesystem::remove(config_file_name);
 }
 
@@ -121,6 +117,7 @@ TEST_P(QDMIImplementationTest, SessionSetParameterImplemented) {
                                          "https://example.com"),
               testing::AnyOf(QDMI_SUCCESS, QDMI_ERROR_NOTSUPPORTED,
                              QDMI_ERROR_INVALIDARGUMENT));
+  QDMI_session_free(uninitialized_session);
   EXPECT_EQ(QDMI_session_set_parameter(session, QDMI_SESSION_PARAMETER_AUTHURL,
                                        20, "https://example.com"),
             QDMI_ERROR_BADSTATE);

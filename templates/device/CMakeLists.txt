@@ -53,7 +53,7 @@ set(CMAKE_VERIFY_INTERFACE_HEADER_SETS
 set(QDMI_PREFIX "MY")
 set(MY_QDMI_DEVICE_ID
     "my.default"
-    CACHE STRING "Stable identifier for the MY QDMI Device")
+    CACHE STRING "Package identifier for the MY QDMI Device")
 
 cmake_dependent_option(
   INSTALL_MY_QDMI_DEVICE
@@ -86,7 +86,7 @@ if(BUILD_MY_QDMI_TESTS)
   get_target_property(EXPORTED_QDMI_DEVICE_PREFIX ${QDMI_TARGET_NAME}
                       QDMI_DEVICE_PREFIX)
   if(NOT EXPORTED_QDMI_DEVICE_ID STREQUAL "${MY_QDMI_DEVICE_ID}")
-    message(FATAL_ERROR "The MY QDMI target does not export its stable ID")
+    message(FATAL_ERROR "The MY QDMI target does not export its package ID")
   endif()
   if(NOT EXPORTED_QDMI_DEVICE_PREFIX STREQUAL "${QDMI_PREFIX}")
     message(FATAL_ERROR "The MY QDMI target does not export its symbol prefix")

@@ -10,6 +10,29 @@ contained in the `examples/` directory in the repository.
 
 \tableofcontents
 
+## Implementing a Client Driver {#client-driver}
+
+A Client driver is a replaceable shared library. It exports every function in
+`qdmi/client.h` with `QDMI_DRIVER_EXPORT`, including
+`QDMI_driver_get_client_abi_version`. A loader accepts a version if and only if
+its major and minor fields equal those of `QDMI_CLIENT_ABI_VERSION`; the patch
+field does not affect compatibility. The loader then resolves the complete
+Client Interface before it calls `QDMI_session_alloc`. The ABI query is
+side-effect free. Session allocation initializes the driver lazily and returns a
+null handle on failure.
+
+The example driver's `QDMI_CONF` file contains one device per line:
+
+```text
+/path/to/libdevice.so PREFIX deployment.device-id
+```
+
+The third field is the nonempty client-visible `QDMI_DEVICE_PROPERTY_ID`. IDs
+must be unique in the configured catalog. The driver reads and validates the
+complete file transactionally when it allocates the first session. A failed
+allocation can be retried with a corrected file. Device libraries can omit this
+property because the Client driver owns the public ID.
+
 ## Implementing a Device {#device}
 
 Below you find mock implementations of a QDMI device in C++.
