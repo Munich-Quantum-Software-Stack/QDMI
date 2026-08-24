@@ -5,7 +5,15 @@
     <path></path>
     <filename>client_8h.html</filename>
     <includes id="constants_8h" name="constants.h" local="yes" import="no" module="no" objc="no">qdmi/constants.h</includes>
+    <includes id="export_8h" name="export.h" local="yes" import="no" module="no" objc="no">qdmi/export.h</includes>
     <includes id="types_8h" name="types.h" local="yes" import="no" module="no" objc="no">qdmi/types.h</includes>
+    <member kind="define">
+      <type>#define</type>
+      <name>QDMI_CLIENT_ABI_VERSION</name>
+      <anchorfile>group__client__interface.html</anchorfile>
+      <anchor>gadf3d2c0eb6fa2315db6ff6f82e08b113</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="typedef">
       <type>struct QDMI_Device_impl_d *</type>
       <name>QDMI_Device</name>
@@ -346,6 +354,13 @@
       <anchorfile>group__client__job__interface.html</anchorfile>
       <anchor>gga8f2f468604e24bab4c86cdb781b879bba8eb02a05c7d9f4077f5f41cf0abb5440</anchor>
       <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>uint32_t</type>
+      <name>QDMI_driver_get_client_abi_version</name>
+      <anchorfile>group__client__interface.html</anchorfile>
+      <anchor>ga9e5a19a04b1ca5279e8696e79228fd6a</anchor>
+      <arglist>(void)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -1211,6 +1226,12 @@
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
+      <name>QDMI_DEVICE_PROPERTY_ID</name>
+      <anchorfile>constants_8h.html</anchorfile>
+      <anchor>ad251d8ae8fbbe9a5c7a10d66b243d526a075556271172ec5539c14df12a050f05</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
       <name>QDMI_DEVICE_PROPERTY_MAX</name>
       <anchorfile>constants_8h.html</anchorfile>
       <anchor>ad251d8ae8fbbe9a5c7a10d66b243d526afe696a25133fa887276e666460981688</anchor>
@@ -2023,12 +2044,26 @@
     <subgroup>client_session_interface</subgroup>
     <subgroup>client_query_interface</subgroup>
     <subgroup>client_job_interface</subgroup>
+    <member kind="define">
+      <type>#define</type>
+      <name>QDMI_CLIENT_ABI_VERSION</name>
+      <anchorfile>group__client__interface.html</anchorfile>
+      <anchor>gadf3d2c0eb6fa2315db6ff6f82e08b113</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="typedef">
       <type>struct QDMI_Device_impl_d *</type>
       <name>QDMI_Device</name>
       <anchorfile>group__client__interface.html</anchorfile>
       <anchor>ga2772c94ab19957ce5aaef652b626baec</anchor>
       <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>uint32_t</type>
+      <name>QDMI_driver_get_client_abi_version</name>
+      <anchorfile>group__client__interface.html</anchorfile>
+      <anchor>ga9e5a19a04b1ca5279e8696e79228fd6a</anchor>
+      <arglist>(void)</arglist>
     </member>
   </compound>
   <compound kind="group">
@@ -2739,6 +2774,7 @@
     <name>md_docs_2examples</name>
     <title>Examples</title>
     <filename>md_docs_2examples.html</filename>
+    <docanchor file="md_docs_2examples.html" title="Implementing a Client Driver">client-driver</docanchor>
     <docanchor file="md_docs_2examples.html" title="Implementing a Device">device</docanchor>
     <docanchor file="md_docs_2examples.html" title="Basic String Properties">device-string</docanchor>
     <docanchor file="md_docs_2examples.html" title="Auxiliary Macros">device-macros</docanchor>

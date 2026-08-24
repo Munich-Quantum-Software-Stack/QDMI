@@ -186,7 +186,7 @@ $(function(){initNavTree('group__client__session__interface.html','',''); });
 <div class="contents">
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Description</h2>
 <div class="textblock"><p>Provides functions to manage sessions between the client and driver. </p>
-<p>A session is a connection between a client and a QDMI driver that allows the client to interact with the driver and the devices it manages.</p>
+<p>A session is a connection between a client and a QDMI driver that allows the client to interact with the driver and the devices it manages. An initialized session exposes an immutable snapshot of the devices that the authenticated client can access. A later session can expose a different snapshot.</p>
 <p>The typical workflow for a client session is as follows:</p><ul>
 <li>Allocate a session with <a class="el" href="#gaa11305e72710d4f2439c0c72892fce11" title="QDMI_session_alloc">QDMI_session_alloc</a>.</li>
 <li>Set parameters for the session with <a class="el" href="#ga39d34b2a95cd9e2b8d9d6ab551bff078" title="QDMI_session_set_parameter">QDMI_session_set_parameter</a>.</li>
@@ -386,7 +386,7 @@ Functions</h2></td></tr>
 <p>Allocate a new session. </p>
 <p>This is the main entry point for a client to establish a session with a QDMI driver. The returned handle can be used throughout the <a class="el" href="group__client__session__interface.html" title="QDMI Client Session Interface">client session interface</a> to refer to the session. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[out]</td><td class="paramname">session</td><td>A handle to the session that is allocated. Must not be <code>NULL</code>. The session must be freed by calling <a class="el" href="#ga24d3efdb64f9ae6d88b32b011f7549ae" title="QDMI_session_free">QDMI_session_free</a> when it is no longer used. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">session</td><td>A handle to the session that is allocated. Must not be <code>NULL</code>. The driver sets <code class="param">session</code> to <code>NULL</code> before any operation that can fail. On failure, no session is allocated and the client can retry. The session must be freed by calling <a class="el" href="#ga24d3efdb64f9ae6d88b32b011f7549ae" title="QDMI_session_free">QDMI_session_free</a> when it is no longer used. </td></tr>
   </table>
   </dd>
 </dl>
@@ -469,7 +469,7 @@ Functions</h2></td></tr>
 <div class="line">  session, <a class="code hl_enumvalue" href="#ggaac5ae9f0bf8046987569c6f4e75611d3af68e93d8a13dacb31e6bbdf43c9c5283">QDMI_SESSION_PARAMETER_TOKEN</a>, token.size() + 1, token.c_str());</div>
 <div class="ttc" id="aconstants_8h_html_a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651"><div class="ttname"><a href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a></div><div class="ttdeci">@ QDMI_ERROR_NOTSUPPORTED</div><div class="ttdef"><b>Definition</b> constants.h:53</div></div>
 <div class="ttc" id="agroup__client__session__interface_html_ga39d34b2a95cd9e2b8d9d6ab551bff078"><div class="ttname"><a href="#ga39d34b2a95cd9e2b8d9d6ab551bff078">QDMI_session_set_parameter</a></div><div class="ttdeci">int QDMI_session_set_parameter(QDMI_Session session, QDMI_Session_Parameter param, size_t size, const void *value)</div><div class="ttdoc">Set a parameter for a session.</div></div>
-<div class="ttc" id="agroup__client__session__interface_html_ggaac5ae9f0bf8046987569c6f4e75611d3af68e93d8a13dacb31e6bbdf43c9c5283"><div class="ttname"><a href="#ggaac5ae9f0bf8046987569c6f4e75611d3af68e93d8a13dacb31e6bbdf43c9c5283">QDMI_SESSION_PARAMETER_TOKEN</a></div><div class="ttdeci">@ QDMI_SESSION_PARAMETER_TOKEN</div><div class="ttdoc">char* (string) The token to use for the session.</div><div class="ttdef"><b>Definition</b> client.h:122</div></div>
+<div class="ttc" id="agroup__client__session__interface_html_ggaac5ae9f0bf8046987569c6f4e75611d3af68e93d8a13dacb31e6bbdf43c9c5283"><div class="ttname"><a href="#ggaac5ae9f0bf8046987569c6f4e75611d3af68e93d8a13dacb31e6bbdf43c9c5283">QDMI_SESSION_PARAMETER_TOKEN</a></div><div class="ttdeci">@ QDMI_SESSION_PARAMETER_TOKEN</div><div class="ttdoc">char* (string) The token to use for the session.</div><div class="ttdef"><b>Definition</b> client.h:156</div></div>
 </div><!-- fragment --> </dd></dl>
 
 </div>
@@ -580,9 +580,9 @@ Functions</h2></td></tr>
 <div class="line"><span class="comment">// Query the property.</span></div>
 <div class="line">ret = <a class="code hl_function" href="#ga53bf25dd42852f40468b30a47996d1a0">QDMI_session_query_session_property</a>(</div>
 <div class="line">  session, prop, size, <span class="keyword">static_cast&lt;</span><span class="keywordtype">void</span>*<span class="keyword">&gt;</span>(devices.data()), <span class="keyword">nullptr</span>);</div>
-<div class="ttc" id="agroup__client__interface_html_ga2772c94ab19957ce5aaef652b626baec"><div class="ttname"><a href="group__client__interface.html#ga2772c94ab19957ce5aaef652b626baec">QDMI_Device</a></div><div class="ttdeci">struct QDMI_Device_impl_d * QDMI_Device</div><div class="ttdoc">A handle for a device implementing the QDMI Device Interface.</div><div class="ttdef"><b>Definition</b> client.h:64</div></div>
+<div class="ttc" id="agroup__client__interface_html_ga2772c94ab19957ce5aaef652b626baec"><div class="ttname"><a href="group__client__interface.html#ga2772c94ab19957ce5aaef652b626baec">QDMI_Device</a></div><div class="ttdeci">struct QDMI_Device_impl_d * QDMI_Device</div><div class="ttdoc">A handle for a device implementing the QDMI Device Interface.</div><div class="ttdef"><b>Definition</b> client.h:93</div></div>
 <div class="ttc" id="agroup__client__session__interface_html_ga53bf25dd42852f40468b30a47996d1a0"><div class="ttname"><a href="#ga53bf25dd42852f40468b30a47996d1a0">QDMI_session_query_session_property</a></div><div class="ttdeci">int QDMI_session_query_session_property(QDMI_Session session, QDMI_Session_Property prop, size_t size, void *value, size_t *size_ret)</div><div class="ttdoc">Query a property of a session.</div></div>
-<div class="ttc" id="agroup__client__session__interface_html_gga737948251bac10b8cabf745afe82bd09ad18bc8e3c5b4f5ebcef0c81dd09eafe5"><div class="ttname"><a href="#gga737948251bac10b8cabf745afe82bd09ad18bc8e3c5b4f5ebcef0c81dd09eafe5">QDMI_SESSION_PROPERTY_DEVICES</a></div><div class="ttdeci">@ QDMI_SESSION_PROPERTY_DEVICES</div><div class="ttdoc">QDMI_Device* (QDMI_Device list) The devices the client has access to.</div><div class="ttdef"><b>Definition</b> client.h:285</div></div>
+<div class="ttc" id="agroup__client__session__interface_html_gga737948251bac10b8cabf745afe82bd09ad18bc8e3c5b4f5ebcef0c81dd09eafe5"><div class="ttname"><a href="#gga737948251bac10b8cabf745afe82bd09ad18bc8e3c5b4f5ebcef0c81dd09eafe5">QDMI_SESSION_PROPERTY_DEVICES</a></div><div class="ttdeci">@ QDMI_SESSION_PROPERTY_DEVICES</div><div class="ttdoc">QDMI_Device* (QDMI_Device list) The devices the client has access to.</div><div class="ttdef"><b>Definition</b> client.h:320</div></div>
 </div><!-- fragment --><p class="enddd"></p>
 </dd></dl>
 <dl class="section attention"><dt>Attention</dt><dd>May only be called after the session has been successfully initialized with <a class="el" href="#gafbc8c6031ee98c87d58515eb35b4202b" title="QDMI_session_init">QDMI_session_init</a>. </dd></dl>
@@ -605,7 +605,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Free a session. </p>
-<p>This function frees the memory allocated for the session. Accessing a (dangling) handle to a device that was attached to the session after the session was freed is undefined behavior. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>This function frees the memory allocated for the session. The client must free all jobs created or retrieved through the session before this call. This call invalidates every device, site, and operation handle obtained from the session. Accessing any invalidated handle is undefined behavior. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">session</td><td>The session to free. </td></tr>
   </table>

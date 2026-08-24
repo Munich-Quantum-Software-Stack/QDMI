@@ -1,5 +1,6 @@
 var client_8h =
 [
+    [ "QDMI_CLIENT_ABI_VERSION", "group__client__interface.html#gadf3d2c0eb6fa2315db6ff6f82e08b113", null ],
     [ "QDMI_Device", "group__client__interface.html#ga2772c94ab19957ce5aaef652b626baec", null ],
     [ "QDMI_Session", "group__client__session__interface.html#ga4dd0162b0321d12934f815f29504106e", null ],
     [ "QDMI_Session_Parameter", "group__client__session__interface.html#gaae2a513b3364705ca75f709215d912f5", null ],
@@ -59,6 +60,7 @@ var client_8h =
       [ "QDMI_JOB_PROPERTY_CUSTOM5", "group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba0108668f46b41020ad1b9b78cb39f0ba", null ],
       [ "QDMI_JOB_PROPERTY_CUSTOM_MAX", "group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba8eb02a05c7d9f4077f5f41cf0abb5440", null ]
     ] ],
+    [ "QDMI_driver_get_client_abi_version", "group__client__interface.html#ga9e5a19a04b1ca5279e8696e79228fd6a", null ],
     [ "QDMI_session_alloc", "group__client__session__interface.html#gaa11305e72710d4f2439c0c72892fce11", null ],
     [ "QDMI_session_set_parameter", "group__client__session__interface.html#ga39d34b2a95cd9e2b8d9d6ab551bff078", null ],
     [ "QDMI_session_init", "group__client__session__interface.html#gafbc8c6031ee98c87d58515eb35b4202b", null ],
