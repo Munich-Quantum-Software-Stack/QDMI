@@ -108,17 +108,48 @@ TEST(QDMIDriverLoadingTest, LazyInitializationIsTransactionalAndRetryable) {
   EXPECT_NE(QDMI_session_alloc(&session), QDMI_SUCCESS);
   EXPECT_EQ(session, nullptr);
 
-  const std::string valid_config = "qdmi_valid.conf";
+  const std::string duplicate_library_config = "qdmi_duplicate_library.conf";
   {
-    std::ofstream config(valid_config);
-    config << "../examples/device/src/libcxx-qdmi-device"
+    std::ofstream config(duplicate_library_config);
+    const std::string library = "../examples/device/src/libcxx-qdmi-device" +
+                                std::string(Shared_library_file_extension());
+    config << library << " CXX first.device\n"
+           << library << " CXX second.device\n";
+  }
+#ifdef _WIN32
+  _putenv_s("QDMI_CONF", duplicate_library_config.c_str());
+#else
+  setenv("QDMI_CONF", duplicate_library_config.c_str(), 1);
+#endif
+  EXPECT_NE(QDMI_session_alloc(&session), QDMI_SUCCESS);
+  EXPECT_EQ(session, nullptr);
+
+  const std::string failing_initialize_config = "qdmi_failing_initialize.conf";
+  {
+    std::ofstream config(failing_initialize_config);
+    config << "../templates/device/src/libmy-qdmi-device"
+           << Shared_library_file_extension() << " MY template.device\n";
+  }
+#ifdef _WIN32
+  _putenv_s("QDMI_CONF", failing_initialize_config.c_str());
+#else
+  setenv("QDMI_CONF", failing_initialize_config.c_str(), 1);
+#endif
+  EXPECT_NE(QDMI_session_alloc(&session), QDMI_SUCCESS);
+  EXPECT_EQ(session, nullptr);
+
+  const std::string default_config = "qdmi.conf";
+  {
+    std::ofstream config(default_config);
+    config << "\n# Ignore comments and empty lines.\n"
+           << "../examples/device/src/libcxx-qdmi-device"
            << Shared_library_file_extension() << " CXX example.cxx-simulator\n";
   }
 #ifdef _WIN32
-  _putenv_s("QDMI_CONF", valid_config.c_str());
+  _putenv_s("QDMI_CONF", "");
   _putenv_s("HOME", "/nonexistent/home/directory");
 #else
-  setenv("QDMI_CONF", valid_config.c_str(), 1);
+  unsetenv("QDMI_CONF");
   setenv("HOME", "/nonexistent/home/directory", 1);
 #endif
   EXPECT_EQ(QDMI_session_alloc(&session), QDMI_SUCCESS);
@@ -127,7 +158,9 @@ TEST(QDMIDriverLoadingTest, LazyInitializationIsTransactionalAndRetryable) {
 
   std::filesystem::remove(invalid_library_config);
   std::filesystem::remove(duplicate_id_config);
-  std::filesystem::remove(valid_config);
+  std::filesystem::remove(duplicate_library_config);
+  std::filesystem::remove(failing_initialize_config);
+  std::filesystem::remove(default_config);
 #ifdef _WIN32
   _putenv_s("QDMI_CONF", saved_conf.c_str());
   _putenv_s("HOME", saved_home.c_str());
