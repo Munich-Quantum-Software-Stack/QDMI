@@ -496,6 +496,26 @@ enum QDMI_DEVICE_PROPERTY_T {
    */
   QDMI_DEVICE_PROPERTY_QUEUELENGTH = 17,
   /**
+   * @brief `char*` (string) The stable client-visible device identifier.
+   * @details The Client Interface must return a nonempty, NUL-terminated,
+   * opaque ID. IDs are unique within one initialized session and immutable for
+   * the lifetime of the corresponding @ref QDMI_Device handle. Equivalent
+   * sessions return the same ID across process restarts while the same logical
+   * resource exists. Clients persist the pair of driver deployment and device
+   * ID because IDs from different drivers need not be unique.
+   *
+   * The ID identifies the logical resource. It is not a display name, endpoint,
+   * pointer value, credential, library version, symbol prefix, or build-system
+   * target ID. A driver can namespace or replace an identifier reported by its
+   * underlying device implementation.
+   *
+   * This property is mandatory through @ref QDMI_device_query_device_property.
+   * A device implementation can return @ref QDMI_ERROR_NOTSUPPORTED through
+   * @ref QDMI_device_session_query_device_property; the driver must then supply
+   * the client-visible ID.
+   */
+  QDMI_DEVICE_PROPERTY_ID = 18,
+  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -503,7 +523,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_DEVICE_PROPERTY_MAX = 18,
+  QDMI_DEVICE_PROPERTY_MAX = 19,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.

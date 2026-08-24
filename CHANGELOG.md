@@ -14,6 +14,8 @@ clients compiled against a different minor or major version.
 
 ### Added
 
+- ✨ Add a versioned, replaceable Client-driver ABI and a mandatory stable
+  client-visible device ID.
 - ✨ Add descriptor-scoped execution-feature queries, exact descriptor equality,
   and a format-defined program-output result ([#508]) ([\@simon1hofmann],
   [\@burgholzer]).
@@ -22,6 +24,8 @@ clients compiled against a different minor or major version.
 
 ### Changed
 
+- 💥 Make Client session allocation initialize drivers lazily and remove the
+  example driver's separate initialization and shutdown functions.
 - 💥 Add a program index to `QDMI_job_get_results` and
   `QDMI_device_job_get_results`, and define atomic legacy-setter and
   multi-program retrieval semantics ([#509]) ([\@burgholzer]).

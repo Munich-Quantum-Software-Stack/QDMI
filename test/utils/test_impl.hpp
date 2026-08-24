@@ -49,8 +49,8 @@ constexpr const char *Shared_library_file_extension() {
 enum class TEST_SESSION_MODE : uint8_t { READONLY, READWRITE };
 
 class QDMIImplementationTest
-    : public ::testing::TestWithParam<
-          std::tuple<std::string, std::string, TEST_SESSION_MODE>> {
+    : public ::testing::TestWithParam<std::tuple<
+          std::string, std::string, std::string, TEST_SESSION_MODE>> {
 protected:
   QDMI_Session session = nullptr;
   QDMI_Device device = nullptr;
