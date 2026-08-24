@@ -17,7 +17,10 @@
  * SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
  */
 
-#include "qdmi/constants.h"
+#include "qdmi/client.h"
+
+_Static_assert(QDMI_CLIENT_ABI_VERSION == QDMI_MAKE_VERSION(1, 4, 0),
+               "unexpected QDMI Client ABI version");
 
 /// C uses void for a no-argument prototype. The C++ test calls this function.
 // NOLINTNEXTLINE(misc-use-internal-linkage, modernize-redundant-void-arg)

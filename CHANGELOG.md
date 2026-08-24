@@ -14,11 +14,15 @@ clients compiled against a different minor or major version.
 
 ### Added
 
+- ✨ Add a versioned, replaceable Client-driver ABI and a mandatory stable
+  client-visible device ID.
 - ✨ Add descriptor-scoped execution-feature queries and a format-defined
   program-output result ([#508]) ([\@simon1hofmann], [\@burgholzer]).
 
 ### Changed
 
+- 💥 Make Client session allocation initialize drivers lazily and remove the
+  example driver's separate initialization and shutdown functions.
 - 💥 Replace program-format enums with exact format descriptors and define the
   flat-bit order of shot and histogram results ([#508]) ([\@simon1hofmann],
   [\@burgholzer]).

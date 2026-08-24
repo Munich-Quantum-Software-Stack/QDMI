@@ -7,6 +7,47 @@ releases, please refer to the
 
 ## [Unreleased]
 
+### Replaceable Client drivers and stable device IDs
+
+QDMI 1.4 defines a stable ABI for replaceable Client driver libraries. Export
+every function declared in `qdmi/client.h` with `QDMI_DRIVER_EXPORT`. Define
+`QDMI_driver_EXPORTS` while building the driver. A loader first resolves and
+calls `QDMI_driver_get_client_abi_version`. It then resolves the complete Client
+Interface before it allocates a session. The returned ABI is compatible if and
+only if its packed major and minor fields equal those of
+`QDMI_CLIENT_ABI_VERSION`. Ignore the patch field when checking compatibility. A
+different major or minor field is incompatible. QDMI 1.4 defines
+`QDMI_CLIENT_ABI_VERSION` as 1.4.0. The ABI version is separate from the QDMI
+release and device library versions.
+
+The ABI version query does not initialize the driver. `QDMI_session_alloc` is
+the first stateful Client call. It initializes the driver lazily, sets its
+output to `NULL` before work that can fail, and leaves no partial session on
+failure. Clients can retry a failed allocation. The example driver no longer
+exposes `QDMI_driver_init` or `QDMI_driver_shutdown`.
+
+A process uses one Client implementation and can allocate many sessions. Each
+initialized session exposes an immutable authorized device catalog. Device,
+site, operation, and job handles belong to that session. Free all jobs before
+freeing the session. Freeing the session invalidates every remaining descendant
+handle.
+
+`QDMI_DEVICE_PROPERTY_ID` is appended as value 18. It is mandatory through the
+Client Interface and optional through the Device Interface. A driver supplies
+the value when a device returns `QDMI_ERROR_NOTSUPPORTED`. The ID is a nonempty,
+opaque string. It is unique within an initialized session, immutable for one
+device handle, and stable across equivalent sessions and process restarts while
+the same logical resource exists. Persist the driver deployment with the ID. Do
+not use a display name, endpoint, pointer, credential, library version, symbol
+prefix, or the `QDMI_DEVICE_ID` CMake target property as the runtime ID.
+
+The example driver configuration now gives each device a runtime ID in a third
+column:
+
+```text
+/path/to/libdevice.so PREFIX deployment.device-id
+```
+
 ### Program-format execution features
 
 QDMI replaces the program-format enum with an exact `QDMI_Program_Format`

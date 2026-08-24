@@ -24,6 +24,7 @@
 #pragma once
 
 #include "qdmi/constants.h" // IWYU pragma: export
+#include "qdmi/export.h"    // IWYU pragma: export
 #include "qdmi/types.h"     // IWYU pragma: export
 
 #ifdef __cplusplus
@@ -44,6 +45,16 @@ extern "C" {
  *  It includes functions to establish sessions between a QDMI driver and a
  *  client, as well as to interact with the devices managed by the driver.
  *
+ *  A process uses one implementation of this interface and can allocate many
+ *  independent sessions from it. A dynamic loader must first resolve and call
+ *  @ref QDMI_driver_get_client_abi_version. A returned ABI is compatible if and
+ *  only if its major and minor fields equal those of @ref
+ *  QDMI_CLIENT_ABI_VERSION. The loader must ignore the patch field for
+ *  compatibility. It must then resolve the complete Client Interface declared
+ *  in this header before it calls @ref QDMI_session_alloc. The driver library
+ *  must remain loaded until every session and every handle obtained from those
+ *  sessions is freed.
+ *
  *  The client interface is split into three parts:
  *  - The @ref client_session_interface "client session interface" for managing
  * sessions between a QDMI driver and a client.
@@ -55,11 +66,29 @@ extern "C" {
  * @{
  */
 
+/** Client Interface ABI implemented by compatible QDMI 1.4 drivers. */
+#define QDMI_CLIENT_ABI_VERSION QDMI_MAKE_VERSION(1, 4, 0)
+
+/**
+ * @brief Return the Client Interface ABI implemented by the driver.
+ * @details This function has no side effects, is safe to call concurrently,
+ * and does not initialize global driver state. A returned ABI is compatible
+ * with @ref QDMI_CLIENT_ABI_VERSION if and only if both versions have the same
+ * major and minor fields. A loader must ignore the patch field when it decides
+ * compatibility. A different major or minor field is incompatible. This ABI
+ * version is independent of the QDMI release version and of device library
+ * versions.
+ * @return The packed Client Interface ABI version.
+ */
+QDMI_DRIVER_EXPORT uint32_t QDMI_driver_get_client_abi_version(void);
+
 /**
  * @brief A handle for a device implementing the
  * @ref device_interface "QDMI Device Interface".
  * @details An opaque pointer to a type defined by the driver that encapsulates
- * an implementation of the  @ref device_interface "QDMI Device Interface".
+ * an implementation of the @ref device_interface "QDMI Device Interface".
+ * The handle belongs to the session that returned it and becomes invalid when
+ * that session is freed.
  */
 typedef struct QDMI_Device_impl_d *QDMI_Device;
 
@@ -67,6 +96,9 @@ typedef struct QDMI_Device_impl_d *QDMI_Device;
  *  @brief Provides functions to manage sessions between the client and driver.
  *  @details A session is a connection between a client and a QDMI driver that
  *  allows the client to interact with the driver and the devices it manages.
+ *  An initialized session exposes an immutable snapshot of the devices that
+ *  the authenticated client can access. A later session can expose a different
+ *  snapshot.
  *
  *  The typical workflow for a client session is as follows:
  *  - Allocate a session with @ref QDMI_session_alloc.
@@ -95,8 +127,10 @@ typedef struct QDMI_Session_impl_d *QDMI_Session;
  * @ref client_session_interface "client session interface" to refer to the
  * session.
  * @param[out] session A handle to the session that is allocated. Must not be
- * @c NULL. The session must be freed by calling @ref QDMI_session_free
- * when it is no longer used.
+ * @c NULL. The driver sets @p session to @c NULL before any operation that can
+ * fail. On failure, no session is allocated and the client can retry. The
+ * session must be freed by calling @ref QDMI_session_free when it is no longer
+ * used.
  * @return @ref QDMI_SUCCESS if the session was allocated successfully.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p session is @c NULL.
  * @return @ref QDMI_ERROR_OUTOFMEM if memory space ran out.
@@ -104,7 +138,7 @@ typedef struct QDMI_Session_impl_d *QDMI_Session;
  * @see QDMI_session_set_parameter
  *      QDMI_session_init
  */
-int QDMI_session_alloc(QDMI_Session *session);
+QDMI_DRIVER_EXPORT int QDMI_session_alloc(QDMI_Session *session);
 
 /**
  * @brief Enum of the session parameters that can be set via @ref
@@ -243,9 +277,10 @@ typedef enum QDMI_SESSION_PARAMETER_T QDMI_Session_Parameter;
  * @endcode
  * @endparblock
  */
-int QDMI_session_set_parameter(QDMI_Session session,
-                               QDMI_Session_Parameter param, size_t size,
-                               const void *value);
+QDMI_DRIVER_EXPORT int QDMI_session_set_parameter(QDMI_Session session,
+                                                  QDMI_Session_Parameter param,
+                                                  size_t size,
+                                                  const void *value);
 
 /**
  * @brief Initialize a session.
@@ -267,7 +302,7 @@ int QDMI_session_set_parameter(QDMI_Session session,
  * @see QDMI_session_set_parameter
  *      QDMI_session_query_session_property
  */
-int QDMI_session_init(QDMI_Session session);
+QDMI_DRIVER_EXPORT int QDMI_session_init(QDMI_Session session);
 
 /**
  * @brief Enum of the session properties that can be queried via @ref
@@ -363,18 +398,20 @@ typedef enum QDMI_SESSION_PROPERTY_T QDMI_Session_Property;
  * @attention May only be called after the session has been successfully
  * initialized with @ref QDMI_session_init.
  */
-int QDMI_session_query_session_property(QDMI_Session session,
-                                        QDMI_Session_Property prop, size_t size,
-                                        void *value, size_t *size_ret);
+QDMI_DRIVER_EXPORT int
+QDMI_session_query_session_property(QDMI_Session session,
+                                    QDMI_Session_Property prop, size_t size,
+                                    void *value, size_t *size_ret);
 
 /**
  * @brief Free a session.
- * @details This function frees the memory allocated for the session.
- * Accessing a (dangling) handle to a device that was attached to the session
- * after the session was freed is undefined behavior.
+ * @details This function frees the memory allocated for the session. The client
+ * must free all jobs created or retrieved through the session before this call.
+ * This call invalidates every device, site, and operation handle obtained from
+ * the session. Accessing any invalidated handle is undefined behavior.
  * @param[in] session The session to free.
  */
-void QDMI_session_free(QDMI_Session session);
+QDMI_DRIVER_EXPORT void QDMI_session_free(QDMI_Session session);
 
 /** @} */ // end of client_session_interface
 
@@ -434,9 +471,9 @@ void QDMI_session_free(QDMI_Session session);
  * @endcode
  * @endparblock
  */
-int QDMI_device_query_device_property(QDMI_Device device,
-                                      QDMI_Device_Property prop, size_t size,
-                                      void *value, size_t *size_ret);
+QDMI_DRIVER_EXPORT int
+QDMI_device_query_device_property(QDMI_Device device, QDMI_Device_Property prop,
+                                  size_t size, void *value, size_t *size_ret);
 
 /**
  * @brief Query the complete optional feature guarantees for one exact program
@@ -457,10 +494,9 @@ int QDMI_device_query_device_property(QDMI_Device device,
  * invalid descriptor, or an insufficient output buffer.
  * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
  */
-int QDMI_device_query_program_features(QDMI_Device device,
-                                       const QDMI_Program_Format *format,
-                                       size_t size, QDMI_Program_Feature *value,
-                                       size_t *size_ret);
+QDMI_DRIVER_EXPORT int QDMI_device_query_program_features(
+    QDMI_Device device, const QDMI_Program_Format *format, size_t size,
+    QDMI_Program_Feature *value, size_t *size_ret);
 
 /**
  * @brief Query a site property.
@@ -513,9 +549,11 @@ int QDMI_device_query_program_features(QDMI_Device device,
  * @remark @ref QDMI_Site handles may be queried via @ref
  * QDMI_device_query_device_property with @ref QDMI_DEVICE_PROPERTY_SITES.
  */
-int QDMI_device_query_site_property(QDMI_Device device, QDMI_Site site,
-                                    QDMI_Site_Property prop, size_t size,
-                                    void *value, size_t *size_ret);
+QDMI_DRIVER_EXPORT int QDMI_device_query_site_property(QDMI_Device device,
+                                                       QDMI_Site site,
+                                                       QDMI_Site_Property prop,
+                                                       size_t size, void *value,
+                                                       size_t *size_ret);
 
 /**
  * @brief Query an operation property.
@@ -599,7 +637,7 @@ int QDMI_device_query_site_property(QDMI_Device device, QDMI_Site site,
  * QDMI_OPERATION_PROPERTY_QUBITSNUM and @ref
  * QDMI_OPERATION_PROPERTY_PARAMETERSNUM, respectively.
  */
-int QDMI_device_query_operation_property(
+QDMI_DRIVER_EXPORT int QDMI_device_query_operation_property(
     QDMI_Device device, QDMI_Operation operation, size_t num_sites,
     const QDMI_Site *sites, size_t num_params, const double *params,
     QDMI_Operation_Property prop, size_t size, void *value, size_t *size_ret);
@@ -631,7 +669,9 @@ int QDMI_device_query_operation_property(
 /**
  * @brief A handle for a client-side job.
  * @details An opaque pointer to a type defined by the driver that encapsulates
- * all information about a job submitted to a device by a client.
+ * all information about a job submitted to a device by a client. The job
+ * belongs to the session that supplied its device handle. The client must free
+ * the job before it frees that session.
  * @remark Implementations of the underlying type will want to store the device
  * handle used to create the job in the job handle to be able to access the
  * device when needed.
@@ -655,7 +695,8 @@ typedef struct QDMI_Job_impl_d *QDMI_Job;
  * current session.
  * @return @ref QDMI_ERROR_FATAL if job creation failed due to a fatal error.
  */
-int QDMI_device_create_job(QDMI_Device device, QDMI_Job *job);
+QDMI_DRIVER_EXPORT int QDMI_device_create_job(QDMI_Device device,
+                                              QDMI_Job *job);
 
 /**
  * @brief Retrieve an existing job by its ID.
@@ -688,8 +729,9 @@ int QDMI_device_create_job(QDMI_Device device, QDMI_Job *job);
  * @return @ref QDMI_ERROR_FATAL if retrieving the job failed due to a fatal
  * error.
  */
-int QDMI_session_retrieve_job_by_id(QDMI_Device device, const char *job_id,
-                                    QDMI_Job *job);
+QDMI_DRIVER_EXPORT int QDMI_session_retrieve_job_by_id(QDMI_Device device,
+                                                       const char *job_id,
+                                                       QDMI_Job *job);
 
 /**
  * @brief Enum of the job parameters that can be set.
@@ -799,8 +841,9 @@ typedef enum QDMI_JOB_PARAMETER_T QDMI_Job_Parameter;
  * @endcode
  * @endparblock
  */
-int QDMI_job_set_parameter(QDMI_Job job, QDMI_Job_Parameter param, size_t size,
-                           const void *value);
+QDMI_DRIVER_EXPORT int QDMI_job_set_parameter(QDMI_Job job,
+                                              QDMI_Job_Parameter param,
+                                              size_t size, const void *value);
 
 /**
  * @brief Enum of the job properties that can be queried via @ref
@@ -932,8 +975,10 @@ typedef enum QDMI_JOB_PROPERTY_T QDMI_Job_Property;
  * @endcode
  * @endparblock
  */
-int QDMI_job_query_property(QDMI_Job job, QDMI_Job_Property prop, size_t size,
-                            void *value, size_t *size_ret);
+QDMI_DRIVER_EXPORT int QDMI_job_query_property(QDMI_Job job,
+                                               QDMI_Job_Property prop,
+                                               size_t size, void *value,
+                                               size_t *size_ret);
 
 /**
  * @brief Submit a job to the device.
@@ -950,7 +995,7 @@ int QDMI_job_query_property(QDMI_Job job, QDMI_Job_Property prop, size_t size,
  * current session.
  * @return @ref QDMI_ERROR_FATAL if the job submission failed.
  */
-int QDMI_job_submit(QDMI_Job job);
+QDMI_DRIVER_EXPORT int QDMI_job_submit(QDMI_Job job);
 
 /**
  * @brief Cancel an already submitted job.
@@ -965,7 +1010,7 @@ int QDMI_job_submit(QDMI_Job job);
  * current session.
  * @return @ref QDMI_ERROR_FATAL if the job could not be canceled.
  */
-int QDMI_job_cancel(QDMI_Job job);
+QDMI_DRIVER_EXPORT int QDMI_job_cancel(QDMI_Job job);
 
 /**
  * @brief Check the status of a job.
@@ -981,7 +1026,7 @@ int QDMI_job_cancel(QDMI_Job job);
  * current session.
  * @return @ref QDMI_ERROR_FATAL if the job status could not be checked.
  */
-int QDMI_job_check(QDMI_Job job, QDMI_Job_Status *status);
+QDMI_DRIVER_EXPORT int QDMI_job_check(QDMI_Job job, QDMI_Job_Status *status);
 
 /**
  * @brief Wait for a job to finish.
@@ -1002,7 +1047,7 @@ int QDMI_job_check(QDMI_Job job, QDMI_Job_Status *status);
  * @return @ref QDMI_ERROR_FATAL if the job could not be waited for and this
  * function returns before the job has finished or has been canceled.
  */
-int QDMI_job_wait(QDMI_Job job, size_t timeout);
+QDMI_DRIVER_EXPORT int QDMI_job_wait(QDMI_Job job, size_t timeout);
 
 /**
  * @brief Retrieve the results of a job.
@@ -1054,8 +1099,9 @@ int QDMI_job_wait(QDMI_Job job, size_t timeout);
  * @endcode
  * @endparblock
  */
-int QDMI_job_get_results(QDMI_Job job, QDMI_Job_Result result, size_t size,
-                         void *data, size_t *size_ret);
+QDMI_DRIVER_EXPORT int QDMI_job_get_results(QDMI_Job job,
+                                            QDMI_Job_Result result, size_t size,
+                                            void *data, size_t *size_ret);
 
 /**
  * @brief Free a job.
@@ -1065,7 +1111,7 @@ int QDMI_job_get_results(QDMI_Job job, QDMI_Job_Result result, size_t size,
  * device-specific.
  * @param[in] job The job to free.
  */
-void QDMI_job_free(QDMI_Job job);
+QDMI_DRIVER_EXPORT void QDMI_job_free(QDMI_Job job);
 
 /** @} */ // end of client_job_interface
 

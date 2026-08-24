@@ -20,7 +20,6 @@
 #include "example_fomac.hpp"
 #include "example_tool.hpp"
 #include "qdmi/client.h"
-#include "qdmi_example_driver.h"
 #include "utils/test_impl.hpp"
 
 #include <algorithm>
@@ -29,6 +28,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <cstdlib>
+#include <cstring>
 #include <filesystem>
 #include <fstream>
 #include <functional>
@@ -53,6 +53,7 @@ static_assert(sizeof(QDMI_Program_Feature) == 144U);
 static_assert(QDMI_VERSION_MAJOR(QDMI_MAKE_VERSION(2, 1, 3)) == 2U);
 static_assert(QDMI_VERSION_MINOR(QDMI_MAKE_VERSION(2, 1, 3)) == 1U);
 static_assert(QDMI_VERSION_PATCH(QDMI_MAKE_VERSION(2, 1, 3)) == 3U);
+static_assert(QDMI_CLIENT_ABI_VERSION == QDMI_MAKE_VERSION(1, 4, 0));
 
 constexpr QDMI_Program_Feature CPP_UNCONSTRAINED_FEATURE =
     QDMI_PROGRAM_FEATURE_UNCONSTRAINED(
@@ -125,6 +126,89 @@ TEST(QDMIConstantsTest, UnconstrainedProgramFeatureMacroIsCCompatible) {
   EXPECT_EQ(feature.constraint_value, 0U);
 }
 
+TEST(QDMIDriverLoadingTest, LazyInitializationIsTransactionalAndRetryable) {
+  EXPECT_EQ(QDMI_driver_get_client_abi_version(), QDMI_MAKE_VERSION(1, 4, 0));
+  const char *original_conf = std::getenv("QDMI_CONF");
+  const std::string saved_conf = original_conf != nullptr ? original_conf : "";
+  const char *original_home = std::getenv("HOME");
+  const std::string saved_home = original_home != nullptr ? original_home : "";
+
+  QDMI_Session session = nullptr;
+#ifdef _WIN32
+  _putenv_s("QDMI_CONF", "/nonexistent/path/to/qdmi.conf");
+#else
+  setenv("QDMI_CONF", "/nonexistent/path/to/qdmi.conf", 1);
+#endif
+  EXPECT_NE(QDMI_session_alloc(&session), QDMI_SUCCESS);
+  EXPECT_EQ(session, nullptr);
+
+  const std::string invalid_library_config = "qdmi_invalid_library.conf";
+  {
+    std::ofstream config(invalid_library_config);
+    config << "/nonexistent/path/to/library" << Shared_library_file_extension()
+           << " CXX missing.device\n";
+  }
+#ifdef _WIN32
+  _putenv_s("QDMI_CONF", invalid_library_config.c_str());
+#else
+  setenv("QDMI_CONF", invalid_library_config.c_str(), 1);
+#endif
+  EXPECT_NE(QDMI_session_alloc(&session), QDMI_SUCCESS);
+  EXPECT_EQ(session, nullptr);
+
+  const std::string duplicate_id_config = "qdmi_duplicate_id.conf";
+  {
+    std::ofstream config(duplicate_id_config);
+    const std::string library = "../examples/device/src/libcxx-qdmi-device" +
+                                std::string(Shared_library_file_extension());
+    config << library << " CXX duplicate.device\n"
+           << library << " CXX duplicate.device\n";
+  }
+#ifdef _WIN32
+  _putenv_s("QDMI_CONF", duplicate_id_config.c_str());
+#else
+  setenv("QDMI_CONF", duplicate_id_config.c_str(), 1);
+#endif
+  EXPECT_NE(QDMI_session_alloc(&session), QDMI_SUCCESS);
+  EXPECT_EQ(session, nullptr);
+
+  const std::string valid_config = "qdmi_valid.conf";
+  {
+    std::ofstream config(valid_config);
+    config << "../examples/device/src/libcxx-qdmi-device"
+           << Shared_library_file_extension() << " CXX example.cxx-simulator\n";
+  }
+#ifdef _WIN32
+  _putenv_s("QDMI_CONF", valid_config.c_str());
+  _putenv_s("HOME", "/nonexistent/home/directory");
+#else
+  setenv("QDMI_CONF", valid_config.c_str(), 1);
+  setenv("HOME", "/nonexistent/home/directory", 1);
+#endif
+  EXPECT_EQ(QDMI_session_alloc(&session), QDMI_SUCCESS);
+  EXPECT_NE(session, nullptr);
+  QDMI_session_free(session);
+
+  std::filesystem::remove(invalid_library_config);
+  std::filesystem::remove(duplicate_id_config);
+  std::filesystem::remove(valid_config);
+#ifdef _WIN32
+  _putenv_s("QDMI_CONF", saved_conf.c_str());
+  _putenv_s("HOME", saved_home.c_str());
+#else
+  if (saved_conf.empty()) {
+    unsetenv("QDMI_CONF");
+  } else {
+    setenv("QDMI_CONF", saved_conf.c_str(), 1);
+  }
+  if (saved_home.empty()) {
+    unsetenv("HOME");
+  } else {
+    setenv("HOME", saved_home.c_str(), 1);
+  }
+#endif
+}
+
 // Instantiate the test suite with different parameters
 INSTANTIATE_TEST_SUITE_P(
     QDMIDevice,
@@ -133,11 +217,13 @@ INSTANTIATE_TEST_SUITE_P(
     // Test suite name
     // Parameters to test with
     ::testing::Values(std::tuple{"../examples/device/src/libcxx-qdmi-device",
-                                 "CXX", TEST_SESSION_MODE::READONLY},
+                                 "CXX", "example.cxx-simulator",
+                                 TEST_SESSION_MODE::READONLY},
                       std::tuple{"../examples/device/src/libcxx-qdmi-device",
-                                 "CXX", TEST_SESSION_MODE::READWRITE}),
-    [](const testing::TestParamInfo<
-        std::tuple<std::string, std::string, TEST_SESSION_MODE>> &inf) {
+                                 "CXX", "example.cxx-simulator",
+                                 TEST_SESSION_MODE::READWRITE}),
+    [](const testing::TestParamInfo<std::tuple<
+           std::string, std::string, std::string, TEST_SESSION_MODE>> &inf) {
       // Extract the last part of the file path
       const size_t pos = std::get<0>(inf.param).find_last_of("/\\");
       std::string filename = (pos == std::string::npos)
@@ -154,7 +240,7 @@ INSTANTIATE_TEST_SUITE_P(
       }
 
       // return name for the test
-      switch (std::get<2>(inf.param)) {
+      switch (std::get<3>(inf.param)) {
       case TEST_SESSION_MODE::READONLY:
         return filename + "__readonly";
       case TEST_SESSION_MODE::READWRITE:
@@ -1249,6 +1335,7 @@ TEST_P(QDMIImplementationTest, SessionInit) {
                                        test_token.c_str()),
             QDMI_SUCCESS);
   EXPECT_EQ(QDMI_session_init(session2), QDMI_SUCCESS);
+  QDMI_session_free(session2);
 }
 
 TEST_P(QDMIImplementationTest, RetrieveJobById) {
@@ -1322,6 +1409,46 @@ TEST_P(QDMIImplementationTest, SessionQuerySessionProperty) {
                 session, QDMI_SESSION_PROPERTY_DEVICES, devices_size,
                 static_cast<void *>(devices_vec.data()), nullptr),
             QDMI_SUCCESS);
+  QDMI_session_free(session2);
+}
+
+TEST_P(QDMIImplementationTest, ClientVisibleDeviceIdIsStable) {
+  size_t id_size = 0;
+  ASSERT_EQ(QDMI_device_query_device_property(device, QDMI_DEVICE_PROPERTY_ID,
+                                              0, nullptr, &id_size),
+            QDMI_SUCCESS);
+  ASSERT_GT(id_size, 1U);
+  std::vector<char> id(id_size);
+  ASSERT_EQ(QDMI_device_query_device_property(device, QDMI_DEVICE_PROPERTY_ID,
+                                              id.size(), id.data(), nullptr),
+            QDMI_SUCCESS);
+  EXPECT_EQ(id.back(), '\0');
+  EXPECT_EQ(std::string(id.data()), "example.cxx-simulator");
+  EXPECT_EQ(QDMI_device_query_device_property(device, QDMI_DEVICE_PROPERTY_ID,
+                                              id.size() - 1, id.data(),
+                                              nullptr),
+            QDMI_ERROR_INVALIDARGUMENT);
+
+  QDMI_Session second_session = nullptr;
+  ASSERT_EQ(QDMI_session_alloc(&second_session), QDMI_SUCCESS);
+  const char *token = mode == TEST_SESSION_MODE::READWRITE ? "token" : "";
+  ASSERT_EQ(QDMI_session_set_parameter(second_session,
+                                       QDMI_SESSION_PARAMETER_TOKEN,
+                                       std::strlen(token) + 1, token),
+            QDMI_SUCCESS);
+  ASSERT_EQ(QDMI_session_init(second_session), QDMI_SUCCESS);
+  QDMI_Device second_device = nullptr;
+  ASSERT_EQ(QDMI_session_query_session_property(
+                second_session, QDMI_SESSION_PROPERTY_DEVICES,
+                sizeof(QDMI_Device), &second_device, nullptr),
+            QDMI_SUCCESS);
+  std::vector<char> second_id(id_size);
+  EXPECT_EQ(QDMI_device_query_device_property(
+                second_device, QDMI_DEVICE_PROPERTY_ID, second_id.size(),
+                second_id.data(), nullptr),
+            QDMI_SUCCESS);
+  EXPECT_EQ(second_id, id);
+  QDMI_session_free(second_session);
 }
 
 TEST_P(QDMIImplementationTest, NeedsCalibration) {
@@ -1341,138 +1468,4 @@ TEST_P(QDMIImplementationTest, QueryPulseSupportLevel) {
       sizeof(QDMI_Device_Pulse_Support_Level), &pulse_support_level, nullptr);
   EXPECT_EQ(ret, QDMI_SUCCESS);
   EXPECT_EQ(pulse_support_level, QDMI_DEVICE_PULSE_SUPPORT_LEVEL_NONE);
-}
-
-// Standalone tests for driver library loading corner cases
-TEST(QDMIDriverLoadingTest, LoadConfigWithNonExistentFile) {
-  // Save the original QDMI_CONF environment variable
-  const char *original_conf = std::getenv("QDMI_CONF");
-  const std::string saved_conf =
-      (original_conf != nullptr) ? original_conf : "";
-
-#ifdef _WIN32
-  _putenv_s("QDMI_CONF", "/nonexistent/path/to/qdmi.conf");
-#else
-  setenv("QDMI_CONF", "/nonexistent/path/to/qdmi.conf", 1);
-#endif
-
-  // Driver initialization should fail because the config file doesn't exist
-  const auto init_result = QDMI_driver_init();
-
-  // Clean up before assertions
-  QDMI_driver_shutdown();
-
-  // Restore the original QDMI_CONF environment variable
-#ifdef _WIN32
-  _putenv_s("QDMI_CONF", saved_conf.c_str());
-#else
-  setenv("QDMI_CONF", saved_conf.c_str(), 1);
-#endif
-
-  // Now perform the assertion after cleanup
-  EXPECT_NE(init_result, QDMI_SUCCESS)
-      << "Driver should fail to initialize with non-existent config file";
-}
-
-TEST(QDMIDriverLoadingTest, LoadLibraryWithNonExistentPath) {
-  // Save the original QDMI_CONF environment variable
-  const char *original_conf = std::getenv("QDMI_CONF");
-  const std::string saved_conf =
-      (original_conf != nullptr) ? original_conf : "";
-
-  // Create a config file pointing to a non-existent library path
-  const std::string config_file_name = "qdmi_nonexistent_library.conf";
-  std::ofstream conf_file(config_file_name);
-  conf_file << "/nonexistent/path/to/library" << Shared_library_file_extension()
-            << " CXX\n";
-  conf_file.close();
-
-#ifdef _WIN32
-  _putenv_s("QDMI_CONF", config_file_name.c_str());
-#else
-  setenv("QDMI_CONF", config_file_name.c_str(), 1);
-#endif
-
-  // Driver initialization should fail because the library path doesn't exist
-  // The Is_path_allowed function should return false when the path cannot be
-  // canonicalized
-  const auto init_result = QDMI_driver_init();
-
-  // Clean up before assertions
-  QDMI_driver_shutdown();
-  std::filesystem::remove(config_file_name);
-
-  // Restore the original QDMI_CONF environment variable
-#ifdef _WIN32
-  if (!saved_conf.empty()) {
-    _putenv_s("QDMI_CONF", saved_conf.c_str());
-  } else {
-    _putenv_s("QDMI_CONF", "");
-  }
-#else
-  if (!saved_conf.empty()) {
-    setenv("QDMI_CONF", saved_conf.c_str(), 1);
-  } else {
-    unsetenv("QDMI_CONF");
-  }
-#endif
-
-  // Now perform the assertion after cleanup
-  EXPECT_NE(init_result, QDMI_SUCCESS)
-      << "Driver should fail to initialize with non-existent library path";
-}
-
-TEST(QDMIDriverLoadingTest, LoadLibraryWithInvalidHomeEnv) {
-  // Save the original HOME environment variable
-  const char *original_home = std::getenv("HOME");
-  const std::string saved_home =
-      (original_home != nullptr) ? original_home : "";
-
-  // Set HOME to a non-existent path
-#ifdef _WIN32
-  _putenv_s("HOME", "/nonexistent/home/directory");
-#else
-  setenv("HOME", "/nonexistent/home/directory", 1);
-#endif
-
-  // Create a valid config file pointing to the example device in the current
-  // directory (test runs from build directory, library is in examples/device/)
-  const std::string config_file_name = "qdmi_invalid_home.conf";
-  std::ofstream conf_file(config_file_name);
-  conf_file << "../examples/device/src/libcxx-qdmi-device"
-            << Shared_library_file_extension() << " CXX\n";
-  conf_file.close();
-
-#ifdef _WIN32
-  _putenv_s("QDMI_CONF", config_file_name.c_str());
-#else
-  setenv("QDMI_CONF", config_file_name.c_str(), 1);
-#endif
-
-  // Driver initialization should succeed because the library is in an allowed
-  // path (current directory) even though HOME is invalid. The Is_path_allowed
-  // function should catch the exception when canonicalizing HOME and skip it.
-  const auto init_result = QDMI_driver_init();
-
-  // Clean up and restore the environment BEFORE any assertions
-  QDMI_driver_shutdown();
-  std::filesystem::remove(config_file_name);
-
-  // Restore the original HOME environment variable
-#ifdef _WIN32
-  if (!saved_home.empty()) {
-    _putenv_s("HOME", saved_home.c_str());
-  }
-#else
-  if (!saved_home.empty()) {
-    setenv("HOME", saved_home.c_str(), 1);
-  } else {
-    unsetenv("HOME");
-  }
-#endif
-
-  // Now perform the assertion after cleanup
-  EXPECT_EQ(init_result, QDMI_SUCCESS)
-      << "Driver should initialize successfully even with invalid HOME "
-         "environment variable";
 }
