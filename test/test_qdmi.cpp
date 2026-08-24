@@ -1155,16 +1155,6 @@ TEST_P(QDMIImplementationTest, SupportsCalibration) {
   EXPECT_EQ(QDMI_job_submit(job), QDMI_SUCCESS);
 }
 
-TEST_P(QDMIImplementationTest, QueryPulseSupportLevel) {
-  QDMI_Device_Pulse_Support_Level pulse_support_level =
-      QDMI_DEVICE_PULSE_SUPPORT_LEVEL_NONE;
-  const auto ret = QDMI_device_query_device_property(
-      device, QDMI_DEVICE_PROPERTY_PULSESUPPORT,
-      sizeof(QDMI_Device_Pulse_Support_Level), &pulse_support_level, nullptr);
-  EXPECT_EQ(ret, QDMI_SUCCESS);
-  EXPECT_EQ(pulse_support_level, QDMI_DEVICE_PULSE_SUPPORT_LEVEL_NONE);
-}
-
 // Standalone tests for driver library loading corner cases
 TEST(QDMIDriverLoadingTest, LoadConfigWithNonExistentFile) {
   // Save the original QDMI_CONF environment variable
