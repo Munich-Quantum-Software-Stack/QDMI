@@ -397,16 +397,15 @@ Enumerations</h2></td></tr>
 , <br />
 &#160;&#160;<a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a223cba616b016a4b33e06b53854a18f6">QDMI_DEVICE_PROPERTY_CHILDDEVICES</a> = 16
 , <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a11b4157c54d33e972a56e327defab279">QDMI_DEVICE_PROPERTY_QUEUELENGTH</a> = 17
-, <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a075556271172ec5539c14df12a050f05">QDMI_DEVICE_PROPERTY_ID</a> = 18
-, <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526afe696a25133fa887276e666460981688">QDMI_DEVICE_PROPERTY_MAX</a> = 19
+, <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526afe696a25133fa887276e666460981688">QDMI_DEVICE_PROPERTY_MAX</a> = 18
+, <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a994b8261b6addc3f56993c467641b122">QDMI_DEVICE_PROPERTY_CUSTOM1</a> = QDMI_CUSTOM_ENUM_VALUE_MIN
 , <br />
-&#160;&#160;<a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a994b8261b6addc3f56993c467641b122">QDMI_DEVICE_PROPERTY_CUSTOM1</a> = QDMI_CUSTOM_ENUM_VALUE_MIN
-, <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a36730bc67d1fd3c7578a352adf47745e">QDMI_DEVICE_PROPERTY_CUSTOM2</a> = 999999996
+&#160;&#160;<a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a36730bc67d1fd3c7578a352adf47745e">QDMI_DEVICE_PROPERTY_CUSTOM2</a> = 999999996
 , <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a32e4c833c31ffb4add4245a722d70e88">QDMI_DEVICE_PROPERTY_CUSTOM3</a> = 999999997
 , <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526ac8f6978f4bf1ad2e263b74bb3bb98aef">QDMI_DEVICE_PROPERTY_CUSTOM4</a> = 999999998
+, <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526adb994f1dc9dfee2910261951f7e4b39f">QDMI_DEVICE_PROPERTY_CUSTOM5</a> = 999999999
 , <br />
-&#160;&#160;<a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526adb994f1dc9dfee2910261951f7e4b39f">QDMI_DEVICE_PROPERTY_CUSTOM5</a> = 999999999
-, <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a5b12d41d98a269576bc4e1376f9a0ea8">QDMI_DEVICE_PROPERTY_CUSTOM_MAX</a> = QDMI_CUSTOM_ENUM_VALUE_MAX
+&#160;&#160;<a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a5b12d41d98a269576bc4e1376f9a0ea8">QDMI_DEVICE_PROPERTY_CUSTOM_MAX</a> = QDMI_CUSTOM_ENUM_VALUE_MAX
 <br />
  }</td></tr>
 <tr class="memitem:aa13ac5e1c93a4b358d84bb9fd1f5fd99" id="r_aa13ac5e1c93a4b358d84bb9fd1f5fd99"><td class="memItemLeft">enum &#160;</td><td class="memItemRight"><a class="el" href="#aa13ac5e1c93a4b358d84bb9fd1f5fd99">QDMI_DEVICE_STATUS_T</a> { <br />
@@ -1241,12 +1240,7 @@ A query for a multi-program job returns <a class="el" href="#a450b1adf81abc6f0ac
 <p>This property is a snapshot of the device's queue length and does not include jobs that are currently executing. If a provider exposes multiple queues for the device, the implementation reports the sum of the waiting jobs across those queues. </p><dl class="section user"><dt></dt><dd>If the provider only exposes a lower bound, the implementation reports that lower bound. For example, a provider value of <span class="tt">&gt;50</span> is reported as <span class="tt">50</span>. </dd></dl>
 <dl class="section user"><dt></dt><dd>The property may yield <a class="el" href="#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651" title="QDMI_ERROR_NOTSUPPORTED">QDMI_ERROR_NOTSUPPORTED</a> if the implementation cannot obtain a trustworthy queue length. </dd></dl>
 </td></tr>
-<tr><td class="fieldname"><a id="ad251d8ae8fbbe9a5c7a10d66b243d526a075556271172ec5539c14df12a050f05" name="ad251d8ae8fbbe9a5c7a10d66b243d526a075556271172ec5539c14df12a050f05"></a>QDMI_DEVICE_PROPERTY_ID&#160;</td><td class="fieldinit">18&#160;</td><td class="fielddoc"><p><span class="tt">char*</span> (string) The stable client-visible device identifier. </p>
-<p>The Client Interface must return a nonempty, NUL-terminated, opaque ID. IDs are unique within one initialized session and immutable for the lifetime of the corresponding <a class="el" href="group__client__interface.html#ga2772c94ab19957ce5aaef652b626baec" title="QDMI_Device">QDMI_Device</a> handle. Equivalent sessions return the same ID across process restarts while the same logical resource exists. Clients persist the pair of driver deployment and device ID because IDs from different drivers need not be unique.</p>
-<p>The ID identifies the logical resource. It is not a display name, endpoint, pointer value, credential, library version, symbol prefix, or build-system target ID. A driver can namespace or replace an identifier reported by its underlying device implementation.</p>
-<p>This property is mandatory through <a class="el" href="group__client__query__interface.html#ga3ed6ddec5adc23e3b08706807dda8430" title="QDMI_device_query_device_property">QDMI_device_query_device_property</a>. A device implementation can return <a class="el" href="#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651" title="QDMI_ERROR_NOTSUPPORTED">QDMI_ERROR_NOTSUPPORTED</a> through <a class="el" href="group__device__query__interface.html#ga9bdebc2bce6e2c6ad9e19096aadf6086" title="QDMI_device_session_query_device_property">QDMI_device_session_query_device_property</a>; the driver must then supply the client-visible ID. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ad251d8ae8fbbe9a5c7a10d66b243d526afe696a25133fa887276e666460981688" name="ad251d8ae8fbbe9a5c7a10d66b243d526afe696a25133fa887276e666460981688"></a>QDMI_DEVICE_PROPERTY_MAX&#160;</td><td class="fieldinit">19&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
+<tr><td class="fieldname"><a id="ad251d8ae8fbbe9a5c7a10d66b243d526afe696a25133fa887276e666460981688" name="ad251d8ae8fbbe9a5c7a10d66b243d526afe696a25133fa887276e666460981688"></a>QDMI_DEVICE_PROPERTY_MAX&#160;</td><td class="fieldinit">18&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
 <p>It can be used by devices for bounds checking and validation of function parameters.</p>
 <dl class="section attention"><dt>Attention</dt><dd>This value must remain the last regular member of the enum besides the custom members and must be updated when new members are added. </dd></dl>
 </td></tr>

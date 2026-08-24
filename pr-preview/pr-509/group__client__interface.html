@@ -187,7 +187,6 @@ $(function(){initNavTree('group__client__interface.html','',''); });
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Description</h2>
 <div class="textblock"><p>Describes the functions accessible to clients or users of QDMI. </p>
 <p>This is an interface between the QDMI driver and the client. It includes functions to establish sessions between a QDMI driver and a client, as well as to interact with the devices managed by the driver.</p>
-<p>A process uses one implementation of this interface and can allocate many independent sessions from it. A dynamic loader must first resolve and call <a class="el" href="#ga9e5a19a04b1ca5279e8696e79228fd6a" title="QDMI_driver_get_client_abi_version">QDMI_driver_get_client_abi_version</a>. A returned ABI is compatible if and only if its major and minor fields equal those of <a class="el" href="#gadf3d2c0eb6fa2315db6ff6f82e08b113" title="QDMI_CLIENT_ABI_VERSION">QDMI_CLIENT_ABI_VERSION</a>. The loader must ignore the patch field for compatibility. It must then resolve the complete Client Interface declared in this header before it calls <a class="el" href="group__client__session__interface.html#gaa11305e72710d4f2439c0c72892fce11" title="QDMI_session_alloc">QDMI_session_alloc</a>. The driver library must remain loaded until every session and every handle obtained from those sessions is freed.</p>
 <p>The client interface is split into three parts:</p><ul>
 <li>The <a class="el" href="group__client__session__interface.html" title="QDMI Client Session Interface">client session interface</a> for managing sessions between a QDMI driver and a client.</li>
 <li>The <a class="el" href="group__client__query__interface.html" title="QDMI Client Query Interface">client query interface</a> for querying properties of devices.</li>
@@ -203,36 +202,11 @@ Interfaces</h2></td></tr>
 <tr class="memitem:client_5Fjob_5Finterface" id="r_client_5Fjob_5Finterface"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="group__client__job__interface.html">QDMI Client Job Interface</a></td></tr>
 <tr class="memdesc:group__client__job__interface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides functions to manage client-side jobs. <br /></td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 id="header-define-members" class="groupheader"><a id="define-members" name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:gadf3d2c0eb6fa2315db6ff6f82e08b113" id="r_gadf3d2c0eb6fa2315db6ff6f82e08b113"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#gadf3d2c0eb6fa2315db6ff6f82e08b113">QDMI_CLIENT_ABI_VERSION</a>&#160;&#160;&#160;<a class="el" href="constants_8h.html#a6afe2f84f9b78688ebcb684424b81319">QDMI_MAKE_VERSION</a>(1, 4, 0)</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-typedef-members" class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:ga2772c94ab19957ce5aaef652b626baec" id="r_ga2772c94ab19957ce5aaef652b626baec"><td class="memItemLeft">typedef struct QDMI_Device_impl_d *&#160;</td><td class="memItemRight"><a class="el" href="#ga2772c94ab19957ce5aaef652b626baec">QDMI_Device</a></td></tr>
 <tr class="memdesc:ga2772c94ab19957ce5aaef652b626baec"><td class="mdescLeft">&#160;</td><td class="mdescRight">A handle for a device implementing the <a class="el" href="group__device__interface.html" title="QDMI Device Interface">QDMI Device Interface</a>.  <br /></td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:ga9e5a19a04b1ca5279e8696e79228fd6a" id="r_ga9e5a19a04b1ca5279e8696e79228fd6a"><td class="memItemLeft">uint32_t&#160;</td><td class="memItemRight"><a class="el" href="#ga9e5a19a04b1ca5279e8696e79228fd6a">QDMI_driver_get_client_abi_version</a> (void)</td></tr>
-<tr class="memdesc:ga9e5a19a04b1ca5279e8696e79228fd6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the Client Interface ABI implemented by the driver.  <br /></td></tr>
 </table>
-<a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">Macro Definition Documentation</h2>
-<a id="gadf3d2c0eb6fa2315db6ff6f82e08b113" name="gadf3d2c0eb6fa2315db6ff6f82e08b113"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gadf3d2c0eb6fa2315db6ff6f82e08b113">&#9670;&#160;</a></span>QDMI_CLIENT_ABI_VERSION</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define QDMI_CLIENT_ABI_VERSION&#160;&#160;&#160;<a class="el" href="constants_8h.html#a6afe2f84f9b78688ebcb684424b81319">QDMI_MAKE_VERSION</a>(1, 4, 0)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Client Interface ABI implemented by compatible QDMI 1.4 drivers. </p>
-
-</div>
-</div>
 <a name="doc-typedef-members" id="doc-typedef-members"></a><h2 id="header-doc-typedef-members" class="groupheader">Typedef Documentation</h2>
 <a id="ga2772c94ab19957ce5aaef652b626baec" name="ga2772c94ab19957ce5aaef652b626baec"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga2772c94ab19957ce5aaef652b626baec">&#9670;&#160;</a></span>QDMI_Device</h2>
@@ -247,28 +221,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>A handle for a device implementing the <a class="el" href="group__device__interface.html" title="QDMI Device Interface">QDMI Device Interface</a>. </p>
-<p>An opaque pointer to a type defined by the driver that encapsulates an implementation of the <a class="el" href="group__device__interface.html" title="QDMI Device Interface">QDMI Device Interface</a>. The handle belongs to the session that returned it and becomes invalid when that session is freed. </p>
-
-</div>
-</div>
-<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
-<a id="ga9e5a19a04b1ca5279e8696e79228fd6a" name="ga9e5a19a04b1ca5279e8696e79228fd6a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga9e5a19a04b1ca5279e8696e79228fd6a">&#9670;&#160;</a></span>QDMI_driver_get_client_abi_version()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t QDMI_driver_get_client_abi_version </td>
-          <td>(</td>
-          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Return the Client Interface ABI implemented by the driver. </p>
-<p>This function has no side effects, is safe to call concurrently, and does not initialize global driver state. A returned ABI is compatible with <a class="el" href="#gadf3d2c0eb6fa2315db6ff6f82e08b113" title="QDMI_CLIENT_ABI_VERSION">QDMI_CLIENT_ABI_VERSION</a> if and only if both versions have the same major and minor fields. A loader must ignore the patch field when it decides compatibility. A different major or minor field is incompatible. This ABI version is independent of the QDMI release version and of device library versions. </p><dl class="section return"><dt>Returns</dt><dd>The packed Client Interface ABI version. </dd></dl>
+<p>An opaque pointer to a type defined by the driver that encapsulates an implementation of the <a class="el" href="group__device__interface.html" title="QDMI Device Interface">QDMI Device Interface</a>. </p>
 
 </div>
 </div>
