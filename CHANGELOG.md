@@ -14,6 +14,11 @@ clients compiled against a different minor or major version.
 
 _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 
+### Added
+
+- ✨ Add a versioned, replaceable Client-driver ABI and a mandatory stable
+  client-visible device ID.
+
 ### Changed
 
 - 📝 Document installation and CMake consumption of the QDMI interface ([#538])
@@ -22,6 +27,9 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
   ([\@burgholzer])
 - 🔧 Leave compiler launchers and debug flags to CMake package consumers
   ([#538]) ([\@burgholzer])
+- 💥 Make Client session allocation initialize drivers lazily and remove the
+  example driver's separate initialization and shutdown functions.
+
 - 💥 Drop x86 macOS from QDMI's tested platforms ([#515]) ([\@denialhaag])
 - ⬆️ Raise generated device projects' macOS deployment target to 13.3 ([#515])
   ([\@denialhaag])
