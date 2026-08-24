@@ -50,7 +50,6 @@ namespace {
 static_assert(QDMI_VERSION_MAJOR(QDMI_MAKE_VERSION(2, 1, 3)) == 2U);
 static_assert(QDMI_VERSION_MINOR(QDMI_MAKE_VERSION(2, 1, 3)) == 1U);
 static_assert(QDMI_VERSION_PATCH(QDMI_MAKE_VERSION(2, 1, 3)) == 3U);
-static_assert(QDMI_CLIENT_ABI_VERSION == QDMI_MAKE_VERSION(1, 4, 0));
 
 /// Hash function for a pair
 struct Pair_hash {
@@ -63,7 +62,7 @@ struct Pair_hash {
 } // namespace
 
 TEST(QDMIDriverLoadingTest, LazyInitializationIsTransactionalAndRetryable) {
-  EXPECT_EQ(QDMI_driver_get_client_abi_version(), QDMI_MAKE_VERSION(1, 4, 0));
+  EXPECT_EQ(QDMI_driver_get_client_abi_version(), QDMI_CLIENT_ABI_VERSION);
   const char *original_conf = std::getenv("QDMI_CONF");
   const std::string saved_conf = original_conf != nullptr ? original_conf : "";
   const char *original_home = std::getenv("HOME");

@@ -15,8 +15,7 @@ The exported CMake target publishes the package ID configured through
 `CXX_QDMI_DEVICE_ID` and the QDMI symbol prefix through
 `configure_qdmi_device_target`. Consumers such as MQT Core can use this metadata
 to package and register the device without project-specific loader code. The
-package ID is not the runtime `QDMI_DEVICE_PROPERTY_ID`. This metadata does not
-add MQT Core as a dependency.
+package ID is not the runtime `QDMI_DEVICE_PROPERTY_ID`.
 
 ## Documentation
 
