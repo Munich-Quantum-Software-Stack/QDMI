@@ -308,7 +308,7 @@ int QDMI_initialize_driver() {
 
     std::string line;
     while (std::getline(file, line)) {
-      if (line.empty() || line[0] == '#') {
+      if (line.empty() || line.front() == '#') {
         continue;
       }
 
@@ -354,14 +354,8 @@ int QDMI_session_alloc(QDMI_Session *session) {
       return status;
     }
   }
-  try {
-    *session = new QDMI_Session_impl_d();
-    return QDMI_SUCCESS;
-  } catch (const std::bad_alloc &) {
-    return QDMI_ERROR_OUTOFMEM;
-  } catch (const std::exception &) {
-    return QDMI_ERROR_FATAL;
-  }
+  *session = new (std::nothrow) QDMI_Session_impl_d();
+  return *session == nullptr ? QDMI_ERROR_OUTOFMEM : QDMI_SUCCESS;
 }
 
 int QDMI_session_init(QDMI_Session session) {

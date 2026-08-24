@@ -17,7 +17,7 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 ### Added
 
 - ✨ Add a versioned, replaceable Client-driver ABI and a mandatory stable
-  client-visible device ID.
+  client-visible device ID ([#511]) ([\@burgholzer]).
 
 ### Changed
 
@@ -28,7 +28,8 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 - 🔧 Leave compiler launchers and debug flags to CMake package consumers
   ([#538]) ([\@burgholzer])
 - 💥 Make Client session allocation initialize drivers lazily and remove the
-  example driver's separate initialization and shutdown functions.
+  example driver's separate initialization and shutdown functions ([#511])
+  ([\@burgholzer]).
 
 - 💥 Drop x86 macOS from QDMI's tested platforms ([#515]) ([\@denialhaag])
 - ⬆️ Raise generated device projects' macOS deployment target to 13.3 ([#515])
@@ -264,6 +265,7 @@ for previous changelogs._
 [#515]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/515
 [#513]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/513
 [#512]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/512
+[#511]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/511
 [#486]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/486
 [#485]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/485
 [#475]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/475
