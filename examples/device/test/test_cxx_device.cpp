@@ -25,6 +25,8 @@
 #include <string_view>
 #include <vector>
 
+namespace {
+
 class QDMIImplementationTest : public ::testing::Test {
 protected:
   CXX_QDMI_Device_Session session = nullptr;
@@ -253,3 +255,4 @@ TEST_F(QDMIImplementationTest, QueryStableDeviceId) {
       QDMI_SUCCESS);
   EXPECT_EQ(repeated, id);
 }
+} // namespace
