@@ -16,14 +16,18 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 
 ### Added
 
-- ✨ Add descriptor-scoped execution-feature queries and a format-defined
-  program-output result ([#508]) ([\@simon1hofmann], [\@burgholzer]).
+- ✨ Add descriptor-scoped execution-feature queries, exact descriptor equality,
+  and a format-defined program-output result ([#508]) ([\@simon1hofmann],
+  [\@burgholzer]).
 
 ### Changed
 
-- 💥 Replace program-format enums with exact format descriptors and define the
-  flat-bit order of shot and histogram results ([#508]) ([\@simon1hofmann],
-  [\@burgholzer]).
+- 💥 Replace program-format enums with exact format descriptors, validate text
+  and binary payload framing, and place logical output slot zero at the right of
+  shot and histogram strings ([#508]) ([\@simon1hofmann], [\@burgholzer]).
+- 💥 Treat every enum value from `999999995` through `INT32_MAX` as a valid
+  provider-defined value while keeping the intervening gap invalid ([#508])
+  ([\@simon1hofmann], [\@burgholzer]).
 - 💥 Require device libraries to export
   `QDMI_device_session_retrieve_device_job_by_id`, while allowing the function
   to return `QDMI_ERROR_NOTSUPPORTED` ([#508]) ([\@simon1hofmann],

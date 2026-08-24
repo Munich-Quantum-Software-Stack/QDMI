@@ -24,18 +24,21 @@ QDMI replaces the program-format enum with an exact `QDMI_Program_Format`
 descriptor. The descriptor contains an ID, packed Semantic Versioning release,
 profile, and text or binary encoding. Devices list every accepted descriptor in
 `QDMI_DEVICE_PROPERTY_SUPPORTEDPROGRAMFORMATS`. Clients must submit one of those
-exact values and must not infer version compatibility.
+exact values and must not infer version compatibility. Descriptor identity is a
+value contract: callers can reconstruct a canonical value and compare it with
+`QDMI_program_format_equal`.
 
 ```c
 const QDMI_Program_Format qasm3 = {
     QDMI_MAKE_VERSION(3, 0, 0), QDMI_PROGRAM_ENCODING_TEXT, "openqasm", ""};
 ```
 
-The size of a text payload includes its terminating NUL. Binary payloads remain
-arbitrary byte sequences.
+Text payloads contain exactly one trailing NUL and no earlier NUL; their size
+includes that NUL. Binary payloads are nonempty arbitrary byte sequences.
 
 QDMI reserves the unqualified IDs `openqasm` and `qir` for standard formats.
-Vendor formats use namespaced IDs such as `com.vendor.format`.
+Vendor formats use `<vendor>.<custom-format-identifier>` IDs such as
+`iqm.circuit`; the vendor component is not a reverse domain name.
 
 Use the following replacements for the removed enum values:
 
@@ -108,14 +111,32 @@ multi-program submission API.
 bit outputs. OpenQASM 2 uses `creg` declarations in source order. OpenQASM 3
 uses explicit bit-valued outputs, or the language's implicit outputs when none
 are declared. Both use increasing bit indices within each declaration. QIR uses
-primitive result-recording call order. The result width is independent of the
-device site count. A provider returns `QDMI_ERROR_NOTSUPPORTED` when an output
-cannot be represented losslessly as a fixed-width bit string.
-`QDMI_JOB_RESULT_PROGRAMOUTPUT` returns a format-defined output byte sequence
-when a flat bit result cannot represent the payload result. A QIR specification
-that defines an output schema uses a complete output-schema stream for every
-shot. Older QIR or provider-defined descriptors can return
-`QDMI_ERROR_NOTSUPPORTED`. The byte sequence need not be NUL-terminated.
+primitive result-recording call order. These rules assign logical slots from
+zero. Strings write the highest slot first and slot zero at the right, so slot
+values `[1, 0, 0]` produce `"001"`. The payload schema owns the slots; their
+width and order are independent of device sites. Logical qubit zero remains the
+least-significant basis bit for state and probability results. A provider
+returns `QDMI_ERROR_NOTSUPPORTED` when an output cannot be represented
+losslessly as a fixed-width bit string. `QDMI_JOB_RESULT_PROGRAMOUTPUT` returns
+a format-defined output byte sequence when a flat bit result cannot represent
+the payload result. A QIR specification that defines an output schema uses a
+complete output-schema stream for every shot. Older QIR or provider-defined
+descriptors can return `QDMI_ERROR_NOTSUPPORTED`. The byte sequence need not be
+NUL-terminated.
+
+On the client interface, job properties report the exact descriptor submitted by
+the client. On the device interface, they report the descriptor executed by the
+device. A translating driver must retain this mapping, including for job
+retrieval, or reject retrieval with `QDMI_ERROR_NOTSUPPORTED`. A retrieved job
+can report its historical descriptor after the device stops advertising that
+descriptor.
+
+Each QDMI enum with `CUSTOM` members reserves the inclusive range from
+`999999995` through `INT32_MAX` for provider-defined values. The existing
+`CUSTOM1` through `CUSTOM5` names remain aliases for the first five values.
+Values between an enum's regular `MAX` member and `999999995` are invalid;
+unrecognized values in the custom range are valid inputs that return
+`QDMI_ERROR_NOTSUPPORTED`.
 
 ### Required device job retrieval symbol
 
