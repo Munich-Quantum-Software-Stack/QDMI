@@ -371,6 +371,7 @@ TEST_P(QDMIImplementationTest, QueryGatePropertiesForEachGate) {
               QDMI_ERROR_NOTSUPPORTED);
     EXPECT_EQ(QDMI_device_query_operation_property(
                   device, op, 0, nullptr, 0, nullptr,
+                  // NOLINTNEXTLINE(clang-analyzer-*)
                   static_cast<QDMI_Operation_Property>(
                       QDMI_OPERATION_PROPERTY_CUSTOM5 + 1),
                   0, nullptr, nullptr),
@@ -464,6 +465,7 @@ TEST_P(QDMIImplementationTest, QuerySiteProperties) {
     EXPECT_EQ(
         QDMI_device_query_site_property(
             device, site,
+            // NOLINTNEXTLINE(clang-analyzer-*)
             static_cast<QDMI_Site_Property>(QDMI_SITE_PROPERTY_CUSTOM5 + 1), 0,
             nullptr, nullptr),
         QDMI_ERROR_NOTSUPPORTED);
@@ -601,6 +603,7 @@ TEST_P(QDMIImplementationTest, QueryDeviceProperties) {
   EXPECT_EQ(
       QDMI_device_query_device_property(
           device,
+          // NOLINTNEXTLINE(clang-analyzer-*)
           static_cast<QDMI_Device_Property>(QDMI_DEVICE_PROPERTY_CUSTOM5 + 1),
           0, nullptr, nullptr),
       QDMI_ERROR_NOTSUPPORTED);
@@ -683,11 +686,13 @@ TEST_P(QDMIImplementationTest, JobLifecycle) {
             QDMI_ERROR_NOTSUPPORTED);
   EXPECT_EQ(QDMI_job_set_parameter(
                 job,
+                // NOLINTNEXTLINE(clang-analyzer-*)
                 static_cast<QDMI_Job_Parameter>(QDMI_JOB_PARAMETER_CUSTOM5 + 1),
                 0, nullptr),
             QDMI_ERROR_NOTSUPPORTED);
   EXPECT_EQ(QDMI_job_set_parameter(
                 job,
+                // NOLINTNEXTLINE(clang-analyzer-*)
                 static_cast<QDMI_Job_Parameter>(QDMI_JOB_PARAMETER_MAX + 1), 0,
                 nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
@@ -727,12 +732,15 @@ TEST_P(QDMIImplementationTest, JobLifecycle) {
   EXPECT_EQ(shots, 5);
   EXPECT_EQ(QDMI_job_query_property(
                 job,
+                // NOLINTNEXTLINE(clang-analyzer-*)
                 static_cast<QDMI_Job_Property>(QDMI_JOB_PROPERTY_CUSTOM5 + 1),
                 0, nullptr, nullptr),
             QDMI_ERROR_NOTSUPPORTED);
   EXPECT_EQ(QDMI_job_query_property(
-                job, static_cast<QDMI_Job_Property>(QDMI_JOB_PROPERTY_MAX + 1),
-                0, nullptr, nullptr),
+                job,
+                // NOLINTNEXTLINE(clang-analyzer-*)
+                static_cast<QDMI_Job_Property>(QDMI_JOB_PROPERTY_MAX + 1), 0,
+                nullptr, nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
   // Queue position is optional and is not supported by the example device.
   EXPECT_EQ(QDMI_job_query_property(job, QDMI_JOB_PROPERTY_QUEUEPOSITION, 0,
@@ -886,8 +894,10 @@ TEST_P(QDMIImplementationTest, GetResultsCornerCases) {
       QDMI_job_get_results(job, QDMI_JOB_RESULT_CUSTOM5, 0, nullptr, nullptr),
       QDMI_ERROR_NOTSUPPORTED);
   EXPECT_EQ(QDMI_job_get_results(
-                job, static_cast<QDMI_Job_Result>(QDMI_JOB_RESULT_CUSTOM5 + 1),
-                0, nullptr, nullptr),
+                job,
+                // NOLINTNEXTLINE(clang-analyzer-*)
+                static_cast<QDMI_Job_Result>(QDMI_JOB_RESULT_CUSTOM5 + 1), 0,
+                nullptr, nullptr),
             QDMI_ERROR_NOTSUPPORTED);
   EXPECT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_PROGRAMOUTPUT, 0, nullptr,
                                  nullptr),
@@ -1335,11 +1345,13 @@ TEST_P(QDMIImplementationTest, SessionSetParameter) {
   QDMI_Session session2 = nullptr;
   ASSERT_EQ(QDMI_session_alloc(&session2), QDMI_SUCCESS);
   EXPECT_EQ(QDMI_session_set_parameter(session2,
+                                       // NOLINTNEXTLINE(clang-analyzer-*)
                                        static_cast<QDMI_Session_Parameter>(
                                            QDMI_SESSION_PARAMETER_CUSTOM5 + 1),
                                        0, nullptr),
             QDMI_ERROR_NOTSUPPORTED);
   EXPECT_EQ(QDMI_session_set_parameter(session2,
+                                       // NOLINTNEXTLINE(clang-analyzer-*)
                                        static_cast<QDMI_Session_Parameter>(
                                            QDMI_SESSION_PARAMETER_MAX + 1),
                                        0, nullptr),
@@ -1417,12 +1429,14 @@ TEST_P(QDMIImplementationTest, SessionQuerySessionProperty) {
   EXPECT_EQ(
       QDMI_session_query_session_property(
           session,
+          // NOLINTNEXTLINE(clang-analyzer-*)
           static_cast<QDMI_Session_Property>(QDMI_SESSION_PROPERTY_CUSTOM5 + 1),
           0, nullptr, nullptr),
       QDMI_ERROR_NOTSUPPORTED);
   EXPECT_EQ(
       QDMI_session_query_session_property(
           session,
+          // NOLINTNEXTLINE(clang-analyzer-*)
           static_cast<QDMI_Session_Property>(QDMI_SESSION_PROPERTY_MAX + 1), 0,
           nullptr, nullptr),
       QDMI_ERROR_INVALIDARGUMENT);
