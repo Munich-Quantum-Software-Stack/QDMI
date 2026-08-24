@@ -1262,7 +1262,8 @@ TEST_P(QDMIImplementationTest, ClientVisibleDeviceIdIsStable) {
   QDMI_Device second_device = nullptr;
   ASSERT_EQ(QDMI_session_query_session_property(
                 second_session, QDMI_SESSION_PROPERTY_DEVICES,
-                sizeof(QDMI_Device), &second_device, nullptr),
+                sizeof(QDMI_Device), static_cast<void *>(&second_device),
+                nullptr),
             QDMI_SUCCESS);
   std::vector<char> second_id(id_size);
   EXPECT_EQ(QDMI_device_query_device_property(
