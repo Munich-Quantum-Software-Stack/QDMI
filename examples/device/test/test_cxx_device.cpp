@@ -24,6 +24,8 @@
 #include <string>
 #include <vector>
 
+namespace {
+
 class QDMIImplementationTest : public ::testing::Test {
 protected:
   CXX_QDMI_Device_Session session = nullptr;
@@ -215,3 +217,5 @@ TEST_F(QDMIImplementationTest, QueryDeviceQubitNum) {
                 &num_qubits, nullptr),
             QDMI_SUCCESS);
 }
+
+} // namespace
