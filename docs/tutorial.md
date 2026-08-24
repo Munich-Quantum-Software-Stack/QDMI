@@ -378,8 +378,10 @@ int tutorial_QDMI_device_job_set_parameter(tutorial_QDMI_Device_Job job,
 
 int tutorial_QDMI_device_job_set_programs(
     tutorial_QDMI_Device_Job job, const QDMI_Program_Format *format,
-    size_t, const size_t *, const void *const *) {
-  if (job == nullptr || format == nullptr) return QDMI_ERROR_INVALIDARGUMENT;
+    size_t count, const size_t *, const void *const *) {
+  if (job == nullptr || format == nullptr || count == 0) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
   return QDMI_ERROR_NOTSUPPORTED;
 }
 
@@ -402,9 +404,11 @@ int tutorial_QDMI_device_job_check(tutorial_QDMI_Device_Job job, QDMI_Job_Status
 }
 
 int tutorial_QDMI_device_job_get_results(tutorial_QDMI_Device_Job job,
+                                      size_t program_index,
                                       QDMI_Job_Result result, const size_t size,
                                       void *data, size_t *size_ret) {
   if (job == nullptr) return QDMI_ERROR_INVALIDARGUMENT;
+  if (program_index != 0) return QDMI_ERROR_OUTOFRANGE;
   if (job->status != QDMI_JOB_STATUS_DONE) return QDMI_ERROR_BADSTATE;
 
   if (result == QDMI_JOB_RESULT_PROBABILITIES_DENSE) {
@@ -419,14 +423,6 @@ int tutorial_QDMI_device_job_get_results(tutorial_QDMI_Device_Job job,
     return QDMI_SUCCESS;
   }
   return QDMI_ERROR_NOTSUPPORTED;
-}
-
-int tutorial_QDMI_device_job_get_results_for_program(
-    tutorial_QDMI_Device_Job job, size_t program_index,
-    QDMI_Job_Result result, size_t size, void *data, size_t *size_ret) {
-  if (job == nullptr) return QDMI_ERROR_INVALIDARGUMENT;
-  if (program_index != 0) return QDMI_ERROR_OUTOFRANGE;
-  return tutorial_QDMI_device_job_get_results(job, result, size, data, size_ret);
 }
 
 void tutorial_QDMI_device_job_free(tutorial_QDMI_Device_Job job) {
@@ -577,13 +573,13 @@ TEST_F(QDMIInitializedSessionTest, SubmitAndSimulateJob) {
 
   std::array<double, 2> probs{};
   // Null job must return INVALIDARGUMENT
-  EXPECT_EQ(tutorial_QDMI_device_job_get_results(nullptr, QDMI_JOB_RESULT_PROBABILITIES_DENSE, probs.size() * sizeof(double), probs.data(), nullptr), QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_EQ(tutorial_QDMI_device_job_get_results(nullptr, 0, QDMI_JOB_RESULT_PROBABILITIES_DENSE, probs.size() * sizeof(double), probs.data(), nullptr), QDMI_ERROR_INVALIDARGUMENT);
   // Buffer too small must return INVALIDARGUMENT
-  EXPECT_EQ(tutorial_QDMI_device_job_get_results(job, QDMI_JOB_RESULT_PROBABILITIES_DENSE, probs.size() * sizeof(double) - 1, probs.data(), nullptr), QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_EQ(tutorial_QDMI_device_job_get_results(job, 0, QDMI_JOB_RESULT_PROBABILITIES_DENSE, probs.size() * sizeof(double) - 1, probs.data(), nullptr), QDMI_ERROR_INVALIDARGUMENT);
   // Unsupported result type must return NOTSUPPORTED
-  EXPECT_EQ(tutorial_QDMI_device_job_get_results(job, QDMI_JOB_RESULT_MAX, probs.size() * sizeof(double), probs.data(), nullptr), QDMI_ERROR_NOTSUPPORTED);
+  EXPECT_EQ(tutorial_QDMI_device_job_get_results(job, 0, QDMI_JOB_RESULT_MAX, probs.size() * sizeof(double), probs.data(), nullptr), QDMI_ERROR_NOTSUPPORTED);
 
-  ASSERT_EQ(tutorial_QDMI_device_job_get_results(job, QDMI_JOB_RESULT_PROBABILITIES_DENSE, probs.size() * sizeof(double), probs.data(), nullptr), QDMI_SUCCESS)
+  ASSERT_EQ(tutorial_QDMI_device_job_get_results(job, 0, QDMI_JOB_RESULT_PROBABILITIES_DENSE, probs.size() * sizeof(double), probs.data(), nullptr), QDMI_SUCCESS)
       << "Checkpoint 4 Failed: Could not retrieve simulated job results.";
 
   tutorial_QDMI_device_job_free(job);
