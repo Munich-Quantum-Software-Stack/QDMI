@@ -15,7 +15,8 @@ var group__client__session__interface =
       [ "QDMI_SESSION_PARAMETER_CUSTOM2", "group__client__session__interface.html#ggaac5ae9f0bf8046987569c6f4e75611d3ac0c579e30bd180a00d5e398b03c987f6", null ],
       [ "QDMI_SESSION_PARAMETER_CUSTOM3", "group__client__session__interface.html#ggaac5ae9f0bf8046987569c6f4e75611d3a4f9b44b3b04b77d2b560cedcee3cfa08", null ],
       [ "QDMI_SESSION_PARAMETER_CUSTOM4", "group__client__session__interface.html#ggaac5ae9f0bf8046987569c6f4e75611d3acc5c97b9d346e291b730956970561124", null ],
-      [ "QDMI_SESSION_PARAMETER_CUSTOM5", "group__client__session__interface.html#ggaac5ae9f0bf8046987569c6f4e75611d3aaafd9df4e1090164a7cc087faaa8557a", null ]
+      [ "QDMI_SESSION_PARAMETER_CUSTOM5", "group__client__session__interface.html#ggaac5ae9f0bf8046987569c6f4e75611d3aaafd9df4e1090164a7cc087faaa8557a", null ],
+      [ "QDMI_SESSION_PARAMETER_CUSTOM_MAX", "group__client__session__interface.html#ggaac5ae9f0bf8046987569c6f4e75611d3abd1ad4a0fe945965cb21f43c666e90e9", null ]
     ] ],
     [ "QDMI_SESSION_PROPERTY_T", "group__client__session__interface.html#ga737948251bac10b8cabf745afe82bd09", [
       [ "QDMI_SESSION_PROPERTY_DEVICES", "group__client__session__interface.html#gga737948251bac10b8cabf745afe82bd09ad18bc8e3c5b4f5ebcef0c81dd09eafe5", null ],
@@ -24,7 +25,8 @@ var group__client__session__interface =
       [ "QDMI_SESSION_PROPERTY_CUSTOM2", "group__client__session__interface.html#gga737948251bac10b8cabf745afe82bd09a68bc688079cf3841fab82cf9cadae941", null ],
       [ "QDMI_SESSION_PROPERTY_CUSTOM3", "group__client__session__interface.html#gga737948251bac10b8cabf745afe82bd09a5f7ad71209e9974517bb48b82d357a13", null ],
       [ "QDMI_SESSION_PROPERTY_CUSTOM4", "group__client__session__interface.html#gga737948251bac10b8cabf745afe82bd09ae3298f27cf51da5fc614c307c3f9aa6d", null ],
-      [ "QDMI_SESSION_PROPERTY_CUSTOM5", "group__client__session__interface.html#gga737948251bac10b8cabf745afe82bd09a7b3416e6058fc94d39a98cab70d89c6b", null ]
+      [ "QDMI_SESSION_PROPERTY_CUSTOM5", "group__client__session__interface.html#gga737948251bac10b8cabf745afe82bd09a7b3416e6058fc94d39a98cab70d89c6b", null ],
+      [ "QDMI_SESSION_PROPERTY_CUSTOM_MAX", "group__client__session__interface.html#gga737948251bac10b8cabf745afe82bd09a48220111e3d1a5e14733aae5859d9781", null ]
     ] ],
     [ "QDMI_session_alloc", "group__client__session__interface.html#gaa11305e72710d4f2439c0c72892fce11", null ],
     [ "QDMI_session_set_parameter", "group__client__session__interface.html#ga39d34b2a95cd9e2b8d9d6ab551bff078", null ],

@@ -134,6 +134,12 @@
       <anchor>ggaac5ae9f0bf8046987569c6f4e75611d3aaafd9df4e1090164a7cc087faaa8557a</anchor>
       <arglist></arglist>
     </member>
+    <member kind="enumvalue">
+      <name>QDMI_SESSION_PARAMETER_CUSTOM_MAX</name>
+      <anchorfile>group__client__session__interface.html</anchorfile>
+      <anchor>ggaac5ae9f0bf8046987569c6f4e75611d3abd1ad4a0fe945965cb21f43c666e90e9</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="enumeration">
       <type></type>
       <name>QDMI_SESSION_PROPERTY_T</name>
@@ -181,6 +187,12 @@
       <name>QDMI_SESSION_PROPERTY_CUSTOM5</name>
       <anchorfile>group__client__session__interface.html</anchorfile>
       <anchor>gga737948251bac10b8cabf745afe82bd09a7b3416e6058fc94d39a98cab70d89c6b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>QDMI_SESSION_PROPERTY_CUSTOM_MAX</name>
+      <anchorfile>group__client__session__interface.html</anchorfile>
+      <anchor>gga737948251bac10b8cabf745afe82bd09a48220111e3d1a5e14733aae5859d9781</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumeration">
@@ -242,6 +254,12 @@
       <name>QDMI_JOB_PARAMETER_CUSTOM5</name>
       <anchorfile>group__client__job__interface.html</anchorfile>
       <anchor>gga1e7131664b094eb409d0f44d731f51f5a88cae1a3c7f8af76fa83ceaaaa5f7998</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>QDMI_JOB_PARAMETER_CUSTOM_MAX</name>
+      <anchorfile>group__client__job__interface.html</anchorfile>
+      <anchor>gga1e7131664b094eb409d0f44d731f51f5aee580be2014a271fb90b6c3c7fc99238</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumeration">
@@ -321,6 +339,12 @@
       <name>QDMI_JOB_PROPERTY_CUSTOM5</name>
       <anchorfile>group__client__job__interface.html</anchorfile>
       <anchor>gga8f2f468604e24bab4c86cdb781b879bba0108668f46b41020ad1b9b78cb39f0ba</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>QDMI_JOB_PROPERTY_CUSTOM_MAX</name>
+      <anchorfile>group__client__job__interface.html</anchorfile>
+      <anchor>gga8f2f468604e24bab4c86cdb781b879bba8eb02a05c7d9f4077f5f41cf0abb5440</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
@@ -913,6 +937,12 @@
       <anchor>a9f1e467b2b3870263b0e9d7e5d36cea4a4fb63f338932625a7ae40eeb04c736c8</anchor>
       <arglist></arglist>
     </member>
+    <member kind="enumvalue">
+      <name>QDMI_DEVICE_SESSION_PARAMETER_CUSTOM_MAX</name>
+      <anchorfile>constants_8h.html</anchorfile>
+      <anchor>a9f1e467b2b3870263b0e9d7e5d36cea4a24b2a44e0adfbde56707e0d4226042e4</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="enumeration">
       <type></type>
       <name>QDMI_DEVICE_JOB_PARAMETER_T</name>
@@ -972,6 +1002,12 @@
       <name>QDMI_DEVICE_JOB_PARAMETER_CUSTOM5</name>
       <anchorfile>constants_8h.html</anchorfile>
       <anchor>a40dd25c531ebf99fb4b46469083b609ead04b984fe78deafa5c507101da54ad32</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>QDMI_DEVICE_JOB_PARAMETER_CUSTOM_MAX</name>
+      <anchorfile>constants_8h.html</anchorfile>
+      <anchor>a40dd25c531ebf99fb4b46469083b609ea03dce278e54f1a9356cedd281ae88220</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumeration">
@@ -1051,6 +1087,12 @@
       <name>QDMI_DEVICE_JOB_PROPERTY_CUSTOM5</name>
       <anchorfile>constants_8h.html</anchorfile>
       <anchor>a6e4d18c7fa5d383bbcc1498abe090d4fa08224f2da22d71f598bf27aa85ac9bd4</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>QDMI_DEVICE_JOB_PROPERTY_CUSTOM_MAX</name>
+      <anchorfile>constants_8h.html</anchorfile>
+      <anchor>a6e4d18c7fa5d383bbcc1498abe090d4faf89e9b61289a81cb1c4670772f263139</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumeration">
@@ -1202,6 +1244,12 @@
       <name>QDMI_DEVICE_PROPERTY_CUSTOM5</name>
       <anchorfile>constants_8h.html</anchorfile>
       <anchor>ad251d8ae8fbbe9a5c7a10d66b243d526adb994f1dc9dfee2910261951f7e4b39f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>QDMI_DEVICE_PROPERTY_CUSTOM_MAX</name>
+      <anchorfile>constants_8h.html</anchorfile>
+      <anchor>ad251d8ae8fbbe9a5c7a10d66b243d526a5b12d41d98a269576bc4e1376f9a0ea8</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumeration">
@@ -1374,6 +1422,12 @@
       <anchor>a69ef10d452cc6f03cac8a917ba48d6e2ae75701dbdb3fd96feb949fa37b405455</anchor>
       <arglist></arglist>
     </member>
+    <member kind="enumvalue">
+      <name>QDMI_SITE_PROPERTY_CUSTOM_MAX</name>
+      <anchorfile>constants_8h.html</anchorfile>
+      <anchor>a69ef10d452cc6f03cac8a917ba48d6e2af02dd8cd2e18076cf1edc2cc741f856e</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="enumeration">
       <type></type>
       <name>QDMI_OPERATION_PROPERTY_T</name>
@@ -1481,6 +1535,12 @@
       <name>QDMI_OPERATION_PROPERTY_CUSTOM5</name>
       <anchorfile>constants_8h.html</anchorfile>
       <anchor>ab23d5f0c5296e3eab4243e91f1213726ae4414f8e1b54a24d9db057f8214ad579</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>QDMI_OPERATION_PROPERTY_CUSTOM_MAX</name>
+      <anchorfile>constants_8h.html</anchorfile>
+      <anchor>ab23d5f0c5296e3eab4243e91f1213726ad4676ff25bc494fd8e82f29e7207fe47</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumeration">
@@ -1652,6 +1712,12 @@
       <name>QDMI_JOB_RESULT_CUSTOM5</name>
       <anchorfile>constants_8h.html</anchorfile>
       <anchor>aa154b942b0f67e437c393ad7b33cadd1aa892eb092c55f5c7ea34c47358675125</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>QDMI_JOB_RESULT_CUSTOM_MAX</name>
+      <anchorfile>constants_8h.html</anchorfile>
+      <anchor>aa154b942b0f67e437c393ad7b33cadd1a389b31372e7c7d866b2ef19fdee3cb52</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumeration">
@@ -2069,6 +2135,12 @@
       <anchor>ggaac5ae9f0bf8046987569c6f4e75611d3aaafd9df4e1090164a7cc087faaa8557a</anchor>
       <arglist></arglist>
     </member>
+    <member kind="enumvalue">
+      <name>QDMI_SESSION_PARAMETER_CUSTOM_MAX</name>
+      <anchorfile>group__client__session__interface.html</anchorfile>
+      <anchor>ggaac5ae9f0bf8046987569c6f4e75611d3abd1ad4a0fe945965cb21f43c666e90e9</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="enumeration">
       <type></type>
       <name>QDMI_SESSION_PROPERTY_T</name>
@@ -2116,6 +2188,12 @@
       <name>QDMI_SESSION_PROPERTY_CUSTOM5</name>
       <anchorfile>group__client__session__interface.html</anchorfile>
       <anchor>gga737948251bac10b8cabf745afe82bd09a7b3416e6058fc94d39a98cab70d89c6b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>QDMI_SESSION_PROPERTY_CUSTOM_MAX</name>
+      <anchorfile>group__client__session__interface.html</anchorfile>
+      <anchor>gga737948251bac10b8cabf745afe82bd09a48220111e3d1a5e14733aae5859d9781</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
@@ -2273,6 +2351,12 @@
       <anchor>gga1e7131664b094eb409d0f44d731f51f5a88cae1a3c7f8af76fa83ceaaaa5f7998</anchor>
       <arglist></arglist>
     </member>
+    <member kind="enumvalue">
+      <name>QDMI_JOB_PARAMETER_CUSTOM_MAX</name>
+      <anchorfile>group__client__job__interface.html</anchorfile>
+      <anchor>gga1e7131664b094eb409d0f44d731f51f5aee580be2014a271fb90b6c3c7fc99238</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="enumeration">
       <type></type>
       <name>QDMI_JOB_PROPERTY_T</name>
@@ -2350,6 +2434,12 @@
       <name>QDMI_JOB_PROPERTY_CUSTOM5</name>
       <anchorfile>group__client__job__interface.html</anchorfile>
       <anchor>gga8f2f468604e24bab4c86cdb781b879bba0108668f46b41020ad1b9b78cb39f0ba</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>QDMI_JOB_PROPERTY_CUSTOM_MAX</name>
+      <anchorfile>group__client__job__interface.html</anchorfile>
+      <anchor>gga8f2f468604e24bab4c86cdb781b879bba8eb02a05c7d9f4077f5f41cf0abb5440</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
