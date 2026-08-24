@@ -168,15 +168,19 @@ enum QDMI_DEVICE_JOB_PARAMETER_T {
    * @details This parameter is required. The device must support the specified
    * program format. If the device does not support the specified program
    * format, the @ref QDMI_device_job_set_parameter function must return @ref
-   * QDMI_ERROR_NOTSUPPORTED.
+   * QDMI_ERROR_NOTSUPPORTED. Setting the same exact descriptor keeps an
+   * existing program payload. Setting a different supported descriptor clears
+   * the payload. Every error leaves the descriptor and payload unchanged.
    */
   QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT = 0,
   /**
    * @brief `void*` The program to be executed.
    * @details This parameter is required. The program must be in the format
    * specified by the @ref QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT parameter.
+   * Setting a program before its format returns @ref QDMI_ERROR_BADSTATE.
    * Setting a value replaces a list set with @ref
-   * QDMI_device_job_set_programs with one program.
+   * QDMI_device_job_set_programs with one deep-copied program. Every error
+   * leaves the existing program list unchanged.
    * If the program is invalid, the @ref QDMI_device_job_set_parameter function
    * must return @ref QDMI_ERROR_INVALIDARGUMENT. If the program is valid, but
    * the device cannot execute it, the @ref QDMI_device_job_set_parameter
@@ -238,7 +242,8 @@ enum QDMI_DEVICE_JOB_PROPERTY_T {
   QDMI_DEVICE_JOB_PROPERTY_ID = 0,
   /**
    * @brief @ref QDMI_Program_Format The format of the program to be executed.
-   * @note This property returns the format set through @ref
+   * @details A query returns @ref QDMI_ERROR_BADSTATE until a format is set.
+   * This property returns the format set through @ref
    * QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT or @ref
    * QDMI_device_job_set_programs.
    */
@@ -276,7 +281,7 @@ enum QDMI_DEVICE_JOB_PROPERTY_T {
    * @brief `size_t` The number of programs in the job.
    * @details A single-program job reports one. A job has no program count until
    * its program payload has been set; a query before that returns @ref
-   * QDMI_ERROR_BADSTATE.
+   * QDMI_ERROR_BADSTATE. The count remains stable after submission.
    */
   QDMI_DEVICE_JOB_PROPERTY_PROGRAMSNUM = 5,
   /**
@@ -906,7 +911,7 @@ enum QDMI_JOB_STATUS_T {
   QDMI_JOB_STATUS_DONE = 4,
   /// The job was canceled, and the result is not available.
   QDMI_JOB_STATUS_CANCELED = 5,
-  /// An error occurred in the job's lifecycle.
+  /// One or more programs failed, or another error occurred in the lifecycle.
   QDMI_JOB_STATUS_FAILED = 6
 };
 
@@ -1101,6 +1106,8 @@ typedef enum QDMI_PROGRAM_FORMAT_T QDMI_Program_Format;
 
 /**
  * @brief Enum of the formats the results can be returned in.
+ * @details Each result applies to the program index passed to @ref
+ * QDMI_job_get_results or @ref QDMI_device_job_get_results.
  */
 enum QDMI_JOB_RESULT_T {
   /**

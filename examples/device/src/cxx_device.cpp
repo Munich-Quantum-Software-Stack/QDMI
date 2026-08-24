@@ -425,14 +425,30 @@ int CXX_QDMI_device_job_set_parameter(CXX_QDMI_Device_Job job,
           format != QDMI_PROGRAM_FORMAT_CALIBRATION) {
         return QDMI_ERROR_NOTSUPPORTED;
       }
+      if (!Same_format(job->format, format)) {
+        job->programs.clear();
+      }
       job->format = format;
     }
     return QDMI_SUCCESS;
   case QDMI_DEVICE_JOB_PARAMETER_PROGRAM:
     if (value != nullptr) {
-      std::vector<char> program(size);
-      memcpy(program.data(), value, size);
-      job->programs = {std::move(program)};
+      if (!Valid_format(job->format)) {
+        return QDMI_ERROR_BADSTATE;
+      }
+      if (!Valid_program(job->format, size, value)) {
+        return QDMI_ERROR_INVALIDARGUMENT;
+      }
+      std::vector<std::vector<char>> new_programs;
+      try {
+        new_programs.emplace_back(static_cast<const char *>(value),
+                                  static_cast<const char *>(value) + size);
+      } catch (const std::bad_alloc &) {
+        return QDMI_ERROR_OUTOFMEM;
+      } catch (const std::length_error &) {
+        return QDMI_ERROR_INVALIDARGUMENT;
+      }
+      job->programs = std::move(new_programs);
     }
     return QDMI_SUCCESS;
   case QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM:
@@ -449,7 +465,8 @@ int CXX_QDMI_device_job_set_programs(CXX_QDMI_Device_Job job,
                                      const QDMI_Program_Format *format,
                                      const size_t count, const size_t *sizes,
                                      const void *const *programs) {
-  if (job == nullptr || format == nullptr || !Valid_format(*format)) {
+  if (job == nullptr || format == nullptr || count == 0 ||
+      !Valid_format(*format)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   if (job->status != QDMI_JOB_STATUS_CREATED) {
@@ -461,7 +478,7 @@ int CXX_QDMI_device_job_set_programs(CXX_QDMI_Device_Job job,
   if (programs == nullptr) {
     return QDMI_SUCCESS;
   }
-  if (count == 0 || sizes == nullptr) {
+  if (sizes == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
 
@@ -469,14 +486,10 @@ int CXX_QDMI_device_job_set_programs(CXX_QDMI_Device_Job job,
   try {
     new_programs.reserve(count);
     for (size_t i = 0; i < count; ++i) {
-      if (sizes[i] == 0 || programs[i] == nullptr) {
+      if (!Valid_program(*format, sizes[i], programs[i])) {
         return QDMI_ERROR_INVALIDARGUMENT;
       }
       const auto *bytes = static_cast<const char *>(programs[i]);
-      if (format->encoding == QDMI_PROGRAM_ENCODING_TEXT &&
-          bytes[sizes[i] - 1] != '\0') {
-        return QDMI_ERROR_INVALIDARGUMENT;
-      }
       new_programs.emplace_back(bytes, bytes + sizes[i]);
     }
   } catch (const std::bad_alloc &) {
@@ -506,6 +519,10 @@ int CXX_QDMI_device_job_query_property(CXX_QDMI_Device_Job job,
   const auto str = std::to_string(job->id);
   ADD_STRING_PROPERTY(QDMI_DEVICE_JOB_PROPERTY_ID, str.c_str(), prop, size,
                       value, size_ret)
+  if (prop == QDMI_DEVICE_JOB_PROPERTY_PROGRAMFORMAT &&
+      !Valid_format(job->format)) {
+    return QDMI_ERROR_BADSTATE;
+  }
   ADD_SINGLE_VALUE_PROPERTY(QDMI_DEVICE_JOB_PROPERTY_PROGRAMFORMAT,
                             QDMI_Program_Format, job->format, prop, size, value,
                             size_ret)
@@ -609,6 +626,11 @@ int CXX_QDMI_device_job_wait(CXX_QDMI_Device_Job job,
                              [[maybe_unused]] const size_t timeout) {
   if (job == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  if (job->status == QDMI_JOB_STATUS_DONE ||
+      job->status == QDMI_JOB_STATUS_CANCELED ||
+      job->status == QDMI_JOB_STATUS_FAILED) {
+    return QDMI_SUCCESS;
   }
   job->status = QDMI_JOB_STATUS_DONE;
   CXX_QDMI_set_device_status(QDMI_DEVICE_STATUS_IDLE);
@@ -808,11 +830,11 @@ int CXX_QDMI_device_job_get_results_probabilities(
 } /// [DOXYGEN FUNCTION END]
 } // namespace
 
-int CXX_QDMI_device_job_get_results_for_program(CXX_QDMI_Device_Job job,
-                                                const size_t program_index,
-                                                const QDMI_Job_Result result,
-                                                const size_t size, void *data,
-                                                size_t *size_ret) {
+int CXX_QDMI_device_job_get_results(CXX_QDMI_Device_Job job,
+                                    const size_t program_index,
+                                    const QDMI_Job_Result result,
+                                    const size_t size, void *data,
+                                    size_t *size_ret) {
   if (job == nullptr || job->status != QDMI_JOB_STATUS_DONE ||
       (data != nullptr && size == 0) ||
       (result >= QDMI_JOB_RESULT_MAX && result != QDMI_JOB_RESULT_CUSTOM1 &&
@@ -846,29 +868,11 @@ int CXX_QDMI_device_job_get_results_for_program(CXX_QDMI_Device_Job job,
     return CXX_QDMI_device_job_get_results_probabilities(program_result, size,
                                                          data, size_ret);
   case QDMI_JOB_RESULT_PROGRAMOUTPUT:
-    return CXX_QDMI_device_job_get_program_output(job, size, data, size_ret);
+    return CXX_QDMI_device_job_get_program_output(job, program_index, size,
+                                                  data, size_ret);
   default:
     return QDMI_ERROR_NOTSUPPORTED;
   }
-} /// [DOXYGEN FUNCTION END]
-
-int CXX_QDMI_device_job_get_results(CXX_QDMI_Device_Job job,
-                                    const QDMI_Job_Result result,
-                                    const size_t size, void *data,
-                                    size_t *size_ret) {
-  if (job == nullptr || job->status != QDMI_JOB_STATUS_DONE ||
-      (data != nullptr && size == 0) ||
-      (result >= QDMI_JOB_RESULT_MAX && result != QDMI_JOB_RESULT_CUSTOM1 &&
-       result != QDMI_JOB_RESULT_CUSTOM2 && result != QDMI_JOB_RESULT_CUSTOM3 &&
-       result != QDMI_JOB_RESULT_CUSTOM4 &&
-       result != QDMI_JOB_RESULT_CUSTOM5)) {
-    return QDMI_ERROR_INVALIDARGUMENT;
-  }
-  if (job->results.size() != 1) {
-    return QDMI_ERROR_NOTSUPPORTED;
-  }
-  return CXX_QDMI_device_job_get_results_for_program(job, 0, result, size, data,
-                                                     size_ret);
 } /// [DOXYGEN FUNCTION END]
 
 int CXX_QDMI_device_session_query_device_property(

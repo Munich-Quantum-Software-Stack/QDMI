@@ -231,11 +231,9 @@ TEST_P(QDMIImplementationTest, JobGetResultsImplemented) {
                                   ? QDMI_SUCCESS
                                   : QDMI_ERROR_PERMISSIONDENIED;
   EXPECT_EQ(QDMI_device_create_job(device, &job), expected_value);
-  EXPECT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_MAX, 0, nullptr, nullptr),
-            QDMI_ERROR_INVALIDARGUMENT);
-  EXPECT_EQ(QDMI_job_get_results_for_program(job, 0, QDMI_JOB_RESULT_MAX, 0,
-                                             nullptr, nullptr),
-            QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_EQ(
+      QDMI_job_get_results(job, 0, QDMI_JOB_RESULT_MAX, 0, nullptr, nullptr),
+      QDMI_ERROR_INVALIDARGUMENT);
   QDMI_job_free(job);
 }
 
