@@ -22,6 +22,11 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 
 ### Changed
 
+- 💥 Drop x86 macOS from QDMI's tested platforms ([#515]) ([\@denialhaag])
+- ⬆️ Raise generated device projects' macOS deployment target to 13.3 ([#515])
+  ([\@denialhaag])
+- 💥 Require generated device projects to use Python 3.11 or newer ([#515])
+  ([\@denialhaag])
 - 💥 Replace program-format enums with exact format descriptors, validate text
   and binary payload framing, and place logical output slot zero at the right of
   shot and histogram strings ([#508]) ([\@simon1hofmann], [\@burgholzer]).
@@ -38,14 +43,6 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 - 💥 Remove calibration, batch-job, QPY, and IQM JSON values from the standard
   program-format vocabulary. Providers can expose proprietary formats with a
   namespaced descriptor ID ([#508]) ([\@simon1hofmann], [\@burgholzer]).
-
-### Changed
-
-- 💥 Drop x86 macOS from QDMI's tested platforms ([#515]) ([\@denialhaag])
-- ⬆️ Raise generated device projects' macOS deployment target to 13.3 ([#515])
-  ([\@denialhaag])
-- 💥 Require generated device projects to use Python 3.11 or newer ([#515])
-  ([\@denialhaag])
 
 ## [1.3.3] - 2026-08-19
 
