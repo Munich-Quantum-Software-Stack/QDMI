@@ -58,7 +58,7 @@ typedef struct QDMI_Site_impl_d *QDMI_Site;
  * @details An opaque pointer to an implementation of the QDMI operation
  * concept. An operation generally represents any instruction that can be
  * executed on a device. This includes gates, measurements, classical control
- * flow elements, movement of qubits, pulse-level instructions, etc.
+ * flow elements, and movement of qubits.
  * Each implementation of the @ref device_interface "QDMI Device Interface"
  * defines the actual implementation of the concept.
  *

@@ -346,14 +346,6 @@ enum QDMI_DEVICE_PROPERTY_T {
    */
   QDMI_DEVICE_PROPERTY_COUPLINGMAP = 7,
   /**
-   * @brief @ref QDMI_Device_Pulse_Support_Level Whether the device supports
-   * pulse-level control.
-   * @details This property indicates the level of pulse-level control.
-   * If a device supports pulse-level control, it may provide additional
-   * functionality for pulse-level programming and execution.
-   */
-  QDMI_DEVICE_PROPERTY_PULSESUPPORT = 8,
-  /**
    * @brief `char*` (string) The length unit reported by the device.
    * @details The device implementation must report a known SI unit (e.g., "mm",
    * "um", or "nm") for this property. A client querying a length value must
@@ -361,7 +353,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * resulting value is then interpreted in the unit specified by this property.
    * @note If the device reports any length values, this property must be set.
    */
-  QDMI_DEVICE_PROPERTY_LENGTHUNIT = 9,
+  QDMI_DEVICE_PROPERTY_LENGTHUNIT = 8,
   /**
    * @brief `double` A scale factor for all length values.
    * @details The device implementation reports this scale factor. A client must
@@ -371,7 +363,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @note If querying this property returns @ref QDMI_ERROR_NOTSUPPORTED, a
    * client should assume a default value of `1.0`.
    */
-  QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR = 10,
+  QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR = 9,
   /**
    * @brief `char*` (string) The duration unit reported by the device.
    * @details The device implementation must report a known SI unit (e.g., "ms",
@@ -380,7 +372,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * resulting value is then interpreted in the unit specified by this property.
    * @note If the device reports any duration values, this property must be set.
    */
-  QDMI_DEVICE_PROPERTY_DURATIONUNIT = 11,
+  QDMI_DEVICE_PROPERTY_DURATIONUNIT = 10,
   /**
    * @brief `double` A scale factor for all duration values.
    * @details The device implementation reports this scale factor. A client must
@@ -390,7 +382,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @note If querying this property returns @ref QDMI_ERROR_NOTSUPPORTED, a
    * client should assume a default value of `1.0`.
    */
-  QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR = 12,
+  QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR = 11,
   /**
    * @brief `uint64_t` The raw, unscaled minimum required distance between
    * qubits during quantum computation.
@@ -409,7 +401,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
    *      QDMI_DEVICE_PROPERTY_LENGTSCALEFACTOR
    */
-  QDMI_DEVICE_PROPERTY_MINATOMDISTANCE = 13,
+  QDMI_DEVICE_PROPERTY_MINATOMDISTANCE = 12,
   /**
    * @brief `QDMI_Program_Format*` (@ref QDMI_Program_Format list) The program
    * formats supported by the device.
@@ -417,7 +409,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * supports for execution. A client can use this information to determine
    * which program formats can be used when submitting jobs to the device.
    */
-  QDMI_DEVICE_PROPERTY_SUPPORTEDPROGRAMFORMATS = 14,
+  QDMI_DEVICE_PROPERTY_SUPPORTEDPROGRAMFORMATS = 13,
   /**
    * @brief `QDMI_Child_Device*` (@ref QDMI_Child_Device list) A list of device
    * handles corresponding to the device's child devices managed by this device.
@@ -431,7 +423,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @note Devices with child devices may have special job submission handling.
    * Check the concrete device's job interface documentation.
    */
-  QDMI_DEVICE_PROPERTY_CHILDDEVICES = 15,
+  QDMI_DEVICE_PROPERTY_CHILDDEVICES = 14,
   /**
    * @brief `size_t` The current number of jobs waiting to access the device.
    * @details This property is a snapshot of the device's queue length and does
@@ -446,7 +438,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * The property may yield @ref QDMI_ERROR_NOTSUPPORTED if the implementation
    * cannot obtain a trustworthy queue length.
    */
-  QDMI_DEVICE_PROPERTY_QUEUELENGTH = 16,
+  QDMI_DEVICE_PROPERTY_QUEUELENGTH = 15,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
@@ -455,7 +447,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_DEVICE_PROPERTY_MAX = 17,
+  QDMI_DEVICE_PROPERTY_MAX = 16,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.
@@ -783,7 +775,7 @@ enum QDMI_OPERATION_PROPERTY_T {
    * occur, resulting in lower fidelity compared to qubits that are simply
    * idling and not exposed to the operation.
    * @note This is especially relevant for neutral atom devices, where global
-   * operations (e.g., laser pulses) can impact all atoms in the array,
+   * laser operations can impact all atoms in the array,
    * including those not interacting.
    */
   QDMI_OPERATION_PROPERTY_IDLINGFIDELITY = 7,
@@ -1182,45 +1174,6 @@ enum QDMI_JOB_RESULT_T {
 
 /// Job result type.
 typedef enum QDMI_JOB_RESULT_T QDMI_Job_Result;
-
-/**
- * @brief Enum to indicate the level of pulse support a device has.
- */
-enum QDMI_DEVICE_PULSE_SUPPORT_LEVEL_T {
-  /// The device does not support pulse-level control.
-  QDMI_DEVICE_PULSE_SUPPORT_LEVEL_NONE = 0,
-  /**
-   * @brief The device supports pulse-level control at an abstraction level of
-   * @ref QDMI_Site.
-   * @details This means that the device can execute pulse-level
-   * instructions on the sites of the device.
-   * This level of support is sufficient for most devices that can execute
-   * quantum circuits with pulse-level control, as it allows the device to
-   * execute pulse-level instructions on the sites of the device.
-   * @see QDMI_Site for more information on the site abstraction.
-   */
-  QDMI_DEVICE_PULSE_SUPPORT_LEVEL_SITE = 1,
-  /**
-   * @brief The device supports pulse-level control at an abstraction level of
-   * `QDMI_Pulse_Channel`.
-   * @details This means that the device can execute pulse-level instructions on
-   * the channels of the device.
-   * This level of support is sufficient for devices that can execute quantum
-   * circuits with pulse-level control on a channel basis, such as devices that
-   * use a single channel for all sites.
-   */
-  QDMI_DEVICE_PULSE_SUPPORT_LEVEL_CHANNEL = 2,
-  /**
-   * @brief The device supports pulse-level control at an abstraction level of
-   * @ref QDMI_Site and `QDMI_Pulse_Channel`.
-   * @details This means that the device can execute pulse-level instructions on
-   * both the sites and channels of the device.
-   */
-  QDMI_DEVICE_PULSE_SUPPORT_LEVEL_SITEANDCHANNEL = 3,
-};
-
-/// Pulse support level type.
-typedef enum QDMI_DEVICE_PULSE_SUPPORT_LEVEL_T QDMI_Device_Pulse_Support_Level;
 
 // NOLINTEND(performance-enum-size, modernize-use-using)
 
