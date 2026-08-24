@@ -34,12 +34,14 @@
 #include <fstream>
 #include <iostream>
 #include <memory>
+#include <new>
 #include <optional>
 #include <sstream>
 #include <stdexcept>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
+#include <utility>
 #include <vector>
 
 /**
@@ -138,6 +140,12 @@ struct QDMI_Device_impl_d {
   QDMI_Library *library = nullptr;
   QDMI_Session session = nullptr;
   QDMI_Device_Session device_session = nullptr;
+
+  QDMI_Device_impl_d() = default;
+  QDMI_Device_impl_d(const QDMI_Device_impl_d &) = delete;
+  QDMI_Device_impl_d &operator=(const QDMI_Device_impl_d &) = delete;
+  QDMI_Device_impl_d(QDMI_Device_impl_d &&) = delete;
+  QDMI_Device_impl_d &operator=(QDMI_Device_impl_d &&) = delete;
 
   ~QDMI_Device_impl_d() {
     if (device_session != nullptr) {
