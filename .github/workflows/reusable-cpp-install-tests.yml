@@ -20,9 +20,7 @@ jobs:
           - name: 🐧
             os: ubuntu-latest
           - name: 🍎
-            os: macos-15-intel
-          - name: 🍎
-            os: macos-14
+            os: macos-26
       fail-fast: false
     env:
       CMAKE_BUILD_PARALLEL_LEVEL: 4

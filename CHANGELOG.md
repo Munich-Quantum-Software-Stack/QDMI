@@ -12,6 +12,16 @@ clients compiled against a different minor or major version.
 
 ## [Unreleased]
 
+_If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
+
+### Changed
+
+- 💥 Drop x86 macOS from QDMI's tested platforms ([#515]) ([\@denialhaag])
+- ⬆️ Raise generated device projects' macOS deployment target to 13.3 ([#515])
+  ([\@denialhaag])
+- 💥 Require generated device projects to use Python 3.11 or newer ([#515])
+  ([\@denialhaag])
+
 ## [1.3.3] - 2026-08-19
 
 _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#133)._
@@ -218,6 +228,7 @@ for previous changelogs._
 
 <!-- PR links -->
 
+[#515]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/515
 [#486]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/486
 [#485]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/485
 [#475]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/475

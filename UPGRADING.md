@@ -7,6 +7,17 @@ releases, please refer to the
 
 ## [Unreleased]
 
+### macOS support
+
+QDMI no longer tests x86 macOS. Generated device projects now target macOS 13.3
+or newer. Use Apple silicon with macOS 13.3 or newer.
+
+### Python support
+
+Generated QDMI device projects now require Python 3.11 or newer and use Python
+3.11 as their stable ABI baseline. Existing generated projects should update
+their Python metadata and wheel configuration when adopting these changes.
+
 ## [1.3.3]
 
 ### Retrieving existing jobs by ID
