@@ -22,7 +22,7 @@ build-backend = "scikit_build_core.build"
 [project]
 name = "cxx-qdmi"
 version = "0.1.0"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 
 description = "Implementation of a CXX QDMI device"
 readme = "README.md"
@@ -74,7 +74,7 @@ cmake.version = "CMakeLists.txt"
 ninja.make-fallback = true
 build-dir = "build/{wheel_tag}/{build_type}"
 build.targets = ["cxx-qdmi-device"]
-wheel.py-api = "py310"
+wheel.py-api = "py311"
 wheel.expand-macos-universal-tags = true
 wheel.packages = ["python/cxx"]
 wheel.install-dir = "cxx/qdmi/data"
@@ -170,7 +170,7 @@ test-command = "pytest test/python"
 build-frontend = "uv"
 
 [tool.cibuildwheel.macos]
-environment = { MACOSX_DEPLOYMENT_TARGET = "11.0" }
+environment = { MACOSX_DEPLOYMENT_TARGET = "13.3" }
 
 [tool.cibuildwheel.windows]
 repair-wheel-command = "delvewheel repair -w {dest_dir} {wheel} --namespace-pkg cxx"

@@ -20,8 +20,6 @@ jobs:
           - name: 🐧
             os: ubuntu-latest
           - name: 🍎
-            os: macos-15-intel
-          - name: 🍎
             os: macos-14
       fail-fast: false
     env:

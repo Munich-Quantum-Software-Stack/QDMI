@@ -35,7 +35,7 @@ The template requires a few standard development tools:
 - **C Compiler**: Supporting C11 (this requirement is covered by the recommended
   options above).
 - **CMake**: Version 3.24 or higher.
-- **Python**: Version 3.10 or higher (we recommend using
+- **Python**: Version 3.11 or higher (we recommend using
   [uv](https://docs.astral.sh/uv/) for fast Python installations).
 
 CMake handles fetching all other dependencies, such as the QDMI core interface
