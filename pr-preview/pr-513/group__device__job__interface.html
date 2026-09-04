@@ -186,14 +186,14 @@ $(function(){initNavTree('group__device__job__interface.html','',''); });
 <div class="contents">
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Description</h2>
 <div class="textblock"><p>Provides functions to manage jobs on a device. </p>
-<p>A job is a task submitted to a device for execution. Most jobs are quantum circuits to be executed on a quantum device.</p>
+<p>A job is a task submitted to a device for execution. Most jobs are quantum circuits to be executed on a quantum device. However, jobs can also be a different type of task, such as calibration.</p>
 <p>The typical workflow for a device job is as follows:</p><ul>
 <li>Create a job with <a class="el" href="#ga63f4e17de8a04f7caeeb195f5d276f5c" title="QDMI_device_session_create_device_job">QDMI_device_session_create_device_job</a>.</li>
-<li>Set one program and other parameters with <a class="el" href="#ga1ff5eda213c2bd60599efeac2166654d" title="QDMI_device_job_set_parameter">QDMI_device_job_set_parameter</a>, or set a program list with <a class="el" href="#gadfab14c8e3218128b9393096d11c738c" title="QDMI_device_job_set_programs">QDMI_device_job_set_programs</a>.</li>
+<li>Set parameters for the job with <a class="el" href="#ga1ff5eda213c2bd60599efeac2166654d" title="QDMI_device_job_set_parameter">QDMI_device_job_set_parameter</a>.</li>
 <li>Submit the job with <a class="el" href="#gaaa70ea915b442e15907106911e0e5a0a" title="QDMI_device_job_submit">QDMI_device_job_submit</a>.</li>
 <li>Check the status of the job with <a class="el" href="#ga9170cd3f690b2ed7df4c2e0b24734138" title="QDMI_device_job_check">QDMI_device_job_check</a>.</li>
 <li>Wait for the job to finish with <a class="el" href="#gaa4f4c5bd68a6116353470de6d9284175" title="QDMI_device_job_wait">QDMI_device_job_wait</a>.</li>
-<li>Retrieve each program's results with <a class="el" href="#gaaefb46a6d128a080329759ad21425c5e" title="QDMI_device_job_get_results">QDMI_device_job_get_results</a>.</li>
+<li>Retrieve the results of the job with <a class="el" href="#ga1b4384e53a1d8fb2d782cd6179664d3b" title="QDMI_device_job_get_results">QDMI_device_job_get_results</a>.</li>
 <li>Free the job with <a class="el" href="#gafe9253bc113ae8ce95dda8942a9f983f" title="QDMI_device_job_free">QDMI_device_job_free</a> when it is no longer used.</li>
 </ul>
 <p>Alternatively, a driver may retrieve a previously submitted job with <a class="el" href="#ga936ccc97552a744032edbeb840aaccba" title="QDMI_device_session_retrieve_device_job_by_id">QDMI_device_session_retrieve_device_job_by_id</a> and continue managing it through the same interface. </p>
@@ -211,8 +211,6 @@ Functions</h2></td></tr>
 <tr class="memdesc:ga936ccc97552a744032edbeb840aaccba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve an existing device job by its ID.  <br /></td></tr>
 <tr class="memitem:ga1ff5eda213c2bd60599efeac2166654d" id="r_ga1ff5eda213c2bd60599efeac2166654d"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#ga1ff5eda213c2bd60599efeac2166654d">QDMI_device_job_set_parameter</a> (<a class="el" href="#gaa9f37f29bc40f719b440a277654789a4">QDMI_Device_Job</a> job, <a class="el" href="constants_8h.html#a65db59774d7c61601159d00d505d835c">QDMI_Device_Job_Parameter</a> param, size_t size, const void *value)</td></tr>
 <tr class="memdesc:ga1ff5eda213c2bd60599efeac2166654d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a parameter for a job.  <br /></td></tr>
-<tr class="memitem:gadfab14c8e3218128b9393096d11c738c" id="r_gadfab14c8e3218128b9393096d11c738c"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#gadfab14c8e3218128b9393096d11c738c">QDMI_device_job_set_programs</a> (<a class="el" href="#gaa9f37f29bc40f719b440a277654789a4">QDMI_Device_Job</a> job, const <a class="el" href="structQDMI__Program__Format.html">QDMI_Program_Format</a> *format, size_t count, const size_t *sizes, const void *const *programs)</td></tr>
-<tr class="memdesc:gadfab14c8e3218128b9393096d11c738c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set one or more programs for a job.  <br /></td></tr>
 <tr class="memitem:ga42686f735d112236118b5e033a6c8194" id="r_ga42686f735d112236118b5e033a6c8194"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#ga42686f735d112236118b5e033a6c8194">QDMI_device_job_query_property</a> (<a class="el" href="#gaa9f37f29bc40f719b440a277654789a4">QDMI_Device_Job</a> job, <a class="el" href="constants_8h.html#a9962b2d3a2ebb0791c8c6196069e499e">QDMI_Device_Job_Property</a> prop, size_t size, void *value, size_t *size_ret)</td></tr>
 <tr class="memdesc:ga42686f735d112236118b5e033a6c8194"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query a job property.  <br /></td></tr>
 <tr class="memitem:gaaa70ea915b442e15907106911e0e5a0a" id="r_gaaa70ea915b442e15907106911e0e5a0a"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#gaaa70ea915b442e15907106911e0e5a0a">QDMI_device_job_submit</a> (<a class="el" href="#gaa9f37f29bc40f719b440a277654789a4">QDMI_Device_Job</a> job)</td></tr>
@@ -223,8 +221,8 @@ Functions</h2></td></tr>
 <tr class="memdesc:ga9170cd3f690b2ed7df4c2e0b24734138"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check the status of a job.  <br /></td></tr>
 <tr class="memitem:gaa4f4c5bd68a6116353470de6d9284175" id="r_gaa4f4c5bd68a6116353470de6d9284175"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#gaa4f4c5bd68a6116353470de6d9284175">QDMI_device_job_wait</a> (<a class="el" href="#gaa9f37f29bc40f719b440a277654789a4">QDMI_Device_Job</a> job, size_t timeout)</td></tr>
 <tr class="memdesc:gaa4f4c5bd68a6116353470de6d9284175"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait for a job to finish.  <br /></td></tr>
-<tr class="memitem:gaaefb46a6d128a080329759ad21425c5e" id="r_gaaefb46a6d128a080329759ad21425c5e"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#gaaefb46a6d128a080329759ad21425c5e">QDMI_device_job_get_results</a> (<a class="el" href="#gaa9f37f29bc40f719b440a277654789a4">QDMI_Device_Job</a> job, size_t program_index, <a class="el" href="constants_8h.html#a52254cd217f8627659a19c8e0c2feed6">QDMI_Job_Result</a> result, size_t size, void *data, size_t *size_ret)</td></tr>
-<tr class="memdesc:gaaefb46a6d128a080329759ad21425c5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve one program's results from a job.  <br /></td></tr>
+<tr class="memitem:ga1b4384e53a1d8fb2d782cd6179664d3b" id="r_ga1b4384e53a1d8fb2d782cd6179664d3b"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#ga1b4384e53a1d8fb2d782cd6179664d3b">QDMI_device_job_get_results</a> (<a class="el" href="#gaa9f37f29bc40f719b440a277654789a4">QDMI_Device_Job</a> job, <a class="el" href="constants_8h.html#a52254cd217f8627659a19c8e0c2feed6">QDMI_Job_Result</a> result, size_t size, void *data, size_t *size_ret)</td></tr>
+<tr class="memdesc:ga1b4384e53a1d8fb2d782cd6179664d3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the results of a job.  <br /></td></tr>
 <tr class="memitem:gafe9253bc113ae8ce95dda8942a9f983f" id="r_gafe9253bc113ae8ce95dda8942a9f983f"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#gafe9253bc113ae8ce95dda8942a9f983f">QDMI_device_job_free</a> (<a class="el" href="#gaa9f37f29bc40f719b440a277654789a4">QDMI_Device_Job</a> job)</td></tr>
 <tr class="memdesc:gafe9253bc113ae8ce95dda8942a9f983f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a job.  <br /></td></tr>
 </table>
@@ -314,8 +312,7 @@ Functions</h2></td></tr>
 
 <p>Retrieve an existing device job by its ID. </p>
 <p>Creates a new local device-job handle for the existing remote job identified by <code class="param">job_id</code>. Retrieving a job does not submit, clone, or otherwise modify the remote job. The returned handle can be used to query properties, check or wait for completion, cancel the job, and retrieve results.</p>
-<p>The job is accessed with the credentials and configuration of <code class="param">session</code>. The job ID is an identifier, not an authentication credential. Parameters cannot be set on a retrieved job, and a retrieved job cannot be submitted again. Retrieval is all-or-nothing: the device must reconstruct the exact historical format descriptor, program count, status, and mapping from each input index to its results. This also applies when the historical descriptor is no longer advertised. The device must return <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651" title="QDMI_ERROR_NOTSUPPORTED">QDMI_ERROR_NOTSUPPORTED</a> if it cannot reconstruct all of this information.</p>
-<p>The retrieved job's properties describe the historical execution. Its exact program descriptor may no longer appear in the device's current supported-format list. A device that cannot reconstruct the historical descriptor losslessly returns <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651" title="QDMI_ERROR_NOTSUPPORTED">QDMI_ERROR_NOTSUPPORTED</a>.</p>
+<p>The job is accessed with the credentials and configuration of <code class="param">session</code>. The job ID is an identifier, not an authentication credential. Parameters cannot be set on a retrieved job, and a retrieved job cannot be submitted again.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">session</td><td>The initialized session with which to retrieve the job. Must not be <code>NULL</code>. </td></tr>
@@ -328,7 +325,7 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642" title="QDMI_ERROR_INVALIDARGUMENT">QDMI_ERROR_INVALIDARGUMENT</a> if <code class="param">session</code>, <code class="param">job_id</code>, or <code class="param">job</code> is <code>NULL</code>, or if <code class="param">job_id</code> is empty. </dd>
 <dd>
-<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651" title="QDMI_ERROR_NOTSUPPORTED">QDMI_ERROR_NOTSUPPORTED</a> if the device does not support retrieving existing jobs or cannot reconstruct all required job metadata and result-index mappings. </dd>
+<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651" title="QDMI_ERROR_NOTSUPPORTED">QDMI_ERROR_NOTSUPPORTED</a> if the device does not support retrieving existing jobs. </dd>
 <dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a03b271eb2b26780e3152e13e3e7ef7be" title="QDMI_ERROR_NOTFOUND">QDMI_ERROR_NOTFOUND</a> if no accessible job with <code class="param">job_id</code> exists. </dd>
 <dd>
@@ -392,8 +389,6 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a916e0810bf915e2ad67f2c1430c54fec" title="QDMI_ERROR_BADSTATE">QDMI_ERROR_BADSTATE</a> if the parameter cannot be set in the current state of the job, for example, because the job is already submitted. </dd>
 <dd>
-<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a0cf40a28841e7b8bcba223ae28a3713d" title="QDMI_ERROR_OUTOFMEM">QDMI_ERROR_OUTOFMEM</a> if a program cannot be copied. </dd>
-<dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8ab875f28072043ad44f7ee5290bba8d01" title="QDMI_ERROR_PERMISSIONDENIED">QDMI_ERROR_PERMISSIONDENIED</a> if the device does not allow using the <a class="el" href="group__device__job__interface.html" title="QDMI Device Job Interface">device job interface</a> for the current session. </dd>
 <dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3" title="QDMI_ERROR_FATAL">QDMI_ERROR_FATAL</a> if setting the parameter failed due to a fatal error.</dd></dl>
@@ -410,76 +405,10 @@ Functions</h2></td></tr>
 <div class="line"><span class="keywordtype">size_t</span> shots = 8192;</div>
 <div class="line"><a class="code hl_function" href="#ga1ff5eda213c2bd60599efeac2166654d">QDMI_device_job_set_parameter</a>(</div>
 <div class="line">  job, <a class="code hl_enumvalue" href="constants_8h.html#a40dd25c531ebf99fb4b46469083b609ea4ecec990e69afb205f9801433be37b26">QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM</a>, <span class="keyword">sizeof</span>(<span class="keywordtype">size_t</span>), &amp;shots);</div>
-<div class="ttc" id="aconstants_8h_html_a40dd25c531ebf99fb4b46469083b609ea4ecec990e69afb205f9801433be37b26"><div class="ttname"><a href="constants_8h.html#a40dd25c531ebf99fb4b46469083b609ea4ecec990e69afb205f9801433be37b26">QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM</a></div><div class="ttdeci">@ QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM</div><div class="ttdoc">size_t The number of shots to execute for a quantum circuit job.</div><div class="ttdef"><b>Definition</b> constants.h:198</div></div>
-<div class="ttc" id="aconstants_8h_html_a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651"><div class="ttname"><a href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a></div><div class="ttdeci">@ QDMI_ERROR_NOTSUPPORTED</div><div class="ttdef"><b>Definition</b> constants.h:53</div></div>
+<div class="ttc" id="aconstants_8h_html_a40dd25c531ebf99fb4b46469083b609ea4ecec990e69afb205f9801433be37b26"><div class="ttname"><a href="constants_8h.html#a40dd25c531ebf99fb4b46469083b609ea4ecec990e69afb205f9801433be37b26">QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM</a></div><div class="ttdeci">@ QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM</div><div class="ttdoc">size_t The number of shots to execute for a quantum circuit job.</div><div class="ttdef"><b>Definition</b> constants.h:188</div></div>
+<div class="ttc" id="aconstants_8h_html_a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651"><div class="ttname"><a href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a></div><div class="ttdeci">@ QDMI_ERROR_NOTSUPPORTED</div><div class="ttdef"><b>Definition</b> constants.h:50</div></div>
 <div class="ttc" id="agroup__device__job__interface_html_ga1ff5eda213c2bd60599efeac2166654d"><div class="ttname"><a href="#ga1ff5eda213c2bd60599efeac2166654d">QDMI_device_job_set_parameter</a></div><div class="ttdeci">int QDMI_device_job_set_parameter(QDMI_Device_Job job, QDMI_Device_Job_Parameter param, size_t size, const void *value)</div><div class="ttdoc">Set a parameter for a job.</div></div>
 </div><!-- fragment --> </dd></dl>
-
-</div>
-</div>
-<a id="gadfab14c8e3218128b9393096d11c738c" name="gadfab14c8e3218128b9393096d11c738c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gadfab14c8e3218128b9393096d11c738c">&#9670;&#160;</a></span>QDMI_device_job_set_programs()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int QDMI_device_job_set_programs </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="#gaa9f37f29bc40f719b440a277654789a4">QDMI_Device_Job</a></td>          <td class="paramname"><span class="paramname"><em>job</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="structQDMI__Program__Format.html">QDMI_Program_Format</a> *</td>          <td class="paramname"><span class="paramname"><em>format</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>count</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const size_t *</td>          <td class="paramname"><span class="paramname"><em>sizes</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const void *const *</td>          <td class="paramname"><span class="paramname"><em>programs</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set one or more programs for a job. </p>
-<p>All programs use the same exact <code class="param">format</code> descriptor and the same job parameters, including the shot count. On success, the device replaces the complete program list with a deep copy of <code class="param">format</code>, <code class="param">sizes</code>, and the program bytes. If validation or copying fails, the existing program list remains unchanged. A device that accepts a list must report its size through <a class="el" href="constants_8h.html#a6e4d18c7fa5d383bbcc1498abe090d4faa24add14b040fb44b0daac7f5714fafc" title="QDMI_DEVICE_JOB_PROPERTY_PROGRAMSNUM">QDMI_DEVICE_JOB_PROPERTY_PROGRAMSNUM</a> and expose each result through <a class="el" href="#gaaefb46a6d128a080329759ad21425c5e" title="QDMI_device_job_get_results">QDMI_device_job_get_results</a>. A result's index equals its input program's index; execution order is unspecified. The list has one ID, status, wait operation, and cancellation operation. The job reaches <a class="el" href="constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6ad3dad6dd89491e223f42ff9cd9bdade2" title="QDMI_JOB_STATUS_DONE">QDMI_JOB_STATUS_DONE</a> only after all programs succeed. One program failure sets the aggregate status to <a class="el" href="constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6ab9b201ad1770dc23b9c1d4753e238d4f" title="QDMI_JOB_STATUS_FAILED">QDMI_JOB_STATUS_FAILED</a>. Cancellation sets it to <a class="el" href="constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6a05163481e57725e91bb22ff798394f33" title="QDMI_JOB_STATUS_CANCELED">QDMI_JOB_STATUS_CANCELED</a>. Results are available only for a job with status <a class="el" href="constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6ad3dad6dd89491e223f42ff9cd9bdade2" title="QDMI_JOB_STATUS_DONE">QDMI_JOB_STATUS_DONE</a>; QDMI exposes no partial results. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">job</td><td>A handle to the job. Must not be <code>NULL</code>. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">format</td><td>The exact format of every program. Must point to a valid <a class="el" href="structQDMI__Program__Format.html" title="QDMI_Program_Format">QDMI_Program_Format</a> when the device supports program lists. It must not be <code>NULL</code>, including for a support check. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">count</td><td>The number of programs. Must be greater than zero. A support check succeeds only if the device supports this exact cardinality. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">sizes</td><td>An array of <code class="param">count</code> program sizes in bytes. Must not be <code>NULL</code> and each size must be greater than zero when <code class="param">programs</code> is not <code>NULL</code>. A text program contains exactly one NUL, as its final byte. Binary programs are arbitrary nonempty byte sequences. When <code class="param">programs</code> is <code>NULL</code>, <code class="param">sizes</code> is ignored. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">programs</td><td>An array of <code class="param">count</code> program pointers. Each pointer must not be <code>NULL</code>. The device copies all input data before returning. If this is <code>NULL</code>, the function checks support for the exact descriptor and cardinality and does not change the job. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a8039f5cd8202553b2a91a1c0b01d6751" title="QDMI_SUCCESS">QDMI_SUCCESS</a> if the device supports program lists in <code class="param">format</code> and, when <code class="param">programs</code> is not <code>NULL</code>, set the complete list. </dd>
-<dd>
-<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642" title="QDMI_ERROR_INVALIDARGUMENT">QDMI_ERROR_INVALIDARGUMENT</a> if<ul>
-<li><code class="param">job</code> or <code class="param">format</code> is <code>NULL</code>, or <code class="param">count</code> is zero,</li>
-<li>the device supports program lists and <code class="param">format</code> is not a valid descriptor, or</li>
-<li>the device supports program lists, <code class="param">programs</code> is not <code>NULL</code>, and <code class="param">sizes</code> is <code>NULL</code>, an element of <code class="param">programs</code> is <code>NULL</code>, an element of <code class="param">sizes</code> is zero, or a text program does not contain exactly one trailing NUL. </li>
-</ul>
-</dd>
-<dd>
-<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651" title="QDMI_ERROR_NOTSUPPORTED">QDMI_ERROR_NOTSUPPORTED</a> if the arguments are valid but the device does not support program lists, <code class="param">format</code>, or one of the programs. </dd>
-<dd>
-<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a916e0810bf915e2ad67f2c1430c54fec" title="QDMI_ERROR_BADSTATE">QDMI_ERROR_BADSTATE</a> if programs cannot be set in the current state of the job, for example, because the job is already submitted. </dd>
-<dd>
-<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8ab875f28072043ad44f7ee5290bba8d01" title="QDMI_ERROR_PERMISSIONDENIED">QDMI_ERROR_PERMISSIONDENIED</a> if the device does not allow using the <a class="el" href="group__device__job__interface.html" title="QDMI Device Job Interface">device job interface</a> for the current session. </dd>
-<dd>
-<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a0cf40a28841e7b8bcba223ae28a3713d" title="QDMI_ERROR_OUTOFMEM">QDMI_ERROR_OUTOFMEM</a> if the device cannot copy the program list. </dd>
-<dd>
-<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3" title="QDMI_ERROR_FATAL">QDMI_ERROR_FATAL</a> if setting the programs failed due to a fatal error. </dd></dl>
 
 </div>
 </div>
@@ -554,7 +483,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="comment">// Query the property.</span></div>
 <div class="line"><a class="code hl_function" href="#ga42686f735d112236118b5e033a6c8194">QDMI_device_job_query_property</a>(</div>
 <div class="line">  job, <a class="code hl_enumvalue" href="constants_8h.html#a6e4d18c7fa5d383bbcc1498abe090d4fad991a6a3b0a17e58b59f9180463855ec">QDMI_DEVICE_JOB_PROPERTY_ID</a>, size, <span class="keywordtype">id</span>.data(), <span class="keyword">nullptr</span>);</div>
-<div class="ttc" id="aconstants_8h_html_a6e4d18c7fa5d383bbcc1498abe090d4fad991a6a3b0a17e58b59f9180463855ec"><div class="ttname"><a href="constants_8h.html#a6e4d18c7fa5d383bbcc1498abe090d4fad991a6a3b0a17e58b59f9180463855ec">QDMI_DEVICE_JOB_PROPERTY_ID</a></div><div class="ttdeci">@ QDMI_DEVICE_JOB_PROPERTY_ID</div><div class="ttdoc">char* (string) The job&#39;s ID.</div><div class="ttdef"><b>Definition</b> constants.h:248</div></div>
+<div class="ttc" id="aconstants_8h_html_a6e4d18c7fa5d383bbcc1498abe090d4fad991a6a3b0a17e58b59f9180463855ec"><div class="ttname"><a href="constants_8h.html#a6e4d18c7fa5d383bbcc1498abe090d4fad991a6a3b0a17e58b59f9180463855ec">QDMI_DEVICE_JOB_PROPERTY_ID</a></div><div class="ttdeci">@ QDMI_DEVICE_JOB_PROPERTY_ID</div><div class="ttdoc">char* (string) The job&#39;s ID.</div><div class="ttdef"><b>Definition</b> constants.h:236</div></div>
 <div class="ttc" id="agroup__device__job__interface_html_ga42686f735d112236118b5e033a6c8194"><div class="ttname"><a href="#ga42686f735d112236118b5e033a6c8194">QDMI_device_job_query_property</a></div><div class="ttdeci">int QDMI_device_job_query_property(QDMI_Device_Job job, QDMI_Device_Job_Property prop, size_t size, void *value, size_t *size_ret)</div><div class="ttdoc">Query a job property.</div></div>
 </div><!-- fragment --> </dd></dl>
 
@@ -586,7 +515,7 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642" title="QDMI_ERROR_INVALIDARGUMENT">QDMI_ERROR_INVALIDARGUMENT</a> if <code class="param">job</code> is <code>NULL</code>. </dd>
 <dd>
-<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a916e0810bf915e2ad67f2c1430c54fec" title="QDMI_ERROR_BADSTATE">QDMI_ERROR_BADSTATE</a> if a required program or format is missing, the job was retrieved with <a class="el" href="#ga936ccc97552a744032edbeb840aaccba" title="QDMI_device_session_retrieve_device_job_by_id">QDMI_device_session_retrieve_device_job_by_id</a>. </dd>
+<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a916e0810bf915e2ad67f2c1430c54fec" title="QDMI_ERROR_BADSTATE">QDMI_ERROR_BADSTATE</a> if the job was retrieved with <a class="el" href="#ga936ccc97552a744032edbeb840aaccba" title="QDMI_device_session_retrieve_device_job_by_id">QDMI_device_session_retrieve_device_job_by_id</a>. </dd>
 <dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8ab875f28072043ad44f7ee5290bba8d01" title="QDMI_ERROR_PERMISSIONDENIED">QDMI_ERROR_PERMISSIONDENIED</a> if the device does not allow using the <a class="el" href="group__device__job__interface.html" title="QDMI Device Job Interface">device job interface</a> for the current session. </dd>
 <dd>
@@ -646,7 +575,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Check the status of a job. </p>
-<p>This function is non-blocking and returns immediately with the job status. It is not required to call this function before calling <a class="el" href="#gaaefb46a6d128a080329759ad21425c5e" title="QDMI_device_job_get_results">QDMI_device_job_get_results</a>. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>This function is non-blocking and returns immediately with the job status. It is not required to call this function before calling <a class="el" href="#ga1b4384e53a1d8fb2d782cd6179664d3b" title="QDMI_device_job_get_results">QDMI_device_job_get_results</a>. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">job</td><td>The job to check the status of. Must not be <code>NULL</code>. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">status</td><td>The status of the job. Must not be <code>NULL</code>. </td></tr>
@@ -683,27 +612,27 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Wait for a job to finish. </p>
-<p>This function blocks until the job reaches <a class="el" href="constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6ad3dad6dd89491e223f42ff9cd9bdade2" title="QDMI_JOB_STATUS_DONE">QDMI_JOB_STATUS_DONE</a>, <a class="el" href="constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6a05163481e57725e91bb22ff798394f33" title="QDMI_JOB_STATUS_CANCELED">QDMI_JOB_STATUS_CANCELED</a>, or <a class="el" href="constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6ab9b201ad1770dc23b9c1d4753e238d4f" title="QDMI_JOB_STATUS_FAILED">QDMI_JOB_STATUS_FAILED</a>, or until the timeout is reached. Call <a class="el" href="#ga9170cd3f690b2ed7df4c2e0b24734138" title="QDMI_device_job_check">QDMI_device_job_check</a> after a successful wait to distinguish terminal states. If <code class="param">timeout</code> is not zero, this function returns latest after the specified number of seconds. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>This function blocks until the job has either finished, has been canceled, or the timeout has been reached. If <code class="param">timeout</code> is not zero, this function returns latest after the specified number of seconds. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">job</td><td>The job to wait for. Must not be <code>NULL</code>. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">timeout</td><td>The timeout in seconds. If this is zero, the function waits indefinitely for a terminal state. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">timeout</td><td>The timeout in seconds. If this is zero, the function waits indefinitely until the job has finished. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a8039f5cd8202553b2a91a1c0b01d6751" title="QDMI_SUCCESS">QDMI_SUCCESS</a> if the job reached any terminal state. </dd>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a8039f5cd8202553b2a91a1c0b01d6751" title="QDMI_SUCCESS">QDMI_SUCCESS</a> if the job is finished or canceled. </dd>
 <dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642" title="QDMI_ERROR_INVALIDARGUMENT">QDMI_ERROR_INVALIDARGUMENT</a> if <code class="param">job</code> is <code>NULL</code>. </dd>
 <dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8ab875f28072043ad44f7ee5290bba8d01" title="QDMI_ERROR_PERMISSIONDENIED">QDMI_ERROR_PERMISSIONDENIED</a> if the device does not allow using the <a class="el" href="group__device__job__interface.html" title="QDMI Device Job Interface">device job interface</a> for the current session. </dd>
 <dd>
-<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8acf9abde59858a1087762ba3e287e9fdd" title="QDMI_ERROR_TIMEOUT">QDMI_ERROR_TIMEOUT</a> if <code class="param">timeout</code> is not zero and the job did not reach a terminal state within the specified time. </dd>
+<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8acf9abde59858a1087762ba3e287e9fdd" title="QDMI_ERROR_TIMEOUT">QDMI_ERROR_TIMEOUT</a> if <code class="param">timeout</code> is not zero and the job did not finish within the specified time. </dd>
 <dd>
-<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3" title="QDMI_ERROR_FATAL">QDMI_ERROR_FATAL</a> if the job could not be waited for and this function returns before the job reached a terminal state. </dd></dl>
+<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3" title="QDMI_ERROR_FATAL">QDMI_ERROR_FATAL</a> if the job could not be waited for and this function returns before the job has finished or has been canceled. </dd></dl>
 
 </div>
 </div>
-<a id="gaaefb46a6d128a080329759ad21425c5e" name="gaaefb46a6d128a080329759ad21425c5e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaaefb46a6d128a080329759ad21425c5e">&#9670;&#160;</a></span>QDMI_device_job_get_results()</h2>
+<a id="ga1b4384e53a1d8fb2d782cd6179664d3b" name="ga1b4384e53a1d8fb2d782cd6179664d3b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1b4384e53a1d8fb2d782cd6179664d3b">&#9670;&#160;</a></span>QDMI_device_job_get_results()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -712,11 +641,6 @@ Functions</h2></td></tr>
           <td class="memname">int QDMI_device_job_get_results </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="#gaa9f37f29bc40f719b440a277654789a4">QDMI_Device_Job</a></td>          <td class="paramname"><span class="paramname"><em>job</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>program_index</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -741,45 +665,45 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Retrieve one program's results from a job. </p>
+<p>Retrieve the results of a job. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">job</td><td>The job to retrieve the results from. Must not be <code>NULL</code>. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">program_index</td><td>The zero-based program index. Must be less than <a class="el" href="constants_8h.html#a6e4d18c7fa5d383bbcc1498abe090d4faa24add14b040fb44b0daac7f5714fafc" title="QDMI_DEVICE_JOB_PROPERTY_PROGRAMSNUM">QDMI_DEVICE_JOB_PROPERTY_PROGRAMSNUM</a>. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">result</td><td>The result to retrieve. Must be one of the values specified for <a class="el" href="constants_8h.html#a52254cd217f8627659a19c8e0c2feed6" title="QDMI_Job_Result">QDMI_Job_Result</a>. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">size</td><td>The size of the buffer pointed to by <code class="param">data</code> in bytes. Must be greater than or equal to the size of the requested result, except when <code class="param">data</code> is <code>NULL</code>, in which case it is ignored. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">data</td><td>The buffer in which to store the result. If this is <code>NULL</code>, it is ignored. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">size_ret</td><td>The required buffer size in bytes. If this is <code>NULL</code>, it is ignored. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">size</td><td>The size of the buffer pointed to by <code class="param">data</code> in bytes. Must be greater or equal to the size of the return type specified for the <a class="el" href="constants_8h.html#a52254cd217f8627659a19c8e0c2feed6" title="QDMI_Job_Result">QDMI_Job_Result</a> <code class="param">result</code>, except when <code class="param">data</code> is <code>NULL</code>, in which case it is ignored. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">data</td><td>A pointer to the memory location where the results will be stored. If this is <code>NULL</code>, it is ignored. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">size_ret</td><td>The actual size of the data being queried in bytes. If this is <code>NULL</code>, it is ignored. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a8039f5cd8202553b2a91a1c0b01d6751" title="QDMI_SUCCESS">QDMI_SUCCESS</a> if the device supports the specified result and, when <code class="param">data</code> is not <code>NULL</code>, retrieved it successfully. </dd>
-<dd>
-<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651" title="QDMI_ERROR_NOTSUPPORTED">QDMI_ERROR_NOTSUPPORTED</a> if the device does not support the specified result. </dd>
-<dd>
-<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8ab6858000dc2e49368e3caba68054423c" title="QDMI_ERROR_OUTOFRANGE">QDMI_ERROR_OUTOFRANGE</a> if <code class="param">program_index</code> is greater than or equal to the number of programs in the job. </dd>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a8039f5cd8202553b2a91a1c0b01d6751" title="QDMI_SUCCESS">QDMI_SUCCESS</a> if the device supports the specified result and, when <code class="param">data</code> is not <code>NULL</code>, the results were successfully retrieved. </dd>
 <dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642" title="QDMI_ERROR_INVALIDARGUMENT">QDMI_ERROR_INVALIDARGUMENT</a> if<ul>
 <li><code class="param">job</code> is <code>NULL</code>,</li>
-<li><code class="param">job</code> does not have status <a class="el" href="constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6ad3dad6dd89491e223f42ff9cd9bdade2" title="QDMI_JOB_STATUS_DONE">QDMI_JOB_STATUS_DONE</a>,</li>
+<li><code class="param">job</code> has not finished,</li>
+<li><code class="param">job</code> was canceled,</li>
 <li><code class="param">result</code> is invalid, or</li>
-<li><code class="param">data</code> is not <code>NULL</code> and <code class="param">size</code> is too small. </li>
+<li><code class="param">data</code> is not <code>NULL</code> and <code class="param">size</code> is smaller than the size of the data being queried. </li>
 </ul>
 </dd>
 <dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8ab875f28072043ad44f7ee5290bba8d01" title="QDMI_ERROR_PERMISSIONDENIED">QDMI_ERROR_PERMISSIONDENIED</a> if the device does not allow using the <a class="el" href="group__device__job__interface.html" title="QDMI Device Job Interface">device job interface</a> for the current session. </dd>
 <dd>
-<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3" title="QDMI_ERROR_FATAL">QDMI_ERROR_FATAL</a> if an error occurred during retrieval.</dd></dl>
-<dl class="section note"><dt>Note</dt><dd><p class="startdd">Calling this function with <code class="param">data</code> set to <code>NULL</code> checks support and returns the required buffer size in <code class="param">size_ret</code> when it is not <code>NULL</code>.</p>
-<p class="enddd">For example, to query the first program's measurement results: </p><div class="fragment"><div class="line"><span class="keywordtype">size_t</span> size;</div>
-<div class="line"><span class="keyword">auto</span> ret = <a class="code hl_function" href="#gaaefb46a6d128a080329759ad21425c5e">QDMI_device_job_get_results</a>(</div>
-<div class="line">  job, 0, <a class="code hl_enumvalue" href="constants_8h.html#aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97">QDMI_JOB_RESULT_SHOTS</a>, 0, <span class="keyword">nullptr</span>, &amp;size);</div>
-<div class="line">std::string shots(size, <span class="charliteral">&#39;\0&#39;</span>);</div>
-<div class="line"><a class="code hl_function" href="#gaaefb46a6d128a080329759ad21425c5e">QDMI_device_job_get_results</a>(</div>
-<div class="line">  job, 0, <a class="code hl_enumvalue" href="constants_8h.html#aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97">QDMI_JOB_RESULT_SHOTS</a>, size, shots.data(), <span class="keyword">nullptr</span>);</div>
-<div class="line">shots.pop_back();</div>
-<div class="ttc" id="aconstants_8h_html_aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97"><div class="ttname"><a href="constants_8h.html#aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97">QDMI_JOB_RESULT_SHOTS</a></div><div class="ttdeci">@ QDMI_JOB_RESULT_SHOTS</div><div class="ttdoc">char* (string) The results of the individual shots as a comma-separated list.</div><div class="ttdef"><b>Definition</b> constants.h:1272</div></div>
-<div class="ttc" id="agroup__device__job__interface_html_gaaefb46a6d128a080329759ad21425c5e"><div class="ttname"><a href="#gaaefb46a6d128a080329759ad21425c5e">QDMI_device_job_get_results</a></div><div class="ttdeci">int QDMI_device_job_get_results(QDMI_Device_Job job, size_t program_index, QDMI_Job_Result result, size_t size, void *data, size_t *size_ret)</div><div class="ttdoc">Retrieve one program&#39;s results from a job.</div></div>
+<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3" title="QDMI_ERROR_FATAL">QDMI_ERROR_FATAL</a> if an error occurred during the retrieval.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd><p class="startdd">By calling this function with <code class="param">data</code> set to <code>NULL</code>, the function can be used to check if the device supports the specified result without retrieving the result and without the need to provide a buffer for the result. Additionally, the size of the buffer needed to retrieve the result is returned in <code class="param">size_ret</code> if <code class="param">size_ret</code> is not <code>NULL</code>.</p>
+<p class="enddd">For example, to query the measurement results of a quantum circuit job, the following code pattern can be used: </p><div class="fragment"><div class="line"><span class="comment">// Query the size of the result.</span></div>
+<div class="line"><span class="keywordtype">size_t</span> size;</div>
+<div class="line"><span class="keyword">auto</span> ret = <a class="code hl_function" href="#ga1b4384e53a1d8fb2d782cd6179664d3b">QDMI_device_job_get_results</a>(</div>
+<div class="line">  job, <a class="code hl_enumvalue" href="constants_8h.html#aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97">QDMI_JOB_RESULT_SHOTS</a>, 0, <span class="keyword">nullptr</span>, &amp;size);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Allocate memory for the result.</span></div>
+<div class="line">std::string shots(size - 1, <span class="charliteral">&#39;\0&#39;</span>);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Query the result.</span></div>
+<div class="line"><a class="code hl_function" href="#ga1b4384e53a1d8fb2d782cd6179664d3b">QDMI_device_job_get_results</a>(</div>
+<div class="line">  job, <a class="code hl_enumvalue" href="constants_8h.html#aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97">QDMI_JOB_RESULT_SHOTS</a>, size, shots.data(), <span class="keyword">nullptr</span>);</div>
+<div class="ttc" id="aconstants_8h_html_aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97"><div class="ttname"><a href="constants_8h.html#aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97">QDMI_JOB_RESULT_SHOTS</a></div><div class="ttdeci">@ QDMI_JOB_RESULT_SHOTS</div><div class="ttdoc">char* (string) The results of the individual shots as a comma-separated list, for example,...</div><div class="ttdef"><b>Definition</b> constants.h:1079</div></div>
+<div class="ttc" id="agroup__device__job__interface_html_ga1b4384e53a1d8fb2d782cd6179664d3b"><div class="ttname"><a href="#ga1b4384e53a1d8fb2d782cd6179664d3b">QDMI_device_job_get_results</a></div><div class="ttdeci">int QDMI_device_job_get_results(QDMI_Device_Job job, QDMI_Job_Result result, size_t size, void *data, size_t *size_ret)</div><div class="ttdoc">Retrieve the results of a job.</div></div>
 </div><!-- fragment --> </dd></dl>
 
 </div>
