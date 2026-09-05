@@ -137,15 +137,16 @@ TEST_F(QDMIInitializedSessionTest, SubmitAndSimulateJob) {
       << "Checkpoint 4 Failed: Could not create a device job.";
 
   const std::string qasm = "OPENQASM 2.0; qreg q[1]; h q[0];";
+  const QDMI_Program_Format format = QDMI_PROGRAM_FORMAT_QASM2;
+  const size_t qasm_size = qasm.size() + 1;
+  const void *qasm_data = qasm.c_str();
 
   // Null job must return INVALIDARGUMENT
-  EXPECT_EQ(MY_QDMI_device_job_set_parameter(nullptr,
-                                             QDMI_DEVICE_JOB_PARAMETER_PROGRAM,
-                                             qasm.size(), qasm.c_str()),
+  EXPECT_EQ(MY_QDMI_device_job_set_programs(nullptr, &format, 1, &qasm_size,
+                                            &qasm_data),
             QDMI_ERROR_INVALIDARGUMENT);
-  // Null value with size==0 must return INVALIDARGUMENT
-  EXPECT_EQ(MY_QDMI_device_job_set_parameter(
-                job, QDMI_DEVICE_JOB_PARAMETER_PROGRAM, 0, nullptr),
+  // A zero program count must return INVALIDARGUMENT
+  EXPECT_EQ(MY_QDMI_device_job_set_programs(job, &format, 0, nullptr, nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
   // Unsupported parameter must return NOTSUPPORTED
   EXPECT_EQ(MY_QDMI_device_job_set_parameter(job, QDMI_DEVICE_JOB_PARAMETER_MAX,
@@ -155,10 +156,9 @@ TEST_F(QDMIInitializedSessionTest, SubmitAndSimulateJob) {
   // Submitting without a program set must return BADSTATE
   EXPECT_EQ(MY_QDMI_device_job_submit(job), QDMI_ERROR_BADSTATE);
 
-  ASSERT_EQ(MY_QDMI_device_job_set_parameter(job,
-                                             QDMI_DEVICE_JOB_PARAMETER_PROGRAM,
-                                             qasm.size(), qasm.c_str()),
-            QDMI_SUCCESS);
+  ASSERT_EQ(
+      MY_QDMI_device_job_set_programs(job, &format, 1, &qasm_size, &qasm_data),
+      QDMI_SUCCESS);
 
   // Null job must return INVALIDARGUMENT
   EXPECT_EQ(MY_QDMI_device_job_submit(nullptr), QDMI_ERROR_INVALIDARGUMENT);
@@ -181,22 +181,22 @@ TEST_F(QDMIInitializedSessionTest, SubmitAndSimulateJob) {
   std::array<double, 2> probs{};
   // Null job must return INVALIDARGUMENT
   EXPECT_EQ(MY_QDMI_device_job_get_results(
-                nullptr, QDMI_JOB_RESULT_PROBABILITIES_DENSE,
+                nullptr, 0, QDMI_JOB_RESULT_PROBABILITIES_DENSE,
                 probs.size() * sizeof(double), probs.data(), nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
   // Buffer too small must return INVALIDARGUMENT
   EXPECT_EQ(MY_QDMI_device_job_get_results(
-                job, QDMI_JOB_RESULT_PROBABILITIES_DENSE,
+                job, 0, QDMI_JOB_RESULT_PROBABILITIES_DENSE,
                 (probs.size() * sizeof(double)) - 1, probs.data(), nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
   // Unsupported result type must return NOTSUPPORTED
-  EXPECT_EQ(MY_QDMI_device_job_get_results(job, QDMI_JOB_RESULT_MAX,
+  EXPECT_EQ(MY_QDMI_device_job_get_results(job, 0, QDMI_JOB_RESULT_MAX,
                                            probs.size() * sizeof(double),
                                            probs.data(), nullptr),
             QDMI_ERROR_NOTSUPPORTED);
 
   ASSERT_EQ(MY_QDMI_device_job_get_results(
-                job, QDMI_JOB_RESULT_PROBABILITIES_DENSE,
+                job, 0, QDMI_JOB_RESULT_PROBABILITIES_DENSE,
                 probs.size() * sizeof(double), probs.data(), nullptr),
             QDMI_SUCCESS)
       << "Checkpoint 4 Failed: Could not retrieve simulated job results.";

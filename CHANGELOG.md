@@ -14,8 +14,18 @@ clients compiled against a different minor or major version.
 
 _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 
+### Added
+
+- ✨ Add ordered multi-program jobs with one aggregate lifecycle, indexed
+  results, and required device entry points ([#509]) ([\@ystade],
+  [\@burgholzer]).
+
 ### Changed
 
+- 💥 Add a program index to `QDMI_job_get_results` and
+  `QDMI_device_job_get_results`; remove the single-program job parameters; and
+  define atomic multi-program retrieval semantics ([#509]) ([\@ystade],
+  [\@burgholzer]).
 - 💥 Drop x86 macOS from QDMI's tested platforms ([#515]) ([\@denialhaag])
 - ⬆️ Raise generated device projects' macOS deployment target to 13.3 ([#515])
   ([\@denialhaag])
@@ -229,6 +239,7 @@ for previous changelogs._
 <!-- PR links -->
 
 [#515]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/515
+[#509]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/509
 [#486]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/486
 [#485]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/485
 [#475]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/475

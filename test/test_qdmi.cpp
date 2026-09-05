@@ -40,6 +40,7 @@ extern "C" {
 #include <stdlib.h>
 }
 #include <string>
+#include <string_view>
 #include <tuple>
 #include <unordered_map>
 #include <unordered_set>
@@ -47,6 +48,9 @@ extern "C" {
 #include <vector>
 
 namespace {
+constexpr auto QASM2_FORMAT = QDMI_PROGRAM_FORMAT_QASM2;
+constexpr auto QIR_BASE_TEXT_FORMAT = QDMI_PROGRAM_FORMAT_QIRBASESTRING;
+constexpr auto QIR_BASE_BINARY_FORMAT = QDMI_PROGRAM_FORMAT_QIRBASEMODULE;
 /// Hash function for a pair
 struct Pair_hash {
   template <class T, class U>
@@ -548,6 +552,12 @@ TEST_P(QDMIImplementationTest, JobLifecycle) {
                                     sizeof(size_t), &shots, nullptr),
             QDMI_SUCCESS);
   EXPECT_EQ(shots, 5);
+  constexpr std::string_view program{"OPENQASM 2.0;\nqreg q[1];\n"};
+  const size_t program_size = program.size() + 1;
+  const void *program_data = program.data();
+  ASSERT_EQ(QDMI_job_set_programs(job, &QASM2_FORMAT, 1, &program_size,
+                                  &program_data),
+            QDMI_SUCCESS);
   // Queue position is optional and is not supported by the example device.
   EXPECT_EQ(QDMI_job_query_property(job, QDMI_JOB_PROPERTY_QUEUEPOSITION, 0,
                                     nullptr, nullptr),
@@ -557,7 +567,7 @@ TEST_P(QDMIImplementationTest, JobLifecycle) {
   EXPECT_EQ(QDMI_job_submit(nullptr), QDMI_ERROR_INVALIDARGUMENT);
   // Cannot get results from a job that is not done yet.
   EXPECT_EQ(
-      QDMI_job_get_results(job, QDMI_JOB_RESULT_SHOTS, 0, nullptr, nullptr),
+      QDMI_job_get_results(job, 0, QDMI_JOB_RESULT_SHOTS, 0, nullptr, nullptr),
       QDMI_ERROR_INVALIDARGUMENT);
   EXPECT_EQ(QDMI_job_check(job, nullptr), QDMI_ERROR_INVALIDARGUMENT);
   QDMI_Job_Status status{};
@@ -573,6 +583,300 @@ TEST_P(QDMIImplementationTest, JobLifecycle) {
                                    sizeof(size_t), &shots),
             QDMI_ERROR_BADSTATE);
   QDMI_job_free(job);
+}
+
+TEST_P(QDMIImplementationTest, MultiProgramJob) {
+  if (mode == TEST_SESSION_MODE::READONLY) {
+    GTEST_SKIP() << "Skipping test for read-only session";
+  }
+
+  QDMI_Job job = nullptr;
+  ASSERT_EQ(QDMI_device_create_job(device, &job), QDMI_SUCCESS);
+  EXPECT_EQ(QDMI_job_query_property(job, QDMI_JOB_PROPERTY_PROGRAMFORMAT, 0,
+                                    nullptr, nullptr),
+            QDMI_ERROR_BADSTATE);
+  EXPECT_EQ(QDMI_job_query_property(job, QDMI_JOB_PROPERTY_PROGRAMSNUM, 0,
+                                    nullptr, nullptr),
+            QDMI_ERROR_BADSTATE);
+  EXPECT_EQ(QDMI_job_submit(job), QDMI_ERROR_BADSTATE);
+
+  std::array<std::string, 3> programs{"OPENQASM 2.0;\nqreg q[1]; // 0",
+                                      "OPENQASM 2.0;\nqreg q[2]; // 1",
+                                      "OPENQASM 2.0;\nqreg q[3]; // 2"};
+  std::array<size_t, 3> sizes{};
+  std::array<const void *, 3> program_ptrs{};
+  for (size_t i = 0; i < programs.size(); ++i) {
+    sizes.at(i) = programs.at(i).size() + 1;
+    program_ptrs.at(i) = programs.at(i).c_str();
+  }
+
+  EXPECT_EQ(QDMI_job_set_programs(nullptr, &QASM2_FORMAT, programs.size(),
+                                  sizes.data(), program_ptrs.data()),
+            QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_EQ(QDMI_job_set_programs(job, nullptr, programs.size(), sizes.data(),
+                                  program_ptrs.data()),
+            QDMI_ERROR_INVALIDARGUMENT);
+  constexpr QDMI_Program_Format invalid_format = QDMI_PROGRAM_FORMAT_MAX;
+  EXPECT_EQ(QDMI_job_set_programs(job, &invalid_format, programs.size(),
+                                  sizes.data(), program_ptrs.data()),
+            QDMI_ERROR_INVALIDARGUMENT);
+  constexpr QDMI_Program_Format unsupported_format = QDMI_PROGRAM_FORMAT_QASM3;
+  EXPECT_EQ(QDMI_job_set_programs(job, &unsupported_format, programs.size(),
+                                  sizes.data(), program_ptrs.data()),
+            QDMI_ERROR_NOTSUPPORTED);
+
+  EXPECT_EQ(QDMI_job_set_programs(job, &QASM2_FORMAT, 42, nullptr, nullptr),
+            QDMI_SUCCESS);
+  EXPECT_EQ(QDMI_job_query_property(job, QDMI_JOB_PROPERTY_PROGRAMSNUM, 0,
+                                    nullptr, nullptr),
+            QDMI_ERROR_BADSTATE);
+  EXPECT_EQ(QDMI_job_set_programs(job, &QASM2_FORMAT, 0, nullptr, nullptr),
+            QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_EQ(QDMI_job_set_programs(job, &QASM2_FORMAT, 0, sizes.data(),
+                                  program_ptrs.data()),
+            QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_EQ(QDMI_job_set_programs(job, &QASM2_FORMAT, programs.size(), nullptr,
+                                  program_ptrs.data()),
+            QDMI_ERROR_INVALIDARGUMENT);
+
+  EXPECT_EQ(QDMI_job_submit(job), QDMI_ERROR_BADSTATE);
+
+  ASSERT_EQ(QDMI_job_set_programs(job, &QASM2_FORMAT, 1, sizes.data(),
+                                  program_ptrs.data()),
+            QDMI_SUCCESS);
+  size_t program_count = 0;
+  ASSERT_EQ(QDMI_job_query_property(job, QDMI_JOB_PROPERTY_PROGRAMSNUM,
+                                    sizeof(size_t), &program_count, nullptr),
+            QDMI_SUCCESS);
+  EXPECT_EQ(program_count, 1);
+
+  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
+                                   sizeof(QDMI_Program_Format), &QASM2_FORMAT),
+            QDMI_SUCCESS);
+  ASSERT_EQ(QDMI_job_query_property(job, QDMI_JOB_PROPERTY_PROGRAMSNUM,
+                                    sizeof(size_t), &program_count, nullptr),
+            QDMI_SUCCESS);
+  EXPECT_EQ(program_count, 1);
+
+  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
+                                   sizeof(QDMI_Program_Format),
+                                   &QIR_BASE_TEXT_FORMAT),
+            QDMI_SUCCESS);
+  EXPECT_EQ(QDMI_job_query_property(job, QDMI_JOB_PROPERTY_PROGRAMSNUM, 0,
+                                    nullptr, nullptr),
+            QDMI_ERROR_BADSTATE);
+  QDMI_Program_Format format{};
+  ASSERT_EQ(QDMI_job_query_property(job, QDMI_JOB_PROPERTY_PROGRAMFORMAT,
+                                    sizeof(QDMI_Program_Format), &format,
+                                    nullptr),
+            QDMI_SUCCESS);
+  EXPECT_EQ(format, QIR_BASE_TEXT_FORMAT);
+
+  ASSERT_EQ(QDMI_job_set_programs(job, &QASM2_FORMAT, 1, sizes.data(),
+                                  program_ptrs.data()),
+            QDMI_SUCCESS);
+
+  EXPECT_EQ(
+      QDMI_job_set_programs(job, &QIR_BASE_TEXT_FORMAT, 42, nullptr, nullptr),
+      QDMI_SUCCESS);
+  ASSERT_EQ(QDMI_job_query_property(job, QDMI_JOB_PROPERTY_PROGRAMFORMAT,
+                                    sizeof(QDMI_Program_Format), &format,
+                                    nullptr),
+            QDMI_SUCCESS);
+  EXPECT_EQ(format, QASM2_FORMAT);
+
+  auto invalid_programs = program_ptrs;
+  invalid_programs.at(1) = nullptr;
+  EXPECT_EQ(QDMI_job_set_programs(job, &QIR_BASE_TEXT_FORMAT, programs.size(),
+                                  sizes.data(), invalid_programs.data()),
+            QDMI_ERROR_INVALIDARGUMENT);
+  auto invalid_sizes = sizes;
+  invalid_sizes.at(1) = programs.at(1).size();
+  EXPECT_EQ(QDMI_job_set_programs(job, &QIR_BASE_TEXT_FORMAT, programs.size(),
+                                  invalid_sizes.data(), program_ptrs.data()),
+            QDMI_ERROR_INVALIDARGUMENT);
+  auto embedded_nul_program = programs.at(1);
+  embedded_nul_program.at(4) = '\0';
+  auto embedded_nul_programs = program_ptrs;
+  embedded_nul_programs.at(1) = embedded_nul_program.c_str();
+  EXPECT_EQ(QDMI_job_set_programs(job, &QIR_BASE_TEXT_FORMAT, programs.size(),
+                                  sizes.data(), embedded_nul_programs.data()),
+            QDMI_ERROR_INVALIDARGUMENT);
+  ASSERT_EQ(QDMI_job_query_property(job, QDMI_JOB_PROPERTY_PROGRAMSNUM,
+                                    sizeof(size_t), &program_count, nullptr),
+            QDMI_SUCCESS);
+  EXPECT_EQ(program_count, 1);
+  ASSERT_EQ(QDMI_job_query_property(job, QDMI_JOB_PROPERTY_PROGRAMFORMAT,
+                                    sizeof(QDMI_Program_Format), &format,
+                                    nullptr),
+            QDMI_SUCCESS);
+  EXPECT_EQ(format, QASM2_FORMAT);
+
+  ASSERT_EQ(QDMI_job_set_programs(job, &QASM2_FORMAT, programs.size(),
+                                  sizes.data(), program_ptrs.data()),
+            QDMI_SUCCESS);
+  ASSERT_EQ(QDMI_job_query_property(job, QDMI_JOB_PROPERTY_PROGRAMSNUM,
+                                    sizeof(size_t), &program_count, nullptr),
+            QDMI_SUCCESS);
+  EXPECT_EQ(program_count, programs.size());
+
+  ASSERT_EQ(QDMI_job_set_programs(job, &QASM2_FORMAT, 1, sizes.data(),
+                                  program_ptrs.data()),
+            QDMI_SUCCESS);
+  ASSERT_EQ(QDMI_job_query_property(job, QDMI_JOB_PROPERTY_PROGRAMSNUM,
+                                    sizeof(size_t), &program_count, nullptr),
+            QDMI_SUCCESS);
+  EXPECT_EQ(program_count, 1);
+  ASSERT_EQ(QDMI_job_set_programs(job, &QASM2_FORMAT, programs.size(),
+                                  sizes.data(), program_ptrs.data()),
+            QDMI_SUCCESS);
+
+  for (auto &program : programs) {
+    program.back() = '3';
+  }
+  auto rejected_programs = program_ptrs;
+  rejected_programs.at(1) = nullptr;
+  EXPECT_EQ(QDMI_job_set_programs(job, &QASM2_FORMAT, programs.size(),
+                                  sizes.data(), rejected_programs.data()),
+            QDMI_ERROR_INVALIDARGUMENT);
+
+  constexpr size_t shots = 1;
+  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_SHOTSNUM,
+                                   sizeof(size_t), &shots),
+            QDMI_SUCCESS);
+  ASSERT_EQ(QDMI_job_submit(job), QDMI_SUCCESS);
+  EXPECT_EQ(QDMI_job_set_programs(job, &QASM2_FORMAT, programs.size(),
+                                  sizes.data(), program_ptrs.data()),
+            QDMI_ERROR_BADSTATE);
+  ASSERT_EQ(QDMI_job_query_property(job, QDMI_JOB_PROPERTY_PROGRAMSNUM,
+                                    sizeof(size_t), &program_count, nullptr),
+            QDMI_SUCCESS);
+  EXPECT_EQ(program_count, programs.size());
+  EXPECT_EQ(
+      QDMI_job_get_results(job, 0, QDMI_JOB_RESULT_SHOTS, 0, nullptr, nullptr),
+      QDMI_ERROR_INVALIDARGUMENT);
+  ASSERT_EQ(QDMI_job_wait(job, 0), QDMI_SUCCESS);
+
+  EXPECT_EQ(QDMI_job_get_results(nullptr, 0, QDMI_JOB_RESULT_SHOTS, 0, nullptr,
+                                 nullptr),
+            QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_EQ(
+      QDMI_job_get_results(job, 0, QDMI_JOB_RESULT_MAX, 0, nullptr, nullptr),
+      QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_EQ(QDMI_job_get_results(job, programs.size(), QDMI_JOB_RESULT_SHOTS, 0,
+                                 nullptr, nullptr),
+            QDMI_ERROR_OUTOFRANGE);
+
+  constexpr std::array<std::string_view, 3> expected_shots{"01", "10", "11"};
+  const FoMaC fomac(device);
+  for (size_t i = 0; i < programs.size(); ++i) {
+    size_t size = 0;
+    ASSERT_EQ(
+        QDMI_job_get_results(job, i, QDMI_JOB_RESULT_SHOTS, 0, nullptr, &size),
+        QDMI_SUCCESS);
+    std::string actual(size, '\0');
+    ASSERT_EQ(QDMI_job_get_results(job, i, QDMI_JOB_RESULT_SHOTS, size,
+                                   actual.data(), nullptr),
+              QDMI_SUCCESS);
+    actual.pop_back();
+    EXPECT_EQ(actual, std::string(fomac.get_qubits_num() - 2, '0') +
+                          std::string(expected_shots.at(i)));
+  }
+
+  QDMI_job_free(job);
+
+  ASSERT_EQ(QDMI_device_create_job(device, &job), QDMI_SUCCESS);
+  const std::array<std::string, 2> qir_programs{"program 0", "program 1"};
+  const std::array<size_t, 2> qir_sizes{qir_programs[0].size() + 1,
+                                        qir_programs[1].size() + 1};
+  const std::array<const void *, 2> qir_program_ptrs{qir_programs[0].c_str(),
+                                                     qir_programs[1].c_str()};
+  ASSERT_EQ(QDMI_job_set_programs(job, &QIR_BASE_TEXT_FORMAT,
+                                  qir_programs.size(), qir_sizes.data(),
+                                  qir_program_ptrs.data()),
+            QDMI_SUCCESS);
+  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_SHOTSNUM,
+                                   sizeof(size_t), &shots),
+            QDMI_SUCCESS);
+  ASSERT_EQ(QDMI_job_submit(job), QDMI_SUCCESS);
+  ASSERT_EQ(QDMI_job_wait(job, 0), QDMI_SUCCESS);
+  std::array<std::vector<char>, qir_programs.size()> outputs;
+  for (size_t i = 0; i < qir_programs.size(); ++i) {
+    size_t output_size = 0;
+    ASSERT_EQ(QDMI_job_get_results(job, i, QDMI_JOB_RESULT_SHOTS, 0, nullptr,
+                                   &output_size),
+              QDMI_SUCCESS);
+    outputs[i].resize(output_size);
+    ASSERT_EQ(QDMI_job_get_results(job, i, QDMI_JOB_RESULT_SHOTS, output_size,
+                                   outputs[i].data(), nullptr),
+              QDMI_SUCCESS);
+  }
+  EXPECT_NE(outputs[0], outputs[1]);
+  QDMI_job_free(job);
+
+  ASSERT_EQ(QDMI_device_create_job(device, &job), QDMI_SUCCESS);
+  constexpr std::array<unsigned char, 3> binary_program{0, 1, 0};
+  constexpr std::array binary_sizes{binary_program.size(),
+                                    binary_program.size()};
+  const std::array<const void *, 2> binary_programs{binary_program.data(),
+                                                    binary_program.data()};
+  ASSERT_EQ(QDMI_job_set_programs(job, &QIR_BASE_BINARY_FORMAT,
+                                  binary_programs.size(), binary_sizes.data(),
+                                  binary_programs.data()),
+            QDMI_SUCCESS);
+  ASSERT_EQ(QDMI_job_submit(job), QDMI_SUCCESS);
+  ASSERT_EQ(QDMI_job_cancel(job), QDMI_SUCCESS);
+  ASSERT_EQ(QDMI_job_wait(job, 0), QDMI_SUCCESS);
+  QDMI_Job_Status canceled_status{};
+  ASSERT_EQ(QDMI_job_check(job, &canceled_status), QDMI_SUCCESS);
+  EXPECT_EQ(canceled_status, QDMI_JOB_STATUS_CANCELED);
+  EXPECT_EQ(
+      QDMI_job_get_results(job, 0, QDMI_JOB_RESULT_SHOTS, 0, nullptr, nullptr),
+      QDMI_ERROR_INVALIDARGUMENT);
+  QDMI_job_free(job);
+}
+
+TEST_P(QDMIImplementationTest, ValidatesProgramPayloadEncoding) {
+  if (mode == TEST_SESSION_MODE::READONLY) {
+    GTEST_SKIP() << "Skipping test for read-only session";
+  }
+
+  QDMI_Job text_job = nullptr;
+  ASSERT_EQ(QDMI_device_create_job(device, &text_job), QDMI_SUCCESS);
+  constexpr std::array<char, 3> valid_text{'x', 'y', '\0'};
+  const void *valid_text_data = valid_text.data();
+  const size_t valid_text_size = valid_text.size();
+  constexpr std::array<char, 2> unterminated_text{'x', 'y'};
+  const void *unterminated_text_data = unterminated_text.data();
+  const size_t unterminated_text_size = unterminated_text.size();
+  EXPECT_EQ(QDMI_job_set_programs(text_job, &QASM2_FORMAT, 1,
+                                  &unterminated_text_size,
+                                  &unterminated_text_data),
+            QDMI_ERROR_INVALIDARGUMENT);
+  constexpr std::array<char, 4> embedded_nul{'x', '\0', 'y', '\0'};
+  const void *embedded_nul_data = embedded_nul.data();
+  const size_t embedded_nul_size = embedded_nul.size();
+  EXPECT_EQ(QDMI_job_set_programs(text_job, &QASM2_FORMAT, 1,
+                                  &embedded_nul_size, &embedded_nul_data),
+            QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_EQ(QDMI_job_set_programs(text_job, &QASM2_FORMAT, 1, &valid_text_size,
+                                  &valid_text_data),
+            QDMI_SUCCESS);
+  QDMI_job_free(text_job);
+
+  QDMI_Job binary_job = nullptr;
+  ASSERT_EQ(QDMI_device_create_job(device, &binary_job), QDMI_SUCCESS);
+  constexpr std::array<unsigned char, 3> binary{0U, 0xFFU, 0U};
+  const void *binary_data = binary.data();
+  constexpr size_t empty_binary_size = 0;
+  EXPECT_EQ(QDMI_job_set_programs(binary_job, &QIR_BASE_BINARY_FORMAT, 1,
+                                  &empty_binary_size, &binary_data),
+            QDMI_ERROR_INVALIDARGUMENT);
+  const size_t binary_size = binary.size();
+  EXPECT_EQ(QDMI_job_set_programs(binary_job, &QIR_BASE_BINARY_FORMAT, 1,
+                                  &binary_size, &binary_data),
+            QDMI_SUCCESS);
+  QDMI_job_free(binary_job);
 }
 
 TEST_P(QDMIImplementationTest, ToolCompile) {
@@ -609,14 +913,11 @@ measure q -> c;
   )";
   QDMI_Job job = nullptr;
   EXPECT_EQ(QDMI_device_create_job(dev, &job), QDMI_SUCCESS);
-  const auto format = QDMI_PROGRAM_FORMAT_QASM2;
-  EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
-                                   sizeof(QDMI_Program_Format), &format),
-            QDMI_SUCCESS);
-  EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAM,
-                                   TEST_CIRCUIT.size() + 1,
-                                   TEST_CIRCUIT.c_str()),
-            QDMI_SUCCESS);
+  const size_t program_size = TEST_CIRCUIT.size() + 1;
+  const void *program = TEST_CIRCUIT.c_str();
+  EXPECT_EQ(
+      QDMI_job_set_programs(job, &QASM2_FORMAT, 1, &program_size, &program),
+      QDMI_SUCCESS);
   if (num_shots > 0) {
     EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_SHOTSNUM,
                                      sizeof(size_t), &num_shots),
@@ -635,25 +936,26 @@ TEST_P(QDMIImplementationTest, GetResultsCornerCases) {
   QDMI_Job job = Submit_test_job(device);
 
   // The MAX parameter is not a valid value for any device
-  EXPECT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_MAX, 0, nullptr, nullptr),
-            QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_EQ(
+      QDMI_job_get_results(job, 0, QDMI_JOB_RESULT_MAX, 0, nullptr, nullptr),
+      QDMI_ERROR_INVALIDARGUMENT);
 
   // The example devices do not support custom results
-  EXPECT_EQ(
-      QDMI_job_get_results(job, QDMI_JOB_RESULT_CUSTOM1, 0, nullptr, nullptr),
-      QDMI_ERROR_NOTSUPPORTED);
-  EXPECT_EQ(
-      QDMI_job_get_results(job, QDMI_JOB_RESULT_CUSTOM2, 0, nullptr, nullptr),
-      QDMI_ERROR_NOTSUPPORTED);
-  EXPECT_EQ(
-      QDMI_job_get_results(job, QDMI_JOB_RESULT_CUSTOM3, 0, nullptr, nullptr),
-      QDMI_ERROR_NOTSUPPORTED);
-  EXPECT_EQ(
-      QDMI_job_get_results(job, QDMI_JOB_RESULT_CUSTOM4, 0, nullptr, nullptr),
-      QDMI_ERROR_NOTSUPPORTED);
-  EXPECT_EQ(
-      QDMI_job_get_results(job, QDMI_JOB_RESULT_CUSTOM5, 0, nullptr, nullptr),
-      QDMI_ERROR_NOTSUPPORTED);
+  EXPECT_EQ(QDMI_job_get_results(job, 0, QDMI_JOB_RESULT_CUSTOM1, 0, nullptr,
+                                 nullptr),
+            QDMI_ERROR_NOTSUPPORTED);
+  EXPECT_EQ(QDMI_job_get_results(job, 0, QDMI_JOB_RESULT_CUSTOM2, 0, nullptr,
+                                 nullptr),
+            QDMI_ERROR_NOTSUPPORTED);
+  EXPECT_EQ(QDMI_job_get_results(job, 0, QDMI_JOB_RESULT_CUSTOM3, 0, nullptr,
+                                 nullptr),
+            QDMI_ERROR_NOTSUPPORTED);
+  EXPECT_EQ(QDMI_job_get_results(job, 0, QDMI_JOB_RESULT_CUSTOM4, 0, nullptr,
+                                 nullptr),
+            QDMI_ERROR_NOTSUPPORTED);
+  EXPECT_EQ(QDMI_job_get_results(job, 0, QDMI_JOB_RESULT_CUSTOM5, 0, nullptr,
+                                 nullptr),
+            QDMI_ERROR_NOTSUPPORTED);
 }
 
 TEST_P(QDMIImplementationTest, GetShots) {
@@ -664,11 +966,12 @@ TEST_P(QDMIImplementationTest, GetShots) {
   const size_t shots_num = 64;
   QDMI_Job job = Submit_test_job(device, shots_num);
   size_t size = 0;
-  ASSERT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_SHOTS, 0, nullptr, &size),
-            QDMI_SUCCESS);
+  ASSERT_EQ(
+      QDMI_job_get_results(job, 0, QDMI_JOB_RESULT_SHOTS, 0, nullptr, &size),
+      QDMI_SUCCESS);
   std::string shots(static_cast<std::size_t>(size - 1), '\0');
-  ASSERT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_SHOTS, size, shots.data(),
-                                 nullptr),
+  ASSERT_EQ(QDMI_job_get_results(job, 0, QDMI_JOB_RESULT_SHOTS, size,
+                                 shots.data(), nullptr),
             QDMI_SUCCESS);
   std::vector<std::string> shots_vec;
   std::string token;
@@ -690,11 +993,11 @@ TEST_P(QDMIImplementationTest, GetHistogram) {
   QDMI_Job job = Submit_test_job(device, shots_num);
 
   size_t size = 0;
-  ASSERT_EQ(
-      QDMI_job_get_results(job, QDMI_JOB_RESULT_HIST_KEYS, 0, nullptr, &size),
-      QDMI_SUCCESS);
+  ASSERT_EQ(QDMI_job_get_results(job, 0, QDMI_JOB_RESULT_HIST_KEYS, 0, nullptr,
+                                 &size),
+            QDMI_SUCCESS);
   std::string key_list(size - 1, '\0');
-  ASSERT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_HIST_KEYS, size,
+  ASSERT_EQ(QDMI_job_get_results(job, 0, QDMI_JOB_RESULT_HIST_KEYS, size,
                                  key_list.data(), nullptr),
             QDMI_SUCCESS);
   std::vector<std::string> key_vec;
@@ -711,13 +1014,13 @@ TEST_P(QDMIImplementationTest, GetHistogram) {
   }
 
   size_t val_size = 0;
-  ASSERT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_HIST_VALUES, 0, nullptr,
-                                 &val_size),
+  ASSERT_EQ(QDMI_job_get_results(job, 0, QDMI_JOB_RESULT_HIST_VALUES, 0,
+                                 nullptr, &val_size),
             QDMI_SUCCESS);
   ASSERT_EQ(val_size / sizeof(size_t), key_vec.size());
 
   std::vector<size_t> val_vec(key_vec.size());
-  ASSERT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_HIST_VALUES, val_size,
+  ASSERT_EQ(QDMI_job_get_results(job, 0, QDMI_JOB_RESULT_HIST_VALUES, val_size,
                                  val_vec.data(), nullptr),
             QDMI_SUCCESS);
 
@@ -743,14 +1046,14 @@ TEST_P(QDMIImplementationTest, GetStateDense) {
   QDMI_Job job = Submit_test_job(device);
 
   size_t state_size = 0;
-  ASSERT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_STATEVECTOR_DENSE, 0,
+  ASSERT_EQ(QDMI_job_get_results(job, 0, QDMI_JOB_RESULT_STATEVECTOR_DENSE, 0,
                                  nullptr, &state_size),
             QDMI_SUCCESS);
   const size_t vec_length = state_size / sizeof(double);
   ASSERT_EQ(vec_length % 2, 0) << "State vector must contain pairs of values";
 
   std::vector<double> state_vector(vec_length);
-  ASSERT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_STATEVECTOR_DENSE,
+  ASSERT_EQ(QDMI_job_get_results(job, 0, QDMI_JOB_RESULT_STATEVECTOR_DENSE,
                                  state_size, state_vector.data(), nullptr),
             QDMI_SUCCESS);
 
@@ -777,12 +1080,14 @@ TEST_P(QDMIImplementationTest, GetStateSparse) {
   const auto fomac = FoMaC(device);
   QDMI_Job job = Submit_test_job(device);
   size_t size = 0;
-  ASSERT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_STATEVECTOR_SPARSE_KEYS,
-                                 0, nullptr, &size),
+  ASSERT_EQ(QDMI_job_get_results(job, 0,
+                                 QDMI_JOB_RESULT_STATEVECTOR_SPARSE_KEYS, 0,
+                                 nullptr, &size),
             QDMI_SUCCESS);
   std::string key_list(size - 1, '\0');
-  ASSERT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_STATEVECTOR_SPARSE_KEYS,
-                                 size, key_list.data(), nullptr),
+  ASSERT_EQ(QDMI_job_get_results(job, 0,
+                                 QDMI_JOB_RESULT_STATEVECTOR_SPARSE_KEYS, size,
+                                 key_list.data(), nullptr),
             QDMI_SUCCESS);
   std::vector<std::string> key_vec;
   std::string token;
@@ -798,13 +1103,15 @@ TEST_P(QDMIImplementationTest, GetStateSparse) {
   }
 
   size_t val_size = 0;
-  ASSERT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_STATEVECTOR_SPARSE_VALUES,
-                                 0, nullptr, &val_size),
+  ASSERT_EQ(QDMI_job_get_results(job, 0,
+                                 QDMI_JOB_RESULT_STATEVECTOR_SPARSE_VALUES, 0,
+                                 nullptr, &val_size),
             QDMI_SUCCESS);
   ASSERT_EQ(val_size / 2 / sizeof(double), key_vec.size());
 
   std::vector<std::complex<double>> val_vec(key_vec.size());
-  ASSERT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_STATEVECTOR_SPARSE_VALUES,
+  ASSERT_EQ(QDMI_job_get_results(job, 0,
+                                 QDMI_JOB_RESULT_STATEVECTOR_SPARSE_VALUES,
                                  val_size, val_vec.data(), nullptr),
             QDMI_SUCCESS);
 
@@ -825,7 +1132,7 @@ TEST_P(QDMIImplementationTest, GetProbsDense) {
   QDMI_Job job = Submit_test_job(device);
 
   std::vector<double> prob_vector(1ULL << fomac.get_qubits_num());
-  ASSERT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_PROBABILITIES_DENSE,
+  ASSERT_EQ(QDMI_job_get_results(job, 0, QDMI_JOB_RESULT_PROBABILITIES_DENSE,
                                  sizeof(double) * prob_vector.size(),
                                  prob_vector.data(), nullptr),
             QDMI_SUCCESS);
@@ -847,11 +1154,13 @@ TEST_P(QDMIImplementationTest, GetProbsSparse) {
   QDMI_Job job = Submit_test_job(device);
 
   size_t size = 0;
-  ASSERT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_PROBABILITIES_SPARSE_KEYS,
-                                 0, nullptr, &size),
+  ASSERT_EQ(QDMI_job_get_results(job, 0,
+                                 QDMI_JOB_RESULT_PROBABILITIES_SPARSE_KEYS, 0,
+                                 nullptr, &size),
             QDMI_SUCCESS);
   std::string key_list(size - 1, '\0');
-  ASSERT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_PROBABILITIES_SPARSE_KEYS,
+  ASSERT_EQ(QDMI_job_get_results(job, 0,
+                                 QDMI_JOB_RESULT_PROBABILITIES_SPARSE_KEYS,
                                  size, key_list.data(), nullptr),
             QDMI_SUCCESS);
   std::vector<std::string> key_vec;
@@ -868,14 +1177,14 @@ TEST_P(QDMIImplementationTest, GetProbsSparse) {
   }
 
   size_t val_size = 0;
-  ASSERT_EQ(QDMI_job_get_results(job,
+  ASSERT_EQ(QDMI_job_get_results(job, 0,
                                  QDMI_JOB_RESULT_PROBABILITIES_SPARSE_VALUES, 0,
                                  nullptr, &val_size),
             QDMI_SUCCESS);
   ASSERT_EQ(val_size / sizeof(double), key_vec.size());
 
   std::vector<double> val_vec(key_vec.size());
-  ASSERT_EQ(QDMI_job_get_results(job,
+  ASSERT_EQ(QDMI_job_get_results(job, 0,
                                  QDMI_JOB_RESULT_PROBABILITIES_SPARSE_VALUES,
                                  val_size, val_vec.data(), nullptr),
             QDMI_SUCCESS);
@@ -895,10 +1204,11 @@ TEST_P(QDMIImplementationTest, GetShotsBufferTooSmall) {
   }
   QDMI_Job job = Submit_test_job(device, 64);
   size_t size = 0;
-  ASSERT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_SHOTS, 0, nullptr, &size),
-            QDMI_SUCCESS);
+  ASSERT_EQ(
+      QDMI_job_get_results(job, 0, QDMI_JOB_RESULT_SHOTS, 0, nullptr, &size),
+      QDMI_SUCCESS);
   std::vector<char> buffer(size - 1); // Buffer too small
-  EXPECT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_SHOTS, buffer.size(),
+  EXPECT_EQ(QDMI_job_get_results(job, 0, QDMI_JOB_RESULT_SHOTS, buffer.size(),
                                  buffer.data(), nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
   QDMI_job_free(job);
@@ -910,12 +1220,12 @@ TEST_P(QDMIImplementationTest, GetHistogramKeysBufferTooSmall) {
   }
   QDMI_Job job = Submit_test_job(device, 64);
   size_t size = 0;
-  ASSERT_EQ(
-      QDMI_job_get_results(job, QDMI_JOB_RESULT_HIST_KEYS, 0, nullptr, &size),
-      QDMI_SUCCESS);
+  ASSERT_EQ(QDMI_job_get_results(job, 0, QDMI_JOB_RESULT_HIST_KEYS, 0, nullptr,
+                                 &size),
+            QDMI_SUCCESS);
   std::vector<char> buffer(size - 1); // Buffer too small
-  EXPECT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_HIST_KEYS, buffer.size(),
-                                 buffer.data(), nullptr),
+  EXPECT_EQ(QDMI_job_get_results(job, 0, QDMI_JOB_RESULT_HIST_KEYS,
+                                 buffer.size(), buffer.data(), nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
   QDMI_job_free(job);
 }
@@ -926,11 +1236,11 @@ TEST_P(QDMIImplementationTest, GetHistogramValuesBufferTooSmall) {
   }
   QDMI_Job job = Submit_test_job(device, 64);
   size_t size = 0;
-  ASSERT_EQ(
-      QDMI_job_get_results(job, QDMI_JOB_RESULT_HIST_VALUES, 0, nullptr, &size),
-      QDMI_SUCCESS);
+  ASSERT_EQ(QDMI_job_get_results(job, 0, QDMI_JOB_RESULT_HIST_VALUES, 0,
+                                 nullptr, &size),
+            QDMI_SUCCESS);
   std::vector<char> buffer(size - 1); // Buffer too small
-  EXPECT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_HIST_VALUES,
+  EXPECT_EQ(QDMI_job_get_results(job, 0, QDMI_JOB_RESULT_HIST_VALUES,
                                  buffer.size(), buffer.data(), nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
   QDMI_job_free(job);
@@ -942,11 +1252,11 @@ TEST_P(QDMIImplementationTest, GetStateDenseBufferTooSmall) {
   }
   QDMI_Job job = Submit_test_job(device);
   size_t size = 0;
-  ASSERT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_STATEVECTOR_DENSE, 0,
+  ASSERT_EQ(QDMI_job_get_results(job, 0, QDMI_JOB_RESULT_STATEVECTOR_DENSE, 0,
                                  nullptr, &size),
             QDMI_SUCCESS);
   std::vector<char> buffer(size - 1); // Buffer too small
-  EXPECT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_STATEVECTOR_DENSE,
+  EXPECT_EQ(QDMI_job_get_results(job, 0, QDMI_JOB_RESULT_STATEVECTOR_DENSE,
                                  buffer.size(), buffer.data(), nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
   QDMI_job_free(job);
@@ -958,11 +1268,13 @@ TEST_P(QDMIImplementationTest, GetStateSparseKeysBufferTooSmall) {
   }
   QDMI_Job job = Submit_test_job(device);
   size_t size = 0;
-  ASSERT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_STATEVECTOR_SPARSE_KEYS,
-                                 0, nullptr, &size),
+  ASSERT_EQ(QDMI_job_get_results(job, 0,
+                                 QDMI_JOB_RESULT_STATEVECTOR_SPARSE_KEYS, 0,
+                                 nullptr, &size),
             QDMI_SUCCESS);
   std::vector<char> buffer(size - 1); // Buffer too small
-  EXPECT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_STATEVECTOR_SPARSE_KEYS,
+  EXPECT_EQ(QDMI_job_get_results(job, 0,
+                                 QDMI_JOB_RESULT_STATEVECTOR_SPARSE_KEYS,
                                  buffer.size(), buffer.data(), nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
   QDMI_job_free(job);
@@ -974,11 +1286,13 @@ TEST_P(QDMIImplementationTest, GetStateSparseValuesBufferTooSmall) {
   }
   QDMI_Job job = Submit_test_job(device);
   size_t size = 0;
-  ASSERT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_STATEVECTOR_SPARSE_VALUES,
-                                 0, nullptr, &size),
+  ASSERT_EQ(QDMI_job_get_results(job, 0,
+                                 QDMI_JOB_RESULT_STATEVECTOR_SPARSE_VALUES, 0,
+                                 nullptr, &size),
             QDMI_SUCCESS);
   std::vector<char> buffer(size - 1); // Buffer too small
-  EXPECT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_STATEVECTOR_SPARSE_VALUES,
+  EXPECT_EQ(QDMI_job_get_results(job, 0,
+                                 QDMI_JOB_RESULT_STATEVECTOR_SPARSE_VALUES,
                                  buffer.size(), buffer.data(), nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
   QDMI_job_free(job);
@@ -990,11 +1304,11 @@ TEST_P(QDMIImplementationTest, GetProbsDenseBufferTooSmall) {
   }
   QDMI_Job job = Submit_test_job(device);
   size_t size = 0;
-  ASSERT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_PROBABILITIES_DENSE, 0,
+  ASSERT_EQ(QDMI_job_get_results(job, 0, QDMI_JOB_RESULT_PROBABILITIES_DENSE, 0,
                                  nullptr, &size),
             QDMI_SUCCESS);
   std::vector<char> buffer(size - 1); // Buffer too small
-  EXPECT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_PROBABILITIES_DENSE,
+  EXPECT_EQ(QDMI_job_get_results(job, 0, QDMI_JOB_RESULT_PROBABILITIES_DENSE,
                                  buffer.size(), buffer.data(), nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
   QDMI_job_free(job);
@@ -1006,11 +1320,13 @@ TEST_P(QDMIImplementationTest, GetProbsSparseKeysBufferTooSmall) {
   }
   QDMI_Job job = Submit_test_job(device);
   size_t size = 0;
-  ASSERT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_PROBABILITIES_SPARSE_KEYS,
-                                 0, nullptr, &size),
+  ASSERT_EQ(QDMI_job_get_results(job, 0,
+                                 QDMI_JOB_RESULT_PROBABILITIES_SPARSE_KEYS, 0,
+                                 nullptr, &size),
             QDMI_SUCCESS);
   std::vector<char> buffer(size - 1); // Buffer too small
-  EXPECT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_PROBABILITIES_SPARSE_KEYS,
+  EXPECT_EQ(QDMI_job_get_results(job, 0,
+                                 QDMI_JOB_RESULT_PROBABILITIES_SPARSE_KEYS,
                                  buffer.size(), buffer.data(), nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
   QDMI_job_free(job);
@@ -1022,12 +1338,12 @@ TEST_P(QDMIImplementationTest, GetProbsSparseValuesBufferTooSmall) {
   }
   QDMI_Job job = Submit_test_job(device);
   size_t size = 0;
-  ASSERT_EQ(QDMI_job_get_results(job,
+  ASSERT_EQ(QDMI_job_get_results(job, 0,
                                  QDMI_JOB_RESULT_PROBABILITIES_SPARSE_VALUES, 0,
                                  nullptr, &size),
             QDMI_SUCCESS);
   std::vector<char> buffer(size - 1); // Buffer too small
-  EXPECT_EQ(QDMI_job_get_results(job,
+  EXPECT_EQ(QDMI_job_get_results(job, 0,
                                  QDMI_JOB_RESULT_PROBABILITIES_SPARSE_VALUES,
                                  buffer.size(), buffer.data(), nullptr),
             QDMI_ERROR_INVALIDARGUMENT);

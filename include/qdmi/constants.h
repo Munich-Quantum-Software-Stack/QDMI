@@ -168,24 +168,16 @@ enum QDMI_DEVICE_JOB_PARAMETER_T {
    * @details This parameter is required. The device must support the specified
    * program format. If the device does not support the specified program
    * format, the @ref QDMI_device_job_set_parameter function must return @ref
-   * QDMI_ERROR_NOTSUPPORTED.
+   * QDMI_ERROR_NOTSUPPORTED. Setting the same format keeps an
+   * existing program payload. Setting a different supported format clears
+   * the payload. Every error leaves the format and payload unchanged.
    */
   QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT = 0,
-  /**
-   * @brief `void*` The program to be executed.
-   * @details This parameter is required. The program must be in the format
-   * specified by the @ref QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT parameter.
-   * If the program is invalid, the @ref QDMI_device_job_set_parameter function
-   * must return @ref QDMI_ERROR_INVALIDARGUMENT. If the program is valid, but
-   * the device cannot execute it, the @ref QDMI_device_job_set_parameter
-   * function must return @ref QDMI_ERROR_NOTSUPPORTED.
-   */
-  QDMI_DEVICE_JOB_PARAMETER_PROGRAM = 1,
   /**
    * @brief `size_t` The number of shots to execute for a quantum circuit job.
    * @details If this parameter is not set, a device-specific default is used.
    */
-  QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM = 2,
+  QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM = 1,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
@@ -194,7 +186,7 @@ enum QDMI_DEVICE_JOB_PARAMETER_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_DEVICE_JOB_PARAMETER_MAX = 3,
+  QDMI_DEVICE_JOB_PARAMETER_MAX = 2,
   /**
    * @brief This enum value is reserved for a custom parameter.
    * @details The device defines the meaning and the type of this parameter.
@@ -236,14 +228,18 @@ enum QDMI_DEVICE_JOB_PROPERTY_T {
   QDMI_DEVICE_JOB_PROPERTY_ID = 0,
   /**
    * @brief @ref QDMI_Program_Format The format of the program to be executed.
-   * @note This property returns the value of the @ref
-   * QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT parameter.
+   * @details A query returns @ref QDMI_ERROR_BADSTATE until a format is set.
+   * This property returns the format set through @ref
+   * QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT or @ref
+   * QDMI_device_job_set_programs.
    */
   QDMI_DEVICE_JOB_PROPERTY_PROGRAMFORMAT = 1,
   /**
    * @brief `void*` The program to be executed.
-   * @note This property returns the value of the @ref
-   * QDMI_DEVICE_JOB_PARAMETER_PROGRAM parameter.
+   * @note This property returns the program set through @ref
+   * QDMI_device_job_set_programs when the job contains one program.
+   * @note A query for a multi-program job returns @ref
+   * QDMI_ERROR_NOTSUPPORTED.
    */
   QDMI_DEVICE_JOB_PROPERTY_PROGRAM = 2,
   /**
@@ -268,6 +264,13 @@ enum QDMI_DEVICE_JOB_PROPERTY_T {
    */
   QDMI_DEVICE_JOB_PROPERTY_QUEUEPOSITION = 4,
   /**
+   * @brief `size_t` The number of programs in the job.
+   * @details A single-program job reports one. A job has no program count until
+   * its program payload has been set; a query before that returns @ref
+   * QDMI_ERROR_BADSTATE. The count remains stable after submission.
+   */
+  QDMI_DEVICE_JOB_PROPERTY_PROGRAMSNUM = 5,
+  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -275,7 +278,7 @@ enum QDMI_DEVICE_JOB_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_DEVICE_JOB_PROPERTY_MAX = 5,
+  QDMI_DEVICE_JOB_PROPERTY_MAX = 6,
   /**
    * @brief This enum value is reserved for a custom parameter.
    * @details The device defines the meaning and the type of this parameter.
@@ -894,7 +897,7 @@ enum QDMI_JOB_STATUS_T {
   QDMI_JOB_STATUS_DONE = 4,
   /// The job was canceled, and the result is not available.
   QDMI_JOB_STATUS_CANCELED = 5,
-  /// An error occurred in the job's lifecycle.
+  /// One or more programs failed, or another error occurred in the lifecycle.
   QDMI_JOB_STATUS_FAILED = 6
 };
 
@@ -1019,7 +1022,7 @@ enum QDMI_PROGRAM_FORMAT_T {
    * @brief `void*` A calibration program.
    * @details This program format is used to request the device to perform a
    * calibration run. Triggering a calibration run does not require a program to
-   * be set via @ref QDMI_DEVICE_JOB_PARAMETER_PROGRAM.
+   * be set via @ref QDMI_device_job_set_programs.
    */
   QDMI_PROGRAM_FORMAT_CALIBRATION = 6,
   /**
@@ -1089,6 +1092,8 @@ typedef enum QDMI_PROGRAM_FORMAT_T QDMI_Program_Format;
 
 /**
  * @brief Enum of the formats the results can be returned in.
+ * @details Each result applies to the program index passed to @ref
+ * QDMI_job_get_results or @ref QDMI_device_job_get_results.
  */
 enum QDMI_JOB_RESULT_T {
   /**

@@ -85,6 +85,8 @@ struct QDMI_Library {
   decltype(QDMI_device_job_free) *device_job_free{};
   /// Function pointer to @ref QDMI_device_job_set_parameter.
   decltype(QDMI_device_job_set_parameter) *device_job_set_parameter{};
+  /// Function pointer to @ref QDMI_device_job_set_programs.
+  decltype(QDMI_device_job_set_programs) *device_job_set_programs{};
   /// Function pointer to @ref QDMI_device_job_query_property.
   decltype(QDMI_device_job_query_property) *device_job_query_property{};
   /// Function pointer to @ref QDMI_device_job_submit.
@@ -222,6 +224,7 @@ void QDMI_library_load(const std::string &lib_name, const std::string &prefix) {
                          device_session_retrieve_device_job_by_id)
     LOAD_SYMBOL(library, prefix, device_job_free)
     LOAD_SYMBOL(library, prefix, device_job_set_parameter)
+    LOAD_SYMBOL(library, prefix, device_job_set_programs)
     LOAD_SYMBOL(library, prefix, device_job_query_property)
     LOAD_SYMBOL(library, prefix, device_job_submit)
     LOAD_SYMBOL(library, prefix, device_job_cancel)
@@ -516,6 +519,16 @@ int QDMI_job_set_parameter(QDMI_Job job, QDMI_Job_Parameter param,
       value);
 }
 
+int QDMI_job_set_programs(QDMI_Job job, const QDMI_Program_Format *format,
+                          const size_t count, const size_t *sizes,
+                          const void *const *programs) {
+  if (job == nullptr) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  return job->device->library->device_job_set_programs(job->device_job, format,
+                                                       count, sizes, programs);
+}
+
 int QDMI_job_query_property(QDMI_Job job, QDMI_Job_Property prop,
                             const size_t size, void *value, size_t *size_ret) {
   if (job == nullptr) {
@@ -554,13 +567,14 @@ int QDMI_job_wait(QDMI_Job job, const size_t timeout) {
   return job->device->library->device_job_wait(job->device_job, timeout);
 }
 
-int QDMI_job_get_results(QDMI_Job job, QDMI_Job_Result result,
-                         const size_t size, void *data, size_t *size_ret) {
+int QDMI_job_get_results(QDMI_Job job, const size_t program_index,
+                         QDMI_Job_Result result, const size_t size, void *data,
+                         size_t *size_ret) {
   if (job == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
-  return job->device->library->device_job_get_results(job->device_job, result,
-                                                      size, data, size_ret);
+  return job->device->library->device_job_get_results(
+      job->device_job, program_index, result, size, data, size_ret);
 }
 
 int QDMI_device_query_device_property(QDMI_Device device,

@@ -24,6 +24,8 @@
 #include <string>
 #include <vector>
 
+namespace {
+
 class QDMIImplementationTest : public ::testing::Test {
 protected:
   CXX_QDMI_Device_Session session = nullptr;
@@ -115,7 +117,7 @@ TEST_F(QDMIImplementationTest, JobGetResultsImplemented) {
   CXX_QDMI_Device_Job job = nullptr;
   ASSERT_EQ(CXX_QDMI_device_session_create_device_job(session, &job),
             QDMI_SUCCESS);
-  ASSERT_EQ(CXX_QDMI_device_job_get_results(job, QDMI_JOB_RESULT_MAX, 0,
+  ASSERT_EQ(CXX_QDMI_device_job_get_results(job, 0, QDMI_JOB_RESULT_MAX, 0,
                                             nullptr, nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
   CXX_QDMI_device_job_free(job);
@@ -215,3 +217,5 @@ TEST_F(QDMIImplementationTest, QueryDeviceQubitNum) {
                 &num_qubits, nullptr),
             QDMI_SUCCESS);
 }
+
+} // namespace
