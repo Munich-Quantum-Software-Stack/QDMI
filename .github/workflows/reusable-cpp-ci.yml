@@ -27,7 +27,7 @@ jobs:
 
   cpp-tests-install:
     name: 📦 Install
-    uses: ./.github/workflows/reusable-cpp-install-tests.yml
+    uses: $/.github/workflows/reusable-cpp-install-tests.yml
     with:
       cmake-args: "-G Ninja -DBUILD_QDMI_DOCS=OFF"
 
