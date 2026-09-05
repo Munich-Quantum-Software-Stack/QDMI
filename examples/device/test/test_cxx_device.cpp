@@ -22,6 +22,7 @@
 #include <cstddef>
 #include <gtest/gtest.h>
 #include <string>
+#include <string_view>
 #include <vector>
 
 class QDMIImplementationTest : public ::testing::Test {
@@ -35,6 +36,12 @@ protected:
     ASSERT_EQ(CXX_QDMI_device_session_alloc(&session), QDMI_SUCCESS)
         << "Failed to allocate a session";
 
+    constexpr std::string_view token = "token";
+    ASSERT_EQ(CXX_QDMI_device_session_set_parameter(
+                  session, QDMI_DEVICE_SESSION_PARAMETER_TOKEN,
+                  token.size() + 1, token.data()),
+              QDMI_SUCCESS);
+
     ASSERT_EQ(CXX_QDMI_device_session_init(session), QDMI_SUCCESS)
         << "Failed to initialize a session. Potential errors: Wrong or missing "
            "authentication information, device status is offline, or in "
@@ -42,7 +49,10 @@ protected:
         << ":" << (__LINE__ - 4);
   }
 
-  void TearDown() override { CXX_QDMI_device_finalize(); }
+  void TearDown() override {
+    CXX_QDMI_device_session_free(session);
+    CXX_QDMI_device_finalize();
+  }
 };
 
 TEST_F(QDMIImplementationTest, SessionSetParameterImplemented) {
@@ -168,6 +178,12 @@ TEST_F(QDMIImplementationTest, QueryDeviceVersionImplemented) {
       QDMI_SUCCESS)
       << "Devices must provide a version";
   ASSERT_FALSE(value.empty()) << "Devices must provide a version";
+}
+
+TEST_F(QDMIImplementationTest, ClientVisibleDeviceIdIsDriverOwned) {
+  EXPECT_EQ(CXX_QDMI_device_session_query_device_property(
+                session, QDMI_DEVICE_PROPERTY_ID, 0, nullptr, nullptr),
+            QDMI_ERROR_NOTSUPPORTED);
 }
 
 TEST_F(QDMIImplementationTest, QueryDeviceLibraryVersionImplemented) {
