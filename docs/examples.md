@@ -108,6 +108,32 @@ QDMI_Site pairs. The pairs are flattened into a single list of @ref QDMI_Site's.
 \until DOXYGEN FUNCTION END
 <!-- rumdl-enable -->
 
+### Program-Format Execution Features {#device-program-format-features}
+
+The @ref QDMI_device_session_query_program_features function reports atomic
+execution features for one exact program-format descriptor. The following
+example device reports two unrestricted OpenQASM features and forward branching
+with a maximum nesting depth of one. Its QIR Base descriptors return a
+successful empty list because they support no optional feature beyond the QIR
+Base baseline.
+
+<!-- rumdl-disable -->
+\dontinclude cxx_device.cpp
+\skipline QASM2_FEATURES{
+\until };
+\skip int CXX_QDMI_device_session_query_program_features
+\until {
+\until DOXYGEN FUNCTION END
+<!-- rumdl-enable -->
+
+Each @ref QDMI_Program_Feature record carries a feature ID, a feature-specific
+value, and an optional typed constraint. Records for one feature and value form
+one conjunctive group. An empty constraint ID means unrestricted support. Use
+@ref QDMI_PROGRAM_FEATURE_UNCONSTRAINED to initialize such a record. Unknown or
+malformed constraints make the group unusable. The returned list is complete.
+Returning @ref QDMI_ERROR_NOTSUPPORTED keeps feature metadata unknown.
+Requirements guaranteed by a standard descriptor remain implicit.
+
 ### Complex Properties {#device-complex}
 
 The properties that are returned by @ref

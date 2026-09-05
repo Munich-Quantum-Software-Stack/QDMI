@@ -141,6 +141,12 @@ int MY_QDMI_device_session_query_device_property(
   return QDMI_ERROR_NOTIMPLEMENTED;
 }
 
+int MY_QDMI_device_session_query_program_features(
+    MY_QDMI_Device_Session session, const QDMI_Program_Format *format,
+    size_t size, QDMI_Program_Feature *value, size_t *size_ret) {
+  return QDMI_ERROR_NOTIMPLEMENTED;
+}
+
 int MY_QDMI_device_session_query_site_property(MY_QDMI_Device_Session session,
                                                MY_QDMI_Site site,
                                                const QDMI_Site_Property prop,

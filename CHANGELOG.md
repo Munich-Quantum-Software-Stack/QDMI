@@ -14,6 +14,12 @@ clients compiled against a different minor or major version.
 
 _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 
+### Added
+
+- ✨ Add descriptor-scoped execution-feature queries, exact descriptor equality,
+  and a format-defined program-output result ([#508]) ([\@simon1hofmann],
+  [\@burgholzer]).
+
 ### Changed
 
 - 💥 Drop x86 macOS from QDMI's tested platforms ([#515]) ([\@denialhaag])
@@ -21,6 +27,22 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
   ([\@denialhaag])
 - 💥 Require generated device projects to use Python 3.11 or newer ([#515])
   ([\@denialhaag])
+- 💥 Replace program-format enums with exact format descriptors, validate text
+  and binary payload framing, and place logical output slot zero at the right of
+  shot and histogram strings ([#508]) ([\@simon1hofmann], [\@burgholzer]).
+- 💥 Treat every enum value from `999999995` through `INT32_MAX` as a valid
+  provider-defined value while keeping the intervening gap invalid ([#508])
+  ([\@simon1hofmann], [\@burgholzer]).
+- 💥 Require device libraries to export
+  `QDMI_device_session_retrieve_device_job_by_id`, while allowing the function
+  to return `QDMI_ERROR_NOTSUPPORTED` ([#508]) ([\@simon1hofmann],
+  [\@burgholzer]).
+
+### Removed
+
+- 💥 Remove calibration, batch-job, QPY, and IQM JSON values from the standard
+  program-format vocabulary. Providers can expose proprietary formats with a
+  namespaced descriptor ID ([#508]) ([\@simon1hofmann], [\@burgholzer]).
 
 ## [1.3.3] - 2026-08-19
 
@@ -229,6 +251,7 @@ for previous changelogs._
 <!-- PR links -->
 
 [#515]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/515
+[#508]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/508
 [#486]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/486
 [#485]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/485
 [#475]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/475
@@ -277,6 +300,7 @@ for previous changelogs._
 
 <!-- Contributors -->
 
+[@simon1hofmann]: https://github.com/simon1hofmann
 [@burgholzer]: https://github.com/burgholzer
 [@ystade]: https://github.com/ystade
 [@mnfarooqi]: https://github.com/mnfarooqi

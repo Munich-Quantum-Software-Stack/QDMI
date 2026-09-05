@@ -39,6 +39,7 @@
 #include <random>
 #include <ranges>
 #include <string>
+#include <string_view>
 #include <unordered_map>
 #include <utility>
 #include <vector>
@@ -63,7 +64,7 @@ struct CXX_QDMI_Device_Session_impl_d {
 struct CXX_QDMI_Device_Job_impl_d {
   CXX_QDMI_Device_Session session = nullptr;
   int id = 0;
-  QDMI_Program_Format format = QDMI_PROGRAM_FORMAT_MAX;
+  QDMI_Program_Format format{};
   void *program = nullptr;
   QDMI_Job_Status status = QDMI_JOB_STATUS_SUBMITTED;
   size_t num_shots = 0;
@@ -232,9 +233,86 @@ const std::unordered_map<
         // No need to specify single-qubit fidelities here
 };
 
+constexpr QDMI_Program_Format QASM2_FORMAT{
+    .version = QDMI_MAKE_VERSION(2, 0, 0),
+    .encoding = QDMI_PROGRAM_ENCODING_TEXT,
+    .id = "openqasm",
+    .profile = ""};
+constexpr QDMI_Program_Format QIR_BASE_TEXT_FORMAT{
+    .version = QDMI_MAKE_VERSION(2, 1, 0),
+    .encoding = QDMI_PROGRAM_ENCODING_TEXT,
+    .id = "qir",
+    .profile = "base"};
+constexpr QDMI_Program_Format QIR_BASE_BINARY_FORMAT{
+    .version = QDMI_MAKE_VERSION(2, 1, 0),
+    .encoding = QDMI_PROGRAM_ENCODING_BINARY,
+    .id = "qir",
+    .profile = "base"};
+
 constexpr std::array SUPPORTED_PROGRAM_FORMATS = {
-    QDMI_PROGRAM_FORMAT_QASM2, QDMI_PROGRAM_FORMAT_QIRBASESTRING,
-    QDMI_PROGRAM_FORMAT_QIRBASEMODULE, QDMI_PROGRAM_FORMAT_CALIBRATION};
+    QASM2_FORMAT, QIR_BASE_TEXT_FORMAT, QIR_BASE_BINARY_FORMAT};
+
+constexpr std::array<QDMI_Program_Feature, 3> QASM2_FEATURES{
+    {QDMI_PROGRAM_FEATURE_UNCONSTRAINED(
+         QDMI_PROGRAM_FEATURE_MID_CIRCUIT_MEASUREMENT, 0),
+     QDMI_PROGRAM_FEATURE_UNCONSTRAINED(
+         QDMI_PROGRAM_FEATURE_MEASURED_QUBIT_REUSE, 0),
+     QDMI_Program_Feature{
+         .id = QDMI_PROGRAM_FEATURE_FORWARD_BRANCHING,
+         .value = 0,
+         .constraint_id =
+             QDMI_PROGRAM_CONSTRAINT_MAX_CONTROL_FLOW_NESTING_DEPTH,
+         .constraint_value = 1}}};
+
+constexpr std::string_view FLAT_SHOT_OUTPUT{"001"};
+constexpr std::string_view QIR_PROGRAM_OUTPUT_HEADER =
+    "HEADER\tschema_id\tordered\n"
+    "HEADER\tschema_version\t2.1\n";
+constexpr std::string_view QIR_PROGRAM_OUTPUT_SHOT =
+    "START\n"
+    "METADATA\tentry_point\n"
+    "METADATA\tqir_profiles\tbase_profile\n"
+    "METADATA\toutput_labeling_schema\tschema_id\n"
+    "METADATA\trequired_num_qubits\t2\n"
+    "METADATA\trequired_num_results\t2\n"
+    "OUTPUT\tRESULT\t0\n"
+    "OUTPUT\tRESULT\t1\n"
+    "END\t0\n";
+
+[[nodiscard]] bool Valid_format(const QDMI_Program_Format &format) {
+  const auto canonical = [](const auto &text) {
+    const auto nul = std::ranges::find(text, '\0');
+    return nul != std::end(text) &&
+           std::ranges::all_of(nul, std::end(text),
+                               [](const char value) { return value == '\0'; });
+  };
+  if (format.version == 0U ||
+      (format.encoding != QDMI_PROGRAM_ENCODING_TEXT &&
+       format.encoding != QDMI_PROGRAM_ENCODING_BINARY) ||
+      !canonical(format.id) || format.id[0] == '\0' ||
+      !canonical(format.profile)) {
+    return false;
+  }
+
+  const std::string_view id{format.id};
+  const std::string_view profile{format.profile};
+  if (id == "openqasm") {
+    return format.encoding == QDMI_PROGRAM_ENCODING_TEXT && profile.empty();
+  }
+  if (id == "qir") {
+    return profile == "base" || profile == "adaptive";
+  }
+  return id.front() != '.' && id.back() != '.' &&
+         id.find('.') != std::string_view::npos &&
+         id.find("..") == std::string_view::npos;
+}
+
+[[nodiscard]] bool Supported_format(const QDMI_Program_Format &format) {
+  return std::ranges::any_of(
+      SUPPORTED_PROGRAM_FORMATS, [&](const auto &candidate) {
+        return QDMI_program_format_equal(&format, &candidate) != 0;
+      });
+}
 } // namespace
 
 // NOLINTBEGIN(bugprone-macro-parentheses)
@@ -339,11 +417,7 @@ int CXX_QDMI_device_session_set_parameter(CXX_QDMI_Device_Session session,
                                           size_t size, const void *value) {
   if (session == nullptr || (value != nullptr && size == 0) ||
       (param >= QDMI_DEVICE_SESSION_PARAMETER_MAX &&
-       param != QDMI_DEVICE_SESSION_PARAMETER_CUSTOM1 &&
-       param != QDMI_DEVICE_SESSION_PARAMETER_CUSTOM2 &&
-       param != QDMI_DEVICE_SESSION_PARAMETER_CUSTOM3 &&
-       param != QDMI_DEVICE_SESSION_PARAMETER_CUSTOM4 &&
-       param != QDMI_DEVICE_SESSION_PARAMETER_CUSTOM5)) {
+       param < QDMI_DEVICE_SESSION_PARAMETER_CUSTOM1)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   if (session->status != CXX_QDMI_DEVICE_SESSION_STATUS::ALLOCATED) {
@@ -392,11 +466,7 @@ int CXX_QDMI_device_job_set_parameter(CXX_QDMI_Device_Job job,
                                       const size_t size, const void *value) {
   if (job == nullptr || (value != nullptr && size == 0) ||
       (param >= QDMI_DEVICE_JOB_PARAMETER_MAX &&
-       param != QDMI_DEVICE_JOB_PARAMETER_CUSTOM1 &&
-       param != QDMI_DEVICE_JOB_PARAMETER_CUSTOM2 &&
-       param != QDMI_DEVICE_JOB_PARAMETER_CUSTOM3 &&
-       param != QDMI_DEVICE_JOB_PARAMETER_CUSTOM4 &&
-       param != QDMI_DEVICE_JOB_PARAMETER_CUSTOM5)) {
+       param < QDMI_DEVICE_JOB_PARAMETER_CUSTOM1)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   if (job->status != QDMI_JOB_STATUS_CREATED) {
@@ -405,19 +475,14 @@ int CXX_QDMI_device_job_set_parameter(CXX_QDMI_Device_Job job,
   switch (param) {
   case QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT:
     if (value != nullptr) {
-      const auto format = *static_cast<const QDMI_Program_Format *>(value);
-      if (format >= QDMI_PROGRAM_FORMAT_MAX &&
-          format != QDMI_PROGRAM_FORMAT_CUSTOM1 &&
-          format != QDMI_PROGRAM_FORMAT_CUSTOM2 &&
-          format != QDMI_PROGRAM_FORMAT_CUSTOM3 &&
-          format != QDMI_PROGRAM_FORMAT_CUSTOM4 &&
-          format != QDMI_PROGRAM_FORMAT_CUSTOM5) {
+      if (size != sizeof(QDMI_Program_Format)) {
         return QDMI_ERROR_INVALIDARGUMENT;
       }
-      if (format != QDMI_PROGRAM_FORMAT_QASM2 &&
-          format != QDMI_PROGRAM_FORMAT_QIRBASESTRING &&
-          format != QDMI_PROGRAM_FORMAT_QIRBASEMODULE &&
-          format != QDMI_PROGRAM_FORMAT_CALIBRATION) {
+      const auto format = *static_cast<const QDMI_Program_Format *>(value);
+      if (!Valid_format(format)) {
+        return QDMI_ERROR_INVALIDARGUMENT;
+      }
+      if (!Supported_format(format)) {
         return QDMI_ERROR_NOTSUPPORTED;
       }
       job->format = format;
@@ -425,8 +490,19 @@ int CXX_QDMI_device_job_set_parameter(CXX_QDMI_Device_Job job,
     return QDMI_SUCCESS;
   case QDMI_DEVICE_JOB_PARAMETER_PROGRAM:
     if (value != nullptr) {
-      job->program = new char[size];
-      memcpy(job->program, value, size);
+      if (!Valid_format(job->format)) {
+        return QDMI_ERROR_BADSTATE;
+      }
+      const auto *bytes = static_cast<const char *>(value);
+      if (job->format.encoding == QDMI_PROGRAM_ENCODING_TEXT &&
+          (bytes[size - 1U] != '\0' ||
+           std::memchr(bytes, '\0', size - 1U) != nullptr)) {
+        return QDMI_ERROR_INVALIDARGUMENT;
+      }
+      auto *copy = new char[size];
+      std::memcpy(copy, value, size);
+      delete[] static_cast<char *>(job->program);
+      job->program = copy;
     }
     return QDMI_SUCCESS;
   case QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM:
@@ -445,11 +521,7 @@ int CXX_QDMI_device_job_query_property(CXX_QDMI_Device_Job job,
                                        size_t *size_ret) {
   if (job == nullptr || (value != nullptr && size == 0) ||
       (prop >= QDMI_DEVICE_JOB_PROPERTY_MAX &&
-       prop != QDMI_DEVICE_JOB_PROPERTY_CUSTOM1 &&
-       prop != QDMI_DEVICE_JOB_PROPERTY_CUSTOM2 &&
-       prop != QDMI_DEVICE_JOB_PROPERTY_CUSTOM3 &&
-       prop != QDMI_DEVICE_JOB_PROPERTY_CUSTOM4 &&
-       prop != QDMI_DEVICE_JOB_PROPERTY_CUSTOM5)) {
+       prop < QDMI_DEVICE_JOB_PROPERTY_CUSTOM1)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   const auto str = std::to_string(job->id);
@@ -468,12 +540,6 @@ int CXX_QDMI_device_job_submit(CXX_QDMI_Device_Job job) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
 
-  // Calibration jobs complete immediately
-  if (job->format == QDMI_PROGRAM_FORMAT_CALIBRATION) {
-    job->status = QDMI_JOB_STATUS_DONE;
-    return QDMI_SUCCESS;
-  }
-
   CXX_QDMI_set_device_status(QDMI_DEVICE_STATUS_BUSY);
   job->status = QDMI_JOB_STATUS_SUBMITTED;
   // here, the actual submission of the problem to the device would happen
@@ -486,14 +552,7 @@ int CXX_QDMI_device_job_submit(CXX_QDMI_Device_Job job) {
       job->session, QDMI_DEVICE_PROPERTY_QUBITSNUM, sizeof(size_t), &num_qubits,
       nullptr);
   job->results.clear();
-  job->results.reserve(job->num_shots);
-  for (size_t i = 0; i < job->num_shots; ++i) {
-    // generate random bitstring
-    std::string result(num_qubits, '0');
-    std::ranges::generate(
-        result, [&]() { return CXX_QDMI_generate_bit() ? '1' : '0'; });
-    job->results.emplace_back(std::move(result));
-  }
+  job->results.assign(job->num_shots, std::string{FLAT_SHOT_OUTPUT});
   // Generate random complex numbers and calculate the norm
   job->state_vec.clear();
   job->state_vec.reserve(1U << num_qubits);
@@ -729,6 +788,39 @@ int CXX_QDMI_device_job_get_results_probabilities(CXX_QDMI_Device_Job job,
   }
   return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]
+
+int CXX_QDMI_device_job_get_program_output(CXX_QDMI_Device_Job job,
+                                           const size_t size, void *data,
+                                           size_t *size_ret) {
+  if (!std::ranges::equal(job->format.id, QIR_BASE_TEXT_FORMAT.id)) {
+    return QDMI_ERROR_NOTSUPPORTED;
+  }
+  if (job->num_shots >
+      (std::numeric_limits<size_t>::max() - QIR_PROGRAM_OUTPUT_HEADER.size()) /
+          QIR_PROGRAM_OUTPUT_SHOT.size()) {
+    return QDMI_ERROR_FATAL;
+  }
+  const size_t required = QIR_PROGRAM_OUTPUT_HEADER.size() +
+                          (job->num_shots * QIR_PROGRAM_OUTPUT_SHOT.size());
+  if (size_ret != nullptr) {
+    *size_ret = required;
+  }
+  if (data != nullptr) {
+    if (size < required) {
+      return QDMI_ERROR_INVALIDARGUMENT;
+    }
+    auto *output = static_cast<char *>(data);
+    std::memcpy(output, QIR_PROGRAM_OUTPUT_HEADER.data(),
+                QIR_PROGRAM_OUTPUT_HEADER.size());
+    output += QIR_PROGRAM_OUTPUT_HEADER.size();
+    for (size_t shot = 0; shot < job->num_shots; ++shot) {
+      std::memcpy(output, QIR_PROGRAM_OUTPUT_SHOT.data(),
+                  QIR_PROGRAM_OUTPUT_SHOT.size());
+      output += QIR_PROGRAM_OUTPUT_SHOT.size();
+    }
+  }
+  return QDMI_SUCCESS;
+} /// [DOXYGEN FUNCTION END]
 } // namespace
 
 int CXX_QDMI_device_job_get_results(CXX_QDMI_Device_Job job,
@@ -737,10 +829,7 @@ int CXX_QDMI_device_job_get_results(CXX_QDMI_Device_Job job,
                                     size_t *size_ret) {
   if (job == nullptr || job->status != QDMI_JOB_STATUS_DONE ||
       (data != nullptr && size == 0) ||
-      (result >= QDMI_JOB_RESULT_MAX && result != QDMI_JOB_RESULT_CUSTOM1 &&
-       result != QDMI_JOB_RESULT_CUSTOM2 && result != QDMI_JOB_RESULT_CUSTOM3 &&
-       result != QDMI_JOB_RESULT_CUSTOM4 &&
-       result != QDMI_JOB_RESULT_CUSTOM5)) {
+      (result >= QDMI_JOB_RESULT_MAX && result < QDMI_JOB_RESULT_CUSTOM1)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   switch (result) {
@@ -762,6 +851,8 @@ int CXX_QDMI_device_job_get_results(CXX_QDMI_Device_Job job,
   case QDMI_JOB_RESULT_PROBABILITIES_DENSE:
     return CXX_QDMI_device_job_get_results_probabilities(job, size, data,
                                                          size_ret);
+  case QDMI_JOB_RESULT_PROGRAMOUTPUT:
+    return CXX_QDMI_device_job_get_program_output(job, size, data, size_ret);
   default:
     return QDMI_ERROR_NOTSUPPORTED;
   }
@@ -772,11 +863,7 @@ int CXX_QDMI_device_session_query_device_property(
     const size_t size, void *value, size_t *size_ret) {
   if (session == nullptr || (value != nullptr && size == 0) ||
       (prop >= QDMI_DEVICE_PROPERTY_MAX &&
-       prop != QDMI_DEVICE_PROPERTY_CUSTOM1 &&
-       prop != QDMI_DEVICE_PROPERTY_CUSTOM2 &&
-       prop != QDMI_DEVICE_PROPERTY_CUSTOM3 &&
-       prop != QDMI_DEVICE_PROPERTY_CUSTOM4 &&
-       prop != QDMI_DEVICE_PROPERTY_CUSTOM5)) {
+       prop < QDMI_DEVICE_PROPERTY_CUSTOM1)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   if (session->status != CXX_QDMI_DEVICE_SESSION_STATUS::INITIALIZED) {
@@ -802,7 +889,7 @@ int CXX_QDMI_device_session_query_device_property(
   ADD_LIST_PROPERTY(QDMI_DEVICE_PROPERTY_COUPLINGMAP, CXX_QDMI_Site,
                     DEVICE_COUPLING_MAP, prop, size, value, size_ret)
 
-  // The example device never requires calibration
+  // The example device never requires calibration.
   ADD_SINGLE_VALUE_PROPERTY(QDMI_DEVICE_PROPERTY_NEEDSCALIBRATION, size_t, 0,
                             prop, size, value, size_ret)
 
@@ -823,8 +910,43 @@ int CXX_QDMI_device_session_query_device_property(
   ADD_LIST_PROPERTY(QDMI_DEVICE_PROPERTY_SUPPORTEDPROGRAMFORMATS,
                     QDMI_Program_Format, SUPPORTED_PROGRAM_FORMATS, prop, size,
                     value, size_ret)
-
   return QDMI_ERROR_NOTSUPPORTED;
+} /// [DOXYGEN FUNCTION END]
+
+int CXX_QDMI_device_session_query_program_features(
+    CXX_QDMI_Device_Session session, const QDMI_Program_Format *format,
+    const size_t size, QDMI_Program_Feature *value, size_t *size_ret) {
+  if (session == nullptr || format == nullptr || !Valid_format(*format)) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  if (session->status != CXX_QDMI_DEVICE_SESSION_STATUS::INITIALIZED) {
+    return QDMI_ERROR_BADSTATE;
+  }
+  if (!Supported_format(*format)) {
+    return QDMI_ERROR_NOTSUPPORTED;
+  }
+
+  const auto copy = [&](const auto &features) {
+    const size_t required = sizeof(features);
+    if (size_ret != nullptr) {
+      *size_ret = required;
+    }
+    if (value == nullptr) {
+      return QDMI_SUCCESS;
+    }
+    if (size < required) {
+      return QDMI_ERROR_INVALIDARGUMENT;
+    }
+    std::ranges::copy(features, value);
+    return QDMI_SUCCESS;
+  };
+  if (QDMI_program_format_equal(format, &QASM2_FORMAT) != 0) {
+    return copy(QASM2_FEATURES);
+  }
+  if (size_ret != nullptr) {
+    *size_ret = 0U;
+  }
+  return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]
 
 int CXX_QDMI_device_session_query_site_property(CXX_QDMI_Device_Session session,
@@ -834,11 +956,7 @@ int CXX_QDMI_device_session_query_site_property(CXX_QDMI_Device_Session session,
                                                 size_t *size_ret) {
   if (session == nullptr || site == nullptr ||
       (value != nullptr && size == 0) ||
-      (prop >= QDMI_SITE_PROPERTY_MAX && prop != QDMI_SITE_PROPERTY_CUSTOM1 &&
-       prop != QDMI_SITE_PROPERTY_CUSTOM2 &&
-       prop != QDMI_SITE_PROPERTY_CUSTOM3 &&
-       prop != QDMI_SITE_PROPERTY_CUSTOM4 &&
-       prop != QDMI_SITE_PROPERTY_CUSTOM5)) {
+      (prop >= QDMI_SITE_PROPERTY_MAX && prop < QDMI_SITE_PROPERTY_CUSTOM1)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   ADD_SINGLE_VALUE_PROPERTY(QDMI_SITE_PROPERTY_INDEX, uint64_t, site->id, prop,
@@ -862,11 +980,7 @@ int CXX_QDMI_device_session_query_operation_property(
       (params != nullptr && num_params == 0) ||
       (value != nullptr && size == 0) ||
       (prop >= QDMI_OPERATION_PROPERTY_MAX &&
-       prop != QDMI_OPERATION_PROPERTY_CUSTOM1 &&
-       prop != QDMI_OPERATION_PROPERTY_CUSTOM2 &&
-       prop != QDMI_OPERATION_PROPERTY_CUSTOM3 &&
-       prop != QDMI_OPERATION_PROPERTY_CUSTOM4 &&
-       prop != QDMI_OPERATION_PROPERTY_CUSTOM5)) {
+       prop < QDMI_OPERATION_PROPERTY_CUSTOM1)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   // General properties
