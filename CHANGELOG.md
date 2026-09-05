@@ -24,6 +24,9 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 
 ### Removed
 
+- 💥 Remove the unused pulse-support device property and level type. Providers
+  can expose pulse programming through a separate vendor interface ([#513])
+  ([\@burgholzer]).
 - 💥 Remove the unused calibration advisory device property. Providers can
   expose proprietary calibration metadata with a custom property ([#512])
   ([\@burgholzer]).
@@ -235,6 +238,7 @@ for previous changelogs._
 <!-- PR links -->
 
 [#515]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/515
+[#513]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/513
 [#512]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/512
 [#486]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/486
 [#485]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/485

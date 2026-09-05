@@ -27,6 +27,15 @@ available. Removing the property shifts later regular device-property values
 down by one. Rebuild clients, drivers, and devices against matching QDMI 1.4
 headers; do not mix binaries built against different interim 1.4 revisions.
 
+### Pulse metadata
+
+The unused `QDMI_DEVICE_PROPERTY_PULSESUPPORT` property and
+`QDMI_Device_Pulse_Support_Level` type are removed. QDMI does not define a
+pulse-programming interface. Providers can expose pulse programming through
+custom program formats or a separate vendor interface. The removal shifts later
+regular device-property values down by one again; rebuild all clients, drivers,
+and devices against matching headers.
+
 ## [1.3.3]
 
 ### Retrieving existing jobs by ID
