@@ -19,8 +19,7 @@ var client_8h =
       [ "QDMI_SESSION_PARAMETER_CUSTOM2", "group__client__session__interface.html#ggaac5ae9f0bf8046987569c6f4e75611d3ac0c579e30bd180a00d5e398b03c987f6", null ],
       [ "QDMI_SESSION_PARAMETER_CUSTOM3", "group__client__session__interface.html#ggaac5ae9f0bf8046987569c6f4e75611d3a4f9b44b3b04b77d2b560cedcee3cfa08", null ],
       [ "QDMI_SESSION_PARAMETER_CUSTOM4", "group__client__session__interface.html#ggaac5ae9f0bf8046987569c6f4e75611d3acc5c97b9d346e291b730956970561124", null ],
-      [ "QDMI_SESSION_PARAMETER_CUSTOM5", "group__client__session__interface.html#ggaac5ae9f0bf8046987569c6f4e75611d3aaafd9df4e1090164a7cc087faaa8557a", null ],
-      [ "QDMI_SESSION_PARAMETER_CUSTOM_MAX", "group__client__session__interface.html#ggaac5ae9f0bf8046987569c6f4e75611d3abd1ad4a0fe945965cb21f43c666e90e9", null ]
+      [ "QDMI_SESSION_PARAMETER_CUSTOM5", "group__client__session__interface.html#ggaac5ae9f0bf8046987569c6f4e75611d3aaafd9df4e1090164a7cc087faaa8557a", null ]
     ] ],
     [ "QDMI_SESSION_PROPERTY_T", "group__client__session__interface.html#ga737948251bac10b8cabf745afe82bd09", [
       [ "QDMI_SESSION_PROPERTY_DEVICES", "group__client__session__interface.html#gga737948251bac10b8cabf745afe82bd09ad18bc8e3c5b4f5ebcef0c81dd09eafe5", null ],
@@ -29,8 +28,7 @@ var client_8h =
       [ "QDMI_SESSION_PROPERTY_CUSTOM2", "group__client__session__interface.html#gga737948251bac10b8cabf745afe82bd09a68bc688079cf3841fab82cf9cadae941", null ],
       [ "QDMI_SESSION_PROPERTY_CUSTOM3", "group__client__session__interface.html#gga737948251bac10b8cabf745afe82bd09a5f7ad71209e9974517bb48b82d357a13", null ],
       [ "QDMI_SESSION_PROPERTY_CUSTOM4", "group__client__session__interface.html#gga737948251bac10b8cabf745afe82bd09ae3298f27cf51da5fc614c307c3f9aa6d", null ],
-      [ "QDMI_SESSION_PROPERTY_CUSTOM5", "group__client__session__interface.html#gga737948251bac10b8cabf745afe82bd09a7b3416e6058fc94d39a98cab70d89c6b", null ],
-      [ "QDMI_SESSION_PROPERTY_CUSTOM_MAX", "group__client__session__interface.html#gga737948251bac10b8cabf745afe82bd09a48220111e3d1a5e14733aae5859d9781", null ]
+      [ "QDMI_SESSION_PROPERTY_CUSTOM5", "group__client__session__interface.html#gga737948251bac10b8cabf745afe82bd09a7b3416e6058fc94d39a98cab70d89c6b", null ]
     ] ],
     [ "QDMI_JOB_PARAMETER_T", "group__client__job__interface.html#ga1e7131664b094eb409d0f44d731f51f5", [
       [ "QDMI_JOB_PARAMETER_PROGRAMFORMAT", "group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5ad0b4fad39ff9935e76bcd888cfca908b", null ],
@@ -40,8 +38,7 @@ var client_8h =
       [ "QDMI_JOB_PARAMETER_CUSTOM2", "group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5aa6438cc893fc43e5124f0ee5a969de2b", null ],
       [ "QDMI_JOB_PARAMETER_CUSTOM3", "group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5a40cc64aa3dfe3a837a3d9b86024cb8ef", null ],
       [ "QDMI_JOB_PARAMETER_CUSTOM4", "group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5a1afd4ae62865f54f0e16584b50b940e3", null ],
-      [ "QDMI_JOB_PARAMETER_CUSTOM5", "group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5a88cae1a3c7f8af76fa83ceaaaa5f7998", null ],
-      [ "QDMI_JOB_PARAMETER_CUSTOM_MAX", "group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5aee580be2014a271fb90b6c3c7fc99238", null ]
+      [ "QDMI_JOB_PARAMETER_CUSTOM5", "group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5a88cae1a3c7f8af76fa83ceaaaa5f7998", null ]
     ] ],
     [ "QDMI_JOB_PROPERTY_T", "group__client__job__interface.html#ga8f2f468604e24bab4c86cdb781b879bb", [
       [ "QDMI_JOB_PROPERTY_ID", "group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba8b29485092d51f7573929a5579521d34", null ],
@@ -55,8 +52,7 @@ var client_8h =
       [ "QDMI_JOB_PROPERTY_CUSTOM2", "group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba95c21c814e579b6ac1d736ba57d69287", null ],
       [ "QDMI_JOB_PROPERTY_CUSTOM3", "group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bbaae52e78d7f9944bde33147b9bef474ac", null ],
       [ "QDMI_JOB_PROPERTY_CUSTOM4", "group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bbac3fe7fca8db9bb213282e5adebf5ff2c", null ],
-      [ "QDMI_JOB_PROPERTY_CUSTOM5", "group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba0108668f46b41020ad1b9b78cb39f0ba", null ],
-      [ "QDMI_JOB_PROPERTY_CUSTOM_MAX", "group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba8eb02a05c7d9f4077f5f41cf0abb5440", null ]
+      [ "QDMI_JOB_PROPERTY_CUSTOM5", "group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba0108668f46b41020ad1b9b78cb39f0ba", null ]
     ] ],
     [ "QDMI_session_alloc", "group__client__session__interface.html#gaa11305e72710d4f2439c0c72892fce11", null ],
     [ "QDMI_session_set_parameter", "group__client__session__interface.html#ga39d34b2a95cd9e2b8d9d6ab551bff078", null ],
@@ -64,7 +60,6 @@ var client_8h =
     [ "QDMI_session_query_session_property", "group__client__session__interface.html#ga53bf25dd42852f40468b30a47996d1a0", null ],
     [ "QDMI_session_free", "group__client__session__interface.html#ga24d3efdb64f9ae6d88b32b011f7549ae", null ],
     [ "QDMI_device_query_device_property", "group__client__query__interface.html#ga3ed6ddec5adc23e3b08706807dda8430", null ],
-    [ "QDMI_device_query_program_features", "group__client__query__interface.html#ga0aa77c35db909201b5fb3e21ad6c7416", null ],
     [ "QDMI_device_query_site_property", "group__client__query__interface.html#gae6e14d1868412f8e80904377116938bb", null ],
     [ "QDMI_device_query_operation_property", "group__client__query__interface.html#ga4cac0fe85f5405e58ea4892e7b9080b6", null ],
     [ "QDMI_device_create_job", "group__client__job__interface.html#ga9fbb6ebc06162e99c15c230cec9491c8", null ],

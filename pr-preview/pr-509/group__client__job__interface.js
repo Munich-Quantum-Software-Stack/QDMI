@@ -11,8 +11,7 @@ var group__client__job__interface =
       [ "QDMI_JOB_PARAMETER_CUSTOM2", "group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5aa6438cc893fc43e5124f0ee5a969de2b", null ],
       [ "QDMI_JOB_PARAMETER_CUSTOM3", "group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5a40cc64aa3dfe3a837a3d9b86024cb8ef", null ],
       [ "QDMI_JOB_PARAMETER_CUSTOM4", "group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5a1afd4ae62865f54f0e16584b50b940e3", null ],
-      [ "QDMI_JOB_PARAMETER_CUSTOM5", "group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5a88cae1a3c7f8af76fa83ceaaaa5f7998", null ],
-      [ "QDMI_JOB_PARAMETER_CUSTOM_MAX", "group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5aee580be2014a271fb90b6c3c7fc99238", null ]
+      [ "QDMI_JOB_PARAMETER_CUSTOM5", "group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5a88cae1a3c7f8af76fa83ceaaaa5f7998", null ]
     ] ],
     [ "QDMI_JOB_PROPERTY_T", "group__client__job__interface.html#ga8f2f468604e24bab4c86cdb781b879bb", [
       [ "QDMI_JOB_PROPERTY_ID", "group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba8b29485092d51f7573929a5579521d34", null ],
@@ -26,8 +25,7 @@ var group__client__job__interface =
       [ "QDMI_JOB_PROPERTY_CUSTOM2", "group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba95c21c814e579b6ac1d736ba57d69287", null ],
       [ "QDMI_JOB_PROPERTY_CUSTOM3", "group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bbaae52e78d7f9944bde33147b9bef474ac", null ],
       [ "QDMI_JOB_PROPERTY_CUSTOM4", "group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bbac3fe7fca8db9bb213282e5adebf5ff2c", null ],
-      [ "QDMI_JOB_PROPERTY_CUSTOM5", "group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba0108668f46b41020ad1b9b78cb39f0ba", null ],
-      [ "QDMI_JOB_PROPERTY_CUSTOM_MAX", "group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba8eb02a05c7d9f4077f5f41cf0abb5440", null ]
+      [ "QDMI_JOB_PROPERTY_CUSTOM5", "group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba0108668f46b41020ad1b9b78cb39f0ba", null ]
     ] ],
     [ "QDMI_device_create_job", "group__client__job__interface.html#ga9fbb6ebc06162e99c15c230cec9491c8", null ],
     [ "QDMI_session_retrieve_job_by_id", "group__client__job__interface.html#ga6b766aceef8ef65a84cc4cd196ce5e2f", null ],
