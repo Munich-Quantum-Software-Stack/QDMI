@@ -346,25 +346,13 @@ enum QDMI_DEVICE_PROPERTY_T {
    */
   QDMI_DEVICE_PROPERTY_COUPLINGMAP = 7,
   /**
-   * @brief `size_t` Whether the device needs calibration.
-   * @details This flag indicates whether the device needs calibration.
-   * A value of zero indicates that the device does not need calibration, while
-   * any non-zero value indicates that the device needs calibration. It is up
-   * to the device to assign a specific meaning to the non-zero value.
-   *
-   * If a device reports that it needs calibration, a calibration run can be
-   * triggered by submitting a job with the @ref QDMI_Program_Format set to @ref
-   * QDMI_PROGRAM_FORMAT_CALIBRATION.
-   */
-  QDMI_DEVICE_PROPERTY_NEEDSCALIBRATION = 8,
-  /**
    * @brief @ref QDMI_Device_Pulse_Support_Level Whether the device supports
    * pulse-level control.
    * @details This property indicates the level of pulse-level control.
    * If a device supports pulse-level control, it may provide additional
    * functionality for pulse-level programming and execution.
    */
-  QDMI_DEVICE_PROPERTY_PULSESUPPORT = 9,
+  QDMI_DEVICE_PROPERTY_PULSESUPPORT = 8,
   /**
    * @brief `char*` (string) The length unit reported by the device.
    * @details The device implementation must report a known SI unit (e.g., "mm",
@@ -373,7 +361,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * resulting value is then interpreted in the unit specified by this property.
    * @note If the device reports any length values, this property must be set.
    */
-  QDMI_DEVICE_PROPERTY_LENGTHUNIT = 10,
+  QDMI_DEVICE_PROPERTY_LENGTHUNIT = 9,
   /**
    * @brief `double` A scale factor for all length values.
    * @details The device implementation reports this scale factor. A client must
@@ -383,7 +371,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @note If querying this property returns @ref QDMI_ERROR_NOTSUPPORTED, a
    * client should assume a default value of `1.0`.
    */
-  QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR = 11,
+  QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR = 10,
   /**
    * @brief `char*` (string) The duration unit reported by the device.
    * @details The device implementation must report a known SI unit (e.g., "ms",
@@ -392,7 +380,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * resulting value is then interpreted in the unit specified by this property.
    * @note If the device reports any duration values, this property must be set.
    */
-  QDMI_DEVICE_PROPERTY_DURATIONUNIT = 12,
+  QDMI_DEVICE_PROPERTY_DURATIONUNIT = 11,
   /**
    * @brief `double` A scale factor for all duration values.
    * @details The device implementation reports this scale factor. A client must
@@ -402,7 +390,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @note If querying this property returns @ref QDMI_ERROR_NOTSUPPORTED, a
    * client should assume a default value of `1.0`.
    */
-  QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR = 13,
+  QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR = 12,
   /**
    * @brief `uint64_t` The raw, unscaled minimum required distance between
    * qubits during quantum computation.
@@ -421,7 +409,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @see QDMI_DEVICE_PROPERTY_LENGTHUNIT
    *      QDMI_DEVICE_PROPERTY_LENGTSCALEFACTOR
    */
-  QDMI_DEVICE_PROPERTY_MINATOMDISTANCE = 14,
+  QDMI_DEVICE_PROPERTY_MINATOMDISTANCE = 13,
   /**
    * @brief `QDMI_Program_Format*` (@ref QDMI_Program_Format list) The program
    * formats supported by the device.
@@ -429,7 +417,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * supports for execution. A client can use this information to determine
    * which program formats can be used when submitting jobs to the device.
    */
-  QDMI_DEVICE_PROPERTY_SUPPORTEDPROGRAMFORMATS = 15,
+  QDMI_DEVICE_PROPERTY_SUPPORTEDPROGRAMFORMATS = 14,
   /**
    * @brief `QDMI_Child_Device*` (@ref QDMI_Child_Device list) A list of device
    * handles corresponding to the device's child devices managed by this device.
@@ -443,7 +431,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @note Devices with child devices may have special job submission handling.
    * Check the concrete device's job interface documentation.
    */
-  QDMI_DEVICE_PROPERTY_CHILDDEVICES = 16,
+  QDMI_DEVICE_PROPERTY_CHILDDEVICES = 15,
   /**
    * @brief `size_t` The current number of jobs waiting to access the device.
    * @details This property is a snapshot of the device's queue length and does
@@ -458,7 +446,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * The property may yield @ref QDMI_ERROR_NOTSUPPORTED if the implementation
    * cannot obtain a trustworthy queue length.
    */
-  QDMI_DEVICE_PROPERTY_QUEUELENGTH = 17,
+  QDMI_DEVICE_PROPERTY_QUEUELENGTH = 16,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
@@ -467,7 +455,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_DEVICE_PROPERTY_MAX = 18,
+  QDMI_DEVICE_PROPERTY_MAX = 17,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.
