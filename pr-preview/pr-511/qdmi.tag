@@ -135,12 +135,6 @@
       <anchor>ggaac5ae9f0bf8046987569c6f4e75611d3aaafd9df4e1090164a7cc087faaa8557a</anchor>
       <arglist></arglist>
     </member>
-    <member kind="enumvalue">
-      <name>QDMI_SESSION_PARAMETER_CUSTOM_MAX</name>
-      <anchorfile>group__client__session__interface.html</anchorfile>
-      <anchor>ggaac5ae9f0bf8046987569c6f4e75611d3abd1ad4a0fe945965cb21f43c666e90e9</anchor>
-      <arglist></arglist>
-    </member>
     <member kind="enumeration">
       <type></type>
       <name>QDMI_SESSION_PROPERTY_T</name>
@@ -190,12 +184,6 @@
       <anchor>gga737948251bac10b8cabf745afe82bd09a7b3416e6058fc94d39a98cab70d89c6b</anchor>
       <arglist></arglist>
     </member>
-    <member kind="enumvalue">
-      <name>QDMI_SESSION_PROPERTY_CUSTOM_MAX</name>
-      <anchorfile>group__client__session__interface.html</anchorfile>
-      <anchor>gga737948251bac10b8cabf745afe82bd09a48220111e3d1a5e14733aae5859d9781</anchor>
-      <arglist></arglist>
-    </member>
     <member kind="enumeration">
       <type></type>
       <name>QDMI_JOB_PARAMETER_T</name>
@@ -207,6 +195,12 @@
       <name>QDMI_JOB_PARAMETER_PROGRAMFORMAT</name>
       <anchorfile>group__client__job__interface.html</anchorfile>
       <anchor>gga1e7131664b094eb409d0f44d731f51f5ad0b4fad39ff9935e76bcd888cfca908b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>QDMI_JOB_PARAMETER_PROGRAM</name>
+      <anchorfile>group__client__job__interface.html</anchorfile>
+      <anchor>gga1e7131664b094eb409d0f44d731f51f5ac44c5d28aada4f1a1628c45805747998</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
@@ -251,12 +245,6 @@
       <anchor>gga1e7131664b094eb409d0f44d731f51f5a88cae1a3c7f8af76fa83ceaaaa5f7998</anchor>
       <arglist></arglist>
     </member>
-    <member kind="enumvalue">
-      <name>QDMI_JOB_PARAMETER_CUSTOM_MAX</name>
-      <anchorfile>group__client__job__interface.html</anchorfile>
-      <anchor>gga1e7131664b094eb409d0f44d731f51f5aee580be2014a271fb90b6c3c7fc99238</anchor>
-      <arglist></arglist>
-    </member>
     <member kind="enumeration">
       <type></type>
       <name>QDMI_JOB_PROPERTY_T</name>
@@ -295,12 +283,6 @@
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
-      <name>QDMI_JOB_PROPERTY_PROGRAMSNUM</name>
-      <anchorfile>group__client__job__interface.html</anchorfile>
-      <anchor>gga8f2f468604e24bab4c86cdb781b879bba43d824ed6fbd28af6a95c64c9403033b</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
       <name>QDMI_JOB_PROPERTY_MAX</name>
       <anchorfile>group__client__job__interface.html</anchorfile>
       <anchor>gga8f2f468604e24bab4c86cdb781b879bba14db954932a0e76a751f89e75eda5351</anchor>
@@ -334,12 +316,6 @@
       <name>QDMI_JOB_PROPERTY_CUSTOM5</name>
       <anchorfile>group__client__job__interface.html</anchorfile>
       <anchor>gga8f2f468604e24bab4c86cdb781b879bba0108668f46b41020ad1b9b78cb39f0ba</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>QDMI_JOB_PROPERTY_CUSTOM_MAX</name>
-      <anchorfile>group__client__job__interface.html</anchorfile>
-      <anchor>gga8f2f468604e24bab4c86cdb781b879bba8eb02a05c7d9f4077f5f41cf0abb5440</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
@@ -393,13 +369,6 @@
     </member>
     <member kind="function">
       <type>int</type>
-      <name>QDMI_device_query_program_features</name>
-      <anchorfile>group__client__query__interface.html</anchorfile>
-      <anchor>ga0aa77c35db909201b5fb3e21ad6c7416</anchor>
-      <arglist>(QDMI_Device device, const QDMI_Program_Format *format, size_t size, QDMI_Program_Feature *value, size_t *size_ret)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
       <name>QDMI_device_query_site_property</name>
       <anchorfile>group__client__query__interface.html</anchorfile>
       <anchor>gae6e14d1868412f8e80904377116938bb</anchor>
@@ -432,13 +401,6 @@
       <anchorfile>group__client__job__interface.html</anchorfile>
       <anchor>ga94b84ea6efa5e7f2ad1ee65bff04381c</anchor>
       <arglist>(QDMI_Job job, QDMI_Job_Parameter param, size_t size, const void *value)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>QDMI_job_set_programs</name>
-      <anchorfile>group__client__job__interface.html</anchorfile>
-      <anchor>gabc8c322751938dea29c5cc350673ac17</anchor>
-      <arglist>(QDMI_Job job, const QDMI_Program_Format *format, size_t count, const size_t *sizes, const void *const *programs)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -479,8 +441,8 @@
       <type>int</type>
       <name>QDMI_job_get_results</name>
       <anchorfile>group__client__job__interface.html</anchorfile>
-      <anchor>ga1a07533166af439c2fa62edafec4d99e</anchor>
-      <arglist>(QDMI_Job job, size_t program_index, QDMI_Job_Result result, size_t size, void *data, size_t *size_ret)</arglist>
+      <anchor>gaba583321332e0753f5de1764edbd8b7f</anchor>
+      <arglist>(QDMI_Job job, QDMI_Job_Result result, size_t size, void *data, size_t *size_ret)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -494,29 +456,6 @@
     <name>constants.h</name>
     <path></path>
     <filename>constants_8h.html</filename>
-    <class kind="struct">QDMI_Program_Format</class>
-    <class kind="struct">QDMI_Program_Feature</class>
-    <member kind="define">
-      <type>#define</type>
-      <name>QDMI_CUSTOM_ENUM_VALUE_MIN</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>a8491b4a773d45e8fe067326b532bec03</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="define">
-      <type>#define</type>
-      <name>QDMI_CUSTOM_ENUM_VALUE_MAX</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>a7e1f6ebee2981970f891339435655e84</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="define">
-      <type>#define</type>
-      <name>QDMI_PROGRAM_ID_SIZE</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>a4955653c3a1bd0a3b3ec66a1dbc82c4f</anchor>
-      <arglist></arglist>
-    </member>
     <member kind="define">
       <type>#define</type>
       <name>QDMI_MAKE_VERSION</name>
@@ -544,153 +483,6 @@
       <anchorfile>constants_8h.html</anchorfile>
       <anchor>a771649d97222ad4e2e23a56797dde658</anchor>
       <arglist>(version)</arglist>
-    </member>
-    <member kind="define">
-      <type>#define</type>
-      <name>QDMI_PROGRAM_FEATURE_ID_SIZE</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>af3221e629750c49a596bc1d5ede3db0d</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="define">
-      <type>#define</type>
-      <name>QDMI_PROGRAM_CONSTRAINT_ID_SIZE</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>ad632b2002054b013dce010d9332c4cad</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="define">
-      <type>#define</type>
-      <name>QDMI_PROGRAM_FEATURE_UNCONSTRAINED</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>a0f3bd80a77571b44774327368ac5b0c3</anchor>
-      <arglist>(feature_id, feature_value)</arglist>
-    </member>
-    <member kind="define">
-      <type>#define</type>
-      <name>QDMI_PROGRAM_FEATURE_MID_CIRCUIT_MEASUREMENT</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>afbdea9e33f7fcc6f69aff39ab12ae6a0</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="define">
-      <type>#define</type>
-      <name>QDMI_PROGRAM_FEATURE_MEASURED_QUBIT_REUSE</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>a9a9a8befeb0b60ef27703918c89a635e</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="define">
-      <type>#define</type>
-      <name>QDMI_PROGRAM_FEATURE_MEASUREMENT_RESULT_USE</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>aae91452451b8a18fbcbc299749306ca5</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="define">
-      <type>#define</type>
-      <name>QDMI_PROGRAM_FEATURE_BOOLEAN_COMPUTATION</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>a9f5cd8079caaedfceda12e9bd797d0e7</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="define">
-      <type>#define</type>
-      <name>QDMI_PROGRAM_FEATURE_FORWARD_BRANCHING</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>a8ac197c8f47d0d20e911faea5f5fb490</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="define">
-      <type>#define</type>
-      <name>QDMI_PROGRAM_FEATURE_COUNTED_ITERATION</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>a5487329d36789b3579c827917cfa2e6e</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="define">
-      <type>#define</type>
-      <name>QDMI_PROGRAM_FEATURE_CONDITIONAL_LOOP</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>aeec854dbe5b2c0bae441a8ee441c10e4</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="define">
-      <type>#define</type>
-      <name>QDMI_PROGRAM_FEATURE_MULTIWAY_BRANCHING</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>aa88b1e11dc197c9818137e29a0f86f66</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="define">
-      <type>#define</type>
-      <name>QDMI_PROGRAM_FEATURE_INTEGER_COMPUTATION</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>a4513bb7aa160f9c8c5990dd3a6f1d4b8</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="define">
-      <type>#define</type>
-      <name>QDMI_PROGRAM_FEATURE_FLOAT_COMPUTATION</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>af4e66935ec643298961178499bcd8632</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="define">
-      <type>#define</type>
-      <name>QDMI_PROGRAM_FEATURE_IR_FUNCTIONS</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>a1fcd551d5977f3aa962018c4466253bc</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="define">
-      <type>#define</type>
-      <name>QDMI_PROGRAM_FEATURE_MULTIPLE_RETURN_POINTS</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>a2b88c16010ed55bb82e4078b4eeb8ea8</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="define">
-      <type>#define</type>
-      <name>QDMI_PROGRAM_FEATURE_DYNAMIC_QUBIT_MANAGEMENT</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>aaa447b38576367c850cb116318747add</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="define">
-      <type>#define</type>
-      <name>QDMI_PROGRAM_FEATURE_DYNAMIC_RESULT_MANAGEMENT</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>a9f85950f9e14d7b291de4992008f49ad</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="define">
-      <type>#define</type>
-      <name>QDMI_PROGRAM_FEATURE_ARRAYS</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>a6e101a1904de79a43091fdb7c547089e</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="define">
-      <type>#define</type>
-      <name>QDMI_PROGRAM_CONSTRAINT_MAX_CONTROL_FLOW_NESTING_DEPTH</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>ac05683163bd0eb1e7b10087c71483539</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="define">
-      <type>#define</type>
-      <name>QDMI_PROGRAM_CONSTRAINT_MAX_ITERATION_COUNT</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>a4f0db2af4041c8b5db4de715583c67d9</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="define">
-      <type>#define</type>
-      <name>QDMI_PROGRAM_CONSTRAINT_MAX_CASE_COUNT</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>aa2e2a5516f09f7b93962c620e1b94ae7</anchor>
-      <arglist></arglist>
     </member>
     <member kind="typedef">
       <type>enum QDMI_DEVICE_SESSION_PARAMETER_T</type>
@@ -749,10 +541,10 @@
       <arglist></arglist>
     </member>
     <member kind="typedef">
-      <type>enum QDMI_PROGRAM_ENCODING_T</type>
-      <name>QDMI_Program_Encoding</name>
+      <type>enum QDMI_PROGRAM_FORMAT_T</type>
+      <name>QDMI_Program_Format</name>
       <anchorfile>constants_8h.html</anchorfile>
-      <anchor>ac7dc4f0192c454165a42a52c4c703649</anchor>
+      <anchor>a475336f0c08bd0218dd76a6016098231</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
@@ -939,12 +731,6 @@
       <anchor>a9f1e467b2b3870263b0e9d7e5d36cea4a4fb63f338932625a7ae40eeb04c736c8</anchor>
       <arglist></arglist>
     </member>
-    <member kind="enumvalue">
-      <name>QDMI_DEVICE_SESSION_PARAMETER_CUSTOM_MAX</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>a9f1e467b2b3870263b0e9d7e5d36cea4a24b2a44e0adfbde56707e0d4226042e4</anchor>
-      <arglist></arglist>
-    </member>
     <member kind="enumeration">
       <type></type>
       <name>QDMI_DEVICE_JOB_PARAMETER_T</name>
@@ -956,6 +742,12 @@
       <name>QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT</name>
       <anchorfile>constants_8h.html</anchorfile>
       <anchor>a40dd25c531ebf99fb4b46469083b609ea5ee9218fc51cbd01765619467b90056f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>QDMI_DEVICE_JOB_PARAMETER_PROGRAM</name>
+      <anchorfile>constants_8h.html</anchorfile>
+      <anchor>a40dd25c531ebf99fb4b46469083b609ea7ef134726b7ec6f0855c0d8171e44dd3</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
@@ -1000,12 +792,6 @@
       <anchor>a40dd25c531ebf99fb4b46469083b609ead04b984fe78deafa5c507101da54ad32</anchor>
       <arglist></arglist>
     </member>
-    <member kind="enumvalue">
-      <name>QDMI_DEVICE_JOB_PARAMETER_CUSTOM_MAX</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>a40dd25c531ebf99fb4b46469083b609ea03dce278e54f1a9356cedd281ae88220</anchor>
-      <arglist></arglist>
-    </member>
     <member kind="enumeration">
       <type></type>
       <name>QDMI_DEVICE_JOB_PROPERTY_T</name>
@@ -1044,12 +830,6 @@
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
-      <name>QDMI_DEVICE_JOB_PROPERTY_PROGRAMSNUM</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>a6e4d18c7fa5d383bbcc1498abe090d4faa24add14b040fb44b0daac7f5714fafc</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
       <name>QDMI_DEVICE_JOB_PROPERTY_MAX</name>
       <anchorfile>constants_8h.html</anchorfile>
       <anchor>a6e4d18c7fa5d383bbcc1498abe090d4fac476c098fa8050146b00c2857a151303</anchor>
@@ -1083,12 +863,6 @@
       <name>QDMI_DEVICE_JOB_PROPERTY_CUSTOM5</name>
       <anchorfile>constants_8h.html</anchorfile>
       <anchor>a6e4d18c7fa5d383bbcc1498abe090d4fa08224f2da22d71f598bf27aa85ac9bd4</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>QDMI_DEVICE_JOB_PROPERTY_CUSTOM_MAX</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>a6e4d18c7fa5d383bbcc1498abe090d4faf89e9b61289a81cb1c4670772f263139</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumeration">
@@ -1246,12 +1020,6 @@
       <name>QDMI_DEVICE_PROPERTY_CUSTOM5</name>
       <anchorfile>constants_8h.html</anchorfile>
       <anchor>ad251d8ae8fbbe9a5c7a10d66b243d526adb994f1dc9dfee2910261951f7e4b39f</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>QDMI_DEVICE_PROPERTY_CUSTOM_MAX</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>ad251d8ae8fbbe9a5c7a10d66b243d526a5b12d41d98a269576bc4e1376f9a0ea8</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumeration">
@@ -1424,12 +1192,6 @@
       <anchor>a69ef10d452cc6f03cac8a917ba48d6e2ae75701dbdb3fd96feb949fa37b405455</anchor>
       <arglist></arglist>
     </member>
-    <member kind="enumvalue">
-      <name>QDMI_SITE_PROPERTY_CUSTOM_MAX</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>a69ef10d452cc6f03cac8a917ba48d6e2af02dd8cd2e18076cf1edc2cc741f856e</anchor>
-      <arglist></arglist>
-    </member>
     <member kind="enumeration">
       <type></type>
       <name>QDMI_OPERATION_PROPERTY_T</name>
@@ -1539,12 +1301,6 @@
       <anchor>ab23d5f0c5296e3eab4243e91f1213726ae4414f8e1b54a24d9db057f8214ad579</anchor>
       <arglist></arglist>
     </member>
-    <member kind="enumvalue">
-      <name>QDMI_OPERATION_PROPERTY_CUSTOM_MAX</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>ab23d5f0c5296e3eab4243e91f1213726ad4676ff25bc494fd8e82f29e7207fe47</anchor>
-      <arglist></arglist>
-    </member>
     <member kind="enumeration">
       <type></type>
       <name>QDMI_JOB_STATUS_T</name>
@@ -1596,21 +1352,105 @@
     </member>
     <member kind="enumeration">
       <type></type>
-      <name>QDMI_PROGRAM_ENCODING_T</name>
+      <name>QDMI_PROGRAM_FORMAT_T</name>
       <anchorfile>constants_8h.html</anchorfile>
-      <anchor>ad5dd287338b8e8d51f0cc545a1797f82</anchor>
+      <anchor>a3eff3252203fcad146d5896e4466ec09</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
-      <name>QDMI_PROGRAM_ENCODING_TEXT</name>
+      <name>QDMI_PROGRAM_FORMAT_QASM2</name>
       <anchorfile>constants_8h.html</anchorfile>
-      <anchor>ad5dd287338b8e8d51f0cc545a1797f82ac2b50483b1c5169f6090ca12dfaf902d</anchor>
+      <anchor>a3eff3252203fcad146d5896e4466ec09afd3bab5e29afc660e29b2a132246471b</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
-      <name>QDMI_PROGRAM_ENCODING_BINARY</name>
+      <name>QDMI_PROGRAM_FORMAT_QASM3</name>
       <anchorfile>constants_8h.html</anchorfile>
-      <anchor>ad5dd287338b8e8d51f0cc545a1797f82a2014390ec8486330e33b62d612c23571</anchor>
+      <anchor>a3eff3252203fcad146d5896e4466ec09a46cb051d6e1f54c658570dee57813903</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>QDMI_PROGRAM_FORMAT_QIRBASESTRING</name>
+      <anchorfile>constants_8h.html</anchorfile>
+      <anchor>a3eff3252203fcad146d5896e4466ec09a3645597dc4c99852e2820de66569ceac</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>QDMI_PROGRAM_FORMAT_QIRBASEMODULE</name>
+      <anchorfile>constants_8h.html</anchorfile>
+      <anchor>a3eff3252203fcad146d5896e4466ec09a705ba084cac8769dc2bf91c0beb35ac7</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>QDMI_PROGRAM_FORMAT_QIRADAPTIVESTRING</name>
+      <anchorfile>constants_8h.html</anchorfile>
+      <anchor>a3eff3252203fcad146d5896e4466ec09ad749b99003f2b2f6bd07916b2e45be14</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>QDMI_PROGRAM_FORMAT_QIRADAPTIVEMODULE</name>
+      <anchorfile>constants_8h.html</anchorfile>
+      <anchor>a3eff3252203fcad146d5896e4466ec09aded29a50e3dc815777fb45f54dbc1b02</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>QDMI_PROGRAM_FORMAT_CALIBRATION</name>
+      <anchorfile>constants_8h.html</anchorfile>
+      <anchor>a3eff3252203fcad146d5896e4466ec09a250ddcb8393b04b08471c5fe7abb3d27</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>QDMI_PROGRAM_FORMAT_QPY</name>
+      <anchorfile>constants_8h.html</anchorfile>
+      <anchor>a3eff3252203fcad146d5896e4466ec09a6bd3fb1aca86016dfc70aa42421a5d48</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>QDMI_PROGRAM_FORMAT_IQMJSON</name>
+      <anchorfile>constants_8h.html</anchorfile>
+      <anchor>a3eff3252203fcad146d5896e4466ec09ae195460aa4da32f2efc5bb61cf50f740</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>QDMI_PROGRAM_FORMAT_BATCHJOB</name>
+      <anchorfile>constants_8h.html</anchorfile>
+      <anchor>a3eff3252203fcad146d5896e4466ec09a07a8f396e623368210fac5d2e0ea10a8</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>QDMI_PROGRAM_FORMAT_MAX</name>
+      <anchorfile>constants_8h.html</anchorfile>
+      <anchor>a3eff3252203fcad146d5896e4466ec09aed0bf48a068be1cc41e339c6ae48e655</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>QDMI_PROGRAM_FORMAT_CUSTOM1</name>
+      <anchorfile>constants_8h.html</anchorfile>
+      <anchor>a3eff3252203fcad146d5896e4466ec09ae4c406dd4f873011195a218898ad2348</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>QDMI_PROGRAM_FORMAT_CUSTOM2</name>
+      <anchorfile>constants_8h.html</anchorfile>
+      <anchor>a3eff3252203fcad146d5896e4466ec09aa623b6643ae8806cc0beae73b13723e4</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>QDMI_PROGRAM_FORMAT_CUSTOM3</name>
+      <anchorfile>constants_8h.html</anchorfile>
+      <anchor>a3eff3252203fcad146d5896e4466ec09a25fa2e815d2f0e788117c54188c379a8</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>QDMI_PROGRAM_FORMAT_CUSTOM4</name>
+      <anchorfile>constants_8h.html</anchorfile>
+      <anchor>a3eff3252203fcad146d5896e4466ec09a606a32a79bea4e188111ac5728b04212</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>QDMI_PROGRAM_FORMAT_CUSTOM5</name>
+      <anchorfile>constants_8h.html</anchorfile>
+      <anchor>a3eff3252203fcad146d5896e4466ec09ac2fc29b4f13482775b7d080f281f9a21</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumeration">
@@ -1675,12 +1515,6 @@
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
-      <name>QDMI_JOB_RESULT_PROGRAMOUTPUT</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>aa154b942b0f67e437c393ad7b33cadd1a78df4888ecd2b1a9bd740e33fa00dc04</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
       <name>QDMI_JOB_RESULT_MAX</name>
       <anchorfile>constants_8h.html</anchorfile>
       <anchor>aa154b942b0f67e437c393ad7b33cadd1a392aa5d821440fd4650119f3986d3196</anchor>
@@ -1714,12 +1548,6 @@
       <name>QDMI_JOB_RESULT_CUSTOM5</name>
       <anchorfile>constants_8h.html</anchorfile>
       <anchor>aa154b942b0f67e437c393ad7b33cadd1aa892eb092c55f5c7ea34c47358675125</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>QDMI_JOB_RESULT_CUSTOM_MAX</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>aa154b942b0f67e437c393ad7b33cadd1a389b31372e7c7d866b2ef19fdee3cb52</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumeration">
@@ -1833,13 +1661,6 @@
     </member>
     <member kind="function">
       <type>int</type>
-      <name>QDMI_device_session_query_program_features</name>
-      <anchorfile>group__device__query__interface.html</anchorfile>
-      <anchor>gac544e377ef9fedcbbc6d5e96c9add7ae</anchor>
-      <arglist>(QDMI_Device_Session session, const QDMI_Program_Format *format, size_t size, QDMI_Program_Feature *value, size_t *size_ret)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
       <name>QDMI_device_session_query_site_property</name>
       <anchorfile>group__device__query__interface.html</anchorfile>
       <anchor>ga953bf947b1efcfaa3fb63dcce61127d5</anchor>
@@ -1872,13 +1693,6 @@
       <anchorfile>group__device__job__interface.html</anchorfile>
       <anchor>ga1ff5eda213c2bd60599efeac2166654d</anchor>
       <arglist>(QDMI_Device_Job job, QDMI_Device_Job_Parameter param, size_t size, const void *value)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>QDMI_device_job_set_programs</name>
-      <anchorfile>group__device__job__interface.html</anchorfile>
-      <anchor>gadfab14c8e3218128b9393096d11c738c</anchor>
-      <arglist>(QDMI_Device_Job job, const QDMI_Program_Format *format, size_t count, const size_t *sizes, const void *const *programs)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -1919,8 +1733,8 @@
       <type>int</type>
       <name>QDMI_device_job_get_results</name>
       <anchorfile>group__device__job__interface.html</anchorfile>
-      <anchor>gaaefb46a6d128a080329759ad21425c5e</anchor>
-      <arglist>(QDMI_Device_Job job, size_t program_index, QDMI_Job_Result result, size_t size, void *data, size_t *size_ret)</arglist>
+      <anchor>ga1b4384e53a1d8fb2d782cd6179664d3b</anchor>
+      <arglist>(QDMI_Device_Job job, QDMI_Job_Result result, size_t size, void *data, size_t *size_ret)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -1952,70 +1766,6 @@
       <anchorfile>types_8h.html</anchorfile>
       <anchor>ae777e8f92186c1e6f836eeaa53b149d7</anchor>
       <arglist></arglist>
-    </member>
-  </compound>
-  <compound kind="struct">
-    <name>QDMI_Program_Feature</name>
-    <filename>structQDMI__Program__Feature.html</filename>
-    <member kind="variable">
-      <type>char</type>
-      <name>id</name>
-      <anchorfile>structQDMI__Program__Feature.html</anchorfile>
-      <anchor>af352c3f325e3cae93c6f6ad99c604bd7</anchor>
-      <arglist>[QDMI_PROGRAM_FEATURE_ID_SIZE]</arglist>
-    </member>
-    <member kind="variable">
-      <type>uint64_t</type>
-      <name>value</name>
-      <anchorfile>structQDMI__Program__Feature.html</anchorfile>
-      <anchor>a9a00d1c9c44c9c3e70c7912c5bbdea50</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>char</type>
-      <name>constraint_id</name>
-      <anchorfile>structQDMI__Program__Feature.html</anchorfile>
-      <anchor>a88c2a6e70460719452dc9326f3a63bc2</anchor>
-      <arglist>[QDMI_PROGRAM_CONSTRAINT_ID_SIZE]</arglist>
-    </member>
-    <member kind="variable">
-      <type>uint64_t</type>
-      <name>constraint_value</name>
-      <anchorfile>structQDMI__Program__Feature.html</anchorfile>
-      <anchor>adc741495bd0c181716bcd9f75a7050ff</anchor>
-      <arglist></arglist>
-    </member>
-  </compound>
-  <compound kind="struct">
-    <name>QDMI_Program_Format</name>
-    <filename>structQDMI__Program__Format.html</filename>
-    <member kind="variable">
-      <type>uint32_t</type>
-      <name>version</name>
-      <anchorfile>structQDMI__Program__Format.html</anchorfile>
-      <anchor>aadcf574516b850840cc4352428416566</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>uint32_t</type>
-      <name>encoding</name>
-      <anchorfile>structQDMI__Program__Format.html</anchorfile>
-      <anchor>ab26c782006c8af9fab1710aa9c93b321</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>char</type>
-      <name>id</name>
-      <anchorfile>structQDMI__Program__Format.html</anchorfile>
-      <anchor>a47110fa755629ce34822cca9c589ac4a</anchor>
-      <arglist>[QDMI_PROGRAM_ID_SIZE]</arglist>
-    </member>
-    <member kind="variable">
-      <type>char</type>
-      <name>profile</name>
-      <anchorfile>structQDMI__Program__Format.html</anchorfile>
-      <anchor>a3181aac9e7b3d398ccf856e0f9718fa6</anchor>
-      <arglist>[QDMI_PROGRAM_ID_SIZE]</arglist>
     </member>
   </compound>
   <compound kind="group">
@@ -2151,12 +1901,6 @@
       <anchor>ggaac5ae9f0bf8046987569c6f4e75611d3aaafd9df4e1090164a7cc087faaa8557a</anchor>
       <arglist></arglist>
     </member>
-    <member kind="enumvalue">
-      <name>QDMI_SESSION_PARAMETER_CUSTOM_MAX</name>
-      <anchorfile>group__client__session__interface.html</anchorfile>
-      <anchor>ggaac5ae9f0bf8046987569c6f4e75611d3abd1ad4a0fe945965cb21f43c666e90e9</anchor>
-      <arglist></arglist>
-    </member>
     <member kind="enumeration">
       <type></type>
       <name>QDMI_SESSION_PROPERTY_T</name>
@@ -2206,12 +1950,6 @@
       <anchor>gga737948251bac10b8cabf745afe82bd09a7b3416e6058fc94d39a98cab70d89c6b</anchor>
       <arglist></arglist>
     </member>
-    <member kind="enumvalue">
-      <name>QDMI_SESSION_PROPERTY_CUSTOM_MAX</name>
-      <anchorfile>group__client__session__interface.html</anchorfile>
-      <anchor>gga737948251bac10b8cabf745afe82bd09a48220111e3d1a5e14733aae5859d9781</anchor>
-      <arglist></arglist>
-    </member>
     <member kind="function">
       <type>int</type>
       <name>QDMI_session_alloc</name>
@@ -2258,13 +1996,6 @@
       <anchorfile>group__client__query__interface.html</anchorfile>
       <anchor>ga3ed6ddec5adc23e3b08706807dda8430</anchor>
       <arglist>(QDMI_Device device, QDMI_Device_Property prop, size_t size, void *value, size_t *size_ret)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>QDMI_device_query_program_features</name>
-      <anchorfile>group__client__query__interface.html</anchorfile>
-      <anchor>ga0aa77c35db909201b5fb3e21ad6c7416</anchor>
-      <arglist>(QDMI_Device device, const QDMI_Program_Format *format, size_t size, QDMI_Program_Feature *value, size_t *size_ret)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -2320,6 +2051,12 @@
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
+      <name>QDMI_JOB_PARAMETER_PROGRAM</name>
+      <anchorfile>group__client__job__interface.html</anchorfile>
+      <anchor>gga1e7131664b094eb409d0f44d731f51f5ac44c5d28aada4f1a1628c45805747998</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
       <name>QDMI_JOB_PARAMETER_SHOTSNUM</name>
       <anchorfile>group__client__job__interface.html</anchorfile>
       <anchor>gga1e7131664b094eb409d0f44d731f51f5a21a7c498f22ef05c9a72f354f6f89a81</anchor>
@@ -2361,12 +2098,6 @@
       <anchor>gga1e7131664b094eb409d0f44d731f51f5a88cae1a3c7f8af76fa83ceaaaa5f7998</anchor>
       <arglist></arglist>
     </member>
-    <member kind="enumvalue">
-      <name>QDMI_JOB_PARAMETER_CUSTOM_MAX</name>
-      <anchorfile>group__client__job__interface.html</anchorfile>
-      <anchor>gga1e7131664b094eb409d0f44d731f51f5aee580be2014a271fb90b6c3c7fc99238</anchor>
-      <arglist></arglist>
-    </member>
     <member kind="enumeration">
       <type></type>
       <name>QDMI_JOB_PROPERTY_T</name>
@@ -2405,12 +2136,6 @@
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
-      <name>QDMI_JOB_PROPERTY_PROGRAMSNUM</name>
-      <anchorfile>group__client__job__interface.html</anchorfile>
-      <anchor>gga8f2f468604e24bab4c86cdb781b879bba43d824ed6fbd28af6a95c64c9403033b</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
       <name>QDMI_JOB_PROPERTY_MAX</name>
       <anchorfile>group__client__job__interface.html</anchorfile>
       <anchor>gga8f2f468604e24bab4c86cdb781b879bba14db954932a0e76a751f89e75eda5351</anchor>
@@ -2446,12 +2171,6 @@
       <anchor>gga8f2f468604e24bab4c86cdb781b879bba0108668f46b41020ad1b9b78cb39f0ba</anchor>
       <arglist></arglist>
     </member>
-    <member kind="enumvalue">
-      <name>QDMI_JOB_PROPERTY_CUSTOM_MAX</name>
-      <anchorfile>group__client__job__interface.html</anchorfile>
-      <anchor>gga8f2f468604e24bab4c86cdb781b879bba8eb02a05c7d9f4077f5f41cf0abb5440</anchor>
-      <arglist></arglist>
-    </member>
     <member kind="function">
       <type>int</type>
       <name>QDMI_device_create_job</name>
@@ -2472,13 +2191,6 @@
       <anchorfile>group__client__job__interface.html</anchorfile>
       <anchor>ga94b84ea6efa5e7f2ad1ee65bff04381c</anchor>
       <arglist>(QDMI_Job job, QDMI_Job_Parameter param, size_t size, const void *value)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>QDMI_job_set_programs</name>
-      <anchorfile>group__client__job__interface.html</anchorfile>
-      <anchor>gabc8c322751938dea29c5cc350673ac17</anchor>
-      <arglist>(QDMI_Job job, const QDMI_Program_Format *format, size_t count, const size_t *sizes, const void *const *programs)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -2519,8 +2231,8 @@
       <type>int</type>
       <name>QDMI_job_get_results</name>
       <anchorfile>group__client__job__interface.html</anchorfile>
-      <anchor>ga1a07533166af439c2fa62edafec4d99e</anchor>
-      <arglist>(QDMI_Job job, size_t program_index, QDMI_Job_Result result, size_t size, void *data, size_t *size_ret)</arglist>
+      <anchor>gaba583321332e0753f5de1764edbd8b7f</anchor>
+      <arglist>(QDMI_Job job, QDMI_Job_Result result, size_t size, void *data, size_t *size_ret)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -2612,13 +2324,6 @@
     </member>
     <member kind="function">
       <type>int</type>
-      <name>QDMI_device_session_query_program_features</name>
-      <anchorfile>group__device__query__interface.html</anchorfile>
-      <anchor>gac544e377ef9fedcbbc6d5e96c9add7ae</anchor>
-      <arglist>(QDMI_Device_Session session, const QDMI_Program_Format *format, size_t size, QDMI_Program_Feature *value, size_t *size_ret)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
       <name>QDMI_device_session_query_site_property</name>
       <anchorfile>group__device__query__interface.html</anchorfile>
       <anchor>ga953bf947b1efcfaa3fb63dcce61127d5</anchor>
@@ -2666,13 +2371,6 @@
     </member>
     <member kind="function">
       <type>int</type>
-      <name>QDMI_device_job_set_programs</name>
-      <anchorfile>group__device__job__interface.html</anchorfile>
-      <anchor>gadfab14c8e3218128b9393096d11c738c</anchor>
-      <arglist>(QDMI_Device_Job job, const QDMI_Program_Format *format, size_t count, const size_t *sizes, const void *const *programs)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
       <name>QDMI_device_job_query_property</name>
       <anchorfile>group__device__job__interface.html</anchorfile>
       <anchor>ga42686f735d112236118b5e033a6c8194</anchor>
@@ -2710,8 +2408,8 @@
       <type>int</type>
       <name>QDMI_device_job_get_results</name>
       <anchorfile>group__device__job__interface.html</anchorfile>
-      <anchor>gaaefb46a6d128a080329759ad21425c5e</anchor>
-      <arglist>(QDMI_Device_Job job, size_t program_index, QDMI_Job_Result result, size_t size, void *data, size_t *size_ret)</arglist>
+      <anchor>ga1b4384e53a1d8fb2d782cd6179664d3b</anchor>
+      <arglist>(QDMI_Device_Job job, QDMI_Job_Result result, size_t size, void *data, size_t *size_ret)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -2755,7 +2453,6 @@
     <docanchor file="md_docs_2examples.html" title="Auxiliary Macros">device-macros</docanchor>
     <docanchor file="md_docs_2examples.html" title="Integer or Enumeration Properties">device-int-enumeration</docanchor>
     <docanchor file="md_docs_2examples.html" title="List Properties">device-list</docanchor>
-    <docanchor file="md_docs_2examples.html" title="Program-Format Execution Features">device-program-format-features</docanchor>
     <docanchor file="md_docs_2examples.html" title="Complex Properties">device-complex</docanchor>
     <docanchor file="md_docs_2examples.html" title="Submitting a Job">device-submit</docanchor>
   </compound>

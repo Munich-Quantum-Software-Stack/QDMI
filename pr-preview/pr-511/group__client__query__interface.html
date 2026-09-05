@@ -192,8 +192,6 @@ $(function(){initNavTree('group__client__query__interface.html','',''); });
 Functions</h2></td></tr>
 <tr class="memitem:ga3ed6ddec5adc23e3b08706807dda8430" id="r_ga3ed6ddec5adc23e3b08706807dda8430"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#ga3ed6ddec5adc23e3b08706807dda8430">QDMI_device_query_device_property</a> (<a class="el" href="group__client__interface.html#ga2772c94ab19957ce5aaef652b626baec">QDMI_Device</a> device, <a class="el" href="constants_8h.html#afeaad074a7321ebb8fb87e06598fc055">QDMI_Device_Property</a> prop, size_t size, void *value, size_t *size_ret)</td></tr>
 <tr class="memdesc:ga3ed6ddec5adc23e3b08706807dda8430"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query a device property.  <br /></td></tr>
-<tr class="memitem:ga0aa77c35db909201b5fb3e21ad6c7416" id="r_ga0aa77c35db909201b5fb3e21ad6c7416"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#ga0aa77c35db909201b5fb3e21ad6c7416">QDMI_device_query_program_features</a> (<a class="el" href="group__client__interface.html#ga2772c94ab19957ce5aaef652b626baec">QDMI_Device</a> device, const <a class="el" href="structQDMI__Program__Format.html">QDMI_Program_Format</a> *format, size_t size, <a class="el" href="structQDMI__Program__Feature.html">QDMI_Program_Feature</a> *value, size_t *size_ret)</td></tr>
-<tr class="memdesc:ga0aa77c35db909201b5fb3e21ad6c7416"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query the complete optional feature guarantees for one exact program format.  <br /></td></tr>
 <tr class="memitem:gae6e14d1868412f8e80904377116938bb" id="r_gae6e14d1868412f8e80904377116938bb"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#gae6e14d1868412f8e80904377116938bb">QDMI_device_query_site_property</a> (<a class="el" href="group__client__interface.html#ga2772c94ab19957ce5aaef652b626baec">QDMI_Device</a> device, <a class="el" href="types_8h.html#ab26279159380e378f258cb663968b9ec">QDMI_Site</a> site, <a class="el" href="constants_8h.html#a699a82efc1fb132a1b67a6e9d5592080">QDMI_Site_Property</a> prop, size_t size, void *value, size_t *size_ret)</td></tr>
 <tr class="memdesc:gae6e14d1868412f8e80904377116938bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query a site property.  <br /></td></tr>
 <tr class="memitem:ga4cac0fe85f5405e58ea4892e7b9080b6" id="r_ga4cac0fe85f5405e58ea4892e7b9080b6"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#ga4cac0fe85f5405e58ea4892e7b9080b6">QDMI_device_query_operation_property</a> (<a class="el" href="group__client__interface.html#ga2772c94ab19957ce5aaef652b626baec">QDMI_Device</a> device, <a class="el" href="types_8h.html#ae777e8f92186c1e6f836eeaa53b149d7">QDMI_Operation</a> operation, size_t num_sites, const <a class="el" href="types_8h.html#ab26279159380e378f258cb663968b9ec">QDMI_Site</a> *sites, size_t num_params, const double *params, <a class="el" href="constants_8h.html#abc8a0427b96af9020c80aedabcf393b3">QDMI_Operation_Property</a> prop, size_t size, void *value, size_t *size_ret)</td></tr>
@@ -269,64 +267,9 @@ Functions</h2></td></tr>
 <div class="line"><span class="comment">// Query the property.</span></div>
 <div class="line"><a class="code hl_function" href="#ga3ed6ddec5adc23e3b08706807dda8430">QDMI_device_query_device_property</a>(</div>
 <div class="line">  device, <a class="code hl_enumvalue" href="constants_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a18d3f183afc4d65c9e368f7cedf2d741">QDMI_DEVICE_PROPERTY_NAME</a>, size, name.data(), <span class="keyword">nullptr</span>);</div>
-<div class="ttc" id="aconstants_8h_html_ad251d8ae8fbbe9a5c7a10d66b243d526a18d3f183afc4d65c9e368f7cedf2d741"><div class="ttname"><a href="constants_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a18d3f183afc4d65c9e368f7cedf2d741">QDMI_DEVICE_PROPERTY_NAME</a></div><div class="ttdeci">@ QDMI_DEVICE_PROPERTY_NAME</div><div class="ttdoc">char* (string) The name of the device.</div><div class="ttdef"><b>Definition</b> constants.h:336</div></div>
+<div class="ttc" id="aconstants_8h_html_ad251d8ae8fbbe9a5c7a10d66b243d526a18d3f183afc4d65c9e368f7cedf2d741"><div class="ttname"><a href="constants_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a18d3f183afc4d65c9e368f7cedf2d741">QDMI_DEVICE_PROPERTY_NAME</a></div><div class="ttdeci">@ QDMI_DEVICE_PROPERTY_NAME</div><div class="ttdoc">char* (string) The name of the device.</div><div class="ttdef"><b>Definition</b> constants.h:323</div></div>
 <div class="ttc" id="agroup__client__query__interface_html_ga3ed6ddec5adc23e3b08706807dda8430"><div class="ttname"><a href="#ga3ed6ddec5adc23e3b08706807dda8430">QDMI_device_query_device_property</a></div><div class="ttdeci">int QDMI_device_query_device_property(QDMI_Device device, QDMI_Device_Property prop, size_t size, void *value, size_t *size_ret)</div><div class="ttdoc">Query a device property.</div></div>
 </div><!-- fragment --> </dd></dl>
-
-</div>
-</div>
-<a id="ga0aa77c35db909201b5fb3e21ad6c7416" name="ga0aa77c35db909201b5fb3e21ad6c7416"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga0aa77c35db909201b5fb3e21ad6c7416">&#9670;&#160;</a></span>QDMI_device_query_program_features()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int QDMI_device_query_program_features </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__client__interface.html#ga2772c94ab19957ce5aaef652b626baec">QDMI_Device</a></td>          <td class="paramname"><span class="paramname"><em>device</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="structQDMI__Program__Format.html">QDMI_Program_Format</a> *</td>          <td class="paramname"><span class="paramname"><em>format</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>size</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structQDMI__Program__Feature.html">QDMI_Program_Feature</a> *</td>          <td class="paramname"><span class="paramname"><em>value</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t *</td>          <td class="paramname"><span class="paramname"><em>size_ret</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Query the complete optional feature guarantees for one exact program format. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">device</td><td>The device to query. Must not be <code>NULL</code>. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">format</td><td>A canonical descriptor equal to one returned by <a class="el" href="constants_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a6cc7734ed9ab8493aa2d6256ed9a8468" title="QDMI_DEVICE_PROPERTY_SUPPORTEDPROGRAMFORMATS">QDMI_DEVICE_PROPERTY_SUPPORTEDPROGRAMFORMATS</a>. The value may be reconstructed by the caller. Must not be <code>NULL</code>. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">size</td><td>The size of <code class="param">value</code> in bytes. Ignored when <code class="param">value</code> is <code>NULL</code>. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">value</td><td>Storage for a list of <a class="el" href="structQDMI__Program__Feature.html" title="QDMI_Program_Feature">QDMI_Program_Feature</a> records, including all constraints, or <code>NULL</code> to query the required size. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">size_ret</td><td>The required list size in bytes, or <code>NULL</code>. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a8039f5cd8202553b2a91a1c0b01d6751" title="QDMI_SUCCESS">QDMI_SUCCESS</a> when the complete optional set is available. A zero-byte result means that the format supports only its normative baseline. </dd>
-<dd>
-<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651" title="QDMI_ERROR_NOTSUPPORTED">QDMI_ERROR_NOTSUPPORTED</a> when optional feature metadata is unknown for <code class="param">format</code>. </dd>
-<dd>
-<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642" title="QDMI_ERROR_INVALIDARGUMENT">QDMI_ERROR_INVALIDARGUMENT</a> for a null handle or descriptor, an invalid descriptor, or an insufficient output buffer. </dd>
-<dd>
-<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3" title="QDMI_ERROR_FATAL">QDMI_ERROR_FATAL</a> if an unexpected error occurred. </dd></dl>
 
 </div>
 </div>
@@ -406,8 +349,8 @@ Functions</h2></td></tr>
 <div class="line">uint64_t t1;</div>
 <div class="line"><a class="code hl_function" href="#gae6e14d1868412f8e80904377116938bb">QDMI_device_query_site_property</a>(</div>
 <div class="line">  device, site, <a class="code hl_enumvalue" href="constants_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2a60262ea30467ff3d36cbe4730c4a23f3">QDMI_SITE_PROPERTY_T1</a>, <span class="keyword">sizeof</span>(uint64_t), &amp;t1, <span class="keyword">nullptr</span>);</div>
-<div class="ttc" id="aconstants_8h_html_a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651"><div class="ttname"><a href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a></div><div class="ttdeci">@ QDMI_ERROR_NOTSUPPORTED</div><div class="ttdef"><b>Definition</b> constants.h:53</div></div>
-<div class="ttc" id="aconstants_8h_html_a69ef10d452cc6f03cac8a917ba48d6e2a60262ea30467ff3d36cbe4730c4a23f3"><div class="ttname"><a href="constants_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2a60262ea30467ff3d36cbe4730c4a23f3">QDMI_SITE_PROPERTY_T1</a></div><div class="ttdeci">@ QDMI_SITE_PROPERTY_T1</div><div class="ttdoc">uint64_t The raw, unscaled T1 time of a site.</div><div class="ttdef"><b>Definition</b> constants.h:587</div></div>
+<div class="ttc" id="aconstants_8h_html_a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651"><div class="ttname"><a href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651">QDMI_ERROR_NOTSUPPORTED</a></div><div class="ttdeci">@ QDMI_ERROR_NOTSUPPORTED</div><div class="ttdef"><b>Definition</b> constants.h:65</div></div>
+<div class="ttc" id="aconstants_8h_html_a69ef10d452cc6f03cac8a917ba48d6e2a60262ea30467ff3d36cbe4730c4a23f3"><div class="ttname"><a href="constants_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2a60262ea30467ff3d36cbe4730c4a23f3">QDMI_SITE_PROPERTY_T1</a></div><div class="ttdeci">@ QDMI_SITE_PROPERTY_T1</div><div class="ttdoc">uint64_t The raw, unscaled T1 time of a site.</div><div class="ttdef"><b>Definition</b> constants.h:575</div></div>
 <div class="ttc" id="agroup__client__query__interface_html_gae6e14d1868412f8e80904377116938bb"><div class="ttname"><a href="#gae6e14d1868412f8e80904377116938bb">QDMI_device_query_site_property</a></div><div class="ttdeci">int QDMI_device_query_site_property(QDMI_Device device, QDMI_Site site, QDMI_Site_Property prop, size_t size, void *value, size_t *size_ret)</div><div class="ttdoc">Query a site property.</div></div>
 </div><!-- fragment --><p class="enddd"></p>
 </dd></dl>
@@ -527,7 +470,7 @@ Functions</h2></td></tr>
 <div class="line"><a class="code hl_function" href="#ga4cac0fe85f5405e58ea4892e7b9080b6">QDMI_device_query_operation_property</a>(</div>
 <div class="line">  device, operation, 0, <span class="keyword">nullptr</span>, 0, <span class="keyword">nullptr</span>,</div>
 <div class="line">  <a class="code hl_enumvalue" href="constants_8h.html#ab23d5f0c5296e3eab4243e91f1213726aeff33960f7a3da9e17058cf9bf05da77">QDMI_OPERATION_PROPERTY_FIDELITY</a>, <span class="keyword">sizeof</span>(<span class="keywordtype">double</span>), &amp;fidelity, <span class="keyword">nullptr</span>);</div>
-<div class="ttc" id="aconstants_8h_html_ab23d5f0c5296e3eab4243e91f1213726aeff33960f7a3da9e17058cf9bf05da77"><div class="ttname"><a href="constants_8h.html#ab23d5f0c5296e3eab4243e91f1213726aeff33960f7a3da9e17058cf9bf05da77">QDMI_OPERATION_PROPERTY_FIDELITY</a></div><div class="ttdeci">@ QDMI_OPERATION_PROPERTY_FIDELITY</div><div class="ttdoc">double The fidelity of an operation.</div><div class="ttdef"><b>Definition</b> constants.h:799</div></div>
+<div class="ttc" id="aconstants_8h_html_ab23d5f0c5296e3eab4243e91f1213726aeff33960f7a3da9e17058cf9bf05da77"><div class="ttname"><a href="constants_8h.html#ab23d5f0c5296e3eab4243e91f1213726aeff33960f7a3da9e17058cf9bf05da77">QDMI_OPERATION_PROPERTY_FIDELITY</a></div><div class="ttdeci">@ QDMI_OPERATION_PROPERTY_FIDELITY</div><div class="ttdoc">double The fidelity of an operation.</div><div class="ttdef"><b>Definition</b> constants.h:785</div></div>
 <div class="ttc" id="agroup__client__query__interface_html_ga4cac0fe85f5405e58ea4892e7b9080b6"><div class="ttname"><a href="#ga4cac0fe85f5405e58ea4892e7b9080b6">QDMI_device_query_operation_property</a></div><div class="ttdeci">int QDMI_device_query_operation_property(QDMI_Device device, QDMI_Operation operation, size_t num_sites, const QDMI_Site *sites, size_t num_params, const double *params, QDMI_Operation_Property prop, size_t size, void *value, size_t *size_ret)</div><div class="ttdoc">Query an operation property.</div></div>
 </div><!-- fragment --><p class="enddd"></p>
 </dd></dl>
