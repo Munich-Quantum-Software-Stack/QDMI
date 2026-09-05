@@ -185,80 +185,10 @@ $(function(){initNavTree('constants_8h.html','',''); });
 </div><!--header-->
 <div class="contents">
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Description</h2>
-<div class="textblock"><p>Defines constants and value types used within QDMI across the <a class="el" href="group__client__interface.html" title="QDMI Client Interface">QDMI Client Interface</a> and the <a class="el" href="group__device__interface.html" title="QDMI Device Interface">QDMI Device Interface</a>. </p>
+<div class="textblock"><p>Defines all enums used within QDMI across the <a class="el" href="group__client__interface.html" title="QDMI Client Interface">QDMI Client Interface</a> and the <a class="el" href="group__device__interface.html" title="QDMI Device Interface">QDMI Device Interface</a>. </p>
 </div>
 <p><a href="constants_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
-Data Structures</h2></td></tr>
-<tr class="memitem:QDMI_5FProgram_5FFormat" id="r_QDMI_5FProgram_5FFormat"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structQDMI__Program__Format.html">QDMI_Program_Format</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exact program format accepted by a device.  <a href="structQDMI__Program__Format.html#details">More...</a><br /></td></tr>
-<tr class="memitem:QDMI_5FProgram_5FFeature" id="r_QDMI_5FProgram_5FFeature"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structQDMI__Program__Feature.html">QDMI_Program_Feature</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One optional feature guarantee for an exact program format.  <a href="structQDMI__Program__Feature.html#details">More...</a><br /></td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 id="header-define-members" class="groupheader"><a id="define-members" name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:a8491b4a773d45e8fe067326b532bec03" id="r_a8491b4a773d45e8fe067326b532bec03"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a8491b4a773d45e8fe067326b532bec03">QDMI_CUSTOM_ENUM_VALUE_MIN</a>&#160;&#160;&#160;999999995</td></tr>
-<tr class="memdesc:a8491b4a773d45e8fe067326b532bec03"><td class="mdescLeft">&#160;</td><td class="mdescRight">First value in every provider-defined enum range.  <br /></td></tr>
-<tr class="memitem:a7e1f6ebee2981970f891339435655e84" id="r_a7e1f6ebee2981970f891339435655e84"><td class="memItemLeft"><a id="a7e1f6ebee2981970f891339435655e84" name="a7e1f6ebee2981970f891339435655e84"></a>
-#define&#160;</td><td class="memItemRight"><b>QDMI_CUSTOM_ENUM_VALUE_MAX</b>&#160;&#160;&#160;INT32_MAX</td></tr>
-<tr class="memdesc:a7e1f6ebee2981970f891339435655e84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Last value in every provider-defined enum range. <br /></td></tr>
-<tr class="memitem:a4955653c3a1bd0a3b3ec66a1dbc82c4f" id="r_a4955653c3a1bd0a3b3ec66a1dbc82c4f"><td class="memItemLeft"><a id="a4955653c3a1bd0a3b3ec66a1dbc82c4f" name="a4955653c3a1bd0a3b3ec66a1dbc82c4f"></a>
-#define&#160;</td><td class="memItemRight"><b>QDMI_PROGRAM_ID_SIZE</b>&#160;&#160;&#160;64U</td></tr>
-<tr class="memdesc:a4955653c3a1bd0a3b3ec66a1dbc82c4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum bytes, including the terminating NUL, in a format or profile ID. <br /></td></tr>
-<tr class="memitem:a6afe2f84f9b78688ebcb684424b81319" id="r_a6afe2f84f9b78688ebcb684424b81319"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a6afe2f84f9b78688ebcb684424b81319">QDMI_MAKE_VERSION</a>(major,  minor,  patch)</td></tr>
-<tr class="memdesc:a6afe2f84f9b78688ebcb684424b81319"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pack a Semantic Versioning major, minor, and patch release into a 32-bit exact version value.  <br /></td></tr>
-<tr class="memitem:a8e8caa8cb8dfb5c515321c3700c40152" id="r_a8e8caa8cb8dfb5c515321c3700c40152"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a8e8caa8cb8dfb5c515321c3700c40152">QDMI_VERSION_MAJOR</a>(version)</td></tr>
-<tr class="memdesc:a8e8caa8cb8dfb5c515321c3700c40152"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract the Semantic Versioning major component of a packed version.  <br /></td></tr>
-<tr class="memitem:ad80ba3f24fa2cec89f3d409f18aa1766" id="r_ad80ba3f24fa2cec89f3d409f18aa1766"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#ad80ba3f24fa2cec89f3d409f18aa1766">QDMI_VERSION_MINOR</a>(version)</td></tr>
-<tr class="memdesc:ad80ba3f24fa2cec89f3d409f18aa1766"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract the Semantic Versioning minor component of a packed version.  <br /></td></tr>
-<tr class="memitem:a771649d97222ad4e2e23a56797dde658" id="r_a771649d97222ad4e2e23a56797dde658"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a771649d97222ad4e2e23a56797dde658">QDMI_VERSION_PATCH</a>(version)</td></tr>
-<tr class="memdesc:a771649d97222ad4e2e23a56797dde658"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract the Semantic Versioning patch component of a packed version.  <br /></td></tr>
-<tr class="memitem:af3221e629750c49a596bc1d5ede3db0d" id="r_af3221e629750c49a596bc1d5ede3db0d"><td class="memItemLeft"><a id="af3221e629750c49a596bc1d5ede3db0d" name="af3221e629750c49a596bc1d5ede3db0d"></a>
-#define&#160;</td><td class="memItemRight"><b>QDMI_PROGRAM_FEATURE_ID_SIZE</b>&#160;&#160;&#160;64U</td></tr>
-<tr class="memdesc:af3221e629750c49a596bc1d5ede3db0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum bytes, including the terminating NUL, in a feature ID. <br /></td></tr>
-<tr class="memitem:ad632b2002054b013dce010d9332c4cad" id="r_ad632b2002054b013dce010d9332c4cad"><td class="memItemLeft"><a id="ad632b2002054b013dce010d9332c4cad" name="ad632b2002054b013dce010d9332c4cad"></a>
-#define&#160;</td><td class="memItemRight"><b>QDMI_PROGRAM_CONSTRAINT_ID_SIZE</b>&#160;&#160;&#160;64U</td></tr>
-<tr class="memdesc:ad632b2002054b013dce010d9332c4cad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum bytes, including the terminating NUL, in a constraint ID. <br /></td></tr>
-<tr class="memitem:a0f3bd80a77571b44774327368ac5b0c3" id="r_a0f3bd80a77571b44774327368ac5b0c3"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a0f3bd80a77571b44774327368ac5b0c3">QDMI_PROGRAM_FEATURE_UNCONSTRAINED</a>(feature_id,  feature_value)</td></tr>
-<tr class="memdesc:a0f3bd80a77571b44774327368ac5b0c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize an unrestricted program feature for C or C++.  <br /></td></tr>
-<tr class="memitem:afbdea9e33f7fcc6f69aff39ab12ae6a0" id="r_afbdea9e33f7fcc6f69aff39ab12ae6a0"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#afbdea9e33f7fcc6f69aff39ab12ae6a0">QDMI_PROGRAM_FEATURE_MID_CIRCUIT_MEASUREMENT</a>&#160;&#160;&#160;&quot;mid-circuit-measurement&quot;</td></tr>
-<tr class="memdesc:afbdea9e33f7fcc6f69aff39ab12ae6a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measure a qubit before the end of one execution.  <br /></td></tr>
-<tr class="memitem:a9a9a8befeb0b60ef27703918c89a635e" id="r_a9a9a8befeb0b60ef27703918c89a635e"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a9a9a8befeb0b60ef27703918c89a635e">QDMI_PROGRAM_FEATURE_MEASURED_QUBIT_REUSE</a>&#160;&#160;&#160;&quot;measured-qubit-reuse&quot;</td></tr>
-<tr class="memdesc:a9a9a8befeb0b60ef27703918c89a635e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply a quantum operation to a measured qubit in the same execution.  <br /></td></tr>
-<tr class="memitem:aae91452451b8a18fbcbc299749306ca5" id="r_aae91452451b8a18fbcbc299749306ca5"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#aae91452451b8a18fbcbc299749306ca5">QDMI_PROGRAM_FEATURE_MEASUREMENT_RESULT_USE</a>&#160;&#160;&#160;&quot;measurement-result-use&quot;</td></tr>
-<tr class="memdesc:aae91452451b8a18fbcbc299749306ca5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read a measurement result during the same execution.  <br /></td></tr>
-<tr class="memitem:a9f5cd8079caaedfceda12e9bd797d0e7" id="r_a9f5cd8079caaedfceda12e9bd797d0e7"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a9f5cd8079caaedfceda12e9bd797d0e7">QDMI_PROGRAM_FEATURE_BOOLEAN_COMPUTATION</a>&#160;&#160;&#160;&quot;boolean-computation&quot;</td></tr>
-<tr class="memdesc:a9f5cd8079caaedfceda12e9bd797d0e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute Boolean values during execution.  <br /></td></tr>
-<tr class="memitem:a8ac197c8f47d0d20e911faea5f5fb490" id="r_a8ac197c8f47d0d20e911faea5f5fb490"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a8ac197c8f47d0d20e911faea5f5fb490">QDMI_PROGRAM_FEATURE_FORWARD_BRANCHING</a>&#160;&#160;&#160;&quot;forward-branching&quot;</td></tr>
-<tr class="memdesc:a8ac197c8f47d0d20e911faea5f5fb490"><td class="mdescLeft">&#160;</td><td class="mdescRight">Select a later program region from a value computed during execution.  <br /></td></tr>
-<tr class="memitem:a5487329d36789b3579c827917cfa2e6e" id="r_a5487329d36789b3579c827917cfa2e6e"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a5487329d36789b3579c827917cfa2e6e">QDMI_PROGRAM_FEATURE_COUNTED_ITERATION</a>&#160;&#160;&#160;&quot;counted-iteration&quot;</td></tr>
-<tr class="memdesc:a5487329d36789b3579c827917cfa2e6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Repeat a program region a known finite number of times.  <br /></td></tr>
-<tr class="memitem:aeec854dbe5b2c0bae441a8ee441c10e4" id="r_aeec854dbe5b2c0bae441a8ee441c10e4"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#aeec854dbe5b2c0bae441a8ee441c10e4">QDMI_PROGRAM_FEATURE_CONDITIONAL_LOOP</a>&#160;&#160;&#160;&quot;conditional-loop&quot;</td></tr>
-<tr class="memdesc:aeec854dbe5b2c0bae441a8ee441c10e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Repeat a program region based on a value computed during execution.  <br /></td></tr>
-<tr class="memitem:aa88b1e11dc197c9818137e29a0f86f66" id="r_aa88b1e11dc197c9818137e29a0f86f66"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#aa88b1e11dc197c9818137e29a0f86f66">QDMI_PROGRAM_FEATURE_MULTIWAY_BRANCHING</a>&#160;&#160;&#160;&quot;multiway-branching&quot;</td></tr>
-<tr class="memdesc:aa88b1e11dc197c9818137e29a0f86f66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Select one of more than two program regions during execution.  <br /></td></tr>
-<tr class="memitem:a4513bb7aa160f9c8c5990dd3a6f1d4b8" id="r_a4513bb7aa160f9c8c5990dd3a6f1d4b8"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a4513bb7aa160f9c8c5990dd3a6f1d4b8">QDMI_PROGRAM_FEATURE_INTEGER_COMPUTATION</a>&#160;&#160;&#160;&quot;integer-computation&quot;</td></tr>
-<tr class="memdesc:a4513bb7aa160f9c8c5990dd3a6f1d4b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute integer values during execution.  <br /></td></tr>
-<tr class="memitem:af4e66935ec643298961178499bcd8632" id="r_af4e66935ec643298961178499bcd8632"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#af4e66935ec643298961178499bcd8632">QDMI_PROGRAM_FEATURE_FLOAT_COMPUTATION</a>&#160;&#160;&#160;&quot;float-computation&quot;</td></tr>
-<tr class="memdesc:af4e66935ec643298961178499bcd8632"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute floating-point values during execution.  <br /></td></tr>
-<tr class="memitem:a1fcd551d5977f3aa962018c4466253bc" id="r_a1fcd551d5977f3aa962018c4466253bc"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a1fcd551d5977f3aa962018c4466253bc">QDMI_PROGRAM_FEATURE_IR_FUNCTIONS</a>&#160;&#160;&#160;&quot;ir-functions&quot;</td></tr>
-<tr class="memdesc:a1fcd551d5977f3aa962018c4466253bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define and call functions beyond the entry point and format-mandated declarations or runtime calls.  <br /></td></tr>
-<tr class="memitem:a2b88c16010ed55bb82e4078b4eeb8ea8" id="r_a2b88c16010ed55bb82e4078b4eeb8ea8"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a2b88c16010ed55bb82e4078b4eeb8ea8">QDMI_PROGRAM_FEATURE_MULTIPLE_RETURN_POINTS</a>&#160;&#160;&#160;&quot;multiple-return-points&quot;</td></tr>
-<tr class="memdesc:a2b88c16010ed55bb82e4078b4eeb8ea8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use more than one return point in one function or entry point.  <br /></td></tr>
-<tr class="memitem:aaa447b38576367c850cb116318747add" id="r_aaa447b38576367c850cb116318747add"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#aaa447b38576367c850cb116318747add">QDMI_PROGRAM_FEATURE_DYNAMIC_QUBIT_MANAGEMENT</a>&#160;&#160;&#160;&quot;dynamic-qubit-management&quot;</td></tr>
-<tr class="memdesc:aaa447b38576367c850cb116318747add"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate and release qubits during execution.  <br /></td></tr>
-<tr class="memitem:a9f85950f9e14d7b291de4992008f49ad" id="r_a9f85950f9e14d7b291de4992008f49ad"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a9f85950f9e14d7b291de4992008f49ad">QDMI_PROGRAM_FEATURE_DYNAMIC_RESULT_MANAGEMENT</a>&#160;&#160;&#160;&quot;dynamic-result-management&quot;</td></tr>
-<tr class="memdesc:a9f85950f9e14d7b291de4992008f49ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate and release result handles during execution.  <br /></td></tr>
-<tr class="memitem:a6e101a1904de79a43091fdb7c547089e" id="r_a6e101a1904de79a43091fdb7c547089e"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a6e101a1904de79a43091fdb7c547089e">QDMI_PROGRAM_FEATURE_ARRAYS</a>&#160;&#160;&#160;&quot;arrays&quot;</td></tr>
-<tr class="memdesc:a6e101a1904de79a43091fdb7c547089e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create and access arrays during execution.  <br /></td></tr>
-<tr class="memitem:ac05683163bd0eb1e7b10087c71483539" id="r_ac05683163bd0eb1e7b10087c71483539"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#ac05683163bd0eb1e7b10087c71483539">QDMI_PROGRAM_CONSTRAINT_MAX_CONTROL_FLOW_NESTING_DEPTH</a>&#160;&#160;&#160;&quot;max-control-flow-nesting-depth&quot;</td></tr>
-<tr class="memdesc:ac05683163bd0eb1e7b10087c71483539"><td class="mdescLeft">&#160;</td><td class="mdescRight">Limit lexical control-flow nesting depth.  <br /></td></tr>
-<tr class="memitem:a4f0db2af4041c8b5db4de715583c67d9" id="r_a4f0db2af4041c8b5db4de715583c67d9"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a4f0db2af4041c8b5db4de715583c67d9">QDMI_PROGRAM_CONSTRAINT_MAX_ITERATION_COUNT</a>&#160;&#160;&#160;&quot;max-iteration-count&quot;</td></tr>
-<tr class="memdesc:a4f0db2af4041c8b5db4de715583c67d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Limit the trip count of each loop.  <br /></td></tr>
-<tr class="memitem:aa2e2a5516f09f7b93962c620e1b94ae7" id="r_aa2e2a5516f09f7b93962c620e1b94ae7"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#aa2e2a5516f09f7b93962c620e1b94ae7">QDMI_PROGRAM_CONSTRAINT_MAX_CASE_COUNT</a>&#160;&#160;&#160;&quot;max-case-count&quot;</td></tr>
-<tr class="memdesc:aa2e2a5516f09f7b93962c620e1b94ae7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Limit the number of explicit cases in each multiway branch.  <br /></td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-typedef-members" class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:ab99cb3929c8d79596e66fb276711ebda" id="r_ab99cb3929c8d79596e66fb276711ebda"><td class="memItemLeft"><a id="ab99cb3929c8d79596e66fb276711ebda" name="ab99cb3929c8d79596e66fb276711ebda"></a>
@@ -285,9 +215,9 @@ typedef enum <a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726">QDMI_OPERAT
 <tr class="memitem:a28c071c6750e755deb9f375fdf4c5bfc" id="r_a28c071c6750e755deb9f375fdf4c5bfc"><td class="memItemLeft"><a id="a28c071c6750e755deb9f375fdf4c5bfc" name="a28c071c6750e755deb9f375fdf4c5bfc"></a>
 typedef enum <a class="el" href="#a04e5c793bcbe8b354a9223bb60f828a6">QDMI_JOB_STATUS_T</a>&#160;</td><td class="memItemRight"><b>QDMI_Job_Status</b></td></tr>
 <tr class="memdesc:a28c071c6750e755deb9f375fdf4c5bfc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Job status type. <br /></td></tr>
-<tr class="memitem:ac7dc4f0192c454165a42a52c4c703649" id="r_ac7dc4f0192c454165a42a52c4c703649"><td class="memItemLeft"><a id="ac7dc4f0192c454165a42a52c4c703649" name="ac7dc4f0192c454165a42a52c4c703649"></a>
-typedef enum <a class="el" href="#ad5dd287338b8e8d51f0cc545a1797f82">QDMI_PROGRAM_ENCODING_T</a>&#160;</td><td class="memItemRight"><b>QDMI_Program_Encoding</b></td></tr>
-<tr class="memdesc:ac7dc4f0192c454165a42a52c4c703649"><td class="mdescLeft">&#160;</td><td class="mdescRight">Program encoding type. <br /></td></tr>
+<tr class="memitem:a475336f0c08bd0218dd76a6016098231" id="r_a475336f0c08bd0218dd76a6016098231"><td class="memItemLeft"><a id="a475336f0c08bd0218dd76a6016098231" name="a475336f0c08bd0218dd76a6016098231"></a>
+typedef enum <a class="el" href="#a3eff3252203fcad146d5896e4466ec09">QDMI_PROGRAM_FORMAT_T</a>&#160;</td><td class="memItemRight"><b>QDMI_Program_Format</b></td></tr>
+<tr class="memdesc:a475336f0c08bd0218dd76a6016098231"><td class="mdescLeft">&#160;</td><td class="mdescRight">Program format type. <br /></td></tr>
 <tr class="memitem:a52254cd217f8627659a19c8e0c2feed6" id="r_a52254cd217f8627659a19c8e0c2feed6"><td class="memItemLeft"><a id="a52254cd217f8627659a19c8e0c2feed6" name="a52254cd217f8627659a19c8e0c2feed6"></a>
 typedef enum <a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1">QDMI_JOB_RESULT_T</a>&#160;</td><td class="memItemRight"><b>QDMI_Job_Result</b></td></tr>
 <tr class="memdesc:a52254cd217f8627659a19c8e0c2feed6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Job result type. <br /></td></tr>
@@ -328,28 +258,27 @@ Enumerations</h2></td></tr>
 , <a class="el" href="#a9f1e467b2b3870263b0e9d7e5d36cea4ac137dfd9d9edc8d822bc7bfb9d574fcb">QDMI_DEVICE_SESSION_PARAMETER_CHILDDEVICE</a> = 6
 , <a class="el" href="#a9f1e467b2b3870263b0e9d7e5d36cea4a08c16fae1a1083cf6aae5b0131b0c6e1">QDMI_DEVICE_SESSION_PARAMETER_MAX</a> = 7
 , <br />
-&#160;&#160;<a class="el" href="#a9f1e467b2b3870263b0e9d7e5d36cea4a90b1f07e865a147dfba3d1531b4f8275">QDMI_DEVICE_SESSION_PARAMETER_CUSTOM1</a> = QDMI_CUSTOM_ENUM_VALUE_MIN
+&#160;&#160;<a class="el" href="#a9f1e467b2b3870263b0e9d7e5d36cea4a90b1f07e865a147dfba3d1531b4f8275">QDMI_DEVICE_SESSION_PARAMETER_CUSTOM1</a> = 999999995
 , <a class="el" href="#a9f1e467b2b3870263b0e9d7e5d36cea4a741c03ce313a4b09a4ef26721e544140">QDMI_DEVICE_SESSION_PARAMETER_CUSTOM2</a> = 999999996
 , <a class="el" href="#a9f1e467b2b3870263b0e9d7e5d36cea4a78eb86a4b3ac80c98279dddd00299bdb">QDMI_DEVICE_SESSION_PARAMETER_CUSTOM3</a> = 999999997
 , <a class="el" href="#a9f1e467b2b3870263b0e9d7e5d36cea4a2fcfc05df513632680a8608b71b8725f">QDMI_DEVICE_SESSION_PARAMETER_CUSTOM4</a> = 999999998
 , <br />
 &#160;&#160;<a class="el" href="#a9f1e467b2b3870263b0e9d7e5d36cea4a4fb63f338932625a7ae40eeb04c736c8">QDMI_DEVICE_SESSION_PARAMETER_CUSTOM5</a> = 999999999
-, <a class="el" href="#a9f1e467b2b3870263b0e9d7e5d36cea4a24b2a44e0adfbde56707e0d4226042e4">QDMI_DEVICE_SESSION_PARAMETER_CUSTOM_MAX</a> = QDMI_CUSTOM_ENUM_VALUE_MAX
 <br />
  }</td></tr>
 <tr class="memdesc:a9f1e467b2b3870263b0e9d7e5d36cea4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum of the device session parameters that can be set via <a class="el" href="group__device__session__interface.html#gaaf2fd0617860189cdbb2cc5c43d77c54" title="QDMI_device_session_set_parameter">QDMI_device_session_set_parameter</a>.  <a href="#a9f1e467b2b3870263b0e9d7e5d36cea4">More...</a><br /></td></tr>
 <tr class="memitem:a40dd25c531ebf99fb4b46469083b609e" id="r_a40dd25c531ebf99fb4b46469083b609e"><td class="memItemLeft">enum &#160;</td><td class="memItemRight"><a class="el" href="#a40dd25c531ebf99fb4b46469083b609e">QDMI_DEVICE_JOB_PARAMETER_T</a> { <br />
 &#160;&#160;<a class="el" href="#a40dd25c531ebf99fb4b46469083b609ea5ee9218fc51cbd01765619467b90056f">QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT</a> = 0
-, <a class="el" href="#a40dd25c531ebf99fb4b46469083b609ea4ecec990e69afb205f9801433be37b26">QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM</a> = 1
-, <a class="el" href="#a40dd25c531ebf99fb4b46469083b609ea535c764f6d9b057069cc2f98e5e3731d">QDMI_DEVICE_JOB_PARAMETER_MAX</a> = 2
-, <a class="el" href="#a40dd25c531ebf99fb4b46469083b609ea59a7b1b3e9da8f9b71b0aec5fd1eb0d9">QDMI_DEVICE_JOB_PARAMETER_CUSTOM1</a> = QDMI_CUSTOM_ENUM_VALUE_MIN
+, <a class="el" href="#a40dd25c531ebf99fb4b46469083b609ea7ef134726b7ec6f0855c0d8171e44dd3">QDMI_DEVICE_JOB_PARAMETER_PROGRAM</a> = 1
+, <a class="el" href="#a40dd25c531ebf99fb4b46469083b609ea4ecec990e69afb205f9801433be37b26">QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM</a> = 2
+, <a class="el" href="#a40dd25c531ebf99fb4b46469083b609ea535c764f6d9b057069cc2f98e5e3731d">QDMI_DEVICE_JOB_PARAMETER_MAX</a> = 3
 , <br />
-&#160;&#160;<a class="el" href="#a40dd25c531ebf99fb4b46469083b609ea7c7b2bfd16a3fc1c8aa6820f9c76112b">QDMI_DEVICE_JOB_PARAMETER_CUSTOM2</a> = 999999996
+&#160;&#160;<a class="el" href="#a40dd25c531ebf99fb4b46469083b609ea59a7b1b3e9da8f9b71b0aec5fd1eb0d9">QDMI_DEVICE_JOB_PARAMETER_CUSTOM1</a> = 999999995
+, <a class="el" href="#a40dd25c531ebf99fb4b46469083b609ea7c7b2bfd16a3fc1c8aa6820f9c76112b">QDMI_DEVICE_JOB_PARAMETER_CUSTOM2</a> = 999999996
 , <a class="el" href="#a40dd25c531ebf99fb4b46469083b609eae919fa568a0f06015060a074cd6466d4">QDMI_DEVICE_JOB_PARAMETER_CUSTOM3</a> = 999999997
 , <a class="el" href="#a40dd25c531ebf99fb4b46469083b609ea75c3ac2ca26800b70515160515e8d5e5">QDMI_DEVICE_JOB_PARAMETER_CUSTOM4</a> = 999999998
-, <a class="el" href="#a40dd25c531ebf99fb4b46469083b609ead04b984fe78deafa5c507101da54ad32">QDMI_DEVICE_JOB_PARAMETER_CUSTOM5</a> = 999999999
 , <br />
-&#160;&#160;<a class="el" href="#a40dd25c531ebf99fb4b46469083b609ea03dce278e54f1a9356cedd281ae88220">QDMI_DEVICE_JOB_PARAMETER_CUSTOM_MAX</a> = QDMI_CUSTOM_ENUM_VALUE_MAX
+&#160;&#160;<a class="el" href="#a40dd25c531ebf99fb4b46469083b609ead04b984fe78deafa5c507101da54ad32">QDMI_DEVICE_JOB_PARAMETER_CUSTOM5</a> = 999999999
 <br />
  }</td></tr>
 <tr class="memdesc:a40dd25c531ebf99fb4b46469083b609e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum of the device job parameters that can be set via <a class="el" href="group__device__job__interface.html#ga1ff5eda213c2bd60599efeac2166654d" title="QDMI_device_job_set_parameter">QDMI_device_job_set_parameter</a>.  <a href="#a40dd25c531ebf99fb4b46469083b609e">More...</a><br /></td></tr>
@@ -360,16 +289,13 @@ Enumerations</h2></td></tr>
 , <a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4faad5344a33a120865b1c6f987b9fe023c">QDMI_DEVICE_JOB_PROPERTY_SHOTSNUM</a> = 3
 , <br />
 &#160;&#160;<a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4fa4fdb1643973913aeb1f201e3484e7f79">QDMI_DEVICE_JOB_PROPERTY_QUEUEPOSITION</a> = 4
-, <a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4faa24add14b040fb44b0daac7f5714fafc">QDMI_DEVICE_JOB_PROPERTY_PROGRAMSNUM</a> = 5
-, <a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4fac476c098fa8050146b00c2857a151303">QDMI_DEVICE_JOB_PROPERTY_MAX</a> = 6
-, <a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4fa19282bf485e4af273b4cfff5290540d6">QDMI_DEVICE_JOB_PROPERTY_CUSTOM1</a> = QDMI_CUSTOM_ENUM_VALUE_MIN
+, <a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4fac476c098fa8050146b00c2857a151303">QDMI_DEVICE_JOB_PROPERTY_MAX</a> = 5
+, <a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4fa19282bf485e4af273b4cfff5290540d6">QDMI_DEVICE_JOB_PROPERTY_CUSTOM1</a> = 999999995
+, <a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4fad86d4edb36e54ab09f6c3a424d5bc8e4">QDMI_DEVICE_JOB_PROPERTY_CUSTOM2</a> = 999999996
 , <br />
-&#160;&#160;<a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4fad86d4edb36e54ab09f6c3a424d5bc8e4">QDMI_DEVICE_JOB_PROPERTY_CUSTOM2</a> = 999999996
-, <a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4faa7144a601ca05f6f3e0d4155dbc6a08e">QDMI_DEVICE_JOB_PROPERTY_CUSTOM3</a> = 999999997
+&#160;&#160;<a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4faa7144a601ca05f6f3e0d4155dbc6a08e">QDMI_DEVICE_JOB_PROPERTY_CUSTOM3</a> = 999999997
 , <a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4fa7f324d6c1468d7c14608e1ffad230c3c">QDMI_DEVICE_JOB_PROPERTY_CUSTOM4</a> = 999999998
 , <a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4fa08224f2da22d71f598bf27aa85ac9bd4">QDMI_DEVICE_JOB_PROPERTY_CUSTOM5</a> = 999999999
-, <br />
-&#160;&#160;<a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4faf89e9b61289a81cb1c4670772f263139">QDMI_DEVICE_JOB_PROPERTY_CUSTOM_MAX</a> = QDMI_CUSTOM_ENUM_VALUE_MAX
 <br />
  }</td></tr>
 <tr class="memdesc:a6e4d18c7fa5d383bbcc1498abe090d4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum of the device job properties that can be queried via <a class="el" href="group__device__job__interface.html#ga42686f735d112236118b5e033a6c8194" title="QDMI_device_job_query_property">QDMI_device_job_query_property</a> as part of the <a class="el" href="group__device__interface.html" title="QDMI Device Interface">device interface</a>.  <a href="#a6e4d18c7fa5d383bbcc1498abe090d4f">More...</a><br /></td></tr>
@@ -395,16 +321,13 @@ Enumerations</h2></td></tr>
 , <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a223cba616b016a4b33e06b53854a18f6">QDMI_DEVICE_PROPERTY_CHILDDEVICES</a> = 15
 , <br />
 &#160;&#160;<a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a11b4157c54d33e972a56e327defab279">QDMI_DEVICE_PROPERTY_QUEUELENGTH</a> = 16
-, <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a075556271172ec5539c14df12a050f05">QDMI_DEVICE_PROPERTY_ID</a> = 17
-, <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526afe696a25133fa887276e666460981688">QDMI_DEVICE_PROPERTY_MAX</a> = 18
-, <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a994b8261b6addc3f56993c467641b122">QDMI_DEVICE_PROPERTY_CUSTOM1</a> = QDMI_CUSTOM_ENUM_VALUE_MIN
+, <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526afe696a25133fa887276e666460981688">QDMI_DEVICE_PROPERTY_MAX</a> = 17
+, <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a994b8261b6addc3f56993c467641b122">QDMI_DEVICE_PROPERTY_CUSTOM1</a> = 999999995
+, <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a36730bc67d1fd3c7578a352adf47745e">QDMI_DEVICE_PROPERTY_CUSTOM2</a> = 999999996
 , <br />
-&#160;&#160;<a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a36730bc67d1fd3c7578a352adf47745e">QDMI_DEVICE_PROPERTY_CUSTOM2</a> = 999999996
-, <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a32e4c833c31ffb4add4245a722d70e88">QDMI_DEVICE_PROPERTY_CUSTOM3</a> = 999999997
+&#160;&#160;<a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a32e4c833c31ffb4add4245a722d70e88">QDMI_DEVICE_PROPERTY_CUSTOM3</a> = 999999997
 , <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526ac8f6978f4bf1ad2e263b74bb3bb98aef">QDMI_DEVICE_PROPERTY_CUSTOM4</a> = 999999998
 , <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526adb994f1dc9dfee2910261951f7e4b39f">QDMI_DEVICE_PROPERTY_CUSTOM5</a> = 999999999
-, <br />
-&#160;&#160;<a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a5b12d41d98a269576bc4e1376f9a0ea8">QDMI_DEVICE_PROPERTY_CUSTOM_MAX</a> = QDMI_CUSTOM_ENUM_VALUE_MAX
 <br />
  }</td></tr>
 <tr class="memitem:aa13ac5e1c93a4b358d84bb9fd1f5fd99" id="r_aa13ac5e1c93a4b358d84bb9fd1f5fd99"><td class="memItemLeft">enum &#160;</td><td class="memItemRight"><a class="el" href="#aa13ac5e1c93a4b358d84bb9fd1f5fd99">QDMI_DEVICE_STATUS_T</a> { <br />
@@ -437,13 +360,12 @@ Enumerations</h2></td></tr>
 , <br />
 &#160;&#160;<a class="el" href="#a69ef10d452cc6f03cac8a917ba48d6e2aae6022d61accc063ffbc0173481f3b90">QDMI_SITE_PROPERTY_SUBMODULEINDEX</a> = 12
 , <a class="el" href="#a69ef10d452cc6f03cac8a917ba48d6e2ade44c67aa77a26645d41d7529cdbff8e">QDMI_SITE_PROPERTY_MAX</a> = 13
-, <a class="el" href="#a69ef10d452cc6f03cac8a917ba48d6e2a1ad5483fe6bcbedf073cd6ae41031e3a">QDMI_SITE_PROPERTY_CUSTOM1</a> = QDMI_CUSTOM_ENUM_VALUE_MIN
+, <a class="el" href="#a69ef10d452cc6f03cac8a917ba48d6e2a1ad5483fe6bcbedf073cd6ae41031e3a">QDMI_SITE_PROPERTY_CUSTOM1</a> = 999999995
 , <a class="el" href="#a69ef10d452cc6f03cac8a917ba48d6e2a4be19ea36b28202b31f21816f968d977">QDMI_SITE_PROPERTY_CUSTOM2</a> = 999999996
 , <br />
 &#160;&#160;<a class="el" href="#a69ef10d452cc6f03cac8a917ba48d6e2a522b513285959f510e03e12e9ba21c5a">QDMI_SITE_PROPERTY_CUSTOM3</a> = 999999997
 , <a class="el" href="#a69ef10d452cc6f03cac8a917ba48d6e2a27cdae762dcc09f9df6ba78d91fa3063">QDMI_SITE_PROPERTY_CUSTOM4</a> = 999999998
 , <a class="el" href="#a69ef10d452cc6f03cac8a917ba48d6e2ae75701dbdb3fd96feb949fa37b405455">QDMI_SITE_PROPERTY_CUSTOM5</a> = 999999999
-, <a class="el" href="#a69ef10d452cc6f03cac8a917ba48d6e2af02dd8cd2e18076cf1edc2cc741f856e">QDMI_SITE_PROPERTY_CUSTOM_MAX</a> = QDMI_CUSTOM_ENUM_VALUE_MAX
 <br />
  }</td></tr>
 <tr class="memitem:ab23d5f0c5296e3eab4243e91f1213726" id="r_ab23d5f0c5296e3eab4243e91f1213726"><td class="memItemLeft">enum &#160;</td><td class="memItemRight"><a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726">QDMI_OPERATION_PROPERTY_T</a> { <br />
@@ -462,13 +384,12 @@ Enumerations</h2></td></tr>
 , <a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726ad543f00e2cb82fd850c738fc38ac09aa">QDMI_OPERATION_PROPERTY_MEANSHUTTLINGSPEED</a> = 10
 , <a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726a049ae95ba8acfe7191dd7d5139389468">QDMI_OPERATION_PROPERTY_MAX</a> = 11
 , <br />
-&#160;&#160;<a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726aa8a314f70a9f754463dd1b8861230322">QDMI_OPERATION_PROPERTY_CUSTOM1</a> = QDMI_CUSTOM_ENUM_VALUE_MIN
+&#160;&#160;<a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726aa8a314f70a9f754463dd1b8861230322">QDMI_OPERATION_PROPERTY_CUSTOM1</a> = 999999995
 , <a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726a0475dc2bb362d79e84f539f09ea43160">QDMI_OPERATION_PROPERTY_CUSTOM2</a> = 999999996
 , <a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726ad091b00466f4429b0b4a61df3ecee07e">QDMI_OPERATION_PROPERTY_CUSTOM3</a> = 999999997
 , <a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726af340d37b0cb6a28660c0a064088125d0">QDMI_OPERATION_PROPERTY_CUSTOM4</a> = 999999998
 , <br />
 &#160;&#160;<a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726ae4414f8e1b54a24d9db057f8214ad579">QDMI_OPERATION_PROPERTY_CUSTOM5</a> = 999999999
-, <a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726ad4676ff25bc494fd8e82f29e7207fe47">QDMI_OPERATION_PROPERTY_CUSTOM_MAX</a> = QDMI_CUSTOM_ENUM_VALUE_MAX
 <br />
  }</td></tr>
 <tr class="memitem:a04e5c793bcbe8b354a9223bb60f828a6" id="r_a04e5c793bcbe8b354a9223bb60f828a6"><td class="memItemLeft">enum &#160;</td><td class="memItemRight"><a class="el" href="#a04e5c793bcbe8b354a9223bb60f828a6">QDMI_JOB_STATUS_T</a> { <br />
@@ -483,10 +404,29 @@ Enumerations</h2></td></tr>
 <br />
  }</td></tr>
 <tr class="memdesc:a04e5c793bcbe8b354a9223bb60f828a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum of the status a job can have.  <a href="#a04e5c793bcbe8b354a9223bb60f828a6">More...</a><br /></td></tr>
-<tr class="memitem:ad5dd287338b8e8d51f0cc545a1797f82" id="r_ad5dd287338b8e8d51f0cc545a1797f82"><td class="memItemLeft">enum &#160;</td><td class="memItemRight"><a class="el" href="#ad5dd287338b8e8d51f0cc545a1797f82">QDMI_PROGRAM_ENCODING_T</a> { <a class="el" href="#ad5dd287338b8e8d51f0cc545a1797f82ac2b50483b1c5169f6090ca12dfaf902d">QDMI_PROGRAM_ENCODING_TEXT</a> = 1
-, <a class="el" href="#ad5dd287338b8e8d51f0cc545a1797f82a2014390ec8486330e33b62d612c23571">QDMI_PROGRAM_ENCODING_BINARY</a> = 2
+<tr class="memitem:a3eff3252203fcad146d5896e4466ec09" id="r_a3eff3252203fcad146d5896e4466ec09"><td class="memItemLeft">enum &#160;</td><td class="memItemRight"><a class="el" href="#a3eff3252203fcad146d5896e4466ec09">QDMI_PROGRAM_FORMAT_T</a> { <br />
+&#160;&#160;<a class="el" href="#a3eff3252203fcad146d5896e4466ec09afd3bab5e29afc660e29b2a132246471b">QDMI_PROGRAM_FORMAT_QASM2</a> = 0
+, <a class="el" href="#a3eff3252203fcad146d5896e4466ec09a46cb051d6e1f54c658570dee57813903">QDMI_PROGRAM_FORMAT_QASM3</a> = 1
+, <a class="el" href="#a3eff3252203fcad146d5896e4466ec09a3645597dc4c99852e2820de66569ceac">QDMI_PROGRAM_FORMAT_QIRBASESTRING</a> = 2
+, <a class="el" href="#a3eff3252203fcad146d5896e4466ec09a705ba084cac8769dc2bf91c0beb35ac7">QDMI_PROGRAM_FORMAT_QIRBASEMODULE</a> = 3
+, <br />
+&#160;&#160;<a class="el" href="#a3eff3252203fcad146d5896e4466ec09ad749b99003f2b2f6bd07916b2e45be14">QDMI_PROGRAM_FORMAT_QIRADAPTIVESTRING</a> = 4
+, <a class="el" href="#a3eff3252203fcad146d5896e4466ec09aded29a50e3dc815777fb45f54dbc1b02">QDMI_PROGRAM_FORMAT_QIRADAPTIVEMODULE</a> = 5
+, <a class="el" href="#a3eff3252203fcad146d5896e4466ec09a250ddcb8393b04b08471c5fe7abb3d27">QDMI_PROGRAM_FORMAT_CALIBRATION</a> = 6
+, <a class="el" href="#a3eff3252203fcad146d5896e4466ec09a6bd3fb1aca86016dfc70aa42421a5d48">QDMI_PROGRAM_FORMAT_QPY</a> = 7
+, <br />
+&#160;&#160;<a class="el" href="#a3eff3252203fcad146d5896e4466ec09ae195460aa4da32f2efc5bb61cf50f740">QDMI_PROGRAM_FORMAT_IQMJSON</a> = 8
+, <a class="el" href="#a3eff3252203fcad146d5896e4466ec09a07a8f396e623368210fac5d2e0ea10a8">QDMI_PROGRAM_FORMAT_BATCHJOB</a> = 9
+, <a class="el" href="#a3eff3252203fcad146d5896e4466ec09aed0bf48a068be1cc41e339c6ae48e655">QDMI_PROGRAM_FORMAT_MAX</a> = 10
+, <a class="el" href="#a3eff3252203fcad146d5896e4466ec09ae4c406dd4f873011195a218898ad2348">QDMI_PROGRAM_FORMAT_CUSTOM1</a> = 999999995
+, <br />
+&#160;&#160;<a class="el" href="#a3eff3252203fcad146d5896e4466ec09aa623b6643ae8806cc0beae73b13723e4">QDMI_PROGRAM_FORMAT_CUSTOM2</a> = 999999996
+, <a class="el" href="#a3eff3252203fcad146d5896e4466ec09a25fa2e815d2f0e788117c54188c379a8">QDMI_PROGRAM_FORMAT_CUSTOM3</a> = 999999997
+, <a class="el" href="#a3eff3252203fcad146d5896e4466ec09a606a32a79bea4e188111ac5728b04212">QDMI_PROGRAM_FORMAT_CUSTOM4</a> = 999999998
+, <a class="el" href="#a3eff3252203fcad146d5896e4466ec09ac2fc29b4f13482775b7d080f281f9a21">QDMI_PROGRAM_FORMAT_CUSTOM5</a> = 999999999
+<br />
  }</td></tr>
-<tr class="memdesc:ad5dd287338b8e8d51f0cc545a1797f82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encoding of a submitted payload.  <a href="#ad5dd287338b8e8d51f0cc545a1797f82">More...</a><br /></td></tr>
+<tr class="memdesc:a3eff3252203fcad146d5896e4466ec09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum of formats that can be submitted to the device.  <a href="#a3eff3252203fcad146d5896e4466ec09">More...</a><br /></td></tr>
 <tr class="memitem:aa154b942b0f67e437c393ad7b33cadd1" id="r_aa154b942b0f67e437c393ad7b33cadd1"><td class="memItemLeft">enum &#160;</td><td class="memItemRight"><a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1">QDMI_JOB_RESULT_T</a> { <br />
 &#160;&#160;<a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97">QDMI_JOB_RESULT_SHOTS</a> = 0
 , <a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1a56e81ab3ca174c75290adaf9227bf090">QDMI_JOB_RESULT_HIST_KEYS</a> = 1
@@ -499,16 +439,13 @@ Enumerations</h2></td></tr>
 , <a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1aff6709af04527a8d5e03f6f0064dd281">QDMI_JOB_RESULT_PROBABILITIES_SPARSE_KEYS</a> = 7
 , <br />
 &#160;&#160;<a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1a68c0d721fa322f5c5b404a088c2e1504">QDMI_JOB_RESULT_PROBABILITIES_SPARSE_VALUES</a> = 8
-, <a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1a78df4888ecd2b1a9bd740e33fa00dc04">QDMI_JOB_RESULT_PROGRAMOUTPUT</a> = 9
-, <a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1a392aa5d821440fd4650119f3986d3196">QDMI_JOB_RESULT_MAX</a> = 10
-, <a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1a885df1084d1067b6336ad6a0eaaffac2">QDMI_JOB_RESULT_CUSTOM1</a> = QDMI_CUSTOM_ENUM_VALUE_MIN
+, <a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1a392aa5d821440fd4650119f3986d3196">QDMI_JOB_RESULT_MAX</a> = 9
+, <a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1a885df1084d1067b6336ad6a0eaaffac2">QDMI_JOB_RESULT_CUSTOM1</a> = 999999995
+, <a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1aaf1c0677ce0a98b75c9a372c790ae7dc">QDMI_JOB_RESULT_CUSTOM2</a> = 999999996
 , <br />
-&#160;&#160;<a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1aaf1c0677ce0a98b75c9a372c790ae7dc">QDMI_JOB_RESULT_CUSTOM2</a> = 999999996
-, <a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1af9d2b9a0c39d1288be2428a6af7c0842">QDMI_JOB_RESULT_CUSTOM3</a> = 999999997
+&#160;&#160;<a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1af9d2b9a0c39d1288be2428a6af7c0842">QDMI_JOB_RESULT_CUSTOM3</a> = 999999997
 , <a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1af3bb2512523d7a0ab9838a6810b257d6">QDMI_JOB_RESULT_CUSTOM4</a> = 999999998
 , <a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1aa892eb092c55f5c7ea34c47358675125">QDMI_JOB_RESULT_CUSTOM5</a> = 999999999
-, <br />
-&#160;&#160;<a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1a389b31372e7c7d866b2ef19fdee3cb52">QDMI_JOB_RESULT_CUSTOM_MAX</a> = QDMI_CUSTOM_ENUM_VALUE_MAX
 <br />
  }</td></tr>
 <tr class="memdesc:aa154b942b0f67e437c393ad7b33cadd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum of the formats the results can be returned in.  <a href="#aa154b942b0f67e437c393ad7b33cadd1">More...</a><br /></td></tr>
@@ -519,452 +456,6 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a4dbe8fa81be42cf37de7172f059092ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum to indicate the level of pulse support a device has.  <a href="#a4dbe8fa81be42cf37de7172f059092ad">More...</a><br /></td></tr>
 </table>
-<a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">Macro Definition Documentation</h2>
-<a id="a8491b4a773d45e8fe067326b532bec03" name="a8491b4a773d45e8fe067326b532bec03"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8491b4a773d45e8fe067326b532bec03">&#9670;&#160;</a></span>QDMI_CUSTOM_ENUM_VALUE_MIN</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define QDMI_CUSTOM_ENUM_VALUE_MIN&#160;&#160;&#160;999999995</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>First value in every provider-defined enum range. </p>
-<p>Every value from <a class="el" href="#a8491b4a773d45e8fe067326b532bec03" title="QDMI_CUSTOM_ENUM_VALUE_MIN">QDMI_CUSTOM_ENUM_VALUE_MIN</a> through <a class="el" href="#a7e1f6ebee2981970f891339435655e84" title="QDMI_CUSTOM_ENUM_VALUE_MAX">QDMI_CUSTOM_ENUM_VALUE_MAX</a> is syntactically valid. The <span class="tt">CUSTOM1</span> through <span class="tt">CUSTOM5</span> members of each extensible enum preserve names for the first five values. Values from such an enum's regular <span class="tt">MAX</span> member up to, but excluding, <a class="el" href="#a8491b4a773d45e8fe067326b532bec03" title="QDMI_CUSTOM_ENUM_VALUE_MIN">QDMI_CUSTOM_ENUM_VALUE_MIN</a> are invalid. An implementation returns <a class="el" href="#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651" title="QDMI_ERROR_NOTSUPPORTED">QDMI_ERROR_NOTSUPPORTED</a> for a valid custom value that it does not support. </p>
-
-</div>
-</div>
-<a id="a6afe2f84f9b78688ebcb684424b81319" name="a6afe2f84f9b78688ebcb684424b81319"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6afe2f84f9b78688ebcb684424b81319">&#9670;&#160;</a></span>QDMI_MAKE_VERSION</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define QDMI_MAKE_VERSION</td>
-          <td>(</td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>major</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>minor</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>patch</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">((((uint32_t)(major) &amp; 0x3FFU) &lt;&lt; 22U) |                                     \</div>
-<div class="line"> (((uint32_t)(minor) &amp; 0x3FFU) &lt;&lt; 12U) | ((uint32_t)(patch) &amp; 0xFFFU))</div>
-</div><!-- fragment -->
-<p>Pack a Semantic Versioning major, minor, and patch release into a 32-bit exact version value. </p>
-<p>The major and minor components must each fit in 10 bits. The patch component must fit in 12 bits. Prerelease and build metadata are not part of a program-format descriptor. </p>
-
-</div>
-</div>
-<a id="a8e8caa8cb8dfb5c515321c3700c40152" name="a8e8caa8cb8dfb5c515321c3700c40152"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8e8caa8cb8dfb5c515321c3700c40152">&#9670;&#160;</a></span>QDMI_VERSION_MAJOR</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define QDMI_VERSION_MAJOR</td>
-          <td>(</td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>version</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">(((uint32_t)(version) &gt;&gt; 22U) &amp; 0x3FFU)</div>
-</div><!-- fragment -->
-<p>Extract the Semantic Versioning major component of a packed version. </p>
-
-</div>
-</div>
-<a id="ad80ba3f24fa2cec89f3d409f18aa1766" name="ad80ba3f24fa2cec89f3d409f18aa1766"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad80ba3f24fa2cec89f3d409f18aa1766">&#9670;&#160;</a></span>QDMI_VERSION_MINOR</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define QDMI_VERSION_MINOR</td>
-          <td>(</td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>version</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">(((uint32_t)(version) &gt;&gt; 12U) &amp; 0x3FFU)</div>
-</div><!-- fragment -->
-<p>Extract the Semantic Versioning minor component of a packed version. </p>
-
-</div>
-</div>
-<a id="a771649d97222ad4e2e23a56797dde658" name="a771649d97222ad4e2e23a56797dde658"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a771649d97222ad4e2e23a56797dde658">&#9670;&#160;</a></span>QDMI_VERSION_PATCH</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define QDMI_VERSION_PATCH</td>
-          <td>(</td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>version</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">((uint32_t)(version) &amp; 0xFFFU)</div>
-</div><!-- fragment -->
-<p>Extract the Semantic Versioning patch component of a packed version. </p>
-
-</div>
-</div>
-<a id="a0f3bd80a77571b44774327368ac5b0c3" name="a0f3bd80a77571b44774327368ac5b0c3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0f3bd80a77571b44774327368ac5b0c3">&#9670;&#160;</a></span>QDMI_PROGRAM_FEATURE_UNCONSTRAINED</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define QDMI_PROGRAM_FEATURE_UNCONSTRAINED</td>
-          <td>(</td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>feature_id</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>feature_value</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">{feature_id, feature_value, <span class="stringliteral">&quot;&quot;</span>, 0U}</div>
-</div><!-- fragment -->
-<p>Initialize an unrestricted program feature for C or C++. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">feature_id</td><td>String-literal feature ID. </td></tr>
-    <tr><td class="paramname">feature_value</td><td>Feature-specific value. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="afbdea9e33f7fcc6f69aff39ab12ae6a0" name="afbdea9e33f7fcc6f69aff39ab12ae6a0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afbdea9e33f7fcc6f69aff39ab12ae6a0">&#9670;&#160;</a></span>QDMI_PROGRAM_FEATURE_MID_CIRCUIT_MEASUREMENT</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define QDMI_PROGRAM_FEATURE_MID_CIRCUIT_MEASUREMENT&#160;&#160;&#160;&quot;mid-circuit-measurement&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Measure a qubit before the end of one execution. </p>
-<p>This Boolean feature uses value zero. It does not by itself guarantee same-execution use of the result or reuse of the measured qubit. </p>
-
-</div>
-</div>
-<a id="a9a9a8befeb0b60ef27703918c89a635e" name="a9a9a8befeb0b60ef27703918c89a635e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9a9a8befeb0b60ef27703918c89a635e">&#9670;&#160;</a></span>QDMI_PROGRAM_FEATURE_MEASURED_QUBIT_REUSE</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define QDMI_PROGRAM_FEATURE_MEASURED_QUBIT_REUSE&#160;&#160;&#160;&quot;measured-qubit-reuse&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Apply a quantum operation to a measured qubit in the same execution. </p>
-<p>This Boolean feature uses value zero. </p>
-
-</div>
-</div>
-<a id="aae91452451b8a18fbcbc299749306ca5" name="aae91452451b8a18fbcbc299749306ca5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aae91452451b8a18fbcbc299749306ca5">&#9670;&#160;</a></span>QDMI_PROGRAM_FEATURE_MEASUREMENT_RESULT_USE</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define QDMI_PROGRAM_FEATURE_MEASUREMENT_RESULT_USE&#160;&#160;&#160;&quot;measurement-result-use&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Read a measurement result during the same execution. </p>
-<p>This Boolean feature uses value zero. Control flow based on the result also requires the relevant branching or loop feature. </p>
-
-</div>
-</div>
-<a id="a9f5cd8079caaedfceda12e9bd797d0e7" name="a9f5cd8079caaedfceda12e9bd797d0e7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9f5cd8079caaedfceda12e9bd797d0e7">&#9670;&#160;</a></span>QDMI_PROGRAM_FEATURE_BOOLEAN_COMPUTATION</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define QDMI_PROGRAM_FEATURE_BOOLEAN_COMPUTATION&#160;&#160;&#160;&quot;boolean-computation&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Compute Boolean values during execution. </p>
-<p>This Boolean feature uses value zero. It includes Boolean logic and comparisons whose operand types are otherwise supported by the descriptor. </p>
-
-</div>
-</div>
-<a id="a8ac197c8f47d0d20e911faea5f5fb490" name="a8ac197c8f47d0d20e911faea5f5fb490"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8ac197c8f47d0d20e911faea5f5fb490">&#9670;&#160;</a></span>QDMI_PROGRAM_FEATURE_FORWARD_BRANCHING</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define QDMI_PROGRAM_FEATURE_FORWARD_BRANCHING&#160;&#160;&#160;&quot;forward-branching&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Select a later program region from a value computed during execution. </p>
-<p>This Boolean feature uses value zero and does not include a backward branch. </p>
-
-</div>
-</div>
-<a id="a5487329d36789b3579c827917cfa2e6e" name="a5487329d36789b3579c827917cfa2e6e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5487329d36789b3579c827917cfa2e6e">&#9670;&#160;</a></span>QDMI_PROGRAM_FEATURE_COUNTED_ITERATION</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define QDMI_PROGRAM_FEATURE_COUNTED_ITERATION&#160;&#160;&#160;&quot;counted-iteration&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Repeat a program region a known finite number of times. </p>
-<p>This Boolean feature uses value zero. The trip count does not depend on a value produced by the repeated region. </p>
-
-</div>
-</div>
-<a id="aeec854dbe5b2c0bae441a8ee441c10e4" name="aeec854dbe5b2c0bae441a8ee441c10e4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeec854dbe5b2c0bae441a8ee441c10e4">&#9670;&#160;</a></span>QDMI_PROGRAM_FEATURE_CONDITIONAL_LOOP</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define QDMI_PROGRAM_FEATURE_CONDITIONAL_LOOP&#160;&#160;&#160;&quot;conditional-loop&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Repeat a program region based on a value computed during execution. </p>
-<p>This Boolean feature uses value zero and includes a backward branch. </p>
-
-</div>
-</div>
-<a id="aa88b1e11dc197c9818137e29a0f86f66" name="aa88b1e11dc197c9818137e29a0f86f66"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa88b1e11dc197c9818137e29a0f86f66">&#9670;&#160;</a></span>QDMI_PROGRAM_FEATURE_MULTIWAY_BRANCHING</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define QDMI_PROGRAM_FEATURE_MULTIWAY_BRANCHING&#160;&#160;&#160;&quot;multiway-branching&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Select one of more than two program regions during execution. </p>
-<p>This Boolean feature uses value zero. The selector type requires its corresponding computation feature. </p>
-
-</div>
-</div>
-<a id="a4513bb7aa160f9c8c5990dd3a6f1d4b8" name="a4513bb7aa160f9c8c5990dd3a6f1d4b8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4513bb7aa160f9c8c5990dd3a6f1d4b8">&#9670;&#160;</a></span>QDMI_PROGRAM_FEATURE_INTEGER_COMPUTATION</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define QDMI_PROGRAM_FEATURE_INTEGER_COMPUTATION&#160;&#160;&#160;&quot;integer-computation&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Compute integer values during execution. </p>
-<p>The feature value is one exact supported integer width in bits. Devices return one feature group for each supported width. </p>
-
-</div>
-</div>
-<a id="af4e66935ec643298961178499bcd8632" name="af4e66935ec643298961178499bcd8632"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af4e66935ec643298961178499bcd8632">&#9670;&#160;</a></span>QDMI_PROGRAM_FEATURE_FLOAT_COMPUTATION</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define QDMI_PROGRAM_FEATURE_FLOAT_COMPUTATION&#160;&#160;&#160;&quot;float-computation&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Compute floating-point values during execution. </p>
-<p>The feature value is one exact supported floating-point width in bits. Devices return one feature group for each supported width. </p>
-
-</div>
-</div>
-<a id="a1fcd551d5977f3aa962018c4466253bc" name="a1fcd551d5977f3aa962018c4466253bc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1fcd551d5977f3aa962018c4466253bc">&#9670;&#160;</a></span>QDMI_PROGRAM_FEATURE_IR_FUNCTIONS</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define QDMI_PROGRAM_FEATURE_IR_FUNCTIONS&#160;&#160;&#160;&quot;ir-functions&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Define and call functions beyond the entry point and format-mandated declarations or runtime calls. </p>
-<p>This Boolean feature uses value zero. </p>
-
-</div>
-</div>
-<a id="a2b88c16010ed55bb82e4078b4eeb8ea8" name="a2b88c16010ed55bb82e4078b4eeb8ea8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2b88c16010ed55bb82e4078b4eeb8ea8">&#9670;&#160;</a></span>QDMI_PROGRAM_FEATURE_MULTIPLE_RETURN_POINTS</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define QDMI_PROGRAM_FEATURE_MULTIPLE_RETURN_POINTS&#160;&#160;&#160;&quot;multiple-return-points&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Use more than one return point in one function or entry point. </p>
-<p>This Boolean feature uses value zero. </p>
-
-</div>
-</div>
-<a id="aaa447b38576367c850cb116318747add" name="aaa447b38576367c850cb116318747add"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaa447b38576367c850cb116318747add">&#9670;&#160;</a></span>QDMI_PROGRAM_FEATURE_DYNAMIC_QUBIT_MANAGEMENT</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define QDMI_PROGRAM_FEATURE_DYNAMIC_QUBIT_MANAGEMENT&#160;&#160;&#160;&quot;dynamic-qubit-management&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Allocate and release qubits during execution. </p>
-<p>This Boolean feature uses value zero. </p>
-
-</div>
-</div>
-<a id="a9f85950f9e14d7b291de4992008f49ad" name="a9f85950f9e14d7b291de4992008f49ad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9f85950f9e14d7b291de4992008f49ad">&#9670;&#160;</a></span>QDMI_PROGRAM_FEATURE_DYNAMIC_RESULT_MANAGEMENT</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define QDMI_PROGRAM_FEATURE_DYNAMIC_RESULT_MANAGEMENT&#160;&#160;&#160;&quot;dynamic-result-management&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Allocate and release result handles during execution. </p>
-<p>This Boolean feature uses value zero. </p>
-
-</div>
-</div>
-<a id="a6e101a1904de79a43091fdb7c547089e" name="a6e101a1904de79a43091fdb7c547089e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6e101a1904de79a43091fdb7c547089e">&#9670;&#160;</a></span>QDMI_PROGRAM_FEATURE_ARRAYS</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define QDMI_PROGRAM_FEATURE_ARRAYS&#160;&#160;&#160;&quot;arrays&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Create and access arrays during execution. </p>
-<p>This Boolean feature uses value zero. Element types must be supported by the descriptor or another reported computation feature. </p>
-
-</div>
-</div>
-<a id="ac05683163bd0eb1e7b10087c71483539" name="ac05683163bd0eb1e7b10087c71483539"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac05683163bd0eb1e7b10087c71483539">&#9670;&#160;</a></span>QDMI_PROGRAM_CONSTRAINT_MAX_CONTROL_FLOW_NESTING_DEPTH</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define QDMI_PROGRAM_CONSTRAINT_MAX_CONTROL_FLOW_NESTING_DEPTH&#160;&#160;&#160;&quot;max-control-flow-nesting-depth&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Limit lexical control-flow nesting depth. </p>
-<p>The positive constraint value is the maximum number of enclosing branch and loop constructs, counting the outermost construct as depth one. This constraint applies to branching and iteration features. </p>
-
-</div>
-</div>
-<a id="a4f0db2af4041c8b5db4de715583c67d9" name="a4f0db2af4041c8b5db4de715583c67d9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4f0db2af4041c8b5db4de715583c67d9">&#9670;&#160;</a></span>QDMI_PROGRAM_CONSTRAINT_MAX_ITERATION_COUNT</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define QDMI_PROGRAM_CONSTRAINT_MAX_ITERATION_COUNT&#160;&#160;&#160;&quot;max-iteration-count&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Limit the trip count of each loop. </p>
-<p>The positive constraint value is the inclusive maximum number of times one loop body may execute. A compiler must prove this upper bound. This constraint applies to counted iteration and conditional loops. </p>
-
-</div>
-</div>
-<a id="aa2e2a5516f09f7b93962c620e1b94ae7" name="aa2e2a5516f09f7b93962c620e1b94ae7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa2e2a5516f09f7b93962c620e1b94ae7">&#9670;&#160;</a></span>QDMI_PROGRAM_CONSTRAINT_MAX_CASE_COUNT</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define QDMI_PROGRAM_CONSTRAINT_MAX_CASE_COUNT&#160;&#160;&#160;&quot;max-case-count&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Limit the number of explicit cases in each multiway branch. </p>
-<p>The positive constraint value counts explicit cases and excludes a default case. This constraint applies to multiway branching. </p>
-
-</div>
-</div>
 <a name="doc-enum-members" id="doc-enum-members"></a><h2 id="header-doc-enum-members" class="groupheader">Enumeration Type Documentation</h2>
 <a id="a450b1adf81abc6f0accbf0ce4abe92f8" name="a450b1adf81abc6f0accbf0ce4abe92f8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a450b1adf81abc6f0accbf0ce4abe92f8">&#9670;&#160;</a></span>QDMI_STATUS</h2>
@@ -1053,7 +544,7 @@ Enumerations</h2></td></tr>
 <p>It can be used by devices for bounds checking and validation of function parameters.</p>
 <dl class="section attention"><dt>Attention</dt><dd>This value must remain the last regular member of the enum besides the custom members and must be updated when new members are added. </dd></dl>
 </td></tr>
-<tr><td class="fieldname"><a id="a9f1e467b2b3870263b0e9d7e5d36cea4a90b1f07e865a147dfba3d1531b4f8275" name="a9f1e467b2b3870263b0e9d7e5d36cea4a90b1f07e865a147dfba3d1531b4f8275"></a>QDMI_DEVICE_SESSION_PARAMETER_CUSTOM1&#160;</td><td class="fieldinit">QDMI_CUSTOM_ENUM_VALUE_MIN&#160;</td><td class="fielddoc"><p>This enum value is reserved for a custom parameter. </p>
+<tr><td class="fieldname"><a id="a9f1e467b2b3870263b0e9d7e5d36cea4a90b1f07e865a147dfba3d1531b4f8275" name="a9f1e467b2b3870263b0e9d7e5d36cea4a90b1f07e865a147dfba3d1531b4f8275"></a>QDMI_DEVICE_SESSION_PARAMETER_CUSTOM1&#160;</td><td class="fieldinit">999999995&#160;</td><td class="fielddoc"><p>This enum value is reserved for a custom parameter. </p>
 <p>The device defines the meaning and the type of this parameter. </p><dl class="section attention"><dt>Attention</dt><dd>The value of this enum member must not be changed to maintain binary compatibility. </dd></dl>
 </td></tr>
 <tr><td class="fieldname"><a id="a9f1e467b2b3870263b0e9d7e5d36cea4a741c03ce313a4b09a4ef26721e544140" name="a9f1e467b2b3870263b0e9d7e5d36cea4a741c03ce313a4b09a4ef26721e544140"></a>QDMI_DEVICE_SESSION_PARAMETER_CUSTOM2&#160;</td><td class="fieldinit">999999996&#160;</td><td class="fielddoc"><dl class="section see"><dt>See also</dt><dd><a class="el" href="#a9f1e467b2b3870263b0e9d7e5d36cea4a90b1f07e865a147dfba3d1531b4f8275" title="This enum value is reserved for a custom parameter.">QDMI_DEVICE_SESSION_PARAMETER_CUSTOM1</a> </dd></dl>
@@ -1063,8 +554,6 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="a9f1e467b2b3870263b0e9d7e5d36cea4a2fcfc05df513632680a8608b71b8725f" name="a9f1e467b2b3870263b0e9d7e5d36cea4a2fcfc05df513632680a8608b71b8725f"></a>QDMI_DEVICE_SESSION_PARAMETER_CUSTOM4&#160;</td><td class="fieldinit">999999998&#160;</td><td class="fielddoc"><dl class="section see"><dt>See also</dt><dd><a class="el" href="#a9f1e467b2b3870263b0e9d7e5d36cea4a90b1f07e865a147dfba3d1531b4f8275" title="This enum value is reserved for a custom parameter.">QDMI_DEVICE_SESSION_PARAMETER_CUSTOM1</a> </dd></dl>
 </td></tr>
 <tr><td class="fieldname"><a id="a9f1e467b2b3870263b0e9d7e5d36cea4a4fb63f338932625a7ae40eeb04c736c8" name="a9f1e467b2b3870263b0e9d7e5d36cea4a4fb63f338932625a7ae40eeb04c736c8"></a>QDMI_DEVICE_SESSION_PARAMETER_CUSTOM5&#160;</td><td class="fieldinit">999999999&#160;</td><td class="fielddoc"><dl class="section see"><dt>See also</dt><dd><a class="el" href="#a9f1e467b2b3870263b0e9d7e5d36cea4a90b1f07e865a147dfba3d1531b4f8275" title="This enum value is reserved for a custom parameter.">QDMI_DEVICE_SESSION_PARAMETER_CUSTOM1</a> </dd></dl>
-</td></tr>
-<tr><td class="fieldname"><a id="a9f1e467b2b3870263b0e9d7e5d36cea4a24b2a44e0adfbde56707e0d4226042e4" name="a9f1e467b2b3870263b0e9d7e5d36cea4a24b2a44e0adfbde56707e0d4226042e4"></a>QDMI_DEVICE_SESSION_PARAMETER_CUSTOM_MAX&#160;</td><td class="fieldinit">QDMI_CUSTOM_ENUM_VALUE_MAX&#160;</td><td class="fielddoc"><p>The largest syntactically valid custom value. </p>
 </td></tr>
 </table>
 
@@ -1085,17 +574,20 @@ Enumerations</h2></td></tr>
 <p>Enum of the device job parameters that can be set via <a class="el" href="group__device__job__interface.html#ga1ff5eda213c2bd60599efeac2166654d" title="QDMI_device_job_set_parameter">QDMI_device_job_set_parameter</a>. </p>
 <p>If not noted otherwise, parameters are optional and devices must not require them to be set. </p>
 <table class="fieldtable">
-<tr><th colspan="3">Enumerator</th></tr><tr><td class="fieldname"><a id="a40dd25c531ebf99fb4b46469083b609ea5ee9218fc51cbd01765619467b90056f" name="a40dd25c531ebf99fb4b46469083b609ea5ee9218fc51cbd01765619467b90056f"></a>QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT&#160;</td><td class="fieldinit">0&#160;</td><td class="fielddoc"><p><a class="el" href="structQDMI__Program__Format.html" title="QDMI_Program_Format">QDMI_Program_Format</a> The format of the program to be executed. </p>
-<p>This parameter is required. The device must support the specified program format. If the device does not support the specified program format, the <a class="el" href="group__device__job__interface.html#ga1ff5eda213c2bd60599efeac2166654d" title="QDMI_device_job_set_parameter">QDMI_device_job_set_parameter</a> function must return <a class="el" href="#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651" title="QDMI_ERROR_NOTSUPPORTED">QDMI_ERROR_NOTSUPPORTED</a>. Setting the same exact descriptor keeps an existing program payload. Setting a different supported descriptor clears the payload. Every error leaves the descriptor and payload unchanged. </p>
+<tr><th colspan="3">Enumerator</th></tr><tr><td class="fieldname"><a id="a40dd25c531ebf99fb4b46469083b609ea5ee9218fc51cbd01765619467b90056f" name="a40dd25c531ebf99fb4b46469083b609ea5ee9218fc51cbd01765619467b90056f"></a>QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT&#160;</td><td class="fieldinit">0&#160;</td><td class="fielddoc"><p><a class="el" href="#a475336f0c08bd0218dd76a6016098231" title="QDMI_Program_Format">QDMI_Program_Format</a> The format of the program to be executed. </p>
+<p>This parameter is required. The device must support the specified program format. If the device does not support the specified program format, the <a class="el" href="group__device__job__interface.html#ga1ff5eda213c2bd60599efeac2166654d" title="QDMI_device_job_set_parameter">QDMI_device_job_set_parameter</a> function must return <a class="el" href="#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651" title="QDMI_ERROR_NOTSUPPORTED">QDMI_ERROR_NOTSUPPORTED</a>. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a40dd25c531ebf99fb4b46469083b609ea4ecec990e69afb205f9801433be37b26" name="a40dd25c531ebf99fb4b46469083b609ea4ecec990e69afb205f9801433be37b26"></a>QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM&#160;</td><td class="fieldinit">1&#160;</td><td class="fielddoc"><p><span class="tt">size_t</span> The number of shots to execute for a quantum circuit job. </p>
+<tr><td class="fieldname"><a id="a40dd25c531ebf99fb4b46469083b609ea7ef134726b7ec6f0855c0d8171e44dd3" name="a40dd25c531ebf99fb4b46469083b609ea7ef134726b7ec6f0855c0d8171e44dd3"></a>QDMI_DEVICE_JOB_PARAMETER_PROGRAM&#160;</td><td class="fieldinit">1&#160;</td><td class="fielddoc"><p><span class="tt">void*</span> The program to be executed. </p>
+<p>This parameter is required. The program must be in the format specified by the <a class="el" href="#a40dd25c531ebf99fb4b46469083b609ea5ee9218fc51cbd01765619467b90056f" title="QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT">QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT</a> parameter. If the program is invalid, the <a class="el" href="group__device__job__interface.html#ga1ff5eda213c2bd60599efeac2166654d" title="QDMI_device_job_set_parameter">QDMI_device_job_set_parameter</a> function must return <a class="el" href="#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642" title="QDMI_ERROR_INVALIDARGUMENT">QDMI_ERROR_INVALIDARGUMENT</a>. If the program is valid, but the device cannot execute it, the <a class="el" href="group__device__job__interface.html#ga1ff5eda213c2bd60599efeac2166654d" title="QDMI_device_job_set_parameter">QDMI_device_job_set_parameter</a> function must return <a class="el" href="#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651" title="QDMI_ERROR_NOTSUPPORTED">QDMI_ERROR_NOTSUPPORTED</a>. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a40dd25c531ebf99fb4b46469083b609ea4ecec990e69afb205f9801433be37b26" name="a40dd25c531ebf99fb4b46469083b609ea4ecec990e69afb205f9801433be37b26"></a>QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM&#160;</td><td class="fieldinit">2&#160;</td><td class="fielddoc"><p><span class="tt">size_t</span> The number of shots to execute for a quantum circuit job. </p>
 <p>If this parameter is not set, a device-specific default is used. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a40dd25c531ebf99fb4b46469083b609ea535c764f6d9b057069cc2f98e5e3731d" name="a40dd25c531ebf99fb4b46469083b609ea535c764f6d9b057069cc2f98e5e3731d"></a>QDMI_DEVICE_JOB_PARAMETER_MAX&#160;</td><td class="fieldinit">2&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
+<tr><td class="fieldname"><a id="a40dd25c531ebf99fb4b46469083b609ea535c764f6d9b057069cc2f98e5e3731d" name="a40dd25c531ebf99fb4b46469083b609ea535c764f6d9b057069cc2f98e5e3731d"></a>QDMI_DEVICE_JOB_PARAMETER_MAX&#160;</td><td class="fieldinit">3&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
 <p>It can be used by devices for bounds checking and validation of function parameters.</p>
 <dl class="section attention"><dt>Attention</dt><dd>This value must remain the last regular member of the enum besides the custom members and must be updated when new members are added. </dd></dl>
 </td></tr>
-<tr><td class="fieldname"><a id="a40dd25c531ebf99fb4b46469083b609ea59a7b1b3e9da8f9b71b0aec5fd1eb0d9" name="a40dd25c531ebf99fb4b46469083b609ea59a7b1b3e9da8f9b71b0aec5fd1eb0d9"></a>QDMI_DEVICE_JOB_PARAMETER_CUSTOM1&#160;</td><td class="fieldinit">QDMI_CUSTOM_ENUM_VALUE_MIN&#160;</td><td class="fielddoc"><p>This enum value is reserved for a custom parameter. </p>
+<tr><td class="fieldname"><a id="a40dd25c531ebf99fb4b46469083b609ea59a7b1b3e9da8f9b71b0aec5fd1eb0d9" name="a40dd25c531ebf99fb4b46469083b609ea59a7b1b3e9da8f9b71b0aec5fd1eb0d9"></a>QDMI_DEVICE_JOB_PARAMETER_CUSTOM1&#160;</td><td class="fieldinit">999999995&#160;</td><td class="fielddoc"><p>This enum value is reserved for a custom parameter. </p>
 <p>The device defines the meaning and the type of this parameter. </p><dl class="section attention"><dt>Attention</dt><dd>The value of this enum member must not be changed to maintain binary compatibility. </dd></dl>
 </td></tr>
 <tr><td class="fieldname"><a id="a40dd25c531ebf99fb4b46469083b609ea7c7b2bfd16a3fc1c8aa6820f9c76112b" name="a40dd25c531ebf99fb4b46469083b609ea7c7b2bfd16a3fc1c8aa6820f9c76112b"></a>QDMI_DEVICE_JOB_PARAMETER_CUSTOM2&#160;</td><td class="fieldinit">999999996&#160;</td><td class="fielddoc"><dl class="section see"><dt>See also</dt><dd><a class="el" href="#a40dd25c531ebf99fb4b46469083b609ea59a7b1b3e9da8f9b71b0aec5fd1eb0d9" title="This enum value is reserved for a custom parameter.">QDMI_DEVICE_JOB_PARAMETER_CUSTOM1</a> </dd></dl>
@@ -1105,8 +597,6 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="a40dd25c531ebf99fb4b46469083b609ea75c3ac2ca26800b70515160515e8d5e5" name="a40dd25c531ebf99fb4b46469083b609ea75c3ac2ca26800b70515160515e8d5e5"></a>QDMI_DEVICE_JOB_PARAMETER_CUSTOM4&#160;</td><td class="fieldinit">999999998&#160;</td><td class="fielddoc"><dl class="section see"><dt>See also</dt><dd><a class="el" href="#a40dd25c531ebf99fb4b46469083b609ea59a7b1b3e9da8f9b71b0aec5fd1eb0d9" title="This enum value is reserved for a custom parameter.">QDMI_DEVICE_JOB_PARAMETER_CUSTOM1</a> </dd></dl>
 </td></tr>
 <tr><td class="fieldname"><a id="a40dd25c531ebf99fb4b46469083b609ead04b984fe78deafa5c507101da54ad32" name="a40dd25c531ebf99fb4b46469083b609ead04b984fe78deafa5c507101da54ad32"></a>QDMI_DEVICE_JOB_PARAMETER_CUSTOM5&#160;</td><td class="fieldinit">999999999&#160;</td><td class="fielddoc"><dl class="section see"><dt>See also</dt><dd><a class="el" href="#a40dd25c531ebf99fb4b46469083b609ea59a7b1b3e9da8f9b71b0aec5fd1eb0d9" title="This enum value is reserved for a custom parameter.">QDMI_DEVICE_JOB_PARAMETER_CUSTOM1</a> </dd></dl>
-</td></tr>
-<tr><td class="fieldname"><a id="a40dd25c531ebf99fb4b46469083b609ea03dce278e54f1a9356cedd281ae88220" name="a40dd25c531ebf99fb4b46469083b609ea03dce278e54f1a9356cedd281ae88220"></a>QDMI_DEVICE_JOB_PARAMETER_CUSTOM_MAX&#160;</td><td class="fieldinit">QDMI_CUSTOM_ENUM_VALUE_MAX&#160;</td><td class="fielddoc"><p>The largest syntactically valid custom value. </p>
 </td></tr>
 </table>
 
@@ -1130,13 +620,11 @@ Enumerations</h2></td></tr>
 <tr><th colspan="3">Enumerator</th></tr><tr><td class="fieldname"><a id="a6e4d18c7fa5d383bbcc1498abe090d4fad991a6a3b0a17e58b59f9180463855ec" name="a6e4d18c7fa5d383bbcc1498abe090d4fad991a6a3b0a17e58b59f9180463855ec"></a>QDMI_DEVICE_JOB_PROPERTY_ID&#160;</td><td class="fieldinit">0&#160;</td><td class="fielddoc"><p><span class="tt">char*</span> (string) The job's ID. </p>
 <p>The ID must uniquely identify a job for the specific device. It should generally be universally unique (such as a UUID), to avoid conflicts with other devices' job IDs. It may be used with <a class="el" href="group__device__job__interface.html#ga936ccc97552a744032edbeb840aaccba" title="QDMI_device_session_retrieve_device_job_by_id">QDMI_device_session_retrieve_device_job_by_id</a> to obtain a new <a class="el" href="group__device__job__interface.html#gaa9f37f29bc40f719b440a277654789a4" title="QDMI_Device_Job">QDMI_Device_Job</a> handle for an existing remote job. It may, for example, correspond to the job ID provided by the device's API or may be generated by the QDMI Device implementation. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a6e4d18c7fa5d383bbcc1498abe090d4fa5ed68ab8ce50f4b2362a0c6ba4c92c93" name="a6e4d18c7fa5d383bbcc1498abe090d4fa5ed68ab8ce50f4b2362a0c6ba4c92c93"></a>QDMI_DEVICE_JOB_PROPERTY_PROGRAMFORMAT&#160;</td><td class="fieldinit">1&#160;</td><td class="fielddoc"><p><a class="el" href="structQDMI__Program__Format.html" title="QDMI_Program_Format">QDMI_Program_Format</a> The format of the program to be executed. </p>
-<p>A query returns <a class="el" href="#a450b1adf81abc6f0accbf0ce4abe92f8a916e0810bf915e2ad67f2c1430c54fec" title="QDMI_ERROR_BADSTATE">QDMI_ERROR_BADSTATE</a> until a format is set. This property returns the format set through <a class="el" href="#a40dd25c531ebf99fb4b46469083b609ea5ee9218fc51cbd01765619467b90056f" title="QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT">QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT</a> or <a class="el" href="group__device__job__interface.html#gadfab14c8e3218128b9393096d11c738c" title="QDMI_device_job_set_programs">QDMI_device_job_set_programs</a>. </p><dl class="section note"><dt>Note</dt><dd>This property returns the descriptor executed by the device. A driver can expose a different client-submitted descriptor when it converts the payload before setting <a class="el" href="#a40dd25c531ebf99fb4b46469083b609ea5ee9218fc51cbd01765619467b90056f" title="QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT">QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT</a>. </dd></dl>
+<tr><td class="fieldname"><a id="a6e4d18c7fa5d383bbcc1498abe090d4fa5ed68ab8ce50f4b2362a0c6ba4c92c93" name="a6e4d18c7fa5d383bbcc1498abe090d4fa5ed68ab8ce50f4b2362a0c6ba4c92c93"></a>QDMI_DEVICE_JOB_PROPERTY_PROGRAMFORMAT&#160;</td><td class="fieldinit">1&#160;</td><td class="fielddoc"><p><a class="el" href="#a475336f0c08bd0218dd76a6016098231" title="QDMI_Program_Format">QDMI_Program_Format</a> The format of the program to be executed. </p>
+<dl class="section note"><dt>Note</dt><dd>This property returns the value of the <a class="el" href="#a40dd25c531ebf99fb4b46469083b609ea5ee9218fc51cbd01765619467b90056f" title="QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT">QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT</a> parameter. </dd></dl>
 </td></tr>
 <tr><td class="fieldname"><a id="a6e4d18c7fa5d383bbcc1498abe090d4fa1215ae3034ffc3c9e6207253b81fa649" name="a6e4d18c7fa5d383bbcc1498abe090d4fa1215ae3034ffc3c9e6207253b81fa649"></a>QDMI_DEVICE_JOB_PROPERTY_PROGRAM&#160;</td><td class="fieldinit">2&#160;</td><td class="fielddoc"><p><span class="tt">void*</span> The program to be executed. </p>
-<dl class="section note"><dt>Note</dt><dd>This property returns the program set through <a class="el" href="group__device__job__interface.html#gadfab14c8e3218128b9393096d11c738c" title="QDMI_device_job_set_programs">QDMI_device_job_set_programs</a> when the job contains one program. </dd>
-<dd>
-A query for a multi-program job returns <a class="el" href="#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651" title="QDMI_ERROR_NOTSUPPORTED">QDMI_ERROR_NOTSUPPORTED</a>. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This property returns the value of the <a class="el" href="#a40dd25c531ebf99fb4b46469083b609ea7ef134726b7ec6f0855c0d8171e44dd3" title="QDMI_DEVICE_JOB_PARAMETER_PROGRAM">QDMI_DEVICE_JOB_PARAMETER_PROGRAM</a> parameter. </dd></dl>
 </td></tr>
 <tr><td class="fieldname"><a id="a6e4d18c7fa5d383bbcc1498abe090d4faad5344a33a120865b1c6f987b9fe023c" name="a6e4d18c7fa5d383bbcc1498abe090d4faad5344a33a120865b1c6f987b9fe023c"></a>QDMI_DEVICE_JOB_PROPERTY_SHOTSNUM&#160;</td><td class="fieldinit">3&#160;</td><td class="fielddoc"><p><span class="tt">size_t</span> The number of shots to execute for a quantum circuit job. </p>
 <dl class="section note"><dt>Note</dt><dd>This property returns the value of the <a class="el" href="#a40dd25c531ebf99fb4b46469083b609ea4ecec990e69afb205f9801433be37b26" title="QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM">QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM</a> parameter. </dd></dl>
@@ -1145,14 +633,11 @@ A query for a multi-program job returns <a class="el" href="#a450b1adf81abc6f0ac
 <p>Querying this property must refresh the job's status and queue position. The property can only be queried while the refreshed status is <a class="el" href="#a04e5c793bcbe8b354a9223bb60f828a6a8af19691cae44fb6816555b1c087e6e8" title="QDMI_JOB_STATUS_QUEUED">QDMI_JOB_STATUS_QUEUED</a>; otherwise, the query must return <a class="el" href="#a450b1adf81abc6f0accbf0ce4abe92f8a916e0810bf915e2ad67f2c1430c54fec" title="QDMI_ERROR_BADSTATE">QDMI_ERROR_BADSTATE</a>. </p><dl class="section user"><dt></dt><dd>If the provider only exposes a lower bound, the implementation reports that lower bound. For example, a provider value of <span class="tt">&gt;50</span> is reported as <span class="tt">50</span>. </dd></dl>
 <dl class="section user"><dt></dt><dd>The property may yield <a class="el" href="#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651" title="QDMI_ERROR_NOTSUPPORTED">QDMI_ERROR_NOTSUPPORTED</a> if the implementation cannot obtain a trustworthy queue position. </dd></dl>
 </td></tr>
-<tr><td class="fieldname"><a id="a6e4d18c7fa5d383bbcc1498abe090d4faa24add14b040fb44b0daac7f5714fafc" name="a6e4d18c7fa5d383bbcc1498abe090d4faa24add14b040fb44b0daac7f5714fafc"></a>QDMI_DEVICE_JOB_PROPERTY_PROGRAMSNUM&#160;</td><td class="fieldinit">5&#160;</td><td class="fielddoc"><p><span class="tt">size_t</span> The number of programs in the job. </p>
-<p>A single-program job reports one. A job has no program count until its program payload has been set; a query before that returns <a class="el" href="#a450b1adf81abc6f0accbf0ce4abe92f8a916e0810bf915e2ad67f2c1430c54fec" title="QDMI_ERROR_BADSTATE">QDMI_ERROR_BADSTATE</a>. The count remains stable after submission. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a6e4d18c7fa5d383bbcc1498abe090d4fac476c098fa8050146b00c2857a151303" name="a6e4d18c7fa5d383bbcc1498abe090d4fac476c098fa8050146b00c2857a151303"></a>QDMI_DEVICE_JOB_PROPERTY_MAX&#160;</td><td class="fieldinit">6&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
+<tr><td class="fieldname"><a id="a6e4d18c7fa5d383bbcc1498abe090d4fac476c098fa8050146b00c2857a151303" name="a6e4d18c7fa5d383bbcc1498abe090d4fac476c098fa8050146b00c2857a151303"></a>QDMI_DEVICE_JOB_PROPERTY_MAX&#160;</td><td class="fieldinit">5&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
 <p>It can be used by devices for bounds checking and validation of function parameters.</p>
 <dl class="section attention"><dt>Attention</dt><dd>This value must remain the last regular member of the enum besides the custom members and must be updated when new members are added. </dd></dl>
 </td></tr>
-<tr><td class="fieldname"><a id="a6e4d18c7fa5d383bbcc1498abe090d4fa19282bf485e4af273b4cfff5290540d6" name="a6e4d18c7fa5d383bbcc1498abe090d4fa19282bf485e4af273b4cfff5290540d6"></a>QDMI_DEVICE_JOB_PROPERTY_CUSTOM1&#160;</td><td class="fieldinit">QDMI_CUSTOM_ENUM_VALUE_MIN&#160;</td><td class="fielddoc"><p>This enum value is reserved for a custom parameter. </p>
+<tr><td class="fieldname"><a id="a6e4d18c7fa5d383bbcc1498abe090d4fa19282bf485e4af273b4cfff5290540d6" name="a6e4d18c7fa5d383bbcc1498abe090d4fa19282bf485e4af273b4cfff5290540d6"></a>QDMI_DEVICE_JOB_PROPERTY_CUSTOM1&#160;</td><td class="fieldinit">999999995&#160;</td><td class="fielddoc"><p>This enum value is reserved for a custom parameter. </p>
 <p>The device defines the meaning and the type of this parameter. </p><dl class="section attention"><dt>Attention</dt><dd>The value of this enum member must not be changed to maintain binary compatibility. </dd></dl>
 </td></tr>
 <tr><td class="fieldname"><a id="a6e4d18c7fa5d383bbcc1498abe090d4fad86d4edb36e54ab09f6c3a424d5bc8e4" name="a6e4d18c7fa5d383bbcc1498abe090d4fad86d4edb36e54ab09f6c3a424d5bc8e4"></a>QDMI_DEVICE_JOB_PROPERTY_CUSTOM2&#160;</td><td class="fieldinit">999999996&#160;</td><td class="fielddoc"><dl class="section see"><dt>See also</dt><dd><a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4fa19282bf485e4af273b4cfff5290540d6" title="This enum value is reserved for a custom parameter.">QDMI_DEVICE_JOB_PROPERTY_CUSTOM1</a> </dd></dl>
@@ -1162,8 +647,6 @@ A query for a multi-program job returns <a class="el" href="#a450b1adf81abc6f0ac
 <tr><td class="fieldname"><a id="a6e4d18c7fa5d383bbcc1498abe090d4fa7f324d6c1468d7c14608e1ffad230c3c" name="a6e4d18c7fa5d383bbcc1498abe090d4fa7f324d6c1468d7c14608e1ffad230c3c"></a>QDMI_DEVICE_JOB_PROPERTY_CUSTOM4&#160;</td><td class="fieldinit">999999998&#160;</td><td class="fielddoc"><dl class="section see"><dt>See also</dt><dd><a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4fa19282bf485e4af273b4cfff5290540d6" title="This enum value is reserved for a custom parameter.">QDMI_DEVICE_JOB_PROPERTY_CUSTOM1</a> </dd></dl>
 </td></tr>
 <tr><td class="fieldname"><a id="a6e4d18c7fa5d383bbcc1498abe090d4fa08224f2da22d71f598bf27aa85ac9bd4" name="a6e4d18c7fa5d383bbcc1498abe090d4fa08224f2da22d71f598bf27aa85ac9bd4"></a>QDMI_DEVICE_JOB_PROPERTY_CUSTOM5&#160;</td><td class="fieldinit">999999999&#160;</td><td class="fielddoc"><dl class="section see"><dt>See also</dt><dd><a class="el" href="#a6e4d18c7fa5d383bbcc1498abe090d4fa19282bf485e4af273b4cfff5290540d6" title="This enum value is reserved for a custom parameter.">QDMI_DEVICE_JOB_PROPERTY_CUSTOM1</a> </dd></dl>
-</td></tr>
-<tr><td class="fieldname"><a id="a6e4d18c7fa5d383bbcc1498abe090d4faf89e9b61289a81cb1c4670772f263139" name="a6e4d18c7fa5d383bbcc1498abe090d4faf89e9b61289a81cb1c4670772f263139"></a>QDMI_DEVICE_JOB_PROPERTY_CUSTOM_MAX&#160;</td><td class="fieldinit">QDMI_CUSTOM_ENUM_VALUE_MAX&#160;</td><td class="fielddoc"><p>The largest syntactically valid custom value. </p>
 </td></tr>
 </table>
 
@@ -1222,8 +705,8 @@ A query for a multi-program job returns <a class="el" href="#a450b1adf81abc6f0ac
 <dl class="section note"><dt>Note</dt><dd>Primarily relevant for neutral atom devices supporting dynamic atom arrangement. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a3a25e71a82af0c1ef7343dd602a3921e" title="char* (string) The length unit reported by the device.">QDMI_DEVICE_PROPERTY_LENGTHUNIT</a> QDMI_DEVICE_PROPERTY_LENGTSCALEFACTOR </dd></dl>
 </td></tr>
-<tr><td class="fieldname"><a id="ad251d8ae8fbbe9a5c7a10d66b243d526a6cc7734ed9ab8493aa2d6256ed9a8468" name="ad251d8ae8fbbe9a5c7a10d66b243d526a6cc7734ed9ab8493aa2d6256ed9a8468"></a>QDMI_DEVICE_PROPERTY_SUPPORTEDPROGRAMFORMATS&#160;</td><td class="fieldinit">14&#160;</td><td class="fielddoc"><p><span class="tt">QDMI_Program_Format*</span> (<a class="el" href="structQDMI__Program__Format.html" title="QDMI_Program_Format">QDMI_Program_Format</a> list) The exact program formats supported by the device. </p>
-<p>Every returned descriptor can be passed unchanged as the job's program-format parameter. Descriptors with different versions, profiles, or encodings are independent formats. The list is ordered from most to least preferred by the device provider. </p>
+<tr><td class="fieldname"><a id="ad251d8ae8fbbe9a5c7a10d66b243d526a6cc7734ed9ab8493aa2d6256ed9a8468" name="ad251d8ae8fbbe9a5c7a10d66b243d526a6cc7734ed9ab8493aa2d6256ed9a8468"></a>QDMI_DEVICE_PROPERTY_SUPPORTEDPROGRAMFORMATS&#160;</td><td class="fieldinit">14&#160;</td><td class="fielddoc"><p><span class="tt">QDMI_Program_Format*</span> (<a class="el" href="#a475336f0c08bd0218dd76a6016098231" title="QDMI_Program_Format">QDMI_Program_Format</a> list) The program formats supported by the device. </p>
+<p>The returned list contains all program formats that the device supports for execution. A client can use this information to determine which program formats can be used when submitting jobs to the device. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="ad251d8ae8fbbe9a5c7a10d66b243d526a223cba616b016a4b33e06b53854a18f6" name="ad251d8ae8fbbe9a5c7a10d66b243d526a223cba616b016a4b33e06b53854a18f6"></a>QDMI_DEVICE_PROPERTY_CHILDDEVICES&#160;</td><td class="fieldinit">15&#160;</td><td class="fielddoc"><p><span class="tt">QDMI_Child_Device*</span> (<a class="el" href="group__device__interface.html#ga112235355550f0b2defb14e3e49323c4" title="QDMI_Child_Device">QDMI_Child_Device</a> list) A list of device handles corresponding to the device's child devices managed by this device. </p>
 <p>Some devices may manage multiple child devices, e.g., a multi-device system or a device with multiple processing units. This property provides access to the child devices as separate <a class="el" href="group__device__interface.html#ga112235355550f0b2defb14e3e49323c4" title="QDMI_Child_Device">QDMI_Child_Device</a> handles. </p><dl class="section user"><dt></dt><dd>The property may yield <a class="el" href="#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651" title="QDMI_ERROR_NOTSUPPORTED">QDMI_ERROR_NOTSUPPORTED</a> if the device does not have any child devices. </dd></dl>
@@ -1233,16 +716,11 @@ A query for a multi-program job returns <a class="el" href="#a450b1adf81abc6f0ac
 <p>This property is a snapshot of the device's queue length and does not include jobs that are currently executing. If a provider exposes multiple queues for the device, the implementation reports the sum of the waiting jobs across those queues. </p><dl class="section user"><dt></dt><dd>If the provider only exposes a lower bound, the implementation reports that lower bound. For example, a provider value of <span class="tt">&gt;50</span> is reported as <span class="tt">50</span>. </dd></dl>
 <dl class="section user"><dt></dt><dd>The property may yield <a class="el" href="#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651" title="QDMI_ERROR_NOTSUPPORTED">QDMI_ERROR_NOTSUPPORTED</a> if the implementation cannot obtain a trustworthy queue length. </dd></dl>
 </td></tr>
-<tr><td class="fieldname"><a id="ad251d8ae8fbbe9a5c7a10d66b243d526a075556271172ec5539c14df12a050f05" name="ad251d8ae8fbbe9a5c7a10d66b243d526a075556271172ec5539c14df12a050f05"></a>QDMI_DEVICE_PROPERTY_ID&#160;</td><td class="fieldinit">17&#160;</td><td class="fielddoc"><p><span class="tt">char*</span> (string) The stable client-visible device identifier. </p>
-<p>The Client Interface must return a nonempty, NUL-terminated, opaque ID. IDs are unique within one initialized session and immutable for the lifetime of the corresponding <a class="el" href="group__client__interface.html#ga2772c94ab19957ce5aaef652b626baec" title="QDMI_Device">QDMI_Device</a> handle. Equivalent sessions return the same ID across process restarts while the same logical resource exists. Clients persist the pair of driver deployment and device ID because IDs from different drivers need not be unique.</p>
-<p>The ID identifies the logical resource. It is not a display name, endpoint, pointer value, credential, library version, symbol prefix, or build-system target ID. A driver can namespace or replace an identifier reported by its underlying device implementation.</p>
-<p>This property is mandatory through <a class="el" href="group__client__query__interface.html#ga3ed6ddec5adc23e3b08706807dda8430" title="QDMI_device_query_device_property">QDMI_device_query_device_property</a>. A device implementation can return <a class="el" href="#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651" title="QDMI_ERROR_NOTSUPPORTED">QDMI_ERROR_NOTSUPPORTED</a> through <a class="el" href="group__device__query__interface.html#ga9bdebc2bce6e2c6ad9e19096aadf6086" title="QDMI_device_session_query_device_property">QDMI_device_session_query_device_property</a>; the driver must then supply the client-visible ID. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ad251d8ae8fbbe9a5c7a10d66b243d526afe696a25133fa887276e666460981688" name="ad251d8ae8fbbe9a5c7a10d66b243d526afe696a25133fa887276e666460981688"></a>QDMI_DEVICE_PROPERTY_MAX&#160;</td><td class="fieldinit">18&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
+<tr><td class="fieldname"><a id="ad251d8ae8fbbe9a5c7a10d66b243d526afe696a25133fa887276e666460981688" name="ad251d8ae8fbbe9a5c7a10d66b243d526afe696a25133fa887276e666460981688"></a>QDMI_DEVICE_PROPERTY_MAX&#160;</td><td class="fieldinit">17&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
 <p>It can be used by devices for bounds checking and validation of function parameters.</p>
 <dl class="section attention"><dt>Attention</dt><dd>This value must remain the last regular member of the enum besides the custom members and must be updated when new members are added. </dd></dl>
 </td></tr>
-<tr><td class="fieldname"><a id="ad251d8ae8fbbe9a5c7a10d66b243d526a994b8261b6addc3f56993c467641b122" name="ad251d8ae8fbbe9a5c7a10d66b243d526a994b8261b6addc3f56993c467641b122"></a>QDMI_DEVICE_PROPERTY_CUSTOM1&#160;</td><td class="fieldinit">QDMI_CUSTOM_ENUM_VALUE_MIN&#160;</td><td class="fielddoc"><p>This enum value is reserved for a custom property. </p>
+<tr><td class="fieldname"><a id="ad251d8ae8fbbe9a5c7a10d66b243d526a994b8261b6addc3f56993c467641b122" name="ad251d8ae8fbbe9a5c7a10d66b243d526a994b8261b6addc3f56993c467641b122"></a>QDMI_DEVICE_PROPERTY_CUSTOM1&#160;</td><td class="fieldinit">999999995&#160;</td><td class="fielddoc"><p>This enum value is reserved for a custom property. </p>
 <p>The device defines the meaning and the type of this property. </p><dl class="section attention"><dt>Attention</dt><dd>The value of this enum member must not be changed to maintain binary compatibility. </dd></dl>
 </td></tr>
 <tr><td class="fieldname"><a id="ad251d8ae8fbbe9a5c7a10d66b243d526a36730bc67d1fd3c7578a352adf47745e" name="ad251d8ae8fbbe9a5c7a10d66b243d526a36730bc67d1fd3c7578a352adf47745e"></a>QDMI_DEVICE_PROPERTY_CUSTOM2&#160;</td><td class="fieldinit">999999996&#160;</td><td class="fielddoc"><dl class="section see"><dt>See also</dt><dd><a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a994b8261b6addc3f56993c467641b122" title="This enum value is reserved for a custom property.">QDMI_DEVICE_PROPERTY_CUSTOM1</a> </dd></dl>
@@ -1252,8 +730,6 @@ A query for a multi-program job returns <a class="el" href="#a450b1adf81abc6f0ac
 <tr><td class="fieldname"><a id="ad251d8ae8fbbe9a5c7a10d66b243d526ac8f6978f4bf1ad2e263b74bb3bb98aef" name="ad251d8ae8fbbe9a5c7a10d66b243d526ac8f6978f4bf1ad2e263b74bb3bb98aef"></a>QDMI_DEVICE_PROPERTY_CUSTOM4&#160;</td><td class="fieldinit">999999998&#160;</td><td class="fielddoc"><dl class="section see"><dt>See also</dt><dd><a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a994b8261b6addc3f56993c467641b122" title="This enum value is reserved for a custom property.">QDMI_DEVICE_PROPERTY_CUSTOM1</a> </dd></dl>
 </td></tr>
 <tr><td class="fieldname"><a id="ad251d8ae8fbbe9a5c7a10d66b243d526adb994f1dc9dfee2910261951f7e4b39f" name="ad251d8ae8fbbe9a5c7a10d66b243d526adb994f1dc9dfee2910261951f7e4b39f"></a>QDMI_DEVICE_PROPERTY_CUSTOM5&#160;</td><td class="fieldinit">999999999&#160;</td><td class="fielddoc"><dl class="section see"><dt>See also</dt><dd><a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526a994b8261b6addc3f56993c467641b122" title="This enum value is reserved for a custom property.">QDMI_DEVICE_PROPERTY_CUSTOM1</a> </dd></dl>
-</td></tr>
-<tr><td class="fieldname"><a id="ad251d8ae8fbbe9a5c7a10d66b243d526a5b12d41d98a269576bc4e1376f9a0ea8" name="ad251d8ae8fbbe9a5c7a10d66b243d526a5b12d41d98a269576bc4e1376f9a0ea8"></a>QDMI_DEVICE_PROPERTY_CUSTOM_MAX&#160;</td><td class="fieldinit">QDMI_CUSTOM_ENUM_VALUE_MAX&#160;</td><td class="fielddoc"><p>The largest syntactically valid custom value. </p>
 </td></tr>
 </table>
 
@@ -1307,7 +783,7 @@ A query for a multi-program job returns <a class="el" href="#a450b1adf81abc6f0ac
 <p>Enum of the site properties that can be queried via <a class="el" href="group__device__query__interface.html#ga953bf947b1efcfaa3fb63dcce61127d5" title="QDMI_device_session_query_site_property">QDMI_device_session_query_site_property</a> as part of the <a class="el" href="group__device__interface.html" title="QDMI Device Interface">device interface</a> and via <a class="el" href="group__client__query__interface.html#gae6e14d1868412f8e80904377116938bb" title="QDMI_device_query_site_property">QDMI_device_query_site_property</a> as part of the <a class="el" href="group__client__interface.html" title="QDMI Client Interface">client interface</a>. </p>
 <table class="fieldtable">
 <tr><th colspan="3">Enumerator</th></tr><tr><td class="fieldname"><a id="a69ef10d452cc6f03cac8a917ba48d6e2a02a5ff9f7dfc10bb579e93d95bef06cf" name="a69ef10d452cc6f03cac8a917ba48d6e2a02a5ff9f7dfc10bb579e93d95bef06cf"></a>QDMI_SITE_PROPERTY_INDEX&#160;</td><td class="fieldinit">0&#160;</td><td class="fielddoc"><p><span class="tt">size_t</span> The unique index (or ID) to identify the site in a program. </p>
-<p>The index of a site is used to link the qubits used in a quantum program to the physical sites of the device that can be queried via this interface. Indices may be non-consecutive and need not start at 0. See <a class="el" href="structQDMI__Program__Format.html" title="QDMI_Program_Format">QDMI_Program_Format</a> for more information on how the site indices map to the qubits in a program.</p>
+<p>The index of a site is used to link the qubits used in a quantum program to the physical sites of the device that can be queried via this interface. Indices may be non-consecutive and need not start at 0. See <a class="el" href="#a475336f0c08bd0218dd76a6016098231" title="QDMI_Program_Format">QDMI_Program_Format</a> for more information on how the site indices map to the qubits in a program.</p>
 <dl class="section user"><dt>This property must be available for all sites since it is used to</dt><dd>address the sites in a program. </dd></dl>
 </td></tr>
 <tr><td class="fieldname"><a id="a69ef10d452cc6f03cac8a917ba48d6e2a60262ea30467ff3d36cbe4730c4a23f3" name="a69ef10d452cc6f03cac8a917ba48d6e2a60262ea30467ff3d36cbe4730c4a23f3"></a>QDMI_SITE_PROPERTY_T1&#160;</td><td class="fieldinit">1&#160;</td><td class="fielddoc"><p><span class="tt">uint64_t</span> The raw, unscaled T1 time of a site. </p>
@@ -1361,7 +837,7 @@ scale_factor</span>, where <span class="tt">scale_factor</span> is the value of 
 <p>It can be used by devices for bounds checking and validation of function parameters.</p>
 <dl class="section attention"><dt>Attention</dt><dd>This value must remain the last regular member of the enum besides the custom members and must be updated when new members are added. </dd></dl>
 </td></tr>
-<tr><td class="fieldname"><a id="a69ef10d452cc6f03cac8a917ba48d6e2a1ad5483fe6bcbedf073cd6ae41031e3a" name="a69ef10d452cc6f03cac8a917ba48d6e2a1ad5483fe6bcbedf073cd6ae41031e3a"></a>QDMI_SITE_PROPERTY_CUSTOM1&#160;</td><td class="fieldinit">QDMI_CUSTOM_ENUM_VALUE_MIN&#160;</td><td class="fielddoc"><p>This enum value is reserved for a custom property. </p>
+<tr><td class="fieldname"><a id="a69ef10d452cc6f03cac8a917ba48d6e2a1ad5483fe6bcbedf073cd6ae41031e3a" name="a69ef10d452cc6f03cac8a917ba48d6e2a1ad5483fe6bcbedf073cd6ae41031e3a"></a>QDMI_SITE_PROPERTY_CUSTOM1&#160;</td><td class="fieldinit">999999995&#160;</td><td class="fielddoc"><p>This enum value is reserved for a custom property. </p>
 <p>The device defines the meaning and the type of this property. </p><dl class="section attention"><dt>Attention</dt><dd>The value of this enum member must not be changed to maintain binary compatibility. </dd></dl>
 </td></tr>
 <tr><td class="fieldname"><a id="a69ef10d452cc6f03cac8a917ba48d6e2a4be19ea36b28202b31f21816f968d977" name="a69ef10d452cc6f03cac8a917ba48d6e2a4be19ea36b28202b31f21816f968d977"></a>QDMI_SITE_PROPERTY_CUSTOM2&#160;</td><td class="fieldinit">999999996&#160;</td><td class="fielddoc"><dl class="section see"><dt>See also</dt><dd><a class="el" href="#a69ef10d452cc6f03cac8a917ba48d6e2a1ad5483fe6bcbedf073cd6ae41031e3a" title="This enum value is reserved for a custom property.">QDMI_SITE_PROPERTY_CUSTOM1</a> </dd></dl>
@@ -1371,8 +847,6 @@ scale_factor</span>, where <span class="tt">scale_factor</span> is the value of 
 <tr><td class="fieldname"><a id="a69ef10d452cc6f03cac8a917ba48d6e2a27cdae762dcc09f9df6ba78d91fa3063" name="a69ef10d452cc6f03cac8a917ba48d6e2a27cdae762dcc09f9df6ba78d91fa3063"></a>QDMI_SITE_PROPERTY_CUSTOM4&#160;</td><td class="fieldinit">999999998&#160;</td><td class="fielddoc"><dl class="section see"><dt>See also</dt><dd><a class="el" href="#a69ef10d452cc6f03cac8a917ba48d6e2a1ad5483fe6bcbedf073cd6ae41031e3a" title="This enum value is reserved for a custom property.">QDMI_SITE_PROPERTY_CUSTOM1</a> </dd></dl>
 </td></tr>
 <tr><td class="fieldname"><a id="a69ef10d452cc6f03cac8a917ba48d6e2ae75701dbdb3fd96feb949fa37b405455" name="a69ef10d452cc6f03cac8a917ba48d6e2ae75701dbdb3fd96feb949fa37b405455"></a>QDMI_SITE_PROPERTY_CUSTOM5&#160;</td><td class="fieldinit">999999999&#160;</td><td class="fielddoc"><dl class="section see"><dt>See also</dt><dd><a class="el" href="#a69ef10d452cc6f03cac8a917ba48d6e2a1ad5483fe6bcbedf073cd6ae41031e3a" title="This enum value is reserved for a custom property.">QDMI_SITE_PROPERTY_CUSTOM1</a> </dd></dl>
-</td></tr>
-<tr><td class="fieldname"><a id="a69ef10d452cc6f03cac8a917ba48d6e2af02dd8cd2e18076cf1edc2cc741f856e" name="a69ef10d452cc6f03cac8a917ba48d6e2af02dd8cd2e18076cf1edc2cc741f856e"></a>QDMI_SITE_PROPERTY_CUSTOM_MAX&#160;</td><td class="fieldinit">QDMI_CUSTOM_ENUM_VALUE_MAX&#160;</td><td class="fielddoc"><p>The largest syntactically valid custom value. </p>
 </td></tr>
 </table>
 
@@ -1438,7 +912,7 @@ length_scale_factor / duration_scale_factor</span>. The <span class="tt">length_
 <p>It can be used by devices for bounds checking and validation of function parameters.</p>
 <dl class="section attention"><dt>Attention</dt><dd>This value must remain the last regular member of the enum besides the custom members and must be updated when new members are added. </dd></dl>
 </td></tr>
-<tr><td class="fieldname"><a id="ab23d5f0c5296e3eab4243e91f1213726aa8a314f70a9f754463dd1b8861230322" name="ab23d5f0c5296e3eab4243e91f1213726aa8a314f70a9f754463dd1b8861230322"></a>QDMI_OPERATION_PROPERTY_CUSTOM1&#160;</td><td class="fieldinit">QDMI_CUSTOM_ENUM_VALUE_MIN&#160;</td><td class="fielddoc"><p>This enum value is reserved for a custom property. </p>
+<tr><td class="fieldname"><a id="ab23d5f0c5296e3eab4243e91f1213726aa8a314f70a9f754463dd1b8861230322" name="ab23d5f0c5296e3eab4243e91f1213726aa8a314f70a9f754463dd1b8861230322"></a>QDMI_OPERATION_PROPERTY_CUSTOM1&#160;</td><td class="fieldinit">999999995&#160;</td><td class="fielddoc"><p>This enum value is reserved for a custom property. </p>
 <p>The device defines the meaning and the type of this property. </p><dl class="section attention"><dt>Attention</dt><dd>The value of this enum member must not be changed to maintain binary compatibility. </dd></dl>
 </td></tr>
 <tr><td class="fieldname"><a id="ab23d5f0c5296e3eab4243e91f1213726a0475dc2bb362d79e84f539f09ea43160" name="ab23d5f0c5296e3eab4243e91f1213726a0475dc2bb362d79e84f539f09ea43160"></a>QDMI_OPERATION_PROPERTY_CUSTOM2&#160;</td><td class="fieldinit">999999996&#160;</td><td class="fielddoc"><dl class="section see"><dt>See also</dt><dd><a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726aa8a314f70a9f754463dd1b8861230322" title="This enum value is reserved for a custom property.">QDMI_OPERATION_PROPERTY_CUSTOM1</a> </dd></dl>
@@ -1448,8 +922,6 @@ length_scale_factor / duration_scale_factor</span>. The <span class="tt">length_
 <tr><td class="fieldname"><a id="ab23d5f0c5296e3eab4243e91f1213726af340d37b0cb6a28660c0a064088125d0" name="ab23d5f0c5296e3eab4243e91f1213726af340d37b0cb6a28660c0a064088125d0"></a>QDMI_OPERATION_PROPERTY_CUSTOM4&#160;</td><td class="fieldinit">999999998&#160;</td><td class="fielddoc"><dl class="section see"><dt>See also</dt><dd><a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726aa8a314f70a9f754463dd1b8861230322" title="This enum value is reserved for a custom property.">QDMI_OPERATION_PROPERTY_CUSTOM1</a> </dd></dl>
 </td></tr>
 <tr><td class="fieldname"><a id="ab23d5f0c5296e3eab4243e91f1213726ae4414f8e1b54a24d9db057f8214ad579" name="ab23d5f0c5296e3eab4243e91f1213726ae4414f8e1b54a24d9db057f8214ad579"></a>QDMI_OPERATION_PROPERTY_CUSTOM5&#160;</td><td class="fieldinit">999999999&#160;</td><td class="fielddoc"><dl class="section see"><dt>See also</dt><dd><a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726aa8a314f70a9f754463dd1b8861230322" title="This enum value is reserved for a custom property.">QDMI_OPERATION_PROPERTY_CUSTOM1</a> </dd></dl>
-</td></tr>
-<tr><td class="fieldname"><a id="ab23d5f0c5296e3eab4243e91f1213726ad4676ff25bc494fd8e82f29e7207fe47" name="ab23d5f0c5296e3eab4243e91f1213726ad4676ff25bc494fd8e82f29e7207fe47"></a>QDMI_OPERATION_PROPERTY_CUSTOM_MAX&#160;</td><td class="fieldinit">QDMI_CUSTOM_ENUM_VALUE_MAX&#160;</td><td class="fielddoc"><p>The largest syntactically valid custom value. </p>
 </td></tr>
 </table>
 
@@ -1482,29 +954,84 @@ length_scale_factor / duration_scale_factor</span>. The <span class="tt">length_
 </td></tr>
 <tr><td class="fieldname"><a id="a04e5c793bcbe8b354a9223bb60f828a6a05163481e57725e91bb22ff798394f33" name="a04e5c793bcbe8b354a9223bb60f828a6a05163481e57725e91bb22ff798394f33"></a>QDMI_JOB_STATUS_CANCELED&#160;</td><td class="fieldinit">5&#160;</td><td class="fielddoc"><p>The job was canceled, and the result is not available. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a04e5c793bcbe8b354a9223bb60f828a6ab9b201ad1770dc23b9c1d4753e238d4f" name="a04e5c793bcbe8b354a9223bb60f828a6ab9b201ad1770dc23b9c1d4753e238d4f"></a>QDMI_JOB_STATUS_FAILED&#160;</td><td class="fieldinit">6&#160;</td><td class="fielddoc"><p>One or more programs failed, or another error occurred in the lifecycle. </p>
+<tr><td class="fieldname"><a id="a04e5c793bcbe8b354a9223bb60f828a6ab9b201ad1770dc23b9c1d4753e238d4f" name="a04e5c793bcbe8b354a9223bb60f828a6ab9b201ad1770dc23b9c1d4753e238d4f"></a>QDMI_JOB_STATUS_FAILED&#160;</td><td class="fieldinit">6&#160;</td><td class="fielddoc"><p>An error occurred in the job's lifecycle. </p>
 </td></tr>
 </table>
 
 </div>
 </div>
-<a id="ad5dd287338b8e8d51f0cc545a1797f82" name="ad5dd287338b8e8d51f0cc545a1797f82"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad5dd287338b8e8d51f0cc545a1797f82">&#9670;&#160;</a></span>QDMI_PROGRAM_ENCODING_T</h2>
+<a id="a3eff3252203fcad146d5896e4466ec09" name="a3eff3252203fcad146d5896e4466ec09"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3eff3252203fcad146d5896e4466ec09">&#9670;&#160;</a></span>QDMI_PROGRAM_FORMAT_T</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="#ad5dd287338b8e8d51f0cc545a1797f82">QDMI_PROGRAM_ENCODING_T</a></td>
+          <td class="memname">enum <a class="el" href="#a3eff3252203fcad146d5896e4466ec09">QDMI_PROGRAM_FORMAT_T</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Encoding of a submitted payload. </p>
+<p>Enum of formats that can be submitted to the device. </p>
 <table class="fieldtable">
-<tr><th colspan="3">Enumerator</th></tr><tr><td class="fieldname"><a id="ad5dd287338b8e8d51f0cc545a1797f82ac2b50483b1c5169f6090ca12dfaf902d" name="ad5dd287338b8e8d51f0cc545a1797f82ac2b50483b1c5169f6090ca12dfaf902d"></a>QDMI_PROGRAM_ENCODING_TEXT&#160;</td><td class="fieldinit">1&#160;</td><td class="fielddoc"><p>Text with exactly one trailing NUL and no earlier NUL. </p>
+<tr><th colspan="3">Enumerator</th></tr><tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09afd3bab5e29afc660e29b2a132246471b" name="a3eff3252203fcad146d5896e4466ec09afd3bab5e29afc660e29b2a132246471b"></a>QDMI_PROGRAM_FORMAT_QASM2&#160;</td><td class="fieldinit">0&#160;</td><td class="fielddoc"><p><span class="tt">char*</span> (string) An OpenQASM 2.0 program. </p>
+<p>A text-based representation of a quantum circuit in the <a href="https://arxiv.org/abs/1707.03429">OpenQASM 2.0 language</a>. Devices that claim to support this format must accept programs conforming to the following rules:</p><ul>
+<li>The program contains exactly one quantum register named <span class="tt">q</span>.</li>
+<li>The number of qubits in the quantum register <span class="tt">q</span> matches the number of sites in the device.</li>
+<li>The program only contains gate identifiers that are reported by the <a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726a5197136670f9d415464f09f283921b5a" title="QDMI_OPERATION_PROPERTY_NAME">QDMI_OPERATION_PROPERTY_NAME</a> property of the device's operations.</li>
+</ul>
+<dl class="section user"><dt></dt><dd>Given a program following these rules, the operations in the program are expected to be performed on the physical sites of the device as queried via <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526aea4d3c2d95a753625a6b61c75a30d07b" title="QDMI_DEVICE_PROPERTY_SITES">QDMI_DEVICE_PROPERTY_SITES</a>. Specifically, an operation on <span class="tt">q[i]</span> is performed on the i-th site in the list of sites returned by the device.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Devices may decide to support more general OpenQASM 2.0 programs that do not follow these rules, for example, using multiple qubit registers or arbitrary gates. However, in that case, no guarantees can be made about the mapping of qubits in the program to the physical sites of the device. </dd></dl>
 </td></tr>
-<tr><td class="fieldname"><a id="ad5dd287338b8e8d51f0cc545a1797f82a2014390ec8486330e33b62d612c23571" name="ad5dd287338b8e8d51f0cc545a1797f82a2014390ec8486330e33b62d612c23571"></a>QDMI_PROGRAM_ENCODING_BINARY&#160;</td><td class="fieldinit">2&#160;</td><td class="fielddoc"><p>A nonempty arbitrary byte sequence. </p>
+<tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09a46cb051d6e1f54c658570dee57813903" name="a3eff3252203fcad146d5896e4466ec09a46cb051d6e1f54c658570dee57813903"></a>QDMI_PROGRAM_FORMAT_QASM3&#160;</td><td class="fieldinit">1&#160;</td><td class="fielddoc"><p><span class="tt">char*</span> (string) An OpenQASM 3 program. </p>
+<p>A text-based representation of a quantum circuit in the <a href="https://openqasm.com/">OpenQASM 3 language</a>. Devices that claim to support this format must accept programs conforming to the same rules as for <a class="el" href="#a3eff3252203fcad146d5896e4466ec09afd3bab5e29afc660e29b2a132246471b" title="QDMI_PROGRAM_FORMAT_QASM2">QDMI_PROGRAM_FORMAT_QASM2</a>.</p>
+<dl class="section user"><dt></dt><dd>Besides the rules for OpenQASM 2.0 programs, OpenQASM 3 programs may be written using physical qubits, which are denoted by <span class="tt">$[NUM]</span>, with <span class="tt">[NUM]</span> being a non-negative integer denoting the physical qubit's index. If a program uses physical qubits, the operations in the program must be performed on the sites with indices corresponding to the physical qubits in the program.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Devices may decide to support more general OpenQASM 3 programs that do not follow these rules, for example, using multiple qubit registers or arbitrary gates. However, in that case, no guarantees can be made about the mapping of qubits in the program to the physical sites of the device. </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09a3645597dc4c99852e2820de66569ceac" name="a3eff3252203fcad146d5896e4466ec09a3645597dc4c99852e2820de66569ceac"></a>QDMI_PROGRAM_FORMAT_QIRBASESTRING&#160;</td><td class="fieldinit">2&#160;</td><td class="fielddoc"><p><span class="tt">char*</span> (string) A text-based QIR program complying to the QIR base profile. </p>
+<p>A text-based representation of a quantum circuit in the Quantum Intermediate Representation (QIR) format; specifically, the <a href="https://github.com/qir-alliance/qir-spec/blob/8b3fd47b7b70122a104e24733ef9de911576f7d6/specification/under_development/profiles/Base_Profile.md">QIR base profile</a>. Devices that claim to support this format must accept programs that follow the rules for the QIR base profile and that only contain operations that are reported by the <a class="el" href="#ab23d5f0c5296e3eab4243e91f1213726a5197136670f9d415464f09f283921b5a" title="QDMI_OPERATION_PROPERTY_NAME">QDMI_OPERATION_PROPERTY_NAME</a> property of the device's operations (for example, <span class="tt">@__quantum__qis__[NAME]__body</span>, where <span class="tt">[NAME]</span> is the name of the operation).</p>
+<dl class="section user"><dt></dt><dd>QIR has a similar distinction between dynamically allocated and static hardware qubits as <a class="el" href="#a3eff3252203fcad146d5896e4466ec09a46cb051d6e1f54c658570dee57813903" title="QDMI_PROGRAM_FORMAT_QASM3">QDMI_PROGRAM_FORMAT_QASM3</a>. The same rules apply for the mapping of qubits in the program to the physical sites of the device. Specifically, if the program only allocates a single register named <span class="tt">q</span> with as many qubits as there are sites in the device, the operations in the program are expected to be performed on the physical sites of the device as queried via <a class="el" href="#ad251d8ae8fbbe9a5c7a10d66b243d526aea4d3c2d95a753625a6b61c75a30d07b" title="QDMI_DEVICE_PROPERTY_SITES">QDMI_DEVICE_PROPERTY_SITES</a>. If the program uses static qubit addresses (for example, <span class="tt">ptr inttoptr (i64 1 to ptr)</span>), the operations in the program must be performed on the sites with indices corresponding to the static qubit addresses in the program.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Devices may decide to support more general QIR programs that do not follow these rules, for example, using multiple qubit registers or arbitrary gates. However, in that case, no guarantees can be made about the mapping of qubits in the program to the physical sites of the device. </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09a705ba084cac8769dc2bf91c0beb35ac7" name="a3eff3252203fcad146d5896e4466ec09a705ba084cac8769dc2bf91c0beb35ac7"></a>QDMI_PROGRAM_FORMAT_QIRBASEMODULE&#160;</td><td class="fieldinit">3&#160;</td><td class="fielddoc"><p><span class="tt">void*</span> A QIR binary complying to the QIR base profile. </p>
+<p>A binary representation of a quantum circuit in the Quantum Intermediate Representation (QIR) format; specifically, the <a href="https://github.com/qir-alliance/qir-spec/blob/8b3fd47b7b70122a104e24733ef9de911576f7d6/specification/under_development/profiles/Base_Profile.md">QIR base profile</a>.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a3eff3252203fcad146d5896e4466ec09a3645597dc4c99852e2820de66569ceac" title="char* (string) A text-based QIR program complying to the QIR base profile.">QDMI_PROGRAM_FORMAT_QIRBASESTRING</a> for more information on the QIR base profile and the expected behavior of devices supporting this format. </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09ad749b99003f2b2f6bd07916b2e45be14" name="a3eff3252203fcad146d5896e4466ec09ad749b99003f2b2f6bd07916b2e45be14"></a>QDMI_PROGRAM_FORMAT_QIRADAPTIVESTRING&#160;</td><td class="fieldinit">4&#160;</td><td class="fielddoc"><p><span class="tt">char*</span> (string) A text-based QIR program complying to the QIR adaptive profile. </p>
+<p>A text-based representation of a quantum circuit in the Quantum Intermediate Representation (QIR) format; specifically, the <a href="https://github.com/qir-alliance/qir-spec/blob/8b3fd47b7b70122a104e24733ef9de911576f7d6/specification/under_development/profiles/Adaptive_Profile.md">QIR adaptive profile</a>.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a3eff3252203fcad146d5896e4466ec09a3645597dc4c99852e2820de66569ceac" title="char* (string) A text-based QIR program complying to the QIR base profile.">QDMI_PROGRAM_FORMAT_QIRBASESTRING</a> for more information on the QIR base profile and the expected behavior of devices supporting this format. </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09aded29a50e3dc815777fb45f54dbc1b02" name="a3eff3252203fcad146d5896e4466ec09aded29a50e3dc815777fb45f54dbc1b02"></a>QDMI_PROGRAM_FORMAT_QIRADAPTIVEMODULE&#160;</td><td class="fieldinit">5&#160;</td><td class="fielddoc"><p><span class="tt">void*</span> A QIR binary complying to the QIR adaptive profile. </p>
+<p>A binary representation of a quantum circuit in the Quantum Intermediate Representation (QIR) format; specifically, the <a href="https://github.com/qir-alliance/qir-spec/blob/8b3fd47b7b70122a104e24733ef9de911576f7d6/specification/under_development/profiles/Adaptive_Profile.md">QIR adaptive profile</a>.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a3eff3252203fcad146d5896e4466ec09a3645597dc4c99852e2820de66569ceac" title="char* (string) A text-based QIR program complying to the QIR base profile.">QDMI_PROGRAM_FORMAT_QIRBASESTRING</a> for more information on the QIR base profile and the expected behavior of devices supporting this format. </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09a250ddcb8393b04b08471c5fe7abb3d27" name="a3eff3252203fcad146d5896e4466ec09a250ddcb8393b04b08471c5fe7abb3d27"></a>QDMI_PROGRAM_FORMAT_CALIBRATION&#160;</td><td class="fieldinit">6&#160;</td><td class="fielddoc"><p><span class="tt">void*</span> A calibration program. </p>
+<p>This program format is used to request the device to perform a calibration run. Triggering a calibration run does not require a program to be set via <a class="el" href="#a40dd25c531ebf99fb4b46469083b609ea7ef134726b7ec6f0855c0d8171e44dd3" title="QDMI_DEVICE_JOB_PARAMETER_PROGRAM">QDMI_DEVICE_JOB_PARAMETER_PROGRAM</a>. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09a6bd3fb1aca86016dfc70aa42421a5d48" name="a3eff3252203fcad146d5896e4466ec09a6bd3fb1aca86016dfc70aa42421a5d48"></a>QDMI_PROGRAM_FORMAT_QPY&#160;</td><td class="fieldinit">7&#160;</td><td class="fielddoc"><p><span class="tt">void*</span> A QPY program. </p>
+<p>A binary representation of a Qiskit <span class="tt">QuantumCircuit</span> in the <a href="https://quantum.cloud.ibm.com/docs/en/api/qiskit/qpy">QPY format</a>.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a3eff3252203fcad146d5896e4466ec09a46cb051d6e1f54c658570dee57813903" title="char* (string) An OpenQASM 3 program.">QDMI_PROGRAM_FORMAT_QASM3</a> for more information on the expected behavior of devices supporting this format. </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09ae195460aa4da32f2efc5bb61cf50f740" name="a3eff3252203fcad146d5896e4466ec09ae195460aa4da32f2efc5bb61cf50f740"></a>QDMI_PROGRAM_FORMAT_IQMJSON&#160;</td><td class="fieldinit">8&#160;</td><td class="fielddoc"><p><span class="tt">char*</span> (string) A program in the IQM data transfer format. </p>
+<p>A text-based, proprietary representation of a quantum circuit in the <a href="https://docs.meetiqm.com/iqm-client/api/iqm.iqm_client.models.html">IQM data transfer format</a>, encoded as a JSON string. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09a07a8f396e623368210fac5d2e0ea10a8" name="a3eff3252203fcad146d5896e4466ec09a07a8f396e623368210fac5d2e0ea10a8"></a>QDMI_PROGRAM_FORMAT_BATCHJOB&#160;</td><td class="fieldinit">9&#160;</td><td class="fielddoc"><p><span class="tt">QDMI_Job*</span>/<span class="tt">QDMI_Device_Job*</span> (<a class="el" href="group__client__job__interface.html#gab63357cf9e4546c7ee86b7378c620981" title="QDMI_Job">QDMI_Job</a> list / <a class="el" href="group__device__job__interface.html#gaa9f37f29bc40f719b440a277654789a4" title="QDMI_Device_Job">QDMI_Device_Job</a> list) A list of jobs within a batch job. </p>
+<p>This program format is used to submit a batch job, i.e., a job that consists of multiple sub-jobs. The program must be a list of jobs created via <a class="el" href="group__client__job__interface.html#ga9fbb6ebc06162e99c15c230cec9491c8" title="QDMI_device_create_job">QDMI_device_create_job</a> or <a class="el" href="group__device__job__interface.html#ga63f4e17de8a04f7caeeb195f5d276f5c" title="QDMI_device_session_create_device_job">QDMI_device_session_create_device_job</a>. These jobs must be configured completely but not submitted. If a batch job contains already submitted jobs, <a class="el" href="group__client__job__interface.html#ga184d0d0fc0d4edc3a447b91991f9abd1" title="QDMI_job_submit">QDMI_job_submit</a> or <a class="el" href="group__device__job__interface.html#gaaa70ea915b442e15907106911e0e5a0a" title="QDMI_device_job_submit">QDMI_device_job_submit</a> on the batch job will return <a class="el" href="#a450b1adf81abc6f0accbf0ce4abe92f8a916e0810bf915e2ad67f2c1430c54fec" title="QDMI_ERROR_BADSTATE">QDMI_ERROR_BADSTATE</a>. </p><dl class="section user"><dt></dt><dd>Querying results from a batch job directly is not possible and will result in <a class="el" href="#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651" title="QDMI_ERROR_NOTSUPPORTED">QDMI_ERROR_NOTSUPPORTED</a> Instead, the results must be queried from the individual jobs after they finished. If the device supports it, each job in the batch can be queried for its status or waited for. However, in any case, individual jobs in a batch cannot be canceled and this will result in <a class="el" href="#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651" title="QDMI_ERROR_NOTSUPPORTED">QDMI_ERROR_NOTSUPPORTED</a>. </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09aed0bf48a068be1cc41e339c6ae48e655" name="a3eff3252203fcad146d5896e4466ec09aed0bf48a068be1cc41e339c6ae48e655"></a>QDMI_PROGRAM_FORMAT_MAX&#160;</td><td class="fieldinit">10&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
+<p>It can be used by devices for bounds checking and validation of function parameters.</p>
+<dl class="section attention"><dt>Attention</dt><dd>This value must remain the last regular member of the enum besides the custom members and must be updated when new members are added. </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09ae4c406dd4f873011195a218898ad2348" name="a3eff3252203fcad146d5896e4466ec09ae4c406dd4f873011195a218898ad2348"></a>QDMI_PROGRAM_FORMAT_CUSTOM1&#160;</td><td class="fieldinit">999999995&#160;</td><td class="fielddoc"><p>This enum value is reserved for a custom program format. </p>
+<p>The device defines the meaning and the type of this value. </p><dl class="section attention"><dt>Attention</dt><dd>The value of this enum member must not be changed to maintain binary compatibility. </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09aa623b6643ae8806cc0beae73b13723e4" name="a3eff3252203fcad146d5896e4466ec09aa623b6643ae8806cc0beae73b13723e4"></a>QDMI_PROGRAM_FORMAT_CUSTOM2&#160;</td><td class="fieldinit">999999996&#160;</td><td class="fielddoc"><dl class="section see"><dt>See also</dt><dd><a class="el" href="#a3eff3252203fcad146d5896e4466ec09ae4c406dd4f873011195a218898ad2348" title="This enum value is reserved for a custom program format.">QDMI_PROGRAM_FORMAT_CUSTOM1</a> </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09a25fa2e815d2f0e788117c54188c379a8" name="a3eff3252203fcad146d5896e4466ec09a25fa2e815d2f0e788117c54188c379a8"></a>QDMI_PROGRAM_FORMAT_CUSTOM3&#160;</td><td class="fieldinit">999999997&#160;</td><td class="fielddoc"><dl class="section see"><dt>See also</dt><dd><a class="el" href="#a3eff3252203fcad146d5896e4466ec09ae4c406dd4f873011195a218898ad2348" title="This enum value is reserved for a custom program format.">QDMI_PROGRAM_FORMAT_CUSTOM1</a> </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09a606a32a79bea4e188111ac5728b04212" name="a3eff3252203fcad146d5896e4466ec09a606a32a79bea4e188111ac5728b04212"></a>QDMI_PROGRAM_FORMAT_CUSTOM4&#160;</td><td class="fieldinit">999999998&#160;</td><td class="fielddoc"><dl class="section see"><dt>See also</dt><dd><a class="el" href="#a3eff3252203fcad146d5896e4466ec09ae4c406dd4f873011195a218898ad2348" title="This enum value is reserved for a custom program format.">QDMI_PROGRAM_FORMAT_CUSTOM1</a> </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="a3eff3252203fcad146d5896e4466ec09ac2fc29b4f13482775b7d080f281f9a21" name="a3eff3252203fcad146d5896e4466ec09ac2fc29b4f13482775b7d080f281f9a21"></a>QDMI_PROGRAM_FORMAT_CUSTOM5&#160;</td><td class="fieldinit">999999999&#160;</td><td class="fielddoc"><dl class="section see"><dt>See also</dt><dd><a class="el" href="#a3eff3252203fcad146d5896e4466ec09ae4c406dd4f873011195a218898ad2348" title="This enum value is reserved for a custom program format.">QDMI_PROGRAM_FORMAT_CUSTOM1</a> </dd></dl>
 </td></tr>
 </table>
 
@@ -1523,49 +1050,39 @@ length_scale_factor / duration_scale_factor</span>. The <span class="tt">length_
 </div><div class="memdoc">
 
 <p>Enum of the formats the results can be returned in. </p>
-<p>Each result applies to the program index passed to <a class="el" href="group__client__job__interface.html#ga1a07533166af439c2fa62edafec4d99e" title="QDMI_job_get_results">QDMI_job_get_results</a> or <a class="el" href="group__device__job__interface.html#gaaefb46a6d128a080329759ad21425c5e" title="QDMI_device_job_get_results">QDMI_device_job_get_results</a>. </p>
 <table class="fieldtable">
-<tr><th colspan="3">Enumerator</th></tr><tr><td class="fieldname"><a id="aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97" name="aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97"></a>QDMI_JOB_RESULT_SHOTS&#160;</td><td class="fieldinit">0&#160;</td><td class="fielddoc"><p><span class="tt">char*</span> (string) The results of the individual shots as a comma-separated list. </p>
-<p>Each bit string contains every flat bit output declared by the submitted payload. The following rules assign logical output slots starting at zero:</p><ul>
-<li>OpenQASM 2 uses <span class="tt">creg</span> declarations in source order and increasing bit index within each declaration.</li>
-<li>OpenQASM 3 uses bit-valued output declarations in source order and increasing bit index within each declaration. If the program has no explicit output declaration, the OpenQASM 3 implicit-output rules select the outputs before this ordering is applied.</li>
-<li>QIR uses primitive result-recording calls in execution order. A result array contributes its elements in memory order. Container recording calls do not add bits. The string writes the highest-numbered slot first and slot zero at the right. For example, logical slot values <span class="tt">[1, 0, 0]</span> produce <span class="tt">"001"</span>. If the payload output cannot be represented losslessly as one fixed-width bit string per shot, queries for shots and histogram results return <a class="el" href="#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651" title="QDMI_ERROR_NOTSUPPORTED">QDMI_ERROR_NOTSUPPORTED</a>. Clients can query <a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1a78df4888ecd2b1a9bd740e33fa00dc04" title="QDMI_JOB_RESULT_PROGRAMOUTPUT">QDMI_JOB_RESULT_PROGRAMOUTPUT</a> when the submitted descriptor defines a native output representation.</li>
-</ul>
-<p>The payload output schema owns the slots. Their width and order are independent of the device sites and physical-site order. For example, <span class="tt">"0010,1101,0101"</span> represents three shots of four declared bit outputs. </p>
+<tr><th colspan="3">Enumerator</th></tr><tr><td class="fieldname"><a id="aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97" name="aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97"></a>QDMI_JOB_RESULT_SHOTS&#160;</td><td class="fieldinit">0&#160;</td><td class="fielddoc"><p><span class="tt">char*</span> (string) The results of the individual shots as a comma-separated list, for example, "0010,1101,0101,1100,1001,1100" for four qubits and six shots. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="aa154b942b0f67e437c393ad7b33cadd1a56e81ab3ca174c75290adaf9227bf090" name="aa154b942b0f67e437c393ad7b33cadd1a56e81ab3ca174c75290adaf9227bf090"></a>QDMI_JOB_RESULT_HIST_KEYS&#160;</td><td class="fieldinit">1&#160;</td><td class="fielddoc"><p><span class="tt">char*</span> (string) The keys for the histogram of the results. </p>
-<p>The histogram of the measurement results is represented as a key-value mapping. This mapping is returned as a list of keys and an equal-length list of values. The corresponding partners of keys and values can be found at the same index in the lists. Each key uses the same payload-declared logical bit order as <a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97" title="QDMI_JOB_RESULT_SHOTS">QDMI_JOB_RESULT_SHOTS</a>.</p>
+<p>The histogram of the measurement results is represented as a key-value mapping. This mapping is returned as a list of keys and an equal-length list of values. The corresponding partners of keys and values can be found at the same index in the lists.</p>
 <p>This constant denotes the list of keys, <a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1a7df344f160e5bc6589c85ee71b311a52" title="QDMI_JOB_RESULT_HIST_VALUES">QDMI_JOB_RESULT_HIST_VALUES</a> denotes the list of values. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="aa154b942b0f67e437c393ad7b33cadd1a7df344f160e5bc6589c85ee71b311a52" name="aa154b942b0f67e437c393ad7b33cadd1a7df344f160e5bc6589c85ee71b311a52"></a>QDMI_JOB_RESULT_HIST_VALUES&#160;</td><td class="fieldinit">2&#160;</td><td class="fielddoc"><p><span class="tt">size_t*</span> (<span class="tt">size_t</span> list) The values for the histogram of the results. </p>
 <dl class="section see"><dt>See also</dt><dd>QDMI_JOB_RESULT_HIST_KEY </dd></dl>
 </td></tr>
 <tr><td class="fieldname"><a id="aa154b942b0f67e437c393ad7b33cadd1a3ca51337735f43e024d012880cd2c7bd" name="aa154b942b0f67e437c393ad7b33cadd1a3ca51337735f43e024d012880cd2c7bd"></a>QDMI_JOB_RESULT_STATEVECTOR_DENSE&#160;</td><td class="fieldinit">3&#160;</td><td class="fielddoc"><p><span class="tt">double*</span> (<span class="tt">double</span> list) The state vector of the result. </p>
-<p>The complex amplitudes are stored as a list of real and imaginary parts. Logical qubit zero is the least-significant bit of basis index <span class="tt">n</span>. The real part of the amplitude is at index <span class="tt">2n</span> and the imaginary part is at index <span class="tt">2n+1</span>. For example, the state vector of a 2-qubit system with amplitudes <span class="tt">(0.5, 0.5), (0.5, -0.5), (-0.5, 0.5), (-0.5, -0.5)</span> would be represented as <span class="tt">{0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5}</span>. </p>
+<p>The complex amplitudes are stored as a list of real and imaginary parts. The real part of the amplitude is at index <span class="tt">2n</span> and the imaginary part is at index <span class="tt">2n+1</span>. For example, the state vector of a 2-qubit system with amplitudes <span class="tt">(0.5, 0.5), (0.5, -0.5), (-0.5, 0.5), (-0.5, -0.5)</span> would be represented as <span class="tt">{0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5}</span>. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="aa154b942b0f67e437c393ad7b33cadd1a320b256c2cddbd933eea4b765dc1a216" name="aa154b942b0f67e437c393ad7b33cadd1a320b256c2cddbd933eea4b765dc1a216"></a>QDMI_JOB_RESULT_PROBABILITIES_DENSE&#160;</td><td class="fieldinit">4&#160;</td><td class="fielddoc"><p><span class="tt">double*</span> (<span class="tt">double</span> list) The probabilities of the result. </p>
-<p>The probabilities are stored as a list of real numbers. Logical qubit zero is the least-significant bit of basis index <span class="tt">n</span>. The probability of that state is at index <span class="tt">n</span> in the list. For example, the probabilities of a 2-qubit system with states <span class="tt">00, 01, 10, 11</span> would be represented as <span class="tt">{0.25, 0.25, 0.25, 0.25}</span>. </p>
+<p>The probabilities are stored as a list of real numbers. The probability of the state with index <span class="tt">n</span> is at index <span class="tt">n</span> in the list. For example, the probabilities of a 2-qubit system with states <span class="tt">00, 01, 10, 11</span> would be represented as <span class="tt">{0.25, 0.25, 0.25, 0.25}</span>. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="aa154b942b0f67e437c393ad7b33cadd1ac9a550895edecffb9cdcf72c3c8140c2" name="aa154b942b0f67e437c393ad7b33cadd1ac9a550895edecffb9cdcf72c3c8140c2"></a>QDMI_JOB_RESULT_STATEVECTOR_SPARSE_KEYS&#160;</td><td class="fieldinit">5&#160;</td><td class="fielddoc"><p><span class="tt">char*</span> (string) The keys for the sparse state vector of the result. </p>
-<p>The sparse state vector is represented as a key-value mapping. This mapping is returned as a list of keys and an equal-length list of values. The corresponding partners of keys and values can be found at the same index in the lists. Keys write the highest-numbered logical qubit at the left and logical qubit zero at the right. </p>
+<p>The sparse state vector is represented as a key-value mapping. This mapping is returned as a list of keys and an equal-length list of values. The corresponding partners of keys and values can be found at the same index in the lists. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="aa154b942b0f67e437c393ad7b33cadd1a82263dc1b055d7237a2c32d318609350" name="aa154b942b0f67e437c393ad7b33cadd1a82263dc1b055d7237a2c32d318609350"></a>QDMI_JOB_RESULT_STATEVECTOR_SPARSE_VALUES&#160;</td><td class="fieldinit">6&#160;</td><td class="fielddoc"><p><span class="tt">double*</span> (<span class="tt">double</span> list) The values for the sparse state vector of the result. </p>
 <p>The complex amplitudes are stored in the same way as the dense state vector, but only for the non-zero amplitudes. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1a3ca51337735f43e024d012880cd2c7bd" title="double* (double list) The state vector of the result.">QDMI_JOB_RESULT_STATEVECTOR_DENSE</a> <a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1ac9a550895edecffb9cdcf72c3c8140c2" title="char* (string) The keys for the sparse state vector of the result.">QDMI_JOB_RESULT_STATEVECTOR_SPARSE_KEYS</a> </dd></dl>
 </td></tr>
 <tr><td class="fieldname"><a id="aa154b942b0f67e437c393ad7b33cadd1aff6709af04527a8d5e03f6f0064dd281" name="aa154b942b0f67e437c393ad7b33cadd1aff6709af04527a8d5e03f6f0064dd281"></a>QDMI_JOB_RESULT_PROBABILITIES_SPARSE_KEYS&#160;</td><td class="fieldinit">7&#160;</td><td class="fielddoc"><p><span class="tt">char*</span> (string) The keys for the sparse probabilities of the result. </p>
-<p>The sparse probabilities are represented as a key-value mapping. This mapping is returned as a list of keys and an equal-length list of values. The corresponding partners of keys and values can be found at the same index in the lists. Keys write the highest-numbered logical qubit at the left and logical qubit zero at the right. </p>
+<p>The sparse probabilities are represented as a key-value mapping. This mapping is returned as a list of keys and an equal-length list of values. The corresponding partners of keys and values can be found at the same index in the lists. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="aa154b942b0f67e437c393ad7b33cadd1a68c0d721fa322f5c5b404a088c2e1504" name="aa154b942b0f67e437c393ad7b33cadd1a68c0d721fa322f5c5b404a088c2e1504"></a>QDMI_JOB_RESULT_PROBABILITIES_SPARSE_VALUES&#160;</td><td class="fieldinit">8&#160;</td><td class="fielddoc"><p><span class="tt">double*</span> (<span class="tt">double</span> list) The values for the sparse probabilities of the result. </p>
 <p>The probabilities are stored in the same way as the dense probabilities, but only for the non-zero probabilities. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1a320b256c2cddbd933eea4b765dc1a216" title="double* (double list) The probabilities of the result.">QDMI_JOB_RESULT_PROBABILITIES_DENSE</a> <a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1aff6709af04527a8d5e03f6f0064dd281" title="char* (string) The keys for the sparse probabilities of the result.">QDMI_JOB_RESULT_PROBABILITIES_SPARSE_KEYS</a> </dd></dl>
 </td></tr>
-<tr><td class="fieldname"><a id="aa154b942b0f67e437c393ad7b33cadd1a78df4888ecd2b1a9bd740e33fa00dc04" name="aa154b942b0f67e437c393ad7b33cadd1a78df4888ecd2b1a9bd740e33fa00dc04"></a>QDMI_JOB_RESULT_PROGRAMOUTPUT&#160;</td><td class="fieldinit">9&#160;</td><td class="fielddoc"><p><span class="tt">void*</span> The complete format-native program output. </p>
-<p>The exact descriptor defines the byte representation for the selected program. The output is an arbitrary byte sequence and need not be NUL-terminated. For a QIR specification that defines an output schema, the sequence is a complete output-schema stream, including its required headers and every shot record. Devices that accept such a QIR descriptor must support this result. A device may return <a class="el" href="#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651" title="QDMI_ERROR_NOTSUPPORTED">QDMI_ERROR_NOTSUPPORTED</a> when the submitted descriptor does not define a native output representation. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="aa154b942b0f67e437c393ad7b33cadd1a392aa5d821440fd4650119f3986d3196" name="aa154b942b0f67e437c393ad7b33cadd1a392aa5d821440fd4650119f3986d3196"></a>QDMI_JOB_RESULT_MAX&#160;</td><td class="fieldinit">10&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
+<tr><td class="fieldname"><a id="aa154b942b0f67e437c393ad7b33cadd1a392aa5d821440fd4650119f3986d3196" name="aa154b942b0f67e437c393ad7b33cadd1a392aa5d821440fd4650119f3986d3196"></a>QDMI_JOB_RESULT_MAX&#160;</td><td class="fieldinit">9&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
 <p>It can be used by devices for bounds checking and validation of function parameters.</p>
 <dl class="section attention"><dt>Attention</dt><dd>This value must remain the last regular member of the enum besides the custom members and must be updated when new members are added. </dd></dl>
 </td></tr>
-<tr><td class="fieldname"><a id="aa154b942b0f67e437c393ad7b33cadd1a885df1084d1067b6336ad6a0eaaffac2" name="aa154b942b0f67e437c393ad7b33cadd1a885df1084d1067b6336ad6a0eaaffac2"></a>QDMI_JOB_RESULT_CUSTOM1&#160;</td><td class="fieldinit">QDMI_CUSTOM_ENUM_VALUE_MIN&#160;</td><td class="fielddoc"><p>This enum value is reserved for a custom result. </p>
+<tr><td class="fieldname"><a id="aa154b942b0f67e437c393ad7b33cadd1a885df1084d1067b6336ad6a0eaaffac2" name="aa154b942b0f67e437c393ad7b33cadd1a885df1084d1067b6336ad6a0eaaffac2"></a>QDMI_JOB_RESULT_CUSTOM1&#160;</td><td class="fieldinit">999999995&#160;</td><td class="fielddoc"><p>This enum value is reserved for a custom result. </p>
 <p>The device defines the meaning and the type of this result. </p><dl class="section attention"><dt>Attention</dt><dd>The value of this enum member must not be changed to maintain binary compatibility. </dd></dl>
 </td></tr>
 <tr><td class="fieldname"><a id="aa154b942b0f67e437c393ad7b33cadd1aaf1c0677ce0a98b75c9a372c790ae7dc" name="aa154b942b0f67e437c393ad7b33cadd1aaf1c0677ce0a98b75c9a372c790ae7dc"></a>QDMI_JOB_RESULT_CUSTOM2&#160;</td><td class="fieldinit">999999996&#160;</td><td class="fielddoc"><dl class="section see"><dt>See also</dt><dd><a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1a885df1084d1067b6336ad6a0eaaffac2" title="This enum value is reserved for a custom result.">QDMI_JOB_RESULT_CUSTOM1</a> </dd></dl>
@@ -1575,8 +1092,6 @@ length_scale_factor / duration_scale_factor</span>. The <span class="tt">length_
 <tr><td class="fieldname"><a id="aa154b942b0f67e437c393ad7b33cadd1af3bb2512523d7a0ab9838a6810b257d6" name="aa154b942b0f67e437c393ad7b33cadd1af3bb2512523d7a0ab9838a6810b257d6"></a>QDMI_JOB_RESULT_CUSTOM4&#160;</td><td class="fieldinit">999999998&#160;</td><td class="fielddoc"><dl class="section see"><dt>See also</dt><dd><a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1a885df1084d1067b6336ad6a0eaaffac2" title="This enum value is reserved for a custom result.">QDMI_JOB_RESULT_CUSTOM1</a> </dd></dl>
 </td></tr>
 <tr><td class="fieldname"><a id="aa154b942b0f67e437c393ad7b33cadd1aa892eb092c55f5c7ea34c47358675125" name="aa154b942b0f67e437c393ad7b33cadd1aa892eb092c55f5c7ea34c47358675125"></a>QDMI_JOB_RESULT_CUSTOM5&#160;</td><td class="fieldinit">999999999&#160;</td><td class="fielddoc"><dl class="section see"><dt>See also</dt><dd><a class="el" href="#aa154b942b0f67e437c393ad7b33cadd1a885df1084d1067b6336ad6a0eaaffac2" title="This enum value is reserved for a custom result.">QDMI_JOB_RESULT_CUSTOM1</a> </dd></dl>
-</td></tr>
-<tr><td class="fieldname"><a id="aa154b942b0f67e437c393ad7b33cadd1a389b31372e7c7d866b2ef19fdee3cb52" name="aa154b942b0f67e437c393ad7b33cadd1a389b31372e7c7d866b2ef19fdee3cb52"></a>QDMI_JOB_RESULT_CUSTOM_MAX&#160;</td><td class="fieldinit">QDMI_CUSTOM_ENUM_VALUE_MAX&#160;</td><td class="fielddoc"><p>The largest syntactically valid custom value. </p>
 </td></tr>
 </table>
 

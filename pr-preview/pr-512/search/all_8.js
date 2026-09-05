@@ -19,6 +19,5 @@ var searchData=
   ['documentation_16',['Documentation',['../md_docs_2contributing.html#building-the-documentation',1,'Building the Documentation'],['../md_docs_2contributing.html#working-on-the-documentation',1,'Working on the Documentation']]],
   ['does_20qdmi_20not_20define_20individual_20functions_20for_20each_20property_17',['Why does QDMI not define individual functions for each property?',['../md_docs_2rationale.html#rationale-properties',1,'']]],
   ['does_20qdmi_20use_20opaque_20pointers_18',['Why does QDMI use opaque pointers?',['../md_docs_2rationale.html#rationale-opaque-pointers',1,'']]],
-  ['driver_19',['Implementing a Client Driver',['../md_docs_2examples.html#client-driver',1,'']]],
-  ['dynamic_20content_20',['Dynamic Content',['../md_docs_2contributing.html#dynamic-content',1,'']]]
+  ['dynamic_20content_19',['Dynamic Content',['../md_docs_2contributing.html#dynamic-content',1,'']]]
 ];
