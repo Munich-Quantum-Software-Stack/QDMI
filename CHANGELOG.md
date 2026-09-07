@@ -22,6 +22,10 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 - 💥 Require generated device projects to use Python 3.11 or newer ([#515])
   ([\@denialhaag])
 
+### Fixed
+
+- Preserve timestamps of unchanged prefixed headers to avoid redundant builds.
+
 ## [1.3.3] - 2026-08-19
 
 _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#133)._
