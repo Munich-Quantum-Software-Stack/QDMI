@@ -15,6 +15,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
+cmake_minimum_required(VERSION 3.24)
+
 include("${QDMI_SOURCE_DIR}/cmake/PrefixHandling.cmake")
 set(QDMI_CMAKE_DIR "${QDMI_SOURCE_DIR}/cmake")
 set(QDMI_INCLUDE_BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}/prefix-fixture")
