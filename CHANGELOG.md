@@ -24,7 +24,8 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 
 ### Fixed
 
-- Preserve timestamps of unchanged prefixed headers to avoid redundant builds.
+- 🐛 Preserve timestamps of unchanged prefixed headers to avoid redundant builds
+  ([#537]) ([\@burgholzer])
 
 ## [1.3.3] - 2026-08-19
 
@@ -232,6 +233,7 @@ for previous changelogs._
 
 <!-- PR links -->
 
+[#537]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/537
 [#515]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/515
 [#486]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/486
 [#485]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/485

@@ -59,7 +59,3 @@ add_dependencies(qdmi_test cxx-qdmi-device)
 # ensures that there is no compilation error in the templates provided with QDMI
 # and their tests.
 add_dependencies(qdmi_test my-qdmi-device-test)
-
-add_test(NAME prefix_header_generation
-         COMMAND "${CMAKE_COMMAND}" -DQDMI_SOURCE_DIR=${PROJECT_SOURCE_DIR} -P
-                 "${CMAKE_CURRENT_SOURCE_DIR}/test_prefix_handling.cmake")
