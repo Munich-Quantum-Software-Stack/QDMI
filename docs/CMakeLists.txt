@@ -42,6 +42,7 @@ file(
 set(DOXYGEN_INPUT_DIRS
     ${DOXYGEN_INPUT_DIRS}
     ${CMAKE_CURRENT_SOURCE_DIR}/index.md
+    ${CMAKE_CURRENT_SOURCE_DIR}/installation.md
     ${CMAKE_CURRENT_SOURCE_DIR}/faq.md
     ${CMAKE_CURRENT_SOURCE_DIR}/support.md
     ${CMAKE_CURRENT_SOURCE_DIR}/rationale.md
