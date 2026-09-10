@@ -450,7 +450,7 @@ implications of recent changes.
 
 This document was inspired by and partially adapted from
 
-- <https://mqt.readthedocs.io/projects/core/en/latest/contributing.html>
+- <https://mqt.readthedocs.io/projects/core/en/stable/contributing.html>
 - <https://matplotlib.org/stable/devel/coding_guide.html>
 - <https://opensource.creativecommons.org/contributing-code/pr-guidelines/>
 - <https://yeoman.io/contributing/pull-request.html>
