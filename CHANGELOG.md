@@ -16,7 +16,7 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 
 ### Changed
 
-- 📝 Document installation and CMake consumption of the QDMI interface
+- 📝 Document installation and CMake consumption of the QDMI interface ([#538])
   ([\@marcelwa])
 - 💥 Drop x86 macOS from QDMI's tested platforms ([#515]) ([\@denialhaag])
 - ⬆️ Raise generated device projects' macOS deployment target to 13.3 ([#515])
@@ -230,6 +230,7 @@ for previous changelogs._
 
 <!-- PR links -->
 
+[#538]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/538
 [#515]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/515
 [#486]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/486
 [#485]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/485
