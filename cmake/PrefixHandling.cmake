@@ -67,10 +67,10 @@ function(generate_prefixed_qdmi_headers prefix)
                 "\\1${prefix}_${replacement}\\2" header_content
                 "${header_content}")
     endforeach()
-    # Write the prefixed header.
-    file(WRITE
-         ${CMAKE_CURRENT_BINARY_DIR}/include/${QDMI_prefix}_qdmi/${rel_header}
-         "${header_content}")
+    # Preserve literal header content and leave unchanged files untouched.
+    file(CONFIGURE OUTPUT
+         "${CMAKE_CURRENT_BINARY_DIR}/include/${QDMI_prefix}_qdmi/${rel_header}"
+         CONTENT "@header_content@" @ONLY)
   endforeach()
 endfunction()
 

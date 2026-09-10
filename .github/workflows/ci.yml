@@ -22,7 +22,7 @@ permissions:
 jobs:
   change-detection:
     name: 🔍 Change
-    uses: ./.github/workflows/reusable-change-detection.yml
+    uses: $/.github/workflows/reusable-change-detection.yml
 
   tests:
     name: 🇨 Test
@@ -31,7 +31,7 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    uses: ./.github/workflows/reusable-cpp-ci.yml
+    uses: $/.github/workflows/reusable-cpp-ci.yml
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
@@ -42,7 +42,7 @@ jobs:
       pull-requests: write
     needs: change-detection
     if: fromJSON(needs.change-detection.outputs.run-linter) && github.event.action != 'closed'
-    uses: munich-quantum-toolkit/workflows/.github/workflows/reusable-cpp-linter.yml@063c90c8e7e094bfffb73f8436eb55341c1e820f # v2.3.0
+    uses: munich-quantum-toolkit/workflows/.github/workflows/reusable-cpp-linter.yml@ae4c1005796fedc123c3c70cdba94ce643c9fcae # v2.3.1
     with:
       clang-version: 21
       cpp-linter-extra-args: "-std=c++20"
@@ -51,13 +51,13 @@ jobs:
     name: 🏗️ Build and Test Templates
     needs: change-detection
     if: fromJSON(needs.change-detection.outputs.run-template) && github.event.action != 'closed'
-    uses: ./.github/workflows/reusable-template-ci.yml
+    uses: $/.github/workflows/reusable-template-ci.yml
 
   docs:
     name: 📝 Build and Deploy Docs
     needs: change-detection
     if: fromJSON(needs.change-detection.outputs.run-docs)
-    uses: ./.github/workflows/reusable-docs.yml
+    uses: $/.github/workflows/reusable-docs.yml
     permissions:
       contents: write
       pull-requests: write
