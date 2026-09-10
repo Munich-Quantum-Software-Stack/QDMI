@@ -16,6 +16,8 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 
 ### Changed
 
+- 📝 Document installation and CMake consumption of the QDMI interface
+  ([\@marcelwa])
 - 💥 Drop x86 macOS from QDMI's tested platforms ([#515]) ([\@denialhaag])
 - ⬆️ Raise generated device projects' macOS deployment target to 13.3 ([#515])
   ([\@denialhaag])

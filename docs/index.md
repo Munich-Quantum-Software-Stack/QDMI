@@ -26,6 +26,9 @@ details about the design and implementation can be found in the
 
 #### Hands-On
 
+The [CMake guide](installation.md) explains how to install QDMI or include it as
+a source dependency in your project.
+
 The [Examples](examples.md) page provides a collection of examples to see QDMI
 in action. When you want to start your own implementation of QDMI, the
 [Templates](templates.md) page is a good starting point.

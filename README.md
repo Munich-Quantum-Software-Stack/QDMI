@@ -45,6 +45,9 @@ files to allow fast integration into an HPC environment.
 
 ## FAQ
 
+For installation and dependency setup, see
+[Using QDMI with CMake](docs/installation.md).
+
 <!-- [DOXYGEN FAQ] -->
 
 ### What is MQSS?
