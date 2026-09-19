@@ -202,7 +202,7 @@ $(function(){initNavTree('md_docs_2installation.html','',''); });
 <div class="line"> </div>
 <div class="line">cmake --install qdmi/build --prefix /opt/qdmi</div>
 </div><!-- fragment --><p>Choose an installation prefix that you can write to. These commands use POSIX shell line continuations; adapt them to your shell on Windows. A release source archive can be used in place of the Git checkout.</p>
-<p>The installation contains headers and CMake package files, including the symbol-prefix helpers used by device implementations. QDMI currently does not publish prebuilt SDK archives; the source installation above provides the interface independently of the target architecture.</p>
+<p>The installation contains headers and CMake package files, including the symbol-prefix helpers used by device implementations. QDMI currently does not publish prebuilt SDK archives. Starting with 1.3.4, the package version check is architecture-independent. Earlier releases, including the 1.3.3 examples here, require installation and consumer toolchains with matching pointer sizes.</p>
 <h1>Use an Installed Package</h1>
 <p>In your project's <span class="tt">CMakeLists.txt</span>, after declaring your target:</p>
 <div class="fragment"><div class="line">find_package(qdmi 1.3.3 CONFIG REQUIRED)</div>
@@ -211,7 +211,7 @@ $(function(){initNavTree('md_docs_2installation.html','',''); });
 <div class="fragment"><div class="line">cmake -S . -B build -DCMAKE_PREFIX_PATH=/opt/qdmi</div>
 </div><!-- fragment --><p>The imported target supplies the include directory and C11 requirement. Use <span class="tt">PUBLIC</span> instead of <span class="tt">PRIVATE</span> when your library exposes QDMI types in its public headers. Linking this interface target does not supply implementations of QDMI functions.</p>
 <h1>Embed the Source with FetchContent</h1>
-<p>Alternatively, let CMake obtain QDMI as part of your project:</p>
+<p>Alternatively, let CMake obtain QDMI as part of your project. C++ projects must also enable C in the parent project, for example with <span class="tt">project(my_project LANGUAGES C CXX)</span>, before including QDMI. This makes QDMI's C11 usage requirement available in the consumer's scope.</p>
 <div class="fragment"><div class="line">include(FetchContent)</div>
 <div class="line">FetchContent_Declare(</div>
 <div class="line">  qdmi</div>
