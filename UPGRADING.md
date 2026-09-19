@@ -7,6 +7,13 @@ releases, please refer to the
 
 ## [Unreleased]
 
+### CMake consumption
+
+Installed QDMI packages no longer select a compiler cache or add `-g` to
+consuming targets. Configure caching with `CMAKE_C_COMPILER_LAUNCHER` and
+`CMAKE_CXX_COMPILER_LAUNCHER`, and select `Debug` or `RelWithDebInfo` when debug
+information is needed.
+
 ### macOS support
 
 QDMI no longer tests x86 macOS. Generated device projects now target macOS 13.3

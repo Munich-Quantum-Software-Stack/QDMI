@@ -46,8 +46,9 @@ archive can be used in place of the Git checkout.
 
 The installation contains headers and CMake package files, including the
 symbol-prefix helpers used by device implementations. QDMI currently does not
-publish prebuilt SDK archives; the source installation above provides the
-interface independently of the target architecture.
+publish prebuilt SDK archives. Starting with 1.3.4, the package version check is
+architecture-independent. Earlier releases, including the 1.3.3 examples here,
+require installation and consumer toolchains with matching pointer sizes.
 
 ## Use an Installed Package
 
@@ -71,7 +72,10 @@ functions.
 
 ## Embed the Source with FetchContent
 
-Alternatively, let CMake obtain QDMI as part of your project:
+Alternatively, let CMake obtain QDMI as part of your project. C++ projects must
+also enable C in the parent project, for example with
+`project(my_project LANGUAGES C CXX)`, before including QDMI. This makes QDMI's
+C11 usage requirement available in the consumer's scope.
 
 ```cmake
 include(FetchContent)

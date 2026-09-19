@@ -122,11 +122,6 @@ if(NOT USE_INSTALLED_QDMI)
     # set required C standard
     target_compile_features(qdmi INTERFACE c_std_11)
 
-    # always include debug symbols (avoids common problems with LTO)
-    if(NOT MSVC)
-      target_compile_options(qdmi INTERFACE -g)
-    endif()
-
     # enable coverage collection options
     option(ENABLE_COVERAGE "Enable coverage reporting" FALSE)
     if(ENABLE_COVERAGE)
@@ -192,7 +187,7 @@ if(INSTALL_QDMI)
   write_basic_package_version_file(
     "${PROJECT_NAME}-config-version.cmake"
     VERSION ${PROJECT_VERSION}
-    COMPATIBILITY SameMinorVersion)
+    COMPATIBILITY SameMinorVersion ARCH_INDEPENDENT)
 
   install(
     FILES "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config.cmake"
@@ -229,8 +224,7 @@ if(INSTALL_QDMI)
     COMPONENT ${PROJECT_NAME}_Development)
 
   install(
-    FILES ${PROJECT_SOURCE_DIR}/cmake/Cache.cmake
-          ${PROJECT_SOURCE_DIR}/cmake/prefix_defs.txt
+    FILES ${PROJECT_SOURCE_DIR}/cmake/prefix_defs.txt
           ${PROJECT_SOURCE_DIR}/cmake/PrefixHandling.cmake
           ${PROJECT_SOURCE_DIR}/cmake/test_defs.cpp.in
     DESTINATION ${QDMI_CONFIG_INSTALL_DIR}
