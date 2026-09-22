@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=11" />
     <meta name="generator" content="Doxygen 1.16.1" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>QDMI: QDMI</title>
+    <title>QDMI: Using QDMI with CMake</title>
     <link href="tabs.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="jquery.js"></script>
     <script type="text/javascript" src="dynsections.js"></script>
@@ -155,7 +155,7 @@ $(function() {
   </div>
 </div>
 <script type="text/javascript">
-$(function(){initNavTree('index.html','',''); });
+$(function(){initNavTree('md_docs_2installation.html','',''); });
 </script>
 <div id="container">
 <div id="doc-content">
@@ -181,27 +181,48 @@ $(function(){initNavTree('index.html','',''); });
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">QDMI </div></div>
+  <div class="headertitle"><div class="title">Using QDMI with CMake </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="mainpage"></a></p>
-<h1>Quantum Device Management Interface</h1>
-<p><img src="qdmi.svg" alt="QDMI in Quantum Software Stack" class="qdmi" style="pointer-events: none;" class="inline"/></p>
-<p>The Quantum Device Management Interface (QDMI) is one of the core components of the Munich Quantum Software Stack (MQSS)—a sophisticated software stack to connect end users to the wide range of possible quantum devices. It enables the submission to and the control of gate-based quantum systems and enables software tools to automatically retrieve and adapt to changing physical characteristics and constraints of different platforms. QDMI strives to connect the software and hardware developers, mediating between their competing interests, bridging between technologies, and eventually providing corresponding figures of merits and constraints to be considered. QDMI is therefore the method of choice for integrating new platforms into the MQSS and for software tools to query information from these platforms. QDMI is provided as a collection of C header files to allow fast integration into an HPC environment.</p>
-<h2>How to Use this Documentation?</h2>
-<p>This documentation tries to provide helpful information to get you started with QDMI.</p>
-<h3>General Information</h3>
-<p>The <a class="el" href="md_docs_2faq.html" title="FAQ">FAQ</a> page gives an overview over frequently asked questions. More details about the design and implementation can be found in the <a class="el" href="md_docs_2rationale.html" title="Rationale">Rationale</a> page.</p>
-<h3>Hands-On</h3>
-<p>The <a class="el" href="md_docs_2installation.html" title="Using QDMI with CMake">CMake guide</a> explains how to install QDMI or include it as a source dependency in your project.</p>
-<p>The <a class="el" href="md_docs_2examples.html" title="Examples">Examples</a> page provides a collection of examples to see QDMI in action. When you want to start your own implementation of QDMI, the <a class="el" href="md_docs_2templates.html" title="Template">Templates</a> page is a good starting point.</p>
-<h3>Nitty-Gritty Details</h3>
-<p>When you are interested in the details of the semantics of functions and the whole API, the <a href="files.html">Reference Documentation</a> page is the right place to look for.</p>
-<h3>Want to Contribute?</h3>
-<p>If you plan to contribute to QDMI, start with the <a class="el" href="md_docs_2contributing.html" title="Contributing">Contributing</a> page. </p>
-</div></div><!-- PageDoc -->
-<a href="doxygen_crawl.html"></a>
-</div><!-- contents -->
+<div class="textblock"><p>QDMI provides C11 headers and CMake helpers through the <span class="tt">qdmi::qdmi</span> interface target. Installing QDMI does not install a driver or a device implementation. Applications need a compatible implementation to execute QDMI calls; see the <a class="el" href="md_docs_2examples.html" title="Examples">examples</a> and <a class="el" href="md_docs_2templates.html" title="Template">templates</a>.</p>
+<h1>Select a Release</h1>
+<p>Use a tag from the <a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/releases">releases page</a>. Release tags include the <span class="tt">v</span> prefix, for example <span class="tt">v1.3.3</span>; CMake package versions omit it, for example <span class="tt">1.3.3</span>. The examples below pin that release rather than a development branch. For reproducible source dependencies, a full commit hash can also be used with <span class="tt">FetchContent</span>.</p>
+<p>QDMI minor releases may contain breaking changes. The installed CMake package accepts compatible patch releases within the requested minor version; use <span class="tt">EXACT</span> if you need one particular version. Consult the <a class="el" href="md_UPGRADING.html" title="Upgrade Guide">upgrade guide</a> before changing minor versions.</p>
+<h1>Install the Interface</h1>
+<p>The source configuration requires CMake 3.24 or newer and both C and C++ compilers. The interface itself is header-only: no QDMI binary needs to be compiled for this installation. Disable tests, examples, templates, and documentation to avoid building optional targets and downloading their dependencies.</p>
+<div class="fragment"><div class="line">git clone --depth 1 --branch v1.3.3 \</div>
+<div class="line">  https://github.com/Munich-Quantum-Software-Stack/QDMI.git qdmi</div>
+<div class="line"> </div>
+<div class="line">cmake -S qdmi -B qdmi/build \</div>
+<div class="line">  -DINSTALL_QDMI=ON \</div>
+<div class="line">  -DBUILD_QDMI_TESTS=OFF \</div>
+<div class="line">  -DBUILD_QDMI_EXAMPLES=OFF \</div>
+<div class="line">  -DBUILD_QDMI_TEMPLATES=OFF \</div>
+<div class="line">  -DBUILD_QDMI_DOCS=OFF</div>
+<div class="line"> </div>
+<div class="line">cmake --install qdmi/build --prefix /opt/qdmi</div>
+</div><!-- fragment --><p>Choose an installation prefix that you can write to. These commands use POSIX shell line continuations; adapt them to your shell on Windows. A release source archive can be used in place of the Git checkout.</p>
+<p>The installation contains headers and CMake package files, including the symbol-prefix helpers used by device implementations. QDMI currently does not publish prebuilt SDK archives. Starting with 1.4.0, the package version check is architecture-independent. Earlier releases, including the 1.3.3 examples here, require installation and consumer toolchains with matching pointer sizes.</p>
+<h1>Use an Installed Package</h1>
+<p>In your project's <span class="tt">CMakeLists.txt</span>, after declaring your target:</p>
+<div class="fragment"><div class="line">find_package(qdmi 1.3.3 CONFIG REQUIRED)</div>
+<div class="line">target_link_libraries(my_target PRIVATE qdmi::qdmi)</div>
+</div><!-- fragment --><p>Configure your project with the installation prefix:</p>
+<div class="fragment"><div class="line">cmake -S . -B build -DCMAKE_PREFIX_PATH=/opt/qdmi</div>
+</div><!-- fragment --><p>The imported target supplies the include directory and C11 requirement. Use <span class="tt">PUBLIC</span> instead of <span class="tt">PRIVATE</span> when your library exposes QDMI types in its public headers. Linking this interface target does not supply implementations of QDMI functions.</p>
+<h1>Embed the Source with FetchContent</h1>
+<p>Alternatively, let CMake obtain QDMI as part of your project. C++ projects must also enable C in the parent project, for example with <span class="tt">project(my_project LANGUAGES C CXX)</span>, before including QDMI. This makes QDMI's C11 usage requirement available in the consumer's scope.</p>
+<div class="fragment"><div class="line">include(FetchContent)</div>
+<div class="line">FetchContent_Declare(</div>
+<div class="line">  qdmi</div>
+<div class="line">  GIT_REPOSITORY https://github.com/Munich-Quantum-Software-Stack/QDMI.git</div>
+<div class="line">  GIT_TAG v1.3.3)</div>
+<div class="line">FetchContent_MakeAvailable(qdmi)</div>
+<div class="line"> </div>
+<div class="line">target_link_libraries(my_target PRIVATE qdmi::qdmi)</div>
+</div><!-- fragment --><p>QDMI defaults to disabling installation, tests, examples, and templates when included as a subproject. Documentation is also disabled by default. This path needs network access for the initial checkout, unless you supply a local source directory with <span class="tt">FETCHCONTENT_SOURCE_DIR_QDMI</span>. </p>
+</div></div><!-- contents -->
+</div><!-- PageDoc -->
 </div><!-- doc-content -->
 </div><!-- container -->
 <!-- start footer part -->
