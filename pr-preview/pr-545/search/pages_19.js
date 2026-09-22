@@ -4,5 +4,6 @@ var searchData=
   ['usage_20guidelines_1',['AI Usage Guidelines',['../md_docs_2ai__usage.html',1,'']]],
   ['use_20a_20prefix_2',['Why do device implementations use a prefix?',['../md_docs_2rationale.html#rationale-prefix',1,'']]],
   ['use_20opaque_20pointers_3',['Why does QDMI use opaque pointers?',['../md_docs_2rationale.html#rationale-opaque-pointers',1,'']]],
-  ['uses_4',['Prohibited Uses',['../md_docs_2ai__usage.html#prohibited-uses',1,'']]]
+  ['uses_4',['Prohibited Uses',['../md_docs_2ai__usage.html#prohibited-uses',1,'']]],
+  ['using_20qdmi_20with_20cmake_5',['Using QDMI with CMake',['../md_docs_2installation.html',1,'']]]
 ];
