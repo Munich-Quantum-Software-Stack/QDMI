@@ -8,9 +8,10 @@ var searchData=
   ['why_20do_20sessions_20need_20to_20be_20initialized_20after_20allocation_5',['Why do sessions need to be initialized after allocation?',['../md_docs_2rationale.html#rationale-session-init',1,'']]],
   ['why_20does_20qdmi_20not_20define_20individual_20functions_20for_20each_20property_6',['Why does QDMI not define individual functions for each property?',['../md_docs_2rationale.html#rationale-properties',1,'']]],
   ['why_20does_20qdmi_20use_20opaque_20pointers_7',['Why does QDMI use opaque pointers?',['../md_docs_2rationale.html#rationale-opaque-pointers',1,'']]],
-  ['with_20the_20template_8',['Working with the Template',['../md_docs_2templates.html#template-working',1,'']]],
-  ['workflow_9',['Pull Request Workflow',['../md_docs_2contributing.html#pull-request-workflow',1,'']]],
-  ['working_20on_20source_20code_10',['Working on Source Code',['../md_docs_2contributing.html#working-on-source-code',1,'']]],
-  ['working_20on_20the_20documentation_11',['Working on the Documentation',['../md_docs_2contributing.html#working-on-the-documentation',1,'']]],
-  ['working_20with_20the_20template_12',['Working with the Template',['../md_docs_2templates.html#template-working',1,'']]]
+  ['with_20cmake_8',['Using QDMI with CMake',['../md_docs_2installation.html',1,'']]],
+  ['with_20the_20template_9',['Working with the Template',['../md_docs_2templates.html#template-working',1,'']]],
+  ['workflow_10',['Pull Request Workflow',['../md_docs_2contributing.html#pull-request-workflow',1,'']]],
+  ['working_20on_20source_20code_11',['Working on Source Code',['../md_docs_2contributing.html#working-on-source-code',1,'']]],
+  ['working_20on_20the_20documentation_12',['Working on the Documentation',['../md_docs_2contributing.html#working-on-the-documentation',1,'']]],
+  ['working_20with_20the_20template_13',['Working with the Template',['../md_docs_2templates.html#template-working',1,'']]]
 ];

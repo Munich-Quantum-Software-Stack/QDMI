@@ -2358,6 +2358,11 @@
     </member>
   </compound>
   <compound kind="page">
+    <name>md_docs_2installation</name>
+    <title>Using QDMI with CMake</title>
+    <filename>md_docs_2installation.html</filename>
+  </compound>
+  <compound kind="page">
     <name>md_docs_2faq</name>
     <title>FAQ</title>
     <filename>md_docs_2faq.html</filename>
