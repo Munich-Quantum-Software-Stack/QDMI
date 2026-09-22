@@ -1156,9 +1156,11 @@ TEST_P(QDMIImplementationTest, SupportsCalibration) {
 }
 
 TEST_P(QDMIImplementationTest, RemovedCalibrationAdvisoryUnsupported) {
+  /// Old binaries can query reserved values that no longer have an enumerator.
+  /// NOLINTNEXTLINE(clang-analyzer-*EnumCastOutOfRange)
+  const auto property = static_cast<QDMI_Device_Property>(8);
   EXPECT_EQ(
-      QDMI_device_query_device_property(
-          device, static_cast<QDMI_Device_Property>(8), 0, nullptr, nullptr),
+      QDMI_device_query_device_property(device, property, 0, nullptr, nullptr),
       QDMI_ERROR_NOTSUPPORTED);
 }
 
