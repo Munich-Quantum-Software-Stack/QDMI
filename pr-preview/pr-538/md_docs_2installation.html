@@ -202,7 +202,7 @@ $(function(){initNavTree('md_docs_2installation.html','',''); });
 <div class="line"> </div>
 <div class="line">cmake --install qdmi/build --prefix /opt/qdmi</div>
 </div><!-- fragment --><p>Choose an installation prefix that you can write to. These commands use POSIX shell line continuations; adapt them to your shell on Windows. A release source archive can be used in place of the Git checkout.</p>
-<p>The installation contains headers and CMake package files, including the symbol-prefix helpers used by device implementations. QDMI currently does not publish prebuilt SDK archives. Starting with 1.3.4, the package version check is architecture-independent. Earlier releases, including the 1.3.3 examples here, require installation and consumer toolchains with matching pointer sizes.</p>
+<p>The installation contains headers and CMake package files, including the symbol-prefix helpers used by device implementations. QDMI currently does not publish prebuilt SDK archives. Starting with 1.4.0, the package version check is architecture-independent. Earlier releases, including the 1.3.3 examples here, require installation and consumer toolchains with matching pointer sizes.</p>
 <h1>Use an Installed Package</h1>
 <p>In your project's <span class="tt">CMakeLists.txt</span>, after declaring your target:</p>
 <div class="fragment"><div class="line">find_package(qdmi 1.3.3 CONFIG REQUIRED)</div>
