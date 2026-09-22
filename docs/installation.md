@@ -46,7 +46,7 @@ archive can be used in place of the Git checkout.
 
 The installation contains headers and CMake package files, including the
 symbol-prefix helpers used by device implementations. QDMI currently does not
-publish prebuilt SDK archives. Starting with 1.3.4, the package version check is
+publish prebuilt SDK archives. Starting with 1.4.0, the package version check is
 architecture-independent. Earlier releases, including the 1.3.3 examples here,
 require installation and consumer toolchains with matching pointer sizes.
 

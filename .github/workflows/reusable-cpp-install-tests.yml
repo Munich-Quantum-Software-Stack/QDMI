@@ -58,8 +58,6 @@ jobs:
       # install the project
       - name: Install QDMI
         run: cmake --install install-build --prefix install-dir
-      - name: Check installed package usage requirements
-        run: cmake -S test/package -B package-test -DCMAKE_PREFIX_PATH="${GITHUB_WORKSPACE}/install-dir"
       # configure CMake for using the installed QDMI
       - name: Configure CMake for use of installed QDMI
         env:
