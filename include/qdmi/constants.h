@@ -348,7 +348,9 @@ enum QDMI_DEVICE_PROPERTY_T {
   /**
    * Value 8 is reserved for the removed calibration advisory; do not reuse it.
    */
-  /// Value 9 is reserved for the removed pulse metadata; do not reuse it.
+  /**
+   * Value 9 is reserved for the removed pulse metadata; do not reuse it.
+   */
   /**
    * @brief `char*` (string) The length unit reported by the device.
    * @details The device implementation must report a known SI unit (e.g., "mm",
