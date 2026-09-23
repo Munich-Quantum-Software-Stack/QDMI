@@ -40,6 +40,14 @@ property, e.g., `QDMI_DEVICE_PROPERTY_CUSTOM1`. `QDMI_DEVICE_STATUS_CALIBRATION`
 and calibration-job submission remain available. The removed property's numeric
 value (8) remains reserved.
 
+#### Pulse metadata
+
+The unused `QDMI_DEVICE_PROPERTY_PULSESUPPORT` property and
+`QDMI_Device_Pulse_Support_Level` type are removed. QDMI does not define a
+pulse-programming interface. Providers can expose pulse programming through
+custom program formats or a separate vendor interface. The removed property's
+numeric value (9) remains reserved.
+
 ## [1.3.3]
 
 ### Retrieving existing jobs by ID
