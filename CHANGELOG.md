@@ -36,7 +36,7 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 ### Removed
 
 - 💥 Remove the calibration program format. Providers can expose calibration
-  submission through a separate function ([\@burgholzer]).
+  submission through a separate function ([#551]) ([\@burgholzer]).
 - 💥 Remove the unused pulse-support device property and level type. Providers
   can expose pulse programming through a separate vendor interface ([#513])
   ([\@burgholzer]).
@@ -250,6 +250,7 @@ for previous changelogs._
 
 <!-- PR links -->
 
+[#551]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/551
 [#538]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/538
 [#537]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/537
 [#515]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/515
