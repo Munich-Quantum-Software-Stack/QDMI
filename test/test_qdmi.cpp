@@ -460,9 +460,9 @@ TEST_P(QDMIImplementationTest, JobLifecycle) {
                                    sizeof(QDMI_Program_Format), &format),
             QDMI_ERROR_INVALIDARGUMENT);
 
-  constexpr std::array supported_formats = {
-      QDMI_PROGRAM_FORMAT_QASM2, QDMI_PROGRAM_FORMAT_QIRBASESTRING,
-      QDMI_PROGRAM_FORMAT_QIRBASEMODULE, QDMI_PROGRAM_FORMAT_CALIBRATION};
+  constexpr std::array supported_formats = {QDMI_PROGRAM_FORMAT_QASM2,
+                                            QDMI_PROGRAM_FORMAT_QIRBASESTRING,
+                                            QDMI_PROGRAM_FORMAT_QIRBASEMODULE};
 
   for (const auto &supported_format : supported_formats) {
     ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
@@ -1140,19 +1140,6 @@ TEST_P(QDMIImplementationTest, SessionQuerySessionProperty) {
                 session, QDMI_SESSION_PROPERTY_DEVICES, devices_size,
                 static_cast<void *>(devices_vec.data()), nullptr),
             QDMI_SUCCESS);
-}
-
-TEST_P(QDMIImplementationTest, SupportsCalibration) {
-  if (mode == TEST_SESSION_MODE::READONLY) {
-    GTEST_SKIP() << "Skipping test for read-only session";
-  }
-  QDMI_Job job = nullptr;
-  QDMI_Program_Format format = QDMI_PROGRAM_FORMAT_CALIBRATION;
-  QDMI_device_create_job(device, &job);
-  const auto ret = QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
-                                          sizeof(QDMI_Program_Format), &format);
-  EXPECT_EQ(ret, QDMI_SUCCESS);
-  EXPECT_EQ(QDMI_job_submit(job), QDMI_SUCCESS);
 }
 
 // Standalone tests for driver library loading corner cases

@@ -35,6 +35,8 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 
 ### Removed
 
+- 💥 Remove the calibration program format. Providers can expose calibration
+  submission through a separate function ([\@burgholzer]).
 - 💥 Remove the unused pulse-support device property and level type. Providers
   can expose pulse programming through a separate vendor interface ([#513])
   ([\@burgholzer]).

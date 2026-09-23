@@ -234,7 +234,7 @@ const std::unordered_map<
 
 constexpr std::array SUPPORTED_PROGRAM_FORMATS = {
     QDMI_PROGRAM_FORMAT_QASM2, QDMI_PROGRAM_FORMAT_QIRBASESTRING,
-    QDMI_PROGRAM_FORMAT_QIRBASEMODULE, QDMI_PROGRAM_FORMAT_CALIBRATION};
+    QDMI_PROGRAM_FORMAT_QIRBASEMODULE};
 } // namespace
 
 // NOLINTBEGIN(bugprone-macro-parentheses)
@@ -416,8 +416,7 @@ int CXX_QDMI_device_job_set_parameter(CXX_QDMI_Device_Job job,
       }
       if (format != QDMI_PROGRAM_FORMAT_QASM2 &&
           format != QDMI_PROGRAM_FORMAT_QIRBASESTRING &&
-          format != QDMI_PROGRAM_FORMAT_QIRBASEMODULE &&
-          format != QDMI_PROGRAM_FORMAT_CALIBRATION) {
+          format != QDMI_PROGRAM_FORMAT_QIRBASEMODULE) {
         return QDMI_ERROR_NOTSUPPORTED;
       }
       job->format = format;
@@ -466,12 +465,6 @@ int CXX_QDMI_device_job_query_property(CXX_QDMI_Device_Job job,
 int CXX_QDMI_device_job_submit(CXX_QDMI_Device_Job job) {
   if (job == nullptr || job->status != QDMI_JOB_STATUS_CREATED) {
     return QDMI_ERROR_INVALIDARGUMENT;
-  }
-
-  // Calibration jobs complete immediately
-  if (job->format == QDMI_PROGRAM_FORMAT_CALIBRATION) {
-    job->status = QDMI_JOB_STATUS_DONE;
-    return QDMI_SUCCESS;
   }
 
   CXX_QDMI_set_device_status(QDMI_DEVICE_STATUS_BUSY);

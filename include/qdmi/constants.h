@@ -1001,13 +1001,7 @@ enum QDMI_PROGRAM_FORMAT_T {
    * profile and the expected behavior of devices supporting this format.
    */
   QDMI_PROGRAM_FORMAT_QIRADAPTIVEMODULE = 5,
-  /**
-   * @brief `void*` A calibration program.
-   * @details This program format is used to request the device to perform a
-   * calibration run. Triggering a calibration run does not require a program to
-   * be set via @ref QDMI_DEVICE_JOB_PARAMETER_PROGRAM.
-   */
-  QDMI_PROGRAM_FORMAT_CALIBRATION = 6,
+  /// Value 6 is reserved for the removed calibration format; do not reuse it.
   /**
    * @brief `void*` A QPY program.
    * @details A binary representation of a Qiskit `QuantumCircuit` in the
