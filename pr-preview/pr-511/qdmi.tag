@@ -1,9 +1,23 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
 <tagfile doxygen_version="1.16.1" doxygen_gitid="669aeeefca743c148e2d935b3d3c69535c7491e6">
   <compound kind="file">
+    <name>client_version.h</name>
+    <path>build/include/qdmi/</path>
+    <filename>client__version_8h.html</filename>
+    <includes id="constants_8h" name="constants.h" local="yes" import="no" module="no" objc="no">qdmi/constants.h</includes>
+    <member kind="define">
+      <type>#define</type>
+      <name>QDMI_CLIENT_ABI_VERSION</name>
+      <anchorfile>client__version_8h.html</anchorfile>
+      <anchor>adf3d2c0eb6fa2315db6ff6f82e08b113</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
     <name>client.h</name>
     <path></path>
     <filename>client_8h.html</filename>
+    <includes id="client__version_8h" name="client_version.h" local="yes" import="no" module="no" objc="no">qdmi/client_version.h</includes>
     <includes id="constants_8h" name="constants.h" local="yes" import="no" module="no" objc="no">qdmi/constants.h</includes>
     <includes id="export_8h" name="export.h" local="yes" import="no" module="no" objc="no">qdmi/export.h</includes>
     <includes id="types_8h" name="types.h" local="yes" import="no" module="no" objc="no">qdmi/types.h</includes>
@@ -554,13 +568,6 @@
       <anchor>a52254cd217f8627659a19c8e0c2feed6</anchor>
       <arglist></arglist>
     </member>
-    <member kind="typedef">
-      <type>enum QDMI_DEVICE_PULSE_SUPPORT_LEVEL_T</type>
-      <name>QDMI_Device_Pulse_Support_Level</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>adbe592e696ab58711eb26bc2bb6d9668</anchor>
-      <arglist></arglist>
-    </member>
     <member kind="enumeration">
       <type></type>
       <name>QDMI_STATUS</name>
@@ -918,18 +925,6 @@
       <name>QDMI_DEVICE_PROPERTY_COUPLINGMAP</name>
       <anchorfile>constants_8h.html</anchorfile>
       <anchor>ad251d8ae8fbbe9a5c7a10d66b243d526a8550a0c1b86c2f97791289647a159efd</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>QDMI_DEVICE_PROPERTY_NEEDSCALIBRATION</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>ad251d8ae8fbbe9a5c7a10d66b243d526a3ab681f741c7fd8f6ad753674b4c1e28</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>QDMI_DEVICE_PROPERTY_PULSESUPPORT</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>ad251d8ae8fbbe9a5c7a10d66b243d526a636246d24c553aa36459537718588965</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
@@ -1394,12 +1389,6 @@
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
-      <name>QDMI_PROGRAM_FORMAT_CALIBRATION</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>a3eff3252203fcad146d5896e4466ec09a250ddcb8393b04b08471c5fe7abb3d27</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
       <name>QDMI_PROGRAM_FORMAT_QPY</name>
       <anchorfile>constants_8h.html</anchorfile>
       <anchor>a3eff3252203fcad146d5896e4466ec09a6bd3fb1aca86016dfc70aa42421a5d48</anchor>
@@ -1548,37 +1537,6 @@
       <name>QDMI_JOB_RESULT_CUSTOM5</name>
       <anchorfile>constants_8h.html</anchorfile>
       <anchor>aa154b942b0f67e437c393ad7b33cadd1aa892eb092c55f5c7ea34c47358675125</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumeration">
-      <type></type>
-      <name>QDMI_DEVICE_PULSE_SUPPORT_LEVEL_T</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>a4dbe8fa81be42cf37de7172f059092ad</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>QDMI_DEVICE_PULSE_SUPPORT_LEVEL_NONE</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>a4dbe8fa81be42cf37de7172f059092ada37a5a4ff5f9297d9806e57c901a026d4</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>QDMI_DEVICE_PULSE_SUPPORT_LEVEL_SITE</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>a4dbe8fa81be42cf37de7172f059092ada9618ac2ae6549428f4830b9b60ef6944</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>QDMI_DEVICE_PULSE_SUPPORT_LEVEL_CHANNEL</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>a4dbe8fa81be42cf37de7172f059092ada15b6967755608a70f135f8ecd90cc61f</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>QDMI_DEVICE_PULSE_SUPPORT_LEVEL_SITEANDCHANNEL</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>a4dbe8fa81be42cf37de7172f059092ada3ed6ea2f6ef78e4b82aeb726cc86659a</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -1775,13 +1733,6 @@
     <subgroup>client_session_interface</subgroup>
     <subgroup>client_query_interface</subgroup>
     <subgroup>client_job_interface</subgroup>
-    <member kind="define">
-      <type>#define</type>
-      <name>QDMI_CLIENT_ABI_VERSION</name>
-      <anchorfile>group__client__interface.html</anchorfile>
-      <anchor>gadf3d2c0eb6fa2315db6ff6f82e08b113</anchor>
-      <arglist></arglist>
-    </member>
     <member kind="typedef">
       <type>struct QDMI_Device_impl_d *</type>
       <name>QDMI_Device</name>
@@ -2420,6 +2371,11 @@
     </member>
   </compound>
   <compound kind="page">
+    <name>md_docs_2installation</name>
+    <title>Using QDMI with CMake</title>
+    <filename>md_docs_2installation.html</filename>
+  </compound>
+  <compound kind="page">
     <name>md_docs_2faq</name>
     <title>FAQ</title>
     <filename>md_docs_2faq.html</filename>
@@ -2447,7 +2403,7 @@
     <name>md_docs_2examples</name>
     <title>Examples</title>
     <filename>md_docs_2examples.html</filename>
-    <docanchor file="md_docs_2examples.html" title="Implementing a Client Driver">client-driver</docanchor>
+    <docanchor file="md_docs_2examples.html" title="Implementing a QDMI Driver">client-driver</docanchor>
     <docanchor file="md_docs_2examples.html" title="Implementing a Device">device</docanchor>
     <docanchor file="md_docs_2examples.html" title="Basic String Properties">device-string</docanchor>
     <docanchor file="md_docs_2examples.html" title="Auxiliary Macros">device-macros</docanchor>

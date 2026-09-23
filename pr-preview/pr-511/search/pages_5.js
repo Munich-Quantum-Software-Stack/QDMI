@@ -1,10 +1,10 @@
 var searchData=
 [
-  ['a_20client_20driver_0',['Implementing a Client Driver',['../md_docs_2examples.html#client-driver',1,'']]],
-  ['a_20device_1',['Implementing a Device',['../md_docs_2examples.html#device',1,'']]],
-  ['a_20job_2',['Submitting a Job',['../md_docs_2examples.html#device-submit',1,'']]],
-  ['a_20new_20project_3',['Creating a new Project',['../md_docs_2templates.html#template-create',1,'']]],
-  ['a_20prefix_4',['Why do device implementations use a prefix?',['../md_docs_2rationale.html#rationale-prefix',1,'']]],
+  ['a_20device_0',['Implementing a Device',['../md_docs_2examples.html#device',1,'']]],
+  ['a_20job_1',['Submitting a Job',['../md_docs_2examples.html#device-submit',1,'']]],
+  ['a_20new_20project_2',['Creating a new Project',['../md_docs_2templates.html#template-create',1,'']]],
+  ['a_20prefix_3',['Why do device implementations use a prefix?',['../md_docs_2rationale.html#rationale-prefix',1,'']]],
+  ['a_20qdmi_20driver_4',['Implementing a QDMI Driver',['../md_docs_2examples.html#client-driver',1,'']]],
   ['after_20allocation_5',['Why do sessions need to be initialized after allocation?',['../md_docs_2rationale.html#rationale-session-init',1,'']]],
   ['ai_20assisted_20contributions_6',['AI-assisted contributions',['../md_docs_2contributing.html#ai-assisted-contributions',1,'']]],
   ['ai_20usage_20guidelines_7',['AI Usage Guidelines',['../md_docs_2ai__usage.html',1,'']]],

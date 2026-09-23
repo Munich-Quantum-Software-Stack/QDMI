@@ -1,13 +1,5 @@
 var NAVTREEINDEX1 =
 {
-"group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bbaae52e78d7f9944bde33147b9bef474ac":[5,0,2,4,8],
-"group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bbac3fe7fca8db9bb213282e5adebf5ff2c":[5,0,2,4,9],
-"group__client__query__interface.html":[5,0,1],
-"group__client__query__interface.html#ga3ed6ddec5adc23e3b08706807dda8430":[5,0,1,0],
-"group__client__query__interface.html#ga4cac0fe85f5405e58ea4892e7b9080b6":[5,0,1,2],
-"group__client__query__interface.html#gae6e14d1868412f8e80904377116938bb":[5,0,1,1],
-"group__client__session__interface.html":[5,0,0],
-"group__client__session__interface.html#ga24d3efdb64f9ae6d88b32b011f7549ae":[5,0,0,9],
 "group__client__session__interface.html#ga39d34b2a95cd9e2b8d9d6ab551bff078":[5,0,0,6],
 "group__client__session__interface.html#ga4dd0162b0321d12934f815f29504106e":[5,0,0,0],
 "group__client__session__interface.html#ga53bf25dd42852f40468b30a47996d1a0":[5,0,0,8],
