@@ -534,7 +534,9 @@ QDMI_EXPORT int QDMI_device_session_retrieve_device_job_by_id(
  * QDMI_Device_Job_Parameter @p param and, when @p value is not @c NULL, the
  * parameter was successfully set.
  * @return @ref QDMI_ERROR_NOTSUPPORTED if the device does not support the
- * parameter or the value of the parameter.
+ * parameter or the value of the parameter. When setting the program format,
+ * reserved numeric values of removed formats return
+ * @ref QDMI_ERROR_NOTSUPPORTED.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if
  *  - @p job is @c NULL,
  *  - @p param is invalid, or
