@@ -29,7 +29,7 @@ their Python metadata and wheel configuration when adopting these changes.
 
 The unused `QDMI_DEVICE_PROPERTY_NEEDSCALIBRATION` property is removed.
 Providers can expose proprietary calibration readiness through a custom
-property. `QDMI_DEVICE_STATUS_CALIBRATION` and calibration-job submission remain
+property, e.g., `QDMI_DEVICE_PROPERTY_CUSTOM1`. `QDMI_DEVICE_STATUS_CALIBRATION` and calibration-job submission remain
 available. The removed property’s numeric value (8) remains reserved. All
 remaining property values are unchanged, so existing binaries can continue
 querying supported properties. Queries for value 8 return
