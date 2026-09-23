@@ -68,12 +68,6 @@ extern "C" {
  */
 
 /**
- * @def QDMI_CLIENT_ABI_VERSION
- * @brief Client Interface ABI implemented by compatible QDMI drivers.
- * @details CMake derives this value from the QDMI release version.
- */
-
-/**
  * @brief Return the Client Interface ABI implemented by the driver.
  * @details This function has no side effects, is safe to call concurrently,
  * and does not initialize global driver state. A returned ABI is compatible

@@ -13,9 +13,10 @@ Installed QDMI packages no longer select a compiler cache or add `-g` to
 consuming targets. Configure caching with `CMAKE_C_COMPILER_LAUNCHER` and
 `CMAKE_CXX_COMPILER_LAUNCHER`, and select `Debug` or `RelWithDebInfo` when debug
 information is needed.
-### Replaceable Client drivers and stable device IDs
 
-QDMI 1.4 defines a stable ABI for replaceable Client driver libraries. Export
+### Replaceable QDMI drivers and stable device IDs
+
+QDMI 1.4 defines a stable ABI for replaceable QDMI driver libraries. Export
 every function declared in `qdmi/client.h` with `QDMI_DRIVER_EXPORT`. Define
 `QDMI_driver_EXPORTS` while building the driver. A loader first resolves and
 calls `QDMI_driver_get_client_abi_version`. It then resolves the complete Client
@@ -44,10 +45,11 @@ the value when a device returns `QDMI_ERROR_NOTSUPPORTED`. The ID is a nonempty,
 opaque string. It is unique within an initialized session, immutable for one
 device handle, and stable across equivalent sessions and process restarts while
 the same logical resource exists. Persist the driver deployment with the ID. Do
-not use a display name, endpoint, pointer, credential, library version, symbol
-prefix, or the `QDMI_DEVICE_ID` CMake target property as the runtime ID.
+not use a display name, endpoint, pointer, credential, library version, or
+symbol prefix as the stable ID. The `QDMI_DEVICE_ID` CMake target property
+supplies a default stable ID that a driver can override in configuration.
 
-The example driver configuration now gives each device a runtime ID in a third
+The example driver configuration now gives each device a stable ID in a third
 column:
 
 ```text

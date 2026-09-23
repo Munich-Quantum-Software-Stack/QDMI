@@ -10,9 +10,9 @@ contained in the `examples/` directory in the repository.
 
 \tableofcontents
 
-## Implementing a Client Driver {#client-driver}
+## Implementing a QDMI Driver {#client-driver}
 
-A Client driver is a replaceable shared library. It exports every function in
+A QDMI driver is a replaceable shared library. It exports every function in
 `qdmi/client.h` with `QDMI_DRIVER_EXPORT`, including
 `QDMI_driver_get_client_abi_version`. A loader accepts a version if and only if
 its major and minor fields equal those of `QDMI_CLIENT_ABI_VERSION`; the patch
@@ -31,7 +31,7 @@ The third field is the nonempty client-visible `QDMI_DEVICE_PROPERTY_ID`. IDs
 must be unique in the configured catalog. The driver reads and validates the
 complete file transactionally when it allocates the first session. A failed
 allocation can be retried with a corrected file. Device libraries can omit this
-property because the Client driver owns the public ID.
+property because the QDMI driver owns the public ID.
 
 ## Implementing a Device {#device}
 
