@@ -392,7 +392,8 @@ void QDMI_session_free(QDMI_Session session);
  * @brief Query a device property.
  * @param[in] device The device to query. Must not be @c NULL.
  * @param[in] prop The property to query. Must be one of the values specified
- * for @ref QDMI_Device_Property.
+ * for @ref QDMI_Device_Property or a reserved numeric value of a removed
+ * property.
  * @param[in] size The size of the memory pointed to by @p value in bytes. Must
  * be greater or equal to the size of the return type specified for @p prop,
  * except when @p value is @c NULL, in which case it is ignored.
@@ -403,7 +404,8 @@ void QDMI_session_free(QDMI_Session session);
  * @return @ref QDMI_SUCCESS if the device supports the specified property and,
  * when @p value is not @c NULL, the property was successfully retrieved.
  * @return @ref QDMI_ERROR_NOTSUPPORTED if the device does not support the
- * property.
+ * property. This includes reserved numeric values of properties removed from
+ * QDMI. Such values are unsupported, not invalid arguments.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if
  *  - @p device is @c NULL,
  *  - @p prop is invalid, or

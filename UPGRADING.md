@@ -25,6 +25,21 @@ Generated QDMI device projects now require Python 3.11 or newer and use Python
 3.11 as their stable ABI baseline. Existing generated projects should update
 their Python metadata and wheel configuration when adopting these changes.
 
+### Removed interfaces
+
+The numeric values of remaining enumeration members are unchanged. Removed
+values remain reserved and return `QDMI_ERROR_NOTSUPPORTED`. Existing binaries
+can continue using supported values; source code referring to removed names must
+be updated when rebuilding against QDMI 1.4.
+
+#### Calibration advisory
+
+The unused `QDMI_DEVICE_PROPERTY_NEEDSCALIBRATION` property is removed.
+Providers can expose proprietary calibration readiness through a custom
+property, e.g., `QDMI_DEVICE_PROPERTY_CUSTOM1`. `QDMI_DEVICE_STATUS_CALIBRATION`
+and calibration-job submission remain available. The removed property's numeric
+value (8) remains reserved.
+
 ## [1.3.3]
 
 ### Retrieving existing jobs by ID

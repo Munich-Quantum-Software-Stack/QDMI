@@ -33,6 +33,12 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 - 🐛 Preserve timestamps of unchanged prefixed headers to avoid redundant builds
   ([#537]) ([\@burgholzer])
 
+### Removed
+
+- 💥 Remove the unused calibration advisory device property. Providers can
+  expose proprietary calibration metadata with a custom property ([#512])
+  ([\@burgholzer]).
+
 ## [1.3.3] - 2026-08-19
 
 _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#133)._
@@ -242,6 +248,7 @@ for previous changelogs._
 [#538]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/538
 [#537]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/537
 [#515]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/515
+[#512]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/512
 [#486]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/486
 [#485]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/485
 [#475]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/475
