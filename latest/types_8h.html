@@ -117,7 +117,7 @@
                 <td id="projectalign">
                   <div id="projectname">
                     QDMI<span id="projectnumber"
-                      >&#160;v1.3.4-dev</span
+                      >&#160;v1.4.0-dev</span
                     >
                   </div>
                   <div id="projectbrief">Quantum Device Management Interface</div>
@@ -230,7 +230,7 @@ Typedefs</h2></td></tr>
 </div><div class="memdoc">
 
 <p>A handle for an operation. </p>
-<p>An opaque pointer to an implementation of the QDMI operation concept. An operation generally represents any instruction that can be executed on a device. This includes gates, measurements, classical control flow elements, movement of qubits, pulse-level instructions, etc. Each implementation of the <a class="el" href="group__device__interface.html" title="QDMI Device Interface">QDMI Device Interface</a> defines the actual implementation of the concept.</p>
+<p>An opaque pointer to an implementation of the QDMI operation concept. An operation generally represents any instruction that can be executed on a device. This includes gates, measurements, classical control flow elements, and movement of qubits. Each implementation of the <a class="el" href="group__device__interface.html" title="QDMI Device Interface">QDMI Device Interface</a> defines the actual implementation of the concept.</p>
 <p>A simple example of an implementation is a struct that merely contains the name of the operation, which can be used to identify the operation. </p><div class="fragment"><div class="line"><span class="keyword">struct </span>QDMI_Operation_impl_d {</div>
 <div class="line">  std::string name;</div>
 <div class="line">};</div>
