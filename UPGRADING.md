@@ -37,8 +37,7 @@ be updated when rebuilding against QDMI 1.4.
 The unused `QDMI_DEVICE_PROPERTY_NEEDSCALIBRATION` property is removed.
 Providers can expose proprietary calibration readiness through a custom
 property, e.g., `QDMI_DEVICE_PROPERTY_CUSTOM1`. `QDMI_DEVICE_STATUS_CALIBRATION`
-and calibration-job submission remain available. The removed property's numeric
-value (8) remains reserved.
+remains available. The removed property's numeric value (8) remains reserved.
 
 #### Pulse metadata
 
@@ -47,6 +46,13 @@ The unused `QDMI_DEVICE_PROPERTY_PULSESUPPORT` property and
 pulse-programming interface. Providers can expose pulse programming through
 custom program formats or a separate vendor interface. The removed property's
 numeric value (9) remains reserved.
+
+#### Calibration submission
+
+The `QDMI_PROGRAM_FORMAT_CALIBRATION` program format is removed. Use a
+provider-specific function to submit calibration jobs, if the provider offers
+one. Its numeric value (6) remains reserved. `QDMI_DEVICE_STATUS_CALIBRATION`
+remains available to report device status.
 
 ## [1.3.3]
 

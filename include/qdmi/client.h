@@ -741,7 +741,9 @@ typedef enum QDMI_JOB_PARAMETER_T QDMI_Job_Parameter;
  * QDMI_Job_Parameter @p param and, when @p value is not @c NULL, the
  * parameter was successfully set.
  * @return @ref QDMI_ERROR_NOTSUPPORTED if the driver does not support the
- * parameter or the value of the parameter.
+ * parameter or the value of the parameter. When setting the program format,
+ * reserved numeric values of removed formats return
+ * @ref QDMI_ERROR_NOTSUPPORTED.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if
  *  - @p job is @c NULL,
  *  - @p param is invalid, or
