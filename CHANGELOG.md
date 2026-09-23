@@ -18,7 +18,7 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 
 - ✨ Add optional target-specific export control for device and client libraries
   ([#559]) ([\@marcelwa])
-- ✨ Add a versioned, replaceable Client-driver ABI and a mandatory stable
+- ✨ Add a versioned, replaceable QDMI driver ABI and a mandatory stable
   client-visible device ID ([#511]) ([\@burgholzer]).
 
 ### Changed

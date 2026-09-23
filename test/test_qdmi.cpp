@@ -1307,5 +1307,3 @@ TEST_P(QDMIImplementationTest, ClientVisibleDeviceIdIsStable) {
   EXPECT_EQ(second_id, id);
   QDMI_session_free(second_session);
 }
-
-

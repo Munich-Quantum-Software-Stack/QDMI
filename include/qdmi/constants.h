@@ -470,9 +470,9 @@ enum QDMI_DEVICE_PROPERTY_T {
    * ID because IDs from different drivers need not be unique.
    *
    * The ID identifies the logical resource. It is not a display name, endpoint,
-   * pointer value, credential, library version, symbol prefix, or build-system
-   * target ID. A driver can namespace or replace an identifier reported by its
-   * underlying device implementation.
+   * pointer value, credential, library version, or symbol prefix. A device
+   * implementation can report its configured default stable ID. The driver can
+   * override that ID to distinguish separately configured logical resources.
    *
    * This property is mandatory through @ref QDMI_device_query_device_property.
    * A device implementation can return @ref QDMI_ERROR_NOTSUPPORTED through

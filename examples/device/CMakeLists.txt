@@ -86,7 +86,8 @@ if(BUILD_CXX_QDMI_TESTS)
   get_target_property(EXPORTED_QDMI_DEVICE_PREFIX ${QDMI_TARGET_NAME}
                       QDMI_DEVICE_PREFIX)
   if(NOT EXPORTED_QDMI_DEVICE_ID STREQUAL "${CXX_QDMI_DEVICE_ID}")
-    message(FATAL_ERROR "The CXX QDMI target does not export its package ID")
+    message(
+      FATAL_ERROR "The CXX QDMI target does not export its default stable ID")
   endif()
   if(NOT EXPORTED_QDMI_DEVICE_PREFIX STREQUAL "${QDMI_PREFIX}")
     message(FATAL_ERROR "The CXX QDMI target does not export its symbol prefix")
