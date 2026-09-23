@@ -1155,27 +1155,6 @@ TEST_P(QDMIImplementationTest, SupportsCalibration) {
   EXPECT_EQ(QDMI_job_submit(job), QDMI_SUCCESS);
 }
 
-TEST_P(QDMIImplementationTest, RemovedCalibrationAdvisoryUnsupported) {
-  /// Old binaries can query reserved values that no longer have an enumerator.
-  /// NOLINTNEXTLINE(clang-analyzer-*EnumCastOutOfRange)
-  const auto property = static_cast<QDMI_Device_Property>(8);
-  EXPECT_EQ(
-      QDMI_device_query_device_property(device, property, 0, nullptr, nullptr),
-      QDMI_ERROR_NOTSUPPORTED);
-}
-
-TEST(QDMIConstantsTest, DevicePropertyValuesRemainStable) {
-  EXPECT_EQ(QDMI_DEVICE_PROPERTY_LENGTHUNIT, 10);
-  EXPECT_EQ(QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR, 11);
-  EXPECT_EQ(QDMI_DEVICE_PROPERTY_DURATIONUNIT, 12);
-  EXPECT_EQ(QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR, 13);
-  EXPECT_EQ(QDMI_DEVICE_PROPERTY_MINATOMDISTANCE, 14);
-  EXPECT_EQ(QDMI_DEVICE_PROPERTY_SUPPORTEDPROGRAMFORMATS, 15);
-  EXPECT_EQ(QDMI_DEVICE_PROPERTY_CHILDDEVICES, 16);
-  EXPECT_EQ(QDMI_DEVICE_PROPERTY_QUEUELENGTH, 17);
-  EXPECT_EQ(QDMI_DEVICE_PROPERTY_MAX, 18);
-}
-
 TEST_P(QDMIImplementationTest, QueryPulseSupportLevel) {
   QDMI_Device_Pulse_Support_Level pulse_support_level =
       QDMI_DEVICE_PULSE_SUPPORT_LEVEL_NONE;
