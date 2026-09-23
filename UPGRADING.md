@@ -47,13 +47,12 @@ pulse-programming interface. Providers can expose pulse programming through
 custom program formats or a separate vendor interface. The removed property's
 numeric value (9) remains reserved.
 
-### Calibration submission
+#### Calibration submission
 
 The `QDMI_PROGRAM_FORMAT_CALIBRATION` program format is removed. Use a
 provider-specific function to submit calibration jobs, if the provider offers
-one. Its numeric value (6) remains reserved; all surviving program-format values
-are unchanged. `QDMI_DEVICE_STATUS_CALIBRATION` remains available to report
-device status.
+one. Its numeric value (6) remains reserved. `QDMI_DEVICE_STATUS_CALIBRATION`
+remains available to report device status.
 
 ## [1.3.3]
 

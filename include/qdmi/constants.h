@@ -1001,7 +1001,9 @@ enum QDMI_PROGRAM_FORMAT_T {
    * profile and the expected behavior of devices supporting this format.
    */
   QDMI_PROGRAM_FORMAT_QIRADAPTIVEMODULE = 5,
-  /// Value 6 is reserved for the removed calibration format; do not reuse it.
+  /**
+   * Value 6 is reserved for the removed calibration format; do not reuse it.
+   */
   /**
    * @brief `void*` A QPY program.
    * @details A binary representation of a Qiskit `QuantumCircuit` in the
