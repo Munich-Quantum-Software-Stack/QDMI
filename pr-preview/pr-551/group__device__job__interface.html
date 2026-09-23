@@ -378,7 +378,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a8039f5cd8202553b2a91a1c0b01d6751" title="QDMI_SUCCESS">QDMI_SUCCESS</a> if the device supports the specified <a class="el" href="constants_8h.html#a65db59774d7c61601159d00d505d835c" title="QDMI_Device_Job_Parameter">QDMI_Device_Job_Parameter</a> <code class="param">param</code> and, when <code class="param">value</code> is not <code>NULL</code>, the parameter was successfully set. </dd>
 <dd>
-<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651" title="QDMI_ERROR_NOTSUPPORTED">QDMI_ERROR_NOTSUPPORTED</a> if the device does not support the parameter or the value of the parameter. </dd>
+<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651" title="QDMI_ERROR_NOTSUPPORTED">QDMI_ERROR_NOTSUPPORTED</a> if the device does not support the parameter or the value of the parameter. When setting the program format, reserved numeric values of removed formats return <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651" title="QDMI_ERROR_NOTSUPPORTED">QDMI_ERROR_NOTSUPPORTED</a>. </dd>
 <dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642" title="QDMI_ERROR_INVALIDARGUMENT">QDMI_ERROR_INVALIDARGUMENT</a> if<ul>
 <li><code class="param">job</code> is <code>NULL</code>,</li>
