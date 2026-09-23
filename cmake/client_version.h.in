@@ -17,11 +17,21 @@
  * SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
  */
 
+/**
+ * @file client_version.h
+ * @brief Generated Client Interface ABI version.
+ */
+
 #ifndef QDMI_CLIENT_VERSION_H
 #define QDMI_CLIENT_VERSION_H
 
 #include "qdmi/constants.h"
 
+/**
+ * @def QDMI_CLIENT_ABI_VERSION
+ * @brief Client Interface ABI implemented by compatible QDMI drivers.
+ * @details CMake derives this value from the QDMI release version.
+ */
 #define QDMI_CLIENT_ABI_VERSION QDMI_MAKE_VERSION(@PROJECT_VERSION_MAJOR@, @PROJECT_VERSION_MINOR@, @PROJECT_VERSION_PATCH@)
 
 #endif // QDMI_CLIENT_VERSION_H

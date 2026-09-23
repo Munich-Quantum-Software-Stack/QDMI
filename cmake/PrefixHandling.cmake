@@ -74,8 +74,8 @@ function(generate_prefixed_qdmi_headers prefix)
   endforeach()
 endfunction()
 
-# Publish the package metadata that build-system consumers need to identify a
-# QDMI device target. The ID is not the runtime QDMI_DEVICE_PROPERTY_ID.
+# Publish a device implementation's default stable ID and symbol prefix for
+# discovery without loading its library. Drivers may override the default ID.
 function(configure_qdmi_device_target)
   cmake_parse_arguments(ARG "" "TARGET;ID;PREFIX" "" ${ARGN})
   foreach(required_argument IN ITEMS TARGET ID PREFIX)
