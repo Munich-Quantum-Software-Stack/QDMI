@@ -89,7 +89,7 @@ third-party licenses or copyrights.
 - **Training Data**: Be aware that some AI tools may generate code that is
   substantially similar to their training data. You must ensure that you have
   the right to contribute the generated code under
-  [our license](https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/main/LICENSE.md).
+  [our license](https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/develop/LICENSE).
 
 ## Extractive Contributions {#extractive-contributions}
 
