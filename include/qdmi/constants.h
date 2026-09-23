@@ -345,7 +345,9 @@ enum QDMI_DEVICE_PROPERTY_T {
    * `{site_0, site_1, site_1, site_2}` would be returned.
    */
   QDMI_DEVICE_PROPERTY_COUPLINGMAP = 7,
-  /// Value 8 is reserved for the removed calibration advisory; do not reuse it.
+  /**
+   * Value 8 is reserved for the removed calibration advisory; do not reuse it.
+   */
   /**
    * @brief @ref QDMI_Device_Pulse_Support_Level Whether the device supports
    * pulse-level control.
