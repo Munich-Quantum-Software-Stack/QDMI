@@ -946,19 +946,28 @@ enum QDMI_PROGRAM_FORMAT_T {
    * performed on the sites with indices corresponding to the physical qubits in
    * the program.
    *
+   * @par Program outputs
+   * Follow OpenQASM 3's
+   * [output
+   * selection](https://openqasm.com/language/directives.html#input-output): if
+   * any `output` declarations are present, select only those variables;
+   * otherwise select all declared classical variables, subject to the
+   * language's scoping rules. QDMI adds no exclusions for inputs or constants.
+   * Return final values, including classical assignments after measurements.
+   * The complete output is represented by @ref QDMI_JOB_RESULT_QASM3_OUTPUT.
+   *
    * @par Binary outputs
-   * Follow OpenQASM 3's output selection: if any `output` declarations are
-   * present, select only those variables; otherwise select the global
-   * classical variables. The binary projection includes `bit`, `bit[n]`, and
-   * `bool` values, with `false` and `true` represented as zero and one.
-   * Flatten supported arrays of these values in increasing index order,
-   * recursively from the outermost dimension. Other types contribute no bits;
-   * their values are not implicitly converted to binary representations.
+   * Shots and histograms are supported only if every selected output has type
+   * `bit`, `bit[n]`, `bool`, or a supported array of Boolean values, and every
+   * output value is defined. Represent `false` and `true` as zero and one.
+   * Flatten registers and arrays in increasing index order, recursively from
+   * the outermost dimension. Numeric outputs, even integers valued zero or
+   * one, must not be converted or omitted; apply the unsupported-result rule
+   * in @ref QDMI_JOB_RESULT_T instead.
    *
    * Assign output-bit indices in declaration order, then increasing element
    * index, and use the serialization of @ref QDMI_PROGRAM_FORMAT_QASM2. Aliases
    * and variables local to a scope do not introduce additional output slots.
-   * Return final values, including classical assignments after measurements.
    * OpenQASM 3 does not initialize classical variables implicitly: portable
    * programs must define every selected output bit on every executed path.
    * Devices must not silently assign zero to an undefined output bit.
@@ -994,15 +1003,24 @@ enum QDMI_PROGRAM_FORMAT_T {
    * operations in the program must be performed on the sites with indices
    * corresponding to the static qubit addresses in the program.
    *
+   * @par Program outputs
+   * Executed output-recording calls define the program output, including its
+   * types and container structure. The complete output is represented by
+   * @ref QDMI_JOB_RESULT_QIR_OUTPUT.
+   *
    * @par Binary outputs
-   * Output-recording calls define the binary output sequence. Each executed
+   * Shots and histograms are supported only if all recorded values are
+   * `RESULT`, `BOOL`, or supported containers of these types (including
+   * `RESULT_ARRAY`). Other recorded types, even integers valued zero or one,
+   * must not be converted or omitted; apply the unsupported-result rule in
+   * @ref QDMI_JOB_RESULT_T instead. Each executed
    * `__quantum__rt__result_record_output` or
    * `__quantum__rt__bool_record_output` contributes one bit, with the first
    * bit assigned index zero. Where supported,
    * `__quantum__rt__result_array_record_output` contributes its elements in
    * increasing array index order at that point in the sequence. Array and
-   * tuple container records and other scalar output types contribute no bits.
-   * Flatten nested containers in recording order.
+   * tuple container records contribute no bits of their own. Flatten entirely
+   * binary nested containers in recording order.
    *
    * Use execution order, not result-pointer indices, qubit indices, labels,
    * or the arrival order of asynchronous backend results. Record the value at
@@ -1013,10 +1031,15 @@ enum QDMI_PROGRAM_FORMAT_T {
    * Adaptive programs may emit different numbers of bits on different shots;
    * do not pad, truncate, or deduplicate these outcomes.
    *
-   * This defines QDMI's binary projection of QIR output. It does not change
-   * the order, labels, or types of a native QIR output stream exposed through
-   * a custom result. The same rules apply to text and binary modules and to
-   * both Base and Adaptive profiles, for the features each profile supports.
+   * A device receiving asynchronous labeled output must reconstruct this
+   * sequence from the program's recording semantics before returning shots or
+   * histograms. If it cannot, those result kinds are unsupported; it must not
+   * substitute arrival order or arbitrary label sorting.
+   *
+   * The full QIR output retains its native schema, ordering, labels, and types;
+   * QDMI's bitstring serialization does not apply to that stream. The same
+   * rules apply to text and binary modules and to both Base and Adaptive
+   * profiles, for the features each profile supports.
    *
    * @note Devices may decide to support more general QIR programs that do not
    * follow these rules, for example, using multiple qubit registers or
@@ -1075,11 +1098,21 @@ enum QDMI_PROGRAM_FORMAT_T {
    */
   QDMI_PROGRAM_FORMAT_QPY = 7,
   /**
-   * @brief `char*` (string) A program in the IQM data transfer format.
+   * @brief `char*` (string) One circuit in the IQM data transfer format.
    * @details A text-based, proprietary representation of a quantum circuit in
    * the [IQM data transfer
    * format](https://docs.meetiqm.com/iqm-client/api/iqm.iqm_client.models.html),
-   * encoded as a JSON string.
+   * encoded as a JSON string. The payload is a single circuit object with
+   * `name` and `instructions`, not a `RunRequest` containing `circuits`,
+   * `shots`, and execution settings. Execution settings and an optional
+   * logical-to-physical qubit mapping are supplied separately through the
+   * device's job/session interface. Support for such a mapping is
+   * device-specific and must be documented.
+   *
+   * Without a mapping, instruction `locus` names (legacy `qubits`) identify
+   * physical sites by @ref QDMI_SITE_PROPERTY_NAME. With a mapping, resolve
+   * logical names to physical site names before execution. Placement does
+   * not change the output positions defined below.
    *
    * @par Binary outputs
    * Assign consecutive output-bit indices starting at zero by visiting
@@ -1091,11 +1124,14 @@ enum QDMI_PROGRAM_FORMAT_T {
    *
    * Measurement keys identify the corresponding backend results; neither
    * their spelling nor JSON object-member order defines bit positions.
-   * Devices must map backend results to the input program's order before
+   * Devices must match backend measurement keys and their columns to the
+   * submitted measurement instructions and locus positions before
    * serialization. SDK-specific key encodings are not part of this convention.
    * A compiler or SDK adapter translating another format must preserve that
    * source's output semantics, arranging measurements or retaining the mapping
-   * needed to reconstruct classical destinations and unmeasured output bits.
+   * needed to reconstruct classical destinations, register widths,
+   * initialization defined by the source, and overwritten destinations.
+   * Qubit placement alone does not encode this source-output mapping.
    */
   QDMI_PROGRAM_FORMAT_IQMJSON = 8,
   /**
@@ -1151,13 +1187,35 @@ typedef enum QDMI_PROGRAM_FORMAT_T QDMI_Program_Format;
 
 /**
  * @brief Enum of the formats the results can be returned in.
- * @details Standard result representations have a fixed bit-order convention;
- * it is not device-selectable. Device libraries must translate backend-native
- * results to this convention. Drivers preserve it, and SDK adapters translate
- * it to the SDK's public representation when necessary. Compilation and
+ * @details Binary shot, histogram, and quantum-basis representations have a
+ * fixed bit-order convention that is not device-selectable. Device libraries
+ * must translate backend-native results to this convention. Drivers preserve
+ * it, and SDK adapters translate it to the SDK's public representation when
+ * necessary. Compilation and
  * physical placement must preserve the submitted program's output mapping.
- * These rules do not require a device to support additional program features
- * or result kinds. Unsupported results use @ref QDMI_ERROR_NOTSUPPORTED.
+ *
+ * @par Binary and complete program outputs
+ * For QIR and OpenQASM 3, shots and histograms represent the complete selected
+ * output only when it is entirely binary as defined by the program format.
+ * If any shot contains a nonbinary output, queries for all three of
+ * @ref QDMI_JOB_RESULT_SHOTS, @ref QDMI_JOB_RESULT_HIST_KEYS, and
+ * @ref QDMI_JOB_RESULT_HIST_VALUES must return @ref QDMI_ERROR_NOTSUPPORTED
+ * for the entire job, including size queries. Do not drop values or shots.
+ * Unsupported binary retrieval does not make successful execution fail.
+ *
+ * A device accepting nonbinary outputs must provide the corresponding
+ * @ref QDMI_JOB_RESULT_QIR_OUTPUT or @ref QDMI_JOB_RESULT_QASM3_OUTPUT result.
+ * It must reject unsupported selected output types as unsupported program
+ * features rather than accept them and discard their values. Full-output
+ * support is optional for binary-only programs. These rules do not require
+ * support for additional program features. Other unsupported result kinds
+ * use @ref QDMI_ERROR_NOTSUPPORTED.
+ *
+ * When full output and binary results are both available, they describe the
+ * same executions. Full output and shots use the same shot order; retrieving
+ * another representation must not execute or sample the program again.
+ * Full-output representations retain their own ordering and structure,
+ * without bitstring reversal.
  */
 enum QDMI_JOB_RESULT_T {
   /**
@@ -1174,14 +1232,15 @@ enum QDMI_JOB_RESULT_T {
    * includes the terminator. An empty outcome is an empty field in the list.
    *
    * @par Programs without measurements
-   * For programs specifying neither explicit measurements nor binary outputs,
+   * For programs specifying neither explicit measurements nor program outputs,
    * support for implicit terminal measurements is implementation-defined.
    * Devices must document whether they reject sampling, return no binary
    * outputs, or implicitly measure, and which qubits they measure. Implicit
    * measurements must use the same bit-order convention. Portable programs
    * must specify their measurements and output mapping explicitly. This
    * exception must not change or supplement explicitly specified outputs,
-   * including on paths that emit no bits in an Adaptive QIR program.
+   * including numeric-only outputs or paths that emit no bits in an Adaptive
+   * QIR program.
    */
   QDMI_JOB_RESULT_SHOTS = 0,
   /**
@@ -1280,6 +1339,59 @@ enum QDMI_JOB_RESULT_T {
    */
   QDMI_JOB_RESULT_PROBABILITIES_SPARSE_VALUES = 8,
   /**
+   * @brief `char*` (string) The complete output of a QIR program.
+   * @details A null-terminated UTF-8 stream conforming to the QIR Alliance
+   * [ordered or labeled output
+   * schema](https://github.com/qir-alliance/qir-spec/tree/f5647346542d5a65225c3eb349847fe4df01d1b2/specification/output_schemas).
+   * The reported byte size includes the terminator. Include the schema ID
+   * and version headers, shot boundaries, metadata required by that schema,
+   * and every output record with its type, container structure, and applicable
+   * label. Preserve repeated records and empty shots. Use the schema version
+   * appropriate to the recorded types; `RESULT_ARRAY` requires version 2.1.
+   *
+   * Preserve the schema's native ordering. In particular, `RESULT_ARRAY`
+   * strings contain the first array element on the left. Do not apply QDMI's
+   * binary shot reversal, flatten containers, or remove nonbinary values.
+   * This result is unsupported for non-QIR programs. See @ref
+   * QDMI_JOB_RESULT_T for when full-output support is required.
+   */
+  QDMI_JOB_RESULT_QIR_OUTPUT = 9,
+  /**
+   * @brief `char*` (string) The complete output of an OpenQASM 3 program.
+   * @details A null-terminated UTF-8 JSON array with one object per shot in
+   * execution order. The reported byte size includes the terminator. Each
+   * object maps every selected output variable's name to its final value;
+   * selection follows @ref QDMI_PROGRAM_FORMAT_QASM3. Object-member order has
+   * no semantic significance. An empty output is `{}`; zero shots give `[]`.
+   * For example: `[{"bits":[1,0],"accepted":true,"count":42}]`.
+   *
+   * Encode values as follows:
+   * - `bit`: the JSON integer `0` or `1`.
+   * - `bit[n]`: an array of `n` such integers in increasing bit-index order,
+   *   even when `n` is one. Do not reverse it as for binary shot strings.
+   * - `bool`: the JSON Boolean `false` or `true`.
+   * - `int` and `uint`: exact JSON integers, without rounding or truncation.
+   *   Consumers must retain the precision of the declared OpenQASM type.
+   * - `float`: a JSON number with enough precision to round-trip the value
+   *   in its OpenQASM type, preserving signed zero. Nonfinite values use the
+   *   JSON strings `"NaN"`, `"Infinity"`, and `"-Infinity"`.
+   * - Valid OpenQASM arrays of supported element types: nested JSON arrays,
+   *   preserving every dimension in increasing index order.
+   * - An undefined value: JSON `null`, including individual undefined array
+   *   elements. Do not omit the variable or substitute zero. If any selected
+   *   value is undefined, binary shot and histogram retrieval is unsupported
+   *   for the entire job.
+   *
+   * The submitted program defines the types; numeric JSON values do not make
+   * `int`, `uint`, or `float` outputs binary. This encoding does not support
+   * other selected output types, such as `complex`, `angle`, or `duration`.
+   * Devices must reject programs with such outputs as unsupported program
+   * features, not return partial output. This result is unsupported for
+   * non-OpenQASM-3 programs. See @ref QDMI_JOB_RESULT_T for when full-output
+   * support is required.
+   */
+  QDMI_JOB_RESULT_QASM3_OUTPUT = 10,
+  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -1287,7 +1399,7 @@ enum QDMI_JOB_RESULT_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_JOB_RESULT_MAX = 9,
+  QDMI_JOB_RESULT_MAX = 11,
   /**
    * @brief This enum value is reserved for a custom result.
    * @details The device defines the meaning and the type of this result.

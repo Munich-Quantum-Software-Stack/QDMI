@@ -638,6 +638,18 @@ TEST_P(QDMIImplementationTest, GetResultsCornerCases) {
   EXPECT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_MAX, 0, nullptr, nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
 
+  /// Recognized full-output kinds reach the mock device through the driver.
+  /// The mock does not interpret programs and cannot provide their output.
+  for (const auto result :
+       {QDMI_JOB_RESULT_QIR_OUTPUT, QDMI_JOB_RESULT_QASM3_OUTPUT}) {
+    size_t size = 0;
+    EXPECT_EQ(QDMI_job_get_results(job, result, 0, nullptr, &size),
+              QDMI_ERROR_NOTSUPPORTED);
+    char data = '\0';
+    EXPECT_EQ(QDMI_job_get_results(job, result, sizeof(data), &data, nullptr),
+              QDMI_ERROR_NOTSUPPORTED);
+  }
+
   // The example devices do not support custom results
   EXPECT_EQ(
       QDMI_job_get_results(job, QDMI_JOB_RESULT_CUSTOM1, 0, nullptr, nullptr),
@@ -826,8 +838,9 @@ TEST_P(QDMIImplementationTest, GetStateSparse) {
   for (size_t i = 0; i < key_vec.size(); ++i) {
     /// Parsing the key as binary must select its dense numerical basis index.
     const auto basis = std::stoull(key_vec[i], nullptr, 2);
-    ASSERT_LT(2 * basis + 1, dense.size());
-    EXPECT_EQ(val_vec[i], std::complex(dense[2 * basis], dense[2 * basis + 1]));
+    ASSERT_LT((2 * basis) + 1, dense.size());
+    EXPECT_EQ(val_vec[i],
+              std::complex(dense[2 * basis], dense[(2 * basis) + 1]));
   }
 
   double norm = 0;

@@ -14,11 +14,18 @@ clients compiled against a different minor or major version.
 
 _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 
+### Added
+
+- ✨ Add standard result kinds for complete QIR output streams and OpenQASM 3
+  per-shot JSON output ([#552]) ([\@burgholzer]).
+
 ### Changed
 
 - 💥 Specify program-output mapping and bit-zero-on-the-right serialization for
-  shots, histograms, and quantum-state results; retain documented,
-  implementation-defined implicit measurement support ([#552]) ([\@burgholzer]).
+  shots, histograms, and quantum-state results. Require entirely binary program
+  output for shot/histogram retrieval and complete output for accepted nonbinary
+  outputs; retain documented, implementation-defined implicit measurement
+  support ([#552]) ([\@burgholzer]).
 - 📝 Document installation and CMake consumption of the QDMI interface ([#538])
   ([\@marcelwa], [\@burgholzer])
 - 🔧 Make CMake package version checks architecture-independent ([#538])
