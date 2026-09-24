@@ -85,11 +85,6 @@ if(NOT USE_INSTALLED_QDMI)
   set(QDMI_CMAKE_DIR
       "${CMAKE_CURRENT_SOURCE_DIR}/cmake"
       CACHE INTERNAL "CMake directory")
-  set(QDMI_GENERATED_INCLUDE_BUILD_DIR "${PROJECT_BINARY_DIR}/include")
-  file(MAKE_DIRECTORY "${QDMI_GENERATED_INCLUDE_BUILD_DIR}/qdmi")
-  configure_file(
-    "${QDMI_CMAKE_DIR}/client_version.h.in"
-    "${QDMI_GENERATED_INCLUDE_BUILD_DIR}/qdmi/client_version.h" @ONLY)
 
   # make scripts available to cmake
   list(APPEND CMAKE_MODULE_PATH ${QDMI_CMAKE_DIR})
@@ -119,20 +114,10 @@ if(NOT USE_INSTALLED_QDMI)
 
     # collect header files
     file(GLOB_RECURSE QDMI_HEADERS ${QDMI_INCLUDE_BUILD_DIR}/qdmi/*.h)
-    set(QDMI_GENERATED_HEADERS
-        "${QDMI_GENERATED_INCLUDE_BUILD_DIR}/qdmi/client_version.h")
 
     # add headers using file sets
-    target_sources(
-      qdmi
-      PUBLIC FILE_SET
-             HEADERS
-             BASE_DIRS
-             ${QDMI_INCLUDE_BUILD_DIR}
-             ${QDMI_GENERATED_INCLUDE_BUILD_DIR}
-             FILES
-             ${QDMI_HEADERS}
-             ${QDMI_GENERATED_HEADERS})
+    target_sources(qdmi PUBLIC FILE_SET HEADERS BASE_DIRS
+                               ${QDMI_INCLUDE_BUILD_DIR} FILES ${QDMI_HEADERS})
 
     # set required C standard
     target_compile_features(qdmi INTERFACE c_std_11)

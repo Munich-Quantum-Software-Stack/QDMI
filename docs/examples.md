@@ -13,10 +13,9 @@ contained in the `examples/` directory in the repository.
 ## Implementing a QDMI Driver {#client-driver}
 
 A QDMI driver is a replaceable shared library. It exports every function in
-`qdmi/client.h` with `QDMI_DRIVER_EXPORT`, including
-`QDMI_driver_get_client_abi_version`. A loader accepts a version if and only if
-its major and minor fields equal those of `QDMI_CLIENT_ABI_VERSION`; the patch
-field does not affect compatibility. The loader then resolves the complete
+`qdmi/client.h` with `QDMI_DRIVER_EXPORT`. A loader accepts a version if and
+only if its major and minor fields equal those of `QDMI_CLIENT_ABI_VERSION`; the
+patch field does not affect compatibility. The loader then resolves the complete
 Client Interface before it calls `QDMI_session_alloc`. The ABI query is
 side-effect free. Session allocation initializes the driver lazily and returns a
 null handle on failure.
