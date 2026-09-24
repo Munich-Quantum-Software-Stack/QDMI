@@ -705,11 +705,6 @@ TEST_P(QDMIImplementationTest, GetHistogram) {
     key_vec.emplace_back(token);
   }
 
-  // keys should be sorted
-  for (size_t i = 1; i < key_vec.size(); ++i) {
-    ASSERT_LT(key_vec[i - 1], key_vec[i]);
-  }
-
   size_t val_size = 0;
   ASSERT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_HIST_VALUES, 0, nullptr,
                                  &val_size),
@@ -732,6 +727,19 @@ TEST_P(QDMIImplementationTest, GetHistogram) {
     results[key_vec[i]] = val_vec[i];
   }
   ASSERT_EQ(results.size(), key_vec.size());
+
+  ASSERT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_SHOTS, 0, nullptr, &size),
+            QDMI_SUCCESS);
+  std::string shots(size - 1, '\0');
+  ASSERT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_SHOTS, size, shots.data(),
+                                 nullptr),
+            QDMI_SUCCESS);
+  std::unordered_map<std::string, size_t> shot_counts;
+  std::stringstream shot_stream(shots);
+  while (std::getline(shot_stream, token, ',')) {
+    ++shot_counts[token];
+  }
+  EXPECT_EQ(results, shot_counts);
 
   QDMI_job_free(job);
 }
@@ -792,10 +800,9 @@ TEST_P(QDMIImplementationTest, GetStateSparse) {
     key_vec.emplace_back(token);
   }
 
-  // keys should be sorted
-  for (size_t i = 1; i < key_vec.size(); ++i) {
-    ASSERT_LT(key_vec[i - 1], key_vec[i]);
-  }
+  EXPECT_EQ(
+      std::unordered_set<std::string>(key_vec.begin(), key_vec.end()).size(),
+      key_vec.size());
 
   size_t val_size = 0;
   ASSERT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_STATEVECTOR_SPARSE_VALUES,
@@ -807,6 +814,21 @@ TEST_P(QDMIImplementationTest, GetStateSparse) {
   ASSERT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_STATEVECTOR_SPARSE_VALUES,
                                  val_size, val_vec.data(), nullptr),
             QDMI_SUCCESS);
+
+  size_t dense_size = 0;
+  ASSERT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_STATEVECTOR_DENSE, 0,
+                                 nullptr, &dense_size),
+            QDMI_SUCCESS);
+  std::vector<double> dense(dense_size / sizeof(double));
+  ASSERT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_STATEVECTOR_DENSE,
+                                 dense_size, dense.data(), nullptr),
+            QDMI_SUCCESS);
+  for (size_t i = 0; i < key_vec.size(); ++i) {
+    /// Parsing the key as binary must select its dense numerical basis index.
+    const auto basis = std::stoull(key_vec[i], nullptr, 2);
+    ASSERT_LT(2 * basis + 1, dense.size());
+    EXPECT_EQ(val_vec[i], std::complex(dense[2 * basis], dense[2 * basis + 1]));
+  }
 
   double norm = 0;
   for (const auto &val : val_vec) {
@@ -862,10 +884,9 @@ TEST_P(QDMIImplementationTest, GetProbsSparse) {
     key_vec.emplace_back(token);
   }
 
-  // keys should be sorted
-  for (size_t i = 1; i < key_vec.size(); ++i) {
-    ASSERT_LT(key_vec[i - 1], key_vec[i]);
-  }
+  EXPECT_EQ(
+      std::unordered_set<std::string>(key_vec.begin(), key_vec.end()).size(),
+      key_vec.size());
 
   size_t val_size = 0;
   ASSERT_EQ(QDMI_job_get_results(job,
@@ -879,6 +900,20 @@ TEST_P(QDMIImplementationTest, GetProbsSparse) {
                                  QDMI_JOB_RESULT_PROBABILITIES_SPARSE_VALUES,
                                  val_size, val_vec.data(), nullptr),
             QDMI_SUCCESS);
+
+  size_t dense_size = 0;
+  ASSERT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_PROBABILITIES_DENSE, 0,
+                                 nullptr, &dense_size),
+            QDMI_SUCCESS);
+  std::vector<double> dense(dense_size / sizeof(double));
+  ASSERT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_PROBABILITIES_DENSE,
+                                 dense_size, dense.data(), nullptr),
+            QDMI_SUCCESS);
+  for (size_t i = 0; i < key_vec.size(); ++i) {
+    const auto basis = std::stoull(key_vec[i], nullptr, 2);
+    ASSERT_LT(basis, dense.size());
+    EXPECT_EQ(val_vec[i], dense[basis]);
+  }
 
   double sum = 0;
   for (const auto &val : val_vec) {

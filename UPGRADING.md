@@ -7,6 +7,42 @@ releases, please refer to the
 
 ## [Unreleased]
 
+### Result ordering
+
+QDMI 1.4 defines one serialization for standard binary results: logical bit zero
+is rightmost, and leading zeros are retained. This is a semantic compatibility
+change for devices that previously returned bit zero first; it does not change
+enum values or the C ABI.
+
+Output slots are defined by the submitted format: OpenQASM uses final classical
+values in declaration order, QPY uses `QuantumCircuit.clbits`, QIR uses executed
+binary output-recording calls, and IQM JSON uses measurement-instruction order
+followed by locus order. OpenQASM 3 respects explicit `output` declarations.
+Shots and histograms expose the binary projection; integer and floating-point
+outputs do not contribute bits. See @ref QDMI_PROGRAM_FORMAT_T and @ref
+QDMI_JOB_RESULT_T for the full contract.
+
+Device libraries must normalize backend results to this mapping. Reversing a
+string suffices only when the backend already selected and flattened exactly the
+required outputs in increasing output-bit order. In particular, do not sort QIR
+result IDs or IQM measurement-key names to derive output positions. Preserve
+repeated QIR outputs, final OpenQASM assignments, output widths, and leading
+zeros. Do not silently zero-fill undefined OpenQASM 3 outputs.
+
+Drivers must not add another reversal. SDK adapters and compilers must preserve
+the source program's output semantics, including classical destinations and
+initialization, while presenting the SDK's expected result format. Coordinate
+provider and adapter updates so that old workarounds do not reverse results
+twice. The IQM JSON format does not interpret SDK-specific measurement-key
+encodings; retain any mapping needed for source-result reconstruction.
+
+Dense statevectors and probabilities use numerical computational-basis indices
+with qubit zero least significant; sparse keys name those same indices. These
+quantum-state results are independent of the program's classical output layout.
+Support for implicit terminal measurement of programs without measurements or
+binary outputs remains implementation-defined and must be documented by the
+device. Portable programs must specify measurements and outputs explicitly.
+
 ### CMake consumption
 
 Installed QDMI packages no longer select a compiler cache or add `-g` to

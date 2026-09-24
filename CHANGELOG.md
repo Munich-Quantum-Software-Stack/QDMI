@@ -16,6 +16,9 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 
 ### Changed
 
+- 💥 Specify program-output mapping and bit-zero-on-the-right serialization for
+  shots, histograms, and quantum-state results; retain documented,
+  implementation-defined implicit measurement support ([\@burgholzer]).
 - 📝 Document installation and CMake consumption of the QDMI interface ([#538])
   ([\@marcelwa], [\@burgholzer])
 - 🔧 Make CMake package version checks architecture-independent ([#538])

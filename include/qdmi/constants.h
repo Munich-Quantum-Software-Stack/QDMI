@@ -910,6 +910,20 @@ enum QDMI_PROGRAM_FORMAT_T {
    * Specifically, an operation on `q[i]` is performed on the i-th site in the
    * list of sites returned by the device.
    *
+   * @par Binary outputs
+   * The output bits are the final values of all classical registers. Assign
+   * consecutive output-bit indices starting at zero in register declaration
+   * order, then increasing bit index within each register. Registers declared
+   * in included files participate at the position of the include directive.
+   * Serialize these bits as specified by @ref QDMI_JOB_RESULT_SHOTS. The first
+   * declared register appears on the right, with its bit zero rightmost.
+   * For `creg a[2]; creg b[3];`, the string is `b[2]b[1]b[0]a[1]a[0]`.
+   *
+   * Measurement destinations, rather than qubit indices or measurement order,
+   * determine output positions. Repeated writes to a classical bit leave its
+   * final value in that position. Unwritten bits retain OpenQASM 2's initial
+   * value of zero; they must not be omitted from the output.
+   *
    * @note
    * Devices may decide to support more general OpenQASM 2.0 programs that
    * do not follow these rules, for example, using multiple qubit registers or
@@ -931,6 +945,23 @@ enum QDMI_PROGRAM_FORMAT_T {
    * If a program uses physical qubits, the operations in the program must be
    * performed on the sites with indices corresponding to the physical qubits in
    * the program.
+   *
+   * @par Binary outputs
+   * Follow OpenQASM 3's output selection: if any `output` declarations are
+   * present, select only those variables; otherwise select the global
+   * classical variables. The binary projection includes `bit`, `bit[n]`, and
+   * `bool` values, with `false` and `true` represented as zero and one.
+   * Flatten supported arrays of these values in increasing index order,
+   * recursively from the outermost dimension. Other types contribute no bits;
+   * their values are not implicitly converted to binary representations.
+   *
+   * Assign output-bit indices in declaration order, then increasing element
+   * index, and use the serialization of @ref QDMI_PROGRAM_FORMAT_QASM2. Aliases
+   * and variables local to a scope do not introduce additional output slots.
+   * Return final values, including classical assignments after measurements.
+   * OpenQASM 3 does not initialize classical variables implicitly: portable
+   * programs must define every selected output bit on every executed path.
+   * Devices must not silently assign zero to an undefined output bit.
    *
    * @note
    * Devices may decide to support more general OpenQASM 3 programs that
@@ -962,6 +993,30 @@ enum QDMI_PROGRAM_FORMAT_T {
    * qubit addresses (for example, `ptr inttoptr (i64 1 to ptr)`), the
    * operations in the program must be performed on the sites with indices
    * corresponding to the static qubit addresses in the program.
+   *
+   * @par Binary outputs
+   * Output-recording calls define the binary output sequence. Each executed
+   * `__quantum__rt__result_record_output` or
+   * `__quantum__rt__bool_record_output` contributes one bit, with the first
+   * bit assigned index zero. Where supported,
+   * `__quantum__rt__result_array_record_output` contributes its elements in
+   * increasing array index order at that point in the sequence. Array and
+   * tuple container records and other scalar output types contribute no bits.
+   * Flatten nested containers in recording order.
+   *
+   * Use execution order, not result-pointer indices, qubit indices, labels,
+   * or the arrival order of asynchronous backend results. Record the value at
+   * each call; repeated records contribute repeated output slots. Measurements
+   * that are not recorded contribute no bits. Apply the serialization of @ref
+   * QDMI_JOB_RESULT_SHOTS to the complete sequence, including across container
+   * boundaries. Recording the values `1, 0, 0` therefore yields `"001"`.
+   * Adaptive programs may emit different numbers of bits on different shots;
+   * do not pad, truncate, or deduplicate these outcomes.
+   *
+   * This defines QDMI's binary projection of QIR output. It does not change
+   * the order, labels, or types of a native QIR output stream exposed through
+   * a custom result. The same rules apply to text and binary modules and to
+   * both Base and Adaptive profiles, for the features each profile supports.
    *
    * @note Devices may decide to support more general QIR programs that do not
    * follow these rules, for example, using multiple qubit registers or
@@ -1009,6 +1064,12 @@ enum QDMI_PROGRAM_FORMAT_T {
    * @details A binary representation of a Qiskit `QuantumCircuit` in the
    * [QPY format](https://quantum.cloud.ibm.com/docs/en/api/qiskit/qpy).
    *
+   * Output bit `i` is the final value of `QuantumCircuit.clbits[i]`, including
+   * bits outside registers. Each bit appears once even if it belongs to
+   * multiple registers. Preserve Qiskit's zero initialization and the full
+   * classical width. Serialize with bit zero on the right as specified by
+   * @ref QDMI_JOB_RESULT_SHOTS, without register separators.
+   *
    * @see QDMI_PROGRAM_FORMAT_QASM3 for more information on the expected
    * behavior of devices supporting this format.
    */
@@ -1019,6 +1080,22 @@ enum QDMI_PROGRAM_FORMAT_T {
    * the [IQM data transfer
    * format](https://docs.meetiqm.com/iqm-client/api/iqm.iqm_client.models.html),
    * encoded as a JSON string.
+   *
+   * @par Binary outputs
+   * Assign consecutive output-bit indices starting at zero by visiting
+   * `measure` instructions in program order, then the qubits in each
+   * instruction's `locus` (or legacy `qubits`) list in list order. Each
+   * measurement occurrence contributes an output slot, including repeated
+   * measurements of the same qubit under distinct measurement keys. Apply
+   * @ref QDMI_JOB_RESULT_SHOTS to the complete sequence.
+   *
+   * Measurement keys identify the corresponding backend results; neither
+   * their spelling nor JSON object-member order defines bit positions.
+   * Devices must map backend results to the input program's order before
+   * serialization. SDK-specific key encodings are not part of this convention.
+   * A compiler or SDK adapter translating another format must preserve that
+   * source's output semantics, arranging measurements or retaining the mapping
+   * needed to reconstruct classical destinations and unmeasured output bits.
    */
   QDMI_PROGRAM_FORMAT_IQMJSON = 8,
   /**
@@ -1052,6 +1129,9 @@ enum QDMI_PROGRAM_FORMAT_T {
   /**
    * @brief This enum value is reserved for a custom program format.
    * @details The device defines the meaning and the type of this value.
+   * When returning standard result kinds, the device must document the logical
+   * output-bit and qubit-to-basis mappings and apply their standard
+   * serialization as specified by @ref QDMI_JOB_RESULT_T.
    * @attention The value of this enum member must not be changed to maintain
    * binary compatibility.
    */
@@ -1071,12 +1151,37 @@ typedef enum QDMI_PROGRAM_FORMAT_T QDMI_Program_Format;
 
 /**
  * @brief Enum of the formats the results can be returned in.
+ * @details Standard result representations have a fixed bit-order convention;
+ * it is not device-selectable. Device libraries must translate backend-native
+ * results to this convention. Drivers preserve it, and SDK adapters translate
+ * it to the SDK's public representation when necessary. Compilation and
+ * physical placement must preserve the submitted program's output mapping.
+ * These rules do not require a device to support additional program features
+ * or result kinds. Unsupported results use @ref QDMI_ERROR_NOTSUPPORTED.
  */
 enum QDMI_JOB_RESULT_T {
   /**
    * @brief `char*` (string) The results of the individual shots as a
    * comma-separated list, for example, "0010,1101,0101,1100,1001,1100" for four
-   * qubits and six shots.
+   * output bits and six shots.
+   * @details For logical output bits `b[0], ..., b[m-1]`, each shot is the
+   * string `b[m-1]...b[0]`: bit zero is rightmost and has weight `2^0` when
+   * interpreting the string as an unsigned integer. Keep all leading zeros.
+   * Program-format descriptions define which values occupy those slots.
+   * Width is the number of output bits, not the device's number of qubits.
+   * Strings contain only `0` and `1`, with no spaces or register separators.
+   * The comma-separated list is null-terminated, and its reported byte size
+   * includes the terminator. An empty outcome is an empty field in the list.
+   *
+   * @par Programs without measurements
+   * For programs specifying neither explicit measurements nor binary outputs,
+   * support for implicit terminal measurements is implementation-defined.
+   * Devices must document whether they reject sampling, return no binary
+   * outputs, or implicitly measure, and which qubits they measure. Implicit
+   * measurements must use the same bit-order convention. Portable programs
+   * must specify their measurements and output mapping explicitly. This
+   * exception must not change or supplement explicitly specified outputs,
+   * including on paths that emit no bits in an Adaptive QIR program.
    */
   QDMI_JOB_RESULT_SHOTS = 0,
   /**
@@ -1088,12 +1193,18 @@ enum QDMI_JOB_RESULT_T {
    *
    * This constant denotes the list of keys, @ref QDMI_JOB_RESULT_HIST_VALUES
    * denotes the list of values.
+   * The keys use exactly the same bitstrings as @ref QDMI_JOB_RESULT_SHOTS,
+   * serialized as a null-terminated, comma-separated list. Each distinct
+   * outcome appears once, including an empty outcome when one was produced.
+   * When both shots and a histogram are available, they describe the same
+   * samples. Key order is unspecified but must remain consistent with value
+   * order across queries. Key widths may differ; leading zeros are significant.
    */
   QDMI_JOB_RESULT_HIST_KEYS = 1,
   /**
    * @brief `size_t*` (`size_t` list) The values for the histogram of the
    * results.
-   * @see QDMI_JOB_RESULT_HIST_KEY
+   * @see QDMI_JOB_RESULT_HIST_KEYS
    */
   QDMI_JOB_RESULT_HIST_VALUES = 2,
   /**
@@ -1103,6 +1214,16 @@ enum QDMI_JOB_RESULT_T {
    * part is at index `2n+1`. For example, the state vector of a 2-qubit system
    * with amplitudes `(0.5, 0.5), (0.5, -0.5), (-0.5, 0.5), (-0.5, -0.5)` would
    * be represented as `{0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5}`.
+   * Basis index `i` denotes `|q[n-1]...q[0]>`, with
+   * `i = sum(q[k] * 2^k)`. Qubit zero is the least significant bit.
+   * Qubit indices follow the submitted program's qubit mapping, not an
+   * internal simulator or routing permutation. For OpenQASM's register `q`
+   * and QIR static qubit addresses, these are their respective indices; QPY
+   * uses `QuantumCircuit.qubits`. For supported generalizations, devices must
+   * document the qubit-to-basis mapping.
+   * Statevector and probability results describe quantum basis states, not
+   * classical output slots. Their width and ordering can therefore differ
+   * from shots when measurements select or permute classical destinations.
    */
   QDMI_JOB_RESULT_STATEVECTOR_DENSE = 3,
   /**
@@ -1111,6 +1232,8 @@ enum QDMI_JOB_RESULT_T {
    * probability of the state with index `n` is at index `n` in the list. For
    * example, the probabilities of a 2-qubit system with states `00, 01, 10, 11`
    * would be represented as `{0.25, 0.25, 0.25, 0.25}`.
+   * Basis indices follow @ref QDMI_JOB_RESULT_STATEVECTOR_DENSE, independently
+   * of classical output selection and ordering.
    */
   QDMI_JOB_RESULT_PROBABILITIES_DENSE = 4,
   /**
@@ -1119,6 +1242,12 @@ enum QDMI_JOB_RESULT_T {
    * This mapping is returned as a list of keys and an equal-length list of
    * values. The corresponding partners of keys and values can be found at the
    * same index in the lists.
+   * Keys are the full-width binary representations of the basis indices
+   * defined by @ref QDMI_JOB_RESULT_STATEVECTOR_DENSE, with qubit zero
+   * rightmost and leading zeros retained. Return them as a null-terminated,
+   * comma-separated list. Key order is unspecified but must remain consistent
+   * with value order across queries. Each key occurs once, and its value
+   * corresponds to the same basis index in the dense representation.
    */
   QDMI_JOB_RESULT_STATEVECTOR_SPARSE_KEYS = 5,
   /**
@@ -1137,6 +1266,8 @@ enum QDMI_JOB_RESULT_T {
    * This mapping is returned as a list of keys and an equal-length list of
    * values. The corresponding partners of keys and values can be found at the
    * same index in the lists.
+   * Keys follow @ref QDMI_JOB_RESULT_STATEVECTOR_SPARSE_KEYS and identify
+   * quantum basis states, not the program's classical output bitstrings.
    */
   QDMI_JOB_RESULT_PROBABILITIES_SPARSE_KEYS = 7,
   /**

@@ -14,6 +14,59 @@ contained in the `examples/` directory in the repository.
 
 Below you find mock implementations of a QDMI device in C++.
 
+The example device demonstrates API calls and result serialization. It does not
+interpret the submitted program: it generates random shot data and a separate
+random statevector. Consequently, it is not a simulator or a reference for
+program execution semantics. Its sparse basis keys already use QDMI's
+qubit-zero-on-the-right convention, and the example driver forwards results
+without reordering them. The device template leaves result retrieval for the
+implementer.
+
+### Result Ordering {#device-result-ordering}
+
+A real device must implement the output mapping documented in @ref
+QDMI_PROGRAM_FORMAT_T and the serialization documented in @ref
+QDMI_JOB_RESULT_T. First identify logical output bits in the submitted program,
+then serialize them with bit zero on the right. Do not infer output positions
+from physical qubit order, measurement-key names, or a backend response's
+object-member order.
+
+These asymmetric examples distinguish output selection from bit direction:
+
+| Program output                                                                      | Logical output bits, starting at bit zero | QDMI shot / histogram key |
+| ----------------------------------------------------------------------------------- | ----------------------------------------- | ------------------------- |
+| `creg c[3];`, with only `c[0]` set to one                                           | `1, 0, 0`                                 | `001`                     |
+| `creg a[2]; creg b[3];`, with only `a[0]` and `b[1]` set to one                     | `1, 0, 0, 1, 0`                           | `01001`                   |
+| Measure qubit zero in state one into `c[2]`, with the other two output bits zero    | `0, 0, 1`                                 | `100`                     |
+| QIR records result one, Boolean false, result zero                                  | `1, 0, 0`                                 | `001`                     |
+| QIR records the same result one twice, then result zero                             | `1, 1, 0`                                 | `011`                     |
+| IQM JSON measures locus `[QB3, QB1]` yielding `[1, 0]`, then `[QB2]` yielding `[0]` | `1, 0, 0`                                 | `001`                     |
+
+OpenQASM outputs contain the final values of the selected classical variables.
+QIR outputs contain values at the executed recording calls. For example, two
+OpenQASM measurements that overwrite the same classical bit produce one output
+slot; recording both measurements in QIR produces two slots. A compiler must
+preserve the source's observable outputs when translating between formats.
+
+When translating to IQM JSON, listing a single terminal measurement's locus in
+increasing logical output-bit order permits direct QDMI readout. The device
+normalizes the backend response and applies the common serialization. An
+exporter must not reverse that locus merely to compensate for a backend's raw
+presentation. More general translations may require the compiler or SDK adapter
+to retain a source-output mapping, including constant or unmeasured classical
+bits. QDMI does not assign classical-register semantics to SDK-specific
+measurement-key names.
+
+For dense and sparse quantum-state results, qubit zero in state one and all
+other qubits in state zero gives basis index `1` and key `001` in a three-qubit
+system. This remains true even if the program measures that qubit into `c[2]`
+and its shot is `100`.
+
+Device tests should check these asymmetric cases, multiple registers, partial
+and repeated outputs, and equivalent supported programs across input formats.
+Check dense/sparse key-value correspondence and compare a job's histogram with
+its shots. Bell-state outcomes `00` and `11` alone cannot detect a reversal.
+
 \note Keep in mind, that even though the interface is defined in C, the device
 can be implemented in C++ or any other language that supports the C ABI.
 
