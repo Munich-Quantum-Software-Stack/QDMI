@@ -21,7 +21,7 @@ values in declaration order, QPY uses `QuantumCircuit.clbits`, QIR uses executed
 output-recording calls, and IQM JSON uses measurement-instruction order followed
 by locus order. OpenQASM 3 follows its language-defined output selection:
 explicit `output` declarations when present, otherwise all declared classical
-variables subject to scoping. QDMI adds no exclusions for inputs or constants.
+variables subject to scoping.
 
 For QIR and OpenQASM 3, shots and histograms require the complete selected
 output to be binary. A numeric output on any shot, including an integer valued

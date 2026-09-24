@@ -22,10 +22,13 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 ### Changed
 
 - 💥 Specify program-output mapping and bit-zero-on-the-right serialization for
-  shots, histograms, and quantum-state results. Require entirely binary program
-  output for shot/histogram retrieval and complete output for accepted nonbinary
-  outputs; retain documented, implementation-defined implicit measurement
-  support ([#552]) ([\@burgholzer]).
+  shots, histograms, and quantum-state results ([#552]) ([\@burgholzer]).
+- 💥 Require entirely binary program output for shot and histogram retrieval
+  ([#552]) ([\@burgholzer]).
+- 💥 Require complete output results for accepted nonbinary program outputs
+  ([#552]) ([\@burgholzer]).
+- 📝 Define when devices may provide implicit terminal measurements ([#552])
+  ([\@burgholzer]).
 - 📝 Document installation and CMake consumption of the QDMI interface ([#538])
   ([\@marcelwa], [\@burgholzer])
 - 🔧 Make CMake package version checks architecture-independent ([#538])

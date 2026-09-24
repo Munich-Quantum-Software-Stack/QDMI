@@ -952,7 +952,7 @@ enum QDMI_PROGRAM_FORMAT_T {
    * selection](https://openqasm.com/language/directives.html#input-output): if
    * any `output` declarations are present, select only those variables;
    * otherwise select all declared classical variables, subject to the
-   * language's scoping rules. QDMI adds no exclusions for inputs or constants.
+   * language's scoping rules.
    * Return final values, including classical assignments after measurements.
    * The complete output is represented by @ref QDMI_JOB_RESULT_QASM3_OUTPUT.
    *

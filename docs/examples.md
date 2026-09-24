@@ -73,8 +73,7 @@ label sorting is a substitute.
 
 For OpenQASM 3, follow the language's output selection: explicit `output`
 declarations select only those variables; without them, all declared classical
-variables are outputs, subject to the language's scoping rules. QDMI does not
-exclude inputs or constants. For example:
+variables are outputs, subject to the language's scoping rules. For example:
 
 ```qasm
 OPENQASM 3.0;
