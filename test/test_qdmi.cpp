@@ -151,6 +151,24 @@ TEST(QDMIDriverLoadingTest, LazyInitializationIsTransactionalAndRetryable) {
   unsetenv("QDMI_CONF");
   setenv("HOME", "/nonexistent/home/directory", 1);
 #endif
+  const std::string outside_config = "../qdmi_outside_allowlist.conf";
+  {
+    std::ofstream config(outside_config);
+    config << "# Outside the allowed working directory.\n";
+  }
+#ifdef _WIN32
+  _putenv_s("QDMI_CONF", outside_config.c_str());
+#else
+  setenv("QDMI_CONF", outside_config.c_str(), 1);
+#endif
+  EXPECT_NE(QDMI_session_alloc(&session), QDMI_SUCCESS);
+  EXPECT_EQ(session, nullptr);
+  std::filesystem::remove(outside_config);
+#ifdef _WIN32
+  _putenv_s("QDMI_CONF", "");
+#else
+  unsetenv("QDMI_CONF");
+#endif
   EXPECT_EQ(QDMI_session_alloc(&session), QDMI_SUCCESS);
   EXPECT_NE(session, nullptr);
   QDMI_session_free(session);
