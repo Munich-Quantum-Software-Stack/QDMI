@@ -1448,6 +1448,18 @@
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
+      <name>QDMI_JOB_RESULT_QIR_OUTPUT</name>
+      <anchorfile>constants_8h.html</anchorfile>
+      <anchor>aa154b942b0f67e437c393ad7b33cadd1ae7cefff3ace749f54479f7d51f82418d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>QDMI_JOB_RESULT_QASM3_OUTPUT</name>
+      <anchorfile>constants_8h.html</anchorfile>
+      <anchor>aa154b942b0f67e437c393ad7b33cadd1a896b4911a9f26735648facbc2da7caab</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
       <name>QDMI_JOB_RESULT_MAX</name>
       <anchorfile>constants_8h.html</anchorfile>
       <anchor>aa154b942b0f67e437c393ad7b33cadd1a392aa5d821440fd4650119f3986d3196</anchor>

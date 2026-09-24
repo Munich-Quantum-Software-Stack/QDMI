@@ -646,6 +646,8 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a916e0810bf915e2ad67f2c1430c54fec" title="QDMI_ERROR_BADSTATE">QDMI_ERROR_BADSTATE</a> if the job is in an invalid state. </dd>
 <dd>
+<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651" title="QDMI_ERROR_NOTSUPPORTED">QDMI_ERROR_NOTSUPPORTED</a> if the program uses unsupported features, including selected output types that the device cannot return as specified by <a class="el" href="constants_8h.html#aa154b942b0f67e437c393ad7b33cadd1" title="QDMI_JOB_RESULT_T">QDMI_JOB_RESULT_T</a>. </dd>
+<dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8ab875f28072043ad44f7ee5290bba8d01" title="QDMI_ERROR_PERMISSIONDENIED">QDMI_ERROR_PERMISSIONDENIED</a> if the driver does not allow using the <a class="el" href="group__client__job__interface.html" title="QDMI Client Job Interface">client job interface</a> for the device in the current session. </dd>
 <dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3" title="QDMI_ERROR_FATAL">QDMI_ERROR_FATAL</a> if the job submission failed. </dd></dl>
@@ -831,7 +833,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="comment">// Query the result.</span></div>
 <div class="line"><a class="code hl_function" href="#gaba583321332e0753f5de1764edbd8b7f">QDMI_job_get_results</a>(</div>
 <div class="line">  job, <a class="code hl_enumvalue" href="constants_8h.html#aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97">QDMI_JOB_RESULT_SHOTS</a>, size, shots.data(), <span class="keyword">nullptr</span>);</div>
-<div class="ttc" id="aconstants_8h_html_aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97"><div class="ttname"><a href="constants_8h.html#aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97">QDMI_JOB_RESULT_SHOTS</a></div><div class="ttdeci">@ QDMI_JOB_RESULT_SHOTS</div><div class="ttdoc">char* (string) The results of the individual shots as a comma-separated list, for example,...</div><div class="ttdef"><b>Definition</b> constants.h:1186</div></div>
+<div class="ttc" id="aconstants_8h_html_aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97"><div class="ttname"><a href="constants_8h.html#aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97">QDMI_JOB_RESULT_SHOTS</a></div><div class="ttdeci">@ QDMI_JOB_RESULT_SHOTS</div><div class="ttdoc">char* (string) The results of the individual shots as a comma-separated list, for example,...</div><div class="ttdef"><b>Definition</b> constants.h:1245</div></div>
 <div class="ttc" id="agroup__client__job__interface_html_gaba583321332e0753f5de1764edbd8b7f"><div class="ttname"><a href="#gaba583321332e0753f5de1764edbd8b7f">QDMI_job_get_results</a></div><div class="ttdeci">int QDMI_job_get_results(QDMI_Job job, QDMI_Job_Result result, size_t size, void *data, size_t *size_ret)</div><div class="ttdoc">Retrieve the results of a job.</div></div>
 </div><!-- fragment --> </dd></dl>
 

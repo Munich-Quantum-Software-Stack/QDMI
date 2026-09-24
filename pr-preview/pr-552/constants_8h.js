@@ -173,6 +173,8 @@ var constants_8h =
       [ "QDMI_JOB_RESULT_STATEVECTOR_SPARSE_VALUES", "constants_8h.html#aa154b942b0f67e437c393ad7b33cadd1a82263dc1b055d7237a2c32d318609350", null ],
       [ "QDMI_JOB_RESULT_PROBABILITIES_SPARSE_KEYS", "constants_8h.html#aa154b942b0f67e437c393ad7b33cadd1aff6709af04527a8d5e03f6f0064dd281", null ],
       [ "QDMI_JOB_RESULT_PROBABILITIES_SPARSE_VALUES", "constants_8h.html#aa154b942b0f67e437c393ad7b33cadd1a68c0d721fa322f5c5b404a088c2e1504", null ],
+      [ "QDMI_JOB_RESULT_QIR_OUTPUT", "constants_8h.html#aa154b942b0f67e437c393ad7b33cadd1ae7cefff3ace749f54479f7d51f82418d", null ],
+      [ "QDMI_JOB_RESULT_QASM3_OUTPUT", "constants_8h.html#aa154b942b0f67e437c393ad7b33cadd1a896b4911a9f26735648facbc2da7caab", null ],
       [ "QDMI_JOB_RESULT_MAX", "constants_8h.html#aa154b942b0f67e437c393ad7b33cadd1a392aa5d821440fd4650119f3986d3196", null ],
       [ "QDMI_JOB_RESULT_CUSTOM1", "constants_8h.html#aa154b942b0f67e437c393ad7b33cadd1a885df1084d1067b6336ad6a0eaaffac2", null ],
       [ "QDMI_JOB_RESULT_CUSTOM2", "constants_8h.html#aa154b942b0f67e437c393ad7b33cadd1aaf1c0677ce0a98b75c9a372c790ae7dc", null ],
