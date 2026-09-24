@@ -17,7 +17,7 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 ### Added
 
 - ✨ Add a versioned, replaceable QDMI driver ABI and a mandatory stable
-  client-visible device ID ([#511]) ([\@burgholzer]).
+  client-visible ID for configured top-level devices ([#511]) ([\@burgholzer]).
 
 ### Changed
 
