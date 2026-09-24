@@ -466,9 +466,9 @@ enum QDMI_DEVICE_PROPERTY_T {
    * NUL-terminated, opaque ID. IDs are unique within one initialized session
    * and immutable for the lifetime of the corresponding @ref QDMI_Device
    * handle. Equivalent sessions return the same ID across process restarts
-   * while the same logical resource exists. Clients persist the pair of driver
-   * deployment and device ID because IDs from different drivers need not be
-   * unique.
+   * while the same logical resource exists. When saving an ID, also record
+   * which driver and configuration provide it. Different drivers may use the
+   * same ID for different devices.
    *
    * The ID identifies the logical resource. It is not a display name, endpoint,
    * pointer value, credential, library version, or symbol prefix. A device
