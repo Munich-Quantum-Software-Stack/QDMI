@@ -252,7 +252,7 @@ void QDMI_library_load(
   libraries.emplace(library->lib_handle, std::move(library));
 }
 
-bool Is_path_allowed(const std::filesystem::path &path) {
+bool Is_path_allowed(const std::filesystem::path &resolved_path) {
   // Construct the allowlist of canonical allowed directories, skipping any
   // nullptr "HOME" values.
   std::vector allowlist{
@@ -267,15 +267,6 @@ bool Is_path_allowed(const std::filesystem::path &path) {
       std::cerr << "Ignoring invalid HOME environment variable: " << home_env
                 << '\n';
     }
-  }
-
-  // Canonicalize the provided path, but only if it exists.
-  std::filesystem::path resolved_path;
-  try {
-    resolved_path = std::filesystem::canonical(path);
-  } catch (const std::filesystem::filesystem_error &) {
-    // If it doesn't exist, deny access
-    return false;
   }
 
   // Check if the resolved path starts with any of the allowlisted directories.
@@ -295,12 +286,13 @@ int QDMI_initialize_driver() {
       config_file = "qdmi.conf";
     }
 
-    if (!Is_path_allowed(config_file)) {
+    const auto config_path = std::filesystem::canonical(config_file);
+    if (!Is_path_allowed(config_path)) {
       std::cerr << "Config file path is not allowed: " << config_file << '\n';
       return QDMI_ERROR_FATAL;
     }
 
-    std::ifstream file(config_file);
+    std::ifstream file(config_path);
     if (!file.is_open()) {
       std::cerr << "Couldn't open the configuration file: " << config_file
                 << '\n';
