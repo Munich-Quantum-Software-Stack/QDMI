@@ -1,26 +1,19 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
 <tagfile doxygen_version="1.16.1" doxygen_gitid="669aeeefca743c148e2d935b3d3c69535c7491e6">
   <compound kind="file">
-    <name>client_version.h</name>
-    <path>build/include/qdmi/</path>
-    <filename>client__version_8h.html</filename>
-    <includes id="constants_8h" name="constants.h" local="yes" import="no" module="no" objc="no">qdmi/constants.h</includes>
-    <member kind="define">
-      <type>#define</type>
-      <name>QDMI_CLIENT_ABI_VERSION</name>
-      <anchorfile>client__version_8h.html</anchorfile>
-      <anchor>adf3d2c0eb6fa2315db6ff6f82e08b113</anchor>
-      <arglist></arglist>
-    </member>
-  </compound>
-  <compound kind="file">
     <name>client.h</name>
     <path></path>
     <filename>client_8h.html</filename>
-    <includes id="client__version_8h" name="client_version.h" local="yes" import="no" module="no" objc="no">qdmi/client_version.h</includes>
     <includes id="constants_8h" name="constants.h" local="yes" import="no" module="no" objc="no">qdmi/constants.h</includes>
     <includes id="export_8h" name="export.h" local="yes" import="no" module="no" objc="no">qdmi/export.h</includes>
     <includes id="types_8h" name="types.h" local="yes" import="no" module="no" objc="no">qdmi/types.h</includes>
+    <member kind="define">
+      <type>#define</type>
+      <name>QDMI_CLIENT_ABI_VERSION</name>
+      <anchorfile>group__client__interface.html</anchorfile>
+      <anchor>gadf3d2c0eb6fa2315db6ff6f82e08b113</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="typedef">
       <type>struct QDMI_Device_impl_d *</type>
       <name>QDMI_Device</name>
@@ -1733,6 +1726,13 @@
     <subgroup>client_session_interface</subgroup>
     <subgroup>client_query_interface</subgroup>
     <subgroup>client_job_interface</subgroup>
+    <member kind="define">
+      <type>#define</type>
+      <name>QDMI_CLIENT_ABI_VERSION</name>
+      <anchorfile>group__client__interface.html</anchorfile>
+      <anchor>gadf3d2c0eb6fa2315db6ff6f82e08b113</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="typedef">
       <type>struct QDMI_Device_impl_d *</type>
       <name>QDMI_Device</name>

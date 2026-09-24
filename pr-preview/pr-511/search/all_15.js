@@ -14,7 +14,7 @@ var searchData=
   ['qdmi_20use_20opaque_20pointers_11',['Why does QDMI use opaque pointers?',['../md_docs_2rationale.html#rationale-opaque-pointers',1,'']]],
   ['qdmi_20with_20cmake_12',['Using QDMI with CMake',['../md_docs_2installation.html',1,'']]],
   ['qdmi_5fchild_5fdevice_13',['QDMI_Child_Device',['../group__device__interface.html#ga112235355550f0b2defb14e3e49323c4',1,'device.h']]],
-  ['qdmi_5fclient_5fabi_5fversion_14',['QDMI_CLIENT_ABI_VERSION',['../client__version_8h.html#adf3d2c0eb6fa2315db6ff6f82e08b113',1,'client_version.h']]],
+  ['qdmi_5fclient_5fabi_5fversion_14',['QDMI_CLIENT_ABI_VERSION',['../group__client__interface.html#gadf3d2c0eb6fa2315db6ff6f82e08b113',1,'client.h']]],
   ['qdmi_5fdevice_15',['QDMI_Device',['../group__client__interface.html#ga2772c94ab19957ce5aaef652b626baec',1,'client.h']]],
   ['qdmi_5fdevice_5fcreate_5fjob_16',['QDMI_device_create_job',['../group__client__job__interface.html#ga9fbb6ebc06162e99c15c230cec9491c8',1,'client.h']]],
   ['qdmi_5fdevice_5ffinalize_17',['QDMI_device_finalize',['../group__device__interface.html#gacea756e5f8d7cb2940252ed6d4e80571',1,'device.h']]],
