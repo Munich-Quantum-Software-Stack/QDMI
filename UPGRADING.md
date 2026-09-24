@@ -47,10 +47,11 @@ device-reported ID when available and may otherwise return
 `QDMI_ERROR_NOTSUPPORTED`, without generating child IDs. The ID is a nonempty,
 opaque string. It is unique within an initialized session, immutable for one
 device handle, and stable across equivalent sessions and process restarts while
-the same logical resource exists. Persist the driver deployment with the ID. Do
-not use a display name, endpoint, pointer, credential, library version, or
-symbol prefix as the stable ID. The `QDMI_DEVICE_ID` CMake target property
-supplies a default stable ID that a driver can override in configuration.
+the same logical resource exists. When saving an ID, also record which driver
+and configuration provide it. Do not use a display name, endpoint, pointer,
+credential, library version, or symbol prefix as the stable ID. The
+`QDMI_DEVICE_ID` CMake target property supplies a default stable ID that a
+driver can override in configuration.
 
 The example driver configuration now gives each device a stable ID in a third
 column:

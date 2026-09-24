@@ -23,10 +23,9 @@
 
 #pragma once
 
-#include "qdmi/client_version.h" // IWYU pragma: export
-#include "qdmi/constants.h"      // IWYU pragma: export
-#include "qdmi/export.h"         // IWYU pragma: export
-#include "qdmi/types.h"          // IWYU pragma: export
+#include "qdmi/constants.h" // IWYU pragma: export
+#include "qdmi/export.h"    // IWYU pragma: export
+#include "qdmi/types.h"     // IWYU pragma: export
 
 #ifdef __cplusplus
 #include <cstddef>
@@ -46,8 +45,9 @@ extern "C" {
  *  It includes functions to establish sessions between a QDMI driver and a
  *  client, as well as to interact with the devices managed by the driver.
  *
- *  A process uses one implementation of this interface and can allocate many
- *  independent sessions from it. A dynamic loader must first resolve and call
+ *  A driver can allocate many independent sessions. Applications may load
+ *  multiple drivers, but must use each handle only with its originating driver.
+ * A dynamic loader must first resolve and call
  *  @ref QDMI_driver_get_client_abi_version. A returned ABI is compatible if and
  *  only if its major and minor fields equal those of @ref
  *  QDMI_CLIENT_ABI_VERSION. The loader must ignore the patch field for
@@ -66,6 +66,13 @@ extern "C" {
  *
  * @{
  */
+
+/**
+ * @brief QDMI release version used for Client Interface ABI compatibility.
+ * @details Drivers and applications must agree on major and minor versions;
+ * patch differences do not affect compatibility.
+ */
+#define QDMI_CLIENT_ABI_VERSION QDMI_MAKE_VERSION(1, 4, 0)
 
 /**
  * @brief Return the Client Interface ABI implemented by the driver.
