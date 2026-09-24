@@ -40,8 +40,11 @@ freeing the session. Freeing the session invalidates every remaining descendant
 handle.
 
 `QDMI_DEVICE_PROPERTY_ID` is appended as value 18. It is mandatory through the
-Client Interface and optional through the Device Interface. A driver supplies
-the value when a device returns `QDMI_ERROR_NOTSUPPORTED`. The ID is a nonempty,
+Client Interface for configured top-level devices and optional through the
+Device Interface. A driver supplies the configured value when a device returns
+`QDMI_ERROR_NOTSUPPORTED`. Child-device IDs remain optional: drivers forward a
+device-reported ID when available and may otherwise return
+`QDMI_ERROR_NOTSUPPORTED`, without generating child IDs. The ID is a nonempty,
 opaque string. It is unique within an initialized session, immutable for one
 device handle, and stable across equivalent sessions and process restarts while
 the same logical resource exists. Persist the driver deployment with the ID. Do

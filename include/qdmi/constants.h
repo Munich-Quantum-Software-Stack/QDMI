@@ -462,22 +462,26 @@ enum QDMI_DEVICE_PROPERTY_T {
   QDMI_DEVICE_PROPERTY_QUEUELENGTH = 17,
   /**
    * @brief `char*` (string) The stable client-visible device identifier.
-   * @details The Client Interface must return a nonempty, NUL-terminated,
-   * opaque ID. IDs are unique within one initialized session and immutable for
-   * the lifetime of the corresponding @ref QDMI_Device handle. Equivalent
-   * sessions return the same ID across process restarts while the same logical
-   * resource exists. Clients persist the pair of driver deployment and device
-   * ID because IDs from different drivers need not be unique.
+   * @details When supported, the Client Interface returns a nonempty,
+   * NUL-terminated, opaque ID. IDs are unique within one initialized session
+   * and immutable for the lifetime of the corresponding @ref QDMI_Device
+   * handle. Equivalent sessions return the same ID across process restarts
+   * while the same logical resource exists. Clients persist the pair of driver
+   * deployment and device ID because IDs from different drivers need not be
+   * unique.
    *
    * The ID identifies the logical resource. It is not a display name, endpoint,
    * pointer value, credential, library version, or symbol prefix. A device
    * implementation can report its configured default stable ID. The driver can
    * override that ID to distinguish separately configured logical resources.
    *
-   * This property is mandatory through @ref QDMI_device_query_device_property.
-   * A device implementation can return @ref QDMI_ERROR_NOTSUPPORTED through
-   * @ref QDMI_device_session_query_device_property; the driver must then supply
-   * the client-visible ID.
+   * This property is mandatory for configured top-level devices through
+   * @ref QDMI_device_query_device_property. A device implementation can return
+   * @ref QDMI_ERROR_NOTSUPPORTED through
+   * @ref QDMI_device_session_query_device_property; the driver then supplies
+   * the configured ID. Child devices may return @ref QDMI_ERROR_NOTSUPPORTED
+   * when no stable ID is available. Drivers need not generate IDs for child
+   * devices.
    */
   QDMI_DEVICE_PROPERTY_ID = 18,
   /**
