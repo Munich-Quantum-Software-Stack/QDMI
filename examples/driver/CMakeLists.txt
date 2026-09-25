@@ -19,8 +19,9 @@
 enable_language(CXX)
 
 add_library(qdmi_example_driver SHARED qdmi_example_driver.cpp)
-target_link_libraries(qdmi_example_driver PRIVATE qdmi::qdmi
-                                                  qdmi::qdmi_project_warnings)
+target_link_libraries(
+  qdmi_example_driver PRIVATE qdmi::qdmi qdmi::qdmi_project_warnings
+                              ${CMAKE_DL_LIBS})
 target_compile_definitions(qdmi_example_driver PRIVATE QDMI_driver_EXPORTS)
 target_compile_features(qdmi_example_driver PRIVATE cxx_std_20)
 set_target_properties(
