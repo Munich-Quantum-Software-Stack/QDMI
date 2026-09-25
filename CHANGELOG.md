@@ -21,6 +21,9 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
   ([#511]) ([\@burgholzer]).
 - ✨ Add native Windows library loading to the example driver ([#511])
   ([\@burgholzer]).
+- ✨ Add ordered multi-program jobs with one aggregate lifecycle, indexed
+  results, optional per-program outcomes, and required device entry points
+  ([#509]) ([\@ystade], [\@burgholzer]).
 
 ### Changed
 
@@ -33,6 +36,9 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 - 💥 Make Client session allocation initialize drivers lazily and remove the
   example driver's separate initialization and shutdown functions ([#511])
   ([\@burgholzer]).
+- 💥 Add a program index to `QDMI_job_get_results` and
+  `QDMI_device_job_get_results` and use the atomic program-list setter for
+  single-program jobs ([#509]) ([\@ystade], [\@burgholzer]).
 - 💥 Drop x86 macOS from QDMI's tested platforms ([#515]) ([\@denialhaag])
 - ⬆️ Raise generated device projects' macOS deployment target to 13.3 ([#515])
   ([\@denialhaag])
@@ -41,11 +47,18 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 
 ### Fixed
 
+- 🐛 Release example-driver device libraries when the final session closes,
+  before process-wide dependency teardown ([#509]) ([\@burgholzer]).
+- 🐛 Allow the example driver to open devices without token authentication while
+  propagating authentication errors ([#509]) ([\@burgholzer]).
 - 🐛 Preserve timestamps of unchanged prefixed headers to avoid redundant builds
   ([#537]) ([\@burgholzer])
 
 ### Removed
 
+- 💥 Replace the batch-job format and single-program payload parameters with
+  ordered program lists, reserving the removed enum values ([#509]) ([\@ystade],
+  [\@burgholzer]).
 - 💥 Remove the calibration program format. Providers can expose calibration
   submission through a separate function ([#551]) ([\@burgholzer]).
 - 💥 Remove the unused pulse-support device property and level type. Providers
@@ -268,6 +281,7 @@ for previous changelogs._
 [#513]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/513
 [#512]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/512
 [#511]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/511
+[#509]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/509
 [#486]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/486
 [#485]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/485
 [#475]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/475

@@ -100,6 +100,38 @@ provider-specific function to submit calibration jobs, if the provider offers
 one. Its numeric value (6) remains reserved. `QDMI_DEVICE_STATUS_CALIBRATION`
 remains available to report device status.
 
+### Multi-program jobs
+
+Use `QDMI_job_set_programs` (or `QDMI_device_job_set_programs`) for one program
+or an ordered list with a common format and shot count per program. The
+`PROGRAM` job parameters and `QDMI_PROGRAM_FORMAT_BATCHJOB` are removed; their
+numeric values (1 and 9, respectively) remain reserved and return
+`QDMI_ERROR_NOTSUPPORTED`. The numeric values of remaining members are
+unchanged.
+
+The setter copies the complete list atomically. Failed setters leave the
+previous format and programs unchanged. A different supported format clears the
+list. A support check passes a nonzero count and `programs == NULL`, checking
+that format and cardinality with the configured parameters without changing the
+job. Text includes exactly one trailing NUL; binary payloads are copied intact.
+
+`PROGRAMSNUM` reports the count once programs are set, or `QDMI_ERROR_BADSTATE`
+before that. Both result functions now take a zero-based program index
+immediately after the job handle; use zero for a single program. The optional
+`PROGRAMSTATUSES` property reports outcomes in input order. Successful results
+remain available if other programs fail or are canceled. An aggregate terminal
+status means all programs have stopped.
+
+Retrieval by ID must restore the program count and input-to-result mapping.
+Unknown historical format or payload properties may return
+`QDMI_ERROR_NOTSUPPORTED` without preventing job retrieval. A provider without
+native list support can return `QDMI_ERROR_NOTSUPPORTED` from the setter;
+applications can then submit separate single-program jobs.
+
+Device libraries must export `QDMI_device_job_set_programs`, and drivers must
+export `QDMI_job_set_programs`, even if they reject lists with more than one
+program. Rebuild clients, drivers, and devices against the updated signatures.
+
 ## [1.3.3]
 
 ### Retrieving existing jobs by ID

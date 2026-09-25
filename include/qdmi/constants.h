@@ -183,21 +183,14 @@ enum QDMI_DEVICE_JOB_PARAMETER_T {
    * @details This parameter is required. The device must support the specified
    * program format. If the device does not support the specified program
    * format, the @ref QDMI_device_job_set_parameter function must return @ref
-   * QDMI_ERROR_NOTSUPPORTED.
+   * QDMI_ERROR_NOTSUPPORTED. Setting the same format keeps an
+   * existing program payload. Setting a different supported format clears
+   * the payload. Every error leaves the format and payload unchanged.
    */
   QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT = 0,
+  /// Value 1 is reserved for the removed program parameter; do not reuse it.
   /**
-   * @brief `void*` The program to be executed.
-   * @details This parameter is required. The program must be in the format
-   * specified by the @ref QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT parameter.
-   * If the program is invalid, the @ref QDMI_device_job_set_parameter function
-   * must return @ref QDMI_ERROR_INVALIDARGUMENT. If the program is valid, but
-   * the device cannot execute it, the @ref QDMI_device_job_set_parameter
-   * function must return @ref QDMI_ERROR_NOTSUPPORTED.
-   */
-  QDMI_DEVICE_JOB_PARAMETER_PROGRAM = 1,
-  /**
-   * @brief `size_t` The number of shots to execute for a quantum circuit job.
+   * @brief `size_t` The number of shots to execute for each program in a job.
    * @details If this parameter is not set, a device-specific default is used.
    */
   QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM = 2,
@@ -251,18 +244,23 @@ enum QDMI_DEVICE_JOB_PROPERTY_T {
   QDMI_DEVICE_JOB_PROPERTY_ID = 0,
   /**
    * @brief @ref QDMI_Program_Format The format of the program to be executed.
-   * @note This property returns the value of the @ref
-   * QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT parameter.
+   * @details A query returns @ref QDMI_ERROR_BADSTATE until a format is set,
+   * or @ref QDMI_ERROR_NOTSUPPORTED if a retrieved job has no format metadata.
+   * This property returns the format set through @ref
+   * QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT or @ref
+   * QDMI_device_job_set_programs.
    */
   QDMI_DEVICE_JOB_PROPERTY_PROGRAMFORMAT = 1,
   /**
    * @brief `void*` The program to be executed.
-   * @note This property returns the value of the @ref
-   * QDMI_DEVICE_JOB_PARAMETER_PROGRAM parameter.
+   * @note This property returns the program set through @ref
+   * QDMI_device_job_set_programs when the job contains one program.
+   * @note A query returns @ref QDMI_ERROR_NOTSUPPORTED for a multi-program
+   * job or when a retrieved job has no payload metadata.
    */
   QDMI_DEVICE_JOB_PROPERTY_PROGRAM = 2,
   /**
-   * @brief `size_t` The number of shots to execute for a quantum circuit job.
+   * @brief `size_t` The number of shots to execute for each program in a job.
    * @note This property returns the value of the @ref
    * QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM parameter.
    */
@@ -283,6 +281,26 @@ enum QDMI_DEVICE_JOB_PROPERTY_T {
    */
   QDMI_DEVICE_JOB_PROPERTY_QUEUEPOSITION = 4,
   /**
+   * @brief `size_t` The number of programs in the job.
+   * @details A single-program job reports one. A job has no program count until
+   * its program payload has been set; a query before that returns @ref
+   * QDMI_ERROR_BADSTATE. The count remains stable after submission.
+   */
+  QDMI_DEVICE_JOB_PROPERTY_PROGRAMSNUM = 5,
+  /**
+   * @brief `QDMI_Job_Status[]` The status of each program in input order.
+   * @details The array contains @ref QDMI_DEVICE_JOB_PROPERTY_PROGRAMSNUM
+   * entries. A value query refreshes the statuses together. Terminal program
+   * statuses remain unchanged, and results of successful programs remain
+   * available if other programs fail or are canceled.
+   * @par
+   * This property is optional. Return @ref QDMI_ERROR_NOTSUPPORTED if the job
+   * provides no individual outcomes, or @ref QDMI_ERROR_BADSTATE if supported
+   * outcomes are not yet available. A temporary query failure must return an
+   * error, not @ref QDMI_ERROR_NOTSUPPORTED. Size queries need only the count.
+   */
+  QDMI_DEVICE_JOB_PROPERTY_PROGRAMSTATUSES = 6,
+  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -290,7 +308,7 @@ enum QDMI_DEVICE_JOB_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_DEVICE_JOB_PROPERTY_MAX = 5,
+  QDMI_DEVICE_JOB_PROPERTY_MAX = 7,
   /**
    * @brief This enum value is reserved for a custom parameter.
    * @details The device defines the meaning and the type of this parameter.
@@ -913,13 +931,13 @@ enum QDMI_JOB_STATUS_T {
   QDMI_JOB_STATUS_SUBMITTED = 1,
   /// The job was received, and is waiting to be executed.
   QDMI_JOB_STATUS_QUEUED = 2,
-  /// The job is running, and the result is not yet available.
+  /// One or more programs are still running.
   QDMI_JOB_STATUS_RUNNING = 3,
-  /// The job is done, and the result can be retrieved.
+  /// All programs succeeded, and their results can be retrieved.
   QDMI_JOB_STATUS_DONE = 4,
-  /// The job was canceled, and the result is not available.
+  /// The job stopped after cancellation; completed programs retain results.
   QDMI_JOB_STATUS_CANCELED = 5,
-  /// An error occurred in the job's lifecycle.
+  /// One or more programs failed, or another error occurred in the lifecycle.
   QDMI_JOB_STATUS_FAILED = 6
 };
 
@@ -1060,25 +1078,7 @@ enum QDMI_PROGRAM_FORMAT_T {
    * encoded as a JSON string.
    */
   QDMI_PROGRAM_FORMAT_IQMJSON = 8,
-  /**
-   * @brief `QDMI_Job*`/`QDMI_Device_Job*` (@ref QDMI_Job list / @ref
-   * QDMI_Device_Job list) A list of jobs within a batch job.
-   * @details This program format is used to submit a batch job, i.e., a job
-   * that consists of multiple sub-jobs. The program must be a list of jobs
-   * created via @ref QDMI_device_create_job or @ref
-   * QDMI_device_session_create_device_job. These jobs must be configured
-   * completely but not submitted. If a batch job contains already submitted
-   * jobs, @ref QDMI_job_submit or @ref QDMI_device_job_submit on the batch job
-   * will return @ref QDMI_ERROR_BADSTATE.
-   * @par
-   * Querying results from a batch job directly is not possible and will result
-   * in @ref QDMI_ERROR_NOTSUPPORTED Instead, the results must be queried from
-   * the individual jobs after they finished. If the device supports it, each
-   * job in the batch can be queried for its status or waited for. However,
-   * in any case, individual jobs in a batch cannot be canceled and this will
-   * result in @ref QDMI_ERROR_NOTSUPPORTED.
-   */
-  QDMI_PROGRAM_FORMAT_BATCHJOB = 9,
+  /// Value 9 is reserved for the removed batch-job format; do not reuse it.
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
@@ -1110,6 +1110,8 @@ typedef enum QDMI_PROGRAM_FORMAT_T QDMI_Program_Format;
 
 /**
  * @brief Enum of the formats the results can be returned in.
+ * @details Each result applies to the program index passed to @ref
+ * QDMI_job_get_results or @ref QDMI_device_job_get_results.
  */
 enum QDMI_JOB_RESULT_T {
   /**
