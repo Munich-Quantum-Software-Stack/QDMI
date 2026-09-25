@@ -2403,7 +2403,7 @@
     <name>md_docs_2examples</name>
     <title>Examples</title>
     <filename>md_docs_2examples.html</filename>
-    <docanchor file="md_docs_2examples.html" title="Implementing a QDMI Driver">client-driver</docanchor>
+    <docanchor file="md_docs_2examples.html" title="Implementing a QDMI Driver">driver</docanchor>
     <docanchor file="md_docs_2examples.html" title="Implementing a Device">device</docanchor>
     <docanchor file="md_docs_2examples.html" title="Basic String Properties">device-string</docanchor>
     <docanchor file="md_docs_2examples.html" title="Auxiliary Macros">device-macros</docanchor>

@@ -185,7 +185,7 @@ $(function(){initNavTree('md_docs_2examples.html','',''); });
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>This page contains example implementations of devices and other components of the software stack that use QDMI. All examples distributed with QDMI are contained in the <span class="tt">examples/</span> directory in the repository.</p>
-<h1 class="doxsection"><a class="anchor" id="client-driver"></a>
+<h1 class="doxsection"><a class="anchor" id="driver"></a>
 Implementing a QDMI Driver</h1>
 <p>A QDMI driver is a replaceable shared library. It exports every function in <span class="tt"><a class="el" href="client_8h.html" title="Defines the QDMI Client Interface.">qdmi/client.h</a></span> with <span class="tt">QDMI_DRIVER_EXPORT</span>. A loader accepts a version if and only if its major and minor fields equal those of <span class="tt"><a class="el" href="group__client__interface.html#gadf3d2c0eb6fa2315db6ff6f82e08b113" title="QDMI release version used for Client Interface ABI compatibility.">QDMI_CLIENT_ABI_VERSION</a></span>; the patch field does not affect compatibility. The loader then resolves the complete Client Interface before it calls <span class="tt"><a class="el" href="group__client__session__interface.html#gaa11305e72710d4f2439c0c72892fce11" title="Allocate a new session.">QDMI_session_alloc</a></span>. The ABI query is side-effect free. Session allocation initializes the driver lazily and returns a null handle on failure.</p>
 <p>The example driver's <span class="tt">QDMI_CONF</span> file contains one device per line:</p>

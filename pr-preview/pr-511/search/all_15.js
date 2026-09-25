@@ -9,7 +9,7 @@ var searchData=
   ['qdmi_20device_20job_20interface_6',['QDMI Device Job Interface',['../group__device__job__interface.html',1,'']]],
   ['qdmi_20device_20query_20interface_7',['QDMI Device Query Interface',['../group__device__query__interface.html',1,'']]],
   ['qdmi_20device_20session_20interface_8',['QDMI Device Session Interface',['../group__device__session__interface.html',1,'']]],
-  ['qdmi_20driver_9',['Implementing a QDMI Driver',['../md_docs_2examples.html#client-driver',1,'']]],
+  ['qdmi_20driver_9',['Implementing a QDMI Driver',['../md_docs_2examples.html#driver',1,'']]],
   ['qdmi_20not_20define_20individual_20functions_20for_20each_20property_10',['Why does QDMI not define individual functions for each property?',['../md_docs_2rationale.html#rationale-properties',1,'']]],
   ['qdmi_20use_20opaque_20pointers_11',['Why does QDMI use opaque pointers?',['../md_docs_2rationale.html#rationale-opaque-pointers',1,'']]],
   ['qdmi_20with_20cmake_12',['Using QDMI with CMake',['../md_docs_2installation.html',1,'']]],
