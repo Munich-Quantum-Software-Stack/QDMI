@@ -47,7 +47,7 @@ extern "C" {
  *
  *  A driver can allocate many independent sessions. Applications may load
  *  multiple drivers, but must use each handle only with its originating driver.
- * A dynamic loader must first resolve and call
+ *  A dynamic loader must first resolve and call
  *  @ref QDMI_driver_get_client_abi_version. A returned ABI is compatible if and
  *  only if its major and minor fields equal those of @ref
  *  QDMI_CLIENT_ABI_VERSION. The loader must ignore the patch field for
