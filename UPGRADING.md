@@ -99,39 +99,38 @@ The `QDMI_PROGRAM_FORMAT_CALIBRATION` program format is removed. Use a
 provider-specific function to submit calibration jobs, if the provider offers
 one. Its numeric value (6) remains reserved. `QDMI_DEVICE_STATUS_CALIBRATION`
 remains available to report device status.
+
 ### Multi-program jobs
 
-Use `QDMI_job_set_programs` to submit an ordered list as one job, with one
-aggregate lifecycle and indexed results. Program-format enum values remain
-unchanged. Providers that cannot preserve the aggregate contract must reject the
-list instead of manufacturing native multi-program support.
+Use `QDMI_job_set_programs` (or `QDMI_device_job_set_programs`) for one program
+or an ordered list with a common format and shot count per program. The
+`PROGRAM` job parameters and `QDMI_PROGRAM_FORMAT_BATCHJOB` are removed; their
+numeric values (1 and 9, respectively) remain reserved and return
+`QDMI_ERROR_NOTSUPPORTED`. The numeric values of remaining members are
+unchanged.
 
-`QDMI_JOB_PARAMETER_PROGRAM` and `QDMI_DEVICE_JOB_PARAMETER_PROGRAM` are
-removed. Use the atomic program-list setter for one program too. Failed setters
-leave the previous format and program list unchanged. Setting a different
-supported format clears the list. `PROGRAMSNUM` reports its size after a list is
-set, and `QDMI_ERROR_BADSTATE` before that.
+The setter copies the complete list atomically. Failed setters leave the
+previous format and programs unchanged. A different supported format clears the
+list. A support check passes a nonzero count and `programs == NULL`, checking
+that format and cardinality with the configured parameters without changing the
+job. Text includes exactly one trailing NUL; binary payloads are copied intact.
 
-`QDMI_job_get_results` and `QDMI_device_job_get_results` now take a zero-based
-program index immediately after the job handle. Use zero for single-program
-jobs. Results are available only after every program succeeds. Failure and
-cancellation apply to the whole job, with no partial result retrieval.
+`PROGRAMSNUM` reports the count once programs are set, or `QDMI_ERROR_BADSTATE`
+before that. Both result functions now take a zero-based program index
+immediately after the job handle; use zero for a single program. The optional
+`PROGRAMSTATUSES` property reports outcomes in input order. Successful results
+remain available if other programs fail or are canceled. An aggregate terminal
+status means all programs have stopped.
 
-A support check passes a nonzero count and `programs == NULL`. It tests that
-format and cardinality without modifying the job. Text includes its final NUL;
-binary programs preserve their complete byte sequence. Shots remain optional.
-Calibration jobs may still omit a payload.
+Retrieval by ID must restore the program count and input-to-result mapping.
+Unknown historical format or payload properties may return
+`QDMI_ERROR_NOTSUPPORTED` without preventing job retrieval. A provider without
+native list support can return `QDMI_ERROR_NOTSUPPORTED` from the setter;
+applications can then submit separate single-program jobs.
 
-Retrieval by ID must restore the historical format, exact program count,
-aggregate state, and input-to-result mapping, or return
-`QDMI_ERROR_NOTSUPPORTED`. A driver may not present independently retrieved jobs
-as one aggregate job without preserving that contract. Concurrent single-program
-submissions remain a separate client-side fallback.
-
-Device libraries must export `QDMI_device_job_set_programs`, even if it returns
-`QDMI_ERROR_NOTSUPPORTED`. Rebuild clients, drivers, and devices against the
-same 1.4 headers; the indexed result getter changes their ABI. Program-format
-enum values and result encodings are unchanged.
+Device libraries must export `QDMI_device_job_set_programs`, and drivers must
+export `QDMI_job_set_programs`, even if they reject lists with more than one
+program. Rebuild clients, drivers, and devices against the updated signatures.
 
 ## [1.3.3]
 

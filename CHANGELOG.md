@@ -22,8 +22,8 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 - ✨ Add native Windows library loading to the example driver ([#511])
   ([\@burgholzer]).
 - ✨ Add ordered multi-program jobs with one aggregate lifecycle, indexed
-  results, and required device entry points ([#509]) ([\@ystade],
-  [\@burgholzer]).
+  results, optional per-program outcomes, and required device entry points
+  ([#509]) ([\@ystade], [\@burgholzer]).
 
 ### Changed
 
@@ -37,9 +37,8 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
   example driver's separate initialization and shutdown functions ([#511])
   ([\@burgholzer]).
 - 💥 Add a program index to `QDMI_job_get_results` and
-  `QDMI_device_job_get_results`; remove the single-program job parameters; and
-  define atomic multi-program retrieval semantics ([#509]) ([\@ystade],
-  [\@burgholzer]).
+  `QDMI_device_job_get_results` and use the atomic program-list setter for
+  single-program jobs ([#509]) ([\@ystade], [\@burgholzer]).
 - 💥 Drop x86 macOS from QDMI's tested platforms ([#515]) ([\@denialhaag])
 - ⬆️ Raise generated device projects' macOS deployment target to 13.3 ([#515])
   ([\@denialhaag])
@@ -53,6 +52,9 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 
 ### Removed
 
+- 💥 Replace the batch-job format and single-program payload parameters with
+  ordered program lists, reserving the removed enum values ([#509]) ([\@ystade],
+  [\@burgholzer]).
 - 💥 Remove the calibration program format. Providers can expose calibration
   submission through a separate function ([#551]) ([\@burgholzer]).
 - 💥 Remove the unused pulse-support device property and level type. Providers

@@ -172,14 +172,13 @@ QDMI_JOB_PARAMETER_SHOTSNUM).
 \until DOXYGEN FUNCTION END
 <!-- rumdl-enable -->
 
-The function @ref QDMI_device_job_set_programs submits an ordered list of
-programs with one exact format and one job-wide shot count. The function copies
-the complete list before it returns. The job has one lifecycle, and result index
-`i` corresponds to input program `i`. A device can execute the programs in any
-order. The job is done only after every program succeeds. One program failure
-fails the job, and cancellation applies to the complete job. QDMI does not
-expose partial results. Use @ref QDMI_device_job_get_results with the input
-index to retrieve one program's result.
+The function @ref QDMI_device_job_set_programs sets an ordered list of programs
+with one format and one shot count per program. It copies the list before
+returning. Submit the job with @ref QDMI_device_job_submit and retrieve each
+program's results by its input index with @ref QDMI_device_job_get_results.
+Execution order is unspecified. Devices may report individual outcomes through
+@ref QDMI_DEVICE_JOB_PROPERTY_PROGRAMSTATUSES so successful results remain
+available when other programs fail or are canceled.
 
 <!-- rumdl-disable -->
 \dontinclude cxx_device.cpp

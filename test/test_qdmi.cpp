@@ -48,6 +48,8 @@ extern "C" {
 #include <vector>
 
 namespace {
+static_assert(QDMI_JOB_PARAMETER_SHOTSNUM == 2);
+static_assert(QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM == 2);
 static_assert(QDMI_VERSION_MAJOR(QDMI_MAKE_VERSION(2, 1, 3)) == 2U);
 static_assert(QDMI_VERSION_MINOR(QDMI_MAKE_VERSION(2, 1, 3)) == 1U);
 static_assert(QDMI_VERSION_PATCH(QDMI_MAKE_VERSION(2, 1, 3)) == 3U);
@@ -708,7 +710,7 @@ TEST_P(QDMIImplementationTest, JobLifecycle) {
   // Cannot get results from a job that is not done yet.
   EXPECT_EQ(
       QDMI_job_get_results(job, 0, QDMI_JOB_RESULT_SHOTS, 0, nullptr, nullptr),
-      QDMI_ERROR_INVALIDARGUMENT);
+      QDMI_ERROR_BADSTATE);
   EXPECT_EQ(QDMI_job_check(job, nullptr), QDMI_ERROR_INVALIDARGUMENT);
   QDMI_Job_Status status{};
   EXPECT_EQ(QDMI_job_check(nullptr, &status), QDMI_ERROR_INVALIDARGUMENT);
@@ -884,6 +886,16 @@ TEST_P(QDMIImplementationTest, MultiProgramJob) {
   ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_SHOTSNUM,
                                    sizeof(size_t), &shots),
             QDMI_SUCCESS);
+  EXPECT_EQ(QDMI_job_set_parameter(job, static_cast<QDMI_Job_Parameter>(1), 0,
+                                   nullptr),
+            QDMI_ERROR_NOTSUPPORTED);
+  constexpr auto removed_batch_format = static_cast<QDMI_Program_Format>(9);
+  EXPECT_EQ(QDMI_job_set_programs(job, &removed_batch_format, programs.size(),
+                                  nullptr, nullptr),
+            QDMI_ERROR_NOTSUPPORTED);
+  EXPECT_EQ(QDMI_job_query_property(job, QDMI_JOB_PROPERTY_PROGRAMSTATUSES, 0,
+                                    nullptr, nullptr),
+            QDMI_ERROR_NOTSUPPORTED);
   ASSERT_EQ(QDMI_job_submit(job), QDMI_SUCCESS);
   EXPECT_EQ(QDMI_job_set_programs(job, &QASM2_FORMAT, programs.size(),
                                   sizes.data(), program_ptrs.data()),
@@ -894,7 +906,7 @@ TEST_P(QDMIImplementationTest, MultiProgramJob) {
   EXPECT_EQ(program_count, programs.size());
   EXPECT_EQ(
       QDMI_job_get_results(job, 0, QDMI_JOB_RESULT_SHOTS, 0, nullptr, nullptr),
-      QDMI_ERROR_INVALIDARGUMENT);
+      QDMI_ERROR_BADSTATE);
   ASSERT_EQ(QDMI_job_wait(job, 0), QDMI_SUCCESS);
 
   EXPECT_EQ(QDMI_job_get_results(nullptr, 0, QDMI_JOB_RESULT_SHOTS, 0, nullptr,
@@ -972,7 +984,7 @@ TEST_P(QDMIImplementationTest, MultiProgramJob) {
   EXPECT_EQ(canceled_status, QDMI_JOB_STATUS_CANCELED);
   EXPECT_EQ(
       QDMI_job_get_results(job, 0, QDMI_JOB_RESULT_SHOTS, 0, nullptr, nullptr),
-      QDMI_ERROR_INVALIDARGUMENT);
+      QDMI_ERROR_BADSTATE);
   QDMI_job_free(job);
 }
 

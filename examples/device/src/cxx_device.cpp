@@ -541,9 +541,7 @@ int CXX_QDMI_device_job_submit(CXX_QDMI_Device_Job job) {
   if (job == nullptr || job->status != QDMI_JOB_STATUS_CREATED) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
-  if (!Valid_format(job->format) ||
-      (job->programs.empty() &&
-       job->format != QDMI_PROGRAM_FORMAT_CALIBRATION)) {
+  if (!Valid_format(job->format) || job->programs.empty()) {
     return QDMI_ERROR_BADSTATE;
   }
 
@@ -832,16 +830,18 @@ int CXX_QDMI_device_job_get_results(CXX_QDMI_Device_Job job,
                                     const QDMI_Job_Result result,
                                     const size_t size, void *data,
                                     size_t *size_ret) {
-  if (job == nullptr || job->status != QDMI_JOB_STATUS_DONE ||
-      (data != nullptr && size == 0) ||
+  if (job == nullptr || (data != nullptr && size == 0) ||
       (result >= QDMI_JOB_RESULT_MAX && result != QDMI_JOB_RESULT_CUSTOM1 &&
        result != QDMI_JOB_RESULT_CUSTOM2 && result != QDMI_JOB_RESULT_CUSTOM3 &&
        result != QDMI_JOB_RESULT_CUSTOM4 &&
        result != QDMI_JOB_RESULT_CUSTOM5)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
-  if (program_index >= job->results.size()) {
+  if (program_index >= job->programs.size()) {
     return QDMI_ERROR_OUTOFRANGE;
+  }
+  if (job->status != QDMI_JOB_STATUS_DONE) {
+    return QDMI_ERROR_BADSTATE;
   }
   const auto &program_result = job->results[program_index];
   switch (result) {
