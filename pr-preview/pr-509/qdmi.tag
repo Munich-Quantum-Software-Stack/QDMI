@@ -5,7 +5,15 @@
     <path></path>
     <filename>client_8h.html</filename>
     <includes id="constants_8h" name="constants.h" local="yes" import="no" module="no" objc="no">qdmi/constants.h</includes>
+    <includes id="export_8h" name="export.h" local="yes" import="no" module="no" objc="no">qdmi/export.h</includes>
     <includes id="types_8h" name="types.h" local="yes" import="no" module="no" objc="no">qdmi/types.h</includes>
+    <member kind="define">
+      <type>#define</type>
+      <name>QDMI_CLIENT_ABI_VERSION</name>
+      <anchorfile>group__client__interface.html</anchorfile>
+      <anchor>gadf3d2c0eb6fa2315db6ff6f82e08b113</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="typedef">
       <type>struct QDMI_Device_impl_d *</type>
       <name>QDMI_Device</name>
@@ -282,6 +290,12 @@
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
+      <name>QDMI_JOB_PROPERTY_PROGRAMSTATUSES</name>
+      <anchorfile>group__client__job__interface.html</anchorfile>
+      <anchor>gga8f2f468604e24bab4c86cdb781b879bba65ed2e6534b3b8ba22c92769114c795a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
       <name>QDMI_JOB_PROPERTY_MAX</name>
       <anchorfile>group__client__job__interface.html</anchorfile>
       <anchor>gga8f2f468604e24bab4c86cdb781b879bba14db954932a0e76a751f89e75eda5351</anchor>
@@ -316,6 +330,13 @@
       <anchorfile>group__client__job__interface.html</anchorfile>
       <anchor>gga8f2f468604e24bab4c86cdb781b879bba0108668f46b41020ad1b9b78cb39f0ba</anchor>
       <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>uint32_t</type>
+      <name>QDMI_driver_get_client_abi_version</name>
+      <anchorfile>group__client__interface.html</anchorfile>
+      <anchor>ga9e5a19a04b1ca5279e8696e79228fd6a</anchor>
+      <arglist>(void)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -455,6 +476,34 @@
     <name>constants.h</name>
     <path></path>
     <filename>constants_8h.html</filename>
+    <member kind="define">
+      <type>#define</type>
+      <name>QDMI_MAKE_VERSION</name>
+      <anchorfile>constants_8h.html</anchorfile>
+      <anchor>a6afe2f84f9b78688ebcb684424b81319</anchor>
+      <arglist>(major, minor, patch)</arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>QDMI_VERSION_MAJOR</name>
+      <anchorfile>constants_8h.html</anchorfile>
+      <anchor>a8e8caa8cb8dfb5c515321c3700c40152</anchor>
+      <arglist>(version)</arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>QDMI_VERSION_MINOR</name>
+      <anchorfile>constants_8h.html</anchorfile>
+      <anchor>ad80ba3f24fa2cec89f3d409f18aa1766</anchor>
+      <arglist>(version)</arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>QDMI_VERSION_PATCH</name>
+      <anchorfile>constants_8h.html</anchorfile>
+      <anchor>a771649d97222ad4e2e23a56797dde658</anchor>
+      <arglist>(version)</arglist>
+    </member>
     <member kind="typedef">
       <type>enum QDMI_DEVICE_SESSION_PARAMETER_T</type>
       <name>QDMI_Device_Session_Parameter</name>
@@ -523,13 +572,6 @@
       <name>QDMI_Job_Result</name>
       <anchorfile>constants_8h.html</anchorfile>
       <anchor>a52254cd217f8627659a19c8e0c2feed6</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="typedef">
-      <type>enum QDMI_DEVICE_PULSE_SUPPORT_LEVEL_T</type>
-      <name>QDMI_Device_Pulse_Support_Level</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>adbe592e696ab58711eb26bc2bb6d9668</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumeration">
@@ -801,6 +843,12 @@
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
+      <name>QDMI_DEVICE_JOB_PROPERTY_PROGRAMSTATUSES</name>
+      <anchorfile>constants_8h.html</anchorfile>
+      <anchor>a6e4d18c7fa5d383bbcc1498abe090d4faf7bfc3e21f7c696db9be6b6b3cf05897</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
       <name>QDMI_DEVICE_JOB_PROPERTY_MAX</name>
       <anchorfile>constants_8h.html</anchorfile>
       <anchor>a6e4d18c7fa5d383bbcc1498abe090d4fac476c098fa8050146b00c2857a151303</anchor>
@@ -892,18 +940,6 @@
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
-      <name>QDMI_DEVICE_PROPERTY_NEEDSCALIBRATION</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>ad251d8ae8fbbe9a5c7a10d66b243d526a3ab681f741c7fd8f6ad753674b4c1e28</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>QDMI_DEVICE_PROPERTY_PULSESUPPORT</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>ad251d8ae8fbbe9a5c7a10d66b243d526a636246d24c553aa36459537718588965</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
       <name>QDMI_DEVICE_PROPERTY_LENGTHUNIT</name>
       <anchorfile>constants_8h.html</anchorfile>
       <anchor>ad251d8ae8fbbe9a5c7a10d66b243d526a3a25e71a82af0c1ef7343dd602a3921e</anchor>
@@ -949,6 +985,12 @@
       <name>QDMI_DEVICE_PROPERTY_QUEUELENGTH</name>
       <anchorfile>constants_8h.html</anchorfile>
       <anchor>ad251d8ae8fbbe9a5c7a10d66b243d526a11b4157c54d33e972a56e327defab279</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>QDMI_DEVICE_PROPERTY_ID</name>
+      <anchorfile>constants_8h.html</anchorfile>
+      <anchor>ad251d8ae8fbbe9a5c7a10d66b243d526a075556271172ec5539c14df12a050f05</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
@@ -1359,12 +1401,6 @@
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
-      <name>QDMI_PROGRAM_FORMAT_CALIBRATION</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>a3eff3252203fcad146d5896e4466ec09a250ddcb8393b04b08471c5fe7abb3d27</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
       <name>QDMI_PROGRAM_FORMAT_QPY</name>
       <anchorfile>constants_8h.html</anchorfile>
       <anchor>a3eff3252203fcad146d5896e4466ec09a6bd3fb1aca86016dfc70aa42421a5d48</anchor>
@@ -1374,12 +1410,6 @@
       <name>QDMI_PROGRAM_FORMAT_IQMJSON</name>
       <anchorfile>constants_8h.html</anchorfile>
       <anchor>a3eff3252203fcad146d5896e4466ec09ae195460aa4da32f2efc5bb61cf50f740</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>QDMI_PROGRAM_FORMAT_BATCHJOB</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>a3eff3252203fcad146d5896e4466ec09a07a8f396e623368210fac5d2e0ea10a8</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
@@ -1513,37 +1543,6 @@
       <name>QDMI_JOB_RESULT_CUSTOM5</name>
       <anchorfile>constants_8h.html</anchorfile>
       <anchor>aa154b942b0f67e437c393ad7b33cadd1aa892eb092c55f5c7ea34c47358675125</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumeration">
-      <type></type>
-      <name>QDMI_DEVICE_PULSE_SUPPORT_LEVEL_T</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>a4dbe8fa81be42cf37de7172f059092ad</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>QDMI_DEVICE_PULSE_SUPPORT_LEVEL_NONE</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>a4dbe8fa81be42cf37de7172f059092ada37a5a4ff5f9297d9806e57c901a026d4</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>QDMI_DEVICE_PULSE_SUPPORT_LEVEL_SITE</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>a4dbe8fa81be42cf37de7172f059092ada9618ac2ae6549428f4830b9b60ef6944</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>QDMI_DEVICE_PULSE_SUPPORT_LEVEL_CHANNEL</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>a4dbe8fa81be42cf37de7172f059092ada15b6967755608a70f135f8ecd90cc61f</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>QDMI_DEVICE_PULSE_SUPPORT_LEVEL_SITEANDCHANNEL</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>a4dbe8fa81be42cf37de7172f059092ada3ed6ea2f6ef78e4b82aeb726cc86659a</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -1747,12 +1746,26 @@
     <subgroup>client_session_interface</subgroup>
     <subgroup>client_query_interface</subgroup>
     <subgroup>client_job_interface</subgroup>
+    <member kind="define">
+      <type>#define</type>
+      <name>QDMI_CLIENT_ABI_VERSION</name>
+      <anchorfile>group__client__interface.html</anchorfile>
+      <anchor>gadf3d2c0eb6fa2315db6ff6f82e08b113</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="typedef">
       <type>struct QDMI_Device_impl_d *</type>
       <name>QDMI_Device</name>
       <anchorfile>group__client__interface.html</anchorfile>
       <anchor>ga2772c94ab19957ce5aaef652b626baec</anchor>
       <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>uint32_t</type>
+      <name>QDMI_driver_get_client_abi_version</name>
+      <anchorfile>group__client__interface.html</anchorfile>
+      <anchor>ga9e5a19a04b1ca5279e8696e79228fd6a</anchor>
+      <arglist>(void)</arglist>
     </member>
   </compound>
   <compound kind="group">
@@ -2094,6 +2107,12 @@
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
+      <name>QDMI_JOB_PROPERTY_PROGRAMSTATUSES</name>
+      <anchorfile>group__client__job__interface.html</anchorfile>
+      <anchor>gga8f2f468604e24bab4c86cdb781b879bba65ed2e6534b3b8ba22c92769114c795a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
       <name>QDMI_JOB_PROPERTY_MAX</name>
       <anchorfile>group__client__job__interface.html</anchorfile>
       <anchor>gga8f2f468604e24bab4c86cdb781b879bba14db954932a0e76a751f89e75eda5351</anchor>
@@ -2392,6 +2411,11 @@
     </member>
   </compound>
   <compound kind="page">
+    <name>md_docs_2installation</name>
+    <title>Using QDMI with CMake</title>
+    <filename>md_docs_2installation.html</filename>
+  </compound>
+  <compound kind="page">
     <name>md_docs_2faq</name>
     <title>FAQ</title>
     <filename>md_docs_2faq.html</filename>
@@ -2419,6 +2443,7 @@
     <name>md_docs_2examples</name>
     <title>Examples</title>
     <filename>md_docs_2examples.html</filename>
+    <docanchor file="md_docs_2examples.html" title="Implementing a QDMI Driver">driver</docanchor>
     <docanchor file="md_docs_2examples.html" title="Implementing a Device">device</docanchor>
     <docanchor file="md_docs_2examples.html" title="Basic String Properties">device-string</docanchor>
     <docanchor file="md_docs_2examples.html" title="Auxiliary Macros">device-macros</docanchor>

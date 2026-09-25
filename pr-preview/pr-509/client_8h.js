@@ -1,5 +1,6 @@
 var client_8h =
 [
+    [ "QDMI_CLIENT_ABI_VERSION", "group__client__interface.html#gadf3d2c0eb6fa2315db6ff6f82e08b113", null ],
     [ "QDMI_Device", "group__client__interface.html#ga2772c94ab19957ce5aaef652b626baec", null ],
     [ "QDMI_Session", "group__client__session__interface.html#ga4dd0162b0321d12934f815f29504106e", null ],
     [ "QDMI_Session_Parameter", "group__client__session__interface.html#gaae2a513b3364705ca75f709215d912f5", null ],
@@ -47,6 +48,7 @@ var client_8h =
       [ "QDMI_JOB_PROPERTY_SHOTSNUM", "group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba63b4303048a3617aa06ac9ccb1795f23", null ],
       [ "QDMI_JOB_PROPERTY_QUEUEPOSITION", "group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bbaa9dc7b2d271978db909921a417b223d9", null ],
       [ "QDMI_JOB_PROPERTY_PROGRAMSNUM", "group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba43d824ed6fbd28af6a95c64c9403033b", null ],
+      [ "QDMI_JOB_PROPERTY_PROGRAMSTATUSES", "group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba65ed2e6534b3b8ba22c92769114c795a", null ],
       [ "QDMI_JOB_PROPERTY_MAX", "group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba14db954932a0e76a751f89e75eda5351", null ],
       [ "QDMI_JOB_PROPERTY_CUSTOM1", "group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba016257118753c19a5a86da3310be27cc", null ],
       [ "QDMI_JOB_PROPERTY_CUSTOM2", "group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba95c21c814e579b6ac1d736ba57d69287", null ],
@@ -54,6 +56,7 @@ var client_8h =
       [ "QDMI_JOB_PROPERTY_CUSTOM4", "group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bbac3fe7fca8db9bb213282e5adebf5ff2c", null ],
       [ "QDMI_JOB_PROPERTY_CUSTOM5", "group__client__job__interface.html#gga8f2f468604e24bab4c86cdb781b879bba0108668f46b41020ad1b9b78cb39f0ba", null ]
     ] ],
+    [ "QDMI_driver_get_client_abi_version", "group__client__interface.html#ga9e5a19a04b1ca5279e8696e79228fd6a", null ],
     [ "QDMI_session_alloc", "group__client__session__interface.html#gaa11305e72710d4f2439c0c72892fce11", null ],
     [ "QDMI_session_set_parameter", "group__client__session__interface.html#ga39d34b2a95cd9e2b8d9d6ab551bff078", null ],
     [ "QDMI_session_init", "group__client__session__interface.html#gafbc8c6031ee98c87d58515eb35b4202b", null ],

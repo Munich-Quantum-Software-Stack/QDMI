@@ -6,8 +6,9 @@ var indexSectionsWithContent =
   3: "q",
   4: "q",
   5: "q",
-  6: "cdijqs",
-  7: "12345abcdefghijklmnopqrstuwy🎉"
+  6: "q",
+  7: "cdijqs",
+  8: "12345abcdefghijklmnopqrstuwy🎉"
 };
 
 var indexSectionNames =
@@ -18,8 +19,9 @@ var indexSectionNames =
   3: "typedefs",
   4: "enums",
   5: "enumvalues",
-  6: "groups",
-  7: "pages"
+  6: "defines",
+  7: "groups",
+  8: "pages"
 };
 
 var indexSectionLabels =
@@ -30,7 +32,8 @@ var indexSectionLabels =
   3: "Typedefs",
   4: "Enumerations",
   5: "Enumerator",
-  6: "Modules",
-  7: "Pages"
+  6: "Macros",
+  7: "Modules",
+  8: "Pages"
 };
 
