@@ -10,7 +10,7 @@ contained in the `examples/` directory in the repository.
 
 \tableofcontents
 
-## Implementing a QDMI Driver {#client-driver}
+## Implementing a QDMI Driver {#driver}
 
 A QDMI driver is a replaceable shared library. It exports every function in
 `qdmi/client.h` with `QDMI_DRIVER_EXPORT`. A loader accepts a version if and
