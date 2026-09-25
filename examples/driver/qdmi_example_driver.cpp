@@ -28,7 +28,6 @@
 #include <cstdint>
 #include <cstdlib>
 #include <cstring>
-#include <dlfcn.h>
 #include <exception>
 #include <filesystem>
 #include <fstream>
@@ -43,6 +42,16 @@
 #include <unordered_set>
 #include <utility>
 #include <vector>
+
+#ifdef _WIN32
+#include <windows.h>
+#define DL_SYM(lib, symbol) GetProcAddress(static_cast<HMODULE>(lib), symbol)
+#define DL_CLOSE(lib) FreeLibrary(static_cast<HMODULE>(lib))
+#else
+#include <dlfcn.h>
+#define DL_SYM(lib, symbol) dlsym(lib, symbol)
+#define DL_CLOSE(lib) dlclose(lib)
+#endif
 
 /**
  * @brief Enum of the modes a device can be opened in.
@@ -128,7 +137,7 @@ struct QDMI_Library {
     }
     // close the dynamic library
     if (lib_handle != nullptr) {
-      dlclose(lib_handle);
+      DL_CLOSE(lib_handle);
     }
   }
 };
@@ -190,7 +199,7 @@ QDMI_Driver_State *QDMI_get_driver_state() {
   {                                                                            \
     const std::string symbol_name = std::string(prefix) + "_QDMI_" + #symbol;  \
     (device).symbol = reinterpret_cast<decltype((device).symbol)>(             \
-        dlsym((device).lib_handle, symbol_name.c_str()));                      \
+        DL_SYM((device).lib_handle, symbol_name.c_str()));                     \
     if ((device).symbol == nullptr) {                                          \
       throw std::runtime_error("Failed to load symbol: " + symbol_name);       \
     }                                                                          \
@@ -200,7 +209,7 @@ QDMI_Driver_State *QDMI_get_driver_state() {
   {                                                                            \
     const std::string symbol_name = std::string(prefix) + "_QDMI_" + #symbol;  \
     (device).symbol = reinterpret_cast<decltype((device).symbol)>(             \
-        dlsym((device).lib_handle, symbol_name.c_str()));                      \
+        DL_SYM((device).lib_handle, symbol_name.c_str()));                     \
   }
 
 void QDMI_library_load(
@@ -208,7 +217,15 @@ void QDMI_library_load(
     const std::string &lib_name, const std::string &prefix,
     const std::string &device_id) {
   auto library = std::make_unique<QDMI_Library>();
+#ifdef _WIN32
+  const auto path = std::filesystem::absolute(
+      std::filesystem::path{std::u8string{lib_name.begin(), lib_name.end()}});
+  library->lib_handle = LoadLibraryExW(path.c_str(), nullptr,
+                                       LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR |
+                                           LOAD_LIBRARY_SEARCH_DEFAULT_DIRS);
+#else
   library->lib_handle = dlopen(lib_name.c_str(), RTLD_NOW | RTLD_LOCAL);
+#endif
   if (library->lib_handle == nullptr) {
     throw std::runtime_error("Couldn't open the device library: " + lib_name);
   }
