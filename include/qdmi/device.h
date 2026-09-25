@@ -435,9 +435,8 @@ QDMI_EXPORT int QDMI_device_session_query_operation_property(
  *
  *  The typical workflow for a device job is as follows:
  *  - Create a job with @ref QDMI_device_session_create_device_job.
- *  - Set one program and other parameters with @ref
- *  QDMI_device_job_set_parameter, or set a program list with @ref
- *  QDMI_device_job_set_programs.
+ *  - Set programs with @ref QDMI_device_job_set_programs and other parameters
+ *  with @ref QDMI_device_job_set_parameter.
  *  - Submit the job with @ref QDMI_device_job_submit.
  *  - Check the status of the job with @ref QDMI_device_job_check.
  *  - Wait for the job to finish with @ref QDMI_device_job_wait.
@@ -552,7 +551,7 @@ QDMI_EXPORT int QDMI_device_session_retrieve_device_job_by_id(
  *    documentation).
  * @return @ref QDMI_ERROR_BADSTATE if the parameter cannot be set in the
  * current state of the job, for example, because the job is already submitted.
- * @return @ref QDMI_ERROR_OUTOFMEM if a program cannot be copied.
+ * @return @ref QDMI_ERROR_OUTOFMEM if a parameter value cannot be copied.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the device does not allow using
  * the @ref device_job_interface "device job interface" for the current session.
  * @return @ref QDMI_ERROR_FATAL if setting the parameter failed due to a fatal

@@ -47,6 +47,8 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 
 ### Fixed
 
+- 🐛 Allow the example driver to open devices without token authentication while
+  propagating authentication errors ([#509]) ([\@burgholzer]).
 - 🐛 Preserve timestamps of unchanged prefixed headers to avoid redundant builds
   ([#537]) ([\@burgholzer])
 

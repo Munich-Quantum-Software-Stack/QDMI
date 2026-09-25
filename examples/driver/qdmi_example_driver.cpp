@@ -403,7 +403,7 @@ int QDMI_session_init(QDMI_Session session) {
       status = device->library->device_session_set_parameter(
           device->device_session, QDMI_DEVICE_SESSION_PARAMETER_TOKEN,
           session->token->size() + 1, session->token->c_str());
-      if (status != QDMI_SUCCESS) {
+      if (status != QDMI_SUCCESS && status != QDMI_ERROR_NOTSUPPORTED) {
         return status;
       }
       status = device->library->device_session_init(device->device_session);
