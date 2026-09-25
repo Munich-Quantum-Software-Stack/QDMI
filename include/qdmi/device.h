@@ -498,11 +498,10 @@ QDMI_device_session_create_device_job(QDMI_Device_Session session,
  * The job is accessed with the credentials and configuration of @p session.
  * The job ID is an identifier, not an authentication credential.
  * Parameters cannot be set on a retrieved job, and a retrieved job cannot be
- * submitted again. Retrieval is all-or-nothing: the device must reconstruct
- * the exact historical format enum value, program count, status, and mapping
- * from each input index to its results. This also applies when the historical
- * format is no longer advertised. The device must return @ref
- * QDMI_ERROR_NOTSUPPORTED if it cannot reconstruct all of this information.
+ * submitted again. The device must reconstruct the program count and
+ * input-to-result mapping. If historical input metadata is unavailable,
+ * queries for the original format or payload may return @ref
+ * QDMI_ERROR_NOTSUPPORTED without preventing retrieval.
  *
  * @param[in] session The initialized session with which to retrieve the job.
  * Must not be @c NULL.
@@ -515,8 +514,8 @@ QDMI_device_session_create_device_job(QDMI_Device_Session session,
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p session, @p job_id, or @p job
  * is @c NULL, or if @p job_id is empty.
  * @return @ref QDMI_ERROR_NOTSUPPORTED if the device does not support
- * retrieving existing jobs or cannot reconstruct all required job metadata
- * and result-index mappings.
+ * retrieving existing jobs or cannot reconstruct the program count
+ * and result-index mapping.
  * @return @ref QDMI_ERROR_NOTFOUND if no accessible job with @p job_id exists.
  * @return @ref QDMI_ERROR_BADSTATE if @p session is not initialized.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if @p session is not permitted to
@@ -596,16 +595,18 @@ QDMI_EXPORT int QDMI_device_job_set_parameter(QDMI_Device_Job job,
  * QDMI_device_job_get_results. A result's index equals its input program's
  * index; execution order is unspecified. The list has one ID, status, wait
  * operation, and cancellation operation. The job reaches @ref
- * QDMI_JOB_STATUS_DONE only after all programs succeed. One program failure
- * sets the aggregate status to @ref QDMI_JOB_STATUS_FAILED. Cancellation sets
- * it to @ref QDMI_JOB_STATUS_CANCELED. Results are available only for a job
- * with status @ref QDMI_JOB_STATUS_DONE; QDMI exposes no partial results.
+ * QDMI_JOB_STATUS_DONE only after all programs succeed. Failed or canceled jobs
+ * become terminal only after all programs have stopped. Optional per-program
+ * outcomes are available through @ref QDMI_DEVICE_JOB_PROPERTY_PROGRAMSTATUSES;
+ * results of successful programs remain accessible when other programs fail or
+ * are canceled.
  * @param[in] job A handle to the job. Must not be @c NULL.
  * @param[in] format The exact format of every program. Must point to a valid
  * @ref QDMI_Program_Format when the device supports program lists. It must not
  * be @c NULL, including for a support check.
  * @param[in] count The number of programs. Must be greater than zero. A support
- * check succeeds only if the device supports this exact cardinality.
+ * check succeeds only if the device supports this exact cardinality
+ * with the configured job parameters.
  * @param[in] sizes An array of @p count program sizes in bytes. Must not be
  * @c NULL and each size must be greater than zero when @p programs is not
  * @c NULL. A text program contains exactly one NUL, as its final byte. Binary
@@ -626,7 +627,9 @@ QDMI_EXPORT int QDMI_device_job_set_parameter(QDMI_Device_Job job,
  *    sizes is zero, or a text program does not contain exactly one trailing
  *    NUL.
  * @return @ref QDMI_ERROR_NOTSUPPORTED if the arguments are valid but the
- * device does not support program lists, @p format, or one of the programs.
+ * device cannot accept the format, count, or programs with the configured
+ * job parameters. Reserved numeric values of removed formats also return
+ * @ref QDMI_ERROR_NOTSUPPORTED.
  * @return @ref QDMI_ERROR_BADSTATE if programs cannot be set in the current
  * state of the job, for example, because the job is already submitted.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the device does not allow using
@@ -768,6 +771,10 @@ QDMI_EXPORT int QDMI_device_job_wait(QDMI_Device_Job job, size_t timeout);
 
 /**
  * @brief Retrieve one program's results from a job.
+ * @details Results are available when the selected program has succeeded, even
+ * if other programs are still running, failed, or canceled. Devices exposing
+ * only aggregate outcomes provide results after the job reaches @ref
+ * QDMI_JOB_STATUS_DONE.
  * @param[in] job The job to retrieve the results from. Must not be @c NULL.
  * @param[in] program_index The zero-based program index. Must be less than
  * @ref QDMI_DEVICE_JOB_PROPERTY_PROGRAMSNUM.
@@ -784,11 +791,11 @@ QDMI_EXPORT int QDMI_device_job_wait(QDMI_Device_Job job, size_t timeout);
  * when @p data is not @c NULL, retrieved it successfully.
  * @return @ref QDMI_ERROR_NOTSUPPORTED if the device does not support the
  * specified result.
+ * @return @ref QDMI_ERROR_BADSTATE if the selected program has not succeeded.
  * @return @ref QDMI_ERROR_OUTOFRANGE if @p program_index is greater than or
  * equal to the number of programs in the job.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if
  *  - @p job is @c NULL,
- *  - @p job does not have status @ref QDMI_JOB_STATUS_DONE,
  *  - @p result is invalid, or
  *  - @p data is not @c NULL and @p size is too small.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the device does not allow using

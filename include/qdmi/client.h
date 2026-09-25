@@ -693,11 +693,10 @@ QDMI_DRIVER_EXPORT int QDMI_device_create_job(QDMI_Device device,
  * The job is accessed with the credentials and configuration of the current
  * session. The job ID is an identifier, not an authentication
  * credential. Parameters cannot be set on a retrieved job, and a retrieved
- * job cannot be submitted again. Retrieval is all-or-nothing: the driver must
- * reconstruct the exact historical format enum value, program count, status,
- * and mapping from each input index to its results. This also applies when the
- * historical format is no longer advertised. The driver must return @ref
- * QDMI_ERROR_NOTSUPPORTED if it cannot reconstruct all of this information.
+ * job cannot be submitted again. The driver must reconstruct the program count
+ * and input-to-result mapping. If historical input metadata is unavailable,
+ * queries for the original format or payload may return @ref
+ * QDMI_ERROR_NOTSUPPORTED without preventing retrieval.
  *
  * @param[in] device The device from which to retrieve the job. Must not be @c
  * NULL.
@@ -710,8 +709,8 @@ QDMI_DRIVER_EXPORT int QDMI_device_create_job(QDMI_Device device,
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p device, @p job_id, or @p job
  * is @c NULL, or if @p job_id is empty.
  * @return @ref QDMI_ERROR_NOTSUPPORTED if the driver or device does not
- * support retrieving existing jobs or cannot reconstruct all required job
- * metadata and result-index mappings.
+ * support retrieving existing jobs or cannot reconstruct the program count and
+ * result-index mapping.
  * @return @ref QDMI_ERROR_NOTFOUND if no accessible job with @p job_id exists.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the current session is not
  * permitted to access the job.
@@ -739,11 +738,12 @@ enum QDMI_JOB_PARAMETER_T {
    * and payload unchanged.
    */
   QDMI_JOB_PARAMETER_PROGRAMFORMAT = 0,
+  /// Value 1 is reserved for the removed program parameter; do not reuse it.
   /**
-   * @brief `size_t` The number of shots to execute for a quantum circuit job.
+   * @brief `size_t` The number of shots to execute for each program in a job.
    * @details If this parameter is not set, a device-specific default is used.
    */
-  QDMI_JOB_PARAMETER_SHOTSNUM = 1,
+  QDMI_JOB_PARAMETER_SHOTSNUM = 2,
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by drivers for bounds checking and validation of
@@ -751,7 +751,7 @@ enum QDMI_JOB_PARAMETER_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_JOB_PARAMETER_MAX = 2,
+  QDMI_JOB_PARAMETER_MAX = 3,
   /**
    * @brief This enum value is reserved for a custom parameter.
    * @details The driver defines the meaning and the type of this parameter.
@@ -844,16 +844,18 @@ QDMI_DRIVER_EXPORT int QDMI_job_set_parameter(QDMI_Job job,
  * QDMI_job_get_results. A result's index equals its input program's index;
  * execution order is unspecified. The list has one ID, status, wait operation,
  * and cancellation operation. The job reaches @ref QDMI_JOB_STATUS_DONE only
- * after all programs succeed. One program failure sets the aggregate status to
- * @ref QDMI_JOB_STATUS_FAILED. Cancellation sets it to @ref
- * QDMI_JOB_STATUS_CANCELED. Results are available only for a job with status
- * @ref QDMI_JOB_STATUS_DONE; QDMI exposes no partial results.
+ * after all programs succeed. Failed or canceled jobs become
+ * terminal only after all programs have stopped. Optional per-program outcomes
+ * are available through @ref QDMI_JOB_PROPERTY_PROGRAMSTATUSES; results of
+ * successful programs remain accessible when other programs fail or are
+ * canceled.
  * @param[in] job A handle to the job. Must not be @c NULL.
  * @param[in] format The exact format of every program. Must point to a valid
  * @ref QDMI_Program_Format when the driver supports program lists. It must not
  * be @c NULL, including for a support check.
  * @param[in] count The number of programs. Must be greater than zero. A support
- * check succeeds only if the driver supports this exact cardinality.
+ * check succeeds only if the driver supports this exact cardinality
+ * with the configured job parameters.
  * @param[in] sizes An array of @p count program sizes in bytes. Must not be
  * @c NULL and each size must be greater than zero when @p programs is not
  * @c NULL. A text program contains exactly one NUL, as its final byte. Binary
@@ -874,7 +876,9 @@ QDMI_DRIVER_EXPORT int QDMI_job_set_parameter(QDMI_Job job,
  *    sizes is zero, or a text program does not contain exactly one trailing
  *    NUL.
  * @return @ref QDMI_ERROR_NOTSUPPORTED if the arguments are valid but the
- * driver cannot accept program lists, @p format, or one of the programs.
+ * driver cannot accept the format, count, or programs with the configured
+ * job parameters. Reserved numeric values of removed formats also return
+ * @ref QDMI_ERROR_NOTSUPPORTED.
  * @return @ref QDMI_ERROR_BADSTATE if programs cannot be set in the current
  * state of the job, for example, because the job is already submitted.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the driver does not allow using
@@ -884,9 +888,10 @@ QDMI_DRIVER_EXPORT int QDMI_job_set_parameter(QDMI_Job job,
  * @return @ref QDMI_ERROR_FATAL if setting the programs failed due to a fatal
  * error.
  */
-int QDMI_job_set_programs(QDMI_Job job, const QDMI_Program_Format *format,
-                          size_t count, const size_t *sizes,
-                          const void *const *programs);
+QDMI_DRIVER_EXPORT int QDMI_job_set_programs(QDMI_Job job,
+                                             const QDMI_Program_Format *format,
+                                             size_t count, const size_t *sizes,
+                                             const void *const *programs);
 
 /**
  * @brief Enum of the job properties that can be queried via @ref
@@ -908,7 +913,8 @@ enum QDMI_JOB_PROPERTY_T {
   QDMI_JOB_PROPERTY_ID = 0,
   /**
    * @brief @ref QDMI_Program_Format The format of the program to be executed.
-   * @details A query returns @ref QDMI_ERROR_BADSTATE until a format is set.
+   * @details A query returns @ref QDMI_ERROR_BADSTATE until a format is set,
+   * or @ref QDMI_ERROR_NOTSUPPORTED if a retrieved job has no format metadata.
    * This property returns the format set through @ref
    * QDMI_JOB_PARAMETER_PROGRAMFORMAT or @ref QDMI_job_set_programs.
    */
@@ -917,12 +923,12 @@ enum QDMI_JOB_PROPERTY_T {
    * @brief `void*` The program to be executed.
    * @note This property returns the program set through @ref
    * QDMI_job_set_programs when the job contains one program.
-   * @note A query for a multi-program job returns @ref
-   * QDMI_ERROR_NOTSUPPORTED.
+   * @note A query returns @ref QDMI_ERROR_NOTSUPPORTED for a multi-program
+   * job or when a retrieved job has no payload metadata.
    */
   QDMI_JOB_PROPERTY_PROGRAM = 2,
   /**
-   * @brief `size_t` The number of shots to execute for a quantum circuit job.
+   * @brief `size_t` The number of shots to execute for each program in a job.
    * @note This property returns the value of the @ref
    * QDMI_JOB_PARAMETER_SHOTSNUM parameter.
    */
@@ -950,6 +956,19 @@ enum QDMI_JOB_PROPERTY_T {
    */
   QDMI_JOB_PROPERTY_PROGRAMSNUM = 5,
   /**
+   * @brief `QDMI_Job_Status[]` The status of each program in input order.
+   * @details The array contains @ref QDMI_JOB_PROPERTY_PROGRAMSNUM entries.
+   * A value query refreshes the statuses together. Terminal program statuses
+   * remain unchanged, and results of successful programs remain available if
+   * other programs fail or are canceled.
+   * @par
+   * This property is optional. Return @ref QDMI_ERROR_NOTSUPPORTED if the job
+   * provides no individual outcomes, or @ref QDMI_ERROR_BADSTATE if supported
+   * outcomes are not yet available. A temporary query failure must return an
+   * error, not @ref QDMI_ERROR_NOTSUPPORTED. Size queries need only the count.
+   */
+  QDMI_JOB_PROPERTY_PROGRAMSTATUSES = 6,
+  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -957,7 +976,7 @@ enum QDMI_JOB_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_JOB_PROPERTY_MAX = 6,
+  QDMI_JOB_PROPERTY_MAX = 7,
   /**
    * @brief This enum value is reserved for a custom parameter.
    * @details The driver defines the meaning and the type of this parameter.
@@ -1107,6 +1126,10 @@ QDMI_DRIVER_EXPORT int QDMI_job_wait(QDMI_Job job, size_t timeout);
 
 /**
  * @brief Retrieve one program's results from a job.
+ * @details Results are available when the selected program has succeeded, even
+ * if other programs are still running, failed, or canceled. Devices exposing
+ * only aggregate outcomes provide results after the job reaches @ref
+ * QDMI_JOB_STATUS_DONE.
  * @param[in] job The job to retrieve the results from. Must not be @c NULL.
  * @param[in] program_index The zero-based program index. Must be less than
  * @ref QDMI_JOB_PROPERTY_PROGRAMSNUM.
@@ -1123,11 +1146,11 @@ QDMI_DRIVER_EXPORT int QDMI_job_wait(QDMI_Job job, size_t timeout);
  * when @p data is not @c NULL, retrieved it successfully.
  * @return @ref QDMI_ERROR_NOTSUPPORTED if the device does not support the
  * specified result.
+ * @return @ref QDMI_ERROR_BADSTATE if the selected program has not succeeded.
  * @return @ref QDMI_ERROR_OUTOFRANGE if @p program_index is greater than or
  * equal to the number of programs in the job.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if
  *  - @p job is @c NULL,
- *  - @p job does not have status @ref QDMI_JOB_STATUS_DONE,
  *  - @p result is invalid, or
  *  - @p data is not @c NULL and @p size is too small.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the driver does not allow using
@@ -1151,9 +1174,9 @@ QDMI_DRIVER_EXPORT int QDMI_job_wait(QDMI_Job job, size_t timeout);
  * @endcode
  * @endparblock
  */
-int QDMI_job_get_results(QDMI_Job job, size_t program_index,
-                         QDMI_Job_Result result, size_t size, void *data,
-                         size_t *size_ret);
+QDMI_DRIVER_EXPORT int QDMI_job_get_results(QDMI_Job job, size_t program_index,
+                                            QDMI_Job_Result result, size_t size,
+                                            void *data, size_t *size_ret);
 
 /**
  * @brief Free a job.
