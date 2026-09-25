@@ -635,8 +635,8 @@ QDMI_DRIVER_EXPORT int QDMI_device_query_operation_property(
  *
  *  The typical workflow for a client job is as follows:
  *  - Create a job with @ref QDMI_device_create_job.
- *  - Set one program and other parameters with @ref QDMI_job_set_parameter, or
- *  set a program list with @ref QDMI_job_set_programs.
+ *  - Set programs with @ref QDMI_job_set_programs and other parameters with
+ *  @ref QDMI_job_set_parameter.
  *  - Submit the job to the device with @ref QDMI_job_submit.
  *  - Check the status of the job with @ref QDMI_job_check.
  *  - Wait for the job to finish with @ref QDMI_job_wait.
@@ -797,7 +797,7 @@ typedef enum QDMI_JOB_PARAMETER_T QDMI_Job_Parameter;
  *  the parameter (if specified by the @ref QDMI_Job_Parameter documentation).
  * @return @ref QDMI_ERROR_BADSTATE if the parameter cannot be set in the
  * current state of the job, for example, because the job is already submitted.
- * @return @ref QDMI_ERROR_OUTOFMEM if a program cannot be copied.
+ * @return @ref QDMI_ERROR_OUTOFMEM if a parameter value cannot be copied.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the driver does not allow using
  * the @ref client_job_interface "client job interface" for the device in the
  * current session.
