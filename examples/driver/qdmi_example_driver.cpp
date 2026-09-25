@@ -185,7 +185,7 @@ struct QDMI_Job_impl_d {
 
 struct QDMI_Driver_State {
   std::unordered_map<void *, std::unique_ptr<QDMI_Library>> libraries;
-  bool initialized = false;
+  size_t sessions = 0;
 };
 
 namespace {
@@ -346,7 +346,6 @@ int QDMI_initialize_driver() {
 
   auto *driver_state = QDMI_get_driver_state();
   driver_state->libraries = std::move(libraries);
-  driver_state->initialized = true;
   return QDMI_SUCCESS;
 }
 } // namespace
@@ -360,15 +359,21 @@ int QDMI_session_alloc(QDMI_Session *session) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   *session = nullptr;
+  auto allocated = std::unique_ptr<QDMI_Session_impl_d>(
+      new (std::nothrow) QDMI_Session_impl_d());
+  if (!allocated) {
+    return QDMI_ERROR_OUTOFMEM;
+  }
   auto *driver_state = QDMI_get_driver_state();
-  if (!driver_state->initialized) {
+  if (driver_state->sessions == 0) {
     const auto status = QDMI_initialize_driver();
     if (status != QDMI_SUCCESS) {
       return status;
     }
   }
-  *session = new (std::nothrow) QDMI_Session_impl_d();
-  return *session == nullptr ? QDMI_ERROR_OUTOFMEM : QDMI_SUCCESS;
+  ++driver_state->sessions;
+  *session = allocated.release();
+  return QDMI_SUCCESS;
 }
 
 int QDMI_session_init(QDMI_Session session) {
@@ -427,6 +432,11 @@ void QDMI_session_free(QDMI_Session session) {
     return;
   }
   delete session;
+  auto *driver_state = QDMI_get_driver_state();
+  if (--driver_state->sessions == 0) {
+    /// Finalize before device dependencies undergo process-wide teardown.
+    driver_state->libraries.clear();
+  }
 }
 
 int QDMI_session_set_parameter(QDMI_Session session,

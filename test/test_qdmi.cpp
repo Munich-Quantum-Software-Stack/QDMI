@@ -177,13 +177,23 @@ TEST(QDMIDriverLoadingTest, LazyInitializationIsTransactionalAndRetryable) {
 #endif
   EXPECT_EQ(QDMI_session_alloc(&session), QDMI_SUCCESS);
   EXPECT_NE(session, nullptr);
+  QDMI_Session second_session = nullptr;
+  EXPECT_EQ(QDMI_session_alloc(&second_session), QDMI_SUCCESS);
   QDMI_session_free(session);
+  std::filesystem::remove(default_config);
+  /// An existing session keeps libraries alive without rereading configuration.
+  EXPECT_EQ(QDMI_session_alloc(&session), QDMI_SUCCESS);
+  QDMI_session_free(second_session);
+  QDMI_session_free(session);
+  /// The final session releases libraries, so the next allocation reloads them.
+  EXPECT_NE(QDMI_session_alloc(&session), QDMI_SUCCESS);
+  EXPECT_EQ(session, nullptr);
 
   std::filesystem::remove(invalid_library_config);
   std::filesystem::remove(duplicate_id_config);
   std::filesystem::remove(duplicate_library_config);
   std::filesystem::remove(failing_initialize_config);
-  std::filesystem::remove(default_config);
+
 #ifdef _WIN32
   _putenv_s("QDMI_CONF", saved_conf.c_str());
   _putenv_s("HOME", saved_home.c_str());
