@@ -189,7 +189,7 @@ $(function(){initNavTree('group__client__job__interface.html','',''); });
 <p>A job is a task submitted by a client to a device for execution. Most jobs are quantum circuits to be executed on a quantum device. However, jobs can also be a different type of task, such as calibration.</p>
 <p>The typical workflow for a client job is as follows:</p><ul>
 <li>Create a job with <a class="el" href="#ga9fbb6ebc06162e99c15c230cec9491c8" title="QDMI_device_create_job">QDMI_device_create_job</a>.</li>
-<li>Set one program and other parameters with <a class="el" href="#ga94b84ea6efa5e7f2ad1ee65bff04381c" title="QDMI_job_set_parameter">QDMI_job_set_parameter</a>, or set a program list with <a class="el" href="#gabc8c322751938dea29c5cc350673ac17" title="QDMI_job_set_programs">QDMI_job_set_programs</a>.</li>
+<li>Set programs with <a class="el" href="#gabc8c322751938dea29c5cc350673ac17" title="QDMI_job_set_programs">QDMI_job_set_programs</a> and other parameters with <a class="el" href="#ga94b84ea6efa5e7f2ad1ee65bff04381c" title="QDMI_job_set_parameter">QDMI_job_set_parameter</a>.</li>
 <li>Submit the job to the device with <a class="el" href="#ga184d0d0fc0d4edc3a447b91991f9abd1" title="QDMI_job_submit">QDMI_job_submit</a>.</li>
 <li>Check the status of the job with <a class="el" href="#gae9a7cba893885c8fcfe4bec030071d2f" title="QDMI_job_check">QDMI_job_check</a>.</li>
 <li>Wait for the job to finish with <a class="el" href="#ga709a8817f2cda4673175e43fe596ead9" title="QDMI_job_wait">QDMI_job_wait</a>.</li>
