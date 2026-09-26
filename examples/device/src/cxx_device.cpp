@@ -775,6 +775,9 @@ int CXX_QDMI_device_session_query_device_property(
   if (session->status != CXX_QDMI_DEVICE_SESSION_STATUS::INITIALIZED) {
     return QDMI_ERROR_BADSTATE;
   }
+  // NOLINTNEXTLINE(misc-include-cleaner)
+  ADD_STRING_PROPERTY(QDMI_DEVICE_PROPERTY_ID, CXX_QDMI_DEVICE_ID, prop, size,
+                      value, size_ret)
   ADD_STRING_PROPERTY(QDMI_DEVICE_PROPERTY_NAME, "C++ Device with 5 qubits",
                       prop, size, value, size_ret)
   // NOLINTNEXTLINE(misc-include-cleaner)

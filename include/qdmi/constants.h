@@ -25,6 +25,21 @@
 #ifndef QDMI_CONSTANTS_H
 #define QDMI_CONSTANTS_H
 
+#include <stdint.h>
+
+/// Pack a Semantic Versioning release into 32 bits.
+/// Major and minor must fit in 10 bits each, and patch must fit in 12 bits.
+#define QDMI_MAKE_VERSION(major, minor, patch)                                 \
+  ((((uint32_t)(major) & 0x3FFU) << 22U) |                                     \
+   (((uint32_t)(minor) & 0x3FFU) << 12U) | ((uint32_t)(patch) & 0xFFFU))
+
+/// Extract the major component of a packed version.
+#define QDMI_VERSION_MAJOR(version) (((uint32_t)(version) >> 22U) & 0x3FFU)
+/// Extract the minor component of a packed version.
+#define QDMI_VERSION_MINOR(version) (((uint32_t)(version) >> 12U) & 0x3FFU)
+/// Extract the patch component of a packed version.
+#define QDMI_VERSION_PATCH(version) ((uint32_t)(version) & 0xFFFU)
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -446,6 +461,30 @@ enum QDMI_DEVICE_PROPERTY_T {
    */
   QDMI_DEVICE_PROPERTY_QUEUELENGTH = 17,
   /**
+   * @brief `char*` (string) The stable client-visible device identifier.
+   * @details When supported, the Client Interface returns a nonempty,
+   * NUL-terminated, opaque ID. IDs are unique within one initialized session
+   * and immutable for the lifetime of the corresponding @ref QDMI_Device
+   * handle. Equivalent sessions return the same ID across process restarts
+   * while the same logical resource exists. When saving an ID, also record
+   * which driver and configuration provide it. Different drivers may use the
+   * same ID for different devices.
+   *
+   * The ID identifies the logical resource. It is not a display name, endpoint,
+   * pointer value, credential, library version, or symbol prefix. A device
+   * implementation can report its configured default stable ID. The driver can
+   * override that ID to distinguish separately configured logical resources.
+   *
+   * This property is mandatory for configured top-level devices through
+   * @ref QDMI_device_query_device_property. A device implementation can return
+   * @ref QDMI_ERROR_NOTSUPPORTED through
+   * @ref QDMI_device_session_query_device_property; the driver then supplies
+   * the configured ID. Child devices may return @ref QDMI_ERROR_NOTSUPPORTED
+   * when no stable ID is available. Drivers need not generate IDs for child
+   * devices.
+   */
+  QDMI_DEVICE_PROPERTY_ID = 18,
+  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -453,7 +492,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_DEVICE_PROPERTY_MAX = 18,
+  QDMI_DEVICE_PROPERTY_MAX = 19,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.

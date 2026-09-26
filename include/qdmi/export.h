@@ -27,6 +27,8 @@
 /// Mark symbols as visible to other modules (no effect on static library
 /// builds).
 #define QDMI_EXPORT
+/// Export Client Interface symbols from a static driver (no effect).
+#define QDMI_DRIVER_EXPORT
 /// Mark symbols as not visible to other modules (no effect on static library
 /// builds).
 #define QDMI_NO_EXPORT
@@ -49,6 +51,26 @@
 #else
 /// Mark symbols as visible to other modules.
 #define QDMI_EXPORT __attribute__((visibility("default")))
+#endif
+#endif
+#endif
+
+#ifndef QDMI_DRIVER_EXPORT
+#ifdef QDMI_driver_EXPORTS
+#ifdef _WIN32
+/// Export a QDMI Client Interface symbol from a driver library.
+#define QDMI_DRIVER_EXPORT __declspec(dllexport)
+#else
+/// Export a QDMI Client Interface symbol from a driver library.
+#define QDMI_DRIVER_EXPORT __attribute__((visibility("default")))
+#endif
+#else
+#ifdef _WIN32
+/// Import a QDMI Client Interface symbol from a driver library.
+#define QDMI_DRIVER_EXPORT __declspec(dllimport)
+#else
+/// Import a QDMI Client Interface symbol from a driver library.
+#define QDMI_DRIVER_EXPORT __attribute__((visibility("default")))
 #endif
 #endif
 #endif
