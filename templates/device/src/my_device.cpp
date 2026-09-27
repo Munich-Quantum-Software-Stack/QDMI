@@ -121,6 +121,13 @@ int MY_QDMI_device_job_get_program(MY_QDMI_Device_Job job,
   return QDMI_ERROR_NOTIMPLEMENTED;
 }
 
+int MY_QDMI_device_job_get_program_status(MY_QDMI_Device_Job job,
+                                          size_t /*program_index*/,
+                                          QDMI_Job_Status *status) {
+  return job == nullptr || status == nullptr ? QDMI_ERROR_INVALIDARGUMENT
+                                             : QDMI_ERROR_NOTSUPPORTED;
+}
+
 int MY_QDMI_device_job_query_property(MY_QDMI_Device_Job job,
                                       const QDMI_Device_Job_Property prop,
                                       const size_t size, void *value,

@@ -100,6 +100,8 @@ struct QDMI_Library {
   decltype(QDMI_device_job_set_programs) *device_job_set_programs{};
   /// Function pointer to @ref QDMI_device_job_get_program.
   decltype(QDMI_device_job_get_program) *device_job_get_program{};
+  /// Function pointer to @ref QDMI_device_job_get_program_status.
+  decltype(QDMI_device_job_get_program_status) *device_job_get_program_status{};
   /// Function pointer to @ref QDMI_device_job_query_property.
   decltype(QDMI_device_job_query_property) *device_job_query_property{};
   /// Function pointer to @ref QDMI_device_job_submit.
@@ -264,6 +266,7 @@ QDMI_library_load(std::vector<std::unique_ptr<QDMI_Library>> &libraries,
   LOAD_SYMBOL(*library, prefix, device_job_set_parameter)
   LOAD_SYMBOL(*library, prefix, device_job_set_programs)
   LOAD_SYMBOL(*library, prefix, device_job_get_program)
+  LOAD_SYMBOL(*library, prefix, device_job_get_program_status)
   LOAD_SYMBOL(*library, prefix, device_job_query_property)
   LOAD_SYMBOL(*library, prefix, device_job_submit)
   LOAD_SYMBOL(*library, prefix, device_job_cancel)
@@ -602,6 +605,15 @@ int QDMI_job_get_program(QDMI_Job job, const size_t program_index,
   }
   return job->device->library->device_job_get_program(
       job->device_job, program_index, size, data, size_ret);
+}
+
+int QDMI_job_get_program_status(QDMI_Job job, const size_t program_index,
+                                QDMI_Job_Status *status) {
+  if (job == nullptr || status == nullptr) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  return job->device->library->device_job_get_program_status(
+      job->device_job, program_index, status);
 }
 
 int QDMI_job_query_property(QDMI_Job job, QDMI_Job_Property prop,

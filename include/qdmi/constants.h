@@ -297,19 +297,6 @@ enum QDMI_DEVICE_JOB_PROPERTY_T {
    */
   QDMI_DEVICE_JOB_PROPERTY_PROGRAMSNUM = 5,
   /**
-   * @brief `QDMI_Job_Status[]` The status of each program in input order.
-   * @details The array contains @ref QDMI_DEVICE_JOB_PROPERTY_PROGRAMSNUM
-   * entries. A value query refreshes the statuses together. Terminal program
-   * statuses remain unchanged, and results of successful programs remain
-   * available if other programs fail or are canceled.
-   * @par
-   * This property is optional. Return @ref QDMI_ERROR_NOTSUPPORTED if the job
-   * provides no individual outcomes, or @ref QDMI_ERROR_BADSTATE if supported
-   * outcomes are not yet available. A temporary query failure must return an
-   * error, not @ref QDMI_ERROR_NOTSUPPORTED. Size queries need only the count.
-   */
-  QDMI_DEVICE_JOB_PROPERTY_PROGRAMSTATUSES = 6,
-  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -317,7 +304,7 @@ enum QDMI_DEVICE_JOB_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_DEVICE_JOB_PROPERTY_MAX = 7,
+  QDMI_DEVICE_JOB_PROPERTY_MAX = 6,
   /**
    * @brief This enum value is reserved for a custom parameter.
    * @details The device defines the meaning and the type of this parameter.

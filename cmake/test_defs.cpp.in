@@ -26,6 +26,7 @@ int main() {
   @QDMI_PREFIX@_QDMI_device_job_set_parameter(job, QDMI_DEVICE_JOB_PARAMETER_MAX, 0, nullptr);
   @QDMI_PREFIX@_QDMI_device_job_set_programs(job, QDMI_PROGRAM_FORMAT_MAX, 0, nullptr, nullptr);
   @QDMI_PREFIX@_QDMI_device_job_get_program(job, 0, 0, nullptr, nullptr);
+  @QDMI_PREFIX@_QDMI_device_job_get_program_status(job, 0, nullptr);
   @QDMI_PREFIX@_QDMI_device_job_query_property(job, QDMI_DEVICE_JOB_PROPERTY_MAX, 0, nullptr, nullptr);
   @QDMI_PREFIX@_QDMI_device_job_submit(job);
   @QDMI_PREFIX@_QDMI_device_job_cancel(job);
