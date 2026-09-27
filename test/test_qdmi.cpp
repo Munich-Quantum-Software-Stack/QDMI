@@ -918,8 +918,12 @@ TEST_P(QDMIImplementationTest, MultiProgramJob) {
   EXPECT_EQ(QDMI_job_set_programs(job, removed_batch_format, programs.size(),
                                   nullptr, nullptr),
             QDMI_ERROR_NOTSUPPORTED);
-  EXPECT_EQ(QDMI_job_query_property(job, QDMI_JOB_PROPERTY_PROGRAMSTATUSES, 0,
-                                    nullptr, nullptr),
+  QDMI_Job_Status program_status = QDMI_JOB_STATUS_CREATED;
+  EXPECT_EQ(QDMI_job_get_program_status(nullptr, 0, &program_status),
+            QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_EQ(QDMI_job_get_program_status(job, 0, nullptr),
+            QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_EQ(QDMI_job_get_program_status(job, 0, &program_status),
             QDMI_ERROR_NOTSUPPORTED);
   ASSERT_EQ(QDMI_job_submit(job), QDMI_SUCCESS);
   EXPECT_EQ(QDMI_job_set_programs(job, QASM2_FORMAT, programs.size(),

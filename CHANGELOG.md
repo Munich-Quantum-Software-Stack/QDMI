@@ -22,8 +22,8 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 - ✨ Add native Windows library loading to the example driver ([#511])
   ([\@burgholzer]).
 - ✨ Add ordered multi-program jobs with one aggregate lifecycle, indexed
-  payloads and results, optional per-program outcomes, and required device entry
-  points ([#509]) ([\@ystade], [\@burgholzer]).
+  payloads and results, optional indexed program-status queries, and required
+  device entry points ([#509]) ([\@ystade], [\@burgholzer]).
 
 ### Changed
 

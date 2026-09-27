@@ -119,9 +119,10 @@ binary payloads are copied intact.
 `PROGRAMSNUM` reports the count once programs are set, or `QDMI_ERROR_BADSTATE`
 before that. Both result functions now take a zero-based program index
 immediately after the job handle; use zero for a single program. The optional
-`PROGRAMSTATUSES` property reports outcomes in input order. Successful results
-remain available if other programs fail or are canceled. An aggregate terminal
-status means all programs have stopped.
+indexed `QDMI_job_get_program_status` and `QDMI_device_job_get_program_status`
+functions report individual outcomes. Successful results remain available if
+other programs fail or are canceled. An aggregate terminal status means all
+programs have stopped.
 
 Use `QDMI_job_get_program` or `QDMI_device_job_get_program` with a zero-based
 index to retrieve the original bytes. Query the required size with a null data
@@ -135,8 +136,9 @@ native list support can return `QDMI_ERROR_NOTSUPPORTED` from the setter;
 applications can then submit separate single-program jobs.
 
 Device libraries must export `QDMI_device_job_set_programs` and
-`QDMI_device_job_get_program`; drivers must export `QDMI_job_set_programs` and
-`QDMI_job_get_program`. Rebuild clients, drivers, and devices against the
+`QDMI_device_job_get_program`, and `QDMI_device_job_get_program_status`; drivers
+must export `QDMI_job_set_programs`, `QDMI_job_get_program`, and
+`QDMI_job_get_program_status`. Rebuild clients, drivers, and devices against the
 updated signatures.
 
 ## [1.3.3]

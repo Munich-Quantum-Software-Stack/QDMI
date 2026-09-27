@@ -596,7 +596,7 @@ QDMI_EXPORT int QDMI_device_job_set_parameter(QDMI_Device_Job job,
  * operation, and cancellation operation. The job reaches @ref
  * QDMI_JOB_STATUS_DONE only after all programs succeed. Failed or canceled jobs
  * become terminal only after all programs have stopped. Optional per-program
- * outcomes are available through @ref QDMI_DEVICE_JOB_PROPERTY_PROGRAMSTATUSES;
+ * outcomes are available through @ref QDMI_device_job_get_program_status;
  * results of successful programs remain accessible when other programs fail or
  * are canceled.
  * @param[in] job A handle to the job. Must not be @c NULL.
@@ -665,6 +665,26 @@ QDMI_EXPORT int QDMI_device_job_set_programs(QDMI_Device_Job job,
 QDMI_EXPORT int QDMI_device_job_get_program(QDMI_Device_Job job,
                                             size_t program_index, size_t size,
                                             void *data, size_t *size_ret);
+
+/**
+ * @brief Query the current status of one program in a device job.
+ * @details Individual outcomes are optional. Terminal statuses remain stable;
+ * results of successful programs remain available when siblings fail or are
+ * canceled. A temporary retrieval failure is an error, not
+ * @ref QDMI_ERROR_NOTSUPPORTED.
+ * @param[in] job The job to query. Must not be @c NULL.
+ * @param[in] program_index The zero-based input program index.
+ * @param[out] status The program status. Must not be @c NULL.
+ * @return @ref QDMI_SUCCESS if the status was retrieved.
+ * @return @ref QDMI_ERROR_NOTSUPPORTED if individual outcomes are unavailable.
+ * @return @ref QDMI_ERROR_BADSTATE if supported outcomes are not yet ready.
+ * @return @ref QDMI_ERROR_OUTOFRANGE if @p program_index is out of range.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p job or @p status is @c NULL.
+ * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
+ */
+QDMI_EXPORT int QDMI_device_job_get_program_status(QDMI_Device_Job job,
+                                                   size_t program_index,
+                                                   QDMI_Job_Status *status);
 
 /**
  * @brief Query a job property.
