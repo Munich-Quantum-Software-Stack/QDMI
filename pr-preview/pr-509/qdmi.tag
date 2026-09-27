@@ -419,8 +419,15 @@
       <type>int</type>
       <name>QDMI_job_set_programs</name>
       <anchorfile>group__client__job__interface.html</anchorfile>
-      <anchor>gabc8c322751938dea29c5cc350673ac17</anchor>
-      <arglist>(QDMI_Job job, const QDMI_Program_Format *format, size_t count, const size_t *sizes, const void *const *programs)</arglist>
+      <anchor>gacd6acbc3f3afb96181d1680f67ca4ecd</anchor>
+      <arglist>(QDMI_Job job, QDMI_Program_Format format, size_t count, const size_t *sizes, const void *const *programs)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>QDMI_job_get_program</name>
+      <anchorfile>group__client__job__interface.html</anchorfile>
+      <anchor>gae0c3f2984b396357edce1acab7fe4967</anchor>
+      <arglist>(QDMI_Job job, size_t program_index, size_t size, void *data, size_t *size_ret)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -1662,8 +1669,15 @@
       <type>int</type>
       <name>QDMI_device_job_set_programs</name>
       <anchorfile>group__device__job__interface.html</anchorfile>
-      <anchor>gadfab14c8e3218128b9393096d11c738c</anchor>
-      <arglist>(QDMI_Device_Job job, const QDMI_Program_Format *format, size_t count, const size_t *sizes, const void *const *programs)</arglist>
+      <anchor>ga1f708ed51d756acecb9243345f73f328</anchor>
+      <arglist>(QDMI_Device_Job job, QDMI_Program_Format format, size_t count, const size_t *sizes, const void *const *programs)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>QDMI_device_job_get_program</name>
+      <anchorfile>group__device__job__interface.html</anchorfile>
+      <anchor>ga3e7776e2c302e6b84dbc6cdeca1ce45b</anchor>
+      <arglist>(QDMI_Device_Job job, size_t program_index, size_t size, void *data, size_t *size_ret)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -2173,8 +2187,15 @@
       <type>int</type>
       <name>QDMI_job_set_programs</name>
       <anchorfile>group__client__job__interface.html</anchorfile>
-      <anchor>gabc8c322751938dea29c5cc350673ac17</anchor>
-      <arglist>(QDMI_Job job, const QDMI_Program_Format *format, size_t count, const size_t *sizes, const void *const *programs)</arglist>
+      <anchor>gacd6acbc3f3afb96181d1680f67ca4ecd</anchor>
+      <arglist>(QDMI_Job job, QDMI_Program_Format format, size_t count, const size_t *sizes, const void *const *programs)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>QDMI_job_get_program</name>
+      <anchorfile>group__client__job__interface.html</anchorfile>
+      <anchor>gae0c3f2984b396357edce1acab7fe4967</anchor>
+      <arglist>(QDMI_Job job, size_t program_index, size_t size, void *data, size_t *size_ret)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -2357,8 +2378,15 @@
       <type>int</type>
       <name>QDMI_device_job_set_programs</name>
       <anchorfile>group__device__job__interface.html</anchorfile>
-      <anchor>gadfab14c8e3218128b9393096d11c738c</anchor>
-      <arglist>(QDMI_Device_Job job, const QDMI_Program_Format *format, size_t count, const size_t *sizes, const void *const *programs)</arglist>
+      <anchor>ga1f708ed51d756acecb9243345f73f328</anchor>
+      <arglist>(QDMI_Device_Job job, QDMI_Program_Format format, size_t count, const size_t *sizes, const void *const *programs)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>QDMI_device_job_get_program</name>
+      <anchorfile>group__device__job__interface.html</anchorfile>
+      <anchor>ga3e7776e2c302e6b84dbc6cdeca1ce45b</anchor>
+      <arglist>(QDMI_Device_Job job, size_t program_index, size_t size, void *data, size_t *size_ret)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
