@@ -290,12 +290,6 @@
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
-      <name>QDMI_JOB_PROPERTY_PROGRAMSTATUSES</name>
-      <anchorfile>group__client__job__interface.html</anchorfile>
-      <anchor>gga8f2f468604e24bab4c86cdb781b879bba65ed2e6534b3b8ba22c92769114c795a</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
       <name>QDMI_JOB_PROPERTY_MAX</name>
       <anchorfile>group__client__job__interface.html</anchorfile>
       <anchor>gga8f2f468604e24bab4c86cdb781b879bba14db954932a0e76a751f89e75eda5351</anchor>
@@ -428,6 +422,13 @@
       <anchorfile>group__client__job__interface.html</anchorfile>
       <anchor>gae0c3f2984b396357edce1acab7fe4967</anchor>
       <arglist>(QDMI_Job job, size_t program_index, size_t size, void *data, size_t *size_ret)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>QDMI_job_get_program_status</name>
+      <anchorfile>group__client__job__interface.html</anchorfile>
+      <anchor>gae7dcb13763b7bb1c854ae61206c4096c</anchor>
+      <arglist>(QDMI_Job job, size_t program_index, QDMI_Job_Status *status)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -847,12 +848,6 @@
       <name>QDMI_DEVICE_JOB_PROPERTY_PROGRAMSNUM</name>
       <anchorfile>constants_8h.html</anchorfile>
       <anchor>a6e4d18c7fa5d383bbcc1498abe090d4faa24add14b040fb44b0daac7f5714fafc</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>QDMI_DEVICE_JOB_PROPERTY_PROGRAMSTATUSES</name>
-      <anchorfile>constants_8h.html</anchorfile>
-      <anchor>a6e4d18c7fa5d383bbcc1498abe090d4faf7bfc3e21f7c696db9be6b6b3cf05897</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
@@ -1681,6 +1676,13 @@
     </member>
     <member kind="function">
       <type>int</type>
+      <name>QDMI_device_job_get_program_status</name>
+      <anchorfile>group__device__job__interface.html</anchorfile>
+      <anchor>gaa420c182bed4ad7d53ed8b80e0211d87</anchor>
+      <arglist>(QDMI_Device_Job job, size_t program_index, QDMI_Job_Status *status)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
       <name>QDMI_device_job_query_property</name>
       <anchorfile>group__device__job__interface.html</anchorfile>
       <anchor>ga42686f735d112236118b5e033a6c8194</anchor>
@@ -2121,12 +2123,6 @@
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
-      <name>QDMI_JOB_PROPERTY_PROGRAMSTATUSES</name>
-      <anchorfile>group__client__job__interface.html</anchorfile>
-      <anchor>gga8f2f468604e24bab4c86cdb781b879bba65ed2e6534b3b8ba22c92769114c795a</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
       <name>QDMI_JOB_PROPERTY_MAX</name>
       <anchorfile>group__client__job__interface.html</anchorfile>
       <anchor>gga8f2f468604e24bab4c86cdb781b879bba14db954932a0e76a751f89e75eda5351</anchor>
@@ -2196,6 +2192,13 @@
       <anchorfile>group__client__job__interface.html</anchorfile>
       <anchor>gae0c3f2984b396357edce1acab7fe4967</anchor>
       <arglist>(QDMI_Job job, size_t program_index, size_t size, void *data, size_t *size_ret)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>QDMI_job_get_program_status</name>
+      <anchorfile>group__client__job__interface.html</anchorfile>
+      <anchor>gae7dcb13763b7bb1c854ae61206c4096c</anchor>
+      <arglist>(QDMI_Job job, size_t program_index, QDMI_Job_Status *status)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -2387,6 +2390,13 @@
       <anchorfile>group__device__job__interface.html</anchorfile>
       <anchor>ga3e7776e2c302e6b84dbc6cdeca1ce45b</anchor>
       <arglist>(QDMI_Device_Job job, size_t program_index, size_t size, void *data, size_t *size_ret)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>QDMI_device_job_get_program_status</name>
+      <anchorfile>group__device__job__interface.html</anchorfile>
+      <anchor>gaa420c182bed4ad7d53ed8b80e0211d87</anchor>
+      <arglist>(QDMI_Device_Job job, size_t program_index, QDMI_Job_Status *status)</arglist>
     </member>
     <member kind="function">
       <type>int</type>

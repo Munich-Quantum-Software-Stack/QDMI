@@ -232,15 +232,13 @@ Enumerations</h2></td></tr>
 , <br />
 &#160;&#160;<a class="el" href="#gga8f2f468604e24bab4c86cdb781b879bbaa9dc7b2d271978db909921a417b223d9">QDMI_JOB_PROPERTY_QUEUEPOSITION</a> = 4
 , <a class="el" href="#gga8f2f468604e24bab4c86cdb781b879bba43d824ed6fbd28af6a95c64c9403033b">QDMI_JOB_PROPERTY_PROGRAMSNUM</a> = 5
-, <a class="el" href="#gga8f2f468604e24bab4c86cdb781b879bba65ed2e6534b3b8ba22c92769114c795a">QDMI_JOB_PROPERTY_PROGRAMSTATUSES</a> = 6
 , <a class="el" href="#gga8f2f468604e24bab4c86cdb781b879bba14db954932a0e76a751f89e75eda5351">QDMI_JOB_PROPERTY_MAX</a> = 7
+, <a class="el" href="#gga8f2f468604e24bab4c86cdb781b879bba016257118753c19a5a86da3310be27cc">QDMI_JOB_PROPERTY_CUSTOM1</a> = 999999995
 , <br />
-&#160;&#160;<a class="el" href="#gga8f2f468604e24bab4c86cdb781b879bba016257118753c19a5a86da3310be27cc">QDMI_JOB_PROPERTY_CUSTOM1</a> = 999999995
-, <a class="el" href="#gga8f2f468604e24bab4c86cdb781b879bba95c21c814e579b6ac1d736ba57d69287">QDMI_JOB_PROPERTY_CUSTOM2</a> = 999999996
+&#160;&#160;<a class="el" href="#gga8f2f468604e24bab4c86cdb781b879bba95c21c814e579b6ac1d736ba57d69287">QDMI_JOB_PROPERTY_CUSTOM2</a> = 999999996
 , <a class="el" href="#gga8f2f468604e24bab4c86cdb781b879bbaae52e78d7f9944bde33147b9bef474ac">QDMI_JOB_PROPERTY_CUSTOM3</a> = 999999997
 , <a class="el" href="#gga8f2f468604e24bab4c86cdb781b879bbac3fe7fca8db9bb213282e5adebf5ff2c">QDMI_JOB_PROPERTY_CUSTOM4</a> = 999999998
-, <br />
-&#160;&#160;<a class="el" href="#gga8f2f468604e24bab4c86cdb781b879bba0108668f46b41020ad1b9b78cb39f0ba">QDMI_JOB_PROPERTY_CUSTOM5</a> = 999999999
+, <a class="el" href="#gga8f2f468604e24bab4c86cdb781b879bba0108668f46b41020ad1b9b78cb39f0ba">QDMI_JOB_PROPERTY_CUSTOM5</a> = 999999999
 <br />
  }</td></tr>
 <tr class="memdesc:ga8f2f468604e24bab4c86cdb781b879bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum of the job properties that can be queried via <a class="el" href="#gaf254976bef932563756897db98cecf8c" title="QDMI_job_query_property">QDMI_job_query_property</a> as part of the <a class="el" href="group__client__interface.html" title="QDMI Client Interface">client interface</a>.  <a href="#ga8f2f468604e24bab4c86cdb781b879bb">More...</a><br /></td></tr>
@@ -257,6 +255,8 @@ Functions</h2></td></tr>
 <tr class="memdesc:gacd6acbc3f3afb96181d1680f67ca4ecd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set one or more programs for a job.  <br /></td></tr>
 <tr class="memitem:gae0c3f2984b396357edce1acab7fe4967" id="r_gae0c3f2984b396357edce1acab7fe4967"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#gae0c3f2984b396357edce1acab7fe4967">QDMI_job_get_program</a> (<a class="el" href="#gab63357cf9e4546c7ee86b7378c620981">QDMI_Job</a> job, size_t program_index, size_t size, void *data, size_t *size_ret)</td></tr>
 <tr class="memdesc:gae0c3f2984b396357edce1acab7fe4967"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve one program's payload in input order.  <br /></td></tr>
+<tr class="memitem:gae7dcb13763b7bb1c854ae61206c4096c" id="r_gae7dcb13763b7bb1c854ae61206c4096c"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#gae7dcb13763b7bb1c854ae61206c4096c">QDMI_job_get_program_status</a> (<a class="el" href="#gab63357cf9e4546c7ee86b7378c620981">QDMI_Job</a> job, size_t program_index, <a class="el" href="constants_8h.html#a28c071c6750e755deb9f375fdf4c5bfc">QDMI_Job_Status</a> *status)</td></tr>
+<tr class="memdesc:gae7dcb13763b7bb1c854ae61206c4096c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query the current status of one program in a job.  <br /></td></tr>
 <tr class="memitem:gaf254976bef932563756897db98cecf8c" id="r_gaf254976bef932563756897db98cecf8c"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#gaf254976bef932563756897db98cecf8c">QDMI_job_query_property</a> (<a class="el" href="#gab63357cf9e4546c7ee86b7378c620981">QDMI_Job</a> job, <a class="el" href="#ga107d5cd42068915f772685dae80f2d7e">QDMI_Job_Property</a> prop, size_t size, void *value, size_t *size_ret)</td></tr>
 <tr class="memdesc:gaf254976bef932563756897db98cecf8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query a job property.  <br /></td></tr>
 <tr class="memitem:ga184d0d0fc0d4edc3a447b91991f9abd1" id="r_ga184d0d0fc0d4edc3a447b91991f9abd1"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#ga184d0d0fc0d4edc3a447b91991f9abd1">QDMI_job_submit</a> (<a class="el" href="#gab63357cf9e4546c7ee86b7378c620981">QDMI_Job</a> job)</td></tr>
@@ -368,10 +368,8 @@ A query returns <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4
 <tr><td class="fieldname"><a id="gga8f2f468604e24bab4c86cdb781b879bba43d824ed6fbd28af6a95c64c9403033b" name="gga8f2f468604e24bab4c86cdb781b879bba43d824ed6fbd28af6a95c64c9403033b"></a>QDMI_JOB_PROPERTY_PROGRAMSNUM&#160;</td><td class="fieldinit">5&#160;</td><td class="fielddoc"><p><span class="tt">size_t</span> The number of programs in the job. </p>
 <p>A single-program job reports one. A job has no program count until its program payload has been set; a query before that returns <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a916e0810bf915e2ad67f2c1430c54fec" title="QDMI_ERROR_BADSTATE">QDMI_ERROR_BADSTATE</a>. The count remains stable after submission. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga8f2f468604e24bab4c86cdb781b879bba65ed2e6534b3b8ba22c92769114c795a" name="gga8f2f468604e24bab4c86cdb781b879bba65ed2e6534b3b8ba22c92769114c795a"></a>QDMI_JOB_PROPERTY_PROGRAMSTATUSES&#160;</td><td class="fieldinit">6&#160;</td><td class="fielddoc"><p><span class="tt"><a class="el" href="constants_8h.html#a28c071c6750e755deb9f375fdf4c5bfc" title="Job status type.">QDMI_Job_Status</a>[]</span> The status of each program in input order. </p>
-<p>The array contains <a class="el" href="#gga8f2f468604e24bab4c86cdb781b879bba43d824ed6fbd28af6a95c64c9403033b" title="QDMI_JOB_PROPERTY_PROGRAMSNUM">QDMI_JOB_PROPERTY_PROGRAMSNUM</a> entries. A value query refreshes the statuses together. Terminal program statuses remain unchanged, and results of successful programs remain available if other programs fail or are canceled. </p><dl class="section user"><dt></dt><dd>This property is optional. Return <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651" title="QDMI_ERROR_NOTSUPPORTED">QDMI_ERROR_NOTSUPPORTED</a> if the job provides no individual outcomes, or <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a916e0810bf915e2ad67f2c1430c54fec" title="QDMI_ERROR_BADSTATE">QDMI_ERROR_BADSTATE</a> if supported outcomes are not yet available. A temporary query failure must return an error, not <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651" title="QDMI_ERROR_NOTSUPPORTED">QDMI_ERROR_NOTSUPPORTED</a>. Size queries need only the count. </dd></dl>
-</td></tr>
-<tr><td class="fieldname"><a id="gga8f2f468604e24bab4c86cdb781b879bba14db954932a0e76a751f89e75eda5351" name="gga8f2f468604e24bab4c86cdb781b879bba14db954932a0e76a751f89e75eda5351"></a>QDMI_JOB_PROPERTY_MAX&#160;</td><td class="fieldinit">7&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
+<tr><td class="fieldname"><a id="gga8f2f468604e24bab4c86cdb781b879bba14db954932a0e76a751f89e75eda5351" name="gga8f2f468604e24bab4c86cdb781b879bba14db954932a0e76a751f89e75eda5351"></a>QDMI_JOB_PROPERTY_MAX&#160;</td><td class="fieldinit">7&#160;</td><td class="fielddoc"><p>Value 6 is reserved (formerly PROGRAMSTATUSES). </p>
+<p>The maximum value of the enum.</p>
 <p>It can be used by devices for bounds checking and validation of function parameters.</p>
 <dl class="section attention"><dt>Attention</dt><dd>This value must remain the last regular member of the enum besides the custom members and must be updated when new members are added. </dd></dl>
 </td></tr>
@@ -589,7 +587,7 @@ A query returns <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4
 </div><div class="memdoc">
 
 <p>Set one or more programs for a job. </p>
-<p>All programs use the same <code class="param">format</code> and the same job parameters, including the shot count. On success, the driver replaces the complete program list with a deep copy of <code class="param">sizes</code> and the program bytes. If validation or copying fails, the existing program list remains unchanged. A driver may convert the programs to a format supported by the device. A driver may use separate underlying jobs only if it preserves the single aggregate ID, lifecycle, cancellation, and retrieval contract. A driver that accepts a list must report its size through <a class="el" href="#gga8f2f468604e24bab4c86cdb781b879bba43d824ed6fbd28af6a95c64c9403033b" title="QDMI_JOB_PROPERTY_PROGRAMSNUM">QDMI_JOB_PROPERTY_PROGRAMSNUM</a> and expose each result through <a class="el" href="#ga1a07533166af439c2fa62edafec4d99e" title="QDMI_job_get_results">QDMI_job_get_results</a>. A result's index equals its input program's index; execution order is unspecified. The list has one ID, status, wait operation, and cancellation operation. The job reaches <a class="el" href="constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6ad3dad6dd89491e223f42ff9cd9bdade2" title="QDMI_JOB_STATUS_DONE">QDMI_JOB_STATUS_DONE</a> only after all programs succeed. Failed or canceled jobs become terminal only after all programs have stopped. Optional per-program outcomes are available through <a class="el" href="#gga8f2f468604e24bab4c86cdb781b879bba65ed2e6534b3b8ba22c92769114c795a" title="QDMI_JOB_PROPERTY_PROGRAMSTATUSES">QDMI_JOB_PROPERTY_PROGRAMSTATUSES</a>; results of successful programs remain accessible when other programs fail or are canceled. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>All programs use the same <code class="param">format</code> and the same job parameters, including the shot count. On success, the driver replaces the complete program list with a deep copy of <code class="param">sizes</code> and the program bytes. If validation or copying fails, the existing program list remains unchanged. A driver may convert the programs to a format supported by the device. A driver may use separate underlying jobs only if it preserves the single aggregate ID, lifecycle, cancellation, and retrieval contract. A driver that accepts a list must report its size through <a class="el" href="#gga8f2f468604e24bab4c86cdb781b879bba43d824ed6fbd28af6a95c64c9403033b" title="QDMI_JOB_PROPERTY_PROGRAMSNUM">QDMI_JOB_PROPERTY_PROGRAMSNUM</a> and expose each result through <a class="el" href="#ga1a07533166af439c2fa62edafec4d99e" title="QDMI_job_get_results">QDMI_job_get_results</a>. A result's index equals its input program's index; execution order is unspecified. The list has one ID, status, wait operation, and cancellation operation. The job reaches <a class="el" href="constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6ad3dad6dd89491e223f42ff9cd9bdade2" title="QDMI_JOB_STATUS_DONE">QDMI_JOB_STATUS_DONE</a> only after all programs succeed. Failed or canceled jobs become terminal only after all programs have stopped. Optional per-program outcomes are available through <a class="el" href="#gae7dcb13763b7bb1c854ae61206c4096c" title="QDMI_job_get_program_status">QDMI_job_get_program_status</a>; results of successful programs remain accessible when other programs fail or are canceled. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">job</td><td>A handle to the job. Must not be <code>NULL</code>. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">format</td><td>The exact format of every program. Must be a valid <a class="el" href="constants_8h.html#a475336f0c08bd0218dd76a6016098231" title="QDMI_Program_Format">QDMI_Program_Format</a> when the driver supports program lists. </td></tr>
@@ -681,6 +679,53 @@ A query returns <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4
 
 </div>
 </div>
+<a id="gae7dcb13763b7bb1c854ae61206c4096c" name="gae7dcb13763b7bb1c854ae61206c4096c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae7dcb13763b7bb1c854ae61206c4096c">&#9670;&#160;</a></span>QDMI_job_get_program_status()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int QDMI_job_get_program_status </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#gab63357cf9e4546c7ee86b7378c620981">QDMI_Job</a></td>          <td class="paramname"><span class="paramname"><em>job</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>program_index</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="constants_8h.html#a28c071c6750e755deb9f375fdf4c5bfc">QDMI_Job_Status</a> *</td>          <td class="paramname"><span class="paramname"><em>status</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Query the current status of one program in a job. </p>
+<p>Individual outcomes are optional. Terminal statuses remain stable; results of successful programs remain available when siblings fail or are canceled. A temporary retrieval failure is an error, not <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651" title="QDMI_ERROR_NOTSUPPORTED">QDMI_ERROR_NOTSUPPORTED</a>. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">job</td><td>The job to query. Must not be <code>NULL</code>. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">program_index</td><td>The zero-based input program index. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">status</td><td>The program status. Must not be <code>NULL</code>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a8039f5cd8202553b2a91a1c0b01d6751" title="QDMI_SUCCESS">QDMI_SUCCESS</a> if the status was retrieved. </dd>
+<dd>
+<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651" title="QDMI_ERROR_NOTSUPPORTED">QDMI_ERROR_NOTSUPPORTED</a> if individual outcomes are unavailable. </dd>
+<dd>
+<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a916e0810bf915e2ad67f2c1430c54fec" title="QDMI_ERROR_BADSTATE">QDMI_ERROR_BADSTATE</a> if supported outcomes are not yet ready. </dd>
+<dd>
+<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8ab6858000dc2e49368e3caba68054423c" title="QDMI_ERROR_OUTOFRANGE">QDMI_ERROR_OUTOFRANGE</a> if <code class="param">program_index</code> is out of range. </dd>
+<dd>
+<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642" title="QDMI_ERROR_INVALIDARGUMENT">QDMI_ERROR_INVALIDARGUMENT</a> if <code class="param">job</code> or <code class="param">status</code> is <code>NULL</code>. </dd>
+<dd>
+<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3" title="QDMI_ERROR_FATAL">QDMI_ERROR_FATAL</a> if an unexpected error occurred. </dd></dl>
+
+</div>
+</div>
 <a id="gaf254976bef932563756897db98cecf8c" name="gaf254976bef932563756897db98cecf8c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gaf254976bef932563756897db98cecf8c">&#9670;&#160;</a></span>QDMI_job_query_property()</h2>
 
@@ -753,7 +798,7 @@ A query returns <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4
 <div class="line"><a class="code hl_function" href="#gaf254976bef932563756897db98cecf8c">QDMI_job_query_property</a>(</div>
 <div class="line">  job, QDMI_JOB_PROPERTY_NAME, size, name.data(), <span class="keyword">nullptr</span>);</div>
 <div class="ttc" id="agroup__client__job__interface_html_gaf254976bef932563756897db98cecf8c"><div class="ttname"><a href="#gaf254976bef932563756897db98cecf8c">QDMI_job_query_property</a></div><div class="ttdeci">int QDMI_job_query_property(QDMI_Job job, QDMI_Job_Property prop, size_t size, void *value, size_t *size_ret)</div><div class="ttdoc">Query a job property.</div></div>
-<div class="ttc" id="agroup__client__job__interface_html_gga8f2f468604e24bab4c86cdb781b879bba8b29485092d51f7573929a5579521d34"><div class="ttname"><a href="#gga8f2f468604e24bab4c86cdb781b879bba8b29485092d51f7573929a5579521d34">QDMI_JOB_PROPERTY_ID</a></div><div class="ttdeci">@ QDMI_JOB_PROPERTY_ID</div><div class="ttdoc">char* (string) The job&#39;s ID.</div><div class="ttdef"><b>Definition</b> client.h:937</div></div>
+<div class="ttc" id="agroup__client__job__interface_html_gga8f2f468604e24bab4c86cdb781b879bba8b29485092d51f7573929a5579521d34"><div class="ttname"><a href="#gga8f2f468604e24bab4c86cdb781b879bba8b29485092d51f7573929a5579521d34">QDMI_JOB_PROPERTY_ID</a></div><div class="ttdeci">@ QDMI_JOB_PROPERTY_ID</div><div class="ttdoc">char* (string) The job&#39;s ID.</div><div class="ttdef"><b>Definition</b> client.h:957</div></div>
 </div><!-- fragment --> </dd></dl>
 
 </div>
@@ -977,7 +1022,7 @@ A query returns <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4
 <div class="line"><a class="code hl_function" href="#ga1a07533166af439c2fa62edafec4d99e">QDMI_job_get_results</a>(</div>
 <div class="line">  job, 0, <a class="code hl_enumvalue" href="constants_8h.html#aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97">QDMI_JOB_RESULT_SHOTS</a>, size, shots.data(), <span class="keyword">nullptr</span>);</div>
 <div class="line">shots.pop_back();</div>
-<div class="ttc" id="aconstants_8h_html_aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97"><div class="ttname"><a href="constants_8h.html#aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97">QDMI_JOB_RESULT_SHOTS</a></div><div class="ttdeci">@ QDMI_JOB_RESULT_SHOTS</div><div class="ttdoc">char* (string) The results of the individual shots as a comma-separated list, for example,...</div><div class="ttdef"><b>Definition</b> constants.h:1123</div></div>
+<div class="ttc" id="aconstants_8h_html_aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97"><div class="ttname"><a href="constants_8h.html#aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97">QDMI_JOB_RESULT_SHOTS</a></div><div class="ttdeci">@ QDMI_JOB_RESULT_SHOTS</div><div class="ttdoc">char* (string) The results of the individual shots as a comma-separated list, for example,...</div><div class="ttdef"><b>Definition</b> constants.h:1111</div></div>
 <div class="ttc" id="agroup__client__job__interface_html_ga1a07533166af439c2fa62edafec4d99e"><div class="ttname"><a href="#ga1a07533166af439c2fa62edafec4d99e">QDMI_job_get_results</a></div><div class="ttdeci">int QDMI_job_get_results(QDMI_Job job, size_t program_index, QDMI_Job_Result result, size_t size, void *data, size_t *size_ret)</div><div class="ttdoc">Retrieve one program&#39;s results from a job.</div></div>
 </div><!-- fragment --> </dd></dl>
 

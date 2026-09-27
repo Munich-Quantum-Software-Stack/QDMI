@@ -193,7 +193,7 @@ $(function(){initNavTree('md_CHANGELOG.html','',''); });
 <li>✨ Add a versioned, replaceable QDMI driver ABI (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/511">#511</a>) ([@burgholzer]).</li>
 <li>✨ Add mandatory stable client-visible IDs for configured top-level devices (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/511">#511</a>) ([@burgholzer]).</li>
 <li>✨ Add native Windows library loading to the example driver (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/511">#511</a>) ([@burgholzer]).</li>
-<li>✨ Add ordered multi-program jobs with one aggregate lifecycle, indexed payloads and results, optional per-program outcomes, and required device entry points (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/509">#509</a>) ([@ystade], [@burgholzer]).</li>
+<li>✨ Add ordered multi-program jobs with one aggregate lifecycle, indexed payloads and results, optional indexed program-status queries, and required device entry points (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/509">#509</a>) ([@ystade], [@burgholzer]).</li>
 </ul>
 <h2>Changed</h2>
 <ul>
@@ -214,6 +214,7 @@ $(function(){initNavTree('md_CHANGELOG.html','',''); });
 </ul>
 <h2>Removed</h2>
 <ul>
+<li>💥 Reserve job-property enum value 6 after replacing the program-status array property with indexed status queries (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/509">#509</a>) ([@burgholzer]).</li>
 <li>💥 Replace the batch-job format and single-program payload parameters with ordered program lists, reserving the removed enum values (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/509">#509</a>) ([@ystade], [@burgholzer]).</li>
 <li>💥 Remove the calibration program format. Providers can expose calibration submission through a separate function (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/551">#551</a>) ([@burgholzer]).</li>
 <li>💥 Remove the unused pulse-support device property and level type. Providers can expose pulse programming through a separate vendor interface (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/513">#513</a>) ([@burgholzer]).</li>
@@ -333,6 +334,7 @@ $(function(){initNavTree('md_CHANGELOG.html','',''); });
 </ul>
 <h2>Removed</h2>
 <ul>
+<li>💥 Reserve job-property enum value 6 after replacing the program-status array property with indexed status queries (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/509">#509</a>) ([@burgholzer]).</li>
 <li>🔥 Remove C language example device implementation (C++ implementation remains) (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/165">#165</a>) ([@ystade])</li>
 </ul>
 <h1><a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.1.0">1.1.0</a> - 2025-01-10</h1>

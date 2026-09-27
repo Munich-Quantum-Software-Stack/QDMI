@@ -17,6 +17,7 @@ var device_8h =
     [ "QDMI_device_job_set_parameter", "group__device__job__interface.html#ga1ff5eda213c2bd60599efeac2166654d", null ],
     [ "QDMI_device_job_set_programs", "group__device__job__interface.html#ga1f708ed51d756acecb9243345f73f328", null ],
     [ "QDMI_device_job_get_program", "group__device__job__interface.html#ga3e7776e2c302e6b84dbc6cdeca1ce45b", null ],
+    [ "QDMI_device_job_get_program_status", "group__device__job__interface.html#gaa420c182bed4ad7d53ed8b80e0211d87", null ],
     [ "QDMI_device_job_query_property", "group__device__job__interface.html#ga42686f735d112236118b5e033a6c8194", null ],
     [ "QDMI_device_job_submit", "group__device__job__interface.html#gaaa70ea915b442e15907106911e0e5a0a", null ],
     [ "QDMI_device_job_cancel", "group__device__job__interface.html#ga95a8e2c63727d079ef37a8171ba275e8", null ],
