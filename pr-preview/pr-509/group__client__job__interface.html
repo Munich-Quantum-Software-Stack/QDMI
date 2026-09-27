@@ -232,7 +232,7 @@ Enumerations</h2></td></tr>
 , <br />
 &#160;&#160;<a class="el" href="#gga8f2f468604e24bab4c86cdb781b879bbaa9dc7b2d271978db909921a417b223d9">QDMI_JOB_PROPERTY_QUEUEPOSITION</a> = 4
 , <a class="el" href="#gga8f2f468604e24bab4c86cdb781b879bba43d824ed6fbd28af6a95c64c9403033b">QDMI_JOB_PROPERTY_PROGRAMSNUM</a> = 5
-, <a class="el" href="#gga8f2f468604e24bab4c86cdb781b879bba14db954932a0e76a751f89e75eda5351">QDMI_JOB_PROPERTY_MAX</a> = 7
+, <a class="el" href="#gga8f2f468604e24bab4c86cdb781b879bba14db954932a0e76a751f89e75eda5351">QDMI_JOB_PROPERTY_MAX</a> = 6
 , <a class="el" href="#gga8f2f468604e24bab4c86cdb781b879bba016257118753c19a5a86da3310be27cc">QDMI_JOB_PROPERTY_CUSTOM1</a> = 999999995
 , <br />
 &#160;&#160;<a class="el" href="#gga8f2f468604e24bab4c86cdb781b879bba95c21c814e579b6ac1d736ba57d69287">QDMI_JOB_PROPERTY_CUSTOM2</a> = 999999996
@@ -368,8 +368,7 @@ A query returns <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4
 <tr><td class="fieldname"><a id="gga8f2f468604e24bab4c86cdb781b879bba43d824ed6fbd28af6a95c64c9403033b" name="gga8f2f468604e24bab4c86cdb781b879bba43d824ed6fbd28af6a95c64c9403033b"></a>QDMI_JOB_PROPERTY_PROGRAMSNUM&#160;</td><td class="fieldinit">5&#160;</td><td class="fielddoc"><p><span class="tt">size_t</span> The number of programs in the job. </p>
 <p>A single-program job reports one. A job has no program count until its program payload has been set; a query before that returns <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a916e0810bf915e2ad67f2c1430c54fec" title="QDMI_ERROR_BADSTATE">QDMI_ERROR_BADSTATE</a>. The count remains stable after submission. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga8f2f468604e24bab4c86cdb781b879bba14db954932a0e76a751f89e75eda5351" name="gga8f2f468604e24bab4c86cdb781b879bba14db954932a0e76a751f89e75eda5351"></a>QDMI_JOB_PROPERTY_MAX&#160;</td><td class="fieldinit">7&#160;</td><td class="fielddoc"><p>Value 6 is reserved (formerly PROGRAMSTATUSES). </p>
-<p>The maximum value of the enum.</p>
+<tr><td class="fieldname"><a id="gga8f2f468604e24bab4c86cdb781b879bba14db954932a0e76a751f89e75eda5351" name="gga8f2f468604e24bab4c86cdb781b879bba14db954932a0e76a751f89e75eda5351"></a>QDMI_JOB_PROPERTY_MAX&#160;</td><td class="fieldinit">6&#160;</td><td class="fielddoc"><p>The maximum value of the enum. </p>
 <p>It can be used by devices for bounds checking and validation of function parameters.</p>
 <dl class="section attention"><dt>Attention</dt><dd>This value must remain the last regular member of the enum besides the custom members and must be updated when new members are added. </dd></dl>
 </td></tr>
@@ -1022,7 +1021,7 @@ A query returns <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4
 <div class="line"><a class="code hl_function" href="#ga1a07533166af439c2fa62edafec4d99e">QDMI_job_get_results</a>(</div>
 <div class="line">  job, 0, <a class="code hl_enumvalue" href="constants_8h.html#aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97">QDMI_JOB_RESULT_SHOTS</a>, size, shots.data(), <span class="keyword">nullptr</span>);</div>
 <div class="line">shots.pop_back();</div>
-<div class="ttc" id="aconstants_8h_html_aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97"><div class="ttname"><a href="constants_8h.html#aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97">QDMI_JOB_RESULT_SHOTS</a></div><div class="ttdeci">@ QDMI_JOB_RESULT_SHOTS</div><div class="ttdoc">char* (string) The results of the individual shots as a comma-separated list, for example,...</div><div class="ttdef"><b>Definition</b> constants.h:1111</div></div>
+<div class="ttc" id="aconstants_8h_html_aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97"><div class="ttname"><a href="constants_8h.html#aa154b942b0f67e437c393ad7b33cadd1ae878a5198fe5907bd3c7683a6ccaab97">QDMI_JOB_RESULT_SHOTS</a></div><div class="ttdeci">@ QDMI_JOB_RESULT_SHOTS</div><div class="ttdoc">char* (string) The results of the individual shots as a comma-separated list, for example,...</div><div class="ttdef"><b>Definition</b> constants.h:1110</div></div>
 <div class="ttc" id="agroup__client__job__interface_html_ga1a07533166af439c2fa62edafec4d99e"><div class="ttname"><a href="#ga1a07533166af439c2fa62edafec4d99e">QDMI_job_get_results</a></div><div class="ttdeci">int QDMI_job_get_results(QDMI_Job job, size_t program_index, QDMI_Job_Result result, size_t size, void *data, size_t *size_ret)</div><div class="ttdoc">Retrieve one program&#39;s results from a job.</div></div>
 </div><!-- fragment --> </dd></dl>
 
