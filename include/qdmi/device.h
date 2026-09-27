@@ -674,12 +674,15 @@ QDMI_EXPORT int QDMI_device_job_get_program(QDMI_Device_Job job,
  * @ref QDMI_ERROR_NOTSUPPORTED.
  * @param[in] job The job to query. Must not be @c NULL.
  * @param[in] program_index The zero-based input program index.
- * @param[out] status The program status. Must not be @c NULL.
+ * @param[out] status The program status. Must not be @c NULL when individual
+ * outcomes are supported. An implementation that always returns
+ * @ref QDMI_ERROR_NOTSUPPORTED need not inspect this pointer.
  * @return @ref QDMI_SUCCESS if the status was retrieved.
  * @return @ref QDMI_ERROR_NOTSUPPORTED if individual outcomes are unavailable.
  * @return @ref QDMI_ERROR_BADSTATE if supported outcomes are not yet ready.
  * @return @ref QDMI_ERROR_OUTOFRANGE if @p program_index is out of range.
- * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p job or @p status is @c NULL.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p job is @c NULL, or if
+ * individual outcomes are supported and @p status is @c NULL.
  * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
  */
 QDMI_EXPORT int QDMI_device_job_get_program_status(QDMI_Device_Job job,
