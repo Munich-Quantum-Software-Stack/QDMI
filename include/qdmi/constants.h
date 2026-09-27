@@ -256,7 +256,8 @@ enum QDMI_DEVICE_JOB_PROPERTY_T {
    * @note This property returns the program set through @ref
    * QDMI_device_job_set_programs when the job contains one program.
    * @note A query returns @ref QDMI_ERROR_NOTSUPPORTED for a multi-program
-   * job or when a retrieved job has no payload metadata.
+   * job or when a retrieved job has no payload metadata. Use @ref
+   * QDMI_device_job_get_program to query any program by index.
    */
   QDMI_DEVICE_JOB_PROPERTY_PROGRAM = 2,
   /**

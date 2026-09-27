@@ -99,6 +99,8 @@ struct QDMI_Library {
   decltype(QDMI_device_job_set_parameter) *device_job_set_parameter{};
   /// Function pointer to @ref QDMI_device_job_set_programs.
   decltype(QDMI_device_job_set_programs) *device_job_set_programs{};
+  /// Function pointer to @ref QDMI_device_job_get_program.
+  decltype(QDMI_device_job_get_program) *device_job_get_program{};
   /// Function pointer to @ref QDMI_device_job_query_property.
   decltype(QDMI_device_job_query_property) *device_job_query_property{};
   /// Function pointer to @ref QDMI_device_job_submit.
@@ -252,6 +254,7 @@ void QDMI_library_load(
   LOAD_SYMBOL(*library, prefix, device_job_free)
   LOAD_SYMBOL(*library, prefix, device_job_set_parameter)
   LOAD_SYMBOL(*library, prefix, device_job_set_programs)
+  LOAD_SYMBOL(*library, prefix, device_job_get_program)
   LOAD_SYMBOL(*library, prefix, device_job_query_property)
   LOAD_SYMBOL(*library, prefix, device_job_submit)
   LOAD_SYMBOL(*library, prefix, device_job_cancel)
@@ -563,7 +566,7 @@ int QDMI_job_set_parameter(QDMI_Job job, QDMI_Job_Parameter param,
       value);
 }
 
-int QDMI_job_set_programs(QDMI_Job job, const QDMI_Program_Format *format,
+int QDMI_job_set_programs(QDMI_Job job, const QDMI_Program_Format format,
                           const size_t count, const size_t *sizes,
                           const void *const *programs) {
   if (job == nullptr) {
@@ -571,6 +574,15 @@ int QDMI_job_set_programs(QDMI_Job job, const QDMI_Program_Format *format,
   }
   return job->device->library->device_job_set_programs(job->device_job, format,
                                                        count, sizes, programs);
+}
+
+int QDMI_job_get_program(QDMI_Job job, const size_t program_index,
+                         const size_t size, void *data, size_t *size_ret) {
+  if (job == nullptr) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  return job->device->library->device_job_get_program(
+      job->device_job, program_index, size, data, size_ret);
 }
 
 int QDMI_job_query_property(QDMI_Job job, QDMI_Job_Property prop,

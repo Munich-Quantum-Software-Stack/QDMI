@@ -587,7 +587,7 @@ QDMI_EXPORT int QDMI_device_job_set_parameter(QDMI_Device_Job job,
  * @brief Set one or more programs for a job.
  * @details All programs use the same @p format and the same
  * job parameters, including the shot count. On success, the device replaces
- * the complete program list with a deep copy of @p format, @p sizes, and the
+ * the complete program list with a deep copy of @p sizes and the
  * program bytes. If validation or copying fails, the existing program list
  * remains unchanged. A device that accepts a list must report its size through
  * @ref QDMI_DEVICE_JOB_PROPERTY_PROGRAMSNUM and expose each result through @ref
@@ -600,9 +600,8 @@ QDMI_EXPORT int QDMI_device_job_set_parameter(QDMI_Device_Job job,
  * results of successful programs remain accessible when other programs fail or
  * are canceled.
  * @param[in] job A handle to the job. Must not be @c NULL.
- * @param[in] format The exact format of every program. Must point to a valid
- * @ref QDMI_Program_Format when the device supports program lists. It must not
- * be @c NULL, including for a support check.
+ * @param[in] format The exact format of every program. Must be a valid
+ * @ref QDMI_Program_Format when the device supports program lists.
  * @param[in] count The number of programs. Must be greater than zero. A support
  * check succeeds only if the device supports this exact cardinality
  * with the configured job parameters.
@@ -618,7 +617,7 @@ QDMI_EXPORT int QDMI_device_job_set_parameter(QDMI_Device_Job job,
  * @return @ref QDMI_SUCCESS if the device supports program lists in @p format
  * and, when @p programs is not @c NULL, set the complete list.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if
- *  - @p job or @p format is @c NULL, or @p count is zero,
+ *  - @p job is @c NULL or @p count is zero,
  *  - the device supports program lists and @p format is not a valid format,
  *    or
  *  - the device supports program lists, @p programs is not @c NULL, and @p
@@ -638,9 +637,34 @@ QDMI_EXPORT int QDMI_device_job_set_parameter(QDMI_Device_Job job,
  * error.
  */
 QDMI_EXPORT int QDMI_device_job_set_programs(QDMI_Device_Job job,
-                                             const QDMI_Program_Format *format,
+                                             QDMI_Program_Format format,
                                              size_t count, const size_t *sizes,
                                              const void *const *programs);
+
+/**
+ * @brief Retrieve one program's payload in input order.
+ * @details The returned bytes include the terminating NUL for text formats.
+ * A retrieved job may return @ref QDMI_ERROR_NOTSUPPORTED when its original
+ * payload is unavailable. The program count is reported by @ref
+ * QDMI_DEVICE_JOB_PROPERTY_PROGRAMSNUM.
+ * @param[in] job The job to query. Must not be @c NULL.
+ * @param[in] program_index The zero-based program index.
+ * @param[in] size The size of @p data in bytes. Ignored if @p data is @c NULL.
+ * @param[out] data The buffer for the program bytes, or @c NULL for a size
+ * query.
+ * @param[out] size_ret The required buffer size, or @c NULL.
+ * @return @ref QDMI_SUCCESS if the program was retrieved.
+ * @return @ref QDMI_ERROR_NOTSUPPORTED if its payload is unavailable.
+ * @return @ref QDMI_ERROR_BADSTATE if no program list has been set.
+ * @return @ref QDMI_ERROR_OUTOFRANGE if @p program_index is out of range.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p job is @c NULL or @p data is
+ * non-@c NULL and @p size is too small.
+ * @return @ref QDMI_ERROR_PERMISSIONDENIED if the session cannot access jobs.
+ * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
+ */
+QDMI_EXPORT int QDMI_device_job_get_program(QDMI_Device_Job job,
+                                            size_t program_index, size_t size,
+                                            void *data, size_t *size_ret);
 
 /**
  * @brief Query a job property.

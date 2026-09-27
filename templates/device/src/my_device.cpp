@@ -108,9 +108,16 @@ int MY_QDMI_device_job_set_parameter(MY_QDMI_Device_Job job,
 }
 
 int MY_QDMI_device_job_set_programs(MY_QDMI_Device_Job job,
-                                    const QDMI_Program_Format *format,
+                                    const QDMI_Program_Format format,
                                     const size_t count, const size_t *sizes,
                                     const void *const *programs) {
+  return QDMI_ERROR_NOTIMPLEMENTED;
+}
+
+int MY_QDMI_device_job_get_program(MY_QDMI_Device_Job job,
+                                   const size_t program_index,
+                                   const size_t size, void *data,
+                                   size_t *size_ret) {
   return QDMI_ERROR_NOTIMPLEMENTED;
 }
 

@@ -834,7 +834,7 @@ QDMI_DRIVER_EXPORT int QDMI_job_set_parameter(QDMI_Job job,
  * @brief Set one or more programs for a job.
  * @details All programs use the same @p format and the same
  * job parameters, including the shot count. On success, the driver replaces
- * the complete program list with a deep copy of @p format, @p sizes, and the
+ * the complete program list with a deep copy of @p sizes and the
  * program bytes. If validation or copying fails, the existing program list
  * remains unchanged. A driver may convert the programs to a format supported
  * by the device. A driver may use separate underlying jobs only if it preserves
@@ -850,9 +850,8 @@ QDMI_DRIVER_EXPORT int QDMI_job_set_parameter(QDMI_Job job,
  * successful programs remain accessible when other programs fail or are
  * canceled.
  * @param[in] job A handle to the job. Must not be @c NULL.
- * @param[in] format The exact format of every program. Must point to a valid
- * @ref QDMI_Program_Format when the driver supports program lists. It must not
- * be @c NULL, including for a support check.
+ * @param[in] format The exact format of every program. Must be a valid
+ * @ref QDMI_Program_Format when the driver supports program lists.
  * @param[in] count The number of programs. Must be greater than zero. A support
  * check succeeds only if the driver supports this exact cardinality
  * with the configured job parameters.
@@ -868,7 +867,7 @@ QDMI_DRIVER_EXPORT int QDMI_job_set_parameter(QDMI_Job job,
  * @return @ref QDMI_SUCCESS if the driver supports program lists in @p format
  * and, when @p programs is not @c NULL, set the complete list.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if
- *  - @p job or @p format is @c NULL, or @p count is zero,
+ *  - @p job is @c NULL or @p count is zero,
  *  - the driver supports program lists and @p format is not a valid format,
  *    or
  *  - the driver supports program lists, @p programs is not @c NULL, and @p
@@ -889,9 +888,34 @@ QDMI_DRIVER_EXPORT int QDMI_job_set_parameter(QDMI_Job job,
  * error.
  */
 QDMI_DRIVER_EXPORT int QDMI_job_set_programs(QDMI_Job job,
-                                             const QDMI_Program_Format *format,
+                                             QDMI_Program_Format format,
                                              size_t count, const size_t *sizes,
                                              const void *const *programs);
+
+/**
+ * @brief Retrieve one program's payload in input order.
+ * @details The returned bytes include the terminating NUL for text formats.
+ * A retrieved job may return @ref QDMI_ERROR_NOTSUPPORTED when its original
+ * payload is unavailable. The program count is reported by @ref
+ * QDMI_JOB_PROPERTY_PROGRAMSNUM.
+ * @param[in] job The job to query. Must not be @c NULL.
+ * @param[in] program_index The zero-based program index.
+ * @param[in] size The size of @p data in bytes. Ignored if @p data is @c NULL.
+ * @param[out] data The buffer for the program bytes, or @c NULL for a size
+ * query.
+ * @param[out] size_ret The required buffer size, or @c NULL.
+ * @return @ref QDMI_SUCCESS if the program was retrieved.
+ * @return @ref QDMI_ERROR_NOTSUPPORTED if its payload is unavailable.
+ * @return @ref QDMI_ERROR_BADSTATE if no program list has been set.
+ * @return @ref QDMI_ERROR_OUTOFRANGE if @p program_index is out of range.
+ * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p job is @c NULL or @p data is
+ * non-@c NULL and @p size is too small.
+ * @return @ref QDMI_ERROR_PERMISSIONDENIED if the session cannot access jobs.
+ * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
+ */
+QDMI_DRIVER_EXPORT int QDMI_job_get_program(QDMI_Job job, size_t program_index,
+                                            size_t size, void *data,
+                                            size_t *size_ret);
 
 /**
  * @brief Enum of the job properties that can be queried via @ref
@@ -924,7 +948,8 @@ enum QDMI_JOB_PROPERTY_T {
    * @note This property returns the program set through @ref
    * QDMI_job_set_programs when the job contains one program.
    * @note A query returns @ref QDMI_ERROR_NOTSUPPORTED for a multi-program
-   * job or when a retrieved job has no payload metadata.
+   * job or when a retrieved job has no payload metadata. Use @ref
+   * QDMI_job_get_program to query any program by index.
    */
   QDMI_JOB_PROPERTY_PROGRAM = 2,
   /**
