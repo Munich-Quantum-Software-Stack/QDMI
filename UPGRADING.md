@@ -117,11 +117,12 @@ numeric values (1 and 9, respectively) remain reserved and return
 `QDMI_ERROR_NOTSUPPORTED`. The numeric values of remaining members are
 unchanged.
 
-The setter copies the complete list atomically. Failed setters leave the
-previous format and programs unchanged. A different supported format clears the
-list. A support check passes a nonzero count and `programs == NULL`, checking
-that format and cardinality with the configured parameters without changing the
-job. Text includes exactly one trailing NUL; binary payloads are copied intact.
+Pass the format by value. The setter copies the complete list atomically. Failed
+setters leave the previous format and programs unchanged. A different supported
+format clears the list. A support check passes a nonzero count and
+`programs == NULL`, checking that format and cardinality with the configured
+parameters without changing the job. Text includes exactly one trailing NUL;
+binary payloads are copied intact.
 
 `PROGRAMSNUM` reports the count once programs are set, or `QDMI_ERROR_BADSTATE`
 before that. Both result functions now take a zero-based program index
@@ -130,15 +131,21 @@ immediately after the job handle; use zero for a single program. The optional
 remain available if other programs fail or are canceled. An aggregate terminal
 status means all programs have stopped.
 
+Use `QDMI_job_get_program` or `QDMI_device_job_get_program` with a zero-based
+index to retrieve the original bytes. Query the required size with a null data
+pointer. Retrieved remote jobs may return `QDMI_ERROR_NOTSUPPORTED` if the
+provider cannot recover historical payloads.
+
 Retrieval by ID must restore the program count and input-to-result mapping.
 Unknown historical format or payload properties may return
 `QDMI_ERROR_NOTSUPPORTED` without preventing job retrieval. A provider without
 native list support can return `QDMI_ERROR_NOTSUPPORTED` from the setter;
 applications can then submit separate single-program jobs.
 
-Device libraries must export `QDMI_device_job_set_programs`, and drivers must
-export `QDMI_job_set_programs`, even if they reject lists with more than one
-program. Rebuild clients, drivers, and devices against the updated signatures.
+Device libraries must export `QDMI_device_job_set_programs` and
+`QDMI_device_job_get_program`; drivers must export `QDMI_job_set_programs` and
+`QDMI_job_get_program`. Rebuild clients, drivers, and devices against the
+updated signatures.
 
 ## [1.3.3]
 

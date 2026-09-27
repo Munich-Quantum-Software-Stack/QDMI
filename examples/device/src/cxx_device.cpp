@@ -453,17 +453,16 @@ int CXX_QDMI_device_job_set_parameter(CXX_QDMI_Device_Job job,
 } /// [DOXYGEN FUNCTION END]
 
 int CXX_QDMI_device_job_set_programs(CXX_QDMI_Device_Job job,
-                                     const QDMI_Program_Format *format,
+                                     const QDMI_Program_Format format,
                                      const size_t count, const size_t *sizes,
                                      const void *const *programs) {
-  if (job == nullptr || format == nullptr || count == 0 ||
-      !Valid_format(*format)) {
+  if (job == nullptr || count == 0 || !Valid_format(format)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   if (job->status != QDMI_JOB_STATUS_CREATED) {
     return QDMI_ERROR_BADSTATE;
   }
-  if (!Supported_format(*format)) {
+  if (!Supported_format(format)) {
     return QDMI_ERROR_NOTSUPPORTED;
   }
   if (programs == nullptr) {
@@ -477,7 +476,7 @@ int CXX_QDMI_device_job_set_programs(CXX_QDMI_Device_Job job,
   try {
     new_programs.reserve(count);
     for (size_t i = 0; i < count; ++i) {
-      if (!Valid_program(*format, sizes[i], programs[i])) {
+      if (!Valid_program(format, sizes[i], programs[i])) {
         return QDMI_ERROR_INVALIDARGUMENT;
       }
       const auto *bytes = static_cast<const char *>(programs[i]);
@@ -489,10 +488,36 @@ int CXX_QDMI_device_job_set_programs(CXX_QDMI_Device_Job job,
     return QDMI_ERROR_INVALIDARGUMENT;
   }
 
-  job->format = *format;
+  job->format = format;
   job->programs = std::move(new_programs);
   return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]
+
+int CXX_QDMI_device_job_get_program(CXX_QDMI_Device_Job job,
+                                    const size_t program_index,
+                                    const size_t size, void *data,
+                                    size_t *size_ret) {
+  if (job == nullptr) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  if (job->programs.empty()) {
+    return QDMI_ERROR_BADSTATE;
+  }
+  if (program_index >= job->programs.size()) {
+    return QDMI_ERROR_OUTOFRANGE;
+  }
+  const auto &program = job->programs[program_index];
+  if (data != nullptr) {
+    if (size < program.size()) {
+      return QDMI_ERROR_INVALIDARGUMENT;
+    }
+    std::memcpy(data, program.data(), program.size());
+  }
+  if (size_ret != nullptr) {
+    *size_ret = program.size();
+  }
+  return QDMI_SUCCESS;
+}
 
 int CXX_QDMI_device_job_query_property(CXX_QDMI_Device_Job job,
                                        const QDMI_Device_Job_Property prop,

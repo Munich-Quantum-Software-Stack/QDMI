@@ -173,7 +173,8 @@ QDMI_JOB_PARAMETER_SHOTSNUM).
 The function @ref QDMI_device_job_set_programs sets an ordered list of programs
 with one format and one shot count per program. It copies the list before
 returning. Submit the job with @ref QDMI_device_job_submit and retrieve each
-program's results by its input index with @ref QDMI_device_job_get_results.
+program's results by its input index with @ref QDMI_device_job_get_results. The
+same index retrieves its original bytes with @ref QDMI_device_job_get_program.
 Execution order is unspecified. Devices may report individual outcomes through
 @ref QDMI_DEVICE_JOB_PROPERTY_PROGRAMSTATUSES so successful results remain
 available when other programs fail or are canceled.

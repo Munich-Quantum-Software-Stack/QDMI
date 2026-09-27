@@ -372,9 +372,9 @@ int tutorial_QDMI_device_job_set_parameter(tutorial_QDMI_Device_Job job,
 }
 
 int tutorial_QDMI_device_job_set_programs(
-    tutorial_QDMI_Device_Job job, const QDMI_Program_Format *format,
+    tutorial_QDMI_Device_Job job, QDMI_Program_Format format,
     size_t count, const size_t *sizes, const void *const *programs) {
-  if (job == nullptr || format == nullptr || count == 0) {
+  if (job == nullptr || count == 0) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   if (count != 1) return QDMI_ERROR_NOTSUPPORTED;
@@ -547,16 +547,16 @@ TEST_F(QDMIInitializedSessionTest, SubmitAndSimulateJob) {
   const void *qasm_data = qasm.c_str();
 
   // Null job must return INVALIDARGUMENT
-  EXPECT_EQ(tutorial_QDMI_device_job_set_programs(nullptr, &format, 1, &qasm_size, &qasm_data), QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_EQ(tutorial_QDMI_device_job_set_programs(nullptr, format, 1, &qasm_size, &qasm_data), QDMI_ERROR_INVALIDARGUMENT);
   // A zero program count must return INVALIDARGUMENT
-  EXPECT_EQ(tutorial_QDMI_device_job_set_programs(job, &format, 0, nullptr, nullptr), QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_EQ(tutorial_QDMI_device_job_set_programs(job, format, 0, nullptr, nullptr), QDMI_ERROR_INVALIDARGUMENT);
   // Unsupported parameter must return NOTSUPPORTED
   EXPECT_EQ(tutorial_QDMI_device_job_set_parameter(job, QDMI_DEVICE_JOB_PARAMETER_MAX, qasm.size(), qasm.c_str()), QDMI_ERROR_NOTSUPPORTED);
 
   // Submitting without a program set must return BADSTATE
   EXPECT_EQ(tutorial_QDMI_device_job_submit(job), QDMI_ERROR_BADSTATE);
 
-  ASSERT_EQ(tutorial_QDMI_device_job_set_programs(job, &format, 1, &qasm_size, &qasm_data), QDMI_SUCCESS);
+  ASSERT_EQ(tutorial_QDMI_device_job_set_programs(job, format, 1, &qasm_size, &qasm_data), QDMI_SUCCESS);
 
   // Null job must return INVALIDARGUMENT
   EXPECT_EQ(tutorial_QDMI_device_job_submit(nullptr), QDMI_ERROR_INVALIDARGUMENT);
