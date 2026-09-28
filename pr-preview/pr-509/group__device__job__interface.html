@@ -576,7 +576,7 @@ Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">job</td><td>The job to query. Must not be <code>NULL</code>. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">program_index</td><td>The zero-based input program index. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">status</td><td>The program status. Must not be <code>NULL</code>. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">status</td><td>The program status. Must not be <code>NULL</code> when individual outcomes are supported. An implementation that always returns <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651" title="QDMI_ERROR_NOTSUPPORTED">QDMI_ERROR_NOTSUPPORTED</a> need not inspect this pointer. </td></tr>
   </table>
   </dd>
 </dl>
@@ -588,7 +588,7 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8ab6858000dc2e49368e3caba68054423c" title="QDMI_ERROR_OUTOFRANGE">QDMI_ERROR_OUTOFRANGE</a> if <code class="param">program_index</code> is out of range. </dd>
 <dd>
-<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642" title="QDMI_ERROR_INVALIDARGUMENT">QDMI_ERROR_INVALIDARGUMENT</a> if <code class="param">job</code> or <code class="param">status</code> is <code>NULL</code>. </dd>
+<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642" title="QDMI_ERROR_INVALIDARGUMENT">QDMI_ERROR_INVALIDARGUMENT</a> if <code class="param">job</code> is <code>NULL</code>, or if individual outcomes are supported and <code class="param">status</code> is <code>NULL</code>. </dd>
 <dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3" title="QDMI_ERROR_FATAL">QDMI_ERROR_FATAL</a> if an unexpected error occurred. </dd></dl>
 
