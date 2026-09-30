@@ -30,7 +30,7 @@ function(configure_qdmi_exports)
       FATAL_ERROR
         "configure_qdmi_exports requires TARGET and INTERFACE device or client")
   endif()
-  if(ARG_INTERFACE STREQUAL "device" AND NOT ARG_PREFIX MATCHES
+  if(ARG_INTERFACE STREQUAL "device" AND NOT "${ARG_PREFIX}" MATCHES
                                          "^[A-Za-z_][A-Za-z0-9_]*$")
     message(FATAL_ERROR "The device interface requires a C identifier PREFIX")
   elseif(ARG_INTERFACE STREQUAL "client" AND DEFINED ARG_PREFIX)
