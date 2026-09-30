@@ -93,4 +93,38 @@ included as a subproject. Documentation is also disabled by default. This path
 needs network access for the initial checkout, unless you supply a local source
 directory with `FETCHCONTENT_SOURCE_DIR_QDMI`.
 
+## Control Shared-Library Exports
+
+Starting with QDMI 1.4.0, implementations can opt into an exact export list:
+
+```cmake
+configure_qdmi_exports(TARGET my_device INTERFACE device PREFIX MY)
+configure_qdmi_exports(TARGET my_driver INTERFACE client
+                      EXTRA_SYMBOLS QDMI_driver_init QDMI_driver_shutdown)
+```
+
+Call the helper once after creating the implementation target. It reads the
+selected interface's function declarations from the QDMI headers in use and
+applies the device prefix, if needed. `EXTRA_SYMBOLS` accepts exact C
+identifiers for additional public interfaces. The helper is available both
+through `find_package` and when including QDMI as a source dependency.
+
+On ELF systems, the helper generates a linker version script. On Apple systems,
+it generates an exported-symbols list. Both lists hide other definitions,
+including symbols from bundled static dependencies. Changes to the interface
+header regenerate the list and relink the library. The options are private to
+the selected shared or module library; they do not propagate to consumers.
+
+On Windows, the helper leaves explicit `dllexport` declarations unchanged; it
+does not filter additional exports. Static libraries are also unchanged: apply
+export control to the final shared library that contains them. Other platforms
+are unsupported by this helper. Export lists do not make hidden definitions
+visible, so retain the interface's export annotations and existing visibility
+settings. Client implementations must keep their public functions visible.
+
+The device example and template enable this helper. The example driver enables
+it when built as a shared library. Projects with other build systems can apply
+equivalent linker settings; QDMI does not require CMake or prohibit additional
+public interfaces.
+
 [releases]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases

@@ -181,6 +181,18 @@ naming conflicts between different devices. Lastly, it allows hardware vendors
 to brand their device implementations. Prefixes must be unique across all
 devices. They should be short and descriptive of the device.
 
+## Why restrict shared-library exports? {#rationale-exports}
+
+A device or driver may bundle dependencies that are also present in its host
+process. On platforms with symbol interposition, exported dependency symbols can
+bind to another library's implementation. Compiler visibility settings on the
+device or driver do not hide definitions in already compiled dependency
+archives. Shared libraries should therefore restrict exports to their intended
+public interfaces, including any deliberate vendor extensions. QDMI provides
+[optional CMake support](installation.md#control-shared-library-exports) for
+this. The restriction belongs at the final shared-library link and does not
+replace dependency management for statically composed implementations.
+
 ## Why do devices have sessions? {#device-session}
 
 Per default, devices do not know which client is calling one of their functions.
