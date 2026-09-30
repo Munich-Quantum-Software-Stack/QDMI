@@ -27,3 +27,12 @@ target_compile_features(qdmi_example_driver PRIVATE cxx_std_20)
 set_target_properties(qdmi_example_driver PROPERTIES POSITION_INDEPENDENT_CODE
                                                      ON)
 add_library(qdmi::example_driver ALIAS qdmi_example_driver)
+
+configure_qdmi_exports(
+  TARGET
+  qdmi_example_driver
+  INTERFACE
+  client
+  EXTRA_SYMBOLS
+  QDMI_driver_init
+  QDMI_driver_shutdown)

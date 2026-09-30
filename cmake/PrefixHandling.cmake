@@ -15,6 +15,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
+include("${CMAKE_CURRENT_LIST_DIR}/ExportHandling.cmake")
+
 # A function for generating prefixed QDMI headers for a user-defined prefix.
 #
 # Arguments: PREFIX - The prefix for the device (required)
