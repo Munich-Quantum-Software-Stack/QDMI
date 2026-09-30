@@ -17,5 +17,10 @@
  * SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
  */
 
-int qdmi_bundled_dependency(void) { return 0; }
-int CXX_QDMI_device_internal(void) { return 0; }
+// These definitions must have external linkage to model a bundled dependency.
+// NOLINTBEGIN(misc-use-internal-linkage)
+extern "C" {
+int Qdmi_bundled_dependency() { return 0; }
+int CXX_QDMI_device_internal() { return 0; }
+}
+// NOLINTEND(misc-use-internal-linkage)

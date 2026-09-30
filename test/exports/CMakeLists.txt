@@ -16,28 +16,36 @@
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 # Build a dependency with default visibility, as third-party archives may have.
-add_library(qdmi_export_dependency STATIC dependency.c)
+add_library(qdmi_export_dependency STATIC dependency.cpp)
 set_target_properties(qdmi_export_dependency
                       PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_link_libraries(
   cxx-qdmi-device
   PRIVATE "$<LINK_LIBRARY:WHOLE_ARCHIVE,qdmi_export_dependency>")
 
-# Exercise the client helper even when the regular example driver is static.
-add_library(qdmi_export_driver SHARED
-            ../../examples/driver/qdmi_example_driver.cpp)
-target_link_libraries(
-  qdmi_export_driver
-  PRIVATE qdmi::qdmi "$<LINK_LIBRARY:WHOLE_ARCHIVE,qdmi_export_dependency>")
-target_compile_features(qdmi_export_driver PRIVATE cxx_std_20)
-configure_qdmi_exports(
-  TARGET
-  qdmi_export_driver
-  INTERFACE
-  client
-  EXTRA_SYMBOLS
-  QDMI_driver_init
-  QDMI_driver_shutdown)
+# Reuse the example driver's objects so coverage measures each source once.
+get_target_property(driver_type qdmi_example_driver TYPE)
+if(driver_type STREQUAL "STATIC_LIBRARY")
+  add_library(qdmi_export_driver SHARED dependency.cpp)
+  target_link_libraries(
+    qdmi_export_driver
+    PRIVATE "$<LINK_LIBRARY:WHOLE_ARCHIVE,qdmi_example_driver>"
+            ${CMAKE_DL_LIBS})
+  configure_qdmi_exports(
+    TARGET
+    qdmi_export_driver
+    INTERFACE
+    client
+    EXTRA_SYMBOLS
+    QDMI_driver_init
+    QDMI_driver_shutdown)
+  set(export_driver qdmi_export_driver)
+else()
+  target_link_libraries(
+    qdmi_example_driver
+    PRIVATE "$<LINK_LIBRARY:WHOLE_ARCHIVE,qdmi_export_dependency>")
+  set(export_driver qdmi_example_driver)
+endif()
 
 # Use the prefix registry independently of the helper's declaration parser.
 set(prefix_dir "${QDMI_CMAKE_DIR}")
@@ -57,10 +65,10 @@ target_include_directories(qdmi_export_test
 target_link_libraries(qdmi_export_test PRIVATE GTest::gtest_main
                                                ${CMAKE_DL_LIBS})
 target_compile_features(qdmi_export_test PRIVATE cxx_std_20)
-add_dependencies(qdmi_export_test cxx-qdmi-device qdmi_export_driver)
+add_dependencies(qdmi_export_test cxx-qdmi-device ${export_driver})
 target_compile_definitions(
   qdmi_export_test PRIVATE DEVICE_LIBRARY="$<TARGET_FILE:cxx-qdmi-device>"
-                           DRIVER_LIBRARY="$<TARGET_FILE:qdmi_export_driver>")
+                           DRIVER_LIBRARY="$<TARGET_FILE:${export_driver}>")
 add_test(NAME QdmiExports COMMAND qdmi_export_test)
 
 add_dependencies(qdmi_test qdmi_export_test)

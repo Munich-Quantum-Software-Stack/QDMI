@@ -19,6 +19,7 @@
 
 #include "device_functions.h"
 
+#include <array>
 #include <dlfcn.h>
 #include <gtest/gtest.h>
 
@@ -29,7 +30,7 @@ void Check_exports(const char *path, const auto &required) {
   for (const auto *symbol : required) {
     EXPECT_NE(dlsym(library, symbol), nullptr) << symbol;
   }
-  EXPECT_EQ(dlsym(library, "qdmi_bundled_dependency"), nullptr);
+  EXPECT_EQ(dlsym(library, "Qdmi_bundled_dependency"), nullptr);
   EXPECT_EQ(dlsym(library, "CXX_QDMI_device_internal"), nullptr);
   EXPECT_EQ(dlclose(library), 0);
 }
@@ -37,26 +38,26 @@ void Check_exports(const char *path, const auto &required) {
 TEST(Exports, Device) { Check_exports(DEVICE_LIBRARY, DEVICE_FUNCTIONS); }
 
 TEST(Exports, Client) {
-  const char *required[] = {"QDMI_session_alloc",
-                            "QDMI_session_set_parameter",
-                            "QDMI_session_init",
-                            "QDMI_session_query_session_property",
-                            "QDMI_session_free",
-                            "QDMI_device_query_device_property",
-                            "QDMI_device_query_site_property",
-                            "QDMI_device_query_operation_property",
-                            "QDMI_device_create_job",
-                            "QDMI_session_retrieve_job_by_id",
-                            "QDMI_job_set_parameter",
-                            "QDMI_job_query_property",
-                            "QDMI_job_submit",
-                            "QDMI_job_cancel",
-                            "QDMI_job_check",
-                            "QDMI_job_wait",
-                            "QDMI_job_get_results",
-                            "QDMI_job_free",
-                            "QDMI_driver_init",
-                            "QDMI_driver_shutdown"};
+  constexpr std::array required = {"QDMI_session_alloc",
+                                   "QDMI_session_set_parameter",
+                                   "QDMI_session_init",
+                                   "QDMI_session_query_session_property",
+                                   "QDMI_session_free",
+                                   "QDMI_device_query_device_property",
+                                   "QDMI_device_query_site_property",
+                                   "QDMI_device_query_operation_property",
+                                   "QDMI_device_create_job",
+                                   "QDMI_session_retrieve_job_by_id",
+                                   "QDMI_job_set_parameter",
+                                   "QDMI_job_query_property",
+                                   "QDMI_job_submit",
+                                   "QDMI_job_cancel",
+                                   "QDMI_job_check",
+                                   "QDMI_job_wait",
+                                   "QDMI_job_get_results",
+                                   "QDMI_job_free",
+                                   "QDMI_driver_init",
+                                   "QDMI_driver_shutdown"};
   Check_exports(DRIVER_LIBRARY, required);
 }
 } // namespace
