@@ -1,0 +1,66 @@
+# Copyright (c) 2024 - 2026 QDMI Maintainers
+# All rights reserved.
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# https://llvm.org/LICENSE.txt
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations under
+# the License.
+#
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+# Build a dependency with default visibility, as third-party archives may have.
+add_library(qdmi_export_dependency STATIC dependency.c)
+set_target_properties(qdmi_export_dependency
+                      PROPERTIES POSITION_INDEPENDENT_CODE ON)
+target_link_libraries(
+  cxx-qdmi-device
+  PRIVATE "$<LINK_LIBRARY:WHOLE_ARCHIVE,qdmi_export_dependency>")
+
+# Exercise the client helper even when the regular example driver is static.
+add_library(qdmi_export_driver SHARED
+            ../../examples/driver/qdmi_example_driver.cpp)
+target_link_libraries(
+  qdmi_export_driver
+  PRIVATE qdmi::qdmi "$<LINK_LIBRARY:WHOLE_ARCHIVE,qdmi_export_dependency>")
+target_compile_features(qdmi_export_driver PRIVATE cxx_std_20)
+configure_qdmi_exports(
+  TARGET
+  qdmi_export_driver
+  INTERFACE
+  client
+  EXTRA_SYMBOLS
+  QDMI_driver_init
+  QDMI_driver_shutdown)
+
+# Use the prefix registry independently of the helper's declaration parser.
+set(prefix_dir "${QDMI_CMAKE_DIR}")
+if(NOT prefix_dir)
+  set(prefix_dir "${qdmi_CMAKE_DIR}")
+endif()
+file(STRINGS "${prefix_dir}/prefix_defs.txt" device_functions
+     REGEX "^QDMI_device_[a-z0-9_]+$")
+list(TRANSFORM device_functions PREPEND "CXX_")
+list(JOIN device_functions "\", \"" device_functions)
+file(CONFIGURE OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/device_functions.h" CONTENT
+     "constexpr const char* DEVICE_FUNCTIONS[] = {\"@device_functions@\"};\n"
+     @ONLY)
+add_executable(qdmi_export_test test_exports.cpp)
+target_include_directories(qdmi_export_test
+                           PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
+target_link_libraries(qdmi_export_test PRIVATE GTest::gtest_main
+                                               ${CMAKE_DL_LIBS})
+target_compile_features(qdmi_export_test PRIVATE cxx_std_20)
+add_dependencies(qdmi_export_test cxx-qdmi-device qdmi_export_driver)
+target_compile_definitions(
+  qdmi_export_test PRIVATE DEVICE_LIBRARY="$<TARGET_FILE:cxx-qdmi-device>"
+                           DRIVER_LIBRARY="$<TARGET_FILE:qdmi_export_driver>")
+add_test(NAME QdmiExports COMMAND qdmi_export_test)
+
+add_dependencies(qdmi_test qdmi_export_test)
