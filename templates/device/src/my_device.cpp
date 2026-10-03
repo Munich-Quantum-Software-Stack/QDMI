@@ -28,6 +28,7 @@
 
 #ifdef __cplusplus
 #include <cstddef>
+#include <cstring>
 #else
 #include <stddef.h>
 #endif
@@ -138,7 +139,24 @@ int MY_QDMI_device_job_get_results(MY_QDMI_Device_Job job,
 int MY_QDMI_device_session_query_device_property(
     MY_QDMI_Device_Session session, const QDMI_Device_Property prop,
     const size_t size, void *value, size_t *size_ret) {
-  return QDMI_ERROR_NOTIMPLEMENTED;
+  if (session == nullptr) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  if (prop != QDMI_DEVICE_PROPERTY_ID) {
+    return QDMI_ERROR_NOTIMPLEMENTED;
+  }
+  // NOLINTNEXTLINE(misc-include-cleaner)
+  constexpr char id[] = MY_QDMI_DEVICE_ID;
+  if (value != nullptr) {
+    if (size < sizeof(id)) {
+      return QDMI_ERROR_INVALIDARGUMENT;
+    }
+    std::memcpy(value, id, sizeof(id));
+  }
+  if (size_ret != nullptr) {
+    *size_ret = sizeof(id);
+  }
+  return QDMI_SUCCESS;
 }
 
 int MY_QDMI_device_session_query_site_property(MY_QDMI_Device_Session session,

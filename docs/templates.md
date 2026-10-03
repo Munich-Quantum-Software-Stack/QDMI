@@ -55,17 +55,15 @@ that. To this end, adjust the `QDMI_REV` variable in
 +   set(QDMI_REV "v1.2.0"
 ```
 
-The generated project assigns the stable ID `prefix.default` to its device.
-Change the project-specific `PREFIX_QDMI_DEVICE_ID` CMake cache variable if the
-device needs a different ID. Once selected and distributed, keep this ID stable
-so that applications and configuration files can continue to refer to the same
-device.
+The generated project assigns the default stable ID `prefix.default` to its
+device implementation. Set the project-specific `PREFIX_QDMI_DEVICE_ID` CMake
+cache variable to change it. The device reports that default through
+`QDMI_DEVICE_PROPERTY_ID`; a driver can override it for each configured device.
 
-The device target calls `configure_qdmi_device_target` to export its stable ID
-and symbol prefix as the `QDMI_DEVICE_ID` and `QDMI_DEVICE_PREFIX` target
-properties. Build-system consumers such as MQT Core can use this metadata to
-package and register the device without project-specific loader code or a
-runtime dependency from the device implementation to that consumer.
+The device target calls `configure_qdmi_device_target` to export its default
+stable ID and symbol prefix as `QDMI_DEVICE_ID` and `QDMI_DEVICE_PREFIX`.
+Consumers such as MQT Core use this metadata for discovery without loading the
+device library or adding a runtime dependency from the device to Core.
 
 When you want to change the prefix after the creation of the template, you need
 to change the prefix in a couple of places. We want to give you some hints where

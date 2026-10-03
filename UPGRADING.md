@@ -14,6 +14,52 @@ consuming targets. Configure caching with `CMAKE_C_COMPILER_LAUNCHER` and
 `CMAKE_CXX_COMPILER_LAUNCHER`, and select `Debug` or `RelWithDebInfo` when debug
 information is needed.
 
+### Replaceable QDMI drivers and stable device IDs
+
+QDMI 1.4 defines a stable ABI for replaceable QDMI driver libraries. Export
+every function declared in `qdmi/client.h` with `QDMI_DRIVER_EXPORT`. Define
+`QDMI_driver_EXPORTS` while building the driver. A loader first resolves and
+calls `QDMI_driver_get_client_abi_version`. It then resolves the complete Client
+Interface before it allocates a session. The returned ABI is compatible if and
+only if its packed major and minor fields equal those of
+`QDMI_CLIENT_ABI_VERSION`. Ignore the patch field when checking compatibility. A
+different major or minor field is incompatible. QDMI 1.4 defines
+`QDMI_CLIENT_ABI_VERSION` as 1.4.0. CMake derives the ABI version from the QDMI
+release version. Device library versions remain independent.
+
+The ABI version query does not initialize the driver. `QDMI_session_alloc` is
+the first stateful Client call. It initializes the driver lazily, sets its
+output to `NULL` before work that can fail, and leaves no partial session on
+failure. Clients can retry a failed allocation. The example driver no longer
+exposes `QDMI_driver_init` or `QDMI_driver_shutdown`.
+
+A process uses one Client implementation and can allocate many sessions. Each
+initialized session exposes an immutable authorized device catalog. Device,
+site, operation, and job handles belong to that session. Free all jobs before
+freeing the session. Freeing the session invalidates every remaining descendant
+handle.
+
+`QDMI_DEVICE_PROPERTY_ID` is appended as value 18. It is mandatory through the
+Client Interface for configured top-level devices and optional through the
+Device Interface. A driver supplies the configured value when a device returns
+`QDMI_ERROR_NOTSUPPORTED`. Child-device IDs remain optional: drivers forward a
+device-reported ID when available and may otherwise return
+`QDMI_ERROR_NOTSUPPORTED`, without generating child IDs. The ID is a nonempty,
+opaque string. It is unique within an initialized session, immutable for one
+device handle, and stable across equivalent sessions and process restarts while
+the same logical resource exists. When saving an ID, also record which driver
+and configuration provide it. Do not use a display name, endpoint, pointer,
+credential, library version, or symbol prefix as the stable ID. The
+`QDMI_DEVICE_ID` CMake target property supplies a default stable ID that a
+driver can override in configuration.
+
+The example driver configuration now gives each device a stable ID in a third
+column:
+
+```text
+/path/to/libdevice.so PREFIX deployment.device-id
+```
+
 ### macOS support
 
 QDMI no longer tests x86 macOS. Generated device projects now target macOS 13.3
