@@ -14,6 +14,11 @@ clients compiled against a different minor or major version.
 
 _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 
+### Added
+
+- ✨ Add optional target-specific export control for device and client libraries
+  ([#559]) ([\@marcelwa])
+
 ### Changed
 
 - 📝 Document installation and CMake consumption of the QDMI interface ([#538])
@@ -319,3 +324,5 @@ for previous changelogs._
 [Semantic Versioning]: https://semver.org/spec/v2.0.0.html
 [CMake presets]: https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html
 [munich-quantum-toolkit/workflows]: https://github.com/munich-quantum-toolkit/workflows
+
+[#559]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/559

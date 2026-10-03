@@ -67,6 +67,11 @@ properties. Build-system consumers such as MQT Core can use this metadata to
 package and register the device without project-specific loader code or a
 runtime dependency from the device implementation to that consumer.
 
+The device target also calls `configure_qdmi_exports` to restrict shared-library
+exports to the prefixed device interface on ELF and Apple systems. See
+[export control](installation.md#control-shared-library-exports) for additional
+public symbols and platform behavior.
+
 When you want to change the prefix after the creation of the template, you need
 to change the prefix in a couple of places. We want to give you some hints where
 you have to change it, but depending on your personal project setup, they might

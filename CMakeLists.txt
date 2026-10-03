@@ -226,6 +226,7 @@ if(INSTALL_QDMI)
   install(
     FILES ${PROJECT_SOURCE_DIR}/cmake/prefix_defs.txt
           ${PROJECT_SOURCE_DIR}/cmake/PrefixHandling.cmake
+          ${PROJECT_SOURCE_DIR}/cmake/ExportHandling.cmake
           ${PROJECT_SOURCE_DIR}/cmake/test_defs.cpp.in
     DESTINATION ${QDMI_CONFIG_INSTALL_DIR}
     COMPONENT ${PROJECT_NAME}_Development)
