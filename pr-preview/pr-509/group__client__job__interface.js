@@ -4,7 +4,6 @@ var group__client__job__interface =
     [ "QDMI_Job_Parameter", "group__client__job__interface.html#ga4d37195d9d0765b10a6ad681304a4512", null ],
     [ "QDMI_Job_Property", "group__client__job__interface.html#ga107d5cd42068915f772685dae80f2d7e", null ],
     [ "QDMI_JOB_PARAMETER_T", "group__client__job__interface.html#ga1e7131664b094eb409d0f44d731f51f5", [
-      [ "QDMI_JOB_PARAMETER_PROGRAMFORMAT", "group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5ad0b4fad39ff9935e76bcd888cfca908b", null ],
       [ "QDMI_JOB_PARAMETER_SHOTSNUM", "group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5a21a7c498f22ef05c9a72f354f6f89a81", null ],
       [ "QDMI_JOB_PARAMETER_MAX", "group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5aa94ff18351f57072ad1e9223583ff978", null ],
       [ "QDMI_JOB_PARAMETER_CUSTOM1", "group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5a06fddbae216743659f3268c0e31554c8", null ],
