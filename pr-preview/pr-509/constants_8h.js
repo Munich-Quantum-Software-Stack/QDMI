@@ -57,7 +57,6 @@ var constants_8h =
     [ "QDMI_DEVICE_JOB_PROPERTY_T", "constants_8h.html#a6e4d18c7fa5d383bbcc1498abe090d4f", [
       [ "QDMI_DEVICE_JOB_PROPERTY_ID", "constants_8h.html#a6e4d18c7fa5d383bbcc1498abe090d4fad991a6a3b0a17e58b59f9180463855ec", null ],
       [ "QDMI_DEVICE_JOB_PROPERTY_PROGRAMFORMAT", "constants_8h.html#a6e4d18c7fa5d383bbcc1498abe090d4fa5ed68ab8ce50f4b2362a0c6ba4c92c93", null ],
-      [ "QDMI_DEVICE_JOB_PROPERTY_PROGRAM", "constants_8h.html#a6e4d18c7fa5d383bbcc1498abe090d4fa1215ae3034ffc3c9e6207253b81fa649", null ],
       [ "QDMI_DEVICE_JOB_PROPERTY_SHOTSNUM", "constants_8h.html#a6e4d18c7fa5d383bbcc1498abe090d4faad5344a33a120865b1c6f987b9fe023c", null ],
       [ "QDMI_DEVICE_JOB_PROPERTY_QUEUEPOSITION", "constants_8h.html#a6e4d18c7fa5d383bbcc1498abe090d4fa4fdb1643973913aeb1f201e3484e7f79", null ],
       [ "QDMI_DEVICE_JOB_PROPERTY_PROGRAMSNUM", "constants_8h.html#a6e4d18c7fa5d383bbcc1498abe090d4faa24add14b040fb44b0daac7f5714fafc", null ],
