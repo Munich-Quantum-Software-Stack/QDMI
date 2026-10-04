@@ -259,15 +259,7 @@ enum QDMI_DEVICE_JOB_PROPERTY_T {
    * QDMI_device_job_set_programs.
    */
   QDMI_DEVICE_JOB_PROPERTY_PROGRAMFORMAT = 1,
-  /**
-   * @brief `void*` The program to be executed.
-   * @note This property returns the program set through @ref
-   * QDMI_device_job_set_programs when the job contains one program.
-   * @note A query returns @ref QDMI_ERROR_NOTSUPPORTED for a multi-program
-   * job or when a retrieved job has no payload metadata. Use @ref
-   * QDMI_device_job_get_program to query any program by index.
-   */
-  QDMI_DEVICE_JOB_PROPERTY_PROGRAM = 2,
+  /// Value 2 is reserved for the removed program property; do not reuse it.
   /**
    * @brief `size_t` The number of shots to execute for each program in a job.
    * @note This property returns the value of the @ref

@@ -64,8 +64,9 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 
 ### Removed
 
-- 💥 Replace the batch-job format and single-program payload parameters with
-  ordered program lists, reserving the removed enum values ([#509]) ([\@ystade],
+- 💥 Replace the batch-job format, single-program payload parameters, and
+  single-program payload properties with ordered program lists and indexed
+  getters, reserving the removed enum values ([#509]) ([\@ystade],
   [\@burgholzer]).
 - 💥 Remove the calibration program format. Providers can expose calibration
   submission through a separate function ([#551]) ([\@burgholzer]).

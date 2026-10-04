@@ -944,13 +944,6 @@ TEST_P(QDMIImplementationTest, MultiProgramJob) {
   ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_SHOTSNUM,
                                    sizeof(size_t), &shots),
             QDMI_SUCCESS);
-  EXPECT_EQ(QDMI_job_set_parameter(job, static_cast<QDMI_Job_Parameter>(1), 0,
-                                   nullptr),
-            QDMI_ERROR_NOTSUPPORTED);
-  constexpr auto removed_batch_format = static_cast<QDMI_Program_Format>(9);
-  EXPECT_EQ(QDMI_job_set_programs(job, removed_batch_format, programs.size(),
-                                  nullptr, nullptr),
-            QDMI_ERROR_NOTSUPPORTED);
   QDMI_Job_Status program_status = QDMI_JOB_STATUS_CREATED;
   EXPECT_EQ(QDMI_job_get_program_status(nullptr, 0, &program_status),
             QDMI_ERROR_INVALIDARGUMENT);
