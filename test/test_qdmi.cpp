@@ -639,8 +639,16 @@ TEST_P(QDMIImplementationTest, JobLifecycle) {
   EXPECT_EQ(QDMI_device_create_job(nullptr, &job), QDMI_ERROR_INVALIDARGUMENT);
   ASSERT_EQ(QDMI_device_create_job(device, &job), QDMI_SUCCESS);
 
+  for (const auto format : FoMaC(device).get_supported_program_formats()) {
+    EXPECT_EQ(QDMI_job_set_programs(job, format, 1, nullptr, nullptr),
+              QDMI_SUCCESS);
+  }
+  EXPECT_EQ(QDMI_job_set_programs(job, QDMI_PROGRAM_FORMAT_QASM3, 1, nullptr,
+                                  nullptr),
+            QDMI_ERROR_NOTSUPPORTED);
+
   /// The removed format parameter slot is not reused.
-  /// NOLINTNEXTLINE(clang-analyzer-option.core.EnumCastOutOfRange)
+  /// NOLINTNEXTLINE(clang-analyzer-optin.core.EnumCastOutOfRange)
   EXPECT_EQ(QDMI_job_set_parameter(job, static_cast<QDMI_Job_Parameter>(0), 0,
                                    nullptr),
             QDMI_ERROR_NOTSUPPORTED);
