@@ -356,6 +356,7 @@ int QDMI_session_alloc(QDMI_Session *session) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   *session = nullptr;
+  // Report allocation failure through the C ABI without throwing.
   auto allocated = std::unique_ptr<QDMI_Session_impl_d>(
       new (std::nothrow) QDMI_Session_impl_d());
   if (!allocated) {
@@ -402,6 +403,8 @@ int QDMI_session_init(QDMI_Session session) {
       if (status != QDMI_SUCCESS) {
         return status;
       }
+      // This example forwards one token to every device. A production driver
+      // may need separate credentials for each configured device.
       status = device->library->device_session_set_parameter(
           device->device_session, QDMI_DEVICE_SESSION_PARAMETER_TOKEN,
           session->token->size() + 1, session->token->c_str());

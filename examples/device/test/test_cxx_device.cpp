@@ -180,12 +180,6 @@ TEST_F(QDMIImplementationTest, QueryDeviceVersionImplemented) {
   ASSERT_FALSE(value.empty()) << "Devices must provide a version";
 }
 
-TEST_F(QDMIImplementationTest, ClientVisibleDeviceIdIsDriverOwned) {
-  EXPECT_EQ(CXX_QDMI_device_session_query_device_property(
-                session, QDMI_DEVICE_PROPERTY_ID, 0, nullptr, nullptr),
-            QDMI_ERROR_NOTSUPPORTED);
-}
-
 TEST_F(QDMIImplementationTest, QueryDeviceLibraryVersionImplemented) {
   size_t size = 0;
   ASSERT_EQ(
@@ -246,10 +240,5 @@ TEST_F(QDMIImplementationTest, QueryStableDeviceId) {
   EXPECT_EQ(CXX_QDMI_device_session_query_device_property(
                 session, QDMI_DEVICE_PROPERTY_ID, size - 1, id.data(), nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
-  std::vector<char> repeated(size);
-  ASSERT_EQ(
-      CXX_QDMI_device_session_query_device_property(
-          session, QDMI_DEVICE_PROPERTY_ID, size, repeated.data(), nullptr),
-      QDMI_SUCCESS);
-  EXPECT_EQ(repeated, id);
+  EXPECT_STREQ(id.data(), CXX_QDMI_DEVICE_ID);
 }

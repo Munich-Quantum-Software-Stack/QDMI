@@ -230,10 +230,5 @@ TEST_F(QDMIImplementationTest, QueryStableDeviceId) {
   EXPECT_EQ(MY_QDMI_device_session_query_device_property(
                 session, QDMI_DEVICE_PROPERTY_ID, size - 1, id.data(), nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
-  std::vector<char> repeated(size);
-  ASSERT_EQ(
-      MY_QDMI_device_session_query_device_property(
-          session, QDMI_DEVICE_PROPERTY_ID, size, repeated.data(), nullptr),
-      QDMI_SUCCESS);
-  EXPECT_EQ(repeated, id);
+  EXPECT_STREQ(id.data(), MY_QDMI_DEVICE_ID);
 }

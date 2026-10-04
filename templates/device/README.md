@@ -20,8 +20,7 @@ The exported CMake target publishes the default stable ID configured through
 `configure_qdmi_device_target`. The device reports this ID through
 `QDMI_DEVICE_PROPERTY_ID`. A driver can override it in its configuration, for
 example to expose multiple configurations of the same device implementation.
-Consumers such as MQT Core use the metadata to discover and register the device
-without loading its library.
+Consumers use the metadata to discover the device without loading its library.
 
 ## Documentation
 

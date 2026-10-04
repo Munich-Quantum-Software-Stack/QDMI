@@ -463,7 +463,8 @@ enum QDMI_DEVICE_PROPERTY_T {
   /**
    * @brief `char*` (string) The stable client-visible device identifier.
    * @details When supported, the Client Interface returns a nonempty,
-   * NUL-terminated, opaque ID. IDs are unique within one initialized session
+   * NUL-terminated string. Clients treat IDs as opaque keys. IDs are unique
+   * within one initialized session
    * and immutable for the lifetime of the corresponding @ref QDMI_Device
    * handle. Equivalent sessions return the same ID across process restarts
    * while the same logical resource exists. When saving an ID, also record

@@ -57,6 +57,11 @@ the client to the devices or statically link the devices into the driver. An
 example implementation using dynamic libraries is provided in the `examples`
 directory of the QDMI repository.
 
+Keeping the Client Interface in a replaceable driver lets an application change
+drivers without rebuilding. Stable IDs let it reopen the same logical device
+across runs. A driver can also assign different IDs to independently configured
+instances of one device implementation.
+
 As depicted in the schematic above, device and client interfaces each have three
 parts, namely:
 

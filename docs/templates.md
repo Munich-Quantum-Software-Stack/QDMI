@@ -62,8 +62,8 @@ cache variable to change it. The device reports that default through
 
 The device target calls `configure_qdmi_device_target` to export its default
 stable ID and symbol prefix as `QDMI_DEVICE_ID` and `QDMI_DEVICE_PREFIX`.
-Consumers such as MQT Core use this metadata for discovery without loading the
-device library or adding a runtime dependency from the device to Core.
+Consumers use this metadata to discover the device without loading its library
+or linking the device to the consuming library.
 
 The device target also calls `configure_qdmi_exports` to restrict shared-library
 exports to the prefixed device interface on ELF and Apple systems. See
