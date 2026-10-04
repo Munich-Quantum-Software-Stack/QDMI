@@ -112,20 +112,21 @@ remains available to report device status.
 
 Use `QDMI_job_set_programs` (or `QDMI_device_job_set_programs`) for one program
 or an ordered list with a common format and shot count per program. The
-`PROGRAM` job parameters, `PROGRAM` job properties, and
-`QDMI_PROGRAM_FORMAT_BATCHJOB` are removed. Their numeric values (parameter 1,
-property 2, and format 9) remain reserved and return `QDMI_ERROR_NOTSUPPORTED`.
-The numeric values of remaining members are unchanged.
+`PROGRAMFORMAT` and `PROGRAM` job parameters, `PROGRAM` job properties, and
+`QDMI_PROGRAM_FORMAT_BATCHJOB` are removed. Their numeric values (parameters 0
+and 1, property 2, and format 9) remain reserved and return
+`QDMI_ERROR_NOTSUPPORTED`. The numeric values of remaining members are
+unchanged.
 
 Use `QDMI_job_get_program` or `QDMI_device_job_get_program` with index zero to
 read a single program, or another index to read one from a multi-program job.
 
 Pass the format by value. The setter copies the complete list atomically. Failed
-setters leave the previous format and programs unchanged. A different supported
-format clears the list. A support check passes a nonzero count and
-`programs == NULL`, checking that format and cardinality with the configured
-parameters without changing the job. Text includes exactly one trailing NUL;
-binary payloads are copied intact.
+setters leave the previous format and programs unchanged; successful calls
+replace both. A support check passes a nonzero count and `programs == NULL`,
+checking that format and cardinality with the configured parameters without
+changing the job. Text includes exactly one trailing NUL; binary payloads are
+copied intact.
 
 `PROGRAMSNUM` reports the count once programs are set, or `QDMI_ERROR_BADSTATE`
 before that. Both result functions now take a zero-based program index

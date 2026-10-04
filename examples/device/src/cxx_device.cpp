@@ -424,24 +424,6 @@ int CXX_QDMI_device_job_set_parameter(CXX_QDMI_Device_Job job,
     return QDMI_ERROR_BADSTATE;
   }
   switch (param) {
-  case QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT:
-    if (value != nullptr) {
-      if (size != sizeof(QDMI_Program_Format)) {
-        return QDMI_ERROR_INVALIDARGUMENT;
-      }
-      const auto format = *static_cast<const QDMI_Program_Format *>(value);
-      if (!Valid_format(format)) {
-        return QDMI_ERROR_INVALIDARGUMENT;
-      }
-      if (!Supported_format(format)) {
-        return QDMI_ERROR_NOTSUPPORTED;
-      }
-      if (job->format != format) {
-        job->programs.clear();
-      }
-      job->format = format;
-    }
-    return QDMI_SUCCESS;
   case QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM:
     if (value != nullptr) {
       job->num_shots = *static_cast<const size_t *>(value);

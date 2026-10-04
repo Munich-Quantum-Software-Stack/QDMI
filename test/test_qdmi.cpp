@@ -639,53 +639,11 @@ TEST_P(QDMIImplementationTest, JobLifecycle) {
   EXPECT_EQ(QDMI_device_create_job(nullptr, &job), QDMI_ERROR_INVALIDARGUMENT);
   ASSERT_EQ(QDMI_device_create_job(device, &job), QDMI_SUCCESS);
 
-  // Test format support
-  EXPECT_EQ(
-      QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT, 0, nullptr),
-      QDMI_SUCCESS);
-  QDMI_Program_Format format = QDMI_PROGRAM_FORMAT_MAX;
-  EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
-                                   sizeof(QDMI_Program_Format), &format),
-            QDMI_ERROR_INVALIDARGUMENT);
-
-  constexpr std::array supported_formats = {QDMI_PROGRAM_FORMAT_QASM2,
-                                            QDMI_PROGRAM_FORMAT_QIRBASESTRING,
-                                            QDMI_PROGRAM_FORMAT_QIRBASEMODULE};
-
-  for (const auto &supported_format : supported_formats) {
-    ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
-                                     sizeof(QDMI_Program_Format),
-                                     &supported_format),
-              QDMI_SUCCESS);
-  }
-
-  const auto fomac = FoMaC(device);
-  const auto formats = fomac.get_supported_program_formats();
-  for (const auto &program_format : formats) {
-    ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
-                                     sizeof(QDMI_Program_Format),
-                                     &program_format),
-              QDMI_SUCCESS);
-  }
-
-  constexpr std::array unsupported_formats = {
-      QDMI_PROGRAM_FORMAT_QASM3,
-      QDMI_PROGRAM_FORMAT_QIRADAPTIVESTRING,
-      QDMI_PROGRAM_FORMAT_QIRADAPTIVEMODULE,
-      QDMI_PROGRAM_FORMAT_QPY,
-      QDMI_PROGRAM_FORMAT_IQMJSON,
-      QDMI_PROGRAM_FORMAT_CUSTOM1,
-      QDMI_PROGRAM_FORMAT_CUSTOM2,
-      QDMI_PROGRAM_FORMAT_CUSTOM3,
-      QDMI_PROGRAM_FORMAT_CUSTOM4,
-      QDMI_PROGRAM_FORMAT_CUSTOM5};
-
-  for (const auto &unsupported_format : unsupported_formats) {
-    EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
-                                     sizeof(QDMI_Program_Format),
-                                     &unsupported_format),
-              QDMI_ERROR_NOTSUPPORTED);
-  }
+  /// The removed format parameter slot is not reused.
+  /// NOLINTNEXTLINE(clang-analyzer-option.core.EnumCastOutOfRange)
+  EXPECT_EQ(QDMI_job_set_parameter(job, static_cast<QDMI_Job_Parameter>(0), 0,
+                                   nullptr),
+            QDMI_ERROR_NOTSUPPORTED);
 
   // The MAX parameter is not a valid value for any device
   EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_MAX, 0, nullptr),
@@ -702,20 +660,6 @@ TEST_P(QDMIImplementationTest, JobLifecycle) {
             QDMI_ERROR_NOTSUPPORTED);
   EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_CUSTOM5, 0, nullptr),
             QDMI_ERROR_NOTSUPPORTED);
-
-  format = QDMI_PROGRAM_FORMAT_QASM2;
-  EXPECT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
-                                   sizeof(QDMI_Program_Format), &format),
-            QDMI_SUCCESS);
-  // The set parameter value must coincide with the value returned for the
-  // respective property
-  size_t size = 0;
-  EXPECT_EQ(QDMI_job_query_property(job, QDMI_JOB_PROPERTY_PROGRAMFORMAT,
-                                    sizeof(QDMI_Program_Format), &format,
-                                    &size),
-            QDMI_SUCCESS);
-  EXPECT_EQ(size, sizeof(QDMI_Program_Format));
-  EXPECT_EQ(format, QDMI_PROGRAM_FORMAT_QASM2);
 
   size_t shots = 5;
   EXPECT_EQ(QDMI_job_set_parameter(nullptr, QDMI_JOB_PARAMETER_SHOTSNUM,
@@ -742,6 +686,13 @@ TEST_P(QDMIImplementationTest, JobLifecycle) {
   ASSERT_EQ(
       QDMI_job_set_programs(job, QASM2_FORMAT, 1, &program_size, &program_data),
       QDMI_SUCCESS);
+  QDMI_Program_Format format{};
+  size_t size = 0;
+  EXPECT_EQ(QDMI_job_query_property(job, QDMI_JOB_PROPERTY_PROGRAMFORMAT,
+                                    sizeof(format), &format, &size),
+            QDMI_SUCCESS);
+  EXPECT_EQ(format, QASM2_FORMAT);
+  EXPECT_EQ(size, sizeof(format));
   // Queue position is optional and is not supported by the example device.
   EXPECT_EQ(QDMI_job_query_property(job, QDMI_JOB_PROPERTY_QUEUEPOSITION, 0,
                                     nullptr, nullptr),
@@ -833,35 +784,10 @@ TEST_P(QDMIImplementationTest, MultiProgramJob) {
             QDMI_SUCCESS);
   EXPECT_EQ(program_count, 1);
 
-  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
-                                   sizeof(QDMI_Program_Format), &QASM2_FORMAT),
-            QDMI_SUCCESS);
-  ASSERT_EQ(QDMI_job_query_property(job, QDMI_JOB_PROPERTY_PROGRAMSNUM,
-                                    sizeof(size_t), &program_count, nullptr),
-            QDMI_SUCCESS);
-  EXPECT_EQ(program_count, 1);
-
-  ASSERT_EQ(QDMI_job_set_parameter(job, QDMI_JOB_PARAMETER_PROGRAMFORMAT,
-                                   sizeof(QDMI_Program_Format),
-                                   &QIR_BASE_TEXT_FORMAT),
-            QDMI_SUCCESS);
-  EXPECT_EQ(QDMI_job_query_property(job, QDMI_JOB_PROPERTY_PROGRAMSNUM, 0,
-                                    nullptr, nullptr),
-            QDMI_ERROR_BADSTATE);
-  QDMI_Program_Format format{};
-  ASSERT_EQ(QDMI_job_query_property(job, QDMI_JOB_PROPERTY_PROGRAMFORMAT,
-                                    sizeof(QDMI_Program_Format), &format,
-                                    nullptr),
-            QDMI_SUCCESS);
-  EXPECT_EQ(format, QIR_BASE_TEXT_FORMAT);
-
-  ASSERT_EQ(QDMI_job_set_programs(job, QASM2_FORMAT, 1, sizes.data(),
-                                  program_ptrs.data()),
-            QDMI_SUCCESS);
-
   EXPECT_EQ(
       QDMI_job_set_programs(job, QIR_BASE_TEXT_FORMAT, 42, nullptr, nullptr),
       QDMI_SUCCESS);
+  QDMI_Program_Format format{};
   ASSERT_EQ(QDMI_job_query_property(job, QDMI_JOB_PROPERTY_PROGRAMFORMAT,
                                     sizeof(QDMI_Program_Format), &format,
                                     nullptr),

@@ -186,16 +186,7 @@ typedef enum QDMI_DEVICE_SESSION_PARAMETER_T QDMI_Device_Session_Parameter;
  * require them to be set.
  */
 enum QDMI_DEVICE_JOB_PARAMETER_T {
-  /**
-   * @brief @ref QDMI_Program_Format The format of the program to be executed.
-   * @details This parameter is required. The device must support the specified
-   * program format. If the device does not support the specified program
-   * format, the @ref QDMI_device_job_set_parameter function must return @ref
-   * QDMI_ERROR_NOTSUPPORTED. Setting the same format keeps an
-   * existing program payload. Setting a different supported format clears
-   * the payload. Every error leaves the format and payload unchanged.
-   */
-  QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT = 0,
+  /// Value 0 is reserved for the removed program format parameter.
   /// Value 1 is reserved for the removed program parameter; do not reuse it.
   /**
    * @brief `size_t` The number of shots to execute for each program in a job.
@@ -255,7 +246,6 @@ enum QDMI_DEVICE_JOB_PROPERTY_T {
    * @details A query returns @ref QDMI_ERROR_BADSTATE until a format is set,
    * or @ref QDMI_ERROR_NOTSUPPORTED if a retrieved job has no format metadata.
    * This property returns the format set through @ref
-   * QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT or @ref
    * QDMI_device_job_set_programs.
    */
   QDMI_DEVICE_JOB_PROPERTY_PROGRAMFORMAT = 1,

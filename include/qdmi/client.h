@@ -727,17 +727,7 @@ QDMI_DRIVER_EXPORT int QDMI_session_retrieve_job_by_id(QDMI_Device device,
  * require them to be set.
  */
 enum QDMI_JOB_PARAMETER_T {
-  /**
-   * @brief @ref QDMI_Program_Format The format of the program to be executed.
-   * @details This parameter is required. If the device does not support the
-   * specified program format, it is up to the driver to decide whether to
-   * return @ref QDMI_ERROR_NOTSUPPORTED from @ref QDMI_job_set_parameter or to
-   * convert the program to a supported format. Setting the same exact
-   * format keeps an existing program payload. Setting a different
-   * supported format clears the payload. Every error leaves the format
-   * and payload unchanged.
-   */
-  QDMI_JOB_PARAMETER_PROGRAMFORMAT = 0,
+  /// Value 0 is reserved for the removed program format parameter.
   /// Value 1 is reserved for the removed program parameter; do not reuse it.
   /**
    * @brief `size_t` The number of shots to execute for each program in a job.
@@ -960,7 +950,7 @@ enum QDMI_JOB_PROPERTY_T {
    * @details A query returns @ref QDMI_ERROR_BADSTATE until a format is set,
    * or @ref QDMI_ERROR_NOTSUPPORTED if a retrieved job has no format metadata.
    * This property returns the format set through @ref
-   * QDMI_JOB_PARAMETER_PROGRAMFORMAT or @ref QDMI_job_set_programs.
+   * QDMI_job_set_programs.
    */
   QDMI_JOB_PROPERTY_PROGRAMFORMAT = 1,
   /// Value 2 is reserved for the removed program property; do not reuse it.
