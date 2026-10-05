@@ -505,7 +505,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a8039f5cd8202553b2a91a1c0b01d6751" title="QDMI_SUCCESS">QDMI_SUCCESS</a> if the driver supports the specified <a class="el" href="#ga4d37195d9d0765b10a6ad681304a4512" title="QDMI_Job_Parameter">QDMI_Job_Parameter</a> <code class="param">param</code> and, when <code class="param">value</code> is not <code>NULL</code>, the parameter was successfully set. </dd>
 <dd>
-<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651" title="QDMI_ERROR_NOTSUPPORTED">QDMI_ERROR_NOTSUPPORTED</a> if the driver does not support the parameter or the value of the parameter. When setting the program format, reserved numeric values of removed formats return <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651" title="QDMI_ERROR_NOTSUPPORTED">QDMI_ERROR_NOTSUPPORTED</a>. </dd>
+<a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a327c1ff469cce7beacddd9c6d428b651" title="QDMI_ERROR_NOTSUPPORTED">QDMI_ERROR_NOTSUPPORTED</a> if the driver does not support the parameter or the value of the parameter. </dd>
 <dd>
 <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642" title="QDMI_ERROR_INVALIDARGUMENT">QDMI_ERROR_INVALIDARGUMENT</a> if<ul>
 <li><code class="param">job</code> is <code>NULL</code>,</li>
@@ -787,7 +787,7 @@ Functions</h2></td></tr>
 <div class="line"><a class="code hl_function" href="#gaf254976bef932563756897db98cecf8c">QDMI_job_query_property</a>(</div>
 <div class="line">  job, QDMI_JOB_PROPERTY_NAME, size, name.data(), <span class="keyword">nullptr</span>);</div>
 <div class="ttc" id="agroup__client__job__interface_html_gaf254976bef932563756897db98cecf8c"><div class="ttname"><a href="#gaf254976bef932563756897db98cecf8c">QDMI_job_query_property</a></div><div class="ttdeci">int QDMI_job_query_property(QDMI_Job job, QDMI_Job_Property prop, size_t size, void *value, size_t *size_ret)</div><div class="ttdoc">Query a job property.</div></div>
-<div class="ttc" id="agroup__client__job__interface_html_gga8f2f468604e24bab4c86cdb781b879bba8b29485092d51f7573929a5579521d34"><div class="ttname"><a href="#gga8f2f468604e24bab4c86cdb781b879bba8b29485092d51f7573929a5579521d34">QDMI_JOB_PROPERTY_ID</a></div><div class="ttdeci">@ QDMI_JOB_PROPERTY_ID</div><div class="ttdoc">char* (string) The job&#39;s ID.</div><div class="ttdef"><b>Definition</b> client.h:947</div></div>
+<div class="ttc" id="agroup__client__job__interface_html_gga8f2f468604e24bab4c86cdb781b879bba8b29485092d51f7573929a5579521d34"><div class="ttname"><a href="#gga8f2f468604e24bab4c86cdb781b879bba8b29485092d51f7573929a5579521d34">QDMI_JOB_PROPERTY_ID</a></div><div class="ttdeci">@ QDMI_JOB_PROPERTY_ID</div><div class="ttdoc">char* (string) The job&#39;s ID.</div><div class="ttdef"><b>Definition</b> client.h:945</div></div>
 </div><!-- fragment --> </dd></dl>
 
 </div>
