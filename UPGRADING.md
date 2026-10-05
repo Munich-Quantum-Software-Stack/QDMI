@@ -118,9 +118,6 @@ and 1, property 2, and format 9) remain reserved and return
 `QDMI_ERROR_NOTSUPPORTED`. The numeric values of remaining members are
 unchanged.
 
-Use `QDMI_job_get_program` or `QDMI_device_job_get_program` with index zero to
-read a single program, or another index to read one from a multi-program job.
-
 Pass the format by value. The setter copies the complete list atomically. Failed
 setters leave the previous format and programs unchanged; successful calls
 replace both. A support check passes a nonzero count and `programs == NULL`,
