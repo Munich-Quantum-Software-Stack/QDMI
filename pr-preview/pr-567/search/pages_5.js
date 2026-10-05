@@ -1,0 +1,28 @@
+var searchData=
+[
+  ['a_20device_0',['Implementing a Device',['../md_docs_2examples.html#device',1,'']]],
+  ['a_20job_1',['Submitting a Job',['../md_docs_2examples.html#device-submit',1,'']]],
+  ['a_20new_20project_2',['Creating a new Project',['../md_docs_2templates.html#template-create',1,'']]],
+  ['a_20prefix_3',['Why do device implementations use a prefix?',['../md_docs_2rationale.html#rationale-prefix',1,'']]],
+  ['after_20allocation_4',['Why do sessions need to be initialized after allocation?',['../md_docs_2rationale.html#rationale-session-init',1,'']]],
+  ['ai_20assisted_20contributions_5',['AI-assisted contributions',['../md_docs_2contributing.html#ai-assisted-contributions',1,'']]],
+  ['ai_20usage_20guidelines_6',['AI Usage Guidelines',['../md_docs_2ai__usage.html',1,'']]],
+  ['allocation_7',['Why do sessions need to be initialized after allocation?',['../md_docs_2rationale.html#rationale-session-init',1,'']]],
+  ['and_20build_8',['Configure and Build',['../md_docs_2contributing.html#configure-and-build',1,'']]],
+  ['and_20clients_9',['Why are there separate kinds of jobs for devices and clients?',['../md_docs_2rationale.html#rationale-job-structs',1,'']]],
+  ['and_20code_20coverage_10',['Running the C++ Tests and Code Coverage',['../md_docs_2contributing.html#running-the-c-tests-and-code-coverage',1,'']]],
+  ['and_20copyright_11',['5. Licensing and Copyright',['../md_docs_2ai__usage.html#licensing-and-copyright',1,'']]],
+  ['and_20disclosure_12',['4. Transparency and Disclosure',['../md_docs_2ai__usage.html#transparency-and-disclosure',1,'']]],
+  ['and_20linting_13',['Code Formatting and Linting',['../md_docs_2contributing.html#code-formatting-and-linting',1,'']]],
+  ['and_20resources_14',['Further Links and Resources',['../md_docs_2contributing.html#further-links-and-resources',1,'']]],
+  ['and_20running_20the_20tests_15',['Building the Template and Running the Tests',['../md_docs_2templates.html#template-building',1,'']]],
+  ['and_20some_20are_20not_16',['Why are some enum definitions placed in the &lt;span class=&quot;tt&quot;&gt;constants.h&lt;/span&gt; header and some are not?',['../md_docs_2rationale.html#rationale-enum-definitions',1,'']]],
+  ['and_20upgrade_20guide_17',['Maintaining the Changelog and Upgrade Guide',['../md_docs_2contributing.html#maintaining-changelog-upgrade-guide',1,'']]],
+  ['are_20not_18',['Why are some enum definitions placed in the &lt;span class=&quot;tt&quot;&gt;constants.h&lt;/span&gt; header and some are not?',['../md_docs_2rationale.html#rationale-enum-definitions',1,'']]],
+  ['are_20responsible_19',['1. You are Responsible',['../md_docs_2ai__usage.html#you-are-responsible',1,'']]],
+  ['are_20some_20enum_20definitions_20placed_20in_20the_20constants_20h_20header_20and_20some_20are_20not_20',['Why are some enum definitions placed in the &lt;span class=&quot;tt&quot;&gt;constants.h&lt;/span&gt; header and some are not?',['../md_docs_2rationale.html#rationale-enum-definitions',1,'']]],
+  ['are_20there_20different_20kinds_20of_20sites_21',['Why are there different kinds of sites?',['../md_docs_2rationale.html#rationale-site-types',1,'']]],
+  ['are_20there_20separate_20kinds_20of_20jobs_20for_20devices_20and_20clients_22',['Why are there separate kinds of jobs for devices and clients?',['../md_docs_2rationale.html#rationale-job-structs',1,'']]],
+  ['assisted_20contributions_23',['AI-assisted contributions',['../md_docs_2contributing.html#ai-assisted-contributions',1,'']]],
+  ['auxiliary_20macros_24',['Auxiliary Macros',['../md_docs_2examples.html#device-macros',1,'']]]
+];
