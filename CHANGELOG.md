@@ -44,6 +44,8 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 
 ### Fixed
 
+- 🐛 Allow the example driver to open one device library more than once with
+  distinct stable IDs ([#511]) ([\@burgholzer]).
 - 🐛 Release example-driver device libraries when the final session closes,
   before process-wide dependency teardown ([#511]) ([\@burgholzer]).
 - 🐛 Allow the example driver to open devices without token authentication while

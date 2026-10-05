@@ -120,8 +120,40 @@ TEST(QDMIDriverLoadingTest, LazyInitializationIsTransactionalAndRetryable) {
 #else
   setenv("QDMI_CONF", duplicate_library_config.c_str(), 1);
 #endif
-  EXPECT_NE(QDMI_session_alloc(&session), QDMI_SUCCESS);
-  EXPECT_EQ(session, nullptr);
+  ASSERT_EQ(QDMI_session_alloc(&session), QDMI_SUCCESS);
+  ASSERT_NE(session, nullptr);
+  const char empty_token[] = "";
+  ASSERT_EQ(QDMI_session_set_parameter(session, QDMI_SESSION_PARAMETER_TOKEN,
+                                       sizeof(empty_token), empty_token),
+            QDMI_SUCCESS);
+  ASSERT_EQ(QDMI_session_init(session), QDMI_SUCCESS);
+  std::array<QDMI_Device, 2> configured_devices{};
+  size_t devices_size = 0;
+  ASSERT_EQ(QDMI_session_query_session_property(
+                session, QDMI_SESSION_PROPERTY_DEVICES,
+                sizeof(configured_devices), configured_devices.data(),
+                &devices_size),
+            QDMI_SUCCESS);
+  ASSERT_EQ(devices_size, sizeof(configured_devices));
+  EXPECT_NE(configured_devices[0], configured_devices[1]);
+  std::unordered_set<std::string> configured_ids;
+  for (const auto device : configured_devices) {
+    std::array<char, 32> id{};
+    ASSERT_EQ(QDMI_device_query_device_property(device, QDMI_DEVICE_PROPERTY_ID,
+                                                id.size(), id.data(), nullptr),
+              QDMI_SUCCESS);
+    configured_ids.emplace(id.data());
+    size_t qubits = 0;
+    ASSERT_EQ(QDMI_device_query_device_property(
+                  device, QDMI_DEVICE_PROPERTY_QUBITSNUM, sizeof(qubits),
+                  &qubits, nullptr),
+              QDMI_SUCCESS);
+    EXPECT_GT(qubits, 0U);
+  }
+  EXPECT_EQ(configured_ids,
+            (std::unordered_set<std::string>{"first.device", "second.device"}));
+  QDMI_session_free(session);
+  session = nullptr;
 
   const std::string failing_initialize_config = "qdmi_failing_initialize.conf";
   {

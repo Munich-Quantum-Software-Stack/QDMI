@@ -23,10 +23,12 @@ The example driver's `QDMI_CONF` file contains one device per line:
 ```
 
 The third field is the nonempty client-visible `QDMI_DEVICE_PROPERTY_ID`. IDs
-must be unique in the configured catalog. The driver reads and validates the
-complete file transactionally when it allocates the first session. A failed
-allocation can be retried with a corrected file. Device libraries can omit this
-property because the QDMI driver owns the public ID.
+must be unique in the configured catalog. Multiple lines may use the same device
+library and prefix with different IDs; each line gets its own device session.
+The driver reads and validates the complete file transactionally when it
+allocates the first session. A failed allocation can be retried with a corrected
+file. Device libraries can omit this property because the QDMI driver owns the
+public ID.
 
 ## Implementing a Device {#device}
 

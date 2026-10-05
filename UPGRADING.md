@@ -24,8 +24,8 @@ Interface before it allocates a session. The returned ABI is compatible if and
 only if its packed major and minor fields equal those of
 `QDMI_CLIENT_ABI_VERSION`. Ignore the patch field when checking compatibility. A
 different major or minor field is incompatible. QDMI 1.4 defines
-`QDMI_CLIENT_ABI_VERSION` as 1.4.0. CMake derives the ABI version from the QDMI
-release version. Device library versions remain independent.
+`QDMI_CLIENT_ABI_VERSION` as 1.4.0 in `qdmi/client.h`. Device library versions
+remain independent.
 
 The ABI version query does not initialize the driver. `QDMI_session_alloc` is
 the first stateful Client call. It initializes the driver lazily, sets its
@@ -59,6 +59,11 @@ column:
 ```text
 /path/to/libdevice.so PREFIX deployment.device-id
 ```
+
+The example driver now accepts multiple entries for one library and prefix when
+their stable IDs differ. It initializes the library once and opens a separate
+device session for each entry. Duplicate IDs still make the configuration
+invalid.
 
 ### macOS support
 
