@@ -111,16 +111,25 @@ through `find_package` and when including QDMI as a source dependency.
 
 On ELF systems, the helper generates a linker version script. On Apple systems,
 it generates an exported-symbols list. Both lists hide other definitions,
-including symbols from bundled static dependencies. Changes to the interface
-header regenerate the list and relink the library. The options are private to
-the selected shared or module library; they do not propagate to consumers.
+including symbols from bundled static dependencies. With the Ninja and Makefile
+generators, changes to the interface header regenerate the list and relink the
+library. The options are private to the selected shared or module library; they
+do not propagate to consumers. Executables and tests that link against the
+restricted library can only use its exported symbols.
+
+The list names every function declared in the header, so a library that does not
+define one of them fails to link with LLD, which rejects undefined version
+symbols, while GNU ld and gold accept it. The same applies to `EXTRA_SYMBOLS`:
+GNU ld and gold silently ignore a misspelled entry, so verify the final exports
+with `nm -D` or `dlsym`.
 
 On Windows, the helper leaves explicit `dllexport` declarations unchanged; it
 does not filter additional exports. Static libraries are also unchanged: apply
 export control to the final shared library that contains them. Other platforms
-are unsupported by this helper. Export lists do not make hidden definitions
-visible, so retain the interface's export annotations and existing visibility
-settings. Client implementations must keep their public functions visible.
+are unsupported by this helper and keep their exports unchanged after a warning.
+Export lists do not make hidden definitions visible, so retain the interface's
+export annotations and existing visibility settings. Client implementations must
+keep their public functions visible.
 
 The device example and template enable this helper. The example driver enables
 it when built as a shared library. Projects with other build systems can apply
