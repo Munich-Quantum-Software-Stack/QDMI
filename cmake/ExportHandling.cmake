@@ -63,8 +63,10 @@ function(configure_qdmi_exports)
     return()
   elseif(NOT APPLE AND NOT CMAKE_EXECUTABLE_FORMAT STREQUAL "ELF")
     message(
-      FATAL_ERROR
-        "QDMI export restrictions are supported on ELF and Apple linkers")
+      WARNING
+        "QDMI export restrictions are supported on ELF and Apple linkers only; exports of ${ARG_TARGET} are unchanged"
+    )
+    return()
   endif()
 
   set(include_dir "${QDMI_INCLUDE_BUILD_DIR}")
