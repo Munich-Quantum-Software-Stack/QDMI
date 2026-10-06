@@ -654,6 +654,8 @@ TEST_P(QDMIImplementationTest, GetResultsCornerCases) {
   EXPECT_EQ(
       QDMI_job_get_results(job, QDMI_JOB_RESULT_CUSTOM5, 0, nullptr, nullptr),
       QDMI_ERROR_NOTSUPPORTED);
+
+  QDMI_job_free(job);
 }
 
 TEST_P(QDMIImplementationTest, GetShots) {
