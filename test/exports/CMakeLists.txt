@@ -22,6 +22,9 @@ set_target_properties(qdmi_export_dependency
 target_link_libraries(
   cxx-qdmi-device
   PRIVATE "$<LINK_LIBRARY:WHOLE_ARCHIVE,qdmi_export_dependency>")
+target_link_libraries(
+  my-qdmi-device PRIVATE "$<LINK_LIBRARY:WHOLE_ARCHIVE,qdmi_export_dependency>")
+add_subdirectory(fixture)
 
 # Reuse the example driver's objects so coverage measures each source once.
 get_target_property(driver_type qdmi_example_driver TYPE)
@@ -54,21 +57,34 @@ if(NOT prefix_dir)
 endif()
 file(STRINGS "${prefix_dir}/prefix_defs.txt" device_functions
      REGEX "^QDMI_device_[a-z0-9_]+$")
+set(template_functions ${device_functions})
 list(TRANSFORM device_functions PREPEND "CXX_")
+list(TRANSFORM template_functions PREPEND "MY_")
 list(JOIN device_functions "\", \"" device_functions)
-file(CONFIGURE OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/device_functions.h" CONTENT
-     "constexpr const char* DEVICE_FUNCTIONS[] = {\"@device_functions@\"};\n"
-     @ONLY)
+list(JOIN template_functions "\", \"" template_functions)
+file(
+  CONFIGURE
+  OUTPUT
+  "${CMAKE_CURRENT_BINARY_DIR}/device_functions.h"
+  CONTENT
+  "constexpr const char* DEVICE_FUNCTIONS[] = {\"@device_functions@\"};
+constexpr const char* TEMPLATE_FUNCTIONS[] = {\"@template_functions@\"};
+"
+  @ONLY)
 add_executable(qdmi_export_test test_exports.cpp)
 target_include_directories(qdmi_export_test
                            PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
 target_link_libraries(qdmi_export_test PRIVATE GTest::gtest_main
                                                ${CMAKE_DL_LIBS})
 target_compile_features(qdmi_export_test PRIVATE cxx_std_20)
-add_dependencies(qdmi_export_test cxx-qdmi-device ${export_driver})
+add_dependencies(qdmi_export_test cxx-qdmi-device my-qdmi-device
+                 qdmi_export_fixture ${export_driver})
 target_compile_definitions(
-  qdmi_export_test PRIVATE DEVICE_LIBRARY="$<TARGET_FILE:cxx-qdmi-device>"
-                           DRIVER_LIBRARY="$<TARGET_FILE:${export_driver}>")
+  qdmi_export_test
+  PRIVATE DEVICE_LIBRARY="$<TARGET_FILE:cxx-qdmi-device>"
+          TEMPLATE_LIBRARY="$<TARGET_FILE:my-qdmi-device>"
+          FIXTURE_LIBRARY="$<TARGET_FILE:qdmi_export_fixture>"
+          DRIVER_LIBRARY="$<TARGET_FILE:${export_driver}>")
 add_test(NAME QdmiExports COMMAND qdmi_export_test)
 
 add_dependencies(qdmi_test qdmi_export_test)

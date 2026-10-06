@@ -37,6 +37,21 @@ void Check_exports(const char *path, const auto &required) {
 
 TEST(Exports, Device) { Check_exports(DEVICE_LIBRARY, DEVICE_FUNCTIONS); }
 
+TEST(Exports, Template) { Check_exports(TEMPLATE_LIBRARY, TEMPLATE_FUNCTIONS); }
+
+TEST(Exports, DeclarationShapes) {
+  constexpr std::array required = {"P_QDMI_device_deprecated",
+                                   "P_QDMI_device_pointer",
+                                   "P_QDMI_device_wrapped"};
+  auto *library = dlopen(FIXTURE_LIBRARY, RTLD_NOW | RTLD_LOCAL);
+  ASSERT_NE(library, nullptr) << dlerror();
+  for (const auto *symbol : required) {
+    EXPECT_NE(dlsym(library, symbol), nullptr) << symbol;
+  }
+  EXPECT_EQ(dlsym(library, "P_hidden"), nullptr);
+  EXPECT_EQ(dlclose(library), 0);
+}
+
 TEST(Exports, Client) {
   constexpr std::array required = {"QDMI_session_alloc",
                                    "QDMI_session_set_parameter",
