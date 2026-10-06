@@ -1,4 +1,5 @@
 [default.extend-words]
+braket = "braket"
 wille = "wille"
 
 [default.extend-identifiers]

@@ -7,6 +7,90 @@ releases, please refer to the
 
 ## [Unreleased]
 
+### Program output and result ordering
+
+QDMI 1.4 defines one serialization for standard binary results: logical bit zero
+is rightmost, and leading zeros are retained. This is a semantic compatibility
+change for devices that previously returned bit zero first. Existing result
+values and function signatures are unchanged. Two result kinds are appended:
+`QDMI_JOB_RESULT_QIR_OUTPUT = 9` and `QDMI_JOB_RESULT_QASM3_OUTPUT = 10`;
+`QDMI_JOB_RESULT_MAX` becomes 11. Rebuild consumers that validate enum bounds.
+
+Output slots are defined by the submitted format: OpenQASM uses final classical
+values in declaration order, QPY uses `QuantumCircuit.clbits`, QIR uses executed
+output-recording calls, and IQM JSON uses measurement-instruction order followed
+by locus order. OpenQASM 3 follows its language-defined output selection:
+explicit `output` declarations when present, otherwise all declared classical
+variables subject to scoping.
+
+For QIR and OpenQASM 3, shots and histograms require the complete selected
+output to be binary. A numeric output on any shot, including an integer valued
+zero or one, makes `SHOTS`, `HIST_KEYS`, and `HIST_VALUES` return
+`QDMI_ERROR_NOTSUPPORTED` for the entire job, including size queries. Do not
+discard nonbinary values or individual shots. Successful execution does not
+become a failed job just because binary retrieval is unsupported.
+
+Devices accepting nonbinary output must expose the corresponding full-output
+result. Full-output support is optional for binary-only programs:
+
+- QIR output uses the standard ordered or labeled output stream, with schema
+  headers, shot boundaries, metadata, types, containers, and applicable labels.
+  Migrate existing custom QIR-output results to the standard enum, preserving
+  native stream ordering and complete values. An opt-in capture setting must not
+  leave an accepted nonbinary-output program without its required output.
+- OpenQASM 3 output is a JSON array of per-shot objects mapping output names to
+  final values. Retain register/array shape and index order, exact integers,
+  round-trip floating-point values, and `null` for undefined values. Binary
+  retrieval is unsupported when any selected output value is undefined. Selected
+  types outside the specified JSON encoding must be rejected as unsupported
+  program features; never return partial output.
+
+Both strings are null-terminated, with the terminator included in their byte
+size. When binary and full output are both available, they describe the same
+executions. Full output and shots use the same shot order. Full-output arrays
+and streams are not reversed. See @ref QDMI_PROGRAM_FORMAT_T and @ref
+QDMI_JOB_RESULT_T for the full contract.
+
+Device libraries must normalize backend results to this mapping. Reversing a
+string suffices only when the backend already selected and flattened exactly the
+required outputs in increasing output-bit order. In particular, do not sort QIR
+result IDs or IQM measurement-key names to derive output positions. Preserve
+repeated QIR outputs, final OpenQASM assignments, output widths, and leading
+zeros. Asynchronous labeled QIR results require reconstruction from the
+program's recording semantics; return `QDMI_ERROR_NOTSUPPORTED` for binary
+results if that reconstruction is unavailable. Do not silently zero-fill
+undefined OpenQASM 3 outputs.
+
+Drivers must not add another reversal. SDK adapters and compilers must preserve
+the source program's output semantics, including classical destinations and
+initialization, while presenting the SDK's expected result format. Coordinate
+provider and adapter updates so that old workarounds do not reverse results
+twice. The IQM JSON format does not interpret SDK-specific measurement-key
+encodings; retain any mapping needed for source-result reconstruction. Compiler
+temporaries must not accidentally become additional source-visible outputs.
+
+The IQM JSON payload remains a single circuit object, not a full `RunRequest`.
+Execution settings and optional logical-to-physical qubit mapping remain
+separate. Locus names identify physical site names unless a documented mapping
+is supplied. Physical placement must not change output positions and does not
+encode source classical destinations.
+
+QDMI-on-IQM needs to normalize backend histogram keys and shot columns against
+the submitted measurement instructions and loci. Its frontend integration and
+Core's compiler pipeline need to preserve source register widths, initialized
+unmeasured bits, and final values of overwritten destinations, independently of
+that normalization. DDSIM and other providers must also adopt the binary/full-
+output distinction. These downstream changes are adoption requirements, not
+implementations supplied by QDMI's mock libraries.
+
+Dense statevectors and probabilities use numerical computational-basis indices
+with qubit zero least significant; sparse keys name those same indices. These
+quantum-state results are independent of the program's classical output layout.
+Support for implicit terminal measurement of programs without measurements or
+program outputs remains implementation-defined and must be documented by the
+device. Numeric-only output does not permit implicit measurement. Portable
+programs must specify measurements and outputs explicitly.
+
 ### CMake consumption
 
 Installed QDMI packages no longer select a compiler cache or add `-g` to
