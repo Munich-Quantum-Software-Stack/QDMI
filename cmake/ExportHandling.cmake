@@ -79,13 +79,12 @@ function(configure_qdmi_exports)
     APPEND
     PROPERTY CMAKE_CONFIGURE_DEPENDS "${header}")
   file(READ "${header}" declarations)
-  # A declaration starts a line with any run of type and macro tokens (for
-  # example QDMI_EXPORT, QDMI_DEPRECATED_EXPORT or a pointer return type) before
-  # a lowercase QDMI function name. Line breaks inside it are allowed.
+  # QDMI declarations use a single return-type token and an optional export
+  # annotation. Match the shipped headers, including multiline declarations.
   string(
     REGEX
       MATCHALL
-      "[\r\n]([A-Za-z_][A-Za-z0-9_]*[ \t\r\n*]+)*QDMI_[a-z][A-Za-z0-9_]*[ \t\r\n]*\\("
+      "[\r\n](QDMI_[A-Z_]+[ \t\r\n]+)?[A-Za-z_][A-Za-z0-9_]*[ \t\r\n]+QDMI_[a-z][A-Za-z0-9_]*[ \t\r\n]*\\("
       functions
       "${declarations}")
   if(NOT functions)
@@ -93,9 +92,7 @@ function(configure_qdmi_exports)
   endif()
   set(symbols ${ARG_EXTRA_SYMBOLS})
   foreach(declaration IN LISTS functions)
-    string(REGEX MATCH "QDMI_[a-z][A-Za-z0-9_]*[ \t\r\n]*\\(" symbol
-                 "${declaration}")
-    string(REGEX REPLACE "[ \t\r\n]*\\($" "" symbol "${symbol}")
+    string(REGEX MATCH "QDMI_[a-z][A-Za-z0-9_]*" symbol "${declaration}")
     if(ARG_INTERFACE STREQUAL "device")
       set(symbol "${ARG_PREFIX}_${symbol}")
     endif()

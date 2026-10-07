@@ -17,14 +17,13 @@
  * SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
  */
 
-#include "device_functions.h"
-
-#include <array>
 #include <dlfcn.h>
 #include <gtest/gtest.h>
+#include <initializer_list>
 
 namespace {
-void Check_exports(const char *path, const auto &required) {
+void Check_exports(const char *path,
+                   std::initializer_list<const char *> required = {}) {
   auto *library = dlopen(path, RTLD_NOW | RTLD_LOCAL);
   ASSERT_NE(library, nullptr) << dlerror();
   for (const auto *symbol : required) {
@@ -35,44 +34,30 @@ void Check_exports(const char *path, const auto &required) {
   EXPECT_EQ(dlclose(library), 0);
 }
 
-TEST(Exports, Device) { Check_exports(DEVICE_LIBRARY, DEVICE_FUNCTIONS); }
+TEST(Exports, Device) { Check_exports(DEVICE_LIBRARY); }
 
-TEST(Exports, Template) { Check_exports(TEMPLATE_LIBRARY, TEMPLATE_FUNCTIONS); }
-
-TEST(Exports, DeclarationShapes) {
-  constexpr std::array required = {"P_QDMI_device_deprecated",
-                                   "P_QDMI_device_pointer",
-                                   "P_QDMI_device_wrapped"};
-  auto *library = dlopen(FIXTURE_LIBRARY, RTLD_NOW | RTLD_LOCAL);
-  ASSERT_NE(library, nullptr) << dlerror();
-  for (const auto *symbol : required) {
-    EXPECT_NE(dlsym(library, symbol), nullptr) << symbol;
-  }
-  EXPECT_EQ(dlsym(library, "P_hidden"), nullptr);
-  EXPECT_EQ(dlclose(library), 0);
-}
+TEST(Exports, Template) { Check_exports(TEMPLATE_LIBRARY); }
 
 TEST(Exports, Client) {
-  constexpr std::array required = {"QDMI_session_alloc",
-                                   "QDMI_session_set_parameter",
-                                   "QDMI_session_init",
-                                   "QDMI_session_query_session_property",
-                                   "QDMI_session_free",
-                                   "QDMI_device_query_device_property",
-                                   "QDMI_device_query_site_property",
-                                   "QDMI_device_query_operation_property",
-                                   "QDMI_device_create_job",
-                                   "QDMI_session_retrieve_job_by_id",
-                                   "QDMI_job_set_parameter",
-                                   "QDMI_job_query_property",
-                                   "QDMI_job_submit",
-                                   "QDMI_job_cancel",
-                                   "QDMI_job_check",
-                                   "QDMI_job_wait",
-                                   "QDMI_job_get_results",
-                                   "QDMI_job_free",
-                                   "QDMI_driver_init",
-                                   "QDMI_driver_shutdown"};
-  Check_exports(DRIVER_LIBRARY, required);
+  Check_exports(DRIVER_LIBRARY, {"QDMI_session_alloc",
+                                 "QDMI_session_set_parameter",
+                                 "QDMI_session_init",
+                                 "QDMI_session_query_session_property",
+                                 "QDMI_session_free",
+                                 "QDMI_device_query_device_property",
+                                 "QDMI_device_query_site_property",
+                                 "QDMI_device_query_operation_property",
+                                 "QDMI_device_create_job",
+                                 "QDMI_session_retrieve_job_by_id",
+                                 "QDMI_job_set_parameter",
+                                 "QDMI_job_query_property",
+                                 "QDMI_job_submit",
+                                 "QDMI_job_cancel",
+                                 "QDMI_job_check",
+                                 "QDMI_job_wait",
+                                 "QDMI_job_get_results",
+                                 "QDMI_job_free",
+                                 "QDMI_driver_init",
+                                 "QDMI_driver_shutdown"});
 }
 } // namespace

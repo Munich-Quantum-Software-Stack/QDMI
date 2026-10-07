@@ -95,7 +95,8 @@ directory with `FETCHCONTENT_SOURCE_DIR_QDMI`.
 
 ## Control Shared-Library Exports
 
-Starting with QDMI 1.4.0, implementations can opt into an exact export list:
+Use `configure_qdmi_exports` to restrict a shared or module library to its QDMI
+interface and explicitly listed additional C symbols:
 
 ```cmake
 configure_qdmi_exports(TARGET my_device INTERFACE device PREFIX MY)
@@ -103,37 +104,29 @@ configure_qdmi_exports(TARGET my_driver INTERFACE client
                       EXTRA_SYMBOLS QDMI_driver_init QDMI_driver_shutdown)
 ```
 
-Call the helper once after creating the implementation target. It reads the
-selected interface's function declarations from the QDMI headers in use and
-applies the device prefix, if needed. `EXTRA_SYMBOLS` accepts exact C
-identifiers for additional public interfaces. The helper is available both
-through `find_package` and when including QDMI as a source dependency.
+Call the helper once after creating the target. Device interfaces require
+`PREFIX`; client interfaces use unprefixed names. `EXTRA_SYMBOLS` accepts exact
+C identifiers for additional public functions. The helper reads the QDMI headers
+in use and is available through `find_package` and source dependencies.
 
-On ELF systems, the helper generates a linker version script. On Apple systems,
-it generates an exported-symbols list. Both lists hide other definitions,
-including symbols from bundled static dependencies. With the Ninja and Makefile
+The helper uses a linker version script on ELF systems and an exported-symbols
+list on Apple systems. These restrict the target's exports, including
+definitions from bundled static dependencies. With Ninja and Makefile
 generators, changes to the interface header regenerate the list and relink the
-library. The options are private to the selected shared or module library; they
-do not propagate to consumers. Executables and tests that link against the
-restricted library can only use its exported symbols.
+library.
 
-The list names every function declared in the header, so a library that does not
-define one of them fails to link with LLD, which rejects undefined version
-symbols, while GNU ld and gold accept it. The same applies to `EXTRA_SYMBOLS`:
-GNU ld and gold silently ignore a misspelled entry, so verify the final exports
-with `nm -D` or `dlsym`.
+Apply export control to the final shared library when using static archives. On
+Windows, use explicit `dllexport` declarations; the helper leaves exports
+unchanged. Other unsupported platforms produce a warning.
 
-On Windows, the helper leaves explicit `dllexport` declarations unchanged; it
-does not filter additional exports. Static libraries are also unchanged: apply
-export control to the final shared library that contains them. Other platforms
-are unsupported by this helper and keep their exports unchanged after a warning.
-Export lists do not make hidden definitions visible, so retain the interface's
-export annotations and existing visibility settings. Client implementations must
-keep their public functions visible.
+Keep public definitions visible through the appropriate export annotations.
+Executables and tests linking against the library must use its exported
+interface. Verify the final exports, for example with `nm -D` on ELF systems or
+`dlsym`: LLD rejects listed symbols without definitions, whereas GNU ld and gold
+silently ignore them.
 
-The device example and template enable this helper. The example driver enables
-it when built as a shared library. Projects with other build systems can apply
-equivalent linker settings; QDMI does not require CMake or prohibit additional
-public interfaces.
+The device example and template use this helper, as does the example driver when
+built as a shared library. Other build systems can apply equivalent linker
+settings.
 
 [releases]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases
