@@ -2435,6 +2435,7 @@
     <docanchor file="md_docs_2rationale.html" title="Why does QDMI use opaque pointers?">rationale-opaque-pointers</docanchor>
     <docanchor file="md_docs_2rationale.html" title="Why does QDMI not define individual functions for each property?">rationale-properties</docanchor>
     <docanchor file="md_docs_2rationale.html" title="Why do device implementations use a prefix?">rationale-prefix</docanchor>
+    <docanchor file="md_docs_2rationale.html" title="Why restrict shared-library exports?">rationale-exports</docanchor>
     <docanchor file="md_docs_2rationale.html" title="Why do devices have sessions?">device-session</docanchor>
     <docanchor file="md_docs_2rationale.html" title="Why do sessions need to be initialized after allocation?">rationale-session-init</docanchor>
     <docanchor file="md_docs_2rationale.html" title="Why are there separate kinds of jobs for devices and clients?">rationale-job-structs</docanchor>
