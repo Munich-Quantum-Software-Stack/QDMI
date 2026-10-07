@@ -5,5 +5,6 @@ var searchData=
   ['enumeration_20properties_2',['Integer or Enumeration Properties',['../md_docs_2examples.html#device-int-enumeration',1,'']]],
   ['examples_3',['Examples',['../md_docs_2examples.html',1,'']]],
   ['export_2eh_4',['export.h',['../export_8h.html',1,'']]],
-  ['extractive_20contributions_5',['Extractive Contributions',['../md_docs_2ai__usage.html#extractive-contributions',1,'']]]
+  ['exports_5',['Why restrict shared-library exports?',['../md_docs_2rationale.html#rationale-exports',1,'']]],
+  ['extractive_20contributions_6',['Extractive Contributions',['../md_docs_2ai__usage.html#extractive-contributions',1,'']]]
 ];

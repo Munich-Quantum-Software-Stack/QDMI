@@ -220,7 +220,17 @@ $(function(){initNavTree('md_docs_2installation.html','',''); });
 <div class="line">FetchContent_MakeAvailable(qdmi)</div>
 <div class="line"> </div>
 <div class="line">target_link_libraries(my_target PRIVATE qdmi::qdmi)</div>
-</div><!-- fragment --><p>QDMI defaults to disabling installation, tests, examples, and templates when included as a subproject. Documentation is also disabled by default. This path needs network access for the initial checkout, unless you supply a local source directory with <span class="tt">FETCHCONTENT_SOURCE_DIR_QDMI</span>. </p>
+</div><!-- fragment --><p>QDMI defaults to disabling installation, tests, examples, and templates when included as a subproject. Documentation is also disabled by default. This path needs network access for the initial checkout, unless you supply a local source directory with <span class="tt">FETCHCONTENT_SOURCE_DIR_QDMI</span>.</p>
+<h1>Control Shared-Library Exports</h1>
+<p>Use <span class="tt">configure_qdmi_exports</span> to restrict a shared or module library to its QDMI interface and explicitly listed additional C symbols:</p>
+<div class="fragment"><div class="line">configure_qdmi_exports(TARGET my_device INTERFACE device PREFIX MY)</div>
+<div class="line">configure_qdmi_exports(TARGET my_driver INTERFACE client</div>
+<div class="line">                      EXTRA_SYMBOLS MY_driver_extension)</div>
+</div><!-- fragment --><p>Call the helper once after creating the target. Device interfaces require <span class="tt">PREFIX</span>; client interfaces use unprefixed names. <span class="tt">EXTRA_SYMBOLS</span> accepts exact C identifiers for additional public functions. The helper reads the QDMI headers in use and is available through <span class="tt">find_package</span> and source dependencies.</p>
+<p>The helper uses a linker version script on ELF systems and an exported-symbols list on Apple systems. These restrict the target's exports, including definitions from bundled static dependencies. With Ninja and Makefile generators, changes to the interface header regenerate the list and relink the library.</p>
+<p>Apply export control to the final shared library when using static archives. On Windows, use explicit <span class="tt">dllexport</span> declarations; the helper leaves exports unchanged. Other unsupported platforms produce a warning.</p>
+<p>Keep public definitions visible through the appropriate export annotations. Executables and tests linking against the library must use its exported interface. Verify the final exports, for example with <span class="tt">nm -D</span> on ELF systems or <span class="tt">dlsym</span>: LLD rejects listed symbols without definitions, whereas GNU ld and gold silently ignore them.</p>
+<p>The device example and template use this helper, as does the example driver when built as a shared library. Other build systems can apply equivalent linker settings. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
