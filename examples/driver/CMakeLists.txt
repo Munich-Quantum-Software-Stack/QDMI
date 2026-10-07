@@ -31,11 +31,4 @@ set_target_properties(
              POSITION_INDEPENDENT_CODE ON)
 add_library(qdmi::example_driver ALIAS qdmi_example_driver)
 
-configure_qdmi_exports(
-  TARGET
-  qdmi_example_driver
-  INTERFACE
-  client
-  EXTRA_SYMBOLS
-  QDMI_driver_init
-  QDMI_driver_shutdown)
+configure_qdmi_exports(TARGET qdmi_example_driver INTERFACE client)
