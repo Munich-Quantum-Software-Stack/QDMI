@@ -15,10 +15,15 @@
 #
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
-# Restrict a shared library to the selected QDMI interface and explicit
-# additions. Usage: configure_qdmi_exports(TARGET my_device INTERFACE device
-# PREFIX MY) configure_qdmi_exports(TARGET my_driver INTERFACE client
-# EXTRA_SYMBOLS QDMI_driver_init QDMI_driver_shutdown)
+#[[
+Restrict a shared library to the selected QDMI interface and explicit additions.
+
+Usage:
+  configure_qdmi_exports(TARGET my_device INTERFACE device PREFIX MY)
+
+  configure_qdmi_exports(TARGET my_driver INTERFACE client
+                         EXTRA_SYMBOLS QDMI_driver_init QDMI_driver_shutdown)
+]]
 function(configure_qdmi_exports)
   cmake_parse_arguments(PARSE_ARGV 0 ARG "" "TARGET;INTERFACE;PREFIX"
                         "EXTRA_SYMBOLS")

@@ -255,6 +255,7 @@ for previous changelogs._
 
 <!-- PR links -->
 
+[#559]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/559
 [#551]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/551
 [#538]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/538
 [#537]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/537
@@ -324,5 +325,3 @@ for previous changelogs._
 [Semantic Versioning]: https://semver.org/spec/v2.0.0.html
 [CMake presets]: https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html
 [munich-quantum-toolkit/workflows]: https://github.com/munich-quantum-toolkit/workflows
-
-[#559]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/559
