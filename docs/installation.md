@@ -93,4 +93,40 @@ included as a subproject. Documentation is also disabled by default. This path
 needs network access for the initial checkout, unless you supply a local source
 directory with `FETCHCONTENT_SOURCE_DIR_QDMI`.
 
+## Control Shared-Library Exports
+
+Use `configure_qdmi_exports` to restrict a shared or module library to its QDMI
+interface and explicitly listed additional C symbols:
+
+```cmake
+configure_qdmi_exports(TARGET my_device INTERFACE device PREFIX MY)
+configure_qdmi_exports(TARGET my_driver INTERFACE client
+                      EXTRA_SYMBOLS QDMI_driver_init QDMI_driver_shutdown)
+```
+
+Call the helper once after creating the target. Device interfaces require
+`PREFIX`; client interfaces use unprefixed names. `EXTRA_SYMBOLS` accepts exact
+C identifiers for additional public functions. The helper reads the QDMI headers
+in use and is available through `find_package` and source dependencies.
+
+The helper uses a linker version script on ELF systems and an exported-symbols
+list on Apple systems. These restrict the target's exports, including
+definitions from bundled static dependencies. With Ninja and Makefile
+generators, changes to the interface header regenerate the list and relink the
+library.
+
+Apply export control to the final shared library when using static archives. On
+Windows, use explicit `dllexport` declarations; the helper leaves exports
+unchanged. Other unsupported platforms produce a warning.
+
+Keep public definitions visible through the appropriate export annotations.
+Executables and tests linking against the library must use its exported
+interface. Verify the final exports, for example with `nm -D` on ELF systems or
+`dlsym`: LLD rejects listed symbols without definitions, whereas GNU ld and gold
+silently ignore them.
+
+The device example and template use this helper, as does the example driver when
+built as a shared library. Other build systems can apply equivalent linker
+settings.
+
 [releases]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases

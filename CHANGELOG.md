@@ -14,6 +14,11 @@ clients compiled against a different minor or major version.
 
 _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 
+### Added
+
+- ✨ Add optional target-specific export control for device and client libraries
+  ([#559]) ([\@marcelwa])
+
 ### Changed
 
 - 📝 Document installation and CMake consumption of the QDMI interface ([#538])
@@ -250,6 +255,7 @@ for previous changelogs._
 
 <!-- PR links -->
 
+[#559]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/559
 [#551]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/551
 [#538]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/538
 [#537]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/537

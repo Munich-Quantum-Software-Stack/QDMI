@@ -183,6 +183,7 @@ if(INSTALL_QDMI)
     "${PROJECT_SOURCE_DIR}/cmake/${PROJECT_NAME}-config.cmake.in"
     "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config.cmake"
     INSTALL_DESTINATION ${QDMI_CONFIG_INSTALL_DIR}
+    PATH_VARS CMAKE_INSTALL_INCLUDEDIR
     NO_SET_AND_CHECK_MACRO NO_CHECK_REQUIRED_COMPONENTS_MACRO)
   write_basic_package_version_file(
     "${PROJECT_NAME}-config-version.cmake"
@@ -226,6 +227,7 @@ if(INSTALL_QDMI)
   install(
     FILES ${PROJECT_SOURCE_DIR}/cmake/prefix_defs.txt
           ${PROJECT_SOURCE_DIR}/cmake/PrefixHandling.cmake
+          ${PROJECT_SOURCE_DIR}/cmake/ExportHandling.cmake
           ${PROJECT_SOURCE_DIR}/cmake/test_defs.cpp.in
     DESTINATION ${QDMI_CONFIG_INSTALL_DIR}
     COMPONENT ${PROJECT_NAME}_Development)
