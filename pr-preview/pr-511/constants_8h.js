@@ -4,6 +4,7 @@ var constants_8h =
     [ "QDMI_VERSION_MAJOR", "constants_8h.html#a8e8caa8cb8dfb5c515321c3700c40152", null ],
     [ "QDMI_VERSION_MINOR", "constants_8h.html#ad80ba3f24fa2cec89f3d409f18aa1766", null ],
     [ "QDMI_VERSION_PATCH", "constants_8h.html#a771649d97222ad4e2e23a56797dde658", null ],
+    [ "QDMI_IS_INVALID_ENUM_VALUE", "constants_8h.html#abaa597c83ab712be78d373f691412aed", null ],
     [ "QDMI_Device_Session_Parameter", "constants_8h.html#ab99cb3929c8d79596e66fb276711ebda", null ],
     [ "QDMI_Device_Job_Parameter", "constants_8h.html#a65db59774d7c61601159d00d505d835c", null ],
     [ "QDMI_Device_Job_Property", "constants_8h.html#a9962b2d3a2ebb0791c8c6196069e499e", null ],

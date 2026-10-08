@@ -198,6 +198,7 @@ Macros</h2></td></tr>
 <tr class="memdesc:ad80ba3f24fa2cec89f3d409f18aa1766"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract the minor component of a packed version.  <br /></td></tr>
 <tr class="memitem:a771649d97222ad4e2e23a56797dde658" id="r_a771649d97222ad4e2e23a56797dde658"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a771649d97222ad4e2e23a56797dde658">QDMI_VERSION_PATCH</a>(version)</td></tr>
 <tr class="memdesc:a771649d97222ad4e2e23a56797dde658"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract the patch component of a packed version.  <br /></td></tr>
+<tr class="memitem:abaa597c83ab712be78d373f691412aed" id="r_abaa597c83ab712be78d373f691412aed"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#abaa597c83ab712be78d373f691412aed">QDMI_IS_INVALID_ENUM_VALUE</a>(value,  PREFIX)</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-typedef-members" class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -543,6 +544,31 @@ Enumerations</h2></td></tr>
 <b>Value:</b><div class="fragment"><div class="line">((uint32_t)(version) &amp; 0xFFFU)</div>
 </div><!-- fragment -->
 <p>Extract the patch component of a packed version. </p>
+
+</div>
+</div>
+<a id="abaa597c83ab712be78d373f691412aed" name="abaa597c83ab712be78d373f691412aed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abaa597c83ab712be78d373f691412aed">&#9670;&#160;</a></span>QDMI_IS_INVALID_ENUM_VALUE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define QDMI_IS_INVALID_ENUM_VALUE</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>value</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>PREFIX</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">((value) &gt;= PREFIX##_MAX &amp;&amp; (value) != PREFIX##_CUSTOM1 &amp;&amp;                   \</div>
+<div class="line"> (value) != PREFIX##_CUSTOM2 &amp;&amp; (value) != PREFIX##_CUSTOM3 &amp;&amp;               \</div>
+<div class="line"> (value) != PREFIX##_CUSTOM4 &amp;&amp; (value) != PREFIX##_CUSTOM5)</div>
+</div><!-- fragment --><p>Check whether an enum value is outside its standard and custom ranges. Reserved standard values below PREFIX_MAX remain valid inputs that the implementation reports as unsupported. </p>
 
 </div>
 </div>
