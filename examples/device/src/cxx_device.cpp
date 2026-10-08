@@ -829,10 +829,7 @@ int CXX_QDMI_device_job_get_results(CXX_QDMI_Device_Job job,
                                     const size_t size, void *data,
                                     size_t *size_ret) {
   if (job == nullptr || (data != nullptr && size == 0) ||
-      (result >= QDMI_JOB_RESULT_MAX && result != QDMI_JOB_RESULT_CUSTOM1 &&
-       result != QDMI_JOB_RESULT_CUSTOM2 && result != QDMI_JOB_RESULT_CUSTOM3 &&
-       result != QDMI_JOB_RESULT_CUSTOM4 &&
-       result != QDMI_JOB_RESULT_CUSTOM5)) {
+      QDMI_IS_INVALID_ENUM_VALUE(result, QDMI_JOB_RESULT)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   if (program_index >= job->programs.size()) {
