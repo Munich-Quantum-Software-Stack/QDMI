@@ -338,12 +338,7 @@ int CXX_QDMI_device_session_set_parameter(CXX_QDMI_Device_Session session,
                                           QDMI_Device_Session_Parameter param,
                                           size_t size, const void *value) {
   if (session == nullptr || (value != nullptr && size == 0) ||
-      (param >= QDMI_DEVICE_SESSION_PARAMETER_MAX &&
-       param != QDMI_DEVICE_SESSION_PARAMETER_CUSTOM1 &&
-       param != QDMI_DEVICE_SESSION_PARAMETER_CUSTOM2 &&
-       param != QDMI_DEVICE_SESSION_PARAMETER_CUSTOM3 &&
-       param != QDMI_DEVICE_SESSION_PARAMETER_CUSTOM4 &&
-       param != QDMI_DEVICE_SESSION_PARAMETER_CUSTOM5)) {
+      QDMI_IS_INVALID_ENUM_VALUE(param, QDMI_DEVICE_SESSION_PARAMETER)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   if (session->status != CXX_QDMI_DEVICE_SESSION_STATUS::ALLOCATED) {
@@ -391,12 +386,7 @@ int CXX_QDMI_device_job_set_parameter(CXX_QDMI_Device_Job job,
                                       const QDMI_Device_Job_Parameter param,
                                       const size_t size, const void *value) {
   if (job == nullptr || (value != nullptr && size == 0) ||
-      (param >= QDMI_DEVICE_JOB_PARAMETER_MAX &&
-       param != QDMI_DEVICE_JOB_PARAMETER_CUSTOM1 &&
-       param != QDMI_DEVICE_JOB_PARAMETER_CUSTOM2 &&
-       param != QDMI_DEVICE_JOB_PARAMETER_CUSTOM3 &&
-       param != QDMI_DEVICE_JOB_PARAMETER_CUSTOM4 &&
-       param != QDMI_DEVICE_JOB_PARAMETER_CUSTOM5)) {
+      QDMI_IS_INVALID_ENUM_VALUE(param, QDMI_DEVICE_JOB_PARAMETER)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   if (job->status != QDMI_JOB_STATUS_CREATED) {
@@ -406,12 +396,7 @@ int CXX_QDMI_device_job_set_parameter(CXX_QDMI_Device_Job job,
   case QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT:
     if (value != nullptr) {
       const auto format = *static_cast<const QDMI_Program_Format *>(value);
-      if (format >= QDMI_PROGRAM_FORMAT_MAX &&
-          format != QDMI_PROGRAM_FORMAT_CUSTOM1 &&
-          format != QDMI_PROGRAM_FORMAT_CUSTOM2 &&
-          format != QDMI_PROGRAM_FORMAT_CUSTOM3 &&
-          format != QDMI_PROGRAM_FORMAT_CUSTOM4 &&
-          format != QDMI_PROGRAM_FORMAT_CUSTOM5) {
+      if (QDMI_IS_INVALID_ENUM_VALUE(format, QDMI_PROGRAM_FORMAT)) {
         return QDMI_ERROR_INVALIDARGUMENT;
       }
       if (format != QDMI_PROGRAM_FORMAT_QASM2 &&
@@ -443,12 +428,7 @@ int CXX_QDMI_device_job_query_property(CXX_QDMI_Device_Job job,
                                        const size_t size, void *value,
                                        size_t *size_ret) {
   if (job == nullptr || (value != nullptr && size == 0) ||
-      (prop >= QDMI_DEVICE_JOB_PROPERTY_MAX &&
-       prop != QDMI_DEVICE_JOB_PROPERTY_CUSTOM1 &&
-       prop != QDMI_DEVICE_JOB_PROPERTY_CUSTOM2 &&
-       prop != QDMI_DEVICE_JOB_PROPERTY_CUSTOM3 &&
-       prop != QDMI_DEVICE_JOB_PROPERTY_CUSTOM4 &&
-       prop != QDMI_DEVICE_JOB_PROPERTY_CUSTOM5)) {
+      QDMI_IS_INVALID_ENUM_VALUE(prop, QDMI_DEVICE_JOB_PROPERTY)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   const auto str = std::to_string(job->id);
@@ -730,10 +710,7 @@ int CXX_QDMI_device_job_get_results(CXX_QDMI_Device_Job job,
                                     size_t *size_ret) {
   if (job == nullptr || job->status != QDMI_JOB_STATUS_DONE ||
       (data != nullptr && size == 0) ||
-      (result >= QDMI_JOB_RESULT_MAX && result != QDMI_JOB_RESULT_CUSTOM1 &&
-       result != QDMI_JOB_RESULT_CUSTOM2 && result != QDMI_JOB_RESULT_CUSTOM3 &&
-       result != QDMI_JOB_RESULT_CUSTOM4 &&
-       result != QDMI_JOB_RESULT_CUSTOM5)) {
+      QDMI_IS_INVALID_ENUM_VALUE(result, QDMI_JOB_RESULT)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   switch (result) {
@@ -764,12 +741,7 @@ int CXX_QDMI_device_session_query_device_property(
     CXX_QDMI_Device_Session session, const QDMI_Device_Property prop,
     const size_t size, void *value, size_t *size_ret) {
   if (session == nullptr || (value != nullptr && size == 0) ||
-      (prop >= QDMI_DEVICE_PROPERTY_MAX &&
-       prop != QDMI_DEVICE_PROPERTY_CUSTOM1 &&
-       prop != QDMI_DEVICE_PROPERTY_CUSTOM2 &&
-       prop != QDMI_DEVICE_PROPERTY_CUSTOM3 &&
-       prop != QDMI_DEVICE_PROPERTY_CUSTOM4 &&
-       prop != QDMI_DEVICE_PROPERTY_CUSTOM5)) {
+      QDMI_IS_INVALID_ENUM_VALUE(prop, QDMI_DEVICE_PROPERTY)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   if (session->status != CXX_QDMI_DEVICE_SESSION_STATUS::INITIALIZED) {
@@ -822,11 +794,7 @@ int CXX_QDMI_device_session_query_site_property(CXX_QDMI_Device_Session session,
                                                 size_t *size_ret) {
   if (session == nullptr || site == nullptr ||
       (value != nullptr && size == 0) ||
-      (prop >= QDMI_SITE_PROPERTY_MAX && prop != QDMI_SITE_PROPERTY_CUSTOM1 &&
-       prop != QDMI_SITE_PROPERTY_CUSTOM2 &&
-       prop != QDMI_SITE_PROPERTY_CUSTOM3 &&
-       prop != QDMI_SITE_PROPERTY_CUSTOM4 &&
-       prop != QDMI_SITE_PROPERTY_CUSTOM5)) {
+      QDMI_IS_INVALID_ENUM_VALUE(prop, QDMI_SITE_PROPERTY)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   ADD_SINGLE_VALUE_PROPERTY(QDMI_SITE_PROPERTY_INDEX, uint64_t, site->id, prop,
@@ -849,12 +817,7 @@ int CXX_QDMI_device_session_query_operation_property(
       (sites != nullptr && num_sites == 0) ||
       (params != nullptr && num_params == 0) ||
       (value != nullptr && size == 0) ||
-      (prop >= QDMI_OPERATION_PROPERTY_MAX &&
-       prop != QDMI_OPERATION_PROPERTY_CUSTOM1 &&
-       prop != QDMI_OPERATION_PROPERTY_CUSTOM2 &&
-       prop != QDMI_OPERATION_PROPERTY_CUSTOM3 &&
-       prop != QDMI_OPERATION_PROPERTY_CUSTOM4 &&
-       prop != QDMI_OPERATION_PROPERTY_CUSTOM5)) {
+      QDMI_IS_INVALID_ENUM_VALUE(prop, QDMI_OPERATION_PROPERTY)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   // General properties

@@ -16,6 +16,8 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 
 ### Added
 
+- ✨ Provide a shared enum-range check for QDMI device and driver
+  implementations ([#511]) ([\@burgholzer]).
 - ✨ Add optional target-specific export control for device and client libraries
   ([#559]) ([\@marcelwa])
 - ✨ Define the existing Client Interface as a versioned, replaceable QDMI

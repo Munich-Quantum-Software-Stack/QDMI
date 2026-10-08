@@ -50,6 +50,8 @@ namespace {
 static_assert(QDMI_VERSION_MAJOR(QDMI_MAKE_VERSION(2, 1, 3)) == 2U);
 static_assert(QDMI_VERSION_MINOR(QDMI_MAKE_VERSION(2, 1, 3)) == 1U);
 static_assert(QDMI_VERSION_PATCH(QDMI_MAKE_VERSION(2, 1, 3)) == 3U);
+static_assert(QDMI_IS_INVALID_ENUM_VALUE(QDMI_DEVICE_PROPERTY_MAX,
+                                         QDMI_DEVICE_PROPERTY));
 
 /// Hash function for a pair
 struct Pair_hash {

@@ -40,6 +40,14 @@
 /// Extract the patch component of a packed version.
 #define QDMI_VERSION_PATCH(version) ((uint32_t)(version) & 0xFFFU)
 
+/// Check whether an enum value is outside its standard and custom ranges.
+/// Reserved standard values below PREFIX_MAX remain valid inputs that the
+/// implementation reports as unsupported.
+#define QDMI_IS_INVALID_ENUM_VALUE(value, PREFIX)                              \
+  ((value) >= PREFIX##_MAX && (value) != PREFIX##_CUSTOM1 &&                   \
+   (value) != PREFIX##_CUSTOM2 && (value) != PREFIX##_CUSTOM3 &&               \
+   (value) != PREFIX##_CUSTOM4 && (value) != PREFIX##_CUSTOM5)
+
 #ifdef __cplusplus
 extern "C" {
 #endif
