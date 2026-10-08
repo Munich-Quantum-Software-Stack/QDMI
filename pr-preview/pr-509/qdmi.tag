@@ -500,6 +500,13 @@
       <anchor>a771649d97222ad4e2e23a56797dde658</anchor>
       <arglist>(version)</arglist>
     </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>QDMI_IS_INVALID_ENUM_VALUE</name>
+      <anchorfile>constants_8h.html</anchorfile>
+      <anchor>abaa597c83ab712be78d373f691412aed</anchor>
+      <arglist>(value, PREFIX)</arglist>
+    </member>
     <member kind="typedef">
       <type>enum QDMI_DEVICE_SESSION_PARAMETER_T</type>
       <name>QDMI_Device_Session_Parameter</name>
