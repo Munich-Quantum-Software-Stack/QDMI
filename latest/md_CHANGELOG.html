@@ -190,23 +190,34 @@ $(function(){initNavTree('md_CHANGELOG.html','',''); });
 <p><em>If you are upgrading: please see <a href="UPGRADING.md#unreleased"><span class="tt">UPGRADING.md</span></a>.</em></p>
 <h2>Added</h2>
 <ul>
+<li>✨ Provide a shared enum-range check for QDMI device and driver implementations (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/511">#511</a>) ([@burgholzer], [@ystade]).</li>
+<li>✨ Define the existing Client Interface as a versioned, replaceable QDMI driver ABI (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/511">#511</a>) ([@burgholzer], [@ystade]).</li>
+<li>✨ Add mandatory stable client-visible IDs for configured top-level devices (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/511">#511</a>) ([@burgholzer], [@ystade]).</li>
+<li>✨ Add native Windows library loading to the example driver (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/511">#511</a>) ([@burgholzer], [@ystade]).</li>
 <li>✨ Add optional target-specific export control for device and client libraries (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/559">#559</a>) ([@marcelwa])</li>
+<li>✨ Add ordered multi-program jobs with one aggregate lifecycle, indexed program and result queries, optional individual status queries, and three required Device Interface job functions (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/509">#509</a>) ([@ystade], [@burgholzer]).</li>
 </ul>
 <h2>Changed</h2>
 <ul>
+<li>💥 Make Client session allocation the first stateful driver call and remove the example driver's separate initialization and shutdown functions (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/511">#511</a>) ([@burgholzer], [@ystade]).</li>
 <li>📝 Document installation and CMake consumption of the QDMI interface (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/538">#538</a>) ([@marcelwa], [@burgholzer])</li>
 <li>🔧 Make CMake package version checks architecture-independent (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/538">#538</a>) ([@burgholzer])</li>
 <li>🔧 Leave compiler launchers and debug flags to CMake package consumers (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/538">#538</a>) ([@burgholzer])</li>
+<li>💥 Add a program index to <span class="tt"><a class="el" href="group__client__job__interface.html#ga1a07533166af439c2fa62edafec4d99e" title="Retrieve one program&#39;s results from a job.">QDMI_job_get_results</a></span> and <span class="tt"><a class="el" href="group__device__job__interface.html#gaaefb46a6d128a080329759ad21425c5e" title="Retrieve one program&#39;s results from a job.">QDMI_device_job_get_results</a></span>, pass program formats by value, and use the atomic program-list setter for single-program jobs (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/509">#509</a>) ([@ystade], [@burgholzer]).</li>
 <li>💥 Drop x86 macOS from QDMI's tested platforms (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/515">#515</a>) ([@denialhaag])</li>
 <li>⬆️ Raise generated device projects' macOS deployment target to 13.3 (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/515">#515</a>) ([@denialhaag])</li>
 <li>💥 Require generated device projects to use Python 3.11 or newer (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/515">#515</a>) ([@denialhaag])</li>
 </ul>
 <h2>Fixed</h2>
 <ul>
+<li>🐛 Allow the example driver to open one device library more than once with distinct stable IDs (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/511">#511</a>) ([@burgholzer], [@ystade]).</li>
+<li>🐛 Release example-driver device libraries when the final session closes, before process-wide dependency teardown (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/511">#511</a>) ([@burgholzer], [@ystade]).</li>
+<li>🐛 Allow the example driver to open devices without token authentication while propagating authentication errors (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/511">#511</a>) ([@burgholzer], [@ystade]).</li>
 <li>🐛 Preserve timestamps of unchanged prefixed headers to avoid redundant builds (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/537">#537</a>) ([@burgholzer])</li>
 </ul>
 <h2>Removed</h2>
 <ul>
+<li>💥 Replace the batch-job format, separate format and program job parameters, and the single-program <span class="tt">PROGRAM</span> property with ordered program lists and indexed getters, reserving the removed enum values (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/509">#509</a>) ([@ystade], [@burgholzer]).</li>
 <li>💥 Remove the calibration program format. Providers can expose calibration submission through a separate function (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/551">#551</a>) ([@burgholzer]).</li>
 <li>💥 Remove the unused pulse-support device property and level type. Providers can expose pulse programming through a separate vendor interface (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/513">#513</a>) ([@burgholzer]).</li>
 <li>💥 Remove the unused calibration advisory device property. Providers can expose proprietary calibration metadata with a custom property (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/512">#512</a>) ([@burgholzer]).</li>
