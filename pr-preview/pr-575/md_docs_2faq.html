@@ -9,8 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>QDMI: FAQ</title>
     <link href="tabs.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="jquery.js"></script>
-    <script type="text/javascript" src="dynsections.js"></script>
+    <script type="text/javascript" src="codefolding.js"></script>
     <script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
     <script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
     <script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
@@ -212,6 +211,8 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('md_docs_2faq.h
 <p>Contributors include <a href="https://mq.sc">MQSC</a>, the TUM Chairs of Design Automation and Computer Architecture and Parallel Systems, and the Leibniz Supercomputing Centre within the Munich Quantum Valley initiative. See <a href="https://munich-quantum-software-stack.github.io/QDMI/latest/md_docs_2support.html">Support</a> for questions and bug reports.</p>
 <h2>Does installing QDMI let me run a quantum program?</h2>
 <p>The interface package supplies headers and CMake helpers. Executing calls requires a compatible driver and device implementation. For a local check, use the <a href="https://munich-quantum-software-stack.github.io/QDMI/latest/md_docs_2getting__started.html">bundled mock device</a>. For execution APIs and a local simulator, see <a href="https://mqt.readthedocs.io/projects/core/en/latest/qdmi/index.html">MQT Core</a>.</p>
+<h2>Why is it written in C and not in Python?</h2>
+<p>The C interface lets native HPC software, drivers, and device libraries share a common ABI. Opaque handles keep implementation details behind that boundary. Other languages can use it through bindings, including the C++ and Python wrappers supplied by MQT Core.</p>
 <h2>Can I use QDMI from Python?</h2>
 <p>Yes. QDMI uses a C ABI that other languages can call. MQT Core provides C++ and Python wrappers, plus Qiskit and PennyLane adapters. These wrappers and adapters are implementation facilities, rather than part of the QDMI C specification.</p>
 <h2>Does every device support the same programs and results?</h2>

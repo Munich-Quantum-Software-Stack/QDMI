@@ -9,8 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>QDMI: Getting Started</title>
     <link href="tabs.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="jquery.js"></script>
-    <script type="text/javascript" src="dynsections.js"></script>
+    <script type="text/javascript" src="codefolding.js"></script>
     <script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
     <script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
     <script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
@@ -268,7 +267,7 @@ Diagnose Configuration and Loading Failures</h1>
 <p>Use trusted configuration files and libraries: loading a device library runs native code in the application process. For the ABI check and handle ownership, see the <a class="el" href="md_docs_2rationale.html" title="Architecture and Rationale">architecture</a>.</p>
 <h1 class="doxsection"><a class="anchor" id="getting-started-runtime"></a>
 Move to a Simulator or External Device</h1>
-<p><a href="https://mqt.readthedocs.io/projects/core/en/latest/qdmi/index.html">MQT Core's QDMI guides</a> cover its runtime installation, local DDSIM execution, C++ and Python APIs, and SDK adapters. Its builtin driver supplies configured devices such as <span class="tt">mqt.ddsim.default</span>; manifest discovery and <span class="tt">builtin_driver</span> helpers are Core conveniences. Follow its <a href="https://mqt.readthedocs.io/projects/core/en/latest/qdmi/configuration.html">configuration guide</a> for library registration and its <a href="https://mqt.readthedocs.io/projects/core/en/latest/qdmi/slurm.html">Slurm guide</a> for scheduler integration.</p>
+<p><a href="https://mqt.readthedocs.io/projects/core/en/latest/qdmi/index.html">MQT Core's QDMI guides</a> cover its runtime installation, local DDSIM execution, C++ and Python APIs, and SDK adapters. The <a href="https://mqt.readthedocs.io/projects/core/en/latest/tutorials/qdmi_execution.html">QDMI execution tutorial</a> walks through device discovery, compilation, submission, and result checks using the bundled DDSIM simulator. Its builtin driver supplies configured devices such as <span class="tt">mqt.ddsim.default</span>; manifest discovery and <span class="tt">builtin_driver</span> helpers are Core conveniences. Follow its <a href="https://mqt.readthedocs.io/projects/core/en/latest/qdmi/configuration.html">configuration guide</a> for library registration and its <a href="https://mqt.readthedocs.io/projects/core/en/latest/qdmi/slurm.html">Slurm guide</a> for scheduler integration.</p>
 <p>For <a href="https://amazon-braket-qdmi-device.readthedocs.io/en/latest/">Amazon Braket</a> or <a href="https://iqm-finland.github.io/QDMI-on-IQM/">IQM</a>, use the device project's installation and configuration guides for catalogues, endpoints, credentials, and deployment. Match the runtime and device versions before submitting work. Installing the standalone QDMI headers is not an additional runtime step when using a packaged application stack. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
