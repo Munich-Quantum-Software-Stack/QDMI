@@ -12,8 +12,9 @@ clients compiled against a different minor or major version.
 
 ## [Unreleased]
 
-_If you are upgrading: please see
-[`UPGRADING.md`](UPGRADING.md#upgrading-unreleased)._
+## [1.4.0] - 2026-10-09
+
+_If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#140)._
 
 ### Added
 
@@ -278,7 +279,8 @@ for previous changelogs._
 
 <!-- Version links -->
 
-[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.3...HEAD
+[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.4.0...HEAD
+[1.4.0]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.4.0
 [1.3.3]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.3.3
 [1.3.2]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.3.2
 [1.3.1]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.3.1
