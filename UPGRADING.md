@@ -5,6 +5,10 @@ between versions. For a complete list of changes, including minor and patch
 releases, please refer to the
 [changelog](CHANGELOG.md).
 
+<!-- Doxygen's heading IDs are global; distinguish CHANGELOG's Unreleased section. -->
+<!-- rumdl-disable-next-line MD033 -->
+<a id="upgrading-unreleased"></a>
+
 ## [Unreleased]
 
 ### CMake consumption

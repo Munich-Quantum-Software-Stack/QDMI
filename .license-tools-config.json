@@ -21,6 +21,7 @@
     ".ps1": "POUND_STYLE"
   },
   "exclude": [
+    "docs/_static/logos/.*",
     "^\\.[^/]+",
     "/\\.[^/]+",
     ".*\\.qasm",

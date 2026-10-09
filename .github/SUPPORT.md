@@ -20,6 +20,6 @@ You can save time by following this procedure when reporting a problem:
   if a handful of lines suffice to show that something is not working.
 
 You can also always reach us at
-[mqss@munich-quantum-valley.de](mailto:mqss@munich-quantum-valley.de).
+<mqss@munich-quantum-valley.de>.
 
 <!-- [DOXYGEN] -->

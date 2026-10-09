@@ -13,9 +13,9 @@ template.
 ## Creating a new Project {#template-create}
 
 The code for the template is contained in the `templates/device/` directory of
-the QDMI repository. To start a new project based on the template, configure
-QDMI once to define the prefix and output path, then explicitly build the
-`qdmi-template` target that writes the files.
+the QDMI repository. To start a new project based on the template, configure the
+@ref getting-started-build "QDMI checkout" once to define the prefix and output
+path, then explicitly build the `qdmi-template` target that writes the files.
 
 \note Initial configuration fetches build dependencies and requires an internet
 connection.
@@ -48,14 +48,13 @@ implementations are provided in the `examples/` directory. See
 
 ## Configuring the Template {#template-configure}
 
-For stability, we recommend pinning the version of QDMI that you are using for
-your implementation. You can use any valid git tag, branch, or commit hash for
-that. To this end, adjust the `QDMI_REV` variable in
+Pin the generated project to the same QDMI revision used for generation and in
+the [installation guide](installation.md). Adjust the `QDMI_REV` variable in
 `cmake/ExternalDependencies.cmake` as follows:
 
 ```diff
 -   set(QDMI_REV "develop"
-+   set(QDMI_REV "v1.4.0"
++   set(QDMI_REV "701fc7052e88618240c0ee2ba81114452e779527"
 ```
 
 The generated project assigns the default stable ID `prefix.default` to its

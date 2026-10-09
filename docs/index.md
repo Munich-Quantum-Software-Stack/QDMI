@@ -6,53 +6,47 @@
 
 \snippet{doc} README.md DOXYGEN MAIN
 
-QDMI provides C11 headers for two interfaces: applications use the @ref
-client_interface implemented by a driver; device libraries implement the @ref
-device_interface called by that driver. Both cover sessions, queries, and jobs.
-The [architecture and rationale](rationale.md) explains these components, stable
-device IDs, and their lifetimes.
-
 ## Choose a Starting Point
 
-| Your goal                     | Guide                                                                                                                              |
-| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| Try QDMI locally              | [Getting Started](getting_started.md): build the examples and run discovery, submission, and result checks against the mock device |
-| Add QDMI headers to a project | [Using QDMI with CMake](installation.md)                                                                                           |
-| Implement a device or driver  | [Examples](examples.md) and [device template](templates.md)                                                                        |
-| Understand the contracts      | [Architecture and rationale](rationale.md) and the @ref client_interface and @ref device_interface references                      |
-| Find answers or contribute    | [FAQ](faq.md), [Support](support.md), and [Contributing](contributing.md)                                                          |
+| Your goal                          | Guide                                                                                                                                                                                                              |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Evaluate or adopt QDMI             | [Ecosystem and Community](ecosystem.md): deployments, integrations, publications, stewardship, and participation                                                                                                   |
+| Develop applications or middleware | The @ref client_interface, [architecture](rationale.md), and [MQT Core guides](https://mqt.readthedocs.io/projects/core/en/latest/qdmi/index.html) for drivers, C++/Python bindings, compilation, and SDK adapters |
+| Connect hardware or services       | The @ref device_interface, [examples](examples.md), [device template](templates.md), and [implementation smoke test](getting_started.md)                                                                           |
+| Operate infrastructure             | @ref ecosystem-operations "Deployment responsibilities", provider configuration and authentication guides, and [MQT Core's Slurm integration](https://mqt.readthedocs.io/projects/core/en/latest/qdmi/slurm.html)  |
 
-## Use QDMI in an Application
+## From Interface to Execution
 
-[MQT Core](https://mqt.readthedocs.io/projects/core/en/latest/qdmi/index.html)
-supplies a driver, C++ and Python APIs, local DDSIM execution, and Qiskit and
+QDMI provides C11 headers for two interfaces: applications call the @ref
+client_interface implemented by a driver; device libraries implement the @ref
+device_interface called by that driver. Both cover sessions, queries, and jobs.
+The [architecture and rationale](rationale.md) explains compatibility, stable
+device IDs, and handle ownership. [Using QDMI with CMake](installation.md)
+covers the header package and build helpers.
+
+To execute circuits locally, follow
+[MQT Core's simulator tutorial](https://mqt.readthedocs.io/projects/core/en/latest/tutorials/qdmi_execution.html).
+MQT Core supplies a driver, C++ and Python APIs, DDSIM execution, and Qiskit and
 PennyLane adapters. Its
 [compilation guide](https://mqt.readthedocs.io/projects/core/en/latest/compilation/index.html)
-explains preparing a program for a target, and its
-[Slurm guide](https://mqt.readthedocs.io/projects/core/en/latest/qdmi/slurm.html)
-covers scheduler integration. These facilities build on QDMI; their APIs and
-configuration formats belong to MQT Core.
+explains preparing programs for a target. These facilities build on QDMI; their
+APIs and configuration formats belong to MQT Core.
 
-For external devices, start with the implementation's own documentation:
+The bundled [mock workflow](getting_started.md) checks an implementation's
+session, discovery, submission, and result plumbing with synthetic results. For
+external devices, choose an @ref ecosystem-implementations "implementation and
+its deployment guide". Installing QDMI's header package separately is needed for
+developing a consumer or implementation, rather than as an extra step for
+packaged runtime users.
 
-- [Amazon Braket](https://amazon-braket-qdmi-device.readthedocs.io/en/latest/):
-  installation, gate-model device catalogue, AWS credentials, and result
-  storage.
-- [IQM](https://iqm-finland.github.io/QDMI-on-IQM/): installation, server
-  selection, authentication, calibration, and HPC deployment.
+## Versions and Further Reading
 
-Install a compatible runtime using those instructions. Installing QDMI's header
-package separately is needed when developing a consumer or an implementation,
-rather than as an extra runtime setup step for packaged users.
+Use the version selector to choose documentation for your QDMI release. The
+[installation guide](installation.md) explains selecting an interface version.
+Match the documentation, driver, and device versions, and consult the
+[upgrade guide](../UPGRADING.md) when moving between minor versions.
 
-## Versions and Background
-
-This documentation describes **QDMI 1.4**. Select the documentation version
-matching your installation and consult the [upgrade guide](../UPGRADING.md) when
-moving between minor versions. Match the interface version to the driver and
-device libraries in your installation.
-
-The @ref rationale-background "background papers" explain QDMI's role within
-MQSS and its cloud and real-hardware integrations. They describe particular
-versions and deployments; this documentation and the corresponding headers
-define the API for the selected version.
+The @ref ecosystem-publications "publications" provide historical and
+architectural context. The headers and documentation for your selected version
+define its API. See the [FAQ](faq.md), [Support](support.md), and
+[Contributing](contributing.md) for further questions and participation.

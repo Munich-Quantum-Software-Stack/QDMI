@@ -32,6 +32,9 @@ file(
   DOXYGEN_INPUT_FILES
   ${PROJECT_SOURCE_DIR}/include/*.h
   ${CMAKE_CURRENT_SOURCE_DIR}/*.md
+  ${CMAKE_CURRENT_SOURCE_DIR}/_static/*.svg
+  ${CMAKE_CURRENT_SOURCE_DIR}/_static/logos/*.png
+  ${CMAKE_CURRENT_SOURCE_DIR}/_static/logos/*.jpg
   ${PROJECT_SOURCE_DIR}/CHANGELOG.md
   ${PROJECT_SOURCE_DIR}/UPGRADING.md
   ${PROJECT_SOURCE_DIR}/README.md)
@@ -42,6 +45,8 @@ file(
 set(DOXYGEN_INPUT_DIRS
     ${DOXYGEN_INPUT_DIRS}
     ${CMAKE_CURRENT_SOURCE_DIR}/index.md
+    ${CMAKE_CURRENT_SOURCE_DIR}/ecosystem.md
+    ${CMAKE_CURRENT_SOURCE_DIR}/_static/logos/SOURCES.md
     ${CMAKE_CURRENT_SOURCE_DIR}/getting_started.md
     ${CMAKE_CURRENT_SOURCE_DIR}/installation.md
     ${CMAKE_CURRENT_SOURCE_DIR}/faq.md
@@ -89,15 +94,24 @@ FetchContent_GetProperties(doxygen-awesome-css SOURCE_DIR AWESOME_CSS_DIR)
 # Ensure the output directory exists
 file(MAKE_DIRECTORY ${DOXYGEN_OUTPUT_DIR}/html)
 
-# Copy over the dark mode logos as they are not automatically copied by Doxygen.
+# Preserve source-relative logo paths so the same Markdown works on GitHub.
+file(
+  GLOB QDMI_LOGOS CONFIGURE_DEPENDS
+  RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+  ${CMAKE_CURRENT_SOURCE_DIR}/_static/logos/*.svg
+  ${CMAKE_CURRENT_SOURCE_DIR}/_static/logos/*.png
+  ${CMAKE_CURRENT_SOURCE_DIR}/_static/logos/*.jpg
+  ${CMAKE_CURRENT_SOURCE_DIR}/_static/logos/*-LICENSE.txt)
+list(APPEND QDMI_LOGOS _static/mqss_logo.svg)
+foreach(logo IN LISTS QDMI_LOGOS)
+  configure_file(${logo} ${DOXYGEN_OUTPUT_DIR}/html/${logo} COPYONLY)
+endforeach()
+
+# Copy the dark schematic, which Doxygen does not discover in the stylesheet.
 # `configure_file` is used here because `file(COPY ...)` does not detect changes
 # and copies the files again after they have changed.
-configure_file(_static/mqss_logo_dark.svg ${DOXYGEN_OUTPUT_DIR}/html COPYONLY)
 configure_file(_static/qdmi_schematic_dark.svg ${DOXYGEN_OUTPUT_DIR}/html
                COPYONLY)
-configure_file(_static/qdmi_dark.svg ${DOXYGEN_OUTPUT_DIR}/html COPYONLY)
-# Set the logo for the project.
-set(PROJECT_LOGO "mqss_logo.svg")
 
 # Replace variables inside @@ with the current values, e.g., the placeholder
 # @DOXYGEN_INPUT_DIRS@ is replaced by the content of the variable

@@ -59,25 +59,25 @@ device library. The initialized session reports its accessible devices through
 @ref QDMI_SESSION_PROPERTY_DEVICES. QDMI does not prescribe a catalogue file
 format, installation location, or Python package discovery mechanism.
 
-In QDMI 1.4, each top-level device has a nonempty, stable @ref
-QDMI_DEVICE_PROPERTY_ID supplied by the driver. IDs are unique within one
-initialized session and remain fixed for the lifetime of their device handles.
-Equivalent sessions return the same IDs across process restarts while the
-logical resources exist. Treat IDs as opaque strings: compare or store them
-without deriving meaning from their spelling. Device libraries may report a
-default ID, which the driver can override; child-device IDs remain optional.
-Save the driver and configuration context along with an ID. An ID alone does not
-identify a globally interchangeable physical device or make a compiled program
-portable to another target.
+Each top-level device has a nonempty, stable @ref QDMI_DEVICE_PROPERTY_ID
+supplied by the driver. IDs are unique within one initialized session and remain
+fixed for the lifetime of their device handles. Equivalent sessions return the
+same IDs across process restarts while the logical resources exist. Treat IDs as
+opaque strings: compare or store them without deriving meaning from their
+spelling. Device libraries may report a default ID, which the driver can
+override; child-device IDs remain optional. Save the driver and configuration
+context along with an ID. An ID alone does not identify a globally
+interchangeable physical device or make a compiled program portable to another
+target.
 
 ### Jobs and Results
 
 The client creates a @ref QDMI_Job; the driver delegates work through @ref
-QDMI_Device_Job objects. In QDMI 1.4, @ref QDMI_job_set_programs supplies one or
-more programs with a common format and common job parameters. A device may
-reject unsupported formats or program counts. Programs are copied before the
-setter returns, and results are retrieved by the original input index. Execution
-order is unspecified.
+QDMI_Device_Job objects. @ref QDMI_job_set_programs supplies one or more
+programs with a common format and common job parameters. A device may reject
+unsupported formats or program counts. Programs are copied before the setter
+returns, and results are retrieved by the original input index. Execution order
+is unspecified.
 
 Submission, status checks, waiting, cancellation, and retrieval use the job
 interface. Optional per-program status can identify individual outcomes. Check
@@ -89,9 +89,9 @@ contract. Compilation and scheduling policies are supplied by higher layers.
 
 ### Shared Libraries and Compatibility
 
-In the QDMI 1.4 Client Interface, a driver exports unprefixed Client Interface
-symbols and @ref QDMI_driver_get_client_abi_version. A dynamic loader first
-calls that function and compares the returned major and minor versions with @ref
+In the Client Interface, a driver exports unprefixed Client Interface symbols
+and @ref QDMI_driver_get_client_abi_version. A dynamic loader first calls that
+function and compares the returned major and minor versions with @ref
 QDMI_CLIENT_ABI_VERSION; patch differences are compatible. It then resolves the
 complete Client Interface before allocating a session. Replacing a driver
 without rebuilding is possible when the replacement satisfies this ABI.
@@ -110,21 +110,26 @@ implements a replaceable QDMI driver and supplies owning C++ and Python
 wrappers, device implementations, compiler integration, and SDK adapters. Its
 builtin driver discovers versioned JSON device manifests, can enumerate
 configured IDs without loading devices, and can open one configured device at a
-time. These discovery helpers and manifest conventions are Core facilities;
+time. These discovery helpers and manifest conventions are MQT Core facilities;
 another QDMI driver can use a different catalogue mechanism.
 
-Use Core's
+Use MQT Core's
 [driver and configuration guides](https://mqt.readthedocs.io/projects/core/en/latest/qdmi/configuration.html)
 for those facilities, its
 [compiler guide](https://mqt.readthedocs.io/projects/core/en/latest/compilation/index.html)
 for preparing target-compatible programs, and its
 [Slurm guide](https://mqt.readthedocs.io/projects/core/en/latest/qdmi/slurm.html)
 for scheduler integration. Device projects own their provider-specific setup:
-[Amazon Braket](https://amazon-braket-qdmi-device.readthedocs.io/en/latest/) and
-[IQM](https://iqm-finland.github.io/QDMI-on-IQM/) document their libraries,
-credentials, accepted programs, and deployment modes.
+[Amazon Braket](https://amazon-braket-qdmi-device.readthedocs.io/en/latest/),
+[IQM](https://iqm-finland.github.io/QDMI-on-IQM/), and
+[IBM](https://ibm-qdmi-device.readthedocs.io/en/latest/) document their
+libraries, credentials, accepted programs, and deployment modes.
 
 ## Background and Version Context {#rationale-background}
+
+See [Ecosystem and Community](ecosystem.md) for international adoption,
+implementation listings, historical credit, and the complete publication list,
+including the original QDMI paper and the openQSE reference-architecture survey.
 
 The
 [Munich Quantum Software Stack paper](https://doi.org/10.1145/3773656.3773669)
@@ -137,11 +142,12 @@ calibration queries, execution, SDK integration, and HPC deployment on IQM
 systems.
 
 These papers explain the architecture and particular implementation snapshots.
-For example, the Braket paper uses QDMI 1.2, while QDMI 1.4 uses program-list
-setters and a versioned Client Interface ABI. Use the headers and documentation
-for the version you deploy, and consult the [upgrade guide](../UPGRADING.md) for
-migrations. Capabilities and deployment options are defined by the selected
-driver and device implementation, rather than by an architectural diagram.
+For example, the Braket paper uses QDMI 1.2, while the current interface uses
+program-list setters and a versioned Client Interface ABI. Use the headers and
+documentation for the version you deploy, and consult the
+[upgrade guide](../UPGRADING.md) for migrations. Capabilities and deployment
+options are defined by the selected driver and device implementation, rather
+than by an architectural diagram.
 
 ## Why does QDMI use opaque pointers? {#rationale-opaque-pointers}
 

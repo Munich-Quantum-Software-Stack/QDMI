@@ -24,8 +24,11 @@
   <!-- Navigation index tabs for HTML output -->
   <navindex>
     <tab type="mainpage" visible="yes" title=""/>
+    <!-- Page links are organized explicitly below; omit automatic page sections. -->
+    <tab type="pages" visible="no"/>
     <tab type="usergroup" title="Introduction" url="index.html">
       <tab type="user" title="Overview" url="index.html"/>
+      <tab type="user" title="Ecosystem and Community" url="md_docs_2ecosystem.html"/>
       <tab type="user" title="Getting Started" url="md_docs_2getting__started.html"/>
       <tab type="user" title="FAQ" url="md_docs_2faq.html"/>
       <tab type="user" title="Support" url="md_docs_2support.html"/>
@@ -36,8 +39,8 @@
       <tab type="user" title="Examples" url="md_docs_2examples.html"/>
       <tab type="user" title="Template" url="md_docs_2templates.html"/>
     </tab>
-    <tab type="user" title="Changelog" url="md__c_h_a_n_g_e_l_o_g.html"/>
-    <tab type="user" title="Upgrade Guide" url="md__u_p_g_r_a_d_i_n_g.html"/>
+    <tab type="user" title="Changelog" url="md_CHANGELOG.html"/>
+    <tab type="user" title="Upgrade Guide" url="md_UPGRADING.html"/>
     <tab type="usergroup" title="Development" url="md_docs_2contributing.html">
       <tab type="user" title="Contributing Guide" url="md_docs_2contributing.html"/>
       <tab type="user" title="AI Usage" url="md_docs_2ai__usage.html"/>

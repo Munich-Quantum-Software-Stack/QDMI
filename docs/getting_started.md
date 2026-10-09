@@ -1,13 +1,17 @@
 # Getting Started
 
-Start with the bundled **example driver and mock device**. This path checks
-sessions, discovery, program submission, and result retrieval locally, without
-cloud credentials, an HPC allocation, or access to quantum hardware. The mock
-returns synthetic results; it does not simulate the supplied quantum circuit.
+Use the bundled **example driver and mock device** for an implementation smoke
+test. This path checks sessions, discovery, program submission, and result
+retrieval locally, without cloud credentials, an HPC allocation, or access to
+quantum hardware. The mock returns synthetic results; it does not simulate the
+supplied quantum circuit.
 
-This page uses **QDMI 1.4**. The [CMake installation guide](installation.md)
-separately shows how to install the interface headers. A driver and its devices
-must implement the interface version you use; see the
+For circuit execution, start with
+[MQT Core's simulator tutorial](https://mqt.readthedocs.io/projects/core/en/latest/tutorials/qdmi_execution.html).
+
+The [CMake installation guide](installation.md) explains the selected revision
+and how to install the interface headers. A driver and its devices must
+implement the interface version you use; see the
 [upgrade guide](../UPGRADING.md).
 
 \tableofcontents
@@ -18,9 +22,10 @@ You need Git, CMake 3.24 or newer, and C11 and C++20 compilers. Configuration
 fetches GoogleTest and initially needs network access. From a new checkout:
 
 ```sh
-git clone --depth 1 --branch v1.4.0 \
+git clone \
   https://github.com/Munich-Quantum-Software-Stack/QDMI.git
 cd QDMI
+git checkout 701fc7052e88618240c0ee2ba81114452e779527
 
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release \
   -DBUILD_QDMI_TESTS=ON -DBUILD_QDMI_DOCS=OFF
@@ -59,9 +64,9 @@ ctest --test-dir build -C Release --output-on-failure
 ```
 
 The assertions and API calls are in
-[`test/test_qdmi.cpp`](https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/develop/test/test_qdmi.cpp),
+[`test/test_qdmi.cpp`](https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/701fc7052e88618240c0ee2ba81114452e779527/test/test_qdmi.cpp),
 with session and configuration setup in
-[`test/utils/test_impl.cpp`](https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/develop/test/utils/test_impl.cpp).
+[`test/utils/test_impl.cpp`](https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/701fc7052e88618240c0ee2ba81114452e779527/test/utils/test_impl.cpp).
 These tests also run in QDMI's CI.
 
 ## Follow the Application Workflow {#getting-started-workflow}
@@ -75,9 +80,9 @@ An application talks to the driver through the @ref client_interface.
    handles belong to this session.
 3. Prepare a program in a supported format. Create a @ref QDMI_Job with @ref
    QDMI_device_create_job, set parameters such as @ref
-   QDMI_JOB_PARAMETER_SHOTSNUM, and call @ref QDMI_job_set_programs. In 1.4,
-   even a single program is a list of length one. Text payload sizes include
-   exactly one trailing null byte; binary payloads retain their bytes.
+   QDMI_JOB_PARAMETER_SHOTSNUM, and call @ref QDMI_job_set_programs. Even a
+   single program is a list of length one. Text payload sizes include exactly
+   one trailing null byte; binary payloads retain their bytes.
 4. Submit with @ref QDMI_job_submit, then use @ref QDMI_job_check or @ref
    QDMI_job_wait to follow execution. Check the terminal status before
    interpreting the available results. Read them with @ref QDMI_job_get_results
@@ -129,16 +134,18 @@ SDK adapters. The
 [QDMI execution tutorial](https://mqt.readthedocs.io/projects/core/en/latest/tutorials/qdmi_execution.html)
 walks through device discovery, compilation, submission, and result checks using
 the bundled DDSIM simulator. Its builtin driver supplies configured devices such
-as `mqt.ddsim.default`; manifest discovery and `builtin_driver` helpers are Core
-conveniences. Follow its
+as `mqt.ddsim.default`; manifest discovery and `builtin_driver` helpers are MQT
+Core conveniences. Follow its
 [configuration guide](https://mqt.readthedocs.io/projects/core/en/latest/qdmi/configuration.html)
 for library registration and its
 [Slurm guide](https://mqt.readthedocs.io/projects/core/en/latest/qdmi/slurm.html)
 for scheduler integration.
 
-For [Amazon Braket](https://amazon-braket-qdmi-device.readthedocs.io/en/latest/)
-or [IQM](https://iqm-finland.github.io/QDMI-on-IQM/), use the device project's
-installation and configuration guides for catalogues, endpoints, credentials,
-and deployment. Match the runtime and device versions before submitting work.
-Installing the standalone QDMI headers is not an additional runtime step when
-using a packaged application stack.
+For
+[Amazon Braket](https://amazon-braket-qdmi-device.readthedocs.io/en/latest/),
+[IQM](https://iqm-finland.github.io/QDMI-on-IQM/), or
+[IBM](https://ibm-qdmi-device.readthedocs.io/en/latest/), use the device
+project's installation and configuration guides for catalogues, endpoints,
+credentials, and deployment. Match the runtime and device versions before
+submitting work. Installing the standalone QDMI headers is not an additional
+runtime step when using a packaged application stack.

@@ -109,20 +109,6 @@
         }
       }
 
-      /* image path depending on the color scheme */
-      /* Default (light mode) */
-      .logo {
-        width: 130px;
-        height: auto;
-        display: block;
-      }
-      .logo {
-        content: url("$relpath^$projectlogo"); /* this is set by doxygen, see PROJECT_LOGO in the Doxyfile.in */
-      }
-      /* Dark mode */
-      html.dark-mode .logo {
-        content: url("$relpath^mqss_logo_dark.svg");
-      }
     </style>
     <!--BEGIN DISABLE_INDEX-->
     <!--BEGIN FULL_SIDEBAR-->
@@ -140,7 +126,7 @@
             <tbody>
               <tr id="projectrow">
                 <!--BEGIN PROJECT_LOGO-->
-                <td id="projectlogo"><img class="logo" alt="Logo" /></td>
+                <td id="projectlogo"><img src="$relpath^$projectlogo" alt="$projectname" /></td>
                 <!--END PROJECT_LOGO-->
                 <!--BEGIN PROJECT_NAME-->
                 <td id="projectalign">
