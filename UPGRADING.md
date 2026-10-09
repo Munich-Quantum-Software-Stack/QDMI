@@ -108,6 +108,48 @@ provider-specific function to submit calibration jobs, if the provider offers
 one. Its numeric value (6) remains reserved. `QDMI_DEVICE_STATUS_CALIBRATION`
 remains available to report device status.
 
+### Multi-program jobs
+
+Use `QDMI_job_set_programs` (or `QDMI_device_job_set_programs`) for one program
+or an ordered list with a common format and shot count per program. The
+`PROGRAMFORMAT` and `PROGRAM` job parameters, `PROGRAM` job properties, and
+`QDMI_PROGRAM_FORMAT_BATCHJOB` are removed. Their numeric values (parameters 0
+and 1, property 2, and format 9) remain reserved and return
+`QDMI_ERROR_NOTSUPPORTED`. The numeric values of remaining members are
+unchanged.
+
+Pass the format by value. The setter copies the complete list atomically. Failed
+setters leave the previous format and programs unchanged; successful calls
+replace both. A support check passes a nonzero count and `programs == NULL`,
+checking that format and cardinality with the configured parameters without
+changing the job. Text includes exactly one trailing `\0`; binary programs are
+copied intact.
+
+`PROGRAMSNUM` reports the count once programs are set, or `QDMI_ERROR_BADSTATE`
+before that. Both result functions now take a zero-based program index
+immediately after the job handle; use zero for a single program. The optional
+indexed `QDMI_job_get_program_status` and `QDMI_device_job_get_program_status`
+functions report individual outcomes. Successful results remain available if
+other programs fail or are canceled. An aggregate terminal status means all
+programs have stopped.
+
+Use `QDMI_job_get_program` or `QDMI_device_job_get_program` with a zero-based
+index to retrieve the original bytes. Query the required size with a null data
+pointer. Retrieved remote jobs may return `QDMI_ERROR_NOTSUPPORTED` if the
+device or driver cannot recover the original program bytes.
+
+Retrieval by ID must restore the program count and input-to-result mapping.
+Queries for an unavailable original format or program bytes may return
+`QDMI_ERROR_NOTSUPPORTED` without preventing job retrieval. A device or driver
+without native list support can return `QDMI_ERROR_NOTSUPPORTED` from the
+setter; applications can then submit separate single-program jobs.
+
+Device libraries must export `QDMI_device_job_set_programs`,
+`QDMI_device_job_get_program`, and `QDMI_device_job_get_program_status`; drivers
+must export `QDMI_job_set_programs`, `QDMI_job_get_program`, and
+`QDMI_job_get_program_status`. Rebuild clients, drivers, and devices against the
+updated signatures.
+
 ## [1.3.3]
 
 ### Retrieving existing jobs by ID

@@ -26,6 +26,9 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
   ([\@burgholzer], [\@ystade]).
 - ✨ Add optional target-specific export control for device and client libraries
   ([#559]) ([\@marcelwa])
+- ✨ Add ordered multi-program jobs with one aggregate lifecycle, indexed
+  program and result queries, optional individual status queries, and three
+  required Device Interface job functions ([#509]) ([\@ystade], [\@burgholzer]).
 
 ### Changed
 
@@ -38,6 +41,10 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
   ([\@burgholzer])
 - 🔧 Leave compiler launchers and debug flags to CMake package consumers
   ([#538]) ([\@burgholzer])
+- 💥 Add a program index to `QDMI_job_get_results` and
+  `QDMI_device_job_get_results`, pass program formats by value, and use the
+  atomic program-list setter for single-program jobs ([#509]) ([\@ystade],
+  [\@burgholzer]).
 - 💥 Drop x86 macOS from QDMI's tested platforms ([#515]) ([\@denialhaag])
 - ⬆️ Raise generated device projects' macOS deployment target to 13.3 ([#515])
   ([\@denialhaag])
@@ -57,6 +64,10 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 
 ### Removed
 
+- 💥 Replace the batch-job format, separate format and program job parameters,
+  and the single-program `PROGRAM` property with ordered program lists and
+  indexed getters, reserving the removed enum values ([#509]) ([\@ystade],
+  [\@burgholzer]).
 - 💥 Remove the calibration program format. Providers can expose calibration
   submission through a separate function ([#551]) ([\@burgholzer]).
 - 💥 Remove the unused pulse-support device property and level type. Providers
@@ -280,6 +291,7 @@ for previous changelogs._
 [#513]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/513
 [#512]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/512
 [#511]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/511
+[#509]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/509
 [#486]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/486
 [#485]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/485
 [#475]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/475

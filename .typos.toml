@@ -1,5 +1,6 @@
 [default.extend-words]
 wille = "wille"
+optin = "optin"
 
 [default.extend-identifiers]
 FoMaC = "FoMaC"

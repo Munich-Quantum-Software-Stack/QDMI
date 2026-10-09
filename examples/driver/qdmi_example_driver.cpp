@@ -96,6 +96,12 @@ struct QDMI_Library {
   decltype(QDMI_device_job_free) *device_job_free{};
   /// Function pointer to @ref QDMI_device_job_set_parameter.
   decltype(QDMI_device_job_set_parameter) *device_job_set_parameter{};
+  /// Function pointer to @ref QDMI_device_job_set_programs.
+  decltype(QDMI_device_job_set_programs) *device_job_set_programs{};
+  /// Function pointer to @ref QDMI_device_job_get_program.
+  decltype(QDMI_device_job_get_program) *device_job_get_program{};
+  /// Function pointer to @ref QDMI_device_job_get_program_status.
+  decltype(QDMI_device_job_get_program_status) *device_job_get_program_status{};
   /// Function pointer to @ref QDMI_device_job_query_property.
   decltype(QDMI_device_job_query_property) *device_job_query_property{};
   /// Function pointer to @ref QDMI_device_job_submit.
@@ -258,6 +264,9 @@ QDMI_library_load(std::vector<std::unique_ptr<QDMI_Library>> &libraries,
                        device_session_retrieve_device_job_by_id)
   LOAD_SYMBOL(*library, prefix, device_job_free)
   LOAD_SYMBOL(*library, prefix, device_job_set_parameter)
+  LOAD_SYMBOL(*library, prefix, device_job_set_programs)
+  LOAD_SYMBOL(*library, prefix, device_job_get_program)
+  LOAD_SYMBOL(*library, prefix, device_job_get_program_status)
   LOAD_SYMBOL(*library, prefix, device_job_query_property)
   LOAD_SYMBOL(*library, prefix, device_job_submit)
   LOAD_SYMBOL(*library, prefix, device_job_cancel)
@@ -459,12 +468,7 @@ int QDMI_session_set_parameter(QDMI_Session session,
                                QDMI_Session_Parameter param, const size_t size,
                                const void *value) {
   if (session == nullptr || (value != nullptr && size == 0) ||
-      (param >= QDMI_SESSION_PARAMETER_MAX &&
-       param != QDMI_SESSION_PARAMETER_CUSTOM1 &&
-       param != QDMI_SESSION_PARAMETER_CUSTOM2 &&
-       param != QDMI_SESSION_PARAMETER_CUSTOM3 &&
-       param != QDMI_SESSION_PARAMETER_CUSTOM4 &&
-       param != QDMI_SESSION_PARAMETER_CUSTOM5)) {
+      QDMI_IS_INVALID_ENUM_VALUE(param, QDMI_SESSION_PARAMETER)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   if (session->status != QDMI_SESSION_STATUS::ALLOCATED) {
@@ -484,12 +488,7 @@ int QDMI_session_query_session_property(QDMI_Session session,
                                         QDMI_Session_Property prop, size_t size,
                                         void *value, size_t *size_ret) {
   if (session == nullptr || (value != nullptr && size == 0) ||
-      (prop >= QDMI_SESSION_PROPERTY_MAX &&
-       prop != QDMI_SESSION_PROPERTY_CUSTOM1 &&
-       prop != QDMI_SESSION_PROPERTY_CUSTOM2 &&
-       prop != QDMI_SESSION_PROPERTY_CUSTOM3 &&
-       prop != QDMI_SESSION_PROPERTY_CUSTOM4 &&
-       prop != QDMI_SESSION_PROPERTY_CUSTOM5)) {
+      QDMI_IS_INVALID_ENUM_VALUE(prop, QDMI_SESSION_PROPERTY)) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
 
@@ -579,6 +578,34 @@ int QDMI_job_set_parameter(QDMI_Job job, QDMI_Job_Parameter param,
       value);
 }
 
+int QDMI_job_set_programs(QDMI_Job job, const QDMI_Program_Format format,
+                          const size_t count, const size_t *sizes,
+                          const void *const *programs) {
+  if (job == nullptr) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  return job->device->library->device_job_set_programs(job->device_job, format,
+                                                       count, sizes, programs);
+}
+
+int QDMI_job_get_program(QDMI_Job job, const size_t program_index,
+                         const size_t size, void *data, size_t *size_ret) {
+  if (job == nullptr) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  return job->device->library->device_job_get_program(
+      job->device_job, program_index, size, data, size_ret);
+}
+
+int QDMI_job_get_program_status(QDMI_Job job, const size_t program_index,
+                                QDMI_Job_Status *status) {
+  if (job == nullptr || status == nullptr) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  return job->device->library->device_job_get_program_status(
+      job->device_job, program_index, status);
+}
+
 int QDMI_job_query_property(QDMI_Job job, QDMI_Job_Property prop,
                             const size_t size, void *value, size_t *size_ret) {
   if (job == nullptr) {
@@ -617,13 +644,14 @@ int QDMI_job_wait(QDMI_Job job, const size_t timeout) {
   return job->device->library->device_job_wait(job->device_job, timeout);
 }
 
-int QDMI_job_get_results(QDMI_Job job, QDMI_Job_Result result,
-                         const size_t size, void *data, size_t *size_ret) {
+int QDMI_job_get_results(QDMI_Job job, const size_t program_index,
+                         QDMI_Job_Result result, const size_t size, void *data,
+                         size_t *size_ret) {
   if (job == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
-  return job->device->library->device_job_get_results(job->device_job, result,
-                                                      size, data, size_ret);
+  return job->device->library->device_job_get_results(
+      job->device_job, program_index, result, size, data, size_ret);
 }
 
 int QDMI_device_query_device_property(QDMI_Device device,

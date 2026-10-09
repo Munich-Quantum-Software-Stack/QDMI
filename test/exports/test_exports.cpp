@@ -39,16 +39,27 @@ TEST(Exports, Device) { Check_exports(DEVICE_LIBRARY); }
 TEST(Exports, Template) { Check_exports(TEMPLATE_LIBRARY); }
 
 TEST(Exports, Client) {
-  Check_exports(DRIVER_LIBRARY,
-                {"QDMI_driver_get_client_abi_version", "QDMI_session_alloc",
-                 "QDMI_session_set_parameter", "QDMI_session_init",
-                 "QDMI_session_query_session_property", "QDMI_session_free",
-                 "QDMI_device_query_device_property",
-                 "QDMI_device_query_site_property",
-                 "QDMI_device_query_operation_property",
-                 "QDMI_device_create_job", "QDMI_session_retrieve_job_by_id",
-                 "QDMI_job_set_parameter", "QDMI_job_query_property",
-                 "QDMI_job_submit", "QDMI_job_cancel", "QDMI_job_check",
-                 "QDMI_job_wait", "QDMI_job_get_results", "QDMI_job_free"});
+  Check_exports(DRIVER_LIBRARY, {"QDMI_driver_get_client_abi_version",
+                                 "QDMI_session_alloc",
+                                 "QDMI_session_set_parameter",
+                                 "QDMI_session_init",
+                                 "QDMI_session_query_session_property",
+                                 "QDMI_session_free",
+                                 "QDMI_device_query_device_property",
+                                 "QDMI_device_query_site_property",
+                                 "QDMI_device_query_operation_property",
+                                 "QDMI_device_create_job",
+                                 "QDMI_session_retrieve_job_by_id",
+                                 "QDMI_job_set_parameter",
+                                 "QDMI_job_set_programs",
+                                 "QDMI_job_get_program",
+                                 "QDMI_job_get_program_status",
+                                 "QDMI_job_query_property",
+                                 "QDMI_job_submit",
+                                 "QDMI_job_cancel",
+                                 "QDMI_job_check",
+                                 "QDMI_job_wait",
+                                 "QDMI_job_get_results",
+                                 "QDMI_job_free"});
 }
 } // namespace

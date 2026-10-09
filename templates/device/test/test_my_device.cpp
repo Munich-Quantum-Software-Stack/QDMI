@@ -68,6 +68,36 @@ TEST_F(QDMIImplementationTest, JobSetParameterImplemented) {
   MY_QDMI_device_job_free(job);
 }
 
+TEST_F(QDMIImplementationTest, JobSetProgramsImplemented) {
+  MY_QDMI_Device_Job job = nullptr;
+  ASSERT_EQ(MY_QDMI_device_session_create_device_job(session, &job),
+            QDMI_SUCCESS);
+  ASSERT_NE(MY_QDMI_device_job_set_programs(job, QDMI_PROGRAM_FORMAT_MAX, 0,
+                                            nullptr, nullptr),
+            QDMI_ERROR_NOTIMPLEMENTED);
+  MY_QDMI_device_job_free(job);
+}
+
+TEST_F(QDMIImplementationTest, JobGetProgramImplemented) {
+  MY_QDMI_Device_Job job = nullptr;
+  ASSERT_EQ(MY_QDMI_device_session_create_device_job(session, &job),
+            QDMI_SUCCESS);
+  size_t size = 0;
+  ASSERT_NE(MY_QDMI_device_job_get_program(job, 0, 0, nullptr, &size),
+            QDMI_ERROR_NOTIMPLEMENTED);
+  MY_QDMI_device_job_free(job);
+}
+
+TEST_F(QDMIImplementationTest, JobGetProgramStatusImplemented) {
+  MY_QDMI_Device_Job job = nullptr;
+  ASSERT_EQ(MY_QDMI_device_session_create_device_job(session, &job),
+            QDMI_SUCCESS);
+  QDMI_Job_Status status = QDMI_JOB_STATUS_CREATED;
+  ASSERT_NE(MY_QDMI_device_job_get_program_status(job, 0, &status),
+            QDMI_ERROR_NOTIMPLEMENTED);
+  MY_QDMI_device_job_free(job);
+}
+
 TEST_F(QDMIImplementationTest, JobQueryPropertyImplemented) {
   MY_QDMI_Device_Job job = nullptr;
   ASSERT_EQ(MY_QDMI_device_session_create_device_job(session, &job),
@@ -115,8 +145,8 @@ TEST_F(QDMIImplementationTest, JobGetResultsImplemented) {
   MY_QDMI_Device_Job job = nullptr;
   ASSERT_EQ(MY_QDMI_device_session_create_device_job(session, &job),
             QDMI_SUCCESS);
-  ASSERT_EQ(MY_QDMI_device_job_get_results(job, QDMI_JOB_RESULT_MAX, 0, nullptr,
-                                           nullptr),
+  ASSERT_EQ(MY_QDMI_device_job_get_results(job, 0, QDMI_JOB_RESULT_MAX, 0,
+                                           nullptr, nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
   MY_QDMI_device_job_free(job);
 }

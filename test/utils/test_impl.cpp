@@ -146,6 +146,42 @@ TEST_P(QDMIImplementationTest, JobSetParameterImplemented) {
   QDMI_job_free(job);
 }
 
+TEST_P(QDMIImplementationTest, JobSetProgramsImplemented) {
+  QDMI_Job job = nullptr;
+  const auto expected_value = mode == TEST_SESSION_MODE::READWRITE
+                                  ? QDMI_SUCCESS
+                                  : QDMI_ERROR_PERMISSIONDENIED;
+  EXPECT_EQ(QDMI_device_create_job(device, &job), expected_value);
+  EXPECT_EQ(
+      QDMI_job_set_programs(job, QDMI_PROGRAM_FORMAT_MAX, 0, nullptr, nullptr),
+      QDMI_ERROR_INVALIDARGUMENT);
+  QDMI_job_free(job);
+}
+
+TEST_P(QDMIImplementationTest, JobGetProgramImplemented) {
+  QDMI_Job job = nullptr;
+  const auto expected_value = mode == TEST_SESSION_MODE::READWRITE
+                                  ? QDMI_SUCCESS
+                                  : QDMI_ERROR_PERMISSIONDENIED;
+  EXPECT_EQ(QDMI_device_create_job(device, &job), expected_value);
+  size_t size = 0;
+  EXPECT_NE(QDMI_job_get_program(job, 0, 0, nullptr, &size),
+            QDMI_ERROR_NOTIMPLEMENTED);
+  QDMI_job_free(job);
+}
+
+TEST_P(QDMIImplementationTest, JobGetProgramStatusImplemented) {
+  QDMI_Job job = nullptr;
+  const auto expected_value = mode == TEST_SESSION_MODE::READWRITE
+                                  ? QDMI_SUCCESS
+                                  : QDMI_ERROR_PERMISSIONDENIED;
+  EXPECT_EQ(QDMI_device_create_job(device, &job), expected_value);
+  QDMI_Job_Status status = QDMI_JOB_STATUS_CREATED;
+  EXPECT_NE(QDMI_job_get_program_status(job, 0, &status),
+            QDMI_ERROR_NOTIMPLEMENTED);
+  QDMI_job_free(job);
+}
+
 TEST_P(QDMIImplementationTest, JobQueryJobPropertyImplemented) {
   QDMI_Job job = nullptr;
   const auto expected_value = mode == TEST_SESSION_MODE::READWRITE
@@ -165,7 +201,7 @@ TEST_P(QDMIImplementationTest, JobSubmitImplemented) {
                             : QDMI_ERROR_PERMISSIONDENIED;
   EXPECT_EQ(QDMI_device_create_job(device, &job), expected_value);
   expected_value = mode == TEST_SESSION_MODE::READWRITE
-                       ? QDMI_SUCCESS
+                       ? QDMI_ERROR_BADSTATE
                        : QDMI_ERROR_INVALIDARGUMENT;
   EXPECT_EQ(QDMI_job_submit(job), expected_value);
   QDMI_job_free(job);
@@ -217,8 +253,9 @@ TEST_P(QDMIImplementationTest, JobGetResultsImplemented) {
                                   ? QDMI_SUCCESS
                                   : QDMI_ERROR_PERMISSIONDENIED;
   EXPECT_EQ(QDMI_device_create_job(device, &job), expected_value);
-  EXPECT_EQ(QDMI_job_get_results(job, QDMI_JOB_RESULT_MAX, 0, nullptr, nullptr),
-            QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_EQ(
+      QDMI_job_get_results(job, 0, QDMI_JOB_RESULT_MAX, 0, nullptr, nullptr),
+      QDMI_ERROR_INVALIDARGUMENT);
   QDMI_job_free(job);
 }
 
