@@ -32,6 +32,9 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 
 ### Changed
 
+- 📝 Improve architecture and onboarding documentation, including a tested local
+  mock-device workflow and links to implementation guides ([#575])
+  ([\@denialhaag]).
 - 💥 Make Client session allocation the first stateful driver call and remove
   the example driver's separate initialization and shutdown functions ([#511])
   ([\@burgholzer], [\@ystade]).
@@ -283,6 +286,7 @@ for previous changelogs._
 
 <!-- PR links -->
 
+[#575]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/575
 [#559]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/559
 [#551]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/551
 [#538]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/538
