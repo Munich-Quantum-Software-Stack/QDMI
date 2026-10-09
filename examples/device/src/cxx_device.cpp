@@ -640,7 +640,7 @@ int CXX_QDMI_device_job_wait(CXX_QDMI_Device_Job job,
 } /// [DOXYGEN FUNCTION END]
 
 namespace {
-int get_results_shots(const CXX_QDMI_Device_Job_impl_d::Result_data &result,
+int Get_results_shots(const CXX_QDMI_Device_Job_impl_d::Result_data &result,
                       const size_t size, void *data, size_t *size_ret) {
   if (result.shots.empty()) {
     if (size_ret != nullptr) {
@@ -670,7 +670,7 @@ int get_results_shots(const CXX_QDMI_Device_Job_impl_d::Result_data &result,
   return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]
 
-int get_results_hist(const CXX_QDMI_Device_Job_impl_d::Result_data &job_result,
+int Get_results_hist(const CXX_QDMI_Device_Job_impl_d::Result_data &job_result,
                      const QDMI_Job_Result result, const size_t size,
                      void *data, size_t *size_ret) {
   // Count unique elements
@@ -716,7 +716,7 @@ int get_results_hist(const CXX_QDMI_Device_Job_impl_d::Result_data &job_result,
   return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]
 
-int get_results_statevector(
+int Get_results_statevector(
     const CXX_QDMI_Device_Job_impl_d::Result_data &result, const size_t size,
     void *data, size_t *size_ret) {
   const size_t req_size = result.state_vec.size() * 2 * sizeof(double);
@@ -732,7 +732,7 @@ int get_results_statevector(
   return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]
 
-int get_results_sparse(
+int Get_results_sparse(
     const CXX_QDMI_Device_Job_impl_d::Result_data &job_result,
     const QDMI_Job_Result result, const size_t size, void *data,
     size_t *size_ret) {
@@ -810,7 +810,7 @@ int get_results_sparse(
   return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]
 
-int get_results_probabilities(
+int Get_results_probabilities(
     const CXX_QDMI_Device_Job_impl_d::Result_data &result, const size_t size,
     void *data, size_t *size_ret) {
   const size_t req_size = result.state_vec.size() * sizeof(double);
@@ -848,19 +848,19 @@ int CXX_QDMI_device_job_get_results(CXX_QDMI_Device_Job job,
   const auto &program_result = job->results[program_index];
   switch (result) {
   case QDMI_JOB_RESULT_SHOTS:
-    return get_results_shots(program_result, size, data, size_ret);
+    return Get_results_shots(program_result, size, data, size_ret);
   case QDMI_JOB_RESULT_HIST_KEYS:
   case QDMI_JOB_RESULT_HIST_VALUES:
-    return get_results_hist(program_result, result, size, data, size_ret);
+    return Get_results_hist(program_result, result, size, data, size_ret);
   case QDMI_JOB_RESULT_STATEVECTOR_DENSE:
-    return get_results_statevector(program_result, size, data, size_ret);
+    return Get_results_statevector(program_result, size, data, size_ret);
   case QDMI_JOB_RESULT_STATEVECTOR_SPARSE_KEYS:
   case QDMI_JOB_RESULT_STATEVECTOR_SPARSE_VALUES:
   case QDMI_JOB_RESULT_PROBABILITIES_SPARSE_KEYS:
   case QDMI_JOB_RESULT_PROBABILITIES_SPARSE_VALUES:
-    return get_results_sparse(program_result, result, size, data, size_ret);
+    return Get_results_sparse(program_result, result, size, data, size_ret);
   case QDMI_JOB_RESULT_PROBABILITIES_DENSE:
-    return get_results_probabilities(program_result, size, data, size_ret);
+    return Get_results_probabilities(program_result, size, data, size_ret);
   default:
     return QDMI_ERROR_NOTSUPPORTED;
   }
