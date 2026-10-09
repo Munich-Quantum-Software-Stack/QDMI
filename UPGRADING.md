@@ -24,14 +24,17 @@ Interface before it allocates a session. The returned ABI is compatible if and
 only if its packed major and minor fields equal those of
 `QDMI_CLIENT_ABI_VERSION`. Ignore the patch field when checking compatibility. A
 different major or minor field is incompatible. QDMI 1.4 defines
-`QDMI_CLIENT_ABI_VERSION` as 1.4.0 in `qdmi/client.h`. Device library versions
-remain independent.
+`QDMI_CLIENT_ABI_VERSION` as 1.4.0 in `qdmi/client.h`. This check only covers
+applications and drivers. A driver may support device libraries built against
+several QDMI minor releases; it decides which Device Interface revisions it can
+load.
 
 The ABI version query does not initialize the driver. `QDMI_session_alloc` is
-the first stateful Client call. It initializes the driver lazily, sets its
-output to `NULL` before work that can fail, and leaves no partial session on
-failure. Clients can retry a failed allocation. The example driver no longer
-exposes `QDMI_driver_init` or `QDMI_driver_shutdown`.
+the first Client call that may establish driver state. A driver may set up its
+backend then or attach to an already running service. The call sets its output
+to `NULL` before work that can fail and leaves no partial session on failure.
+Clients can retry a failed allocation. The example driver no longer exposes
+`QDMI_driver_init` or `QDMI_driver_shutdown`.
 
 A process uses one Client implementation and can allocate many sessions. Each
 initialized session exposes an immutable authorized device catalog. Device,
