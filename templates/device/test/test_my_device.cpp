@@ -78,6 +78,26 @@ TEST_F(QDMIImplementationTest, JobSetProgramsImplemented) {
   MY_QDMI_device_job_free(job);
 }
 
+TEST_F(QDMIImplementationTest, JobGetProgramImplemented) {
+  MY_QDMI_Device_Job job = nullptr;
+  ASSERT_EQ(MY_QDMI_device_session_create_device_job(session, &job),
+            QDMI_SUCCESS);
+  size_t size = 0;
+  ASSERT_NE(MY_QDMI_device_job_get_program(job, 0, 0, nullptr, &size),
+            QDMI_ERROR_NOTIMPLEMENTED);
+  MY_QDMI_device_job_free(job);
+}
+
+TEST_F(QDMIImplementationTest, JobGetProgramStatusImplemented) {
+  MY_QDMI_Device_Job job = nullptr;
+  ASSERT_EQ(MY_QDMI_device_session_create_device_job(session, &job),
+            QDMI_SUCCESS);
+  QDMI_Job_Status status = QDMI_JOB_STATUS_CREATED;
+  ASSERT_NE(MY_QDMI_device_job_get_program_status(job, 0, &status),
+            QDMI_ERROR_NOTIMPLEMENTED);
+  MY_QDMI_device_job_free(job);
+}
+
 TEST_F(QDMIImplementationTest, JobQueryPropertyImplemented) {
   MY_QDMI_Device_Job job = nullptr;
   ASSERT_EQ(MY_QDMI_device_session_create_device_job(session, &job),

@@ -27,8 +27,8 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 - ✨ Add optional target-specific export control for device and client libraries
   ([#559]) ([\@marcelwa])
 - ✨ Add ordered multi-program jobs with one aggregate lifecycle, indexed
-  payloads and results, optional indexed program-status queries, and required
-  device entry points ([#509]) ([\@ystade], [\@burgholzer]).
+  program and result queries, optional individual status queries, and three
+  required Device Interface job functions ([#509]) ([\@ystade], [\@burgholzer]).
 
 ### Changed
 
@@ -64,9 +64,9 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 
 ### Removed
 
-- 💥 Replace the batch-job format, separate program format and payload
-  parameters, and single-program payload properties with ordered program lists
-  and indexed getters, reserving the removed enum values ([#509]) ([\@ystade],
+- 💥 Replace the batch-job format, separate format and program job parameters,
+  and the single-program `PROGRAM` property with ordered program lists and
+  indexed getters, reserving the removed enum values ([#509]) ([\@ystade],
   [\@burgholzer]).
 - 💥 Remove the calibration program format. Providers can expose calibration
   submission through a separate function ([#551]) ([\@burgholzer]).

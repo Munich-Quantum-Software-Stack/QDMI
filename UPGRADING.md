@@ -122,7 +122,7 @@ Pass the format by value. The setter copies the complete list atomically. Failed
 setters leave the previous format and programs unchanged; successful calls
 replace both. A support check passes a nonzero count and `programs == NULL`,
 checking that format and cardinality with the configured parameters without
-changing the job. Text includes exactly one trailing NUL; binary payloads are
+changing the job. Text includes exactly one trailing `\0`; binary programs are
 copied intact.
 
 `PROGRAMSNUM` reports the count once programs are set, or `QDMI_ERROR_BADSTATE`
@@ -136,15 +136,15 @@ programs have stopped.
 Use `QDMI_job_get_program` or `QDMI_device_job_get_program` with a zero-based
 index to retrieve the original bytes. Query the required size with a null data
 pointer. Retrieved remote jobs may return `QDMI_ERROR_NOTSUPPORTED` if the
-provider cannot recover historical payloads.
+device or driver cannot recover the original program bytes.
 
 Retrieval by ID must restore the program count and input-to-result mapping.
-Unknown historical format or payload properties may return
-`QDMI_ERROR_NOTSUPPORTED` without preventing job retrieval. A provider without
-native list support can return `QDMI_ERROR_NOTSUPPORTED` from the setter;
-applications can then submit separate single-program jobs.
+Queries for an unavailable original format or program bytes may return
+`QDMI_ERROR_NOTSUPPORTED` without preventing job retrieval. A device or driver
+without native list support can return `QDMI_ERROR_NOTSUPPORTED` from the
+setter; applications can then submit separate single-program jobs.
 
-Device libraries must export `QDMI_device_job_set_programs` and
+Device libraries must export `QDMI_device_job_set_programs`,
 `QDMI_device_job_get_program`, and `QDMI_device_job_get_program_status`; drivers
 must export `QDMI_job_set_programs`, `QDMI_job_get_program`, and
 `QDMI_job_get_program_status`. Rebuild clients, drivers, and devices against the

@@ -885,6 +885,8 @@ TEST_P(QDMIImplementationTest, MultiProgramJob) {
             QDMI_ERROR_INVALIDARGUMENT);
   EXPECT_EQ(QDMI_job_get_program_status(job, 0, &program_status),
             QDMI_ERROR_NOTSUPPORTED);
+  EXPECT_EQ(QDMI_job_get_program_status(job, programs.size(), &program_status),
+            QDMI_ERROR_OUTOFRANGE);
   ASSERT_EQ(QDMI_job_submit(job), QDMI_SUCCESS);
   EXPECT_EQ(QDMI_job_set_programs(job, QASM2_FORMAT, programs.size(),
                                   sizes.data(), program_ptrs.data()),

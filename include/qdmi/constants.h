@@ -186,7 +186,8 @@ typedef enum QDMI_DEVICE_SESSION_PARAMETER_T QDMI_Device_Session_Parameter;
  * require them to be set.
  */
 enum QDMI_DEVICE_JOB_PARAMETER_T {
-  /// Value 0 is reserved for the removed program format parameter.
+  /// Value 0 is reserved for the removed program format parameter; do not reuse
+  /// it.
   /// Value 1 is reserved for the removed program parameter; do not reuse it.
   /**
    * @brief `size_t` The number of shots to execute for each program in a job.

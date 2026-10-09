@@ -695,7 +695,7 @@ QDMI_DRIVER_EXPORT int QDMI_device_create_job(QDMI_Device device,
  * credential. Parameters cannot be set on a retrieved job, and a retrieved
  * job cannot be submitted again. The driver must reconstruct the program count
  * and input-to-result mapping. If historical input metadata is unavailable,
- * queries for the original format or payload may return @ref
+ * queries for the original format or program bytes may return @ref
  * QDMI_ERROR_NOTSUPPORTED without preventing retrieval.
  *
  * @param[in] device The device from which to retrieve the job. Must not be @c
@@ -839,29 +839,28 @@ QDMI_DRIVER_EXPORT int QDMI_job_set_parameter(QDMI_Job job,
  * canceled.
  * @param[in] job A handle to the job. Must not be @c NULL.
  * @param[in] format The exact format of every program. Must be a valid
- * @ref QDMI_Program_Format when the driver supports program lists.
+ * @ref QDMI_Program_Format, including for a single program.
  * @param[in] count The number of programs. Must be greater than zero. A support
  * check succeeds only if the driver supports this exact cardinality
  * with the configured job parameters.
  * @param[in] sizes An array of @p count program sizes in bytes. Must not be
  * @c NULL and each size must be greater than zero when @p programs is not
- * @c NULL. A text program contains exactly one NUL, as its final byte. Binary
- * programs are arbitrary nonempty byte sequences. When @p programs is @c NULL,
- * @p sizes is ignored.
- * @param[in] programs An array of @p count program pointers. Each pointer must
- * not be @c NULL. The driver copies all input data before returning. If this is
- * @c NULL, the function checks support for the format and cardinality
- * and does not change the job.
- * @return @ref QDMI_SUCCESS if the driver supports program lists in @p format
+ * @c NULL. A text program contains exactly one @c '\0' as its final byte.
+ * Binary programs are arbitrary nonempty byte sequences. When @p programs is
+ * @c NULL, @p sizes is ignored.
+ * @param[in] programs An array of @p count program pointers. When the array is
+ * not @c NULL, each pointer must not be @c NULL. The driver copies all input
+ * data before returning. If the array is @c NULL, the function checks support
+ * for the format and cardinality without changing the job.
+ * @return @ref QDMI_SUCCESS if the driver supports the count in @p format
  * and, when @p programs is not @c NULL, set the complete list.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if
- *  - @p job is @c NULL or @p count is zero,
- *  - the driver supports program lists and @p format is not a valid format,
+ *  - @p job is @c NULL, @p count is zero, or @p format is not valid,
  *    or
  *  - the driver supports program lists, @p programs is not @c NULL, and @p
  *    sizes is @c NULL, an element of @p programs is @c NULL, an element of @p
  *    sizes is zero, or a text program does not contain exactly one trailing
- *    NUL.
+ *    @c '\0'.
  * @return @ref QDMI_ERROR_NOTSUPPORTED if the arguments are valid but the
  * driver cannot accept the format, count, or programs with the configured
  * job parameters. Reserved numeric values of removed formats also return
@@ -881,10 +880,10 @@ QDMI_DRIVER_EXPORT int QDMI_job_set_programs(QDMI_Job job,
                                              const void *const *programs);
 
 /**
- * @brief Retrieve one program's payload in input order.
+ * @brief Retrieve one program in input order.
  * @details The returned bytes include the terminating NUL for text formats.
  * A retrieved job may return @ref QDMI_ERROR_NOTSUPPORTED when its original
- * payload is unavailable. The program count is reported by @ref
+ * program bytes are unavailable. The program count is reported by @ref
  * QDMI_JOB_PROPERTY_PROGRAMSNUM.
  * @param[in] job The job to query. Must not be @c NULL.
  * @param[in] program_index The zero-based program index.
@@ -892,8 +891,9 @@ QDMI_DRIVER_EXPORT int QDMI_job_set_programs(QDMI_Job job,
  * @param[out] data The buffer for the program bytes, or @c NULL for a size
  * query.
  * @param[out] size_ret The required buffer size, or @c NULL.
- * @return @ref QDMI_SUCCESS if the program was retrieved.
- * @return @ref QDMI_ERROR_NOTSUPPORTED if its payload is unavailable.
+ * @return @ref QDMI_SUCCESS if the program bytes were copied, or their size
+ * was returned when @p data is @c NULL.
+ * @return @ref QDMI_ERROR_NOTSUPPORTED if the original program is unavailable.
  * @return @ref QDMI_ERROR_BADSTATE if no program list has been set.
  * @return @ref QDMI_ERROR_OUTOFRANGE if @p program_index is out of range.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p job is @c NULL or @p data is
@@ -907,7 +907,9 @@ QDMI_DRIVER_EXPORT int QDMI_job_get_program(QDMI_Job job, size_t program_index,
 
 /**
  * @brief Query the current status of one program in a job.
- * @details Individual outcomes are optional. Terminal statuses remain stable;
+ * @details Individual outcomes are optional. Once reached, a program's
+ * terminal status cannot change. An out-of-range index returns
+ * @ref QDMI_ERROR_OUTOFRANGE even if individual outcomes are unsupported;
  * results of successful programs remain available when siblings fail or are
  * canceled. A temporary retrieval failure is an error, not
  * @ref QDMI_ERROR_NOTSUPPORTED.
@@ -916,7 +918,8 @@ QDMI_DRIVER_EXPORT int QDMI_job_get_program(QDMI_Job job, size_t program_index,
  * @param[out] status The program status. Must not be @c NULL.
  * @return @ref QDMI_SUCCESS if the status was retrieved.
  * @return @ref QDMI_ERROR_NOTSUPPORTED if individual outcomes are unavailable.
- * @return @ref QDMI_ERROR_BADSTATE if supported outcomes are not yet ready.
+ * @return @ref QDMI_ERROR_BADSTATE if no program list has been set or
+ * supported outcomes are not yet ready.
  * @return @ref QDMI_ERROR_OUTOFRANGE if @p program_index is out of range.
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p job or @p status is @c NULL.
  * @return @ref QDMI_ERROR_FATAL if an unexpected error occurred.
