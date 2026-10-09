@@ -208,7 +208,7 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('md_CHANGELOG.h
 <div class="textblock"><p>All notable changes to this project will be described in this document. The format is based on a mixture of <a href="https://keepachangelog.com/en/1.1.0/">Keep a Changelog</a> and <a href="https://common-changelog.org">Common Changelog</a>.</p>
 <p>This project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>, with the exception that minor releases may include breaking changes. Particularly, QDMI device implementations compiled against a particular version <span class="tt">1.x.y</span> of the QDMI headers are expected to be compatible with QDMI drivers and, hence, QDMI clients compiled against any patch release in the <span class="tt">1.x</span> series, but not necessarily with QDMI drivers and clients compiled against a different minor or major version.</p>
 <h1><a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.3...HEAD">Unreleased</a></h1>
-<p><em>If you are upgrading: please see <a href="UPGRADING.md#unreleased"><span class="tt">UPGRADING.md</span></a>.</em></p>
+<p><em>If you are upgrading: please see <a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/develop/UPGRADING.md#unreleased"><span class="tt">UPGRADING.md</span></a>.</em></p>
 <h2>Added</h2>
 <ul>
 <li>✨ Provide a shared enum-range check for QDMI device and driver implementations (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/511">#511</a>) ([@burgholzer], [@ystade]).</li>
@@ -220,6 +220,7 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('md_CHANGELOG.h
 </ul>
 <h2>Changed</h2>
 <ul>
+<li>📝 Improve architecture and onboarding documentation, including a tested local mock-device workflow and links to implementation guides (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/575">#575</a>) ([@denialhaag]).</li>
 <li>💥 Make Client session allocation the first stateful driver call and remove the example driver's separate initialization and shutdown functions (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/511">#511</a>) ([@burgholzer], [@ystade]).</li>
 <li>📝 Document installation and CMake consumption of the QDMI interface (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/538">#538</a>) ([@marcelwa], [@burgholzer])</li>
 <li>🔧 Make CMake package version checks architecture-independent (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/538">#538</a>) ([@burgholzer])</li>
@@ -244,7 +245,7 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('md_CHANGELOG.h
 <li>💥 Remove the unused calibration advisory device property. Providers can expose proprietary calibration metadata with a custom property (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/512">#512</a>) ([@burgholzer]).</li>
 </ul>
 <h1><a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.3.3">1.3.3</a> - 2026-08-19</h1>
-<p><em>If you are upgrading: please see <a href="UPGRADING.md#133"><span class="tt">UPGRADING.md</span></a>.</em></p>
+<p><em>If you are upgrading: please see <a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/develop/UPGRADING.md#133"><span class="tt">UPGRADING.md</span></a>.</em></p>
 <h2>Added</h2>
 <ul>
 <li>🚸 Add support for retrieving existing jobs by their IDs (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/485">#485</a>) ([@burgholzer])</li>
@@ -275,7 +276,7 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('md_CHANGELOG.h
 <li>🐛 Fix Windows shared-library detection in the Python wrappers of the example and template device packages by resolving packaged libraries from <span class="tt">bin</span> instead of only <span class="tt">lib</span>/<span class="tt">lib64</span> (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/409">#409</a>) ([@marcelwa])</li>
 </ul>
 <h1><a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.3.0">1.3.0</a> - 2026-04-21</h1>
-<p><em>If you are upgrading: please see <a href="UPGRADING.md#130"><span class="tt">UPGRADING.md</span></a>.</em></p>
+<p><em>If you are upgrading: please see <a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/develop/UPGRADING.md#130"><span class="tt">UPGRADING.md</span></a>.</em></p>
 <h2>Added</h2>
 <ul>
 <li>👨‍💻 Add an option to disable installation instructions for QDMI (example and template) device (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/326">#326</a>) ([@ystade])</li>
@@ -287,7 +288,7 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('md_CHANGELOG.h
 <li>👨‍💻 Base the example device implementation on the device template (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/326">#326</a>) ([@ystade], [@burgholzer])</li>
 </ul>
 <h1><a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.2.2">1.2.2</a> - 2026-04-20</h1>
-<p><em>If you are upgrading: please see <a href="UPGRADING.md#122"><span class="tt">UPGRADING.md</span></a>.</em></p>
+<p><em>If you are upgrading: please see <a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/develop/UPGRADING.md#122"><span class="tt">UPGRADING.md</span></a>.</em></p>
 <h2>Added</h2>
 <ul>
 <li>👷 Add mergify configuration for easier backports and maintenance of release branches (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/355">#355</a>) ([@burgholzer])</li>
@@ -304,7 +305,7 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('md_CHANGELOG.h
 <li>🐛 Install CMake config files as part of the <span class="tt">qdmi_Development</span> component (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/371">#371</a>) ([@burgholzer])</li>
 </ul>
 <h1><a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.2.1">1.2.1</a> - 2025-12-22</h1>
-<p><em>If you are upgrading: please see <a href="UPGRADING.md#121"><span class="tt">UPGRADING.md</span></a>.</em></p>
+<p><em>If you are upgrading: please see <a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/develop/UPGRADING.md#121"><span class="tt">UPGRADING.md</span></a>.</em></p>
 <h2>Added</h2>
 <ul>
 <li>🚸 Provide compile definitions for inferring device and QDMI versions automatically (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/272">#272</a>) ([@burgholzer])</li>
@@ -322,7 +323,7 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('md_CHANGELOG.h
 <li>🐛 Fix target name mismatch for <span class="tt">qdmi_project_warnings</span> between source and installed version of QDMI (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/270">#270</a>) ([@burgholzer])</li>
 </ul>
 <h1><a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.2.0">1.2.0</a> - 2025-12-01</h1>
-<p><em>If you are upgrading: please see <a href="UPGRADING.md#120"><span class="tt">UPGRADING.md</span></a>.</em></p>
+<p><em>If you are upgrading: please see <a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/develop/UPGRADING.md#120"><span class="tt">UPGRADING.md</span></a>.</em></p>
 <h2>Added</h2>
 <ul>
 <li>✨ Add comprehensive properties to query neutral atom-based device characteristics and capabilities, including site coordinates, zone properties, module/submodule indices, interaction and blocking radii, idling fidelity, and shuttling speed (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/198">#198</a>, <a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/199">#199</a>, <a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/200">#200</a>, <a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/203">#203</a>, <a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/207">#207</a>, <a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/208">#208</a>, <a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/209">#209</a>, <a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/211">#211</a>) ([@ystade], [@burgholzer])</li>

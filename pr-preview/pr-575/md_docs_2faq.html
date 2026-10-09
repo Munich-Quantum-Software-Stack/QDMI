@@ -205,21 +205,21 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('md_docs_2faq.h
   <div class="headertitle"><div class="title">FAQ </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1>What is QDMI?</h1>
-<p>QDMI is a C interface for managing quantum devices. It connects an application's Client Interface calls to device implementations through a driver. Its session, query, and job interfaces cover configuration, capability discovery, submission, and result retrieval. See the <a class="el" href="md_docs_2rationale.html" title="Architecture and Rationale">architecture</a>.</p>
-<h1>What is MQSS, and who develops QDMI?</h1>
+<div class="textblock"><h2>What is QDMI?</h2>
+<p>QDMI is a C interface for managing quantum devices. It connects an application's Client Interface calls to device implementations through a driver. Its session, query, and job interfaces cover configuration, capability discovery, submission, and result retrieval. See the <a href="https://munich-quantum-software-stack.github.io/QDMI/latest/md_docs_2rationale.html">architecture</a>.</p>
+<h2>What is MQSS, and who develops QDMI?</h2>
 <p>The <a href="https://www.munich-quantum-valley.de/research/research-areas/mqss">Munich Quantum Software Stack (MQSS)</a> connects quantum applications, compilation and runtime infrastructure, and device implementations. QDMI is its device-management interface and can also be used by other software stacks.</p>
-<p>Contributors include the <a href="https://mq.sc">Munich Quantum Software Company (MQSC)</a>, the TUM Chairs of Design Automation and Computer Architecture and Parallel Systems, and the Leibniz Supercomputing Centre within the Munich Quantum Valley initiative. See <a class="el" href="md_docs_2support.html" title="Support">Support</a> for questions and bug reports.</p>
-<h1>Does installing QDMI let me run a quantum program?</h1>
-<p>The interface package supplies headers and CMake helpers. Executing calls requires a compatible driver and device implementation. For a local check, use the <a class="el" href="md_docs_2getting__started.html" title="Getting Started">bundled mock device</a>. For execution APIs and a local simulator, see <a href="https://mqt.readthedocs.io/projects/core/en/latest/qdmi/index.html">MQT Core</a>.</p>
-<h1>Can I use QDMI from Python?</h1>
+<p>Contributors include <a href="https://mq.sc">MQSC</a>, the TUM Chairs of Design Automation and Computer Architecture and Parallel Systems, and the Leibniz Supercomputing Centre within the Munich Quantum Valley initiative. See <a href="https://munich-quantum-software-stack.github.io/QDMI/latest/md_docs_2support.html">Support</a> for questions and bug reports.</p>
+<h2>Does installing QDMI let me run a quantum program?</h2>
+<p>The interface package supplies headers and CMake helpers. Executing calls requires a compatible driver and device implementation. For a local check, use the <a href="https://munich-quantum-software-stack.github.io/QDMI/latest/md_docs_2getting__started.html">bundled mock device</a>. For execution APIs and a local simulator, see <a href="https://mqt.readthedocs.io/projects/core/en/latest/qdmi/index.html">MQT Core</a>.</p>
+<h2>Can I use QDMI from Python?</h2>
 <p>Yes. QDMI uses a C ABI that other languages can call. MQT Core provides C++ and Python wrappers, plus Qiskit and PennyLane adapters. These wrappers and adapters are implementation facilities, rather than part of the QDMI C specification.</p>
-<h1>Does every device support the same programs and results?</h1>
+<h2>Does every device support the same programs and results?</h2>
 <p>No. Query the selected device's capabilities, including accepted program formats, and check the return codes of optional queries and operations. Available results depend on the program, device, and execution mode. For example, statevectors are simulator capabilities, rather than hardware measurement results.</p>
-<h1>How do I select compatible versions?</h1>
-<p>Use the headers and documentation corresponding to your driver and device libraries. QDMI minor releases can introduce breaking changes. QDMI 1.4 includes a Client Interface ABI query; loaders compare major and minor versions and ignore patch differences. See the <a class="el" href="md_docs_2installation.html" title="Using QDMI with CMake">CMake installation guide</a>, <a class="el" href="md_docs_2rationale.html" title="Architecture and Rationale">architecture</a>, and <a class="el" href="md_UPGRADING.html" title="Upgrade Guide">upgrade guide</a>.</p>
-<h1>Where can I get help, contribute, or find citation information?</h1>
-<p>Use <a class="el" href="md_docs_2support.html" title="Support">Support</a> for questions and bug reports and <a class="el" href="md_docs_2contributing.html" title="Contributing">Contributing</a> for contributions. The <a href="https://github.com/Munich-Quantum-Software-Stack/QDMI#cite-qdmi">README</a> contains the citation and license information. </p>
+<h2>How do I select compatible versions?</h2>
+<p>Use the headers and documentation corresponding to your driver and device libraries. QDMI minor releases can introduce breaking changes. The Client Interface provides an ABI query; loaders compare major and minor versions and ignore patch differences. See the <a href="https://munich-quantum-software-stack.github.io/QDMI/latest/md_docs_2installation.html">CMake installation guide</a>, <a href="https://munich-quantum-software-stack.github.io/QDMI/latest/md_docs_2rationale.html">architecture</a>, and <a href="https://munich-quantum-software-stack.github.io/QDMI/latest/md__u_p_g_r_a_d_i_n_g.html">upgrade guide</a>.</p>
+<h2>Where can I get help, contribute, or find citation information?</h2>
+<p>Use <a href="https://munich-quantum-software-stack.github.io/QDMI/latest/md_docs_2support.html">Support</a> for questions and bug reports and <a href="https://munich-quantum-software-stack.github.io/QDMI/latest/md_docs_2contributing.html">Contributing</a> for contributions. The <a href="https://github.com/Munich-Quantum-Software-Stack/QDMI#cite-qdmi">README</a> contains the citation and license information.</p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
