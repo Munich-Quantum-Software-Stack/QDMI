@@ -8,8 +8,8 @@ Applications need a compatible implementation to execute QDMI calls; see the
 ## Select a Release
 
 Use a tag from the [releases page][releases]. Release tags include the `v`
-prefix, for example `v1.3.3`; CMake package versions omit it, for example
-`1.3.3`. The examples below pin that release rather than a development branch.
+prefix, for example `v1.4.0`; CMake package versions omit it, for example
+`1.4.0`. The examples below pin that release rather than a development branch.
 For reproducible source dependencies, a full commit hash can also be used with
 `FetchContent`.
 
@@ -27,7 +27,7 @@ documentation to avoid building optional targets and downloading their
 dependencies.
 
 ```sh
-git clone --depth 1 --branch v1.3.3 \
+git clone --depth 1 --branch v1.4.0 \
   https://github.com/Munich-Quantum-Software-Stack/QDMI.git qdmi
 
 cmake -S qdmi -B qdmi/build \
@@ -46,16 +46,16 @@ archive can be used in place of the Git checkout.
 
 The installation contains headers and CMake package files, including the
 symbol-prefix helpers used by device implementations. QDMI currently does not
-publish prebuilt SDK archives. Starting with 1.4.0, the package version check is
-architecture-independent. Earlier releases, including the 1.3.3 examples here,
-require installation and consumer toolchains with matching pointer sizes.
+publish prebuilt SDK archives. The 1.4 package version check is
+architecture-independent; device and driver binaries still need to match the
+platform and architecture of the application.
 
 ## Use an Installed Package
 
 In your project's `CMakeLists.txt`, after declaring your target:
 
 ```cmake
-find_package(qdmi 1.3.3 CONFIG REQUIRED)
+find_package(qdmi 1.4.0 CONFIG REQUIRED)
 target_link_libraries(my_target PRIVATE qdmi::qdmi)
 ```
 
@@ -82,7 +82,7 @@ include(FetchContent)
 FetchContent_Declare(
   qdmi
   GIT_REPOSITORY https://github.com/Munich-Quantum-Software-Stack/QDMI.git
-  GIT_TAG v1.3.3)
+  GIT_TAG v1.4.0)
 FetchContent_MakeAvailable(qdmi)
 
 target_link_libraries(my_target PRIVATE qdmi::qdmi)
@@ -93,7 +93,7 @@ included as a subproject. Documentation is also disabled by default. This path
 needs network access for the initial checkout, unless you supply a local source
 directory with `FETCHCONTENT_SOURCE_DIR_QDMI`.
 
-## Control Shared-Library Exports
+## Control Shared-Library Exports {#installation-exports}
 
 Use `configure_qdmi_exports` to restrict a shared or module library to its QDMI
 interface and explicitly listed additional C symbols:

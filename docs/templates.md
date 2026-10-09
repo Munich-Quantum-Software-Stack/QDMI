@@ -12,10 +12,10 @@ template.
 
 ## Creating a new Project {#template-create}
 
-The code for the template is contained in the `template/` directory of the QDMI
-repository. To start a new project based on the template, configure QDMI once to
-define the prefix and output path, then explicitly build the `qdmi-template`
-target that writes the files.
+The code for the template is contained in the `templates/device/` directory of
+the QDMI repository. To start a new project based on the template, configure
+QDMI once to define the prefix and output path, then explicitly build the
+`qdmi-template` target that writes the files.
 
 \note An internet connection is needed for this step as the QDMI repository will
 be fetched from GitHub.
@@ -48,11 +48,11 @@ implementations are provided in the `examples/` directory. See
 For stability, we recommend pinning the version of QDMI that you are using for
 your implementation. You can use any valid git tag, branch, or commit hash for
 that. To this end, adjust the `QDMI_REV` variable in
-`cmake/ExternalDependecies.cmake` as follows:
+`cmake/ExternalDependencies.cmake` as follows:
 
 ```diff
 -   set(QDMI_REV "develop"
-+   set(QDMI_REV "v1.2.0"
++   set(QDMI_REV "v1.4.0"
 ```
 
 The generated project assigns the default stable ID `prefix.default` to its
@@ -66,9 +66,9 @@ Consumers use this metadata to discover the device without loading its library
 or linking the device to the consuming library.
 
 The device target also calls `configure_qdmi_exports` to restrict shared-library
-exports to the prefixed device interface on ELF and Apple systems. See
-[export control](installation.md#control-shared-library-exports) for additional
-public symbols and platform behavior.
+exports to the prefixed device interface on ELF and Apple systems. See @ref
+installation-exports "export control" for additional public symbols and platform
+behavior.
 
 When you want to change the prefix after the creation of the template, you need
 to change the prefix in a couple of places. We want to give you some hints where
@@ -139,8 +139,8 @@ cmake --build build --config Release
 ```
 
 If you only want to build a specific target, you can append, for example,
-`--target prefix_device_test` to the command above, which will build the tests.
-If you only want to build the device implementation, you can use
+`--target prefix-qdmi-device-test` to the command above, which will build the
+tests. If you only want to build the device implementation, you can use
 `--target prefix_qdmi`.
 
 To run the tests, perform the following command:
