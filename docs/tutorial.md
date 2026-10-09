@@ -648,7 +648,7 @@ We recommend pinning your project to a specific QDMI release for stability. Edit
 
 ```diff
 -   set(QDMI_REV "develop")
-+   set(QDMI_REV "v1.3.0")
++   set(QDMI_REV "v1.4.0")
 ```
 
 ### Troubleshooting Fetch Failures
