@@ -16,11 +16,22 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 
 ### Added
 
+- ✨ Provide a shared enum-range check for QDMI device and driver
+  implementations ([#511]) ([\@burgholzer], [\@ystade]).
+- ✨ Define the existing Client Interface as a versioned, replaceable QDMI
+  driver ABI ([#511]) ([\@burgholzer], [\@ystade]).
+- ✨ Add mandatory stable client-visible IDs for configured top-level devices
+  ([#511]) ([\@burgholzer], [\@ystade]).
+- ✨ Add native Windows library loading to the example driver ([#511])
+  ([\@burgholzer], [\@ystade]).
 - ✨ Add optional target-specific export control for device and client libraries
   ([#559]) ([\@marcelwa])
 
 ### Changed
 
+- 💥 Make Client session allocation the first stateful driver call and remove
+  the example driver's separate initialization and shutdown functions ([#511])
+  ([\@burgholzer], [\@ystade]).
 - 📝 Document installation and CMake consumption of the QDMI interface ([#538])
   ([\@marcelwa], [\@burgholzer])
 - 🔧 Make CMake package version checks architecture-independent ([#538])
@@ -35,6 +46,12 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 
 ### Fixed
 
+- 🐛 Allow the example driver to open one device library more than once with
+  distinct stable IDs ([#511]) ([\@burgholzer], [\@ystade]).
+- 🐛 Release example-driver device libraries when the final session closes,
+  before process-wide dependency teardown ([#511]) ([\@burgholzer], [\@ystade]).
+- 🐛 Allow the example driver to open devices without token authentication while
+  propagating authentication errors ([#511]) ([\@burgholzer], [\@ystade]).
 - 🐛 Preserve timestamps of unchanged prefixed headers to avoid redundant builds
   ([#537]) ([\@burgholzer])
 
@@ -262,6 +279,7 @@ for previous changelogs._
 [#515]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/515
 [#513]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/513
 [#512]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/512
+[#511]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/511
 [#486]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/486
 [#485]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/485
 [#475]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/475

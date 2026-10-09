@@ -101,7 +101,7 @@ interface and explicitly listed additional C symbols:
 ```cmake
 configure_qdmi_exports(TARGET my_device INTERFACE device PREFIX MY)
 configure_qdmi_exports(TARGET my_driver INTERFACE client
-                      EXTRA_SYMBOLS QDMI_driver_init QDMI_driver_shutdown)
+                      EXTRA_SYMBOLS MY_driver_extension)
 ```
 
 Call the helper once after creating the target. Device interfaces require

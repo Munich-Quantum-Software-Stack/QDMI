@@ -215,3 +215,20 @@ TEST_F(QDMIImplementationTest, QueryDeviceQubitNum) {
                 &num_qubits, nullptr),
             QDMI_SUCCESS);
 }
+
+TEST_F(QDMIImplementationTest, QueryStableDeviceId) {
+  size_t size = 0;
+  ASSERT_EQ(MY_QDMI_device_session_query_device_property(
+                session, QDMI_DEVICE_PROPERTY_ID, 0, nullptr, &size),
+            QDMI_SUCCESS);
+  ASSERT_GT(size, 1U);
+  std::vector<char> id(size);
+  ASSERT_EQ(MY_QDMI_device_session_query_device_property(
+                session, QDMI_DEVICE_PROPERTY_ID, size, id.data(), nullptr),
+            QDMI_SUCCESS);
+  EXPECT_EQ(id.back(), '\0');
+  EXPECT_EQ(MY_QDMI_device_session_query_device_property(
+                session, QDMI_DEVICE_PROPERTY_ID, size - 1, id.data(), nullptr),
+            QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_STREQ(id.data(), MY_QDMI_DEVICE_ID);
+}

@@ -33,14 +33,7 @@ if(driver_type STREQUAL "STATIC_LIBRARY")
     qdmi_export_driver
     PRIVATE "$<LINK_LIBRARY:WHOLE_ARCHIVE,qdmi_example_driver>"
             ${CMAKE_DL_LIBS})
-  configure_qdmi_exports(
-    TARGET
-    qdmi_export_driver
-    INTERFACE
-    client
-    EXTRA_SYMBOLS
-    QDMI_driver_init
-    QDMI_driver_shutdown)
+  configure_qdmi_exports(TARGET qdmi_export_driver INTERFACE client)
   set(export_driver qdmi_export_driver)
 else()
   target_link_libraries(

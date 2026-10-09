@@ -22,7 +22,7 @@ Usage:
   configure_qdmi_exports(TARGET my_device INTERFACE device PREFIX MY)
 
   configure_qdmi_exports(TARGET my_driver INTERFACE client
-                         EXTRA_SYMBOLS QDMI_driver_init QDMI_driver_shutdown)
+                         EXTRA_SYMBOLS MY_driver_extension)
 ]]
 function(configure_qdmi_exports)
   cmake_parse_arguments(PARSE_ARGV 0 ARG "" "TARGET;INTERFACE;PREFIX"
