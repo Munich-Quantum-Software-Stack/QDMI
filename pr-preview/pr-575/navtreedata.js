@@ -25,9 +25,9 @@
 var NAVTREE =
 [
   [ "QDMI", "index.html", [
-    [ "Getting Started", "index.html", [
+    [ "Introduction", "index.html", [
       [ "Overview", "index.html", null ],
-      [ "Local Onboarding", "md_docs_2getting__started.html", null ],
+      [ "Getting Started", "md_docs_2getting__started.html", null ],
       [ "FAQ", "md_docs_2faq.html", null ],
       [ "Support", "md_docs_2support.html", null ]
     ] ],
