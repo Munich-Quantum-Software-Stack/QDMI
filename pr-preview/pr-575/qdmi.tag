@@ -2420,6 +2420,22 @@
     </member>
   </compound>
   <compound kind="page">
+    <name>md_docs_2ecosystem</name>
+    <title>Ecosystem and Community</title>
+    <filename>md_docs_2ecosystem.html</filename>
+    <docanchor file="md_docs_2ecosystem.html" title="From Munich Origins to International Collaboration">ecosystem-reach</docanchor>
+    <docanchor file="md_docs_2ecosystem.html" title="Implementations and Integrations">ecosystem-implementations</docanchor>
+    <docanchor file="md_docs_2ecosystem.html" title="Hardware, Cloud Services, and Simulators">ecosystem-devices</docanchor>
+    <docanchor file="md_docs_2ecosystem.html" title="Deployment Responsibilities">ecosystem-operations</docanchor>
+    <docanchor file="md_docs_2ecosystem.html" title="Origins, Maintenance, and Participation">ecosystem-stewardship</docanchor>
+    <docanchor file="md_docs_2ecosystem.html" title="Publications">ecosystem-publications</docanchor>
+  </compound>
+  <compound kind="page">
+    <name>md_docs_2__static_2logos_2SOURCES</name>
+    <title>Organization artwork</title>
+    <filename>md_docs_2__static_2logos_2SOURCES.html</filename>
+  </compound>
+  <compound kind="page">
     <name>md_docs_2getting__started</name>
     <title>Getting Started</title>
     <filename>md_docs_2getting__started.html</filename>
@@ -2492,6 +2508,7 @@
     <name>md_UPGRADING</name>
     <title>Upgrade Guide</title>
     <filename>md_UPGRADING.html</filename>
+    <docanchor file="md_UPGRADING.html">upgrading-unreleased</docanchor>
   </compound>
   <compound kind="page">
     <name>md_docs_2contributing</name>

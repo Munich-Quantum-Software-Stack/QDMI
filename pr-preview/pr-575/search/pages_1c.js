@@ -1,4 +1,28 @@
 var searchData=
 [
-  ['you_20are_20responsible_0',['1. You are Responsible',['../md_docs_2ai__usage.html#you-are-responsible',1,'']]]
+  ['what_20changed_0',['What Changed',['../md_UPGRADING.html#what-changed',1,'']]],
+  ['what_20is_20qdmi_1',['What is QDMI?',['../md_docs_2faq.html#what-is-qdmi',1,'']]],
+  ['what_20mqt_20core_20adds_2',['What MQT Core Adds',['../md_docs_2rationale.html#what-mqt-core-adds',1,'']]],
+  ['where_20can_20i_20get_20help_20contribute_20or_20find_20citation_20information_3',['Where can I get help, contribute, or find citation information?',['../md_docs_2faq.html#where-can-i-get-help-contribute-or-find-citation-information',1,'']]],
+  ['where_20is_20qdmi_20used_20and_20who_20develops_20it_4',['Where is QDMI used, and who develops it?',['../md_docs_2faq.html#where-is-qdmi-used-and-who-develops-it',1,'']]],
+  ['who_20develops_20it_5',['Where is QDMI used, and who develops it?',['../md_docs_2faq.html#where-is-qdmi-used-and-who-develops-it',1,'']]],
+  ['why_20are_20some_20enum_20definitions_20placed_20in_20the_20constants_20h_20header_20and_20some_20are_20not_6',['Why are some enum definitions placed in the &lt;span class=&quot;tt&quot;&gt;constants.h&lt;/span&gt; header and some are not?',['../md_docs_2rationale.html#rationale-enum-definitions',1,'']]],
+  ['why_20are_20there_20different_20kinds_20of_20sites_7',['Why are there different kinds of sites?',['../md_docs_2rationale.html#rationale-site-types',1,'']]],
+  ['why_20are_20there_20separate_20kinds_20of_20jobs_20for_20devices_20and_20clients_8',['Why are there separate kinds of jobs for devices and clients?',['../md_docs_2rationale.html#rationale-job-structs',1,'']]],
+  ['why_20do_20device_20implementations_20use_20a_20prefix_9',['Why do device implementations use a prefix?',['../md_docs_2rationale.html#rationale-prefix',1,'']]],
+  ['why_20do_20devices_20have_20sessions_10',['Why do devices have sessions?',['../md_docs_2rationale.html#device-session',1,'']]],
+  ['why_20do_20sessions_20need_20to_20be_20initialized_20after_20allocation_11',['Why do sessions need to be initialized after allocation?',['../md_docs_2rationale.html#rationale-session-init',1,'']]],
+  ['why_20does_20qdmi_20not_20define_20individual_20functions_20for_20each_20property_12',['Why does QDMI not define individual functions for each property?',['../md_docs_2rationale.html#rationale-properties',1,'']]],
+  ['why_20does_20qdmi_20use_20opaque_20pointers_13',['Why does QDMI use opaque pointers?',['../md_docs_2rationale.html#rationale-opaque-pointers',1,'']]],
+  ['why_20is_20it_20written_20in_20c_20and_20not_20in_20python_14',['Why is it written in C and not in Python?',['../md_docs_2faq.html#why-is-it-written-in-c-and-not-in-python',1,'']]],
+  ['why_20restrict_20shared_20library_20exports_15',['Why restrict shared-library exports?',['../md_docs_2rationale.html#rationale-exports',1,'']]],
+  ['with_20cmake_16',['Using QDMI with CMake',['../md_docs_2installation.html',1,'']]],
+  ['with_20fetchcontent_17',['Embed the Source with FetchContent',['../md_docs_2installation.html#embed-the-source-with-fetchcontent',1,'']]],
+  ['with_20the_20template_18',['Working with the Template',['../md_docs_2templates.html#template-working',1,'']]],
+  ['work_19',['Europe: EuroHPC and EQS3 Integration Work',['../md_docs_2ecosystem.html#europe-eurohpc-and-eqs3-integration-work',1,'']]],
+  ['workflow_20',['Workflow',['../md_docs_2getting__started.html#getting-started-workflow',1,'Follow the Application Workflow'],['../md_docs_2contributing.html#pull-request-workflow',1,'Pull Request Workflow']]],
+  ['working_20on_20source_20code_21',['Working on Source Code',['../md_docs_2contributing.html#working-on-source-code',1,'']]],
+  ['working_20on_20the_20documentation_22',['Working on the Documentation',['../md_docs_2contributing.html#working-on-the-documentation',1,'']]],
+  ['working_20with_20the_20template_23',['Working with the Template',['../md_docs_2templates.html#template-working',1,'']]],
+  ['written_20in_20c_20and_20not_20in_20python_24',['Why is it written in C and not in Python?',['../md_docs_2faq.html#why-is-it-written-in-c-and-not-in-python',1,'']]]
 ];

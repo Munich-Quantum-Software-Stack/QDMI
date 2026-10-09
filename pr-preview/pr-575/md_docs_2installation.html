@@ -91,20 +91,6 @@
           animation: octocat-wave 560ms ease-in-out;
         }
       }
-      /* image path depending on the color scheme */
-      /* Default (light mode) */
-      .logo {
-        width: 130px;
-        height: auto;
-        display: block;
-      }
-      .logo {
-        content: url("mqss_logo.svg"); /* this is set by doxygen, see PROJECT_LOGO in the Doxyfile.in */
-      }
-      /* Dark mode */
-      html.dark-mode .logo {
-        content: url("mqss_logo_dark.svg");
-      }
     </style>
       <div id="top">
         <!-- do not remove this div, it is closed by doxygen! -->
@@ -112,7 +98,6 @@
           <table cellspacing="0" cellpadding="0">
             <tbody>
               <tr id="projectrow">
-                <td id="projectlogo"><img class="logo" alt="Logo" /></td>
                 <td id="projectalign">
                   <div id="projectname">
                     QDMI<span id="projectnumber"
@@ -204,14 +189,19 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('md_docs_2insta
   <div class="headertitle"><div class="title">Using QDMI with CMake </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>QDMI provides C11 headers and CMake helpers through the <span class="tt">qdmi::qdmi</span> interface target. Installing QDMI does not install a driver or a device implementation. Applications need a compatible implementation to execute QDMI calls; see the <a class="el" href="md_docs_2examples.html" title="Examples">examples</a> and <a class="el" href="md_docs_2templates.html" title="Template">templates</a>.</p>
-<h1>Select a Release</h1>
-<p>Use a tag from the <a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/releases">releases page</a>. Release tags include the <span class="tt">v</span> prefix, for example <span class="tt">v1.4.0</span>; CMake package versions omit it, for example <span class="tt">1.4.0</span>. The examples below pin that release rather than a development branch. For reproducible source dependencies, a full commit hash can also be used with <span class="tt">FetchContent</span>.</p>
+<div class="textblock"><p><a class="anchor" id="using-qdmi-with-cmake"></a></p>
+<p>QDMI provides C11 headers and CMake helpers through the <span class="tt">qdmi::qdmi</span> interface target. Installing QDMI does not install a driver or a device implementation. Applications need a compatible implementation to execute QDMI calls; see the <a class="el" href="md_docs_2examples.html" title="Examples">examples</a> and <a class="el" href="md_docs_2templates.html" title="Template">templates</a>.</p>
+<h1 class="doxsection"><a class="anchor" id="select-an-interface-version"></a>
+Select an Interface Version</h1>
+<p>Until the next release, the examples pin the development revision <span class="tt">701fc7052e88618240c0ee2ba81114452e779527</span>, which provides this interface.</p>
+<p>For a published release, select a tag from the <a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/releases">releases page</a> and use its matching documentation. Release tags have a <span class="tt">v</span> prefix; CMake package versions do not. Keep drivers, devices, and application headers on compatible versions.</p>
 <p>QDMI minor releases may contain breaking changes. The installed CMake package accepts compatible patch releases within the requested minor version; use <span class="tt">EXACT</span> if you need one particular version. Consult the <a class="el" href="md_UPGRADING.html" title="Upgrade Guide">upgrade guide</a> before changing minor versions.</p>
-<h1>Install the Interface</h1>
+<h1 class="doxsection"><a class="anchor" id="install-the-interface"></a>
+Install the Interface</h1>
 <p>The source configuration requires CMake 3.24 or newer and both C and C++ compilers. The interface itself is header-only: no QDMI binary needs to be compiled for this installation. Disable tests, examples, templates, and documentation to avoid building optional targets and downloading their dependencies.</p>
-<div class="fragment"><div class="line">git clone --depth 1 --branch v1.4.0 \</div>
+<div class="fragment"><div class="line">git clone \</div>
 <div class="line">  https://github.com/Munich-Quantum-Software-Stack/QDMI.git qdmi</div>
+<div class="line">git -C qdmi checkout 701fc7052e88618240c0ee2ba81114452e779527</div>
 <div class="line"> </div>
 <div class="line">cmake -S qdmi -B qdmi/build \</div>
 <div class="line">  -DINSTALL_QDMI=ON \</div>
@@ -220,23 +210,25 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('md_docs_2insta
 <div class="line">  -DBUILD_QDMI_TEMPLATES=OFF \</div>
 <div class="line">  -DBUILD_QDMI_DOCS=OFF</div>
 <div class="line"> </div>
-<div class="line">cmake --install qdmi/build --prefix /opt/qdmi</div>
-</div><!-- fragment --><p>Choose an installation prefix that you can write to. These commands use POSIX shell line continuations; adapt them to your shell on Windows. A release source archive can be used in place of the Git checkout.</p>
-<p>The installation contains headers and CMake package files, including the symbol-prefix helpers used by device implementations. QDMI currently does not publish prebuilt SDK archives. The 1.4 package version check is architecture-independent; device and driver binaries still need to match the platform and architecture of the application.</p>
-<h1>Use an Installed Package</h1>
+<div class="line">cmake --install qdmi/build --prefix &quot;$PWD/qdmi-install&quot;</div>
+</div><!-- fragment --><p>Choose an installation prefix that you can write to. These commands use POSIX shell line continuations; adapt them to your shell on Windows. A source archive of the selected revision can be used in place of the Git checkout.</p>
+<p>The installation contains headers and CMake package files, including the symbol-prefix helpers used by device implementations. QDMI currently does not publish prebuilt SDK archives. The package version check is architecture-independent; device and driver binaries still need to match the platform and architecture of the application.</p>
+<h1 class="doxsection"><a class="anchor" id="use-an-installed-package"></a>
+Use an Installed Package</h1>
 <p>In your project's <span class="tt">CMakeLists.txt</span>, after declaring your target:</p>
 <div class="fragment"><div class="line">find_package(qdmi 1.4.0 CONFIG REQUIRED)</div>
 <div class="line">target_link_libraries(my_target PRIVATE qdmi::qdmi)</div>
-</div><!-- fragment --><p>Configure your project with the installation prefix:</p>
-<div class="fragment"><div class="line">cmake -S . -B build -DCMAKE_PREFIX_PATH=/opt/qdmi</div>
+</div><!-- fragment --><p>Configure your project with the absolute installation prefix from the previous step:</p>
+<div class="fragment"><div class="line">cmake -S . -B build -DCMAKE_PREFIX_PATH=/absolute/path/to/qdmi-install</div>
 </div><!-- fragment --><p>The imported target supplies the include directory and C11 requirement. Use <span class="tt">PUBLIC</span> instead of <span class="tt">PRIVATE</span> when your library exposes QDMI types in its public headers. Linking this interface target does not supply implementations of QDMI functions.</p>
-<h1>Embed the Source with FetchContent</h1>
+<h1 class="doxsection"><a class="anchor" id="embed-the-source-with-fetchcontent"></a>
+Embed the Source with FetchContent</h1>
 <p>Alternatively, let CMake obtain QDMI as part of your project. C++ projects must also enable C in the parent project, for example with <span class="tt">project(my_project LANGUAGES C CXX)</span>, before including QDMI. This makes QDMI's C11 usage requirement available in the consumer's scope.</p>
 <div class="fragment"><div class="line">include(FetchContent)</div>
 <div class="line">FetchContent_Declare(</div>
 <div class="line">  qdmi</div>
 <div class="line">  GIT_REPOSITORY https://github.com/Munich-Quantum-Software-Stack/QDMI.git</div>
-<div class="line">  GIT_TAG v1.4.0)</div>
+<div class="line">  GIT_TAG 701fc7052e88618240c0ee2ba81114452e779527)</div>
 <div class="line">FetchContent_MakeAvailable(qdmi)</div>
 <div class="line"> </div>
 <div class="line">target_link_libraries(my_target PRIVATE qdmi::qdmi)</div>

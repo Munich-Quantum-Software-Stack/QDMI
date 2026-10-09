@@ -26,6 +26,7 @@ var menudata={children:[
 {text:"Main Page",url:"index.html"},
 {text:"Introduction",url:"index.html",children:[
 {text:"Overview",url:"index.html"},
+{text:"Ecosystem and Community",url:"md_docs_2ecosystem.html"},
 {text:"Getting Started",url:"md_docs_2getting__started.html"},
 {text:"FAQ",url:"md_docs_2faq.html"},
 {text:"Support",url:"md_docs_2support.html"}]},
@@ -34,8 +35,8 @@ var menudata={children:[
 {text:"Using QDMI with CMake",url:"md_docs_2installation.html"},
 {text:"Examples",url:"md_docs_2examples.html"},
 {text:"Template",url:"md_docs_2templates.html"}]},
-{text:"Changelog",url:"md__c_h_a_n_g_e_l_o_g.html"},
-{text:"Upgrade Guide",url:"md__u_p_g_r_a_d_i_n_g.html"},
+{text:"Changelog",url:"md_CHANGELOG.html"},
+{text:"Upgrade Guide",url:"md_UPGRADING.html"},
 {text:"Development",url:"md_docs_2contributing.html",children:[
 {text:"Contributing Guide",url:"md_docs_2contributing.html"},
 {text:"AI Usage",url:"md_docs_2ai__usage.html"}]},
