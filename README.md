@@ -137,6 +137,13 @@ the
 For execution APIs and a local simulator, see
 [MQT Core](https://mqt.readthedocs.io/projects/core/en/latest/qdmi/index.html).
 
+### Why is it written in C and not in Python?
+
+The C interface lets native HPC software, drivers, and device libraries share a
+common ABI. Opaque handles keep implementation details behind that boundary.
+Other languages can use it through bindings, including the C++ and Python
+wrappers supplied by MQT Core.
+
 ### Can I use QDMI from Python?
 
 Yes. QDMI uses a C ABI that other languages can call. MQT Core provides C++ and
@@ -182,9 +189,12 @@ We welcome bug reports, implementation feedback, and contributions. Start with
 [discussions][discussions] for questions and feedback; see
 [Support](.github/SUPPORT.md) for more details.
 
-Development is led by Martin Schulz (TUM CAPS) and Robert Wille (TUM CDA /
-MQSC), with Lukas Burgholzer (TUM CDA / MQSC) and Jorge Echavarria (MQV)
-providing technical leadership.
+The development of this project is led by
+[Martin Schulz](mailto:martin.w.j.schulz@tum.de) (TUM CAPS), and
+[Robert Wille](mailto:robert.wille@tum.de) (TUM CDA / MQSC) on the management
+side and [Lukas Burgholzer](mailto:lukas.burgholzer@tum.de) (TUM CDA / MQSC) as
+well as [Jorge Echavarria](mailto:jorge.echavarria@munich-quantum-valley.de)
+(MQV gGmbH) from the technical side.
 
 QDMI is released under [Apache-2.0 with LLVM exceptions](LICENSE).
 

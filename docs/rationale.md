@@ -60,13 +60,15 @@ device library. The initialized session reports its accessible devices through
 format, installation location, or Python package discovery mechanism.
 
 In QDMI 1.4, each top-level device has a nonempty, stable @ref
-QDMI_DEVICE_PROPERTY_ID supplied by the driver. IDs distinguish configured
-devices within that driver's catalogue. Treat them as opaque strings: compare or
-store them without deriving meaning from their spelling. Device libraries may
-report a default ID, which the driver can override; child-device IDs remain
-optional. Save the driver and configuration context along with an ID. An ID
-alone does not identify a globally interchangeable physical device or make a
-compiled program portable to another target.
+QDMI_DEVICE_PROPERTY_ID supplied by the driver. IDs are unique within one
+initialized session and remain fixed for the lifetime of their device handles.
+Equivalent sessions return the same IDs across process restarts while the
+logical resources exist. Treat IDs as opaque strings: compare or store them
+without deriving meaning from their spelling. Device libraries may report a
+default ID, which the driver can override; child-device IDs remain optional.
+Save the driver and configuration context along with an ID. An ID alone does not
+identify a globally interchangeable physical device or make a compiled program
+portable to another target.
 
 ### Jobs and Results
 
@@ -224,14 +226,13 @@ and retrieving results of jobs.
 
 ## Why do device implementations use a prefix? {#rationale-prefix}
 
-Each device must add a unique prefix to all symbols and types defined within its
-implementation. This is necessary to facilitate static linking of multiple
-device implementations as part of one driver. It also helps to identify the
-source of an error when debugging because the name of the symbol will contain
-the prefix of the device that defined it. The prefix is also used to avoid
-naming conflicts between different devices. Lastly, it allows hardware vendors
-to brand their device implementations. Prefixes must be unique across all
-devices. They should be short and descriptive of the device.
+Each device implementation prefixes its Device Interface symbols and opaque
+types. Distinct implementations linked statically into the same program need
+noncolliding prefixes. The prefix also identifies the implementation when
+debugging and allows hardware vendors to brand their device implementations.
+Different configured instances of one implementation can share a prefix; their
+stable device IDs distinguish the logical resources. Prefixes should be short
+and descriptive of the implementation.
 
 ## Why restrict shared-library exports? {#rationale-exports}
 

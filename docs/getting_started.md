@@ -125,8 +125,11 @@ see the [architecture](rationale.md).
 
 [MQT Core's QDMI guides](https://mqt.readthedocs.io/projects/core/en/latest/qdmi/index.html)
 cover its runtime installation, local DDSIM execution, C++ and Python APIs, and
-SDK adapters. Its builtin driver supplies configured devices such as
-`mqt.ddsim.default`; manifest discovery and `builtin_driver` helpers are Core
+SDK adapters. The
+[QDMI execution tutorial](https://mqt.readthedocs.io/projects/core/en/latest/tutorials/qdmi_execution.html)
+walks through device discovery, compilation, submission, and result checks using
+the bundled DDSIM simulator. Its builtin driver supplies configured devices such
+as `mqt.ddsim.default`; manifest discovery and `builtin_driver` helpers are Core
 conveniences. Follow its
 [configuration guide](https://mqt.readthedocs.io/projects/core/en/latest/qdmi/configuration.html)
 for library registration and its
