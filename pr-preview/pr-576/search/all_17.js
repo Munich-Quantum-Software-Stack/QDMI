@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['separate_20kinds_20of_20jobs_20for_20devices_20and_20clients_0',['Why are there separate kinds of jobs for devices and clients?',['../md_docs_2rationale.html#rationale-job-structs',1,'']]],
+  ['session_20interface_1',['Session Interface',['../group__client__session__interface.html',1,'QDMI Client Session Interface'],['../group__device__session__interface.html',1,'QDMI Device Session Interface']]],
+  ['sessions_2',['Why do devices have sessions?',['../md_docs_2rationale.html#device-session',1,'']]],
+  ['sessions_20need_20to_20be_20initialized_20after_20allocation_3',['Why do sessions need to be initialized after allocation?',['../md_docs_2rationale.html#rationale-session-init',1,'']]],
+  ['setup_4',['Initial Setup',['../md_docs_2contributing.html#initial-setup',1,'']]],
+  ['shared_20library_20exports_5',['Control Shared-Library Exports',['../md_docs_2installation.html#installation-exports',1,'']]],
+  ['shared_20library_20exports_6',['Why restrict shared-library exports?',['../md_docs_2rationale.html#rationale-exports',1,'']]],
+  ['simulator_20or_20external_20device_7',['Move to a Simulator or External Device',['../md_docs_2getting__started.html#getting-started-runtime',1,'']]],
+  ['sites_8',['Why are there different kinds of sites?',['../md_docs_2rationale.html#rationale-site-types',1,'']]],
+  ['some_20are_20not_9',['Why are some enum definitions placed in the &lt;span class=&quot;tt&quot;&gt;constants.h&lt;/span&gt; header and some are not?',['../md_docs_2rationale.html#rationale-enum-definitions',1,'']]],
+  ['some_20enum_20definitions_20placed_20in_20the_20constants_20h_20header_20and_20some_20are_20not_10',['Why are some enum definitions placed in the &lt;span class=&quot;tt&quot;&gt;constants.h&lt;/span&gt; header and some are not?',['../md_docs_2rationale.html#rationale-enum-definitions',1,'']]],
+  ['source_11',['Sustainable Open Source',['../md_docs_2ai__usage.html#sustainable-open-source',1,'']]],
+  ['source_20code_12',['Working on Source Code',['../md_docs_2contributing.html#working-on-source-code',1,'']]],
+  ['started_13',['Getting Started',['../md_docs_2getting__started.html',1,'']]],
+  ['started_20🎉_14',['Get Started 🎉',['../md_docs_2contributing.html#get-started',1,'']]],
+  ['static_20content_15',['Static Content',['../md_docs_2contributing.html#static-content',1,'']]],
+  ['string_20properties_16',['Basic String Properties',['../md_docs_2examples.html#device-string',1,'']]],
+  ['structure_20of_20qdmi_17',['The Structure of QDMI',['../md_docs_2rationale.html#rationale-structure',1,'']]],
+  ['submission_20and_20results_18',['Verify Discovery, Submission, and Results',['../md_docs_2getting__started.html#getting-started-checkpoint',1,'']]],
+  ['submitting_20a_20job_19',['Submitting a Job',['../md_docs_2examples.html#device-submit',1,'']]],
+  ['summary_20',['Summary',['../md_docs_2ai__usage.html#summary',1,'']]],
+  ['support_21',['Support',['../md_docs_2support.html',1,'']]],
+  ['sustainable_20open_20source_22',['Sustainable Open Source',['../md_docs_2ai__usage.html#sustainable-open-source',1,'']]]
+];
