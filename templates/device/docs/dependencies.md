@@ -11,7 +11,7 @@ These dependencies are linked into the shared library and
 
 | Dependency | Version   | License                        | Purpose                                  |
 | :--------- | :-------- | :----------------------------- | :--------------------------------------- |
-| [QDMI]     | 1.3.4-dev | Apache-2.0 with LLVM-exception | QDMI specification and interface headers |
+| [QDMI]     | 1.4.0-dev | Apache-2.0 with LLVM-exception | QDMI specification and interface headers |
 
 ## Test Dependencies
 
@@ -21,13 +21,13 @@ Used for testing only, **not shipped** in any binary or wheel.
 
 | Dependency   | Version | License      | Purpose                          |
 | :----------- | :------ | :----------- | :------------------------------- |
-| [googletest] | 1.17.0  | BSD-3-Clause | C++ unit and integration testing |
+| [googletest] | 1.18.0  | BSD-3-Clause | C++ unit and integration testing |
 
 ### Python Tests
 
 | Dependency               | Version | License      | Purpose                         |
 | :----------------------- | :------ | :----------- | :------------------------------ |
-| [pytest]                 | ≥9.0.3  | MIT License  | Testing framework               |
+| [pytest]                 | ≥9.1.1  | MIT License  | Testing framework               |
 | [pytest-console-scripts] | ≥1.4.1  | MIT License  | Testing CLI entry points        |
 | [pytest-cov]             | ≥7.1.0  | MIT License  | Test coverage reporting         |
 | [pytest-sugar]           | ≥1.1.1  | BSD-3-Clause | Prettier test output formatting |
@@ -39,8 +39,8 @@ Used to generate the API documentation, **not shipped** in any binary or wheel.
 
 | Dependency            | Version | License     | Purpose                      |
 | :-------------------- | :------ | :---------- | :--------------------------- |
-| [Doxygen]             | 1.16.1  | GNU GPL v2  | API documentation generation |
-| [doxygen-awesome-css] | 2.4.1   | MIT License | Modern Doxygen theme         |
+| [Doxygen]             | 1.18.0  | GNU GPL v2  | API documentation generation |
+| [doxygen-awesome-css] | 2.5.0   | MIT License | Modern Doxygen theme         |
 
 > [!NOTE]
 > Doxygen is licensed under GNU GPL v2, but

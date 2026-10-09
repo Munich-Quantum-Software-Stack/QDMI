@@ -24,6 +24,7 @@ jobs:
     name: 🍎
     uses: munich-quantum-toolkit/workflows/.github/workflows/reusable-cpp-tests-macos.yml@fd3d75dece69c363989347869529a5e99cdcfffc # v2.5.1
     with:
+      runs-on: macos-26
       preset-name: release
 
   cpp-tests-install:
@@ -34,7 +35,7 @@ jobs:
 
   coverage:
     name: 📈
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     env:
       CMAKE_BUILD_PARALLEL_LEVEL: 4
       CTEST_PARALLEL_LEVEL: 4

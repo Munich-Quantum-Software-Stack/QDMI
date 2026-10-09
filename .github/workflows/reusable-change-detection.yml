@@ -24,7 +24,7 @@ permissions:
 jobs:
   change-detection:
     name: 🕵️ Check
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     timeout-minutes: 1
     outputs:
       run-tests: ${{ steps.tests-changes.outputs.run-tests || false }}
@@ -47,7 +47,10 @@ jobs:
             templates/**
             CMakeLists.txt
             cmake/**
+            CMakePresets.json
             .github/codecov.yml
+            .github/workflows/reusable-cpp-ci.yml
+            .github/workflows/reusable-cpp-install-tests.yml
             .github/workflows/ci.yml
       - name: Set a flag for running the tests
         if: >-
@@ -103,6 +106,8 @@ jobs:
             examples/**
             templates/**
             docs/**
+            CMakeLists.txt
+            cmake/**
             .github/workflows/reusable-docs.yml
             .github/workflows/ci.yml
       - name: Set a flag for running the documentation job
