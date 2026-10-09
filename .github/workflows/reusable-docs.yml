@@ -7,7 +7,7 @@ permissions:
 jobs:
   build-and-deploy:
     concurrency: ci-${{ github.ref }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -17,7 +17,7 @@ jobs:
         if: github.event.action != 'closed'
         uses: ssciwr/doxygen-install@fa3e94d34131d3990b6b8ba939ab982964aa3758 # v2.0.3
         with:
-          version: "1.16.1"
+          version: "1.18.0"
       - name: Install and Build 🔧
         if: github.event.action != 'closed'
         run: |

@@ -18,7 +18,7 @@ jobs:
       matrix:
         include:
           - name: 🐧
-            os: ubuntu-latest
+            os: ubuntu-26.04
           - name: 🍎
             os: macos-26
       fail-fast: false

@@ -12,6 +12,8 @@
     ":prConcurrentLimitNone",
     ":prHourlyLimitNone",
   ],
+  // The device example is maintained alongside the source template.
+  ignorePresets: [":ignoreModulesAndTests"],
   enabledManagers: ["cargo", "github-actions", "npm", "pep621", "pre-commit"],
   lockFileMaintenance: {
     enabled: true,

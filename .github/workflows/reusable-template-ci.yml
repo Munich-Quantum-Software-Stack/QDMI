@@ -50,7 +50,7 @@ jobs:
       - name: Install Doxygen
         uses: ssciwr/doxygen-install@fa3e94d34131d3990b6b8ba939ab982964aa3758 # v2.0.3
         with:
-          version: "1.15.0"
+          version: "1.18.0"
       - name: Build docs
         run: |
           cmake -G Ninja -S . -B build_docs -DCMAKE_BUILD_TYPE=Release -DBUILD_MQSS_QDMI_DOCS=ON -DBUILD_MQSS_QDMI_TESTS=OFF $CMAKE_ARGS
@@ -68,7 +68,7 @@ jobs:
         uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
         with:
           enable-cache: true
-          save-cache: ${{ github.ref == 'refs/heads/main' }}
+          save-cache: ${{ github.ref == 'refs/heads/develop' }}
       - name: Build SDist
         run: uv build --sdist
       - name: Check metadata
