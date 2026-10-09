@@ -24,9 +24,9 @@
   <!-- Navigation index tabs for HTML output -->
   <navindex>
     <tab type="mainpage" visible="yes" title=""/>
-    <tab type="usergroup" title="Getting Started" url="index.html">
+    <tab type="usergroup" title="Introduction" url="index.html">
       <tab type="user" title="Overview" url="index.html"/>
-      <tab type="user" title="Local Onboarding" url="md_docs_2getting__started.html"/>
+      <tab type="user" title="Getting Started" url="md_docs_2getting__started.html"/>
       <tab type="user" title="FAQ" url="md_docs_2faq.html"/>
       <tab type="user" title="Support" url="md_docs_2support.html"/>
     </tab>

@@ -16,7 +16,7 @@ device IDs, and their lifetimes.
 
 | Your goal                     | Guide                                                                                                                              |
 | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| Try QDMI locally              | [Getting started](getting_started.md): build the examples and run discovery, submission, and result checks against the mock device |
+| Try QDMI locally              | [Getting Started](getting_started.md): build the examples and run discovery, submission, and result checks against the mock device |
 | Add QDMI headers to a project | [Using QDMI with CMake](installation.md)                                                                                           |
 | Implement a device or driver  | [Examples](examples.md) and [device template](templates.md)                                                                        |
 | Understand the contracts      | [Architecture and rationale](rationale.md) and the @ref client_interface and @ref device_interface references                      |

@@ -64,7 +64,7 @@ are supplied by other components of the stack.
 | I want to…                                             | Start here                                                                                   |
 | ------------------------------------------------------ | -------------------------------------------------------------------------------------------- |
 | Understand the components and their responsibilities   | [Architecture and rationale](docs/rationale.md)                                              |
-| Try sessions, discovery, jobs, and results locally     | [Getting started](docs/getting_started.md) with the bundled mock device                      |
+| Try sessions, discovery, jobs, and results locally     | [Getting Started](docs/getting_started.md) with the bundled mock device                      |
 | Use the interface in a C or C++ project                | [Using QDMI with CMake](docs/installation.md)                                                |
 | Run programs through C++, Python, Qiskit, or PennyLane | [MQT Core's QDMI guides][core-qdmi]                                                          |
 | Implement a device or driver                           | [Examples](docs/examples.md), [device template](docs/templates.md), and [API reference][api] |
@@ -87,7 +87,7 @@ does not make every program format or result available on every device.
 
 The [documentation][docs] includes the [FAQ](docs/faq.md),
 [architecture and rationale](docs/rationale.md),
-[local onboarding](docs/getting_started.md), and [API reference][api].
+[Getting Started](docs/getting_started.md), and [API reference][api].
 
 For the architecture and deployment context, see:
 
