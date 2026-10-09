@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
-<tagfile doxygen_version="1.16.1" doxygen_gitid="669aeeefca743c148e2d935b3d3c69535c7491e6">
+<tagfile doxygen_version="1.18.0" doxygen_gitid="8e760943e5d9581a444cf327f43a0b4d20d29482">
   <compound kind="file">
     <name>client.h</name>
     <path></path>
