@@ -36,9 +36,9 @@ _If you are upgrading: please see
 - 📝 Reorganize documentation around QDMI's international ecosystem, origins,
   maintenance, and integration roles. Add publication-backed adoption accounts,
   MQT Core's DDSIM device, public MQSS components, IBM and other hardware
-  integrations, and implementation guides; fix navigation, contributor links,
-  and responsive layouts, and provide reproducible onboarding ([#575])
-  ([\@denialhaag], [\@burgholzer]).
+  integrations, and implementation guides; fix navigation, API-index anchors,
+  contributor links, and responsive layouts, and provide reproducible onboarding
+  ([#575]) ([\@denialhaag], [\@burgholzer]).
 - 💥 Make Client session allocation the first stateful driver call and remove
   the example driver's separate initialization and shutdown functions ([#511])
   ([\@burgholzer], [\@ystade]).

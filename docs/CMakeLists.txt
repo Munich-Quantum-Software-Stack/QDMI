@@ -132,12 +132,15 @@ add_custom_command(
           ${CMAKE_CURRENT_SOURCE_DIR}/header.html
           ${CMAKE_CURRENT_SOURCE_DIR}/layout.xml
           ${CMAKE_CURRENT_SOURCE_DIR}/style.css
+          ${CMAKE_CURRENT_SOURCE_DIR}/FixDoxygenIndex.cmake
           ${CMAKE_SOURCE_DIR}/README.md
           ${CMAKE_SOURCE_DIR}/CHANGELOG.md
           ${CMAKE_SOURCE_DIR}/UPGRADING.md
           ${CMAKE_SOURCE_DIR}/.github/SUPPORT.md
           $<IF:$<TARGET_EXISTS:doxygen>,doxygen,>
   COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_CONFIG_FILE_OUT}
+  COMMAND ${CMAKE_COMMAND} -DQDMI_DOCS_HTML_DIR=${DOXYGEN_OUTPUT_DIR}/html -P
+          ${CMAKE_CURRENT_SOURCE_DIR}/FixDoxygenIndex.cmake
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
   COMMENT "Generating API documentation with Doxygen"
   VERBATIM)
