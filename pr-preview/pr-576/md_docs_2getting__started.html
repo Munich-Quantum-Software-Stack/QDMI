@@ -91,20 +91,6 @@
           animation: octocat-wave 560ms ease-in-out;
         }
       }
-      /* image path depending on the color scheme */
-      /* Default (light mode) */
-      .logo {
-        width: 130px;
-        height: auto;
-        display: block;
-      }
-      .logo {
-        content: url("mqss_logo.svg"); /* this is set by doxygen, see PROJECT_LOGO in the Doxyfile.in */
-      }
-      /* Dark mode */
-      html.dark-mode .logo {
-        content: url("mqss_logo_dark.svg");
-      }
     </style>
       <div id="top">
         <!-- do not remove this div, it is closed by doxygen! -->
@@ -112,7 +98,6 @@
           <table cellspacing="0" cellpadding="0">
             <tbody>
               <tr id="projectrow">
-                <td id="projectlogo"><img class="logo" alt="Logo" /></td>
                 <td id="projectalign">
                   <div id="projectname">
                     QDMI<span id="projectnumber"
@@ -204,14 +189,17 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('md_docs_2getti
   <div class="headertitle"><div class="title">Getting Started </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>Start with the bundled <b>example driver and mock device</b>. This path checks sessions, discovery, program submission, and result retrieval locally, without cloud credentials, an HPC allocation, or access to quantum hardware. The mock returns synthetic results; it does not simulate the supplied quantum circuit.</p>
-<p>This page uses <b>QDMI 1.4</b>. The <a class="el" href="md_docs_2installation.html" title="Using QDMI with CMake">CMake installation guide</a> separately shows how to install the interface headers. A driver and its devices must implement the interface version you use; see the <a class="el" href="md_UPGRADING.html" title="Upgrade Guide">upgrade guide</a>.</p>
+<div class="textblock"><p><a class="anchor" id="getting-started"></a></p>
+<p>Use the bundled <b>example driver and mock device</b> for an implementation smoke test. This path checks sessions, discovery, program submission, and result retrieval locally, without cloud credentials, an HPC allocation, or access to quantum hardware. The mock returns synthetic results; it does not simulate the supplied quantum circuit.</p>
+<p>For circuit execution, start with <a href="https://mqt.readthedocs.io/projects/core/en/latest/tutorials/qdmi_execution.html">MQT Core's simulator tutorial</a>.</p>
+<p>The <a class="el" href="md_docs_2installation.html" title="Using QDMI with CMake">CMake installation guide</a> explains the selected revision and how to install the interface headers. A driver and its devices must implement the interface version you use; see the <a class="el" href="md_UPGRADING.html" title="Upgrade Guide">upgrade guide</a>.</p>
 <h1 class="doxsection"><a class="anchor" id="getting-started-build"></a>
 Build the Local Examples</h1>
 <p>You need Git, CMake 3.24 or newer, and C11 and C++20 compilers. Configuration fetches GoogleTest and initially needs network access. From a new checkout:</p>
-<div class="fragment"><div class="line">git clone --depth 1 --branch v1.4.0 \</div>
+<div class="fragment"><div class="line">git clone \</div>
 <div class="line">  https://github.com/Munich-Quantum-Software-Stack/QDMI.git</div>
 <div class="line">cd QDMI</div>
+<div class="line">git checkout v1.4.0</div>
 <div class="line"> </div>
 <div class="line">cmake -S . -B build -DCMAKE_BUILD_TYPE=Release \</div>
 <div class="line">  -DBUILD_QDMI_TESTS=ON -DBUILD_QDMI_DOCS=OFF</div>
@@ -231,14 +219,14 @@ Verify Discovery, Submission, and Results</h1>
 </ul>
 <p>Read-only sessions intentionally skip submission and result checks. The read/write cases must pass. To run all checks:</p>
 <div class="fragment"><div class="line">ctest --test-dir build -C Release --output-on-failure</div>
-</div><!-- fragment --><p>The assertions and API calls are in <a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/develop/test/test_qdmi.cpp"><span class="tt">test/test_qdmi.cpp</span></a>, with session and configuration setup in <a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/develop/test/utils/test_impl.cpp"><span class="tt">test/utils/test_impl.cpp</span></a>. These tests also run in QDMI's CI.</p>
+</div><!-- fragment --><p>The assertions and API calls are in <a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/v1.4.0/test/test_qdmi.cpp"><span class="tt">test/test_qdmi.cpp</span></a>, with session and configuration setup in <a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/v1.4.0/test/utils/test_impl.cpp"><span class="tt">test/utils/test_impl.cpp</span></a>. These tests also run in QDMI's CI.</p>
 <h1 class="doxsection"><a class="anchor" id="getting-started-workflow"></a>
 Follow the Application Workflow</h1>
 <p>An application talks to the driver through the <a class="el" href="group__client__interface.html" title="QDMI Client Interface">QDMI Client Interface</a>.</p>
 <ol type="1">
 <li>Allocate a <a class="el" href="group__client__session__interface.html#ga4dd0162b0321d12934f815f29504106e" title="QDMI_Session">QDMI_Session</a> with <a class="el" href="group__client__session__interface.html#gaa11305e72710d4f2439c0c72892fce11" title="QDMI_session_alloc">QDMI_session_alloc</a>, set the driver's supported session parameters, and call <a class="el" href="group__client__session__interface.html#gafbc8c6031ee98c87d58515eb35b4202b" title="QDMI_session_init">QDMI_session_init</a>.</li>
 <li>Query <a class="el" href="group__client__session__interface.html#gga737948251bac10b8cabf745afe82bd09ad18bc8e3c5b4f5ebcef0c81dd09eafe5" title="QDMI_SESSION_PROPERTY_DEVICES">QDMI_SESSION_PROPERTY_DEVICES</a>, then inspect each device's <a class="el" href="constants_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a075556271172ec5539c14df12a050f05" title="QDMI_DEVICE_PROPERTY_ID">QDMI_DEVICE_PROPERTY_ID</a>, capabilities, sites, and operations. The returned handles belong to this session.</li>
-<li>Prepare a program in a supported format. Create a <a class="el" href="group__client__job__interface.html#gab63357cf9e4546c7ee86b7378c620981" title="QDMI_Job">QDMI_Job</a> with <a class="el" href="group__client__job__interface.html#ga9fbb6ebc06162e99c15c230cec9491c8" title="QDMI_device_create_job">QDMI_device_create_job</a>, set parameters such as <a class="el" href="group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5a21a7c498f22ef05c9a72f354f6f89a81" title="QDMI_JOB_PARAMETER_SHOTSNUM">QDMI_JOB_PARAMETER_SHOTSNUM</a>, and call <a class="el" href="group__client__job__interface.html#gacd6acbc3f3afb96181d1680f67ca4ecd" title="QDMI_job_set_programs">QDMI_job_set_programs</a>. In 1.4, even a single program is a list of length one. Text payload sizes include exactly one trailing null byte; binary payloads retain their bytes.</li>
+<li>Prepare a program in a supported format. Create a <a class="el" href="group__client__job__interface.html#gab63357cf9e4546c7ee86b7378c620981" title="QDMI_Job">QDMI_Job</a> with <a class="el" href="group__client__job__interface.html#ga9fbb6ebc06162e99c15c230cec9491c8" title="QDMI_device_create_job">QDMI_device_create_job</a>, set parameters such as <a class="el" href="group__client__job__interface.html#gga1e7131664b094eb409d0f44d731f51f5a21a7c498f22ef05c9a72f354f6f89a81" title="QDMI_JOB_PARAMETER_SHOTSNUM">QDMI_JOB_PARAMETER_SHOTSNUM</a>, and call <a class="el" href="group__client__job__interface.html#gacd6acbc3f3afb96181d1680f67ca4ecd" title="QDMI_job_set_programs">QDMI_job_set_programs</a>. Even a single program is a list of length one. Text payload sizes include exactly one trailing null byte; binary payloads retain their bytes.</li>
 <li>Submit with <a class="el" href="group__client__job__interface.html#ga184d0d0fc0d4edc3a447b91991f9abd1" title="QDMI_job_submit">QDMI_job_submit</a>, then use <a class="el" href="group__client__job__interface.html#gae9a7cba893885c8fcfe4bec030071d2f" title="QDMI_job_check">QDMI_job_check</a> or <a class="el" href="group__client__job__interface.html#ga709a8817f2cda4673175e43fe596ead9" title="QDMI_job_wait">QDMI_job_wait</a> to follow execution. Check the terminal status before interpreting the available results. Read them with <a class="el" href="group__client__job__interface.html#ga1a07533166af439c2fa62edafec4d99e" title="QDMI_job_get_results">QDMI_job_get_results</a> using the input program's index. Variable-size queries first request the required byte size, then fill an appropriately sized buffer.</li>
 <li>Free the job with <a class="el" href="group__client__job__interface.html#ga9e9de68a558361018974e954ddead940" title="QDMI_job_free">QDMI_job_free</a>, then release the session with <a class="el" href="group__client__session__interface.html#ga24d3efdb64f9ae6d88b32b011f7549ae" title="QDMI_session_free">QDMI_session_free</a> after its handles are no longer needed. Keep the driver library loaded throughout those lifetimes.</li>
 </ol>
@@ -267,8 +255,8 @@ Diagnose Configuration and Loading Failures</h1>
 <p>Use trusted configuration files and libraries: loading a device library runs native code in the application process. For the ABI check and handle ownership, see the <a class="el" href="md_docs_2rationale.html" title="Architecture and Rationale">architecture</a>.</p>
 <h1 class="doxsection"><a class="anchor" id="getting-started-runtime"></a>
 Move to a Simulator or External Device</h1>
-<p><a href="https://mqt.readthedocs.io/projects/core/en/latest/qdmi/index.html">MQT Core's QDMI guides</a> cover its runtime installation, local DDSIM execution, C++ and Python APIs, and SDK adapters. The <a href="https://mqt.readthedocs.io/projects/core/en/latest/tutorials/qdmi_execution.html">QDMI execution tutorial</a> walks through device discovery, compilation, submission, and result checks using the bundled DDSIM simulator. Its builtin driver supplies configured devices such as <span class="tt">mqt.ddsim.default</span>; manifest discovery and <span class="tt">builtin_driver</span> helpers are Core conveniences. Follow its <a href="https://mqt.readthedocs.io/projects/core/en/latest/qdmi/configuration.html">configuration guide</a> for library registration and its <a href="https://mqt.readthedocs.io/projects/core/en/latest/qdmi/slurm.html">Slurm guide</a> for scheduler integration.</p>
-<p>For <a href="https://amazon-braket-qdmi-device.readthedocs.io/en/latest/">Amazon Braket</a> or <a href="https://iqm-finland.github.io/QDMI-on-IQM/">IQM</a>, use the device project's installation and configuration guides for catalogues, endpoints, credentials, and deployment. Match the runtime and device versions before submitting work. Installing the standalone QDMI headers is not an additional runtime step when using a packaged application stack. </p>
+<p><a href="https://mqt.readthedocs.io/projects/core/en/latest/qdmi/index.html">MQT Core's QDMI guides</a> cover its runtime installation, local DDSIM execution, C++ and Python APIs, and SDK adapters. The <a href="https://mqt.readthedocs.io/projects/core/en/latest/tutorials/qdmi_execution.html">QDMI execution tutorial</a> walks through device discovery, compilation, submission, and result checks using the bundled DDSIM simulator. Its builtin driver supplies configured devices such as <span class="tt">mqt.ddsim.default</span>; manifest discovery and <span class="tt">builtin_driver</span> helpers are MQT Core conveniences. Follow its <a href="https://mqt.readthedocs.io/projects/core/en/latest/qdmi/configuration.html">configuration guide</a> for library registration and its <a href="https://mqt.readthedocs.io/projects/core/en/latest/qdmi/slurm.html">Slurm guide</a> for scheduler integration.</p>
+<p>For <a href="https://amazon-braket-qdmi-device.readthedocs.io/en/latest/">Amazon Braket</a>, <a href="https://iqm-finland.github.io/QDMI-on-IQM/">IQM</a>, or <a href="https://ibm-qdmi-device.readthedocs.io/en/latest/">IBM</a>, use the device project's installation and configuration guides for catalogues, endpoints, credentials, and deployment. Match the runtime and device versions before submitting work. Installing the standalone QDMI headers is not an additional runtime step when using a packaged application stack. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
