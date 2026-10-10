@@ -509,6 +509,9 @@ Submitting a Job</h2>
 <div class="line">  <span class="keywordflow">switch</span> (param) {</div>
 <div class="line">  <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="constants_8h.html#a40dd25c531ebf99fb4b46469083b609ea4ecec990e69afb205f9801433be37b26">QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM</a>:</div>
 <div class="line">    <span class="keywordflow">if</span> (value != <span class="keyword">nullptr</span>) {</div>
+<div class="line">      <span class="keywordflow">if</span> (size != <span class="keyword">sizeof</span>(<span class="keywordtype">size_t</span>)) {</div>
+<div class="line">        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a72b5274b4f2a76101255ac8409410642">QDMI_ERROR_INVALIDARGUMENT</a>;</div>
+<div class="line">      }</div>
 <div class="line">      job-&gt;num_shots = *<span class="keyword">static_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">size_t</span> *<span class="keyword">&gt;</span>(value);</div>
 <div class="line">    }</div>
 <div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a8039f5cd8202553b2a91a1c0b01d6751">QDMI_SUCCESS</a>;</div>
@@ -569,56 +572,64 @@ Submitting a Job</h2>
 <div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a916e0810bf915e2ad67f2c1430c54fec">QDMI_ERROR_BADSTATE</a>;</div>
 <div class="line">  }</div>
 <div class="line"> </div>
-<div class="line">  CXX_QDMI_set_device_status(<a class="code hl_enumvalue" href="constants_8h.html#aa13ac5e1c93a4b358d84bb9fd1f5fd99aedb7fbd4f25c108ab71385aec61e4409">QDMI_DEVICE_STATUS_BUSY</a>);</div>
-<div class="line">  job-&gt;status = <a class="code hl_enumvalue" href="constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6a3c531c6a92164cfb31a6c4c1a6cc5dfe">QDMI_JOB_STATUS_SUBMITTED</a>;</div>
-<div class="line">  <span class="comment">// here, the actual submission of the problem to the device would happen</span></div>
-<div class="line">  <span class="comment">// ...</span></div>
-<div class="line">  <span class="comment">// set job status to running for demonstration purposes</span></div>
-<div class="line">  job-&gt;status = <a class="code hl_enumvalue" href="constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6ac1203df2c0360fafd873b42cdcbe9cc5">QDMI_JOB_STATUS_RUNNING</a>;</div>
-<div class="line">  <span class="comment">// generate random result data</span></div>
 <div class="line">  <span class="keywordtype">size_t</span> num_qubits = 0;</div>
 <div class="line">  CXX_QDMI_device_session_query_device_property(</div>
 <div class="line">      job-&gt;session, <a class="code hl_enumvalue" href="constants_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a7ada8f720629c4cac8d74ac4270a1c46">QDMI_DEVICE_PROPERTY_QUBITSNUM</a>, <span class="keyword">sizeof</span>(<span class="keywordtype">size_t</span>), &amp;num_qubits,</div>
 <div class="line">      <span class="keyword">nullptr</span>);</div>
 <div class="line">  <span class="keyword">constexpr</span> std::array&lt;std::string_view, 4&gt; shot_outputs{<span class="stringliteral">&quot;01&quot;</span>, <span class="stringliteral">&quot;10&quot;</span>, <span class="stringliteral">&quot;11&quot;</span>,</div>
 <div class="line">                                                         <span class="stringliteral">&quot;00&quot;</span>};</div>
-<div class="line">  job-&gt;results.clear();</div>
-<div class="line">  job-&gt;results.resize(job-&gt;programs.size());</div>
-<div class="line">  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> program_index = 0; program_index &lt; job-&gt;results.size();</div>
-<div class="line">       ++program_index) {</div>
-<div class="line">    <span class="keyword">auto</span> &amp;result = job-&gt;results[program_index];</div>
-<div class="line">    <span class="keywordtype">size_t</span> output_index = 0;</div>
-<div class="line">    <span class="keywordflow">if</span> (job-&gt;programs.size() &gt; 1) {</div>
-<div class="line">      <span class="keyword">const</span> <span class="keyword">auto</span> &amp;program = job-&gt;programs.at(program_index);</div>
-<div class="line">      <span class="keyword">const</span> <span class="keyword">auto</span> marker = program.at(</div>
-<div class="line">          program.size() - (job-&gt;format != <a class="code hl_enumvalue" href="constants_8h.html#a3eff3252203fcad146d5896e4466ec09a705ba084cac8769dc2bf91c0beb35ac7">QDMI_PROGRAM_FORMAT_QIRBASEMODULE</a> &amp;&amp;</div>
-<div class="line">                                    program.size() &gt; 1</div>
-<div class="line">                                ? 2</div>
-<div class="line">                                : 1));</div>
-<div class="line">      output_index = <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">char</span><span class="keyword">&gt;</span>(marker) % shot_outputs.size();</div>
+<div class="line">  <span class="keywordflow">try</span> {</div>
+<div class="line">    std::vector&lt;CXX_QDMI_Device_Job_impl_d::Result_data&gt; results(</div>
+<div class="line">        job-&gt;programs.size());</div>
+<div class="line">    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> program_index = 0; program_index &lt; results.size();</div>
+<div class="line">         ++program_index) {</div>
+<div class="line">      <span class="keyword">auto</span> &amp;result = results[program_index];</div>
+<div class="line">      <span class="keywordtype">size_t</span> output_index = 0;</div>
+<div class="line">      <span class="keywordflow">if</span> (job-&gt;programs.size() &gt; 1) {</div>
+<div class="line">        <span class="keyword">const</span> <span class="keyword">auto</span> &amp;program = job-&gt;programs.at(program_index);</div>
+<div class="line">        <span class="keyword">const</span> <span class="keyword">auto</span> marker =</div>
+<div class="line">            program.at(program.size() -</div>
+<div class="line">                       (job-&gt;format != <a class="code hl_enumvalue" href="constants_8h.html#a3eff3252203fcad146d5896e4466ec09a705ba084cac8769dc2bf91c0beb35ac7">QDMI_PROGRAM_FORMAT_QIRBASEMODULE</a> &amp;&amp;</div>
+<div class="line">                                program.size() &gt; 1</div>
+<div class="line">                            ? 2</div>
+<div class="line">                            : 1));</div>
+<div class="line">        output_index = <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">char</span><span class="keyword">&gt;</span>(marker) % shot_outputs.size();</div>
+<div class="line">      }</div>
+<div class="line">      <span class="keyword">auto</span> shot = std::string{shot_outputs.at(output_index)};</div>
+<div class="line">      shot.insert(0, num_qubits - shot.size(), <span class="charliteral">&#39;0&#39;</span>);</div>
+<div class="line">      result.shots.assign(job-&gt;num_shots, shot);</div>
+<div class="line">      <span class="comment">// Generate random complex numbers and calculate the norm</span></div>
+<div class="line">      result.state_vec.reserve(1U &lt;&lt; num_qubits);</div>
+<div class="line">      <span class="keywordtype">double</span> norm = 0.0;</div>
+<div class="line">      <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; 1U &lt;&lt; num_qubits; ++i) {</div>
+<div class="line">        <span class="keyword">const</span> <span class="keyword">auto</span> &amp;c = result.state_vec.emplace_back(CXX_QDMI_generate_real(),</div>
+<div class="line">                                                      CXX_QDMI_generate_real());</div>
+<div class="line">        norm += std::norm(c);</div>
+<div class="line">      }</div>
+<div class="line">      <span class="comment">// Normalize the vector</span></div>
+<div class="line">      norm = std::sqrt(norm);</div>
+<div class="line">      <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;c : result.state_vec) {</div>
+<div class="line">        c /= norm;</div>
+<div class="line">      }</div>
 <div class="line">    }</div>
-<div class="line">    <span class="keyword">auto</span> shot = std::string{shot_outputs.at(output_index)};</div>
-<div class="line">    shot.insert(0, num_qubits - shot.size(), <span class="charliteral">&#39;0&#39;</span>);</div>
-<div class="line">    result.shots.assign(job-&gt;num_shots, shot);</div>
-<div class="line">    <span class="comment">// Generate random complex numbers and calculate the norm</span></div>
-<div class="line">    result.state_vec.reserve(1U &lt;&lt; num_qubits);</div>
-<div class="line">    <span class="keywordtype">double</span> norm = 0.0;</div>
-<div class="line">    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; 1U &lt;&lt; num_qubits; ++i) {</div>
-<div class="line">      <span class="keyword">const</span> <span class="keyword">auto</span> &amp;c = result.state_vec.emplace_back(CXX_QDMI_generate_real(),</div>
-<div class="line">                                                    CXX_QDMI_generate_real());</div>
-<div class="line">      norm += std::norm(c);</div>
-<div class="line">    }</div>
-<div class="line">    <span class="comment">// Normalize the vector</span></div>
-<div class="line">    norm = std::sqrt(norm);</div>
-<div class="line">    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;c : result.state_vec) {</div>
-<div class="line">      c /= norm;</div>
-<div class="line">    }</div>
+<div class="line">    job-&gt;results = std::move(results);</div>
+<div class="line">  } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::bad_alloc &amp;) {</div>
+<div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a0cf40a28841e7b8bcba223ae28a3713d">QDMI_ERROR_OUTOFMEM</a>;</div>
+<div class="line">  } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;) {</div>
+<div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3">QDMI_ERROR_FATAL</a>;</div>
+<div class="line">  } <span class="keywordflow">catch</span> (...) {</div>
+<div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3">QDMI_ERROR_FATAL</a>;</div>
 <div class="line">  }</div>
+<div class="line">  CXX_QDMI_set_device_status(<a class="code hl_enumvalue" href="constants_8h.html#aa13ac5e1c93a4b358d84bb9fd1f5fd99aedb7fbd4f25c108ab71385aec61e4409">QDMI_DEVICE_STATUS_BUSY</a>);</div>
+<div class="line">  <span class="comment">// here, the actual submission of the problem to the device would happen</span></div>
+<div class="line">  <span class="comment">// ...</span></div>
+<div class="line">  <span class="comment">// set job status to running for demonstration purposes</span></div>
+<div class="line">  job-&gt;status = <a class="code hl_enumvalue" href="constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6ac1203df2c0360fafd873b42cdcbe9cc5">QDMI_JOB_STATUS_RUNNING</a>;</div>
 <div class="line">  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a8039f5cd8202553b2a91a1c0b01d6751">QDMI_SUCCESS</a>;</div>
 <div class="line">} </div>
-<div class="ttc" id="aconstants_8h_html_a04e5c793bcbe8b354a9223bb60f828a6a3c531c6a92164cfb31a6c4c1a6cc5dfe"><div class="ttname"><a href="constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6a3c531c6a92164cfb31a6c4c1a6cc5dfe">QDMI_JOB_STATUS_SUBMITTED</a></div><div class="ttdeci">@ QDMI_JOB_STATUS_SUBMITTED</div><div class="ttdoc">The job was submitted.</div><div class="ttdef"><b>Definition</b> constants.h:911</div></div>
 <div class="ttc" id="aconstants_8h_html_a04e5c793bcbe8b354a9223bb60f828a6ac1203df2c0360fafd873b42cdcbe9cc5"><div class="ttname"><a href="constants_8h.html#a04e5c793bcbe8b354a9223bb60f828a6ac1203df2c0360fafd873b42cdcbe9cc5">QDMI_JOB_STATUS_RUNNING</a></div><div class="ttdeci">@ QDMI_JOB_STATUS_RUNNING</div><div class="ttdoc">One or more programs are still running.</div><div class="ttdef"><b>Definition</b> constants.h:915</div></div>
 <div class="ttc" id="aconstants_8h_html_a3eff3252203fcad146d5896e4466ec09a705ba084cac8769dc2bf91c0beb35ac7"><div class="ttname"><a href="constants_8h.html#a3eff3252203fcad146d5896e4466ec09a705ba084cac8769dc2bf91c0beb35ac7">QDMI_PROGRAM_FORMAT_QIRBASEMODULE</a></div><div class="ttdeci">@ QDMI_PROGRAM_FORMAT_QIRBASEMODULE</div><div class="ttdoc">void* A QIR binary complying to the QIR base profile.</div><div class="ttdef"><b>Definition</b> constants.h:1019</div></div>
+<div class="ttc" id="aconstants_8h_html_a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3"><div class="ttname"><a href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3">QDMI_ERROR_FATAL</a></div><div class="ttdeci">@ QDMI_ERROR_FATAL</div><div class="ttdoc">A fatal error.</div><div class="ttdef"><b>Definition</b> constants.h:65</div></div>
 <div class="ttc" id="aconstants_8h_html_aa13ac5e1c93a4b358d84bb9fd1f5fd99aedb7fbd4f25c108ab71385aec61e4409"><div class="ttname"><a href="constants_8h.html#aa13ac5e1c93a4b358d84bb9fd1f5fd99aedb7fbd4f25c108ab71385aec61e4409">QDMI_DEVICE_STATUS_BUSY</a></div><div class="ttdeci">@ QDMI_DEVICE_STATUS_BUSY</div><div class="ttdoc">The device is busy.</div><div class="ttdef"><b>Definition</b> constants.h:518</div></div>
 </div><!-- fragment --><p>For the full implementation of the example devices we refer to the respective source files in the QDMI repository, that is, <a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/v1.4.0/examples/device/src/cxx_device.cpp"><span class="tt">cxx_device.cpp</span></a> for the C++ implementation. </p>
 </div></div><!-- contents -->

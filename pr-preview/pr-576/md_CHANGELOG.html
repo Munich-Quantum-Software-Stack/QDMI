@@ -223,6 +223,9 @@ Changed</h2>
 <h2 class="doxsection"><a class="anchor" id="fixed"></a>
 Fixed</h2>
 <ul>
+<li>🐛 Keep the example device job ready when result preparation fails instead of letting a C++ exception escape the Device Interface (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/576">#576</a>) (<a href="https://github.com/burgholzer">@burgholzer</a>).</li>
+<li>🐛 Reject incorrectly sized shot-count values in the example device before reading them (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/576">#576</a>) (<a href="https://github.com/burgholzer">@burgholzer</a>).</li>
+<li>🐛 Avoid exposing or leaking a client job when the example driver's device job creation fails (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/576">#576</a>) (<a href="https://github.com/burgholzer">@burgholzer</a>).</li>
 <li>🐛 Allow the example driver to open one device library more than once with distinct stable IDs (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/511">#511</a>) (<a href="https://github.com/burgholzer">@burgholzer</a>, <a href="https://github.com/ystade">@ystade</a>).</li>
 <li>🐛 Release example-driver device libraries when the final session closes, before process-wide dependency teardown (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/511">#511</a>) (<a href="https://github.com/burgholzer">@burgholzer</a>, <a href="https://github.com/ystade">@ystade</a>).</li>
 <li>🐛 Allow the example driver to open devices without token authentication while propagating authentication errors (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/511">#511</a>) (<a href="https://github.com/burgholzer">@burgholzer</a>, <a href="https://github.com/ystade">@ystade</a>).</li>
