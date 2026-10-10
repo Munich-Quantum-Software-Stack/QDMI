@@ -25,7 +25,7 @@ fetches GoogleTest and initially needs network access. From a new checkout:
 git clone \
   https://github.com/Munich-Quantum-Software-Stack/QDMI.git
 cd QDMI
-git checkout 701fc7052e88618240c0ee2ba81114452e779527
+git checkout v1.4.0
 
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release \
   -DBUILD_QDMI_TESTS=ON -DBUILD_QDMI_DOCS=OFF
@@ -64,9 +64,9 @@ ctest --test-dir build -C Release --output-on-failure
 ```
 
 The assertions and API calls are in
-[`test/test_qdmi.cpp`](https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/701fc7052e88618240c0ee2ba81114452e779527/test/test_qdmi.cpp),
+[`test/test_qdmi.cpp`](https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/v1.4.0/test/test_qdmi.cpp),
 with session and configuration setup in
-[`test/utils/test_impl.cpp`](https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/701fc7052e88618240c0ee2ba81114452e779527/test/utils/test_impl.cpp).
+[`test/utils/test_impl.cpp`](https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/v1.4.0/test/utils/test_impl.cpp).
 These tests also run in QDMI's CI.
 
 ## Follow the Application Workflow {#getting-started-workflow}

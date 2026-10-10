@@ -677,6 +677,7 @@ typedef struct QDMI_Job_impl_d *QDMI_Job;
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the driver does not allow using
  * the @ref client_job_interface "client job interface" for the device in the
  * current session.
+ * @return @ref QDMI_ERROR_OUTOFMEM if the driver cannot allocate the job.
  * @return @ref QDMI_ERROR_FATAL if job creation failed due to a fatal error.
  */
 QDMI_DRIVER_EXPORT int QDMI_device_create_job(QDMI_Device device,

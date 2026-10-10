@@ -11,6 +11,8 @@ releases, please refer to the
 
 ## [Unreleased]
 
+## [1.4.0]
+
 ### CMake consumption
 
 Installed QDMI packages no longer select a compiler cache or add `-g` to
@@ -667,7 +669,8 @@ For quick reference, here are all breaking changes in v1.2.0:
 
 <!-- Version links -->
 
-[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.3...HEAD
+[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.4.0...HEAD
+[1.4.0]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.3...v1.4.0
 [1.3.3]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.2...v1.3.3
 [1.3.2]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.1...v1.3.2
 [1.3.1]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.0...v1.3.1

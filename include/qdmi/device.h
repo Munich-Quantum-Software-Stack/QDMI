@@ -759,6 +759,7 @@ QDMI_EXPORT int QDMI_device_job_query_property(QDMI_Device_Job job,
  * QDMI_device_session_retrieve_device_job_by_id.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the device does not allow using
  * the @ref device_job_interface "device job interface" for the current session.
+ * @return @ref QDMI_ERROR_OUTOFMEM if the device cannot allocate job results.
  * @return @ref QDMI_ERROR_FATAL if the job submission failed.
  */
 QDMI_EXPORT int QDMI_device_job_submit(QDMI_Device_Job job);

@@ -52,6 +52,7 @@ we'll use `tutorial` as our project prefix.
 # Step 1: Clone the QDMI repository
 git clone https://github.com/Munich-Quantum-Software-Stack/QDMI.git
 cd QDMI
+git checkout v1.4.0
 
 # Step 2: Generate the project files
 cmake -DQDMI_GENERATE_TEMPLATE=ON \
@@ -313,7 +314,7 @@ int tutorial_QDMI_device_session_query_device_property(
 > [!NOTE]
 > For a more advanced approach that uses macros to reduce boilerplate code when
 > defining multiple properties, refer to the
-> [Example Device Implementation](https://github.com/Munich-Quantum-Software-Stack/QDMI/tree/develop/examples/device).
+> [Example Device Implementation](https://github.com/Munich-Quantum-Software-Stack/QDMI/tree/v1.4.0/examples/device).
 
 > [!TIP]
 > **Check Now**: The device can now describe itself to the driver.
@@ -643,13 +644,10 @@ Congratulations on building your first QDMI device. You've implemented:
 
 ### Configuring the Template
 
-We recommend pinning your project to a specific QDMI release for stability. Edit
-`cmake/ExternalDependencies.cmake`:
-
-```diff
--   set(QDMI_REV "develop")
-+   set(QDMI_REV "v1.3.0")
-```
+Generated projects pin QDMI to the release selected by `QDMI_VERSION` in
+`cmake/ExternalDependencies.cmake`. The `QDMI_REV` cache variable defaults to
+the matching release tag. Override it when configuring if you need another tag
+or commit, and keep `QDMI_VERSION` consistent with that interface.
 
 ### Troubleshooting Fetch Failures
 
