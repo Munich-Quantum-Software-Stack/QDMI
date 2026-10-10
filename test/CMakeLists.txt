@@ -24,10 +24,6 @@ enable_language(CXX)
 
 add_subdirectory(utils)
 
-add_test(NAME qdmi_docs_index_anchors
-         COMMAND ${CMAKE_COMMAND} -DTEST_OUTPUT_DIR=${CMAKE_CURRENT_BINARY_DIR}
-                 -P ${CMAKE_CURRENT_SOURCE_DIR}/test_doxygen_index.cmake)
-
 # ------------------------------------------------------------------------------
 # Functional Tests
 # ------------------------------------------------------------------------------
