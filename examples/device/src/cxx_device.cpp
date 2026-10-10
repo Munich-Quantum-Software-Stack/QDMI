@@ -32,6 +32,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
+#include <exception>
 #include <functional>
 #include <iterator>
 #include <limits>
@@ -426,6 +427,9 @@ int CXX_QDMI_device_job_set_parameter(CXX_QDMI_Device_Job job,
   switch (param) {
   case QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM:
     if (value != nullptr) {
+      if (size != sizeof(size_t)) {
+        return QDMI_ERROR_INVALIDARGUMENT;
+      }
       job->num_shots = *static_cast<const size_t *>(value);
     }
     return QDMI_SUCCESS;
@@ -552,51 +556,59 @@ int CXX_QDMI_device_job_submit(CXX_QDMI_Device_Job job) {
     return QDMI_ERROR_BADSTATE;
   }
 
-  CXX_QDMI_set_device_status(QDMI_DEVICE_STATUS_BUSY);
-  job->status = QDMI_JOB_STATUS_SUBMITTED;
-  // here, the actual submission of the problem to the device would happen
-  // ...
-  // set job status to running for demonstration purposes
-  job->status = QDMI_JOB_STATUS_RUNNING;
-  // generate random result data
   size_t num_qubits = 0;
   CXX_QDMI_device_session_query_device_property(
       job->session, QDMI_DEVICE_PROPERTY_QUBITSNUM, sizeof(size_t), &num_qubits,
       nullptr);
   constexpr std::array<std::string_view, 4> shot_outputs{"01", "10", "11",
                                                          "00"};
-  job->results.clear();
-  job->results.resize(job->programs.size());
-  for (size_t program_index = 0; program_index < job->results.size();
-       ++program_index) {
-    auto &result = job->results[program_index];
-    size_t output_index = 0;
-    if (job->programs.size() > 1) {
-      const auto &program = job->programs.at(program_index);
-      const auto marker = program.at(
-          program.size() - (job->format != QDMI_PROGRAM_FORMAT_QIRBASEMODULE &&
-                                    program.size() > 1
-                                ? 2
-                                : 1));
-      output_index = static_cast<unsigned char>(marker) % shot_outputs.size();
+  try {
+    std::vector<CXX_QDMI_Device_Job_impl_d::Result_data> results(
+        job->programs.size());
+    for (size_t program_index = 0; program_index < results.size();
+         ++program_index) {
+      auto &result = results[program_index];
+      size_t output_index = 0;
+      if (job->programs.size() > 1) {
+        const auto &program = job->programs.at(program_index);
+        const auto marker =
+            program.at(program.size() -
+                       (job->format != QDMI_PROGRAM_FORMAT_QIRBASEMODULE &&
+                                program.size() > 1
+                            ? 2
+                            : 1));
+        output_index = static_cast<unsigned char>(marker) % shot_outputs.size();
+      }
+      auto shot = std::string{shot_outputs.at(output_index)};
+      shot.insert(0, num_qubits - shot.size(), '0');
+      result.shots.assign(job->num_shots, shot);
+      // Generate random complex numbers and calculate the norm
+      result.state_vec.reserve(1U << num_qubits);
+      double norm = 0.0;
+      for (size_t i = 0; i < 1U << num_qubits; ++i) {
+        const auto &c = result.state_vec.emplace_back(CXX_QDMI_generate_real(),
+                                                      CXX_QDMI_generate_real());
+        norm += std::norm(c);
+      }
+      // Normalize the vector
+      norm = std::sqrt(norm);
+      for (auto &c : result.state_vec) {
+        c /= norm;
+      }
     }
-    auto shot = std::string{shot_outputs.at(output_index)};
-    shot.insert(0, num_qubits - shot.size(), '0');
-    result.shots.assign(job->num_shots, shot);
-    // Generate random complex numbers and calculate the norm
-    result.state_vec.reserve(1U << num_qubits);
-    double norm = 0.0;
-    for (size_t i = 0; i < 1U << num_qubits; ++i) {
-      const auto &c = result.state_vec.emplace_back(CXX_QDMI_generate_real(),
-                                                    CXX_QDMI_generate_real());
-      norm += std::norm(c);
-    }
-    // Normalize the vector
-    norm = std::sqrt(norm);
-    for (auto &c : result.state_vec) {
-      c /= norm;
-    }
+    job->results = std::move(results);
+  } catch (const std::bad_alloc &) {
+    return QDMI_ERROR_OUTOFMEM;
+  } catch (const std::exception &) {
+    return QDMI_ERROR_FATAL;
+  } catch (...) {
+    return QDMI_ERROR_FATAL;
   }
+  CXX_QDMI_set_device_status(QDMI_DEVICE_STATUS_BUSY);
+  // here, the actual submission of the problem to the device would happen
+  // ...
+  // set job status to running for demonstration purposes
+  job->status = QDMI_JOB_STATUS_RUNNING;
   return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]
 

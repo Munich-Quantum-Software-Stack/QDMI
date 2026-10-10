@@ -525,10 +525,19 @@ int QDMI_device_create_job(QDMI_Device dev, QDMI_Job *job) {
     return QDMI_ERROR_PERMISSIONDENIED;
   }
 
-  *job = new QDMI_Job_impl_d();
-  (*job)->device = dev;
-  return dev->library->device_session_create_device_job(dev->device_session,
-                                                        &(*job)->device_job);
+  auto created_job =
+      std::unique_ptr<QDMI_Job_impl_d>(new (std::nothrow) QDMI_Job_impl_d());
+  if (!created_job) {
+    return QDMI_ERROR_OUTOFMEM;
+  }
+  created_job->device = dev;
+  const auto status = dev->library->device_session_create_device_job(
+      dev->device_session, &created_job->device_job);
+  if (status != QDMI_SUCCESS) {
+    return status;
+  }
+  *job = created_job.release();
+  return QDMI_SUCCESS;
 }
 
 int QDMI_session_retrieve_job_by_id(QDMI_Device dev, const char *job_id,

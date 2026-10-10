@@ -54,7 +54,9 @@ jobs:
       - name: Build
         run: cmake --build --preset coverage
       - name: Test
-        run: ctest --preset coverage
+        run: |
+          ctest --preset coverage
+          ./build/coverage/examples/device/test/cxx-qdmi-device-test
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
         with:
