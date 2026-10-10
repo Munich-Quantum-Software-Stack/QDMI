@@ -10,7 +10,7 @@ and result retrieval. See the
 
 ## Where is QDMI used, and who develops it?
 
-QDMI grew out of Munich Quantum Valley and is used in the Munich Quantum
+QDMI grew out of Munich Quantum Valley (MQV) and is used in the Munich Quantum
 Software Stack (MQSS). It also contributes to reference-architecture and
 integration work across Germany, Europe, and the international openQSE
 community. See [Ecosystem and Community](ecosystem.md) for deployments,
@@ -18,9 +18,10 @@ implementations, and opportunities to participate.
 
 QDMI was created jointly by TUM's Chairs of Design Automation and Computer
 Architecture and Parallel Systems and the Leibniz Supercomputing Centre. It is
-maintained by Munich Quantum Valley gGmbH and MQSC, with contributions from the
-wider community. Participation is open to organizations and individuals
-worldwide.
+maintained by
+[MQV gGmbH](https://www.munich-quantum-valley.de/de/ueber-uns/mqv-ggmbh) and
+MQSC, with contributions from the wider community. Participation is open to
+organizations and individuals worldwide.
 
 ## Does installing QDMI let me run a quantum program?
 
@@ -40,9 +41,11 @@ wrappers supplied by MQT Core.
 
 ## Can I use QDMI from Python?
 
-Yes. QDMI uses a C ABI that other languages can call. MQT Core provides C++ and
-Python wrappers, plus Qiskit and PennyLane adapters. These wrappers and adapters
-are implementation facilities, rather than part of the QDMI C specification.
+Yes. QDMI uses a C ABI that other languages can call.
+[MQT Core](https://mqt.readthedocs.io/projects/core/en/latest/qdmi/index.html)
+provides C++ and Python wrappers, plus Qiskit and PennyLane adapters. These
+wrappers and adapters are implementation facilities, rather than part of the
+QDMI C specification.
 
 ## Does every device support the same programs and results?
 

@@ -16,8 +16,8 @@ queries, and job execution, helping integrate quantum computers into classical
 computing infrastructure—from local systems and HPC centres to cloud services.
 
 QDMI grew out of the
-[Munich Quantum Valley](https://www.munich-quantum-valley.de) initiative, where
-it is used as part of the
+[Munich Quantum Valley (MQV)](https://www.munich-quantum-valley.de) initiative,
+where it is used as part of the
 [Munich Quantum Software Stack (MQSS)](https://doi.org/10.1145/3773656.3773669).
 QDMI was created jointly by TUM's
 [Chair for Design Automation](https://www.cda.cit.tum.de), TUM's
@@ -27,7 +27,7 @@ contributes to an international standardization effort for interoperable
 quantum–classical software stacks.
 
 QDMI is maintained by the
-[Munich Quantum Valley gGmbH](https://www.munich-quantum-valley.de) and
+[MQV gGmbH](https://www.munich-quantum-valley.de/de/ueber-uns/mqv-ggmbh) and
 [MQSC](https://mq.sc), with contributions from the wider community.
 
 Its reach extends from use at LRZ and MQV gGmbH through MQSS to Germany's

@@ -13,19 +13,20 @@ worldwide.
 
 ### Munich: Origins and Deployment
 
-QDMI grew out of the Munich Quantum Valley initiative. It is used at the
-[Leibniz Supercomputing Centre (LRZ)](https://www.lrz.de) and
-[Munich Quantum Valley gGmbH](https://www.munich-quantum-valley.de) as part of
-the
+QDMI grew out of the
+[Munich Quantum Valley (MQV)](https://www.munich-quantum-valley.de) initiative.
+It is used at the [Leibniz Supercomputing Centre (LRZ)](https://www.lrz.de) and
+[MQV gGmbH](https://www.munich-quantum-valley.de/de/ueber-uns/mqv-ggmbh) as part
+of the
 [Munich Quantum Software Stack (MQSS)](https://www.munich-quantum-valley.de/research/research-areas/mqss).
 MQSS connects applications, compilation, resource management, and quantum
 devices. The [MQSS publication][mqss-paper] describes the stack's architecture
 and its deployment at LRZ, including access to AQT and IQM systems.
 
 <div class="qdmi-logos">
+  <a href="https://www.munich-quantum-valley.de"><img width="160" src="_static/logos/mqv.svg" alt=""/>MQV</a>
   <a href="https://www.munich-quantum-valley.de/research/research-areas/mqss"><img width="160" src="_static/mqss_logo.svg" alt=""/>MQSS</a>
   <a href="https://www.lrz.de"><img width="160" src="_static/logos/lrz.svg" alt=""/>LRZ</a>
-  <a href="https://www.munich-quantum-valley.de"><img width="160" src="_static/logos/mqv.svg" alt=""/>Munich Quantum Valley</a>
 </div>
 
 ### Germany: FullStaQD Reference Architecture
@@ -73,7 +74,7 @@ interoperable quantum–HPC stacks and proposes a reference architecture.
 
 <div class="qdmi-logos">
   <a href="https://openqse.org/"><img width="160" src="_static/logos/openqse.png" alt=""/>openQSE</a>
-  <a href="https://www.ornl.gov/"><img width="160" src="_static/logos/ornl.svg" alt=""/>Oak Ridge National Laboratory</a>
+  <a href="https://www.ornl.gov/"><img width="160" src="_static/logos/ornl.svg" alt=""/>ORNL</a>
 </div>
 
 ## Implementations and Integrations {#ecosystem-implementations}
@@ -192,21 +193,21 @@ not make their operational requirements identical.
 
 ## Origins, Maintenance, and Participation {#ecosystem-stewardship}
 
-QDMI was created jointly by TUM's
-[Chair for Design Automation](https://www.cda.cit.tum.de), TUM's
-[Chair of Computer Architecture and Parallel Systems](https://www.ce.cit.tum.de/en/caps/homepage/),
-and the [Leibniz Supercomputing Centre](https://www.lrz.de) within Munich
-Quantum Valley. The [original QDMI paper][qdmi-paper] records the motivation and
+QDMI was created jointly by the
+[Chair for Design Automation (CDA)](https://www.cda.cit.tum.de) and
+[Chair of Computer Architecture and Parallel Systems (CAPS)](https://www.ce.cit.tum.de/en/caps/homepage/)
+at the Technical University of Munich (TUM) and by [LRZ](https://www.lrz.de)
+within MQV. The [original QDMI paper][qdmi-paper] records the motivation and
 early work.
 
-Today, [Munich Quantum Valley gGmbH](https://www.munich-quantum-valley.de) and
-[MQSC](https://mq.sc) maintain QDMI with contributions from the wider community.
-We thank the original authors and
+Today, [MQV gGmbH](https://www.munich-quantum-valley.de/de/ueber-uns/mqv-ggmbh)
+and [MQSC](https://mq.sc) maintain QDMI with contributions from the wider
+community. We thank the original authors and
 [all repository contributors](https://github.com/Munich-Quantum-Software-Stack/QDMI/graphs/contributors)
 for building and developing the interface.
 
 <div class="qdmi-logos">
-  <a href="https://www.munich-quantum-valley.de"><img width="160" src="_static/logos/mqv.svg" alt=""/>MQV gGmbH</a>
+  <a href="https://www.munich-quantum-valley.de/de/ueber-uns/mqv-ggmbh"><img width="160" src="_static/logos/mqv_ggmbh.png" alt=""/>MQV gGmbH</a>
   <a href="https://mq.sc"><img width="160" src="_static/logos/mqsc.svg" alt=""/>MQSC</a>
   <a href="https://www.cda.cit.tum.de"><img width="160" src="_static/logos/tum-cda.svg" alt=""/>TUM CDA</a>
   <a href="https://www.ce.cit.tum.de/en/caps/homepage/"><img width="160" src="_static/logos/tum.svg" alt=""/>TUM CAPS</a>
@@ -229,37 +230,44 @@ particular versions and deployments; use the headers and implementation guides
 for your selected version when writing software. In particular, the Braket paper
 describes QDMI 1.2; its API examples differ from the current interface.
 
-1. **Motivation and historical credit.** Robert Wille, Ludwig Schmid, Yannick
-   Stade, Jorge Echavarria, Martin Schulz, Laura Schulz, and Lukas Burgholzer.
-   *QDMI — Quantum Device Management Interface: Hardware-Software Interface for
-   the Munich Quantum Software Stack.* IEEE International Conference on Quantum
-   Computing and Engineering (QCE), 2024.
-   [DOI: 10.1109/QCE60285.2024.10411][qdmi-paper]. Introduces the interface and
+1. **Motivation and historical credit.** This paper introduces the interface and
    its role in connecting hardware-aware quantum software with classical
    infrastructure. Please cite this paper when using QDMI; a BibTeX entry is in
    the
    [README](https://github.com/Munich-Quantum-Software-Stack/QDMI#cite-qdmi).
-2. **System architecture and deployment.** Lukas Burgholzer et al. *The Munich
-   Quantum Software Stack: Connecting End Users, Integrating Diverse Quantum
-   Technologies, Accelerating HPC.* SCA/HPCAsia, 2026.
-   [DOI: 10.1145/3773656.3773669][mqss-paper];
-   [arXiv:2509.02674](https://arxiv.org/abs/2509.02674). Places QDMI within MQSS
+
+   Robert Wille, Ludwig Schmid, Yannick Stade, Jorge Echavarria, Martin Schulz,
+   Laura Schulz, and Lukas Burgholzer. *QDMI — Quantum Device Management
+   Interface: Hardware-Software Interface for the Munich Quantum Software
+   Stack.* IEEE International Conference on Quantum Computing and Engineering
+   (QCE), 2024. [DOI: 10.1109/QCE60285.2024.10411][qdmi-paper].
+2. **System architecture and deployment.** This paper places QDMI within MQSS
    and describes integration with compilation, resource management, and quantum
    systems at LRZ.
-3. **Real-hardware integration.** Lukas Burgholzer et al. *Practical HPCQC
-   Integration with QDMI: A Real-Hardware Case Study with IQM Systems.* 2026.
-   [arXiv:2604.19869][iqm-paper]. Demonstrates architecture and calibration
-   queries, execution on IQM hardware, and integration with application SDKs and
-   HPC workflows.
-4. **Cloud integration.** Patrick Hopf, Sebastian Stern, Robert Wille, and Lukas
-   Burgholzer. *Standardizing Access to Heterogeneous Quantum Backends: A Case
-   Study on Cloud Service Integration with QDMI.* 2026.
-   [arXiv:2603.05138][braket-paper]. Uses Amazon Braket to examine the mapping
+
+   Lukas Burgholzer et al. *The Munich Quantum Software Stack: Connecting End
+   Users, Integrating Diverse Quantum Technologies, Accelerating HPC.*
+   SCA/HPCAsia, 2026. [DOI: 10.1145/3773656.3773669][mqss-paper];
+   [arXiv:2509.02674](https://arxiv.org/abs/2509.02674).
+3. **Real-hardware integration.** This paper demonstrates architecture and
+   calibration queries, execution on IQM hardware, and integration with
+   application SDKs and HPC workflows.
+
+   Lukas Burgholzer et al. *Practical HPCQC Integration with QDMI: A
+   Real-Hardware Case Study with IQM Systems.* 2026.
+   [arXiv:2604.19869][iqm-paper].
+4. **Cloud integration.** This paper uses Amazon Braket to examine the mapping
    of a cloud service onto QDMI's sessions, queries, jobs, and results.
-5. **International architectural context.** Amir Shehata et al. *Quantum–HPC
-   Software Stacks and the openQSE Reference Architecture: A Survey.* 2026.
-   [arXiv:2604.20912][openqse-paper]. Surveys quantum–HPC stacks, discusses
-   QDMI, and develops a reference architecture for an interoperable ecosystem.
+
+   Patrick Hopf, Sebastian Stern, Robert Wille, and Lukas Burgholzer.
+   *Standardizing Access to Heterogeneous Quantum Backends: A Case Study on
+   Cloud Service Integration with QDMI.* 2026. [arXiv:2603.05138][braket-paper].
+5. **International architectural context.** This paper surveys quantum–HPC
+   stacks, discusses QDMI, and develops a reference architecture for an
+   interoperable ecosystem.
+
+   Amir Shehata et al. *Quantum–HPC Software Stacks and the openQSE Reference
+   Architecture: A Survey.* 2026. [arXiv:2604.20912][openqse-paper].
 
 [qdmi-paper]: https://doi.org/10.1109/QCE60285.2024.10411
 [mqss-paper]: https://doi.org/10.1145/3773656.3773669

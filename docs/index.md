@@ -20,9 +20,10 @@
 QDMI provides C11 headers for two interfaces: applications call the @ref
 client_interface implemented by a driver; device libraries implement the @ref
 device_interface called by that driver. Both cover sessions, queries, and jobs.
-The [architecture and rationale](rationale.md) explains compatibility, stable
-device IDs, and handle ownership. [Using QDMI with CMake](installation.md)
-covers the header package and build helpers.
+The [architecture and rationale](rationale.md) page explains compatibility,
+stable device IDs, and handle ownership. The
+[Using QDMI with CMake](installation.md) page covers the header package and
+build helpers.
 
 To execute circuits locally, follow
 [MQT Core's simulator tutorial](https://mqt.readthedocs.io/projects/core/en/latest/tutorials/qdmi_execution.html).
