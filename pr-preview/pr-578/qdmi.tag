@@ -2420,9 +2420,36 @@
     </member>
   </compound>
   <compound kind="page">
+    <name>md_docs_2ecosystem</name>
+    <title>Ecosystem and Community</title>
+    <filename>md_docs_2ecosystem.html</filename>
+    <docanchor file="md_docs_2ecosystem.html" title="From Munich Origins to International Collaboration">ecosystem-reach</docanchor>
+    <docanchor file="md_docs_2ecosystem.html" title="Implementations and Integrations">ecosystem-implementations</docanchor>
+    <docanchor file="md_docs_2ecosystem.html" title="Hardware, Cloud Services, and Simulators">ecosystem-devices</docanchor>
+    <docanchor file="md_docs_2ecosystem.html" title="Deployment Responsibilities">ecosystem-operations</docanchor>
+    <docanchor file="md_docs_2ecosystem.html" title="Origins, Maintenance, and Participation">ecosystem-stewardship</docanchor>
+    <docanchor file="md_docs_2ecosystem.html" title="Publications">ecosystem-publications</docanchor>
+  </compound>
+  <compound kind="page">
+    <name>md_docs_2__static_2logos_2SOURCES</name>
+    <title>Organization artwork</title>
+    <filename>md_docs_2__static_2logos_2SOURCES.html</filename>
+  </compound>
+  <compound kind="page">
+    <name>md_docs_2getting__started</name>
+    <title>Getting Started</title>
+    <filename>md_docs_2getting__started.html</filename>
+    <docanchor file="md_docs_2getting__started.html" title="Build the Local Examples">getting-started-build</docanchor>
+    <docanchor file="md_docs_2getting__started.html" title="Verify Discovery, Submission, and Results">getting-started-checkpoint</docanchor>
+    <docanchor file="md_docs_2getting__started.html" title="Follow the Application Workflow">getting-started-workflow</docanchor>
+    <docanchor file="md_docs_2getting__started.html" title="Diagnose Configuration and Loading Failures">getting-started-diagnostics</docanchor>
+    <docanchor file="md_docs_2getting__started.html" title="Move to a Simulator or External Device">getting-started-runtime</docanchor>
+  </compound>
+  <compound kind="page">
     <name>md_docs_2installation</name>
     <title>Using QDMI with CMake</title>
     <filename>md_docs_2installation.html</filename>
+    <docanchor file="md_docs_2installation.html" title="Control Shared-Library Exports">installation-exports</docanchor>
   </compound>
   <compound kind="page">
     <name>md_docs_2faq</name>
@@ -2436,9 +2463,10 @@
   </compound>
   <compound kind="page">
     <name>md_docs_2rationale</name>
-    <title>Rationale</title>
+    <title>Architecture and Rationale</title>
     <filename>md_docs_2rationale.html</filename>
-    <docanchor file="md_docs_2rationale.html" title="The structure of QDMI">rationale-structure</docanchor>
+    <docanchor file="md_docs_2rationale.html" title="The Structure of QDMI">rationale-structure</docanchor>
+    <docanchor file="md_docs_2rationale.html" title="Background and Version Context">rationale-background</docanchor>
     <docanchor file="md_docs_2rationale.html" title="Why does QDMI use opaque pointers?">rationale-opaque-pointers</docanchor>
     <docanchor file="md_docs_2rationale.html" title="Why does QDMI not define individual functions for each property?">rationale-properties</docanchor>
     <docanchor file="md_docs_2rationale.html" title="Why do device implementations use a prefix?">rationale-prefix</docanchor>
@@ -2480,6 +2508,7 @@
     <name>md_UPGRADING</name>
     <title>Upgrade Guide</title>
     <filename>md_UPGRADING.html</filename>
+    <docanchor file="md_UPGRADING.html">upgrading-unreleased</docanchor>
   </compound>
   <compound kind="page">
     <name>md_docs_2contributing</name>

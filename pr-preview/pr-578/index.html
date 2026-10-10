@@ -9,8 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>QDMI: QDMI</title>
     <link href="tabs.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="jquery.js"></script>
-    <script type="text/javascript" src="dynsections.js"></script>
+    <script type="text/javascript" src="codefolding.js"></script>
     <script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
     <script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
     <script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
@@ -92,20 +91,6 @@
           animation: octocat-wave 560ms ease-in-out;
         }
       }
-      /* image path depending on the color scheme */
-      /* Default (light mode) */
-      .logo {
-        width: 130px;
-        height: auto;
-        display: block;
-      }
-      .logo {
-        content: url("mqss_logo.svg"); /* this is set by doxygen, see PROJECT_LOGO in the Doxyfile.in */
-      }
-      /* Dark mode */
-      html.dark-mode .logo {
-        content: url("mqss_logo_dark.svg");
-      }
     </style>
       <div id="top">
         <!-- do not remove this div, it is closed by doxygen! -->
@@ -113,7 +98,6 @@
           <table cellspacing="0" cellpadding="0">
             <tbody>
               <tr id="projectrow">
-                <td id="projectlogo"><img class="logo" alt="Logo" /></td>
                 <td id="projectalign">
                   <div id="projectname">
                     QDMI<span id="projectnumber"
@@ -206,20 +190,35 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('index.html',''
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="mainpage"></a></p>
-<h1>Quantum Device Management Interface</h1>
-<p><img src="qdmi.svg" alt="QDMI in Quantum Software Stack" class="qdmi" style="pointer-events: none;" class="inline"/></p>
-<p>The Quantum Device Management Interface (QDMI) is one of the core components of the Munich Quantum Software Stack (MQSS)—a sophisticated software stack to connect end users to the wide range of possible quantum devices. It enables the submission to and the control of gate-based quantum systems and enables software tools to automatically retrieve and adapt to changing physical characteristics and constraints of different platforms. QDMI strives to connect the software and hardware developers, mediating between their competing interests, bridging between technologies, and eventually providing corresponding figures of merits and constraints to be considered. QDMI is therefore the method of choice for integrating new platforms into the MQSS and for software tools to query information from these platforms. QDMI is provided as a collection of C header files to allow fast integration into an HPC environment.</p>
-<h2>How to Use this Documentation?</h2>
-<p>This documentation tries to provide helpful information to get you started with QDMI.</p>
-<h3>General Information</h3>
-<p>The <a class="el" href="md_docs_2faq.html" title="FAQ">FAQ</a> page gives an overview over frequently asked questions. More details about the design and implementation can be found in the <a class="el" href="md_docs_2rationale.html" title="Rationale">Rationale</a> page.</p>
-<h3>Hands-On</h3>
-<p>The <a class="el" href="md_docs_2installation.html" title="Using QDMI with CMake">CMake guide</a> explains how to install QDMI or include it as a source dependency in your project.</p>
-<p>The <a class="el" href="md_docs_2examples.html" title="Examples">Examples</a> page provides a collection of examples to see QDMI in action. When you want to start your own implementation of QDMI, the <a class="el" href="md_docs_2templates.html" title="Template">Templates</a> page is a good starting point.</p>
-<h3>Nitty-Gritty Details</h3>
-<p>When you are interested in the details of the semantics of functions and the whole API, the <a href="files.html">Reference Documentation</a> page is the right place to look for.</p>
-<h3>Want to Contribute?</h3>
-<p>If you plan to contribute to QDMI, start with the <a class="el" href="md_docs_2contributing.html" title="Contributing">Contributing</a> page. </p>
+<h1 class="doxsection"><a class="anchor" id="quantum-device-management-interface"></a>
+Quantum Device Management Interface</h1>
+<p><b>QDMI provides an open, vendor-neutral interface between quantum software and quantum devices.</b> It standardizes device discovery, capability and calibration queries, and job execution, helping integrate quantum computers into classical computing infrastructure—from local systems and HPC centres to cloud services.</p>
+<p>QDMI grew out of the <a href="https://www.munich-quantum-valley.de">Munich Quantum Valley</a> initiative, where it is used as part of the <a href="https://doi.org/10.1145/3773656.3773669">Munich Quantum Software Stack (MQSS)</a>. QDMI was created jointly by TUM's <a href="https://www.cda.cit.tum.de">Chair for Design Automation</a>, TUM's <a href="https://www.ce.cit.tum.de/en/caps/homepage/">Chair of Computer Architecture and Parallel Systems</a>, and the <a href="https://www.lrz.de">Leibniz Supercomputing Centre (LRZ)</a>. Today, it contributes to an international standardization effort for interoperable quantum–classical software stacks.</p>
+<p>QDMI is maintained by the <a href="https://www.munich-quantum-valley.de">Munich Quantum Valley gGmbH</a> and <a href="https://mq.sc">MQSC</a>, with contributions from the wider community.</p>
+<p>Its reach extends from use at LRZ and MQV gGmbH through MQSS to Germany's FullStaQD reference architecture, EuroHPC-related integration work with EQS3, LRZ, PSNC, CESGA, CINECA, and VTT, and exploration within the ORNL-hosted openQSE initiative. Its growing ecosystem spans simulators, quantum hardware, and cloud services. Prominent open-source examples include IQM hardware integration, Amazon Braket access on AWS, the DDSIM simulator in MQT Core, and IBM Quantum integration. The MQSS QDMI Devices Suite also provides Qaptiva simulation and access to MQSS resources at LRZ. MQT Core and MQSS supply the surrounding drivers, application bindings, compilation, and HPC integration.</p>
+<h1 class="doxsection"><a class="anchor" id="choose-a-starting-point"></a>
+Choose a Starting Point</h1>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Your goal  </th><th class="markdownTableHeadNone">Guide  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">Evaluate or adopt QDMI  </td><td class="markdownTableBodyNone"><a class="el" href="md_docs_2ecosystem.html" title="Ecosystem and Community">Ecosystem and Community</a>: deployments, integrations, publications, stewardship, and participation  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">Develop applications or middleware  </td><td class="markdownTableBodyNone">The <a class="el" href="group__client__interface.html" title="QDMI Client Interface">QDMI Client Interface</a>, <a class="el" href="md_docs_2rationale.html" title="Architecture and Rationale">architecture</a>, and <a href="https://mqt.readthedocs.io/projects/core/en/latest/qdmi/index.html">MQT Core guides</a> for drivers, C++/Python bindings, compilation, and SDK adapters  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">Connect hardware or services  </td><td class="markdownTableBodyNone">The <a class="el" href="group__device__interface.html" title="QDMI Device Interface">QDMI Device Interface</a>, <a class="el" href="md_docs_2examples.html" title="Examples">examples</a>, <a class="el" href="md_docs_2templates.html" title="Template">device template</a>, and <a class="el" href="md_docs_2getting__started.html" title="Getting Started">implementation smoke test</a>  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">Operate infrastructure  </td><td class="markdownTableBodyNone"><a class="el" href="md_docs_2ecosystem.html#ecosystem-operations" title="Deployment Responsibilities">Deployment responsibilities</a>, provider configuration and authentication guides, and <a href="https://mqt.readthedocs.io/projects/core/en/latest/qdmi/slurm.html">MQT Core's Slurm integration</a>  </td></tr>
+</table>
+<h1 class="doxsection"><a class="anchor" id="from-interface-to-execution"></a>
+From Interface to Execution</h1>
+<p>QDMI provides C11 headers for two interfaces: applications call the <a class="el" href="group__client__interface.html" title="QDMI Client Interface">QDMI Client Interface</a> implemented by a driver; device libraries implement the <a class="el" href="group__device__interface.html" title="QDMI Device Interface">QDMI Device Interface</a> called by that driver. Both cover sessions, queries, and jobs. The <a class="el" href="md_docs_2rationale.html" title="Architecture and Rationale">architecture and rationale</a> explains compatibility, stable device IDs, and handle ownership. <a class="el" href="md_docs_2installation.html" title="Using QDMI with CMake">Using QDMI with CMake</a> covers the header package and build helpers.</p>
+<p>To execute circuits locally, follow <a href="https://mqt.readthedocs.io/projects/core/en/latest/tutorials/qdmi_execution.html">MQT Core's simulator tutorial</a>. MQT Core supplies a driver, C++ and Python APIs, DDSIM execution, and Qiskit and PennyLane adapters. Its <a href="https://mqt.readthedocs.io/projects/core/en/latest/compilation/index.html">compilation guide</a> explains preparing programs for a target. These facilities build on QDMI; their APIs and configuration formats belong to MQT Core.</p>
+<p>The bundled <a class="el" href="md_docs_2getting__started.html" title="Getting Started">mock workflow</a> checks an implementation's session, discovery, submission, and result plumbing with synthetic results. For external devices, choose an <a class="el" href="md_docs_2ecosystem.html#ecosystem-implementations" title="Implementations and Integrations">implementation andits deployment guide</a>. Installing QDMI's header package separately is needed for developing a consumer or implementation, rather than as an extra step for packaged runtime users.</p>
+<h1 class="doxsection"><a class="anchor" id="versions-and-further-reading"></a>
+Versions and Further Reading</h1>
+<p>Use the version selector to choose documentation for your QDMI release. The <a class="el" href="md_docs_2installation.html" title="Using QDMI with CMake">installation guide</a> explains selecting an interface version. Match the documentation, driver, and device versions, and consult the <a class="el" href="md_UPGRADING.html" title="Upgrade Guide">upgrade guide</a> when moving between minor versions.</p>
+<p>The <a class="el" href="md_docs_2ecosystem.html#ecosystem-publications" title="Publications">publications</a> provide historical and architectural context. The headers and documentation for your selected version define its API. See the <a class="el" href="md_docs_2faq.html" title="FAQ">FAQ</a>, <a class="el" href="md_docs_2support.html" title="Support">Support</a>, and <a class="el" href="md_docs_2contributing.html" title="Contributing">Contributing</a> for further questions and participation. </p>
 </div></div><!-- PageDoc -->
 <a href="doxygen_crawl.html"></a>
 </div><!-- contents -->

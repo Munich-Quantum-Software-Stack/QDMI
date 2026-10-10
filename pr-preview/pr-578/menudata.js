@@ -24,12 +24,15 @@
 */
 var menudata={children:[
 {text:"Main Page",url:"index.html"},
-{text:"Getting Started",url:"index.html",children:[
+{text:"Introduction",url:"index.html",children:[
 {text:"Overview",url:"index.html"},
+{text:"Ecosystem and Community",url:"md_docs_2ecosystem.html"},
+{text:"Getting Started",url:"md_docs_2getting__started.html"},
 {text:"FAQ",url:"md_docs_2faq.html"},
 {text:"Support",url:"md_docs_2support.html"}]},
 {text:"User Guides",url:"md_docs_2rationale.html",children:[
-{text:"Rationale",url:"md_docs_2rationale.html"},
+{text:"Architecture and Rationale",url:"md_docs_2rationale.html"},
+{text:"Using QDMI with CMake",url:"md_docs_2installation.html"},
 {text:"Examples",url:"md_docs_2examples.html"},
 {text:"Template",url:"md_docs_2templates.html"}]},
 {text:"Changelog",url:"md_CHANGELOG.html"},
