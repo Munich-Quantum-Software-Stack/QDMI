@@ -605,9 +605,9 @@ int CXX_QDMI_device_job_submit(CXX_QDMI_Device_Job job) {
     return QDMI_ERROR_FATAL;
   }
   CXX_QDMI_set_device_status(QDMI_DEVICE_STATUS_BUSY);
-  // here, the actual submission of the problem to the device would happen
+  // Here, the actual submission of the problem to the device would happen
   // ...
-  // set job status to running for demonstration purposes
+  // Set job status to running for demonstration purposes
   job->status = QDMI_JOB_STATUS_RUNNING;
   return QDMI_SUCCESS;
 } /// [DOXYGEN FUNCTION END]
