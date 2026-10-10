@@ -25,13 +25,16 @@
 var NAVTREE =
 [
   [ "QDMI", "index.html", [
-    [ "Getting Started", "index.html", [
+    [ "Introduction", "index.html", [
       [ "Overview", "index.html", null ],
+      [ "Ecosystem and Community", "md_docs_2ecosystem.html", null ],
+      [ "Getting Started", "md_docs_2getting__started.html", null ],
       [ "FAQ", "md_docs_2faq.html", null ],
       [ "Support", "md_docs_2support.html", null ]
     ] ],
     [ "User Guides", "md_docs_2rationale.html", [
-      [ "Rationale", "md_docs_2rationale.html", null ],
+      [ "Architecture and Rationale", "md_docs_2rationale.html", null ],
+      [ "Using QDMI with CMake", "md_docs_2installation.html", null ],
       [ "Examples", "md_docs_2examples.html", null ],
       [ "Template", "md_docs_2templates.html", null ]
     ] ],

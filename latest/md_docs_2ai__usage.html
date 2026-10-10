@@ -9,8 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>QDMI: AI Usage Guidelines</title>
     <link href="tabs.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="jquery.js"></script>
-    <script type="text/javascript" src="dynsections.js"></script>
+    <script type="text/javascript" src="codefolding.js"></script>
     <script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
     <script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
     <script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
@@ -92,20 +91,6 @@
           animation: octocat-wave 560ms ease-in-out;
         }
       }
-      /* image path depending on the color scheme */
-      /* Default (light mode) */
-      .logo {
-        width: 130px;
-        height: auto;
-        display: block;
-      }
-      .logo {
-        content: url("mqss_logo.svg"); /* this is set by doxygen, see PROJECT_LOGO in the Doxyfile.in */
-      }
-      /* Dark mode */
-      html.dark-mode .logo {
-        content: url("mqss_logo_dark.svg");
-      }
     </style>
       <div id="top">
         <!-- do not remove this div, it is closed by doxygen! -->
@@ -113,7 +98,6 @@
           <table cellspacing="0" cellpadding="0">
             <tbody>
               <tr id="projectrow">
-                <td id="projectlogo"><img class="logo" alt="Logo" /></td>
                 <td id="projectalign">
                   <div id="projectname">
                     QDMI<span id="projectnumber"
@@ -205,7 +189,8 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('md_docs_2ai__u
   <div class="headertitle"><div class="title">AI Usage Guidelines </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>We acknowledge that AI tools (Large Language Models, code completion engines like GitHub Copilot, etc.) have become helpful assistants for many developers. We allow the use of these tools to assist with contributions, provided that their use is transparent, responsible, and that a <b>human remains in the loop</b> at all times.</p>
+<div class="textblock"><p><a class="anchor" id="ai-usage-guidelines"></a></p>
+<p>We acknowledge that AI tools (Large Language Models, code completion engines like GitHub Copilot, etc.) have become helpful assistants for many developers. We allow the use of these tools to assist with contributions, provided that their use is transparent, responsible, and that a <b>human remains in the loop</b> at all times.</p>
 <p>This guide outlines our policy on AI-assisted contributions to ensure code quality, maintainability, and legal compliance.</p>
 <h1 class="doxsection"><a class="anchor" id="core-principles"></a>
 Core Principles</h1>

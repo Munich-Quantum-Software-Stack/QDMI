@@ -9,8 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>QDMI: Template</title>
     <link href="tabs.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="jquery.js"></script>
-    <script type="text/javascript" src="dynsections.js"></script>
+    <script type="text/javascript" src="codefolding.js"></script>
     <script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
     <script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
     <script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
@@ -92,20 +91,6 @@
           animation: octocat-wave 560ms ease-in-out;
         }
       }
-      /* image path depending on the color scheme */
-      /* Default (light mode) */
-      .logo {
-        width: 130px;
-        height: auto;
-        display: block;
-      }
-      .logo {
-        content: url("mqss_logo.svg"); /* this is set by doxygen, see PROJECT_LOGO in the Doxyfile.in */
-      }
-      /* Dark mode */
-      html.dark-mode .logo {
-        content: url("mqss_logo_dark.svg");
-      }
     </style>
       <div id="top">
         <!-- do not remove this div, it is closed by doxygen! -->
@@ -113,7 +98,6 @@
           <table cellspacing="0" cellpadding="0">
             <tbody>
               <tr id="projectrow">
-                <td id="projectlogo"><img class="logo" alt="Logo" /></td>
                 <td id="projectalign">
                   <div id="projectname">
                     QDMI<span id="projectnumber"
@@ -205,38 +189,39 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('md_docs_2templ
   <div class="headertitle"><div class="title">Template </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>Together with QDMI, we provide a template meant to kick-start the implementation of a new device. The following sections describe how to set up and use the template.</p>
+<div class="textblock"><p><a class="anchor" id="template"></a></p>
+<p>Together with QDMI, we provide a template meant to kick-start the implementation of a new device. The following sections describe how to set up and use the template.</p>
 <h1 class="doxsection"><a class="anchor" id="template-create"></a>
 Creating a new Project</h1>
-<p>The code for the template is contained in the <span class="tt">template/</span> directory of the QDMI repository. To start a new project based on the template, configure QDMI once to define the prefix and output path, then explicitly build the <span class="tt">qdmi-template</span> target that writes the files.</p>
-<dl class="section note"><dt>Note</dt><dd>An internet connection is needed for this step as the QDMI repository will be fetched from GitHub.</dd></dl>
+<p>The code for the template is contained in the <span class="tt">templates/device/</span> directory of the QDMI repository. To start a new project based on the template, configure the <a class="el" href="md_docs_2getting__started.html#getting-started-build" title="Build the Local Examples">QDMI checkout</a> once to define the prefix and output path, then explicitly build the <span class="tt">qdmi-template</span> target that writes the files.</p>
+<dl class="section note"><dt>Note</dt><dd>Initial configuration fetches build dependencies and requires an internet connection.</dd></dl>
 <div class="fragment"><div class="line">cmake -DQDMI_GENERATE_TEMPLATE=ON \</div>
-<div class="line">      -DTEMPLATE_PREFIX=&quot;PREFIX&quot; \</div>
+<div class="line">      -DTEMPLATE_PREFIX=&quot;prefix&quot; \</div>
 <div class="line">      -DTEMPLATE_PATH=&quot;path/to/dir&quot; \</div>
 <div class="line">      -S . -B build</div>
 <div class="line"> </div>
 <div class="line"># actually write the template files</div>
 <div class="line">cmake --build build --target qdmi-template</div>
-</div><!-- fragment --><p>If the option <span class="tt">TEMPLATE_PATH</span> is not given it will be placed in <span class="tt">PREFIX-qdmi-device</span> relative to the parent directory where QDMI was cloned in.</p>
-<p>If you want to regenerate into an existing directory, use:</p>
-<div class="fragment"><div class="line">cmake --build build --target qdmi-template-force</div>
+</div><!-- fragment --><p>If the option <span class="tt">TEMPLATE_PATH</span> is not given it will be placed in <span class="tt">prefix-qdmi-device</span> relative to the parent directory where QDMI was cloned in. The directory name uses the lowercase form of <span class="tt">TEMPLATE_PREFIX</span>.</p>
+<p>To regenerate into an existing directory, run the same target again. This overwrites files supplied by the template; preserve your implementation changes before doing so:</p>
+<div class="fragment"><div class="line">cmake --build build --target qdmi-template</div>
 </div><!-- fragment --><p>After this step you can directly start implementing your device in C++. Example implementations are provided in the <span class="tt">examples/</span> directory. See <a class="el" href="md_docs_2examples.html" title="Examples">Examples</a> for more information.</p>
 <h1 class="doxsection"><a class="anchor" id="template-configure"></a>
 Configuring the Template</h1>
-<p>For stability, we recommend pinning the version of QDMI that you are using for your implementation. You can use any valid git tag, branch, or commit hash for that. To this end, adjust the <span class="tt">QDMI_REV</span> variable in <span class="tt">cmake/ExternalDependecies.cmake</span> as follows:</p>
+<p>Pin the generated project to the same QDMI revision used for generation and in the <a class="el" href="md_docs_2installation.html" title="Using QDMI with CMake">installation guide</a>. Adjust the <span class="tt">QDMI_REV</span> variable in <span class="tt">cmake/ExternalDependencies.cmake</span> as follows:</p>
 <div class="fragment"><div class="line">-   set(QDMI_REV &quot;develop&quot;</div>
-<div class="line">+   set(QDMI_REV &quot;v1.2.0&quot;</div>
-</div><!-- fragment --><p>The generated project assigns the default stable ID <span class="tt">prefix.default</span> to its device implementation. Set the project-specific <span class="tt">PREFIX_QDMI_DEVICE_ID</span> CMake cache variable to change it. The device reports that default through <span class="tt"><a class="el" href="constants_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a075556271172ec5539c14df12a050f05" title="char* (string) The stable client-visible device identifier.">QDMI_DEVICE_PROPERTY_ID</a></span>; a driver can override it for each configured device.</p>
+<div class="line">+   set(QDMI_REV &quot;701fc7052e88618240c0ee2ba81114452e779527&quot;</div>
+</div><!-- fragment --><p>The generated project assigns the default stable ID <span class="tt">prefix.default</span> to its device implementation. Set the project-specific <span class="tt">prefix_QDMI_DEVICE_ID</span> CMake cache variable to change it. The device reports that default through <span class="tt"><a class="el" href="constants_8h.html#ad251d8ae8fbbe9a5c7a10d66b243d526a075556271172ec5539c14df12a050f05" title="char* (string) The stable client-visible device identifier.">QDMI_DEVICE_PROPERTY_ID</a></span>; a driver can override it for each configured device.</p>
 <p>The device target calls <span class="tt">configure_qdmi_device_target</span> to export its default stable ID and symbol prefix as <span class="tt">QDMI_DEVICE_ID</span> and <span class="tt">QDMI_DEVICE_PREFIX</span>. Consumers use this metadata to discover the device without loading its library or linking the device to the consuming library.</p>
-<p>The device target also calls <span class="tt">configure_qdmi_exports</span> to restrict shared-library exports to the prefixed device interface on ELF and Apple systems. See <a href="installation.md#control-shared-library-exports">export control</a> for additional public symbols and platform behavior.</p>
+<p>The device target also calls <span class="tt">configure_qdmi_exports</span> to restrict shared-library exports to the prefixed device interface on ELF and Apple systems. See <a class="el" href="md_docs_2installation.html#installation-exports" title="Control Shared-Library Exports">export control</a> for additional public symbols and platform behavior.</p>
 <p>When you want to change the prefix after the creation of the template, you need to change the prefix in a couple of places. We want to give you some hints where you have to change it, but depending on your personal project setup, they might be different or there might be more than the ones listed. All paths are given relative to the root of the template project directory.</p>
 <ul>
 <li><span class="tt">CMakeLists.txt</span>,</li>
-<li><span class="tt">src/CMakeLists.txt</span>: the target <span class="tt">prefix_qdmi</span> and <span class="tt">prefix_qdmi.cpp</span></li>
-<li>Rename <span class="tt">src/prefix_qdmi.cpp</span> accordingly</li>
-<li><span class="tt">src/prefix_qdmi.cpp</span>: adapt the includes and the prefix of each function</li>
-<li>Rename <span class="tt">test/test_prefix_qdmi.cpp</span> accordingly</li>
-<li><span class="tt">test/test_prefix_qdmi.cpp</span>: adapt the includes and the prefix of each function</li>
+<li><span class="tt">src/CMakeLists.txt</span>: the target <span class="tt">prefix-qdmi-device</span> and <span class="tt">prefix_device.cpp</span></li>
+<li>Rename <span class="tt">src/prefix_device.cpp</span> accordingly</li>
+<li><span class="tt">src/prefix_device.cpp</span>: adapt the includes and the prefix of each function</li>
+<li>Rename <span class="tt">test/test_prefix_device.cpp</span> accordingly</li>
+<li><span class="tt">test/test_prefix_device.cpp</span>: adapt the includes and the prefix of each function</li>
 <li><span class="tt">pyproject.toml</span>: adapt the package name and several paths</li>
 <li><span class="tt">python/prefix</span>: adapt the package namespace in the directory structure</li>
 <li><span class="tt">python/prefix/qdmi/*</span>: adapt the prefix throughout the package</li>
@@ -245,7 +230,7 @@ Configuring the Template</h1>
 </ul>
 <h1 class="doxsection"><a class="anchor" id="template-working"></a>
 Working with the Template</h1>
-<p>The template is structured into five directories. The top-level <span class="tt">CMakeLists.txt</span> contains settings for the entire project. Some additional CMake code that imports required dependencies is outsourced into <span class="tt">cmake/</span>.</p>
+<p>The top-level <span class="tt">CMakeLists.txt</span> contains settings for the entire project. Some additional CMake code that imports required dependencies is outsourced into <span class="tt">cmake/</span>.</p>
 <p>The most important directory for your implementation is <span class="tt">src/</span> and the <span class="tt">.cpp</span> file located in that directory. Here you find stubs for all functions that have to be implemented by a device. For every function the <span class="tt">return <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8ab69c1e1729bae7b7a2db0138e7c32ffd" title="Not implemented.">QDMI_ERROR_NOTIMPLEMENTED</a>;</span> should be replaced by a proper implementation of the function. In particular, there should not be any computation path at the end that returns <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8ab69c1e1729bae7b7a2db0138e7c32ffd" title="QDMI_ERROR_NOTIMPLEMENTED">QDMI_ERROR_NOTIMPLEMENTED</a>. Instead, some other error code from <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8" title="QDMI_STATUS">QDMI_STATUS</a> should be returned in case of an erroneous state.</p>
 <p>QDMI entry points have C linkage, so exceptions must not escape them. Catch exceptions directly at entry points that call throwing C++ code, map <span class="tt">std::bad_alloc</span> to <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a0cf40a28841e7b8bcba223ae28a3713d" title="QDMI_ERROR_OUTOFMEM">QDMI_ERROR_OUTOFMEM</a>, and map unexpected exceptions to <a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8a74b2c0dafe09d9c6d819751e1ec120d3" title="QDMI_ERROR_FATAL">QDMI_ERROR_FATAL</a>. Catch provider-specific exceptions first when a more precise QDMI status applies. A function-try-block keeps this boundary local and does not require wrapping non-throwing entry points.</p>
 <p>The implementation in the <span class="tt">src/</span> directory is complemented with a testing framework in <span class="tt">test/</span>. The <span class="tt">.cpp</span> source file already contains some examples for tests. They are meant to serve as an inspiration, and more tests should be implemented to cover everything in your device implementation.</p>
@@ -257,10 +242,11 @@ Building the Template and Running the Tests</h1>
 <p>All following commands are meant to be executed from the root directory of the template. After configuring your project (see <a class="el" href="#template-configure" title="Configuring the Template">Configuring the Template</a>), you can build your project with the following command:</p>
 <div class="fragment"><div class="line">cmake -S . -B build -DCMAKE_BUILD_TYPE=Release</div>
 <div class="line">cmake --build build --config Release</div>
-</div><!-- fragment --><p>If you only want to build a specific target, you can append, for example, <span class="tt">--target prefix_device_test</span> to the command above, which will build the tests. If you only want to build the device implementation, you can use <span class="tt">--target prefix_qdmi</span>.</p>
+</div><!-- fragment --><p>If you only want to build a specific target, you can append, for example, <span class="tt">--target prefix-qdmi-device-test</span> to the command above, which will build the tests. If you only want to build the device implementation, you can use <span class="tt">--target prefix-qdmi-device</span>.</p>
 <p>To run the tests, perform the following command:</p>
 <div class="fragment"><div class="line">ctest --test-dir build</div>
-</div><!-- fragment --><p>For more details on the development process, also check out the <a class="el" href="md_docs_2contributing.html" title="Contributing">Contributing Guide</a>. </p>
+</div><!-- fragment --><p>The generated implementation contains stubs that return <span class="tt"><a class="el" href="constants_8h.html#a450b1adf81abc6f0accbf0ce4abe92f8ab69c1e1729bae7b7a2db0138e7c32ffd" title="Not implemented.">QDMI_ERROR_NOTIMPLEMENTED</a></span>. Its functional tests fail until you implement the required entry points; use those failures to track the remaining work.</p>
+<p>For more details on the development process, also check out the <a class="el" href="md_docs_2contributing.html" title="Contributing">Contributing Guide</a>. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
