@@ -1,0 +1,25 @@
+var searchData=
+[
+  ['rationale_0',['Architecture and Rationale',['../md_docs_2rationale.html',1,'']]],
+  ['reading_1',['Versions and Further Reading',['../index.html#versions-and-further-reading',1,'']]],
+  ['reference_20architecture_2',['Germany: FullStaQD Reference Architecture',['../md_docs_2ecosystem.html#germany-fullstaqd-reference-architecture',1,'']]],
+  ['removed_3',['Removed',['../md_CHANGELOG.html#removed',1,'Removed'],['../md_CHANGELOG.html#removed-1',1,'Removed']]],
+  ['removed_20interfaces_4',['Removed interfaces',['../md_UPGRADING.html#removed-interfaces',1,'']]],
+  ['rename_5',['Breaking Change: Property Rename',['../md_UPGRADING.html#breaking-change-property-rename',1,'']]],
+  ['replaceable_20qdmi_20drivers_20and_20stable_20device_20ids_6',['Replaceable QDMI drivers and stable device IDs',['../md_UPGRADING.html#replaceable-qdmi-drivers-and-stable-device-ids',1,'']]],
+  ['representations_20in_20a_20multicore_20architecture_7',['Child device representations in a multicore architecture',['../md_UPGRADING.html#child-device-representations-in-a-multicore-architecture',1,'']]],
+  ['request_20workflow_8',['Pull Request Workflow',['../md_docs_2contributing.html#pull-request-workflow',1,'']]],
+  ['required_9',['Breaking Change: Timeout Parameter Required',['../md_UPGRADING.html#breaking-change-timeout-parameter-required',1,'']]],
+  ['required_20changes_20for_20device_20implementations_10',['Required Changes for Device Implementations',['../md_UPGRADING.html#required-changes-for-device-implementations',1,'']]],
+  ['requirement_20breaking_20change_11',['CMake Version Requirement (Breaking Change)',['../md_UPGRADING.html#cmake-version-requirement-breaking-change',1,'']]],
+  ['resources_12',['Further Links and Resources',['../md_docs_2contributing.html#further-links-and-resources',1,'']]],
+  ['responsibilities_13',['Deployment Responsibilities',['../md_docs_2ecosystem.html#ecosystem-operations',1,'']]],
+  ['responsible_14',['1. You are Responsible',['../md_docs_2ai__usage.html#you-are-responsible',1,'']]],
+  ['restrict_20shared_20library_20exports_15',['Why restrict shared-library exports?',['../md_docs_2rationale.html#rationale-exports',1,'']]],
+  ['results_16',['Results',['../md_docs_2rationale.html#jobs-and-results',1,'Jobs and Results'],['../md_docs_2getting__started.html#getting-started-checkpoint',1,'Verify Discovery, Submission, and Results']]],
+  ['results_17',['Does every device support the same programs and results?',['../md_docs_2faq.html#does-every-device-support-the-same-programs-and-results',1,'']]],
+  ['retrieving_20existing_20jobs_20by_20id_18',['Retrieving existing jobs by ID',['../md_UPGRADING.html#retrieving-existing-jobs-by-id',1,'']]],
+  ['run_20a_20quantum_20program_19',['Does installing QDMI let me run a quantum program?',['../md_docs_2faq.html#does-installing-qdmi-let-me-run-a-quantum-program',1,'']]],
+  ['running_20the_20c_20tests_20and_20code_20coverage_20',['Running the C++ Tests and Code Coverage',['../md_docs_2contributing.html#running-the-c-tests-and-code-coverage',1,'']]],
+  ['running_20the_20tests_21',['Building the Template and Running the Tests',['../md_docs_2templates.html#template-building',1,'']]]
+];
