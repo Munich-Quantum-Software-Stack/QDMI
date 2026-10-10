@@ -19,7 +19,7 @@ var searchData=
   ['2026_2005_2021_16',['&lt;a href=&quot;https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.3.1&quot;&gt;1.3.1&lt;/a&gt; - 2026-05-21',['../md_CHANGELOG.html#autotoc_md131---2026-05-21',1,'']]],
   ['2026_2007_2008_17',['&lt;a href=&quot;https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.3.2&quot;&gt;1.3.2&lt;/a&gt; - 2026-07-08',['../md_CHANGELOG.html#autotoc_md132---2026-07-08',1,'']]],
   ['2026_2008_2019_18',['&lt;a href=&quot;https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.3.3&quot;&gt;1.3.3&lt;/a&gt; - 2026-08-19',['../md_CHANGELOG.html#autotoc_md133---2026-08-19',1,'']]],
-  ['2026_2010_2010_19',['&lt;a href=&quot;https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.4.0&quot;&gt;1.4.0&lt;/a&gt; - 2026-10-10',['../md_CHANGELOG.html#autotoc_md140---2026-10-10',1,'']]],
+  ['2026_2010_2011_19',['&lt;a href=&quot;https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.4.0&quot;&gt;1.4.0&lt;/a&gt; - 2026-10-11',['../md_CHANGELOG.html#autotoc_md140---2026-10-11',1,'']]],
   ['21_20',['21',['../md_CHANGELOG.html#autotoc_md130---2026-04-21',1,'&lt;a href=&quot;https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.3.0&quot;&gt;1.3.0&lt;/a&gt; - 2026-04-21'],['../md_CHANGELOG.html#autotoc_md131---2026-05-21',1,'&lt;a href=&quot;https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.3.1&quot;&gt;1.3.1&lt;/a&gt; - 2026-05-21']]],
   ['22_21',['&lt;a href=&quot;https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.2.1&quot;&gt;1.2.1&lt;/a&gt; - 2025-12-22',['../md_CHANGELOG.html#autotoc_md121---2025-12-22',1,'']]]
 ];
