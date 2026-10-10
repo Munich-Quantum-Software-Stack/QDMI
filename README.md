@@ -27,7 +27,7 @@ contributes to an international standardization effort for interoperable
 quantum–classical software stacks.
 
 QDMI is maintained by the
-[MQV gGmbH](https://www.munich-quantum-valley.de/de/ueber-uns/mqv-ggmbh) and
+[MQV gGmbH](https://www.munich-quantum-valley.de/about-us/mqv-ggmbh) and
 [MQSC](https://mq.sc), with contributions from the wider community.
 
 Its reach extends from use at LRZ and MQV gGmbH through MQSS to Germany's

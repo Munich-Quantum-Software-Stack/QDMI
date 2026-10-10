@@ -19,8 +19,8 @@ implementations, and opportunities to participate.
 QDMI was created jointly by TUM's Chairs of Design Automation and Computer
 Architecture and Parallel Systems and the Leibniz Supercomputing Centre. It is
 maintained by
-[MQV gGmbH](https://www.munich-quantum-valley.de/de/ueber-uns/mqv-ggmbh) and
-MQSC, with contributions from the wider community. Participation is open to
+[MQV gGmbH](https://www.munich-quantum-valley.de/about-us/mqv-ggmbh) and MQSC,
+with contributions from the wider community. Participation is open to
 organizations and individuals worldwide.
 
 ## Does installing QDMI let me run a quantum program?

@@ -16,8 +16,8 @@ worldwide.
 QDMI grew out of the
 [Munich Quantum Valley (MQV)](https://www.munich-quantum-valley.de) initiative.
 It is used at the [Leibniz Supercomputing Centre (LRZ)](https://www.lrz.de) and
-[MQV gGmbH](https://www.munich-quantum-valley.de/de/ueber-uns/mqv-ggmbh) as part
-of the
+[MQV gGmbH](https://www.munich-quantum-valley.de/about-us/mqv-ggmbh) as part of
+the
 [Munich Quantum Software Stack (MQSS)](https://www.munich-quantum-valley.de/research/research-areas/mqss).
 MQSS connects applications, compilation, resource management, and quantum
 devices. The [MQSS publication][mqss-paper] describes the stack's architecture
@@ -200,14 +200,14 @@ at the Technical University of Munich (TUM) and by [LRZ](https://www.lrz.de)
 within MQV. The [original QDMI paper][qdmi-paper] records the motivation and
 early work.
 
-Today, [MQV gGmbH](https://www.munich-quantum-valley.de/de/ueber-uns/mqv-ggmbh)
-and [MQSC](https://mq.sc) maintain QDMI with contributions from the wider
-community. We thank the original authors and
+Today, [MQV gGmbH](https://www.munich-quantum-valley.de/about-us/mqv-ggmbh) and
+[MQSC](https://mq.sc) maintain QDMI with contributions from the wider community.
+We thank the original authors and
 [all repository contributors](https://github.com/Munich-Quantum-Software-Stack/QDMI/graphs/contributors)
 for building and developing the interface.
 
 <div class="qdmi-logos">
-  <a href="https://www.munich-quantum-valley.de/de/ueber-uns/mqv-ggmbh"><img width="160" src="_static/logos/mqv_ggmbh.png" alt=""/>MQV gGmbH</a>
+  <a href="https://www.munich-quantum-valley.de/about-us/mqv-ggmbh"><img width="160" src="_static/logos/mqv_ggmbh.png" alt=""/>MQV gGmbH</a>
   <a href="https://mq.sc"><img width="160" src="_static/logos/mqsc.svg" alt=""/>MQSC</a>
   <a href="https://www.cda.cit.tum.de"><img width="160" src="_static/logos/tum-cda.svg" alt=""/>TUM CDA</a>
   <a href="https://www.ce.cit.tum.de/en/caps/homepage/"><img width="160" src="_static/logos/tum.svg" alt=""/>TUM CAPS</a>
