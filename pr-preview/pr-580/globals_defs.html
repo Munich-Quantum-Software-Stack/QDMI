@@ -9,8 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>QDMI: Index</title>
     <link href="tabs.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="jquery.js"></script>
-    <script type="text/javascript" src="dynsections.js"></script>
+    <script type="text/javascript" src="codefolding.js"></script>
     <script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
     <script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
     <script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
@@ -92,20 +91,6 @@
           animation: octocat-wave 560ms ease-in-out;
         }
       }
-      /* image path depending on the color scheme */
-      /* Default (light mode) */
-      .logo {
-        width: 130px;
-        height: auto;
-        display: block;
-      }
-      .logo {
-        content: url("mqss_logo.svg"); /* this is set by doxygen, see PROJECT_LOGO in the Doxyfile.in */
-      }
-      /* Dark mode */
-      html.dark-mode .logo {
-        content: url("mqss_logo_dark.svg");
-      }
     </style>
       <div id="top">
         <!-- do not remove this div, it is closed by doxygen! -->
@@ -113,7 +98,6 @@
           <table cellspacing="0" cellpadding="0">
             <tbody>
               <tr id="projectrow">
-                <td id="projectlogo"><img class="logo" alt="Logo" /></td>
                 <td id="projectalign">
                   <div id="projectname">
                     QDMI<span id="projectnumber"
@@ -205,10 +189,10 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('globals_defs.h
 <div class="textblock">Here is a list of all documented macros with links to the documentation:</div><br/>
 <div class="qindex"><a class="qindex" href="#index_c">C</a><div class="alphasepar"></div><a class="qindex" href="#index_i">I</a><div class="alphasepar"></div><a class="qindex" href="#index_m">M</a><div class="alphasepar"></div><a class="qindex" href="#index_v">V</a></div>
 <ul>
-<li>QDMI_CLIENT_ABI_VERSION&#160;:&#160;<a class="el" href="group__client__interface.html#gadf3d2c0eb6fa2315db6ff6f82e08b113">client.h</a></li>
-<li>QDMI_IS_INVALID_ENUM_VALUE&#160;:&#160;<a class="el" href="constants_8h.html#abaa597c83ab712be78d373f691412aed">constants.h</a></li>
-<li>QDMI_MAKE_VERSION&#160;:&#160;<a class="el" href="constants_8h.html#a6afe2f84f9b78688ebcb684424b81319">constants.h</a></li>
-<li>QDMI_VERSION_MAJOR&#160;:&#160;<a class="el" href="constants_8h.html#a8e8caa8cb8dfb5c515321c3700c40152">constants.h</a></li>
+<li id="index_c">QDMI_CLIENT_ABI_VERSION&#160;:&#160;<a class="el" href="group__client__interface.html#gadf3d2c0eb6fa2315db6ff6f82e08b113">client.h</a></li>
+<li id="index_i">QDMI_IS_INVALID_ENUM_VALUE&#160;:&#160;<a class="el" href="constants_8h.html#abaa597c83ab712be78d373f691412aed">constants.h</a></li>
+<li id="index_m">QDMI_MAKE_VERSION&#160;:&#160;<a class="el" href="constants_8h.html#a6afe2f84f9b78688ebcb684424b81319">constants.h</a></li>
+<li id="index_v">QDMI_VERSION_MAJOR&#160;:&#160;<a class="el" href="constants_8h.html#a8e8caa8cb8dfb5c515321c3700c40152">constants.h</a></li>
 <li>QDMI_VERSION_MINOR&#160;:&#160;<a class="el" href="constants_8h.html#ad80ba3f24fa2cec89f3d409f18aa1766">constants.h</a></li>
 <li>QDMI_VERSION_PATCH&#160;:&#160;<a class="el" href="constants_8h.html#a771649d97222ad4e2e23a56797dde658">constants.h</a></li>
 </ul>
