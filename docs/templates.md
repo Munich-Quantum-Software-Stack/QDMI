@@ -12,17 +12,17 @@ template.
 
 ## Creating a new Project {#template-create}
 
-The code for the template is contained in the `template/` directory of the QDMI
-repository. To start a new project based on the template, configure QDMI once to
-define the prefix and output path, then explicitly build the `qdmi-template`
-target that writes the files.
+The code for the template is contained in the `templates/device/` directory of
+the QDMI repository. To start a new project based on the template, configure the
+@ref getting-started-build "QDMI checkout" once to define the prefix and output
+path, then explicitly build the `qdmi-template` target that writes the files.
 
-\note An internet connection is needed for this step as the QDMI repository will
-be fetched from GitHub.
+\note Initial configuration fetches build dependencies and requires an internet
+connection.
 
 ```sh
 cmake -DQDMI_GENERATE_TEMPLATE=ON \
-      -DTEMPLATE_PREFIX="PREFIX" \
+      -DTEMPLATE_PREFIX="prefix" \
       -DTEMPLATE_PATH="path/to/dir" \
       -S . -B build
 
@@ -31,12 +31,15 @@ cmake --build build --target qdmi-template
 ```
 
 If the option `TEMPLATE_PATH` is not given it will be placed in
-`PREFIX-qdmi-device` relative to the parent directory where QDMI was cloned in.
+`prefix-qdmi-device` relative to the parent directory where QDMI was cloned in.
+The directory name uses the lowercase form of `TEMPLATE_PREFIX`.
 
-If you want to regenerate into an existing directory, use:
+To regenerate into an existing directory, run the same target again. This
+overwrites files supplied by the template; preserve your implementation changes
+before doing so:
 
 ```sh
-cmake --build build --target qdmi-template-force
+cmake --build build --target qdmi-template
 ```
 
 After this step you can directly start implementing your device in C++. Example
@@ -45,18 +48,17 @@ implementations are provided in the `examples/` directory. See
 
 ## Configuring the Template {#template-configure}
 
-For stability, we recommend pinning the version of QDMI that you are using for
-your implementation. You can use any valid git tag, branch, or commit hash for
-that. To this end, adjust the `QDMI_REV` variable in
-`cmake/ExternalDependecies.cmake` as follows:
+Pin the generated project to the same QDMI revision used for generation and in
+the [installation guide](installation.md). Adjust the `QDMI_REV` variable in
+`cmake/ExternalDependencies.cmake` as follows:
 
 ```diff
 -   set(QDMI_REV "develop"
-+   set(QDMI_REV "v1.2.0"
++   set(QDMI_REV "701fc7052e88618240c0ee2ba81114452e779527"
 ```
 
 The generated project assigns the default stable ID `prefix.default` to its
-device implementation. Set the project-specific `PREFIX_QDMI_DEVICE_ID` CMake
+device implementation. Set the project-specific `prefix_QDMI_DEVICE_ID` CMake
 cache variable to change it. The device reports that default through
 `QDMI_DEVICE_PROPERTY_ID`; a driver can override it for each configured device.
 
@@ -66,9 +68,9 @@ Consumers use this metadata to discover the device without loading its library
 or linking the device to the consuming library.
 
 The device target also calls `configure_qdmi_exports` to restrict shared-library
-exports to the prefixed device interface on ELF and Apple systems. See
-[export control](installation.md#control-shared-library-exports) for additional
-public symbols and platform behavior.
+exports to the prefixed device interface on ELF and Apple systems. See @ref
+installation-exports "export control" for additional public symbols and platform
+behavior.
 
 When you want to change the prefix after the creation of the template, you need
 to change the prefix in a couple of places. We want to give you some hints where
@@ -77,11 +79,11 @@ be different or there might be more than the ones listed. All paths are given
 relative to the root of the template project directory.
 
 - `CMakeLists.txt`,
-- `src/CMakeLists.txt`: the target `prefix_qdmi` and `prefix_qdmi.cpp`
-- Rename `src/prefix_qdmi.cpp` accordingly
-- `src/prefix_qdmi.cpp`: adapt the includes and the prefix of each function
-- Rename `test/test_prefix_qdmi.cpp` accordingly
-- `test/test_prefix_qdmi.cpp`: adapt the includes and the prefix of each
+- `src/CMakeLists.txt`: the target `prefix-qdmi-device` and `prefix_device.cpp`
+- Rename `src/prefix_device.cpp` accordingly
+- `src/prefix_device.cpp`: adapt the includes and the prefix of each function
+- Rename `test/test_prefix_device.cpp` accordingly
+- `test/test_prefix_device.cpp`: adapt the includes and the prefix of each
   function
 - `pyproject.toml`: adapt the package name and several paths
 - `python/prefix`: adapt the package namespace in the directory structure
@@ -91,9 +93,9 @@ relative to the root of the template project directory.
 
 ## Working with the Template {#template-working}
 
-The template is structured into five directories. The top-level `CMakeLists.txt`
-contains settings for the entire project. Some additional CMake code that
-imports required dependencies is outsourced into `cmake/`.
+The top-level `CMakeLists.txt` contains settings for the entire project. Some
+additional CMake code that imports required dependencies is outsourced into
+`cmake/`.
 
 The most important directory for your implementation is `src/` and the `.cpp`
 file located in that directory. Here you find stubs for all functions that have
@@ -139,15 +141,19 @@ cmake --build build --config Release
 ```
 
 If you only want to build a specific target, you can append, for example,
-`--target prefix_device_test` to the command above, which will build the tests.
-If you only want to build the device implementation, you can use
-`--target prefix_qdmi`.
+`--target prefix-qdmi-device-test` to the command above, which will build the
+tests. If you only want to build the device implementation, you can use
+`--target prefix-qdmi-device`.
 
 To run the tests, perform the following command:
 
 ```sh
 ctest --test-dir build
 ```
+
+The generated implementation contains stubs that return
+`QDMI_ERROR_NOTIMPLEMENTED`. Its functional tests fail until you implement the
+required entry points; use those failures to track the remaining work.
 
 For more details on the development process, also check out the
 [Contributing Guide](contributing.md).

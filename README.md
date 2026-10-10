@@ -4,126 +4,86 @@
 [![CI](https://img.shields.io/github/actions/workflow/status/Munich-Quantum-Software-Stack/QDMI/ci.yml?branch=develop&style=flat-square&logo=github&label=ci)](https://github.com/Munich-Quantum-Software-Stack/QDMI/actions/workflows/ci.yml)
 [![codecov](https://img.shields.io/codecov/c/github/Munich-Quantum-Software-Stack/QDMI?style=flat-square&logo=codecov)](https://codecov.io/gh/Munich-Quantum-Software-Stack/QDMI)
 
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Munich-Quantum-Software-Stack/QDMI/develop/docs/_static/mqss_logo_dark.svg" width="20%">
-    <img src="https://raw.githubusercontent.com/Munich-Quantum-Software-Stack/QDMI/develop/docs/_static/mqss_logo.svg" width="20%">
-  </picture>
-</p>
-
 # QDMI — Quantum Device Management Interface
 
-<p align="center">
-  <a href="https://munich-quantum-software-stack.github.io/QDMI/">
-  <img style="min-width: 200px !important; width: 30%;" src="https://img.shields.io/badge/documentation-blue?style=for-the-badge&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NDggNTEyIj48IS0tIUZvbnQgQXdlc29tZSBGcmVlIDYuNi4wIGJ5IEBmb250YXdlc29tZSAtIGh0dHBzOi8vZm9udGF3ZXNvbWUuY29tIExpY2Vuc2UgLSBodHRwczovL2ZvbnRhd2Vzb21lLmNvbS9saWNlbnNlL2ZyZWUgQ29weXJpZ2h0IDIwMjQgRm9udGljb25zLCBJbmMuLS0+PHBhdGggZmlsbD0iI2ZmZmZmZiIgZD0iTTk2IDBDNDMgMCAwIDQzIDAgOTZMMCA0MTZjMCA1MyA0MyA5NiA5NiA5NmwyODggMCAzMiAwYzE3LjcgMCAzMi0xNC4zIDMyLTMycy0xNC4zLTMyLTMyLTMybDAtNjRjMTcuNyAwIDMyLTE0LjMgMzItMzJsMC0zMjBjMC0xNy43LTE0LjMtMzItMzItMzJMMzg0IDAgOTYgMHptMCAzODRsMjU2IDAgMCA2NEw5NiA0NDhjLTE3LjcgMC0zMi0xNC4zLTMyLTMyczE0LjMtMzIgMzItMzJ6bTMyLTI0MGMwLTguOCA3LjItMTYgMTYtMTZsMTkyIDBjOC44IDAgMTYgNy4yIDE2IDE2cy03LjIgMTYtMTYgMTZsLTE5MiAwYy04LjggMC0xNi03LjItMTYtMTZ6bTE2IDQ4bDE5MiAwYzguOCAwIDE2IDcuMiAxNiAxNnMtNy4yIDE2LTE2IDE2bC0xOTIgMGMtOC44IDAtMTYtNy4yLTE2LTE2czcuMi0xNiAxNi0xNnoiLz48L3N2Zz4=" alt="Documentation" />
-  </a>
-</p>
-<!-- [DOXYGEN MAIN] -->
-
-The Quantum Device Management Interface (QDMI) is one of the core components of
-the Munich Quantum Software Stack (MQSS)—a sophisticated software stack to
-connect end users to the wide range of possible quantum devices. It enables the
-submission to and the control of gate-based quantum systems and enables software
-tools to automatically retrieve and adapt to changing physical characteristics
-and constraints of different platforms. QDMI strives to connect the software and
-hardware developers, mediating between their competing interests, bridging
-between technologies, and eventually providing corresponding figures of merits
-and constraints to be considered. QDMI is therefore the method of choice for
-integrating new platforms into the MQSS and for software tools to query
-information from these platforms. QDMI is provided as a collection of C header
-files to allow fast integration into an HPC environment.
+[![Documentation](https://img.shields.io/badge/documentation-blue?style=for-the-badge)][docs]
 
 <!-- [DOXYGEN MAIN] -->
 
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Munich-Quantum-Software-Stack/QDMI/develop/docs/_static/qdmi_dark.svg" width="80%">
-    <img src="https://raw.githubusercontent.com/Munich-Quantum-Software-Stack/QDMI/develop/docs/_static/qdmi.svg" width="80%">
-  </picture>
-</p>
+**QDMI provides an open, vendor-neutral interface between quantum software and
+quantum devices.** It standardizes device discovery, capability and calibration
+queries, and job execution, helping integrate quantum computers into classical
+computing infrastructure—from local systems and HPC centres to cloud services.
 
-> [!IMPORTANT]
->
-> QDMI's development process is open to the community, encouraging contributions
-> and feedback. We value your input and invite you to participate in shaping
-> QDMI's future. For the latest updates and to contribute, visit our
-> [issues page](https://github.com/Munich-Quantum-Software-Stack/QDMI/issues).
+QDMI grew out of the
+[Munich Quantum Valley](https://www.munich-quantum-valley.de) initiative, where
+it is used as part of the
+[Munich Quantum Software Stack (MQSS)](https://doi.org/10.1145/3773656.3773669).
+QDMI was created jointly by TUM's
+[Chair for Design Automation](https://www.cda.cit.tum.de), TUM's
+[Chair of Computer Architecture and Parallel Systems](https://www.ce.cit.tum.de/en/caps/homepage/),
+and the [Leibniz Supercomputing Centre (LRZ)](https://www.lrz.de). Today, it
+contributes to an international standardization effort for interoperable
+quantum–classical software stacks.
 
-## FAQ
+QDMI is maintained by the
+[Munich Quantum Valley gGmbH](https://www.munich-quantum-valley.de) and
+[MQSC](https://mq.sc), with contributions from the wider community.
 
-For installation and dependency setup, see
-[Using QDMI with CMake](docs/installation.md).
+Its reach extends from use at LRZ and MQV gGmbH through MQSS to Germany's
+FullStaQD reference architecture, EuroHPC-related integration work with EQS3,
+LRZ, PSNC, CESGA, CINECA, and VTT, and exploration within the ORNL-hosted
+openQSE initiative. Its growing ecosystem spans simulators, quantum hardware,
+and cloud services. Prominent open-source examples include IQM hardware
+integration, Amazon Braket access on AWS, the DDSIM simulator in MQT Core, and
+IBM Quantum integration. The MQSS QDMI Devices Suite also provides Qaptiva
+simulation and access to MQSS resources at LRZ. MQT Core and MQSS supply the
+surrounding drivers, application bindings, compilation, and HPC integration.
 
-<!-- [DOXYGEN FAQ] -->
+<!-- [DOXYGEN MAIN] -->
 
-### What is MQSS?
+## Start Here
 
-**MQSS** stands for _Munich Quantum Software Stack_ and is a project of the
-_Munich Quantum Valley (MQV)_ initiative. It is jointly developed by the
-_Leibniz Supercomputing Centre (LRZ)_, the _Chair for Design Automation (CDA)_,
-and the _Chair of Computer Architecture and Parallel Systems (CAPS)_ at TUM. It
-provides a comprehensive compilation and runtime infrastructure for on-premise
-and remote quantum devices, support for modern compilation and optimization
-techniques, and enables both current and future high-level abstractions for
-quantum programming. This stack is designed to be capable of deployment in a
-variety of scenarios via flexible configuration options. This includes
-stand-alone scenarios for individual systems, cloud access to a variety of
-devices, as well as tight integration into HPC environments supporting quantum
-acceleration. Within the MQV, a concrete instance of the MQSS is deployed at the
-LRZ, serving as a single access point to all of its quantum devices via multiple
-compatible access paths. This includes a web portal, command line access via web
-credentials, as well as the option for hybrid access with tight integration with
-LRZ's HPC systems. It facilitates the connection between end-users and quantum
-computing platforms by its integration within HPC infrastructures, such as those
-found at the LRZ.
+| Your goal                          | Guide                                                                                                                                                        |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Evaluate or adopt QDMI             | [Ecosystem and Community](docs/ecosystem.md): deployments, integrations, publications, and stewardship                                                       |
+| Develop applications or middleware | [Architecture](docs/rationale.md), [Client Interface][client-api], and [MQT Core's C++/Python, compiler, and SDK guides][core-qdmi]                          |
+| Connect hardware or services       | [Device Interface][device-api], [examples](docs/examples.md), [device template](docs/templates.md), and [implementation smoke test](docs/getting_started.md) |
+| Operate infrastructure             | [Deployment responsibilities](docs/ecosystem.md), provider guides, and [MQT Core's Slurm integration][core-slurm]                                            |
 
-### What is QDMI?
+## What This Repository Provides
 
-**QDMI**, or _Quantum Device Management Interface_, serves as the communication
-interface between software within the MQSS and the quantum hardware connected to
-the MQSS. The aim is to provide a standard way to communicate with quantum
-resources that can be widely used by the quantum community.
+QDMI's standardized interface covers **sessions**, **queries**, and **jobs**.
+This repository supplies C11 headers, CMake integration, reference examples,
+tests, and a device implementation template. The interface package is
+header-only; executing programs requires a compatible driver and device
+implementation. Compilers, Python bindings, SDK adapters, and scheduler
+integration are provided by other components of the stack.
 
-### Who is using QDMI?
+To run circuits locally, start with
+[MQT Core's executable simulator tutorial][core-tutorial]. To develop against
+the interface, see [Using QDMI with CMake](docs/installation.md) and the
+[local mock workflow](docs/getting_started.md), which checks integration with
+synthetic results. Further answers are in the [FAQ](docs/faq.md) and the
+[versioned documentation][docs].
 
-QDMI will be the default communication channel within the MQSS, meaning all
-hardware and software tools integrated into the MQSS will have to support QDMI.
-Moreover, platforms implementing QDMI can also be seamlessly integrated in other
-software stacks understanding QDMI, as can software tools interfacing with QDMI
-for platform feedback.
+## Contributing and Support
 
-### Where is the code?
+Using or implementing QDMI? [Open an issue][issues] or pull request to add your
+integration, deployment, or research project. Include a short description, its
+current status, and any public documentation or publication.
 
-The code is publicly available and hosted on GitHub at
-[github.com/Munich-Quantum-Software-Stack/QDMI](https://github.com/Munich-Quantum-Software-Stack/QDMI).
+We welcome contributions from around the world and thank
+[all repository contributors](https://github.com/Munich-Quantum-Software-Stack/QDMI/graphs/contributors).
+Start with [Contributing](docs/contributing.md) and the
+[AI usage guidelines](docs/ai_usage.md). For questions, see
+[Support](.github/SUPPORT.md) or [discussions][discussions].
 
-### Under which license is QDMI released?
+QDMI is released under [Apache-2.0 with LLVM exceptions](LICENSE).
 
-QDMI is released under the Apache License v2.0 with LLVM Exceptions. See
-[LICENSE](https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/develop/LICENSE)
-for more information. Any contribution to the project is assumed to be under the
-same license.
+## Cite QDMI
 
-### Why is it written in C and not in Python?
-
-The interface is written in C to allow close integration within the MQSS and
-fulfill the performance as well as stability requirements needed for production
-systems, in particular as we scale quantum systems. Further, this enables a
-clean integration into existing and well-established system software stacks,
-including those for HPC.
-
-### Can I still integrate my Python code?
-
-Python natively allows calling C APIs. So while it might not be as
-straightforward as the usage from C/C++, it is definitely possible. However, we
-generally do expect Python-based programming approaches to be used as
-front-ends, feeding into a natively implemented compiler infrastructure, which
-then relies on QDMI. This is similar to how Python is used in many other parts
-of high-performance computing.
-
-### How do I cite QDMI?
-
-If you use QDMI in your research, please cite the following paper:
+If you use QDMI in your research, please cite:
 
 ```bibtex
 @inproceedings{qdmi,
@@ -136,19 +96,14 @@ If you use QDMI in your research, please cite the following paper:
 }
 ```
 
-<!-- [DOXYGEN FAQ] -->
+For deployment, hardware, cloud, and reference-architecture studies, see the
+[annotated publications](docs/ecosystem.md).
 
-## Contact
-
-The development of this project is led by
-[Martin Schulz](mailto:martin.w.j.schulz@tum.de) (TUM CAPS), and
-[Robert Wille](mailto:robert.wille@tum.de) (TUM CDA / MQSC) on the management
-side and [Lukas Burgholzer](mailto:lukas.burgholzer@tum.de) (TUM CDA / MQSC) as
-well as [Jorge Echavarria](mailto:jorge.echavarria@munich-quantum-valley.de)
-(MQV gGmbH) from the technical side.
-
-Please try to use the publicly accessible GitHub channels
-([issues](https://github.com/Munich-Quantum-Software-Stack/QDMI/issues),
-[discussions](https://github.com/Munich-Quantum-Software-Stack/QDMI/discussions),
-[pull requests](https://github.com/Munich-Quantum-Software-Stack/QDMI/pulls)) to
-allow for a transparent and open discussion as much as possible.
+[docs]: https://munich-quantum-software-stack.github.io/QDMI/
+[client-api]: https://munich-quantum-software-stack.github.io/QDMI/latest/group__client__interface.html
+[device-api]: https://munich-quantum-software-stack.github.io/QDMI/latest/group__device__interface.html
+[issues]: https://github.com/Munich-Quantum-Software-Stack/QDMI/issues
+[discussions]: https://github.com/Munich-Quantum-Software-Stack/QDMI/discussions
+[core-qdmi]: https://mqt.readthedocs.io/projects/core/en/latest/qdmi/index.html
+[core-slurm]: https://mqt.readthedocs.io/projects/core/en/latest/qdmi/slurm.html
+[core-tutorial]: https://mqt.readthedocs.io/projects/core/en/latest/tutorials/qdmi_execution.html

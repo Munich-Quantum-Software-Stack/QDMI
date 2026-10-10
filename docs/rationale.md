@@ -1,98 +1,153 @@
-# Rationale
+# Architecture and Rationale
 
 <!-- IMPORTANT: Keep the line above as the first line. -->
 
 <!-- This file is a static page and included in the ./CMakeLists.txt file. -->
 
-During the development of QDMI, we had to make several design decisions, which
-we want to outline in the following. This page is supposed to serve as a
-reference to why things are as they are in QDMI. Simultaneously, it should help
-to get a better understanding of the principles of QDMI. To this end, this page
-is useful for everyone working with QDMI.
+QDMI separates applications, drivers, and device implementations through two C
+interfaces. This page explains their responsibilities and the design choices
+behind the interface.
 
 \tableofcontents
 
-## The structure of QDMI {#rationale-structure}
+## The Structure of QDMI {#rationale-structure}
 
 <img class="qdmi-schematic" alt="QDMI Components and Interfaces" src="qdmi_schematic.svg"/>
 
-QDMI interfaces three different entities, namely:
+QDMI connects an application to devices through a driver. The two public C
+interfaces define the boundary between these components:
 
-- "devices",
-- "clients", and
-- a "driver".
+| Term                      | Responsibility                                                                                               |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| **Client**                | An application or software component using QDMI to query devices or submit work.                             |
+| **Client Interface**      | The unprefixed functions in `qdmi/client.h`, implemented by the driver and called by clients.                |
+| **Driver**                | An implementation of the Client Interface that exposes devices and mediates sessions, queries, and jobs.     |
+| **Device Interface**      | The functions in `qdmi/device.h`, implemented with a device-specific symbol prefix and called by the driver. |
+| **Device implementation** | A library translating the Device Interface into simulator operations, a hardware API, or a cloud service.    |
+| **Application bindings**  | Language wrappers or SDK adapters above the Client Interface, such as MQT Core's C++ and Python APIs.        |
 
-These entities are connected via two interfaces that allow the communication
-between the entities. We call those interfaces the @ref device_interface and the
-@ref client_interface. In the following, we will explain the responsibilities of
-the entities and the interfaces.
+A device implementation can represent one physical system, a simulator, or a
+configured service endpoint. A driver can load it as a shared library or link it
+statically. QDMI's examples use shared libraries; QDMI's interface package
+itself contains headers and CMake helpers, rather than a runtime implementation.
 
-_Devices_ (also commonly called _"backends"_) represent actual quantum devices
-or simulators. Each device provides an implementation of the structs and
-functions defined by the @ref device_interface. In particular, this includes
-implementations of types for \ref QDMI_Site "sites", \ref QDMI_Operation
-"operations", \ref QDMI_Device_Job "device jobs", and \ref QDMI_Device_Session
-"device sessions". Handles to these types are passed across the interface as
-opaque pointers, which means that only the device knows the actual
-implementation of those types.
+### Sessions and Handle Ownership
 
-_Clients_ are the users of the QDMI library that want to interact with the
-devices. They use the functions defined by the @ref client_interface "client
-interface" to interact with the devices. The clients do not have direct access
-to the devices but must go through what we refer to as a "driver". This is to
-ensure that the devices are used in a controlled manner and that the clients do
-not interfere with each other. The clients can create \ref QDMI_Session
-"sessions" with the driver to gain access to the devices.
+The client allocates a @ref QDMI_Session, configures it, and initializes it with
+the driver. The driver creates @ref QDMI_Device_Session objects for its device
+implementations. Each layer defines its own opaque handles and implements the
+corresponding types and functions. Session parameters convey authentication or
+configuration; supported parameters and access policies belong to the driver and
+device implementation.
 
-The _driver_ is the component that manages all available devices and provides
-access to them for the clients. It implements the structs and functions defined
-by the @ref client_interface. In particular, this includes implementations of
-types for \ref QDMI_Session "sessions" and \ref QDMI_Job "jobs". Handles to
-these types are passed across the interface to clients as opaque pointers, which
-means that only the driver knows the actual implementation of those types. It is
-up to the driver how it exposes the @ref device_interface implementation
-provided by the devices as part of the @ref client_interface. For example, the
-driver could load the devices as dynamic libraries and translate the calls from
-the client to the devices or statically link the devices into the driver. An
-example implementation using dynamic libraries is provided in the `examples`
-directory of the QDMI repository.
+The driver exposes client-visible @ref QDMI_Device, @ref QDMI_Job, @ref
+QDMI_Site, and @ref QDMI_Operation handles. Keep the originating session alive
+while using its handles, free jobs before releasing their session, and use every
+handle only with its originating driver. A dynamic loader must keep the driver
+library loaded until all its sessions and derived handles have been released.
 
-Keeping the Client Interface in a replaceable driver lets an application change
-drivers without rebuilding. Stable IDs let it reopen the same logical device
-across runs. A driver can also assign different IDs to independently configured
-instances of one device implementation.
+### Queries, Catalogues, and Stable IDs
 
-As depicted in the schematic above, device and client interfaces each have three
-parts, namely:
+The @ref client_query_interface exposes device properties, sites, operations,
+and available calibration data through the driver. These queries describe the
+selected device's capabilities and constraints; they inform compilation and
+execution choices. A driver may cache or adapt information returned by a device.
 
-- the "session interface",
-- the "query interface", and
-- the "job interface".
+A **catalogue** is the set of device definitions exposed by a particular driver
+or installation. It can contain independently configured instances of the same
+device library. The initialized session reports its accessible devices through
+@ref QDMI_SESSION_PROPERTY_DEVICES. QDMI does not prescribe a catalogue file
+format, installation location, or Python package discovery mechanism.
 
-The session interface is used to establish a connection between two entities.
-The client creates a session with the driver, and the driver creates sessions
-with the devices it manages. The main purpose of the session interface is to
-handle the authentication and authorization of the clients at the driver and the
-driver at the devices.
+Each top-level device has a nonempty, stable @ref QDMI_DEVICE_PROPERTY_ID
+supplied by the driver. IDs are unique within one initialized session and remain
+fixed for the lifetime of their device handles. Equivalent sessions return the
+same IDs across process restarts while the logical resources exist. Treat IDs as
+opaque strings: compare or store them without deriving meaning from their
+spelling. Device libraries may report a default ID, which the driver can
+override; child-device IDs remain optional. Save the driver and configuration
+context along with an ID. An ID alone does not identify a globally
+interchangeable physical device or make a compiled program portable to another
+target.
 
-The query interface is used to retrieve information from the devices. The client
-can query the devices for information about the device itself, its sites, or its
-operations. Most importantly, this allows clients to discover the capabilities
-as well as constraints of the devices and to make informed decisions about how
-to use them. The information flow in the query interface is always from the
-device to the client via the driver. The driver may cache or modify any
-information returned by the device before passing it to the client.
+### Jobs and Results
 
-The job interface is used to control the execution of jobs on the devices. Most
-jobs will be quantum circuits that the client wants to execute on the device.
-However, the job interface is not limited to quantum circuits and can be used to
-control any kind of computation on the device, such as calibrations. The client
-creates a job with the driver, and the driver delegates the job to the device.
-The device executes the job and reports the results back to the client via the
-driver. The information flow in the job interface is bidirectional. The client
-can control the job execution and retrieve the results of the job. The driver
-may cache or modify any information returned by the device before passing it to
-the client.
+The client creates a @ref QDMI_Job; the driver delegates work through @ref
+QDMI_Device_Job objects. @ref QDMI_job_set_programs supplies one or more
+programs with a common format and common job parameters. A device may reject
+unsupported formats or program counts. Programs are copied before the setter
+returns, and results are retrieved by the original input index. Execution order
+is unspecified.
+
+Submission, status checks, waiting, cancellation, and retrieval use the job
+interface. Optional per-program status can identify individual outcomes. Check
+aggregate and, where available, individual status before consuming results;
+successful programs can retain results when other programs fail or are canceled.
+Available result types depend on the device and execution mode. A driver may
+translate formats or adapt results while preserving the Client Interface
+contract. Compilation and scheduling policies are supplied by higher layers.
+
+### Shared Libraries and Compatibility
+
+In the Client Interface, a driver exports unprefixed Client Interface symbols
+and @ref QDMI_driver_get_client_abi_version. A dynamic loader first calls that
+function and compares the returned major and minor versions with @ref
+QDMI_CLIENT_ABI_VERSION; patch differences are compatible. It then resolves the
+complete Client Interface before allocating a session. Replacing a driver
+without rebuilding is possible when the replacement satisfies this ABI.
+
+Device libraries export the Device Interface with their own symbol prefix. Their
+implementation version is independent of the QDMI interface version; @ref
+QDMI_DEVICE_PROPERTY_LIBRARYVERSION reports the QDMI version they implement. Use
+headers, drivers, and device libraries for compatible interface versions. See
+[CMake integration](installation.md), the @ref driver "driver example", and the
+[upgrade guide](../UPGRADING.md).
+
+### What MQT Core Adds
+
+[MQT Core](https://mqt.readthedocs.io/projects/core/en/latest/qdmi/index.html)
+implements a replaceable QDMI driver and supplies owning C++ and Python
+wrappers, device implementations, compiler integration, and SDK adapters. Its
+builtin driver discovers versioned JSON device manifests, can enumerate
+configured IDs without loading devices, and can open one configured device at a
+time. These discovery helpers and manifest conventions are MQT Core facilities;
+another QDMI driver can use a different catalogue mechanism.
+
+Use MQT Core's
+[driver and configuration guides](https://mqt.readthedocs.io/projects/core/en/latest/qdmi/configuration.html)
+for those facilities, its
+[compiler guide](https://mqt.readthedocs.io/projects/core/en/latest/compilation/index.html)
+for preparing target-compatible programs, and its
+[Slurm guide](https://mqt.readthedocs.io/projects/core/en/latest/qdmi/slurm.html)
+for scheduler integration. Device projects own their provider-specific setup:
+[Amazon Braket](https://amazon-braket-qdmi-device.readthedocs.io/en/latest/),
+[IQM](https://iqm-finland.github.io/QDMI-on-IQM/), and
+[IBM](https://ibm-qdmi-device.readthedocs.io/en/latest/) document their
+libraries, credentials, accepted programs, and deployment modes.
+
+## Background and Version Context {#rationale-background}
+
+See [Ecosystem and Community](ecosystem.md) for international adoption,
+implementation listings, historical credit, and the complete publication list,
+including the original QDMI paper and the openQSE reference-architecture survey.
+
+The
+[Munich Quantum Software Stack paper](https://doi.org/10.1145/3773656.3773669)
+places QDMI at the device-management boundary beneath adapters, compilers, and
+resource managers. The
+[Amazon Braket case study](https://arxiv.org/abs/2603.05138) describes mapping a
+cloud service's authentication, tasks, and results onto QDMI. The
+[IQM case study](https://arxiv.org/abs/2604.19869) covers architecture and
+calibration queries, execution, SDK integration, and HPC deployment on IQM
+systems.
+
+These papers explain the architecture and particular implementation snapshots.
+For example, the Braket paper uses QDMI 1.2, while the current interface uses
+program-list setters and a versioned Client Interface ABI. Use the headers and
+documentation for the version you deploy, and consult the
+[upgrade guide](../UPGRADING.md) for migrations. Capabilities and deployment
+options are defined by the selected driver and device implementation, rather
+than by an architectural diagram.
 
 ## Why does QDMI use opaque pointers? {#rationale-opaque-pointers}
 
@@ -177,14 +232,13 @@ and retrieving results of jobs.
 
 ## Why do device implementations use a prefix? {#rationale-prefix}
 
-Each device must add a unique prefix to all symbols and types defined within its
-implementation. This is necessary to facilitate static linking of multiple
-device implementations as part of one driver. It also helps to identify the
-source of an error when debugging because the name of the symbol will contain
-the prefix of the device that defined it. The prefix is also used to avoid
-naming conflicts between different devices. Lastly, it allows hardware vendors
-to brand their device implementations. Prefixes must be unique across all
-devices. They should be short and descriptive of the device.
+Each device implementation prefixes its Device Interface symbols and opaque
+types. Distinct implementations linked statically into the same program need
+noncolliding prefixes. The prefix also identifies the implementation when
+debugging and allows hardware vendors to brand their device implementations.
+Different configured instances of one implementation can share a prefix; their
+stable device IDs distinguish the logical resources. Prefixes should be short
+and descriptive of the implementation.
 
 ## Why restrict shared-library exports? {#rationale-exports}
 
@@ -194,9 +248,9 @@ bind to another library's implementation. Compiler visibility settings on the
 device or driver do not hide definitions in already compiled dependency
 archives. Shared libraries should therefore restrict exports to their intended
 public interfaces, including any deliberate vendor extensions. QDMI provides
-[optional CMake support](installation.md#control-shared-library-exports) for
-this. The restriction belongs at the final shared-library link and does not
-replace dependency management for statically composed implementations.
+@ref installation-exports "optional CMake support" for this. The restriction
+belongs at the final shared-library link and does not replace dependency
+management for statically composed implementations.
 
 ## Why do devices have sessions? {#device-session}
 

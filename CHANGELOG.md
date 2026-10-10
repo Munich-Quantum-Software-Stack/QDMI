@@ -12,7 +12,8 @@ clients compiled against a different minor or major version.
 
 ## [Unreleased]
 
-_If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
+_If you are upgrading: please see
+[`UPGRADING.md`](UPGRADING.md#upgrading-unreleased)._
 
 ### Added
 
@@ -32,6 +33,12 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 
 ### Changed
 
+- 📝 Reorganize documentation around QDMI's international ecosystem, origins,
+  maintenance, and integration roles. Add publication-backed adoption accounts,
+  MQT Core's DDSIM device, public MQSS components, IBM and other hardware
+  integrations, and implementation guides; fix navigation, API-index anchors,
+  contributor links, and responsive layouts, and provide reproducible onboarding
+  ([#575]) ([\@denialhaag], [\@burgholzer]).
 - 💥 Make Client session allocation the first stateful driver call and remove
   the example driver's separate initialization and shutdown functions ([#511])
   ([\@burgholzer], [\@ystade]).
@@ -283,6 +290,7 @@ for previous changelogs._
 
 <!-- PR links -->
 
+[#575]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/575
 [#559]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/559
 [#551]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/551
 [#538]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/538
@@ -340,13 +348,13 @@ for previous changelogs._
 
 <!-- Contributors -->
 
-[@burgholzer]: https://github.com/burgholzer
-[@ystade]: https://github.com/ystade
-[@mnfarooqi]: https://github.com/mnfarooqi
-[@rainij]: https://github.com/rainij
-[@marcelwa]: https://github.com/marcelwa
-[@denialhaag]: https://github.com/denialhaag
-[@kabu-planqc]: https://github.com/kabu-planqc
+[\@burgholzer]: https://github.com/burgholzer
+[\@ystade]: https://github.com/ystade
+[\@mnfarooqi]: https://github.com/mnfarooqi
+[\@rainij]: https://github.com/rainij
+[\@marcelwa]: https://github.com/marcelwa
+[\@denialhaag]: https://github.com/denialhaag
+[\@kabu-planqc]: https://github.com/kabu-planqc
 
 <!-- General links -->
 

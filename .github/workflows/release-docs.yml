@@ -28,7 +28,7 @@ jobs:
           # This also allows existing releases to be rebuilt with tag files.
           git fetch origin develop
           mkdir -p .github/scripts
-          git checkout origin/develop -- docs/CMakeLists.txt docs/Doxyfile.in .github/scripts/inject-version-selector.sh .github/scripts/version-selector.html || echo "Documentation tooling not found in develop"
+          git checkout origin/develop -- docs/CMakeLists.txt docs/Doxyfile.in docs/FixDoxygenIndex.cmake .github/scripts/inject-version-selector.sh .github/scripts/version-selector.html || echo "Documentation tooling not found in develop"
 
       - name: Install Doxygen
         uses: ssciwr/doxygen-install@fa3e94d34131d3990b6b8ba939ab982964aa3758 # v2.0.3

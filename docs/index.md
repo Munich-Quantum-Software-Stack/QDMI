@@ -2,48 +2,51 @@
 
 <!-- IMPORTANT: Keep the line above as the first line and do not remove the label above. -->
 
-<!-- The label is needed to set this page as the main page in Doxygen. -->
-<!-- This file is a static page and included in the CMakeLists.txt file. -->
-
 ## Quantum Device Management Interface
-
-<img class="qdmi" alt="QDMI in Quantum Software Stack" src="qdmi.svg">
-
-<!-- Include the content of README.md between the pair of markers DOXYGEN MAIN. -->
 
 \snippet{doc} README.md DOXYGEN MAIN
 
-### How to Use this Documentation?
+## Choose a Starting Point
 
-This documentation tries to provide helpful information to get you started with
-QDMI.
+| Your goal                          | Guide                                                                                                                                                                                                              |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Evaluate or adopt QDMI             | [Ecosystem and Community](ecosystem.md): deployments, integrations, publications, stewardship, and participation                                                                                                   |
+| Develop applications or middleware | The @ref client_interface, [architecture](rationale.md), and [MQT Core guides](https://mqt.readthedocs.io/projects/core/en/latest/qdmi/index.html) for drivers, C++/Python bindings, compilation, and SDK adapters |
+| Connect hardware or services       | The @ref device_interface, [examples](examples.md), [device template](templates.md), and [implementation smoke test](getting_started.md)                                                                           |
+| Operate infrastructure             | @ref ecosystem-operations "Deployment responsibilities", provider configuration and authentication guides, and [MQT Core's Slurm integration](https://mqt.readthedocs.io/projects/core/en/latest/qdmi/slurm.html)  |
 
-#### General Information
+## From Interface to Execution
 
-The [FAQ](faq.md) page gives an overview over frequently asked questions. More
-details about the design and implementation can be found in the
-[Rationale](rationale.md) page.
+QDMI provides C11 headers for two interfaces: applications call the @ref
+client_interface implemented by a driver; device libraries implement the @ref
+device_interface called by that driver. Both cover sessions, queries, and jobs.
+The [architecture and rationale](rationale.md) explains compatibility, stable
+device IDs, and handle ownership. [Using QDMI with CMake](installation.md)
+covers the header package and build helpers.
 
-#### Hands-On
+To execute circuits locally, follow
+[MQT Core's simulator tutorial](https://mqt.readthedocs.io/projects/core/en/latest/tutorials/qdmi_execution.html).
+MQT Core supplies a driver, C++ and Python APIs, DDSIM execution, and Qiskit and
+PennyLane adapters. Its
+[compilation guide](https://mqt.readthedocs.io/projects/core/en/latest/compilation/index.html)
+explains preparing programs for a target. These facilities build on QDMI; their
+APIs and configuration formats belong to MQT Core.
 
-The [CMake guide](installation.md) explains how to install QDMI or include it as
-a source dependency in your project.
+The bundled [mock workflow](getting_started.md) checks an implementation's
+session, discovery, submission, and result plumbing with synthetic results. For
+external devices, choose an @ref ecosystem-implementations "implementation and
+its deployment guide". Installing QDMI's header package separately is needed for
+developing a consumer or implementation, rather than as an extra step for
+packaged runtime users.
 
-The [Examples](examples.md) page provides a collection of examples to see QDMI
-in action. When you want to start your own implementation of QDMI, the
-[Templates](templates.md) page is a good starting point.
+## Versions and Further Reading
 
-#### Nitty-Gritty Details
+Use the version selector to choose documentation for your QDMI release. The
+[installation guide](installation.md) explains selecting an interface version.
+Match the documentation, driver, and device versions, and consult the
+[upgrade guide](../UPGRADING.md) when moving between minor versions.
 
-<!-- rumdl-disable MD057 -->
-
-When you are interested in the details of the semantics of functions and the
-whole API, the [Reference Documentation](files.html) page is the right place to
-look for.
-
-<!-- rumdl-enable MD057 -->
-
-#### Want to Contribute?
-
-If you plan to contribute to QDMI, start with the
-[Contributing](contributing.md) page.
+The @ref ecosystem-publications "publications" provide historical and
+architectural context. The headers and documentation for your selected version
+define its API. See the [FAQ](faq.md), [Support](support.md), and
+[Contributing](contributing.md) for further questions and participation.
