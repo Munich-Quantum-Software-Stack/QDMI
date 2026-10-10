@@ -100,8 +100,8 @@ For deployment, hardware, cloud, and reference-architecture studies, see the
 [annotated publications](docs/ecosystem.md).
 
 [docs]: https://munich-quantum-software-stack.github.io/QDMI/
-[client-api]: https://munich-quantum-software-stack.github.io/QDMI/latest/group__client__interface.html
-[device-api]: https://munich-quantum-software-stack.github.io/QDMI/latest/group__device__interface.html
+[client-api]: https://munich-quantum-software-stack.github.io/QDMI/v1.4.0/group__client__interface.html
+[device-api]: https://munich-quantum-software-stack.github.io/QDMI/v1.4.0/group__device__interface.html
 [issues]: https://github.com/Munich-Quantum-Software-Stack/QDMI/issues
 [discussions]: https://github.com/Munich-Quantum-Software-Stack/QDMI/discussions
 [core-qdmi]: https://mqt.readthedocs.io/projects/core/en/latest/qdmi/index.html

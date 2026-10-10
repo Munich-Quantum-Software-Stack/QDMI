@@ -12,7 +12,7 @@ clients compiled against a different minor or major version.
 
 ## [Unreleased]
 
-## [1.4.0] - 2026-10-09
+## [1.4.0] - 2026-10-10
 
 _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#140)._
 
