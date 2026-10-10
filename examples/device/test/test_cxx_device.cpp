@@ -19,8 +19,10 @@
 
 #include "cxx_qdmi/device.h"
 
+#include <array>
 #include <cstddef>
 #include <gtest/gtest.h>
+#include <limits>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -77,6 +79,45 @@ TEST_F(QDMIImplementationTest, JobSetParameterImplemented) {
   ASSERT_EQ(CXX_QDMI_device_job_set_parameter(
                 job, QDMI_DEVICE_JOB_PARAMETER_MAX, 0, nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
+  CXX_QDMI_device_job_free(job);
+}
+
+TEST_F(QDMIImplementationTest, RejectUndersizedShotCount) {
+  CXX_QDMI_Device_Job job = nullptr;
+  ASSERT_EQ(CXX_QDMI_device_session_create_device_job(session, &job),
+            QDMI_SUCCESS);
+  const size_t shots = 5;
+  EXPECT_EQ(CXX_QDMI_device_job_set_parameter(
+                job, QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM, 1, &shots),
+            QDMI_ERROR_INVALIDARGUMENT);
+  CXX_QDMI_device_job_free(job);
+}
+
+TEST_F(QDMIImplementationTest, FailedSubmissionKeepsJobReady) {
+  CXX_QDMI_Device_Job job = nullptr;
+  ASSERT_EQ(CXX_QDMI_device_session_create_device_job(session, &job),
+            QDMI_SUCCESS);
+  constexpr auto program = std::to_array("OPENQASM 2.0;\nqreg q[5];\n");
+  constexpr size_t size = program.size();
+  const std::array<const void *, 1> programs{program.data()};
+  ASSERT_EQ(CXX_QDMI_device_job_set_programs(job, QDMI_PROGRAM_FORMAT_QASM2, 1,
+                                             &size, programs.data()),
+            QDMI_SUCCESS);
+  const size_t huge_shots = std::numeric_limits<size_t>::max();
+  ASSERT_EQ(
+      CXX_QDMI_device_job_set_parameter(job, QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM,
+                                        sizeof(huge_shots), &huge_shots),
+      QDMI_SUCCESS);
+  EXPECT_EQ(CXX_QDMI_device_job_submit(job), QDMI_ERROR_FATAL);
+
+  QDMI_Job_Status status = QDMI_JOB_STATUS_RUNNING;
+  EXPECT_EQ(CXX_QDMI_device_job_check(job, &status), QDMI_SUCCESS);
+  EXPECT_EQ(status, QDMI_JOB_STATUS_CREATED);
+  const size_t shots = 2;
+  ASSERT_EQ(CXX_QDMI_device_job_set_parameter(
+                job, QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM, sizeof(shots), &shots),
+            QDMI_SUCCESS);
+  EXPECT_EQ(CXX_QDMI_device_job_submit(job), QDMI_SUCCESS);
   CXX_QDMI_device_job_free(job);
 }
 

@@ -12,8 +12,9 @@ clients compiled against a different minor or major version.
 
 ## [Unreleased]
 
-_If you are upgrading: please see
-[`UPGRADING.md`](UPGRADING.md#upgrading-unreleased)._
+## [1.4.0] - 2026-10-10
+
+_If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#140)._
 
 ### Added
 
@@ -60,6 +61,12 @@ _If you are upgrading: please see
 
 ### Fixed
 
+- 🐛 Keep the example device job ready when result preparation fails instead of
+  letting a C++ exception escape the Device Interface ([#576]) ([\@burgholzer]).
+- 🐛 Reject incorrectly sized shot-count values in the example device before
+  reading them ([#576]) ([\@burgholzer]).
+- 🐛 Avoid exposing or leaking a client job when the example driver's device job
+  creation fails ([#576]) ([\@burgholzer]).
 - 🐛 Allow the example driver to open one device library more than once with
   distinct stable IDs ([#511]) ([\@burgholzer], [\@ystade]).
 - 🐛 Release example-driver device libraries when the final session closes,
@@ -278,7 +285,8 @@ for previous changelogs._
 
 <!-- Version links -->
 
-[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.3...HEAD
+[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.4.0...HEAD
+[1.4.0]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.4.0
 [1.3.3]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.3.3
 [1.3.2]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.3.2
 [1.3.1]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.3.1
@@ -290,6 +298,7 @@ for previous changelogs._
 
 <!-- PR links -->
 
+[#576]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/576
 [#575]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/575
 [#559]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/559
 [#551]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/551

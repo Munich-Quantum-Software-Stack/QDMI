@@ -48,14 +48,11 @@ implementations are provided in the `examples/` directory. See
 
 ## Configuring the Template {#template-configure}
 
-Pin the generated project to the same QDMI revision used for generation and in
-the [installation guide](installation.md). Adjust the `QDMI_REV` variable in
-`cmake/ExternalDependencies.cmake` as follows:
-
-```diff
--   set(QDMI_REV "develop"
-+   set(QDMI_REV "701fc7052e88618240c0ee2ba81114452e779527"
-```
+Generated projects request the QDMI release selected by `QDMI_VERSION` in
+`cmake/ExternalDependencies.cmake`; `QDMI_REV` defaults to the matching release
+tag. See the [installation guide](installation.md) for version compatibility. To
+use a different tag or commit, override `QDMI_REV` when configuring and keep
+`QDMI_VERSION` consistent with the selected interface.
 
 The generated project assigns the default stable ID `prefix.default` to its
 device implementation. Set the project-specific `prefix_QDMI_DEVICE_ID` CMake

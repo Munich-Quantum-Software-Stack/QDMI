@@ -7,9 +7,6 @@ Applications need a compatible implementation to execute QDMI calls; see the
 
 ## Select an Interface Version
 
-Until the next release, the examples pin the development revision
-`701fc7052e88618240c0ee2ba81114452e779527`, which provides this interface.
-
 For a published release, select a tag from the [releases page][releases] and use
 its matching documentation. Release tags have a `v` prefix; CMake package
 versions do not. Keep drivers, devices, and application headers on compatible
@@ -31,7 +28,7 @@ dependencies.
 ```sh
 git clone \
   https://github.com/Munich-Quantum-Software-Stack/QDMI.git qdmi
-git -C qdmi checkout 701fc7052e88618240c0ee2ba81114452e779527
+git -C qdmi checkout v1.4.0
 
 cmake -S qdmi -B qdmi/build \
   -DINSTALL_QDMI=ON \
@@ -86,7 +83,7 @@ include(FetchContent)
 FetchContent_Declare(
   qdmi
   GIT_REPOSITORY https://github.com/Munich-Quantum-Software-Stack/QDMI.git
-  GIT_TAG 701fc7052e88618240c0ee2ba81114452e779527)
+  GIT_TAG v1.4.0)
 FetchContent_MakeAvailable(qdmi)
 
 target_link_libraries(my_target PRIVATE qdmi::qdmi)

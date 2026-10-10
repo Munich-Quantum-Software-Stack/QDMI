@@ -196,5 +196,5 @@ example shows a mock implementation of @ref QDMI_device_job_submit.
 
 For the full implementation of the example devices we refer to the respective
 source files in the QDMI repository, that is,
-[`cxx_device.cpp`](https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/develop/examples/device/cxx_device.cpp)
+[`cxx_device.cpp`](https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/v1.4.0/examples/device/src/cxx_device.cpp)
 for the C++ implementation.
