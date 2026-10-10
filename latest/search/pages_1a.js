@@ -1,7 +1,7 @@
 var searchData=
 [
   ['units_20for_20length_20and_20duration_20breaking_20change_0',['Units for Length and Duration (Breaking Change)',['../md_UPGRADING.html#units-for-length-and-duration-breaking-change',1,'']]],
-  ['unreleased_1',['Unreleased',['../md_CHANGELOG.html#unreleased',1,'&lt;a href=&quot;https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.3...HEAD&quot;&gt;Unreleased&lt;/a&gt;'],['../md_UPGRADING.html#unreleased-1',1,'&lt;a href=&quot;https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.3...HEAD&quot;&gt;Unreleased&lt;/a&gt;']]],
+  ['unreleased_1',['Unreleased',['../md_CHANGELOG.html#unreleased',1,'&lt;a href=&quot;https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.4.0...HEAD&quot;&gt;Unreleased&lt;/a&gt;'],['../md_UPGRADING.html#unreleased-1',1,'&lt;a href=&quot;https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.4.0...HEAD&quot;&gt;Unreleased&lt;/a&gt;']]],
   ['updated_20qdmi_20device_20template_2',['Updated QDMI device template',['../md_UPGRADING.html#updated-qdmi-device-template',1,'Updated QDMI device template'],['../md_UPGRADING.html#updated-qdmi-device-template-1',1,'Updated QDMI device template']]],
   ['updates_20breaking_20change_3',['Job Status Enum Updates (Breaking Change)',['../md_UPGRADING.html#job-status-enum-updates-breaking-change',1,'']]],
   ['upgrade_20guide_4',['Upgrade Guide',['../md_docs_2contributing.html#maintaining-changelog-upgrade-guide',1,'Maintaining the Changelog and Upgrade Guide'],['../md_UPGRADING.html',1,'Upgrade Guide']]],

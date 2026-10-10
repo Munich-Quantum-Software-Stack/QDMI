@@ -101,7 +101,7 @@
                 <td id="projectalign">
                   <div id="projectname">
                     QDMI<span id="projectnumber"
-                      >&#160;v1.4.0-dev</span
+                      >&#160;v1.4.0</span
                     >
                   </div>
                   <div id="projectbrief">Quantum Device Management Interface</div>
@@ -199,7 +199,7 @@ Build the Local Examples</h1>
 <div class="fragment"><div class="line">git clone \</div>
 <div class="line">  https://github.com/Munich-Quantum-Software-Stack/QDMI.git</div>
 <div class="line">cd QDMI</div>
-<div class="line">git checkout 701fc7052e88618240c0ee2ba81114452e779527</div>
+<div class="line">git checkout v1.4.0</div>
 <div class="line"> </div>
 <div class="line">cmake -S . -B build -DCMAKE_BUILD_TYPE=Release \</div>
 <div class="line">  -DBUILD_QDMI_TESTS=ON -DBUILD_QDMI_DOCS=OFF</div>
@@ -219,7 +219,7 @@ Verify Discovery, Submission, and Results</h1>
 </ul>
 <p>Read-only sessions intentionally skip submission and result checks. The read/write cases must pass. To run all checks:</p>
 <div class="fragment"><div class="line">ctest --test-dir build -C Release --output-on-failure</div>
-</div><!-- fragment --><p>The assertions and API calls are in <a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/701fc7052e88618240c0ee2ba81114452e779527/test/test_qdmi.cpp"><span class="tt">test/test_qdmi.cpp</span></a>, with session and configuration setup in <a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/701fc7052e88618240c0ee2ba81114452e779527/test/utils/test_impl.cpp"><span class="tt">test/utils/test_impl.cpp</span></a>. These tests also run in QDMI's CI.</p>
+</div><!-- fragment --><p>The assertions and API calls are in <a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/v1.4.0/test/test_qdmi.cpp"><span class="tt">test/test_qdmi.cpp</span></a>, with session and configuration setup in <a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/v1.4.0/test/utils/test_impl.cpp"><span class="tt">test/utils/test_impl.cpp</span></a>. These tests also run in QDMI's CI.</p>
 <h1 class="doxsection"><a class="anchor" id="getting-started-workflow"></a>
 Follow the Application Workflow</h1>
 <p>An application talks to the driver through the <a class="el" href="group__client__interface.html" title="QDMI Client Interface">QDMI Client Interface</a>.</p>
