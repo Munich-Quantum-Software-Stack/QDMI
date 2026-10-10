@@ -93,7 +93,7 @@ repos:
 
   ## Format pyproject.toml with pyproject-fmt
   - repo: https://github.com/tox-dev/pyproject-fmt
-    rev: v2.30.2
+    rev: v2.30.3
     hooks:
       - id: pyproject-fmt
         priority: 5
