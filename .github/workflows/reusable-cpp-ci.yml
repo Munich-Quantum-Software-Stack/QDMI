@@ -15,14 +15,14 @@ jobs:
       matrix:
         preset: [debug, release]
       fail-fast: false
-    uses: munich-quantum-toolkit/workflows/.github/workflows/reusable-cpp-tests-ubuntu.yml@fd3d75dece69c363989347869529a5e99cdcfffc # v2.5.1
+    uses: munich-quantum-toolkit/workflows/.github/workflows/reusable-cpp-tests-ubuntu.yml@6c933678406ab1887a137839dfd0e290f12917da # v2.5.2
     with:
       runs-on: ubuntu-26.04
       preset-name: ${{ matrix.preset }}
 
   cpp-tests-macos:
     name: 🍎
-    uses: munich-quantum-toolkit/workflows/.github/workflows/reusable-cpp-tests-macos.yml@fd3d75dece69c363989347869529a5e99cdcfffc # v2.5.1
+    uses: munich-quantum-toolkit/workflows/.github/workflows/reusable-cpp-tests-macos.yml@6c933678406ab1887a137839dfd0e290f12917da # v2.5.2
     with:
       runs-on: macos-26
       preset-name: release
