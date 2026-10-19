@@ -37,7 +37,7 @@ jobs:
           persist-credentials: false
       # set up ccache for faster C++ builds
       - name: Setup ccache
-        uses: Chocobo1/setup-ccache-action@a4d08616f5b614053bce228ddf881592f69d61d4 # v1.5.9
+        uses: Chocobo1/setup-ccache-action@efeb0f4b0670854c2190fd2389da92c399ff5ceb # v1.5.10
         with:
           prepend_symlinks_to_path: false
           override_cache_key: c++-tests-install-${{ matrix.os }}
