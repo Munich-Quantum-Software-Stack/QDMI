@@ -25,13 +25,16 @@
 var NAVTREE =
 [
   [ "QDMI", "index.html", [
-    [ "Getting Started", "index.html", [
+    [ "Introduction", "index.html", [
       [ "Overview", "index.html", null ],
+      [ "Ecosystem and Community", "md_docs_2ecosystem.html", null ],
+      [ "Getting Started", "md_docs_2getting__started.html", null ],
       [ "FAQ", "md_docs_2faq.html", null ],
       [ "Support", "md_docs_2support.html", null ]
     ] ],
     [ "User Guides", "md_docs_2rationale.html", [
-      [ "Rationale", "md_docs_2rationale.html", null ],
+      [ "Architecture and Rationale", "md_docs_2rationale.html", null ],
+      [ "Using QDMI with CMake", "md_docs_2installation.html", null ],
       [ "Examples", "md_docs_2examples.html", null ],
       [ "Template", "md_docs_2templates.html", null ]
     ] ],
@@ -49,7 +52,8 @@ var NAVTREE =
         [ "Functions", "globals_func.html", null ],
         [ "Typedefs", "globals_type.html", null ],
         [ "Enumerations", "globals_enum.html", null ],
-        [ "Enumerator", "globals_eval.html", null ]
+        [ "Enumerator", "globals_eval.html", null ],
+        [ "Macros", "globals_defs.html", null ]
       ] ]
     ] ]
   ] ]
@@ -58,9 +62,9 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "client_8h.html",
-"group__client__session__interface.html#gga737948251bac10b8cabf745afe82bd09ac4a412a46caedf39781f7f441c3994fd"
+"group__client__session__interface.html#ga737948251bac10b8cabf745afe82bd09"
 ];
 
-var SYNCONMSG = 'click to disable panel synchronization';
-var SYNCOFFMSG = 'click to enable panel synchronization';
-var LISTOFALLMEMBERS = 'List of all members';
+const SYNCONMSG = 'click to disable panel synchronization';
+const SYNCOFFMSG = 'click to enable panel synchronization';
+const LISTOFALLMEMBERS = 'List of all members';
