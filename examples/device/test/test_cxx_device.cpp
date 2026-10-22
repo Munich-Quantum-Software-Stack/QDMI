@@ -19,10 +19,15 @@
 
 #include "cxx_qdmi/device.h"
 
+#include <array>
 #include <cstddef>
 #include <gtest/gtest.h>
+#include <limits>
 #include <string>
+#include <string_view>
 #include <vector>
+
+namespace {
 
 class QDMIImplementationTest : public ::testing::Test {
 protected:
@@ -35,6 +40,12 @@ protected:
     ASSERT_EQ(CXX_QDMI_device_session_alloc(&session), QDMI_SUCCESS)
         << "Failed to allocate a session";
 
+    constexpr std::string_view token = "token";
+    ASSERT_EQ(CXX_QDMI_device_session_set_parameter(
+                  session, QDMI_DEVICE_SESSION_PARAMETER_TOKEN,
+                  token.size() + 1, token.data()),
+              QDMI_SUCCESS);
+
     ASSERT_EQ(CXX_QDMI_device_session_init(session), QDMI_SUCCESS)
         << "Failed to initialize a session. Potential errors: Wrong or missing "
            "authentication information, device status is offline, or in "
@@ -42,7 +53,10 @@ protected:
         << ":" << (__LINE__ - 4);
   }
 
-  void TearDown() override { CXX_QDMI_device_finalize(); }
+  void TearDown() override {
+    CXX_QDMI_device_session_free(session);
+    CXX_QDMI_device_finalize();
+  }
 };
 
 TEST_F(QDMIImplementationTest, SessionSetParameterImplemented) {
@@ -65,6 +79,45 @@ TEST_F(QDMIImplementationTest, JobSetParameterImplemented) {
   ASSERT_EQ(CXX_QDMI_device_job_set_parameter(
                 job, QDMI_DEVICE_JOB_PARAMETER_MAX, 0, nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
+  CXX_QDMI_device_job_free(job);
+}
+
+TEST_F(QDMIImplementationTest, RejectUndersizedShotCount) {
+  CXX_QDMI_Device_Job job = nullptr;
+  ASSERT_EQ(CXX_QDMI_device_session_create_device_job(session, &job),
+            QDMI_SUCCESS);
+  const size_t shots = 5;
+  EXPECT_EQ(CXX_QDMI_device_job_set_parameter(
+                job, QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM, 1, &shots),
+            QDMI_ERROR_INVALIDARGUMENT);
+  CXX_QDMI_device_job_free(job);
+}
+
+TEST_F(QDMIImplementationTest, FailedSubmissionKeepsJobReady) {
+  CXX_QDMI_Device_Job job = nullptr;
+  ASSERT_EQ(CXX_QDMI_device_session_create_device_job(session, &job),
+            QDMI_SUCCESS);
+  constexpr auto program = std::to_array("OPENQASM 2.0;\nqreg q[5];\n");
+  constexpr size_t size = program.size();
+  const std::array<const void *, 1> programs{program.data()};
+  ASSERT_EQ(CXX_QDMI_device_job_set_programs(job, QDMI_PROGRAM_FORMAT_QASM2, 1,
+                                             &size, programs.data()),
+            QDMI_SUCCESS);
+  const size_t huge_shots = std::numeric_limits<size_t>::max();
+  ASSERT_EQ(
+      CXX_QDMI_device_job_set_parameter(job, QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM,
+                                        sizeof(huge_shots), &huge_shots),
+      QDMI_SUCCESS);
+  EXPECT_EQ(CXX_QDMI_device_job_submit(job), QDMI_ERROR_FATAL);
+
+  QDMI_Job_Status status = QDMI_JOB_STATUS_RUNNING;
+  EXPECT_EQ(CXX_QDMI_device_job_check(job, &status), QDMI_SUCCESS);
+  EXPECT_EQ(status, QDMI_JOB_STATUS_CREATED);
+  const size_t shots = 2;
+  ASSERT_EQ(CXX_QDMI_device_job_set_parameter(
+                job, QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM, sizeof(shots), &shots),
+            QDMI_SUCCESS);
+  EXPECT_EQ(CXX_QDMI_device_job_submit(job), QDMI_SUCCESS);
   CXX_QDMI_device_job_free(job);
 }
 
@@ -115,7 +168,7 @@ TEST_F(QDMIImplementationTest, JobGetResultsImplemented) {
   CXX_QDMI_Device_Job job = nullptr;
   ASSERT_EQ(CXX_QDMI_device_session_create_device_job(session, &job),
             QDMI_SUCCESS);
-  ASSERT_EQ(CXX_QDMI_device_job_get_results(job, QDMI_JOB_RESULT_MAX, 0,
+  ASSERT_EQ(CXX_QDMI_device_job_get_results(job, 0, QDMI_JOB_RESULT_MAX, 0,
                                             nullptr, nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
   CXX_QDMI_device_job_free(job);
@@ -215,3 +268,21 @@ TEST_F(QDMIImplementationTest, QueryDeviceQubitNum) {
                 &num_qubits, nullptr),
             QDMI_SUCCESS);
 }
+
+TEST_F(QDMIImplementationTest, QueryStableDeviceId) {
+  size_t size = 0;
+  ASSERT_EQ(CXX_QDMI_device_session_query_device_property(
+                session, QDMI_DEVICE_PROPERTY_ID, 0, nullptr, &size),
+            QDMI_SUCCESS);
+  ASSERT_GT(size, 1U);
+  std::vector<char> id(size);
+  ASSERT_EQ(CXX_QDMI_device_session_query_device_property(
+                session, QDMI_DEVICE_PROPERTY_ID, size, id.data(), nullptr),
+            QDMI_SUCCESS);
+  EXPECT_EQ(id.back(), '\0');
+  EXPECT_EQ(CXX_QDMI_device_session_query_device_property(
+                session, QDMI_DEVICE_PROPERTY_ID, size - 1, id.data(), nullptr),
+            QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_STREQ(id.data(), CXX_QDMI_DEVICE_ID);
+}
+} // namespace

@@ -19,6 +19,9 @@
 -->
 
 <svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 367.82 136.8">
+  <!-- Fixed background keeps the artwork legible in both themes. -->
+  <rect x="0" y="0" width="367.82" height="136.8" fill="#ffffff"/>
+
   <defs>
     <style>
       .cls-1 {

@@ -59,3 +59,7 @@ add_dependencies(qdmi_test cxx-qdmi-device)
 # ensures that there is no compilation error in the templates provided with QDMI
 # and their tests.
 add_dependencies(qdmi_test my-qdmi-device-test)
+
+if(UNIX)
+  add_subdirectory(exports)
+endif()

@@ -17,7 +17,7 @@
 
 [build-system]
 build-backend = "scikit_build_core.build"
-requires = [ "scikit-build-core>=1.0.1" ]
+requires = [ "scikit-build-core>=1.1.1" ]
 
 
 [project]
@@ -60,10 +60,10 @@ my-qdmi = "my.qdmi.__main__:main"
 [dependency-groups]
 dev = [
   { include-group = "test" },
-  "nox>=2026.4.10",
+  "nox>=2026.8.17",
 ]
 test = [
-  "pytest>=9.0.3",
+  "pytest>=9.1.1",
   "pytest-console-scripts>=1.4.1",
   "pytest-cov>=7.1",
   "pytest-sugar>=1.1.1",
@@ -148,6 +148,10 @@ preview = true
 fix = true
 unsafe-fixes = true
 show-fixes = true
+
+[tool.ruff.format]
+preview = true
+docstring-code-format = true
 
 [tool.ruff.lint.per-file-ignores]
 "python/my/qdmi/__main__.py" = [ "T201" ]

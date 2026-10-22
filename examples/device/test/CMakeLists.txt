@@ -38,6 +38,11 @@ target_link_libraries(
 
 # set c++ standard
 target_compile_features(${QDMI_TEST_TARGET_NAME} PRIVATE cxx_std_20)
+target_compile_definitions(
+  ${QDMI_TEST_TARGET_NAME}
+  PRIVATE
+    ${QDMI_PREFIX}_QDMI_DEVICE_ID="$<TARGET_PROPERTY:${QDMI_TARGET_NAME},QDMI_DEVICE_ID>"
+)
 
 add_dependencies(${QDMI_TEST_TARGET_NAME} qdmi_test_cxx_device_defs)
 

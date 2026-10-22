@@ -15,6 +15,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
+set(BUILD_CXX_QDMI_TESTS ${BUILD_QDMI_TESTS})
 add_subdirectory(device)
 add_subdirectory(fomac)
 add_subdirectory(tool)

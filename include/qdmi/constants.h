@@ -25,6 +25,29 @@
 #ifndef QDMI_CONSTANTS_H
 #define QDMI_CONSTANTS_H
 
+#include <stdint.h>
+
+/// Pack a Semantic Versioning release into 32 bits.
+/// Major and minor must fit in 10 bits each, and patch must fit in 12 bits.
+#define QDMI_MAKE_VERSION(major, minor, patch)                                 \
+  ((((uint32_t)(major) & 0x3FFU) << 22U) |                                     \
+   (((uint32_t)(minor) & 0x3FFU) << 12U) | ((uint32_t)(patch) & 0xFFFU))
+
+/// Extract the major component of a packed version.
+#define QDMI_VERSION_MAJOR(version) (((uint32_t)(version) >> 22U) & 0x3FFU)
+/// Extract the minor component of a packed version.
+#define QDMI_VERSION_MINOR(version) (((uint32_t)(version) >> 12U) & 0x3FFU)
+/// Extract the patch component of a packed version.
+#define QDMI_VERSION_PATCH(version) ((uint32_t)(version) & 0xFFFU)
+
+/// Check whether an enum value is outside its standard and custom ranges.
+/// Reserved standard values below PREFIX_MAX remain valid inputs that the
+/// implementation reports as unsupported.
+#define QDMI_IS_INVALID_ENUM_VALUE(value, PREFIX)                              \
+  ((value) >= PREFIX##_MAX && (value) != PREFIX##_CUSTOM1 &&                   \
+   (value) != PREFIX##_CUSTOM2 && (value) != PREFIX##_CUSTOM3 &&               \
+   (value) != PREFIX##_CUSTOM4 && (value) != PREFIX##_CUSTOM5)
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -163,26 +186,11 @@ typedef enum QDMI_DEVICE_SESSION_PARAMETER_T QDMI_Device_Session_Parameter;
  * require them to be set.
  */
 enum QDMI_DEVICE_JOB_PARAMETER_T {
+  /// Value 0 is reserved for the removed program format parameter; do not reuse
+  /// it.
+  /// Value 1 is reserved for the removed program parameter; do not reuse it.
   /**
-   * @brief @ref QDMI_Program_Format The format of the program to be executed.
-   * @details This parameter is required. The device must support the specified
-   * program format. If the device does not support the specified program
-   * format, the @ref QDMI_device_job_set_parameter function must return @ref
-   * QDMI_ERROR_NOTSUPPORTED.
-   */
-  QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT = 0,
-  /**
-   * @brief `void*` The program to be executed.
-   * @details This parameter is required. The program must be in the format
-   * specified by the @ref QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT parameter.
-   * If the program is invalid, the @ref QDMI_device_job_set_parameter function
-   * must return @ref QDMI_ERROR_INVALIDARGUMENT. If the program is valid, but
-   * the device cannot execute it, the @ref QDMI_device_job_set_parameter
-   * function must return @ref QDMI_ERROR_NOTSUPPORTED.
-   */
-  QDMI_DEVICE_JOB_PARAMETER_PROGRAM = 1,
-  /**
-   * @brief `size_t` The number of shots to execute for a quantum circuit job.
+   * @brief `size_t` The number of shots to execute for each program in a job.
    * @details If this parameter is not set, a device-specific default is used.
    */
   QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM = 2,
@@ -236,18 +244,15 @@ enum QDMI_DEVICE_JOB_PROPERTY_T {
   QDMI_DEVICE_JOB_PROPERTY_ID = 0,
   /**
    * @brief @ref QDMI_Program_Format The format of the program to be executed.
-   * @note This property returns the value of the @ref
-   * QDMI_DEVICE_JOB_PARAMETER_PROGRAMFORMAT parameter.
+   * @details A query returns @ref QDMI_ERROR_BADSTATE until a format is set,
+   * or @ref QDMI_ERROR_NOTSUPPORTED if a retrieved job has no format metadata.
+   * This property returns the format set through @ref
+   * QDMI_device_job_set_programs.
    */
   QDMI_DEVICE_JOB_PROPERTY_PROGRAMFORMAT = 1,
+  /// Value 2 is reserved for the removed program property; do not reuse it.
   /**
-   * @brief `void*` The program to be executed.
-   * @note This property returns the value of the @ref
-   * QDMI_DEVICE_JOB_PARAMETER_PROGRAM parameter.
-   */
-  QDMI_DEVICE_JOB_PROPERTY_PROGRAM = 2,
-  /**
-   * @brief `size_t` The number of shots to execute for a quantum circuit job.
+   * @brief `size_t` The number of shots to execute for each program in a job.
    * @note This property returns the value of the @ref
    * QDMI_DEVICE_JOB_PARAMETER_SHOTSNUM parameter.
    */
@@ -268,6 +273,13 @@ enum QDMI_DEVICE_JOB_PROPERTY_T {
    */
   QDMI_DEVICE_JOB_PROPERTY_QUEUEPOSITION = 4,
   /**
+   * @brief `size_t` The number of programs in the job.
+   * @details A single-program job reports one. A job has no program count until
+   * its program payload has been set; a query before that returns @ref
+   * QDMI_ERROR_BADSTATE. The count remains stable after submission.
+   */
+  QDMI_DEVICE_JOB_PROPERTY_PROGRAMSNUM = 5,
+  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -275,7 +287,7 @@ enum QDMI_DEVICE_JOB_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_DEVICE_JOB_PROPERTY_MAX = 5,
+  QDMI_DEVICE_JOB_PROPERTY_MAX = 6,
   /**
    * @brief This enum value is reserved for a custom parameter.
    * @details The device defines the meaning and the type of this parameter.
@@ -446,6 +458,31 @@ enum QDMI_DEVICE_PROPERTY_T {
    */
   QDMI_DEVICE_PROPERTY_QUEUELENGTH = 17,
   /**
+   * @brief `char*` (string) The stable client-visible device identifier.
+   * @details When supported, the Client Interface returns a nonempty,
+   * NUL-terminated string. Clients may compare or store IDs but must not infer
+   * meaning from their text. IDs are unique within one initialized session
+   * and immutable for the lifetime of the corresponding @ref QDMI_Device
+   * handle. Equivalent sessions return the same ID across process restarts
+   * while the same logical resource exists. When saving an ID, also record
+   * which driver and configuration provide it. Different drivers may use the
+   * same ID for different devices.
+   *
+   * The ID identifies the logical resource. It is not a display name, endpoint,
+   * pointer value, credential, library version, or symbol prefix. A device
+   * implementation can report its configured default stable ID. The driver can
+   * override that ID to distinguish separately configured logical resources.
+   *
+   * This property is mandatory for configured top-level devices through
+   * @ref QDMI_device_query_device_property. A device implementation can return
+   * @ref QDMI_ERROR_NOTSUPPORTED through
+   * @ref QDMI_device_session_query_device_property; the driver then supplies
+   * the configured ID. Child devices may return @ref QDMI_ERROR_NOTSUPPORTED
+   * when no stable ID is available. Drivers need not generate IDs for child
+   * devices.
+   */
+  QDMI_DEVICE_PROPERTY_ID = 18,
+  /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
    * function parameters.
@@ -453,7 +490,7 @@ enum QDMI_DEVICE_PROPERTY_T {
    * @attention This value must remain the last regular member of the enum
    * besides the custom members and must be updated when new members are added.
    */
-  QDMI_DEVICE_PROPERTY_MAX = 18,
+  QDMI_DEVICE_PROPERTY_MAX = 19,
   /**
    * @brief This enum value is reserved for a custom property.
    * @details The device defines the meaning and the type of this property.
@@ -874,13 +911,13 @@ enum QDMI_JOB_STATUS_T {
   QDMI_JOB_STATUS_SUBMITTED = 1,
   /// The job was received, and is waiting to be executed.
   QDMI_JOB_STATUS_QUEUED = 2,
-  /// The job is running, and the result is not yet available.
+  /// One or more programs are still running.
   QDMI_JOB_STATUS_RUNNING = 3,
-  /// The job is done, and the result can be retrieved.
+  /// All programs succeeded, and their results can be retrieved.
   QDMI_JOB_STATUS_DONE = 4,
-  /// The job was canceled, and the result is not available.
+  /// The job stopped after cancellation; completed programs retain results.
   QDMI_JOB_STATUS_CANCELED = 5,
-  /// An error occurred in the job's lifecycle.
+  /// One or more programs failed, or another error occurred in the lifecycle.
   QDMI_JOB_STATUS_FAILED = 6
 };
 
@@ -1134,25 +1171,7 @@ enum QDMI_PROGRAM_FORMAT_T {
    * Qubit placement alone does not encode this source-output mapping.
    */
   QDMI_PROGRAM_FORMAT_IQMJSON = 8,
-  /**
-   * @brief `QDMI_Job*`/`QDMI_Device_Job*` (@ref QDMI_Job list / @ref
-   * QDMI_Device_Job list) A list of jobs within a batch job.
-   * @details This program format is used to submit a batch job, i.e., a job
-   * that consists of multiple sub-jobs. The program must be a list of jobs
-   * created via @ref QDMI_device_create_job or @ref
-   * QDMI_device_session_create_device_job. These jobs must be configured
-   * completely but not submitted. If a batch job contains already submitted
-   * jobs, @ref QDMI_job_submit or @ref QDMI_device_job_submit on the batch job
-   * will return @ref QDMI_ERROR_BADSTATE.
-   * @par
-   * Querying results from a batch job directly is not possible and will result
-   * in @ref QDMI_ERROR_NOTSUPPORTED Instead, the results must be queried from
-   * the individual jobs after they finished. If the device supports it, each
-   * job in the batch can be queried for its status or waited for. However,
-   * in any case, individual jobs in a batch cannot be canceled and this will
-   * result in @ref QDMI_ERROR_NOTSUPPORTED.
-   */
-  QDMI_PROGRAM_FORMAT_BATCHJOB = 9,
+  /// Value 9 is reserved for the removed batch-job format; do not reuse it.
   /**
    * @brief The maximum value of the enum.
    * @details It can be used by devices for bounds checking and validation of
@@ -1200,8 +1219,8 @@ typedef enum QDMI_PROGRAM_FORMAT_T QDMI_Program_Format;
  * If any shot contains a nonbinary output, queries for all three of
  * @ref QDMI_JOB_RESULT_SHOTS, @ref QDMI_JOB_RESULT_HIST_KEYS, and
  * @ref QDMI_JOB_RESULT_HIST_VALUES must return @ref QDMI_ERROR_NOTSUPPORTED
- * for the entire job, including size queries. Do not drop values or shots.
- * Unsupported binary retrieval does not make successful execution fail.
+ * for the selected program, including size queries. Do not drop values or
+ * shots. Unsupported binary retrieval does not make successful execution fail.
  *
  * A device accepting nonbinary outputs must provide the corresponding
  * @ref QDMI_JOB_RESULT_QIR_OUTPUT or @ref QDMI_JOB_RESULT_QASM3_OUTPUT result.
@@ -1216,6 +1235,9 @@ typedef enum QDMI_PROGRAM_FORMAT_T QDMI_Program_Format;
  * another representation must not execute or sample the program again.
  * Full-output representations retain their own ordering and structure,
  * without bitstring reversal.
+ *
+ * Each result applies to the program index passed to @ref
+ * QDMI_job_get_results or @ref QDMI_device_job_get_results.
  */
 enum QDMI_JOB_RESULT_T {
   /**
@@ -1380,7 +1402,7 @@ enum QDMI_JOB_RESULT_T {
    * - An undefined value: JSON `null`, including individual undefined array
    *   elements. Do not omit the variable or substitute zero. If any selected
    *   value is undefined, binary shot and histogram retrieval is unsupported
-   *   for the entire job.
+   *   for the selected program.
    *
    * The submitted program defines the types; numeric JSON values do not make
    * `int`, `uint`, or `float` outputs binary. This encoding does not support

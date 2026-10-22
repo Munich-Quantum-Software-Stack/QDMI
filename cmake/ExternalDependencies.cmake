@@ -25,10 +25,10 @@ if(BUILD_QDMI_DOCS)
       CACHE STRING
             "Set the default CMP0116 policy to NEW for documentation builds")
   set(DOXYGEN_VERSION
-      1.15.0
+      1.18.0
       CACHE STRING "Doxygen version")
   set(DOXYGEN_REV
-      "7cca38ba5185457e6d9495bf963d4cdeacebc25a"
+      "8e760943e5d9581a444cf327f43a0b4d20d29482"
       CACHE STRING "Doxygen identifier (tag, branch or commit hash)")
   FetchContent_Declare(
     Doxygen
@@ -38,10 +38,10 @@ if(BUILD_QDMI_DOCS)
   list(APPEND FETCH_PACKAGES Doxygen)
 
   set(DOXYGEN_AWESOME_VERSION
-      2.4.1
+      2.5.0
       CACHE STRING "Doxygen Awesome version")
   set(DOXYGEN_AWESOME_REV
-      "1f3620084ff75734ed192101acf40e9dff01d848"
+      "46483f1e5a70ffb9ecd3b82d0a1cd1b24edf13da"
       CACHE STRING "Doxygen Awesome identifier (tag, branch or commit hash)")
   FetchContent_Declare(
     doxygen-awesome-css
@@ -56,7 +56,7 @@ if(BUILD_QDMI_TESTS)
       ON
       CACHE BOOL "" FORCE)
   set(GTEST_VERSION
-      1.17.0
+      1.18.0
       CACHE STRING "Google Test version")
   set(GTEST_URL
       https://github.com/google/googletest/archive/refs/tags/v${GTEST_VERSION}.tar.gz

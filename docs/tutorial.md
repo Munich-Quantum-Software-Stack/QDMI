@@ -52,6 +52,7 @@ we'll use `tutorial` as our project prefix.
 # Step 1: Clone the QDMI repository
 git clone https://github.com/Munich-Quantum-Software-Stack/QDMI.git
 cd QDMI
+git checkout v1.4.0
 
 # Step 2: Generate the project files
 cmake -DQDMI_GENERATE_TEMPLATE=ON \
@@ -313,7 +314,7 @@ int tutorial_QDMI_device_session_query_device_property(
 > [!NOTE]
 > For a more advanced approach that uses macros to reduce boilerplate code when
 > defining multiple properties, refer to the
-> [Example Device Implementation](https://github.com/Munich-Quantum-Software-Stack/QDMI/tree/develop/examples/device).
+> [Example Device Implementation](https://github.com/Munich-Quantum-Software-Stack/QDMI/tree/v1.4.0/examples/device).
 
 > [!TIP]
 > **Check Now**: The device can now describe itself to the driver.
@@ -367,13 +368,23 @@ int tutorial_QDMI_device_session_create_device_job(tutorial_QDMI_Device_Session 
 int tutorial_QDMI_device_job_set_parameter(tutorial_QDMI_Device_Job job,
                                         const QDMI_Device_Job_Parameter param,
                                         const size_t size, const void *value) {
-  if (job == nullptr || value == nullptr || size == 0) return QDMI_ERROR_INVALIDARGUMENT;
-
-  if (param == QDMI_DEVICE_JOB_PARAMETER_PROGRAM) {
-    job->program = std::string(static_cast<const char*>(value), size);
-    return QDMI_SUCCESS;
-  }
+  if (job == nullptr || (value != nullptr && size == 0)) return QDMI_ERROR_INVALIDARGUMENT;
   return QDMI_ERROR_NOTSUPPORTED;
+}
+
+int tutorial_QDMI_device_job_set_programs(
+    tutorial_QDMI_Device_Job job, QDMI_Program_Format format,
+    size_t count, const size_t *sizes, const void *const *programs) {
+  if (job == nullptr || count == 0) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  if (count != 1) return QDMI_ERROR_NOTSUPPORTED;
+  if (programs == nullptr) return QDMI_SUCCESS;
+  if (sizes == nullptr || sizes[0] == 0 || programs[0] == nullptr) {
+    return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  job->program = std::string(static_cast<const char*>(programs[0]), sizes[0]);
+  return QDMI_SUCCESS;
 }
 
 int tutorial_QDMI_device_job_submit(tutorial_QDMI_Device_Job job) {
@@ -395,9 +406,11 @@ int tutorial_QDMI_device_job_check(tutorial_QDMI_Device_Job job, QDMI_Job_Status
 }
 
 int tutorial_QDMI_device_job_get_results(tutorial_QDMI_Device_Job job,
+                                      size_t program_index,
                                       QDMI_Job_Result result, const size_t size,
                                       void *data, size_t *size_ret) {
   if (job == nullptr) return QDMI_ERROR_INVALIDARGUMENT;
+  if (program_index != 0) return QDMI_ERROR_OUTOFRANGE;
   if (job->status != QDMI_JOB_STATUS_DONE) return QDMI_ERROR_BADSTATE;
 
   if (result == QDMI_JOB_RESULT_PROBABILITIES_DENSE) {
@@ -530,18 +543,21 @@ TEST_F(QDMIInitializedSessionTest, SubmitAndSimulateJob) {
       << "Checkpoint 4 Failed: Could not create a device job.";
 
   const std::string qasm = "OPENQASM 2.0; qreg q[1]; h q[0];";
+  const QDMI_Program_Format format = QDMI_PROGRAM_FORMAT_QASM2;
+  const size_t qasm_size = qasm.size() + 1;
+  const void *qasm_data = qasm.c_str();
 
   // Null job must return INVALIDARGUMENT
-  EXPECT_EQ(tutorial_QDMI_device_job_set_parameter(nullptr, QDMI_DEVICE_JOB_PARAMETER_PROGRAM, qasm.size(), qasm.c_str()), QDMI_ERROR_INVALIDARGUMENT);
-  // Null value with size==0 must return INVALIDARGUMENT
-  EXPECT_EQ(tutorial_QDMI_device_job_set_parameter(job, QDMI_DEVICE_JOB_PARAMETER_PROGRAM, 0, nullptr), QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_EQ(tutorial_QDMI_device_job_set_programs(nullptr, format, 1, &qasm_size, &qasm_data), QDMI_ERROR_INVALIDARGUMENT);
+  // A zero program count must return INVALIDARGUMENT
+  EXPECT_EQ(tutorial_QDMI_device_job_set_programs(job, format, 0, nullptr, nullptr), QDMI_ERROR_INVALIDARGUMENT);
   // Unsupported parameter must return NOTSUPPORTED
   EXPECT_EQ(tutorial_QDMI_device_job_set_parameter(job, QDMI_DEVICE_JOB_PARAMETER_MAX, qasm.size(), qasm.c_str()), QDMI_ERROR_NOTSUPPORTED);
 
   // Submitting without a program set must return BADSTATE
   EXPECT_EQ(tutorial_QDMI_device_job_submit(job), QDMI_ERROR_BADSTATE);
 
-  ASSERT_EQ(tutorial_QDMI_device_job_set_parameter(job, QDMI_DEVICE_JOB_PARAMETER_PROGRAM, qasm.size(), qasm.c_str()), QDMI_SUCCESS);
+  ASSERT_EQ(tutorial_QDMI_device_job_set_programs(job, format, 1, &qasm_size, &qasm_data), QDMI_SUCCESS);
 
   // Null job must return INVALIDARGUMENT
   EXPECT_EQ(tutorial_QDMI_device_job_submit(nullptr), QDMI_ERROR_INVALIDARGUMENT);
@@ -562,13 +578,13 @@ TEST_F(QDMIInitializedSessionTest, SubmitAndSimulateJob) {
 
   std::array<double, 2> probs{};
   // Null job must return INVALIDARGUMENT
-  EXPECT_EQ(tutorial_QDMI_device_job_get_results(nullptr, QDMI_JOB_RESULT_PROBABILITIES_DENSE, probs.size() * sizeof(double), probs.data(), nullptr), QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_EQ(tutorial_QDMI_device_job_get_results(nullptr, 0, QDMI_JOB_RESULT_PROBABILITIES_DENSE, probs.size() * sizeof(double), probs.data(), nullptr), QDMI_ERROR_INVALIDARGUMENT);
   // Buffer too small must return INVALIDARGUMENT
-  EXPECT_EQ(tutorial_QDMI_device_job_get_results(job, QDMI_JOB_RESULT_PROBABILITIES_DENSE, probs.size() * sizeof(double) - 1, probs.data(), nullptr), QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_EQ(tutorial_QDMI_device_job_get_results(job, 0, QDMI_JOB_RESULT_PROBABILITIES_DENSE, probs.size() * sizeof(double) - 1, probs.data(), nullptr), QDMI_ERROR_INVALIDARGUMENT);
   // Unsupported result type must return NOTSUPPORTED
-  EXPECT_EQ(tutorial_QDMI_device_job_get_results(job, QDMI_JOB_RESULT_MAX, probs.size() * sizeof(double), probs.data(), nullptr), QDMI_ERROR_NOTSUPPORTED);
+  EXPECT_EQ(tutorial_QDMI_device_job_get_results(job, 0, QDMI_JOB_RESULT_MAX, probs.size() * sizeof(double), probs.data(), nullptr), QDMI_ERROR_NOTSUPPORTED);
 
-  ASSERT_EQ(tutorial_QDMI_device_job_get_results(job, QDMI_JOB_RESULT_PROBABILITIES_DENSE, probs.size() * sizeof(double), probs.data(), nullptr), QDMI_SUCCESS)
+  ASSERT_EQ(tutorial_QDMI_device_job_get_results(job, 0, QDMI_JOB_RESULT_PROBABILITIES_DENSE, probs.size() * sizeof(double), probs.data(), nullptr), QDMI_SUCCESS)
       << "Checkpoint 4 Failed: Could not retrieve simulated job results.";
 
   tutorial_QDMI_device_job_free(job);
@@ -628,13 +644,10 @@ Congratulations on building your first QDMI device. You've implemented:
 
 ### Configuring the Template
 
-We recommend pinning your project to a specific QDMI release for stability. Edit
-`cmake/ExternalDependencies.cmake`:
-
-```diff
--   set(QDMI_REV "develop")
-+   set(QDMI_REV "v1.3.0")
-```
+Generated projects pin QDMI to the release selected by `QDMI_VERSION` in
+`cmake/ExternalDependencies.cmake`. The `QDMI_REV` cache variable defaults to
+the matching release tag. Override it when configuring if you need another tag
+or commit, and keep `QDMI_VERSION` consistent with that interface.
 
 ### Troubleshooting Fetch Failures
 

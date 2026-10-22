@@ -5,12 +5,16 @@ between versions. For a complete list of changes, including minor and patch
 releases, please refer to the
 [changelog](CHANGELOG.md).
 
+<!-- Doxygen's heading IDs are global; distinguish CHANGELOG's Unreleased section. -->
+<!-- rumdl-disable-next-line MD033 -->
+<a id="upgrading-unreleased"></a>
+
 ## [Unreleased]
 
 ### Program output and result ordering
 
-QDMI 1.4 defines one serialization for standard binary results: logical bit zero
-is rightmost, and leading zeros are retained. This is a semantic compatibility
+QDMI defines one serialization for standard binary results: logical bit zero is
+rightmost, and leading zeros are retained. This is a semantic compatibility
 change for devices that previously returned bit zero first. Existing result
 values and function signatures are unchanged. Two result kinds are appended:
 `QDMI_JOB_RESULT_QIR_OUTPUT = 9` and `QDMI_JOB_RESULT_QASM3_OUTPUT = 10`;
@@ -26,8 +30,8 @@ variables subject to scoping.
 For QIR and OpenQASM 3, shots and histograms require the complete selected
 output to be binary. A numeric output on any shot, including an integer valued
 zero or one, makes `SHOTS`, `HIST_KEYS`, and `HIST_VALUES` return
-`QDMI_ERROR_NOTSUPPORTED` for the entire job, including size queries. Do not
-discard nonbinary values or individual shots. Successful execution does not
+`QDMI_ERROR_NOTSUPPORTED` for the selected program, including size queries. Do
+not discard nonbinary values or individual shots. Successful execution does not
 become a failed job just because binary retrieval is unsupported.
 
 Devices accepting nonbinary output must expose the corresponding full-output
@@ -91,12 +95,68 @@ program outputs remains implementation-defined and must be documented by the
 device. Numeric-only output does not permit implicit measurement. Portable
 programs must specify measurements and outputs explicitly.
 
+## [1.4.0]
+
 ### CMake consumption
 
 Installed QDMI packages no longer select a compiler cache or add `-g` to
 consuming targets. Configure caching with `CMAKE_C_COMPILER_LAUNCHER` and
 `CMAKE_CXX_COMPILER_LAUNCHER`, and select `Debug` or `RelWithDebInfo` when debug
 information is needed.
+
+### Replaceable QDMI drivers and stable device IDs
+
+QDMI 1.4 defines a stable ABI for replaceable QDMI driver libraries. Export
+every function declared in `qdmi/client.h` with `QDMI_DRIVER_EXPORT`. Define
+`QDMI_driver_EXPORTS` while building the driver. A loader first resolves and
+calls `QDMI_driver_get_client_abi_version`. It then resolves the complete Client
+Interface before it allocates a session. The returned ABI is compatible if and
+only if its packed major and minor fields equal those of
+`QDMI_CLIENT_ABI_VERSION`. Ignore the patch field when checking compatibility. A
+different major or minor field is incompatible. QDMI 1.4 defines
+`QDMI_CLIENT_ABI_VERSION` as 1.4.0 in `qdmi/client.h`. This check only covers
+applications and drivers. A driver may support device libraries built against
+several QDMI minor releases; it decides which Device Interface revisions it can
+load.
+
+The ABI version query does not initialize the driver. `QDMI_session_alloc` is
+the first Client call that may establish driver state. A driver may set up its
+backend then or attach to an already running service. The call sets its output
+to `NULL` before work that can fail and leaves no partial session on failure.
+Clients can retry a failed allocation. The example driver no longer exposes
+`QDMI_driver_init` or `QDMI_driver_shutdown`.
+
+A process uses one Client implementation and can allocate many sessions. Each
+initialized session exposes an immutable authorized device catalog. Device,
+site, operation, and job handles belong to that session. Free all jobs before
+freeing the session. Freeing the session invalidates every remaining descendant
+handle.
+
+`QDMI_DEVICE_PROPERTY_ID` is appended as value 18. It is mandatory through the
+Client Interface for configured top-level devices and optional through the
+Device Interface. A driver supplies the configured value when a device returns
+`QDMI_ERROR_NOTSUPPORTED`. Child-device IDs remain optional: drivers forward a
+device-reported ID when available and may otherwise return
+`QDMI_ERROR_NOTSUPPORTED`, without generating child IDs. The ID is a nonempty,
+opaque string. It is unique within an initialized session, immutable for one
+device handle, and stable across equivalent sessions and process restarts while
+the same logical resource exists. When saving an ID, also record which driver
+and configuration provide it. Do not use a display name, endpoint, pointer,
+credential, library version, or symbol prefix as the stable ID. The
+`QDMI_DEVICE_ID` CMake target property supplies a default stable ID that a
+driver can override in configuration.
+
+The example driver configuration now gives each device a stable ID in a third
+column:
+
+```text
+/path/to/libdevice.so PREFIX deployment.device-id
+```
+
+The example driver now accepts multiple entries for one library and prefix when
+their stable IDs differ. It initializes the library once and opens a separate
+device session for each entry. Duplicate IDs still make the configuration
+invalid.
 
 ### macOS support
 
@@ -137,6 +197,48 @@ The `QDMI_PROGRAM_FORMAT_CALIBRATION` program format is removed. Use a
 provider-specific function to submit calibration jobs, if the provider offers
 one. Its numeric value (6) remains reserved. `QDMI_DEVICE_STATUS_CALIBRATION`
 remains available to report device status.
+
+### Multi-program jobs
+
+Use `QDMI_job_set_programs` (or `QDMI_device_job_set_programs`) for one program
+or an ordered list with a common format and shot count per program. The
+`PROGRAMFORMAT` and `PROGRAM` job parameters, `PROGRAM` job properties, and
+`QDMI_PROGRAM_FORMAT_BATCHJOB` are removed. Their numeric values (parameters 0
+and 1, property 2, and format 9) remain reserved and return
+`QDMI_ERROR_NOTSUPPORTED`. The numeric values of remaining members are
+unchanged.
+
+Pass the format by value. The setter copies the complete list atomically. Failed
+setters leave the previous format and programs unchanged; successful calls
+replace both. A support check passes a nonzero count and `programs == NULL`,
+checking that format and cardinality with the configured parameters without
+changing the job. Text includes exactly one trailing `\0`; binary programs are
+copied intact.
+
+`PROGRAMSNUM` reports the count once programs are set, or `QDMI_ERROR_BADSTATE`
+before that. Both result functions now take a zero-based program index
+immediately after the job handle; use zero for a single program. The optional
+indexed `QDMI_job_get_program_status` and `QDMI_device_job_get_program_status`
+functions report individual outcomes. Successful results remain available if
+other programs fail or are canceled. An aggregate terminal status means all
+programs have stopped.
+
+Use `QDMI_job_get_program` or `QDMI_device_job_get_program` with a zero-based
+index to retrieve the original bytes. Query the required size with a null data
+pointer. Retrieved remote jobs may return `QDMI_ERROR_NOTSUPPORTED` if the
+device or driver cannot recover the original program bytes.
+
+Retrieval by ID must restore the program count and input-to-result mapping.
+Queries for an unavailable original format or program bytes may return
+`QDMI_ERROR_NOTSUPPORTED` without preventing job retrieval. A device or driver
+without native list support can return `QDMI_ERROR_NOTSUPPORTED` from the
+setter; applications can then submit separate single-program jobs.
+
+Device libraries must export `QDMI_device_job_set_programs`,
+`QDMI_device_job_get_program`, and `QDMI_device_job_get_program_status`; drivers
+must export `QDMI_job_set_programs`, `QDMI_job_get_program`, and
+`QDMI_job_get_program_status`. Rebuild clients, drivers, and devices against the
+updated signatures.
 
 ## [1.3.3]
 
@@ -651,7 +753,8 @@ For quick reference, here are all breaking changes in v1.2.0:
 
 <!-- Version links -->
 
-[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.3...HEAD
+[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.4.0...HEAD
+[1.4.0]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.3...v1.4.0
 [1.3.3]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.2...v1.3.3
 [1.3.2]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.1...v1.3.2
 [1.3.1]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.0...v1.3.1

@@ -12,7 +12,8 @@ clients compiled against a different minor or major version.
 
 ## [Unreleased]
 
-_If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
+_If you are upgrading: please see
+[`UPGRADING.md`](UPGRADING.md#upgrading-unreleased)._
 
 ### Added
 
@@ -29,12 +30,48 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
   ([#552]) ([\@burgholzer]).
 - 📝 Define when devices may provide implicit terminal measurements ([#552])
   ([\@burgholzer]).
+
+## [1.4.0] - 2026-10-11
+
+_If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#140)._
+
+### Added
+
+- ✨ Provide a shared enum-range check for QDMI device and driver
+  implementations ([#511]) ([\@burgholzer], [\@ystade]).
+- ✨ Define the existing Client Interface as a versioned, replaceable QDMI
+  driver ABI ([#511]) ([\@burgholzer], [\@ystade]).
+- ✨ Add mandatory stable client-visible IDs for configured top-level devices
+  ([#511]) ([\@burgholzer], [\@ystade]).
+- ✨ Add native Windows library loading to the example driver ([#511])
+  ([\@burgholzer], [\@ystade]).
+- ✨ Add optional target-specific export control for device and client libraries
+  ([#559]) ([\@marcelwa])
+- ✨ Add ordered multi-program jobs with one aggregate lifecycle, indexed
+  program and result queries, optional individual status queries, and three
+  required Device Interface job functions ([#509]) ([\@ystade], [\@burgholzer]).
+
+### Changed
+
+- 📝 Reorganize documentation around QDMI's international ecosystem, origins,
+  maintenance, and integration roles. Add publication-backed adoption accounts,
+  MQT Core's DDSIM device, public MQSS components, IBM and other hardware
+  integrations, and implementation guides; fix navigation, API-index anchors,
+  contributor links, and responsive layouts, and provide reproducible onboarding
+  ([#575]) ([\@denialhaag], [\@burgholzer]).
+- 💥 Make Client session allocation the first stateful driver call and remove
+  the example driver's separate initialization and shutdown functions ([#511])
+  ([\@burgholzer], [\@ystade]).
 - 📝 Document installation and CMake consumption of the QDMI interface ([#538])
   ([\@marcelwa], [\@burgholzer])
 - 🔧 Make CMake package version checks architecture-independent ([#538])
   ([\@burgholzer])
 - 🔧 Leave compiler launchers and debug flags to CMake package consumers
   ([#538]) ([\@burgholzer])
+- 💥 Add a program index to `QDMI_job_get_results` and
+  `QDMI_device_job_get_results`, pass program formats by value, and use the
+  atomic program-list setter for single-program jobs ([#509]) ([\@ystade],
+  [\@burgholzer]).
 - 💥 Drop x86 macOS from QDMI's tested platforms ([#515]) ([\@denialhaag])
 - ⬆️ Raise generated device projects' macOS deployment target to 13.3 ([#515])
   ([\@denialhaag])
@@ -43,11 +80,27 @@ _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#unreleased)._
 
 ### Fixed
 
+- 🐛 Keep the example device job ready when result preparation fails instead of
+  letting a C++ exception escape the Device Interface ([#576]) ([\@burgholzer]).
+- 🐛 Reject incorrectly sized shot-count values in the example device before
+  reading them ([#576]) ([\@burgholzer]).
+- 🐛 Avoid exposing or leaking a client job when the example driver's device job
+  creation fails ([#576]) ([\@burgholzer]).
+- 🐛 Allow the example driver to open one device library more than once with
+  distinct stable IDs ([#511]) ([\@burgholzer], [\@ystade]).
+- 🐛 Release example-driver device libraries when the final session closes,
+  before process-wide dependency teardown ([#511]) ([\@burgholzer], [\@ystade]).
+- 🐛 Allow the example driver to open devices without token authentication while
+  propagating authentication errors ([#511]) ([\@burgholzer], [\@ystade]).
 - 🐛 Preserve timestamps of unchanged prefixed headers to avoid redundant builds
   ([#537]) ([\@burgholzer])
 
 ### Removed
 
+- 💥 Replace the batch-job format, separate format and program job parameters,
+  and the single-program `PROGRAM` property with ordered program lists and
+  indexed getters, reserving the removed enum values ([#509]) ([\@ystade],
+  [\@burgholzer]).
 - 💥 Remove the calibration program format. Providers can expose calibration
   submission through a separate function ([#551]) ([\@burgholzer]).
 - 💥 Remove the unused pulse-support device property and level type. Providers
@@ -251,7 +304,8 @@ for previous changelogs._
 
 <!-- Version links -->
 
-[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.3...HEAD
+[unreleased]: https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.4.0...HEAD
+[1.4.0]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.4.0
 [1.3.3]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.3.3
 [1.3.2]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.3.2
 [1.3.1]: https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.3.1
@@ -263,6 +317,9 @@ for previous changelogs._
 
 <!-- PR links -->
 
+[#576]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/576
+[#575]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/575
+[#559]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/559
 [#552]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/552
 [#551]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/551
 [#538]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/538
@@ -270,6 +327,8 @@ for previous changelogs._
 [#515]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/515
 [#513]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/513
 [#512]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/512
+[#511]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/511
+[#509]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/509
 [#486]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/486
 [#485]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/485
 [#475]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/475
@@ -318,13 +377,13 @@ for previous changelogs._
 
 <!-- Contributors -->
 
-[@burgholzer]: https://github.com/burgholzer
-[@ystade]: https://github.com/ystade
-[@mnfarooqi]: https://github.com/mnfarooqi
-[@rainij]: https://github.com/rainij
-[@marcelwa]: https://github.com/marcelwa
-[@denialhaag]: https://github.com/denialhaag
-[@kabu-planqc]: https://github.com/kabu-planqc
+[\@burgholzer]: https://github.com/burgholzer
+[\@ystade]: https://github.com/ystade
+[\@mnfarooqi]: https://github.com/mnfarooqi
+[\@rainij]: https://github.com/rainij
+[\@marcelwa]: https://github.com/marcelwa
+[\@denialhaag]: https://github.com/denialhaag
+[\@kabu-planqc]: https://github.com/kabu-planqc
 
 <!-- General links -->
 

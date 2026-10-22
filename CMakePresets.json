@@ -43,6 +43,7 @@
       "inherits": "base",
       "displayName": "Lint config",
       "cacheVariables": {
+        "BUILD_CXX_QDMI_TESTS": "ON",
         "CMAKE_BUILD_TYPE": "Debug"
       }
     }

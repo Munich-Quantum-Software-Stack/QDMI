@@ -1,6 +1,7 @@
 [default.extend-words]
-braket = "braket"
 wille = "wille"
+optin = "optin"
+braket = "braket"
 
 [default.extend-identifiers]
 FoMaC = "FoMaC"

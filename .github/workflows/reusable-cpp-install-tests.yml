@@ -18,7 +18,7 @@ jobs:
       matrix:
         include:
           - name: 🐧
-            os: ubuntu-latest
+            os: ubuntu-26.04
           - name: 🍎
             os: macos-26
       fail-fast: false
@@ -37,13 +37,13 @@ jobs:
           persist-credentials: false
       # set up ccache for faster C++ builds
       - name: Setup ccache
-        uses: Chocobo1/setup-ccache-action@a4d08616f5b614053bce228ddf881592f69d61d4 # v1.5.9
+        uses: Chocobo1/setup-ccache-action@efeb0f4b0670854c2190fd2389da92c399ff5ceb # v1.5.10
         with:
           prepend_symlinks_to_path: false
           override_cache_key: c++-tests-install-${{ matrix.os }}
       # set up mold as linker for faster C++ builds
       - name: Set up mold as linker
-        uses: rui314/setup-mold@10ca16bf91dc22e05ebdc935cad9c75ea248f621 # v1
+        uses: rui314/setup-mold@339e96b4ff1f3bd865856ba4cbbe8818a7acb038 # v1
       # make sure ninja is installed
       - name: Install Ninja
         run: pipx install ninja

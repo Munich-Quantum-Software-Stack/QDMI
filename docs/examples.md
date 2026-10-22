@@ -10,14 +10,34 @@ contained in the `examples/` directory in the repository.
 
 \tableofcontents
 
+## Implementing a QDMI Driver {#driver}
+
+A QDMI driver is a shared library implementing the @ref client_interface.
+Applications can select another compatible driver without rebuilding. The Client
+Interface defines the ABI and handle-lifetime requirements.
+
+The example driver's `QDMI_CONF` file contains one device per line:
+
+```text
+/path/to/libdevice.so PREFIX deployment.device-id
+```
+
+The third field is the nonempty client-visible `QDMI_DEVICE_PROPERTY_ID`. IDs
+must be unique in the configured catalog. Multiple lines may use the same device
+library and prefix with different IDs; each line gets its own device session.
+The driver reads and validates the complete file transactionally when it
+allocates the first session. A failed allocation can be retried with a corrected
+file. Device libraries can omit this property because the QDMI driver owns the
+public ID.
+
 ## Implementing a Device {#device}
 
 Below you find mock implementations of a QDMI device in C++.
 
 The example device demonstrates API calls and result serialization. It does not
-interpret the submitted program: it generates random shot data and a separate
-random statevector. Consequently, it is not a simulator or a reference for
-program execution semantics.
+interpret the submitted program: it generates deterministic shot data and a
+separate random statevector. Consequently, it is not a simulator or a reference
+for program execution semantics.
 
 ### Result Ordering {#device-result-ordering}
 
@@ -101,8 +121,8 @@ between languages.
 JSON registers and arrays retain their dimensions and increasing index order;
 they are not reversed like bitstrings. Integers retain their exact value, floats
 retain sufficient precision to round-trip, and undefined values are `null`. Any
-undefined selected value makes binary retrieval unsupported for the entire job.
-The full encoding and supported types are specified in @ref
+undefined selected value makes binary retrieval unsupported for the selected
+program. The full encoding and supported types are specified in @ref
 QDMI_JOB_RESULT_QASM3_OUTPUT. Unsupported selected types must be rejected as
 unsupported program features, not omitted. Full-output support is optional for
 binary-only programs. When both representations are available, they describe the
@@ -164,8 +184,8 @@ only exercise API behavior and result serialization.
   overwritten destinations, and equivalent programs across supported formats.
 - QIR records ordered differently from result IDs, repeated recordings, nested
   binary containers, and variable-length outcomes. A numeric record on even one
-  shot makes every binary result query unsupported for the job; full output
-  preserves all shots and values.
+  shot makes every binary result query unsupported for the selected program;
+  full output preserves all shots and values.
 - OpenQASM 3 explicit and default output selection, final classical assignments,
   multidimensional Boolean arrays, and undefined scalar or array elements. Check
   exact integers, round-trip floats, and full-output types.
@@ -322,6 +342,21 @@ QDMI_JOB_PARAMETER_SHOTSNUM).
 \until DOXYGEN FUNCTION END
 <!-- rumdl-enable -->
 
+The function @ref QDMI_device_job_set_programs sets an ordered list of programs
+with one format and one shot count per program. It copies the list before
+returning. Submit the job with @ref QDMI_device_job_submit and retrieve each
+program's results by its input index with @ref QDMI_device_job_get_results. The
+same index retrieves its original bytes with @ref QDMI_device_job_get_program.
+Execution order is unspecified. Devices may report individual outcomes through
+@ref QDMI_device_job_get_program_status so successful results remain available
+when other programs fail or are canceled.
+
+<!-- rumdl-disable -->
+\dontinclude cxx_device.cpp
+\skip QDMI_device_job_set_programs
+\until DOXYGEN FUNCTION END
+<!-- rumdl-enable -->
+
 After the job is set up, it can be submitted to the device. The following
 example shows a mock implementation of @ref QDMI_device_job_submit.
 
@@ -333,5 +368,5 @@ example shows a mock implementation of @ref QDMI_device_job_submit.
 
 For the full implementation of the example devices we refer to the respective
 source files in the QDMI repository, that is,
-[`cxx_device.cpp`](https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/develop/examples/device/cxx_device.cpp)
+[`cxx_device.cpp`](https://github.com/Munich-Quantum-Software-Stack/QDMI/blob/v1.4.0/examples/device/src/cxx_device.cpp)
 for the C++ implementation.

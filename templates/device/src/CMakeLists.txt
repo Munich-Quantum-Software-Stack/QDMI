@@ -34,6 +34,7 @@ get_target_property(qdmi_library_VERSION qdmi::qdmi VERSION)
 target_compile_definitions(
   ${QDMI_TARGET_NAME}
   PRIVATE QDMI_VERSION="${qdmi_library_VERSION}"
+          ${QDMI_PREFIX}_QDMI_DEVICE_ID="${${QDMI_PREFIX}_QDMI_DEVICE_ID}"
           ${QDMI_PREFIX}_QDMI_DEVICE_VERSION="${PROJECT_VERSION}"
           ${QDMI_PREFIX}_QDMI_device_EXPORTS)
 set_target_properties(
@@ -41,6 +42,8 @@ set_target_properties(
   PROPERTIES C_VISIBILITY_PRESET hidden
              CXX_VISIBILITY_PRESET hidden
              VISIBILITY_INLINES_HIDDEN 1)
+configure_qdmi_exports(TARGET ${QDMI_TARGET_NAME} INTERFACE device PREFIX
+                       ${QDMI_PREFIX})
 configure_qdmi_device_target(TARGET ${QDMI_TARGET_NAME} ID ${MY_QDMI_DEVICE_ID}
                              PREFIX ${QDMI_PREFIX})
 target_sources(${QDMI_TARGET_NAME} PRIVATE ${SRC_FILES})
