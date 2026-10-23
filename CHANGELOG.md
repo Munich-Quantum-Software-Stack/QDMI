@@ -16,7 +16,7 @@ clients compiled against a different minor or major version.
 
 - ✨ Add an opt-in reusable offline device query conformance suite with source
   and installed CMake consumers, positive and negative controls, and integration
-  guidance.
+  guidance ([#591]) ([\@marcelwa]).
 
 ## [1.4.0] - 2026-10-11
 
@@ -304,6 +304,7 @@ for previous changelogs._
 
 <!-- PR links -->
 
+[#591]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/591
 [#576]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/576
 [#575]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/575
 [#559]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/559
