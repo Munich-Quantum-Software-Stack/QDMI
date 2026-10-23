@@ -63,7 +63,7 @@ auto Operation_query(Session session, Operation operation,
 template <class T, class Query>
 auto Read(Query query, bool scalar = true, bool mandatory = false)
     -> std::optional<std::vector<T>> {
-  size_t bytes = 0;
+  size_t bytes = std::numeric_limits<size_t>::max();
   const auto status = query(0, nullptr, &bytes);
   if (status == QDMI_SUCCESS || status == QDMI_ERROR_NOTSUPPORTED) {
     EXPECT_EQ(query(0, nullptr, nullptr), status);
@@ -76,6 +76,11 @@ auto Read(Query query, bool scalar = true, bool mandatory = false)
   }
   EXPECT_EQ(status, QDMI_SUCCESS);
   if (status != QDMI_SUCCESS) {
+    return std::nullopt;
+  }
+  EXPECT_NE(bytes, std::numeric_limits<size_t>::max())
+      << "size probe did not set the requested output";
+  if (bytes == std::numeric_limits<size_t>::max()) {
     return std::nullopt;
   }
   if (scalar && bytes != sizeof(T)) {
@@ -108,7 +113,10 @@ auto Read(Query query, bool scalar = true, bool mandatory = false)
   }
   for (const auto capacity : {bytes, bytes + sizeof(T)}) {
     for (const bool return_size : {false, true}) {
-      size_t actual = bytes;
+      if constexpr (std::is_same_v<T, char>) {
+        std::fill(values.begin(), values.end(), '\x7f');
+      }
+      size_t actual = std::numeric_limits<size_t>::max();
       const auto result =
           query(capacity, static_cast<void *>(values.data()), return_size ? &actual : nullptr);
       EXPECT_EQ(result, QDMI_SUCCESS) << "payload retrieval failed; metadata "
@@ -116,12 +124,17 @@ auto Read(Query query, bool scalar = true, bool mandatory = false)
       if (result != QDMI_SUCCESS) {
         return std::nullopt;
       }
-      EXPECT_EQ(actual, bytes) << "payload size changed since size probe";
-      if (actual != bytes) {
+      if (return_size) {
+        EXPECT_EQ(actual, bytes) << "payload size changed since size probe";
+      }
+      if (return_size && actual != bytes) {
         return std::nullopt;
       }
       if constexpr (std::is_same_v<T, char>) {
         EXPECT_EQ(values[bytes - 1], '\0') << "string payload must end in NUL";
+        if (values[bytes - 1] != '\0') {
+          return std::nullopt;
+        }
       }
     }
   }
@@ -131,7 +144,7 @@ auto Read(Query query, bool scalar = true, bool mandatory = false)
 
 // vector<bool> has no data(); use one aligned bool object for this scalar.
 template <class Query> auto Read_bool(Query query) -> std::optional<bool> {
-  size_t bytes = 0;
+  size_t bytes = std::numeric_limits<size_t>::max();
   const auto status = query(0, nullptr, &bytes);
   if (status == QDMI_SUCCESS || status == QDMI_ERROR_NOTSUPPORTED) {
     EXPECT_EQ(query(0, nullptr, nullptr), status);
@@ -145,6 +158,11 @@ template <class Query> auto Read_bool(Query query) -> std::optional<bool> {
   if (status != QDMI_SUCCESS) {
     return std::nullopt;
   }
+  EXPECT_NE(bytes, std::numeric_limits<size_t>::max())
+      << "size probe did not set the requested output";
+  if (bytes == std::numeric_limits<size_t>::max()) {
+    return std::nullopt;
+  }
   if (bytes != sizeof(bool)) {
     ADD_FAILURE() << "scalar payload size does not match bool";
     return std::nullopt;
@@ -154,15 +172,17 @@ template <class Query> auto Read_bool(Query query) -> std::optional<bool> {
             QDMI_ERROR_INVALIDARGUMENT);
   for (const auto capacity : {sizeof(bool), sizeof(values)}) {
     for (const bool return_size : {false, true}) {
-      size_t actual = bytes;
+      size_t actual = std::numeric_limits<size_t>::max();
       const auto result =
           query(capacity, static_cast<void *>(values.data()), return_size ? &actual : nullptr);
       EXPECT_EQ(result, QDMI_SUCCESS);
       if (result != QDMI_SUCCESS) {
         return std::nullopt;
       }
-      EXPECT_EQ(actual, bytes) << "payload size changed since size probe";
-      if (actual != bytes) {
+      if (return_size) {
+        EXPECT_EQ(actual, bytes) << "payload size changed since size probe";
+      }
+      if (return_size && actual != bytes) {
         return std::nullopt;
       }
     }
@@ -196,8 +216,10 @@ void Require_unit(Session session, QDMI_Device_Property property) {
   ASSERT_TRUE(unit) << "unit is required for supported physical values";
 }
 
-void Unsupported_object(size_t index) {
-  std::cout << "Property unsupported for object " << index << '\n';
+void Unsupported_objects(size_t count) {
+  if (count != 0) {
+    std::cout << "Property unsupported for " << count << " objects\n";
+  }
 }
 } // namespace
 
@@ -376,6 +398,7 @@ void Check_site_property(Session session, QDMI_Site_Property property) {
     return;
   }
   size_t supported = 0;
+  size_t unsupported = 0;
   // Mutated only in the INDEX/size_t specialization.
   std::unordered_set<size_t> indices; // NOLINT(misc-const-correctness)
   for (size_t i = 0; i < sites->size(); ++i) {
@@ -394,7 +417,7 @@ void Check_site_property(Session session, QDMI_Site_Property property) {
       }
     }();
     if (!value) {
-      Unsupported_object(i);
+      ++unsupported;
       continue;
     }
     ++supported;
@@ -420,6 +443,7 @@ void Check_site_property(Session session, QDMI_Site_Property property) {
       EXPECT_TRUE(zone.value_or(false)) << "nonzone extent must be unsupported";
     }
   }
+  Unsupported_objects(unsupported);
   if (supported == 0 && !::testing::Test::HasFailure()) {
     GTEST_SKIP() << "No site supports this property";
   }
@@ -435,6 +459,7 @@ void Check_operation_property(Session session, QDMI_Operation_Property property)
     return;
   }
   size_t supported = 0;
+  size_t unsupported = 0;
   for (size_t i = 0; i < operations->size(); ++i) {
     SCOPED_TRACE(i);
     auto *const operation = (*operations)[i];
@@ -451,7 +476,7 @@ void Check_operation_property(Session session, QDMI_Operation_Property property)
       }
     }();
     if (!value) {
-      Unsupported_object(i);
+      ++unsupported;
       continue;
     }
     ++supported;
@@ -465,6 +490,7 @@ void Check_operation_property(Session session, QDMI_Operation_Property property)
       Require_unit(session, QDMI_DEVICE_PROPERTY_LENGTHUNIT);
     }
   }
+  Unsupported_objects(unsupported);
   if (supported == 0 && !::testing::Test::HasFailure()) {
     GTEST_SKIP() << "No operation supports this property";
   }
@@ -801,6 +827,7 @@ TEST_F(QDMIQueryFixture, SiteCoordinateUniqueness) {
   }
   std::unordered_set<std::string> coordinates;
   size_t complete = 0;
+  size_t unsupported = 0;
   for (size_t i = 0; i < sites->size(); ++i) {
     SCOPED_TRACE(i);
     auto *const site = (*sites)[i];
@@ -814,7 +841,7 @@ TEST_F(QDMIQueryFixture, SiteCoordinateUniqueness) {
     const auto z =
         Read<int64_t>(Site_query(session, site, QDMI_SITE_PROPERTY_ZCOORDINATE));
     if (!x || !y || !z) {
-      Unsupported_object(i);
+      ++unsupported;
       continue;
     }
     ++complete;
@@ -823,6 +850,7 @@ TEST_F(QDMIQueryFixture, SiteCoordinateUniqueness) {
     EXPECT_TRUE(coordinates.insert(key).second)
         << "coordinate triples must be unique";
   }
+  Unsupported_objects(unsupported);
   if (complete == 0 && !HasFailure()) {
     GTEST_SKIP() << "No complete coordinate triple";
   }
@@ -852,6 +880,7 @@ TEST_F(QDMIQueryFixture, OperationSiteRelationships) {
     }
   }
   size_t supported = 0;
+  size_t unsupported = 0;
   for (size_t i = 0; i < operations->size(); ++i) {
     SCOPED_TRACE(i);
     auto *const operation = (*operations)[i];
@@ -862,7 +891,7 @@ TEST_F(QDMIQueryFixture, OperationSiteRelationships) {
         Operation_query(session, operation, QDMI_OPERATION_PROPERTY_SITES),
         false);
     if (!applicable) {
-      Unsupported_object(i);
+      ++unsupported;
       continue;
     }
     ++supported;
@@ -887,6 +916,7 @@ TEST_F(QDMIQueryFixture, OperationSiteRelationships) {
       }
     }
   }
+  Unsupported_objects(unsupported);
   if (supported == 0 && !HasFailure()) {
     GTEST_SKIP() << "Operation sites are unsupported";
   }

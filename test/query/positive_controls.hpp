@@ -49,3 +49,115 @@ TEST_F(QDMIQueryFixture, SuccessfulPayloadSnapshot) {
   ASSERT_TRUE(zone);
   EXPECT_TRUE(*zone);
 }
+
+TEST_F(QDMIQueryFixture, MissingArrayProbeSize) {
+  const auto query = [](size_t, void *value, size_t *size_ret) {
+    if (value != nullptr && size_ret != nullptr) {
+      *size_ret = 0;
+    }
+    return QDMI_SUCCESS;
+  };
+  (void)Read<size_t>(query, false);
+}
+
+TEST_F(QDMIQueryFixture, MissingBoolProbeSize) {
+  const auto query = [](size_t size, void *value, size_t *size_ret) {
+    if (value != nullptr && size < sizeof(bool)) {
+      return QDMI_ERROR_INVALIDARGUMENT;
+    }
+    if (size_ret != nullptr && value != nullptr) {
+      *size_ret = sizeof(bool);
+    }
+    if (value != nullptr) {
+      *static_cast<bool *>(value) = true;
+    }
+    return QDMI_SUCCESS;
+  };
+  (void)Read_bool(query);
+}
+
+TEST_F(QDMIQueryFixture, MissingArrayRetrievalSize) {
+  const auto query = [](size_t size, void *value, size_t *size_ret) {
+    if (value != nullptr && size < sizeof(size_t)) {
+      return QDMI_ERROR_INVALIDARGUMENT;
+    }
+    if (size_ret != nullptr && value == nullptr) {
+      *size_ret = sizeof(size_t);
+    }
+    if (value != nullptr) {
+      *static_cast<size_t *>(value) = 1;
+    }
+    return QDMI_SUCCESS;
+  };
+  (void)Read<size_t>(query, false);
+}
+
+TEST_F(QDMIQueryFixture, MissingBoolRetrievalSize) {
+  const auto query = [](size_t size, void *value, size_t *size_ret) {
+    if (value != nullptr && size < sizeof(bool)) {
+      return QDMI_ERROR_INVALIDARGUMENT;
+    }
+    if (size_ret != nullptr && value == nullptr) {
+      *size_ret = sizeof(bool);
+    }
+    if (value != nullptr) {
+      *static_cast<bool *>(value) = true;
+    }
+    return QDMI_SUCCESS;
+  };
+  (void)Read_bool(query);
+}
+
+namespace {
+void Check_missing_terminator(size_t missing_retrieval) {
+  size_t retrieval = 0;
+  const auto query = [&retrieval, missing_retrieval](size_t size, void *value,
+                                                     size_t *size_ret) {
+    if (value != nullptr && size < 4) {
+      return QDMI_ERROR_INVALIDARGUMENT;
+    }
+    if (size_ret != nullptr) {
+      *size_ret = 4;
+    }
+    if (value != nullptr) {
+      auto *text = static_cast<char *>(value);
+      std::fill_n(text, 3, 'a');
+      if (retrieval++ != missing_retrieval) {
+        text[3] = '\0';
+      }
+    }
+    return QDMI_SUCCESS;
+  };
+  (void)Read<char>(query, false);
+}
+
+} // namespace
+
+TEST_F(QDMIQueryFixture, MissingTerminator0) { Check_missing_terminator(0); }
+
+TEST_F(QDMIQueryFixture, MissingTerminator1) { Check_missing_terminator(1); }
+
+TEST_F(QDMIQueryFixture, MissingTerminator2) { Check_missing_terminator(2); }
+
+TEST_F(QDMIQueryFixture, MissingTerminator3) { Check_missing_terminator(3); }
+
+TEST_F(QDMIQueryFixture, EmptyArrayPayload) {
+  size_t probes = 0;
+  size_t retrievals = 0;
+  const auto query = [&](size_t, void *value, size_t *size_ret) {
+    if (value == nullptr) {
+      ++probes;
+    } else {
+      ++retrievals;
+    }
+    if (size_ret != nullptr) {
+      *size_ret = 0;
+    }
+    return QDMI_SUCCESS;
+  };
+  const auto values = Read<size_t>(query, false);
+  ASSERT_TRUE(values);
+  EXPECT_TRUE(values->empty());
+  EXPECT_EQ(probes, 3U);
+  EXPECT_EQ(retrievals, 4U);
+}

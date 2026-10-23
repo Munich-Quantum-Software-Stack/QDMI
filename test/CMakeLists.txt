@@ -99,7 +99,7 @@ add_test(
   NAME query-positive
   COMMAND
     query-control
-    "--gtest_filter=-QDMIQueryFixture.DeviceQueueLength:QDMIQueryFixture.DeviceSupportedProgramFormats:QDMIQueryFixture.DeviceInvalidProperty:QDMIQueryFixture.SiteIndex"
+    "--gtest_filter=-QDMIQueryFixture.DeviceQueueLength:QDMIQueryFixture.DeviceSupportedProgramFormats:QDMIQueryFixture.DeviceInvalidProperty:QDMIQueryFixture.SiteIndex:QDMIQueryFixture.Missing*"
 )
 set_tests_properties(query-positive PROPERTIES LABELS qdmi-query)
 add_test(
@@ -116,7 +116,15 @@ foreach(
   ITEMS "DeviceQueueLength|scalar payload size"
         "DeviceSupportedProgramFormats|array payload size"
         "DeviceInvalidProperty|invalid device property"
-        "SiteIndex|mandatory site index")
+        "SiteIndex|mandatory site index"
+        "MissingArrayProbeSize|size probe did not set"
+        "MissingBoolProbeSize|size probe did not set"
+        "MissingArrayRetrievalSize|payload size changed"
+        "MissingBoolRetrievalSize|payload size changed"
+        "MissingTerminator0|string payload must end in NUL"
+        "MissingTerminator1|string payload must end in NUL"
+        "MissingTerminator2|string payload must end in NUL"
+        "MissingTerminator3|string payload must end in NUL")
   string(REPLACE "|" ";" fields "${control}")
   list(GET fields 0 case)
   list(GET fields 1 diagnostic)

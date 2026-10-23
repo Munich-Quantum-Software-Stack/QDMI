@@ -143,8 +143,10 @@ separate specification decision. Radius and idling-fidelity applicability and
 zero-arity local-operation tuple semantics also need clarification before adding
 stronger assertions. The suite does not change the normative API docstrings.
 
-QDMI CI runs positive controls, four deliberately faulty query controls, two
-source consumers, and a relocated installed consumer on Linux and macOS. The
-consumer checks include fixture/install paths with spaces, missing installed
-assets, and explicit opt-out. This workflow does not run on Windows; local
-Windows verification is separate.
+QDMI CI runs positive controls and fixed negative controls for malformed sizes,
+invalid properties, missing mandatory indices, omitted size outputs, and missing
+string terminators at every retrieval position. It also runs two source
+consumers and relocated installed consumers on Linux and macOS. The consumer
+checks include fixture/install paths with spaces, missing installed assets, and
+explicit opt-out. This workflow does not run on Windows; local Windows
+verification is separate.
