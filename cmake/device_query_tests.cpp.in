@@ -38,19 +38,19 @@ using Session = @QDMI_QUERY_PREFIX@_QDMI_Device_Session;
 using Site = @QDMI_QUERY_PREFIX@_QDMI_Site;
 using Operation = @QDMI_QUERY_PREFIX@_QDMI_Operation;
 
-auto DeviceQuery(Session session, QDMI_Device_Property prop) {
+auto Device_query(Session session, QDMI_Device_Property prop) {
   return [=](size_t size, void *value, size_t *size_ret) {
     return @QDMI_QUERY_PREFIX@_QDMI_device_session_query_device_property(
         session, prop, size, value, size_ret);
   };
 }
-auto SiteQuery(Session session, Site site, QDMI_Site_Property prop) {
+auto Site_query(Session session, Site site, QDMI_Site_Property prop) {
   return [=](size_t size, void *value, size_t *size_ret) {
     return @QDMI_QUERY_PREFIX@_QDMI_device_session_query_site_property(
         session, site, prop, size, value, size_ret);
   };
 }
-auto OperationQuery(Session session, Operation operation,
+auto Operation_query(Session session, Operation operation,
                     QDMI_Operation_Property prop) {
   return [=](size_t size, void *value, size_t *size_ret) {
     return @QDMI_QUERY_PREFIX@_QDMI_device_session_query_operation_property(
@@ -88,7 +88,7 @@ auto Read(Query query, bool scalar = true, bool mandatory = false)
     return std::nullopt;
   }
   // This is a test-process allocation limit, not a QDMI requirement.
-  if (bytes > 64U * 1024U * 1024U) {
+  if (bytes > size_t{64} * 1024U * 1024U) {
     ADD_FAILURE() << "payload exceeds the 64 MiB harness allocation limit";
     return std::nullopt;
   }
@@ -99,10 +99,10 @@ auto Read(Query query, bool scalar = true, bool mandatory = false)
     }
   }
   // One extra aligned element gives empty queries a valid nonnull buffer too.
-  std::vector<T> values(bytes / sizeof(T) + 1);
+  std::vector<T> values((bytes / sizeof(T)) + 1);
   // Retrieve after error probes; errors need not preserve the buffer.
   if (bytes != 0) {
-    EXPECT_EQ(query(bytes - 1, values.data(), nullptr),
+    EXPECT_EQ(query(bytes - 1, static_cast<void *>(values.data()), nullptr),
               QDMI_ERROR_INVALIDARGUMENT)
         << "one-byte-small buffer";
   }
@@ -110,7 +110,7 @@ auto Read(Query query, bool scalar = true, bool mandatory = false)
     for (const bool return_size : {false, true}) {
       size_t actual = bytes;
       const auto result =
-          query(capacity, values.data(), return_size ? &actual : nullptr);
+          query(capacity, static_cast<void *>(values.data()), return_size ? &actual : nullptr);
       EXPECT_EQ(result, QDMI_SUCCESS) << "payload retrieval failed; metadata "
                                          "may have changed since size probe";
       if (result != QDMI_SUCCESS) {
@@ -130,7 +130,7 @@ auto Read(Query query, bool scalar = true, bool mandatory = false)
 }
 
 // vector<bool> has no data(); use one aligned bool object for this scalar.
-template <class Query> auto ReadBool(Query query) -> std::optional<bool> {
+template <class Query> auto Read_bool(Query query) -> std::optional<bool> {
   size_t bytes = 0;
   const auto status = query(0, nullptr, &bytes);
   if (status == QDMI_SUCCESS || status == QDMI_ERROR_NOTSUPPORTED) {
@@ -150,13 +150,13 @@ template <class Query> auto ReadBool(Query query) -> std::optional<bool> {
     return std::nullopt;
   }
   std::array<bool, 2> values{};
-  EXPECT_EQ(query(bytes - 1, values.data(), nullptr),
+  EXPECT_EQ(query(bytes - 1, static_cast<void *>(values.data()), nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
   for (const auto capacity : {sizeof(bool), sizeof(values)}) {
     for (const bool return_size : {false, true}) {
       size_t actual = bytes;
       const auto result =
-          query(capacity, values.data(), return_size ? &actual : nullptr);
+          query(capacity, static_cast<void *>(values.data()), return_size ? &actual : nullptr);
       EXPECT_EQ(result, QDMI_SUCCESS);
       if (result != QDMI_SUCCESS) {
         return std::nullopt;
@@ -170,40 +170,40 @@ template <class Query> auto ReadBool(Query query) -> std::optional<bool> {
   return values[0];
 }
 
-auto ReadSites(Session session) {
+auto Read_sites(Session session) {
   auto sites =
-      Read<Site>(DeviceQuery(session, QDMI_DEVICE_PROPERTY_SITES), false);
+      Read<Site>(Device_query(session, QDMI_DEVICE_PROPERTY_SITES), false);
   if (sites) {
-    for (auto site : *sites) {
+    for (auto *site : *sites) {
       EXPECT_NE(site, nullptr) << "advertised site handle";
     }
   }
   return sites;
 }
-auto ReadOperations(Session session) {
+auto Read_operations(Session session) {
   auto operations = Read<Operation>(
-      DeviceQuery(session, QDMI_DEVICE_PROPERTY_OPERATIONS), false);
+      Device_query(session, QDMI_DEVICE_PROPERTY_OPERATIONS), false);
   if (operations) {
-    for (auto operation : *operations) {
+    for (auto *operation : *operations) {
       EXPECT_NE(operation, nullptr) << "advertised operation handle";
     }
   }
   return operations;
 }
 
-void RequireUnit(Session session, QDMI_Device_Property property) {
-  const auto unit = Read<char>(DeviceQuery(session, property), false);
+void Require_unit(Session session, QDMI_Device_Property property) {
+  const auto unit = Read<char>(Device_query(session, property), false);
   ASSERT_TRUE(unit) << "unit is required for supported physical values";
 }
 
-void UnsupportedObject(size_t index) {
+void Unsupported_object(size_t index) {
   std::cout << "Property unsupported for object " << index << '\n';
 }
 } // namespace
 
 TEST_F(QDMIQueryFixture, DeviceName) {
   const auto value =
-      Read<char>(DeviceQuery(session, QDMI_DEVICE_PROPERTY_NAME), false);
+      Read<char>(Device_query(session, QDMI_DEVICE_PROPERTY_NAME), false);
   if (!value && !HasFailure()) {
     GTEST_SKIP() << "Device property is unsupported";
   }
@@ -211,7 +211,7 @@ TEST_F(QDMIQueryFixture, DeviceName) {
 
 TEST_F(QDMIQueryFixture, DeviceVersion) {
   const auto value =
-      Read<char>(DeviceQuery(session, QDMI_DEVICE_PROPERTY_VERSION), false);
+      Read<char>(Device_query(session, QDMI_DEVICE_PROPERTY_VERSION), false);
   if (!value && !HasFailure()) {
     GTEST_SKIP() << "Device property is unsupported";
   }
@@ -219,7 +219,7 @@ TEST_F(QDMIQueryFixture, DeviceVersion) {
 
 TEST_F(QDMIQueryFixture, DeviceStatus) {
   const auto value = Read<QDMI_Device_Status>(
-      DeviceQuery(session, QDMI_DEVICE_PROPERTY_STATUS), true);
+      Device_query(session, QDMI_DEVICE_PROPERTY_STATUS), true);
   if (!value && !HasFailure()) {
     GTEST_SKIP() << "Device property is unsupported";
   }
@@ -231,7 +231,7 @@ TEST_F(QDMIQueryFixture, DeviceStatus) {
 
 TEST_F(QDMIQueryFixture, DeviceLibraryVersion) {
   const auto value = Read<char>(
-      DeviceQuery(session, QDMI_DEVICE_PROPERTY_LIBRARYVERSION), false);
+      Device_query(session, QDMI_DEVICE_PROPERTY_LIBRARYVERSION), false);
   if (!value && !HasFailure()) {
     GTEST_SKIP() << "Device property is unsupported";
   }
@@ -239,7 +239,7 @@ TEST_F(QDMIQueryFixture, DeviceLibraryVersion) {
 
 TEST_F(QDMIQueryFixture, DeviceQubitsNum) {
   const auto value =
-      Read<size_t>(DeviceQuery(session, QDMI_DEVICE_PROPERTY_QUBITSNUM), true);
+      Read<size_t>(Device_query(session, QDMI_DEVICE_PROPERTY_QUBITSNUM), true);
   if (!value && !HasFailure()) {
     GTEST_SKIP() << "Device property is unsupported";
   }
@@ -247,7 +247,7 @@ TEST_F(QDMIQueryFixture, DeviceQubitsNum) {
 
 TEST_F(QDMIQueryFixture, DeviceSites) {
   const auto value =
-      Read<Site>(DeviceQuery(session, QDMI_DEVICE_PROPERTY_SITES), false);
+      Read<Site>(Device_query(session, QDMI_DEVICE_PROPERTY_SITES), false);
   if (!value && !HasFailure()) {
     GTEST_SKIP() << "Device property is unsupported";
   }
@@ -255,7 +255,7 @@ TEST_F(QDMIQueryFixture, DeviceSites) {
 
 TEST_F(QDMIQueryFixture, DeviceOperations) {
   const auto value = Read<Operation>(
-      DeviceQuery(session, QDMI_DEVICE_PROPERTY_OPERATIONS), false);
+      Device_query(session, QDMI_DEVICE_PROPERTY_OPERATIONS), false);
   if (!value && !HasFailure()) {
     GTEST_SKIP() << "Device property is unsupported";
   }
@@ -263,7 +263,7 @@ TEST_F(QDMIQueryFixture, DeviceOperations) {
 
 TEST_F(QDMIQueryFixture, DeviceCouplingMap) {
   const auto value =
-      Read<Site>(DeviceQuery(session, QDMI_DEVICE_PROPERTY_COUPLINGMAP), false);
+      Read<Site>(Device_query(session, QDMI_DEVICE_PROPERTY_COUPLINGMAP), false);
   if (!value && !HasFailure()) {
     GTEST_SKIP() << "Device property is unsupported";
   }
@@ -271,7 +271,7 @@ TEST_F(QDMIQueryFixture, DeviceCouplingMap) {
 
 TEST_F(QDMIQueryFixture, DeviceLengthUnit) {
   const auto value =
-      Read<char>(DeviceQuery(session, QDMI_DEVICE_PROPERTY_LENGTHUNIT), false);
+      Read<char>(Device_query(session, QDMI_DEVICE_PROPERTY_LENGTHUNIT), false);
   if (!value && !HasFailure()) {
     GTEST_SKIP() << "Device property is unsupported";
   }
@@ -279,7 +279,7 @@ TEST_F(QDMIQueryFixture, DeviceLengthUnit) {
 
 TEST_F(QDMIQueryFixture, DeviceLengthScaleFactor) {
   const auto value = Read<double>(
-      DeviceQuery(session, QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR), true);
+      Device_query(session, QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR), true);
   if (!value && !HasFailure()) {
     GTEST_SKIP() << "Device property is unsupported";
   }
@@ -287,7 +287,7 @@ TEST_F(QDMIQueryFixture, DeviceLengthScaleFactor) {
 
 TEST_F(QDMIQueryFixture, DeviceDurationUnit) {
   const auto value = Read<char>(
-      DeviceQuery(session, QDMI_DEVICE_PROPERTY_DURATIONUNIT), false);
+      Device_query(session, QDMI_DEVICE_PROPERTY_DURATIONUNIT), false);
   if (!value && !HasFailure()) {
     GTEST_SKIP() << "Device property is unsupported";
   }
@@ -295,7 +295,7 @@ TEST_F(QDMIQueryFixture, DeviceDurationUnit) {
 
 TEST_F(QDMIQueryFixture, DeviceDurationScaleFactor) {
   const auto value = Read<double>(
-      DeviceQuery(session, QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR), true);
+      Device_query(session, QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR), true);
   if (!value && !HasFailure()) {
     GTEST_SKIP() << "Device property is unsupported";
   }
@@ -303,18 +303,18 @@ TEST_F(QDMIQueryFixture, DeviceDurationScaleFactor) {
 
 TEST_F(QDMIQueryFixture, DeviceMinAtomDistance) {
   const auto value = Read<uint64_t>(
-      DeviceQuery(session, QDMI_DEVICE_PROPERTY_MINATOMDISTANCE), true);
+      Device_query(session, QDMI_DEVICE_PROPERTY_MINATOMDISTANCE), true);
   if (!value && !HasFailure()) {
     GTEST_SKIP() << "Device property is unsupported";
   }
   if (value) {
-    RequireUnit(session, QDMI_DEVICE_PROPERTY_LENGTHUNIT);
+    Require_unit(session, QDMI_DEVICE_PROPERTY_LENGTHUNIT);
   }
 }
 
 TEST_F(QDMIQueryFixture, DeviceSupportedProgramFormats) {
   const auto value = Read<QDMI_Program_Format>(
-      DeviceQuery(session, QDMI_DEVICE_PROPERTY_SUPPORTEDPROGRAMFORMATS),
+      Device_query(session, QDMI_DEVICE_PROPERTY_SUPPORTEDPROGRAMFORMATS),
       false);
   if (!value && !HasFailure()) {
     GTEST_SKIP() << "Device property is unsupported";
@@ -334,7 +334,7 @@ TEST_F(QDMIQueryFixture, DeviceSupportedProgramFormats) {
                                  QDMI_PROGRAM_FORMAT_CUSTOM4,
                                  QDMI_PROGRAM_FORMAT_CUSTOM5};
     for (const auto format : *value) {
-      EXPECT_NE(std::find(formats.begin(), formats.end(), format),
+      EXPECT_NE(std::ranges::find(formats, format),
                 formats.end())
           << "advertised program format must be a defined format";
     }
@@ -343,7 +343,7 @@ TEST_F(QDMIQueryFixture, DeviceSupportedProgramFormats) {
 
 TEST_F(QDMIQueryFixture, DeviceChildDevices) {
   const auto value = Read<@QDMI_QUERY_PREFIX@_QDMI_Child_Device>(
-      DeviceQuery(session, QDMI_DEVICE_PROPERTY_CHILDDEVICES), false);
+      Device_query(session, QDMI_DEVICE_PROPERTY_CHILDDEVICES), false);
   if (!value && !HasFailure()) {
     GTEST_SKIP() << "Device property is unsupported";
   }
@@ -351,7 +351,7 @@ TEST_F(QDMIQueryFixture, DeviceChildDevices) {
 
 TEST_F(QDMIQueryFixture, DeviceQueueLength) {
   const auto value = Read<size_t>(
-      DeviceQuery(session, QDMI_DEVICE_PROPERTY_QUEUELENGTH), true);
+      Device_query(session, QDMI_DEVICE_PROPERTY_QUEUELENGTH), true);
   if (!value && !HasFailure()) {
     GTEST_SKIP() << "Device property is unsupported";
   }
@@ -359,7 +359,7 @@ TEST_F(QDMIQueryFixture, DeviceQueueLength) {
 
 TEST_F(QDMIQueryFixture, DeviceId) {
   const auto value =
-      Read<char>(DeviceQuery(session, QDMI_DEVICE_PROPERTY_ID), false);
+      Read<char>(Device_query(session, QDMI_DEVICE_PROPERTY_ID), false);
   if (!value && !HasFailure()) {
     GTEST_SKIP() << "Device property is unsupported";
   }
@@ -367,8 +367,8 @@ TEST_F(QDMIQueryFixture, DeviceId) {
 
 namespace {
 template <class T>
-void CheckSiteProperty(Session session, QDMI_Site_Property property) {
-  const auto sites = ReadSites(session);
+void Check_site_property(Session session, QDMI_Site_Property property) {
+  const auto sites = Read_sites(session);
   if (!sites) {
     if (!::testing::Test::HasFailure()) {
       GTEST_SKIP() << "Sites list is unsupported";
@@ -376,24 +376,25 @@ void CheckSiteProperty(Session session, QDMI_Site_Property property) {
     return;
   }
   size_t supported = 0;
-  std::unordered_set<size_t> indices;
+  // Mutated only in the INDEX/size_t specialization.
+  std::unordered_set<size_t> indices; // NOLINT(misc-const-correctness)
   for (size_t i = 0; i < sites->size(); ++i) {
     SCOPED_TRACE(i);
-    const auto site = (*sites)[i];
+    auto *const site = (*sites)[i];
     if (site == nullptr) {
       continue;
     }
-    const auto query = SiteQuery(session, site, property);
+    const auto query = Site_query(session, site, property);
     const auto value = [&] {
       if constexpr (std::is_same_v<T, bool>) {
-        return ReadBool(query);
+        return Read_bool(query);
       } else {
         return Read<T>(query, !std::is_same_v<T, char>,
                        property == QDMI_SITE_PROPERTY_INDEX);
       }
     }();
     if (!value) {
-      UnsupportedObject(i);
+      Unsupported_object(i);
       continue;
     }
     ++supported;
@@ -405,17 +406,17 @@ void CheckSiteProperty(Session session, QDMI_Site_Property property) {
     }
     if (property == QDMI_SITE_PROPERTY_T1 ||
         property == QDMI_SITE_PROPERTY_T2) {
-      RequireUnit(session, QDMI_DEVICE_PROPERTY_DURATIONUNIT);
+      Require_unit(session, QDMI_DEVICE_PROPERTY_DURATIONUNIT);
     }
     if (property >= QDMI_SITE_PROPERTY_XCOORDINATE &&
         property <= QDMI_SITE_PROPERTY_ZEXTENT &&
         property != QDMI_SITE_PROPERTY_ISZONE) {
-      RequireUnit(session, QDMI_DEVICE_PROPERTY_LENGTHUNIT);
+      Require_unit(session, QDMI_DEVICE_PROPERTY_LENGTHUNIT);
     }
     if (property >= QDMI_SITE_PROPERTY_XEXTENT &&
         property <= QDMI_SITE_PROPERTY_ZEXTENT) {
       const auto zone =
-          ReadBool(SiteQuery(session, site, QDMI_SITE_PROPERTY_ISZONE));
+          Read_bool(Site_query(session, site, QDMI_SITE_PROPERTY_ISZONE));
       EXPECT_TRUE(zone.value_or(false)) << "nonzone extent must be unsupported";
     }
   }
@@ -425,8 +426,8 @@ void CheckSiteProperty(Session session, QDMI_Site_Property property) {
 }
 
 template <class T>
-void CheckOperationProperty(Session session, QDMI_Operation_Property property) {
-  const auto operations = ReadOperations(session);
+void Check_operation_property(Session session, QDMI_Operation_Property property) {
+  const auto operations = Read_operations(session);
   if (!operations) {
     if (!::testing::Test::HasFailure()) {
       GTEST_SKIP() << "Operations list is unsupported";
@@ -436,32 +437,32 @@ void CheckOperationProperty(Session session, QDMI_Operation_Property property) {
   size_t supported = 0;
   for (size_t i = 0; i < operations->size(); ++i) {
     SCOPED_TRACE(i);
-    const auto operation = (*operations)[i];
+    auto *const operation = (*operations)[i];
     if (operation == nullptr) {
       continue;
     }
-    const auto query = OperationQuery(session, operation, property);
+    const auto query = Operation_query(session, operation, property);
     const auto value = [&] {
       if constexpr (std::is_same_v<T, bool>) {
-        return ReadBool(query);
+        return Read_bool(query);
       } else {
         return Read<T>(query,
                        !std::is_same_v<T, char> && !std::is_same_v<T, Site>);
       }
     }();
     if (!value) {
-      UnsupportedObject(i);
+      Unsupported_object(i);
       continue;
     }
     ++supported;
     if (property == QDMI_OPERATION_PROPERTY_DURATION ||
         property == QDMI_OPERATION_PROPERTY_MEANSHUTTLINGSPEED) {
-      RequireUnit(session, QDMI_DEVICE_PROPERTY_DURATIONUNIT);
+      Require_unit(session, QDMI_DEVICE_PROPERTY_DURATIONUNIT);
     }
     if (property == QDMI_OPERATION_PROPERTY_INTERACTIONRADIUS ||
         property == QDMI_OPERATION_PROPERTY_BLOCKINGRADIUS ||
         property == QDMI_OPERATION_PROPERTY_MEANSHUTTLINGSPEED) {
-      RequireUnit(session, QDMI_DEVICE_PROPERTY_LENGTHUNIT);
+      Require_unit(session, QDMI_DEVICE_PROPERTY_LENGTHUNIT);
     }
   }
   if (supported == 0 && !::testing::Test::HasFailure()) {
@@ -471,108 +472,108 @@ void CheckOperationProperty(Session session, QDMI_Operation_Property property) {
 } // namespace
 
 TEST_F(QDMIQueryFixture, SiteIndex) {
-  CheckSiteProperty<size_t>(session, QDMI_SITE_PROPERTY_INDEX);
+  Check_site_property<size_t>(session, QDMI_SITE_PROPERTY_INDEX);
 }
 
 TEST_F(QDMIQueryFixture, SiteT1) {
-  CheckSiteProperty<uint64_t>(session, QDMI_SITE_PROPERTY_T1);
+  Check_site_property<uint64_t>(session, QDMI_SITE_PROPERTY_T1);
 }
 
 TEST_F(QDMIQueryFixture, SiteT2) {
-  CheckSiteProperty<uint64_t>(session, QDMI_SITE_PROPERTY_T2);
+  Check_site_property<uint64_t>(session, QDMI_SITE_PROPERTY_T2);
 }
 
 TEST_F(QDMIQueryFixture, SiteName) {
-  CheckSiteProperty<char>(session, QDMI_SITE_PROPERTY_NAME);
+  Check_site_property<char>(session, QDMI_SITE_PROPERTY_NAME);
 }
 
 TEST_F(QDMIQueryFixture, SiteXCoordinate) {
-  CheckSiteProperty<int64_t>(session, QDMI_SITE_PROPERTY_XCOORDINATE);
+  Check_site_property<int64_t>(session, QDMI_SITE_PROPERTY_XCOORDINATE);
 }
 
 TEST_F(QDMIQueryFixture, SiteYCoordinate) {
-  CheckSiteProperty<int64_t>(session, QDMI_SITE_PROPERTY_YCOORDINATE);
+  Check_site_property<int64_t>(session, QDMI_SITE_PROPERTY_YCOORDINATE);
 }
 
 TEST_F(QDMIQueryFixture, SiteZCoordinate) {
-  CheckSiteProperty<int64_t>(session, QDMI_SITE_PROPERTY_ZCOORDINATE);
+  Check_site_property<int64_t>(session, QDMI_SITE_PROPERTY_ZCOORDINATE);
 }
 
 TEST_F(QDMIQueryFixture, SiteIsZone) {
-  CheckSiteProperty<bool>(session, QDMI_SITE_PROPERTY_ISZONE);
+  Check_site_property<bool>(session, QDMI_SITE_PROPERTY_ISZONE);
 }
 
 TEST_F(QDMIQueryFixture, SiteXExtent) {
-  CheckSiteProperty<uint64_t>(session, QDMI_SITE_PROPERTY_XEXTENT);
+  Check_site_property<uint64_t>(session, QDMI_SITE_PROPERTY_XEXTENT);
 }
 
 TEST_F(QDMIQueryFixture, SiteYExtent) {
-  CheckSiteProperty<uint64_t>(session, QDMI_SITE_PROPERTY_YEXTENT);
+  Check_site_property<uint64_t>(session, QDMI_SITE_PROPERTY_YEXTENT);
 }
 
 TEST_F(QDMIQueryFixture, SiteZExtent) {
-  CheckSiteProperty<uint64_t>(session, QDMI_SITE_PROPERTY_ZEXTENT);
+  Check_site_property<uint64_t>(session, QDMI_SITE_PROPERTY_ZEXTENT);
 }
 
 TEST_F(QDMIQueryFixture, SiteModuleIndex) {
-  CheckSiteProperty<uint64_t>(session, QDMI_SITE_PROPERTY_MODULEINDEX);
+  Check_site_property<uint64_t>(session, QDMI_SITE_PROPERTY_MODULEINDEX);
 }
 
 TEST_F(QDMIQueryFixture, SiteSubmoduleIndex) {
-  CheckSiteProperty<uint64_t>(session, QDMI_SITE_PROPERTY_SUBMODULEINDEX);
+  Check_site_property<uint64_t>(session, QDMI_SITE_PROPERTY_SUBMODULEINDEX);
 }
 
 TEST_F(QDMIQueryFixture, OperationName) {
-  CheckOperationProperty<char>(session, QDMI_OPERATION_PROPERTY_NAME);
+  Check_operation_property<char>(session, QDMI_OPERATION_PROPERTY_NAME);
 }
 
 TEST_F(QDMIQueryFixture, OperationQubitsNum) {
-  CheckOperationProperty<size_t>(session, QDMI_OPERATION_PROPERTY_QUBITSNUM);
+  Check_operation_property<size_t>(session, QDMI_OPERATION_PROPERTY_QUBITSNUM);
 }
 
 TEST_F(QDMIQueryFixture, OperationParametersNum) {
-  CheckOperationProperty<size_t>(session,
+  Check_operation_property<size_t>(session,
                                  QDMI_OPERATION_PROPERTY_PARAMETERSNUM);
 }
 
 TEST_F(QDMIQueryFixture, OperationDuration) {
-  CheckOperationProperty<uint64_t>(session, QDMI_OPERATION_PROPERTY_DURATION);
+  Check_operation_property<uint64_t>(session, QDMI_OPERATION_PROPERTY_DURATION);
 }
 
 TEST_F(QDMIQueryFixture, OperationFidelity) {
-  CheckOperationProperty<double>(session, QDMI_OPERATION_PROPERTY_FIDELITY);
+  Check_operation_property<double>(session, QDMI_OPERATION_PROPERTY_FIDELITY);
 }
 
 TEST_F(QDMIQueryFixture, OperationInteractionRadius) {
-  CheckOperationProperty<uint64_t>(session,
+  Check_operation_property<uint64_t>(session,
                                    QDMI_OPERATION_PROPERTY_INTERACTIONRADIUS);
 }
 
 TEST_F(QDMIQueryFixture, OperationBlockingRadius) {
-  CheckOperationProperty<uint64_t>(session,
+  Check_operation_property<uint64_t>(session,
                                    QDMI_OPERATION_PROPERTY_BLOCKINGRADIUS);
 }
 
 TEST_F(QDMIQueryFixture, OperationIdlingFidelity) {
-  CheckOperationProperty<double>(session,
+  Check_operation_property<double>(session,
                                  QDMI_OPERATION_PROPERTY_IDLINGFIDELITY);
 }
 
 TEST_F(QDMIQueryFixture, OperationIsZoned) {
-  CheckOperationProperty<bool>(session, QDMI_OPERATION_PROPERTY_ISZONED);
+  Check_operation_property<bool>(session, QDMI_OPERATION_PROPERTY_ISZONED);
 }
 
 TEST_F(QDMIQueryFixture, OperationSites) {
-  CheckOperationProperty<Site>(session, QDMI_OPERATION_PROPERTY_SITES);
+  Check_operation_property<Site>(session, QDMI_OPERATION_PROPERTY_SITES);
 }
 
 TEST_F(QDMIQueryFixture, OperationMeanShuttlingSpeed) {
-  CheckOperationProperty<uint64_t>(session,
+  Check_operation_property<uint64_t>(session,
                                    QDMI_OPERATION_PROPERTY_MEANSHUTTLINGSPEED);
 }
 
 TEST_F(QDMIQueryFixture, DeviceInvalidProperty) {
-  EXPECT_EQ(DeviceQuery(session, QDMI_DEVICE_PROPERTY_MAX)(0, nullptr, nullptr),
+  EXPECT_EQ(Device_query(session, QDMI_DEVICE_PROPERTY_MAX)(0, nullptr, nullptr),
             QDMI_ERROR_INVALIDARGUMENT)
       << "invalid device property";
 }
@@ -581,7 +582,7 @@ TEST_F(QDMIQueryFixture, RemovedDeviceProperties) {
   for (const auto reserved : {8, 9}) {
     SCOPED_TRACE(reserved);
     const auto query =
-        DeviceQuery(session, static_cast<QDMI_Device_Property>(reserved));
+        Device_query(session, static_cast<QDMI_Device_Property>(reserved));
     EXPECT_EQ(query(0, nullptr, nullptr), QDMI_ERROR_NOTSUPPORTED);
     size_t size = 0;
     EXPECT_EQ(query(std::numeric_limits<size_t>::max(), nullptr, &size),
@@ -595,12 +596,12 @@ TEST_F(QDMIQueryFixture, DeviceNullSession) {
       continue;
     }
     const auto property = static_cast<QDMI_Device_Property>(i);
-    const auto status = DeviceQuery(session, property)(0, nullptr, nullptr);
+    const auto status = Device_query(session, property)(0, nullptr, nullptr);
     if (status == QDMI_ERROR_NOTSUPPORTED) {
       continue;
     }
     ASSERT_EQ(status, QDMI_SUCCESS);
-    EXPECT_EQ(DeviceQuery(nullptr, property)(0, nullptr, nullptr),
+    EXPECT_EQ(Device_query(nullptr, property)(0, nullptr, nullptr),
               QDMI_ERROR_INVALIDARGUMENT);
     return;
   }
@@ -609,64 +610,64 @@ TEST_F(QDMIQueryFixture, DeviceNullSession) {
 }
 
 TEST_F(QDMIQueryFixture, SiteInvalidProperty) {
-  const auto sites = ReadSites(session);
+  const auto sites = Read_sites(session);
   if (!sites || sites->empty()) {
     if (!HasFailure()) {
       GTEST_SKIP() << "No advertised site";
     }
     return;
   }
-  for (const auto site : *sites) {
+  for (auto *const site : *sites) {
     SCOPED_TRACE(site);
     if (site == nullptr) {
       continue;
     }
     EXPECT_EQ(
-        SiteQuery(session, site, QDMI_SITE_PROPERTY_MAX)(0, nullptr, nullptr),
+        Site_query(session, site, QDMI_SITE_PROPERTY_MAX)(0, nullptr, nullptr),
         QDMI_ERROR_INVALIDARGUMENT);
   }
 }
 
 TEST_F(QDMIQueryFixture, OperationInvalidProperty) {
-  const auto operations = ReadOperations(session);
+  const auto operations = Read_operations(session);
   if (!operations || operations->empty()) {
     if (!HasFailure()) {
       GTEST_SKIP() << "No advertised operation";
     }
     return;
   }
-  for (const auto operation : *operations) {
+  for (auto *const operation : *operations) {
     SCOPED_TRACE(operation);
     if (operation == nullptr) {
       continue;
     }
-    EXPECT_EQ(OperationQuery(session, operation,
+    EXPECT_EQ(Operation_query(session, operation,
                              QDMI_OPERATION_PROPERTY_MAX)(0, nullptr, nullptr),
               QDMI_ERROR_INVALIDARGUMENT);
   }
 }
 
 TEST_F(QDMIQueryFixture, SiteNullSession) {
-  const auto objects = ReadSites(session);
+  const auto objects = Read_sites(session);
   if (!objects) {
     if (!HasFailure()) {
       GTEST_SKIP() << "No sites list";
     }
     return;
   }
-  for (const auto object : *objects) {
+  for (auto *const object : *objects) {
     if (object == nullptr) {
       continue;
     }
     for (int i = 0; i < QDMI_SITE_PROPERTY_MAX; ++i) {
       const auto property = static_cast<QDMI_Site_Property>(i);
       const auto status =
-          SiteQuery(session, object, property)(0, nullptr, nullptr);
+          Site_query(session, object, property)(0, nullptr, nullptr);
       if (status == QDMI_ERROR_NOTSUPPORTED) {
         continue;
       }
       ASSERT_EQ(status, QDMI_SUCCESS);
-      EXPECT_EQ(SiteQuery(nullptr, object, property)(0, nullptr, nullptr),
+      EXPECT_EQ(Site_query(nullptr, object, property)(0, nullptr, nullptr),
                 QDMI_ERROR_INVALIDARGUMENT);
       return;
     }
@@ -677,26 +678,26 @@ TEST_F(QDMIQueryFixture, SiteNullSession) {
 }
 
 TEST_F(QDMIQueryFixture, SiteNullHandle) {
-  const auto objects = ReadSites(session);
+  const auto objects = Read_sites(session);
   if (!objects) {
     if (!HasFailure()) {
       GTEST_SKIP() << "No sites list";
     }
     return;
   }
-  for (const auto object : *objects) {
+  for (auto *const object : *objects) {
     if (object == nullptr) {
       continue;
     }
     for (int i = 0; i < QDMI_SITE_PROPERTY_MAX; ++i) {
       const auto property = static_cast<QDMI_Site_Property>(i);
       const auto status =
-          SiteQuery(session, object, property)(0, nullptr, nullptr);
+          Site_query(session, object, property)(0, nullptr, nullptr);
       if (status == QDMI_ERROR_NOTSUPPORTED) {
         continue;
       }
       ASSERT_EQ(status, QDMI_SUCCESS);
-      EXPECT_EQ(SiteQuery(session, nullptr, property)(0, nullptr, nullptr),
+      EXPECT_EQ(Site_query(session, nullptr, property)(0, nullptr, nullptr),
                 QDMI_ERROR_INVALIDARGUMENT);
       return;
     }
@@ -707,26 +708,26 @@ TEST_F(QDMIQueryFixture, SiteNullHandle) {
 }
 
 TEST_F(QDMIQueryFixture, OperationNullSession) {
-  const auto objects = ReadOperations(session);
+  const auto objects = Read_operations(session);
   if (!objects) {
     if (!HasFailure()) {
       GTEST_SKIP() << "No operations list";
     }
     return;
   }
-  for (const auto object : *objects) {
+  for (auto *const object : *objects) {
     if (object == nullptr) {
       continue;
     }
     for (int i = 0; i < QDMI_OPERATION_PROPERTY_MAX; ++i) {
       const auto property = static_cast<QDMI_Operation_Property>(i);
       const auto status =
-          OperationQuery(session, object, property)(0, nullptr, nullptr);
+          Operation_query(session, object, property)(0, nullptr, nullptr);
       if (status == QDMI_ERROR_NOTSUPPORTED) {
         continue;
       }
       ASSERT_EQ(status, QDMI_SUCCESS);
-      EXPECT_EQ(OperationQuery(nullptr, object, property)(0, nullptr, nullptr),
+      EXPECT_EQ(Operation_query(nullptr, object, property)(0, nullptr, nullptr),
                 QDMI_ERROR_INVALIDARGUMENT);
       return;
     }
@@ -737,26 +738,26 @@ TEST_F(QDMIQueryFixture, OperationNullSession) {
 }
 
 TEST_F(QDMIQueryFixture, OperationNullHandle) {
-  const auto objects = ReadOperations(session);
+  const auto objects = Read_operations(session);
   if (!objects) {
     if (!HasFailure()) {
       GTEST_SKIP() << "No operations list";
     }
     return;
   }
-  for (const auto object : *objects) {
+  for (auto *const object : *objects) {
     if (object == nullptr) {
       continue;
     }
     for (int i = 0; i < QDMI_OPERATION_PROPERTY_MAX; ++i) {
       const auto property = static_cast<QDMI_Operation_Property>(i);
       const auto status =
-          OperationQuery(session, object, property)(0, nullptr, nullptr);
+          Operation_query(session, object, property)(0, nullptr, nullptr);
       if (status == QDMI_ERROR_NOTSUPPORTED) {
         continue;
       }
       ASSERT_EQ(status, QDMI_SUCCESS);
-      EXPECT_EQ(OperationQuery(session, nullptr, property)(0, nullptr, nullptr),
+      EXPECT_EQ(Operation_query(session, nullptr, property)(0, nullptr, nullptr),
                 QDMI_ERROR_INVALIDARGUMENT);
       return;
     }
@@ -768,7 +769,7 @@ TEST_F(QDMIQueryFixture, OperationNullHandle) {
 
 TEST_F(QDMIQueryFixture, CouplingMapRelationships) {
   const auto edges =
-      Read<Site>(DeviceQuery(session, QDMI_DEVICE_PROPERTY_COUPLINGMAP), false);
+      Read<Site>(Device_query(session, QDMI_DEVICE_PROPERTY_COUPLINGMAP), false);
   if (!edges) {
     if (!HasFailure()) {
       GTEST_SKIP() << "Coupling map is unsupported";
@@ -776,7 +777,7 @@ TEST_F(QDMIQueryFixture, CouplingMapRelationships) {
     return;
   }
   EXPECT_EQ(edges->size() % 2, 0U) << "coupling map must contain pairs";
-  const auto sites = ReadSites(session);
+  const auto sites = Read_sites(session);
   if (!sites) {
     if (!HasFailure()) {
       GTEST_SKIP() << "Site membership unavailable; pair shape was checked";
@@ -784,14 +785,14 @@ TEST_F(QDMIQueryFixture, CouplingMapRelationships) {
     return;
   }
   const std::unordered_set<Site> members(sites->begin(), sites->end());
-  for (const auto site : *edges) {
+  for (auto *const site : *edges) {
     EXPECT_TRUE(members.contains(site))
         << "coupling endpoint is not an advertised site";
   }
 }
 
 TEST_F(QDMIQueryFixture, SiteCoordinateUniqueness) {
-  const auto sites = ReadSites(session);
+  const auto sites = Read_sites(session);
   if (!sites) {
     if (!HasFailure()) {
       GTEST_SKIP() << "Sites are unsupported";
@@ -802,18 +803,18 @@ TEST_F(QDMIQueryFixture, SiteCoordinateUniqueness) {
   size_t complete = 0;
   for (size_t i = 0; i < sites->size(); ++i) {
     SCOPED_TRACE(i);
-    const auto site = (*sites)[i];
+    auto *const site = (*sites)[i];
     if (site == nullptr) {
       continue;
     }
     const auto x =
-        Read<int64_t>(SiteQuery(session, site, QDMI_SITE_PROPERTY_XCOORDINATE));
+        Read<int64_t>(Site_query(session, site, QDMI_SITE_PROPERTY_XCOORDINATE));
     const auto y =
-        Read<int64_t>(SiteQuery(session, site, QDMI_SITE_PROPERTY_YCOORDINATE));
+        Read<int64_t>(Site_query(session, site, QDMI_SITE_PROPERTY_YCOORDINATE));
     const auto z =
-        Read<int64_t>(SiteQuery(session, site, QDMI_SITE_PROPERTY_ZCOORDINATE));
+        Read<int64_t>(Site_query(session, site, QDMI_SITE_PROPERTY_ZCOORDINATE));
     if (!x || !y || !z) {
-      UnsupportedObject(i);
+      Unsupported_object(i);
       continue;
     }
     ++complete;
@@ -828,23 +829,23 @@ TEST_F(QDMIQueryFixture, SiteCoordinateUniqueness) {
 }
 
 TEST_F(QDMIQueryFixture, OperationSiteRelationships) {
-  const auto operations = ReadOperations(session);
+  const auto operations = Read_operations(session);
   if (!operations) {
     if (!HasFailure()) {
       GTEST_SKIP() << "Operations are unsupported";
     }
     return;
   }
-  const auto sites = ReadSites(session);
+  const auto sites = Read_sites(session);
   std::unordered_set<Site> members;
   std::unordered_set<Site> zones;
   if (sites) {
     members.insert(sites->begin(), sites->end());
-    for (const auto site : *sites) {
+    for (auto *const site : *sites) {
       if (site == nullptr) {
         continue;
       }
-      if (ReadBool(SiteQuery(session, site, QDMI_SITE_PROPERTY_ISZONE))
+      if (Read_bool(Site_query(session, site, QDMI_SITE_PROPERTY_ISZONE))
               .value_or(false)) {
         zones.insert(site);
       }
@@ -853,22 +854,22 @@ TEST_F(QDMIQueryFixture, OperationSiteRelationships) {
   size_t supported = 0;
   for (size_t i = 0; i < operations->size(); ++i) {
     SCOPED_TRACE(i);
-    const auto operation = (*operations)[i];
+    auto *const operation = (*operations)[i];
     if (operation == nullptr) {
       continue;
     }
     const auto applicable = Read<Site>(
-        OperationQuery(session, operation, QDMI_OPERATION_PROPERTY_SITES),
+        Operation_query(session, operation, QDMI_OPERATION_PROPERTY_SITES),
         false);
     if (!applicable) {
-      UnsupportedObject(i);
+      Unsupported_object(i);
       continue;
     }
     ++supported;
-    const auto zoned = ReadBool(
-        OperationQuery(session, operation, QDMI_OPERATION_PROPERTY_ISZONED));
+    const auto zoned = Read_bool(
+        Operation_query(session, operation, QDMI_OPERATION_PROPERTY_ISZONED));
     if (sites) {
-      for (const auto site : *applicable) {
+      for (auto *const site : *applicable) {
         EXPECT_TRUE(members.contains(site))
             << "operation site is not advertised";
         if (zoned.value_or(false)) {
@@ -878,7 +879,7 @@ TEST_F(QDMIQueryFixture, OperationSiteRelationships) {
       }
     }
     if (!zoned.value_or(false)) {
-      const auto arity = Read<size_t>(OperationQuery(
+      const auto arity = Read<size_t>(Operation_query(
           session, operation, QDMI_OPERATION_PROPERTY_QUBITSNUM));
       if (arity && (*arity)[0] != 0) {
         EXPECT_EQ(applicable->size() % (*arity)[0], 0U)

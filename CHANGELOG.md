@@ -12,6 +12,12 @@ clients compiled against a different minor or major version.
 
 ## [Unreleased]
 
+### Added
+
+- ✨ Add an opt-in reusable offline device query conformance suite with source
+  and installed CMake consumers, positive and negative controls, and integration
+  guidance.
+
 ## [1.4.0] - 2026-10-11
 
 _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#140)._

@@ -129,3 +129,14 @@ foreach(
       "${CMAKE_CURRENT_SOURCE_DIR}/query/check_negative.cmake")
   set_tests_properties("query-negative.${case}" PROPERTIES LABELS qdmi-query)
 endforeach()
+
+add_test(
+  NAME query-consumers
+  COMMAND
+    "${CMAKE_COMMAND}" "-DSOURCE_DIR=${PROJECT_SOURCE_DIR}"
+    "-DBINARY_DIR=${PROJECT_BINARY_DIR}" "-DGENERATOR=${CMAKE_GENERATOR}"
+    "-DC_COMPILER=${CMAKE_C_COMPILER}" "-DCXX_COMPILER=${CMAKE_CXX_COMPILER}"
+    "-DGTEST_SOURCE=${googletest_SOURCE_DIR}"
+    "-DCTEST_COMMAND=${CMAKE_CTEST_COMMAND}" -P
+    "${CMAKE_CURRENT_SOURCE_DIR}/query/check_consumers.cmake")
+set_tests_properties(query-consumers PROPERTIES LABELS qdmi-query TIMEOUT 600)

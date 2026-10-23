@@ -30,7 +30,8 @@ function(add_qdmi_device_query_tests name)
     )
   endif()
   foreach(required_argument IN ITEMS PREFIX TARGET FIXTURE_HEADER)
-    if(NOT ARG_${required_argument})
+    if(NOT DEFINED ARG_${required_argument} OR "${ARG_${required_argument}}"
+                                               STREQUAL "")
       message(
         FATAL_ERROR "add_qdmi_device_query_tests requires ${required_argument}")
     endif()

@@ -20,32 +20,32 @@
 // Included after the shared suite only in the fixed fake-provider executable.
 TEST_F(QDMIQueryFixture, SuccessfulPayloadSnapshot) {
   const auto count =
-      Read<size_t>(DeviceQuery(session, QDMI_DEVICE_PROPERTY_QUBITSNUM));
+      Read<size_t>(Device_query(session, QDMI_DEVICE_PROPERTY_QUBITSNUM));
   ASSERT_TRUE(count);
   EXPECT_EQ((*count)[0], size_t{0x11223344});
 
-  const auto sites = ReadSites(session);
+  const auto sites = Read_sites(session);
   ASSERT_TRUE(sites);
   std::array<Site, 3> expected_sites{};
-  ASSERT_EQ(DeviceQuery(session, QDMI_DEVICE_PROPERTY_SITES)(
+  ASSERT_EQ(Device_query(session, QDMI_DEVICE_PROPERTY_SITES)(
                 sizeof(expected_sites), expected_sites.data(), nullptr),
             QDMI_SUCCESS);
   EXPECT_EQ(*sites,
             std::vector<Site>(expected_sites.begin(), expected_sites.end()));
 
-  const auto operations = ReadOperations(session);
+  const auto operations = Read_operations(session);
   ASSERT_TRUE(operations);
   std::array<Operation, 2> expected_operations{};
   ASSERT_EQ(
-      DeviceQuery(session, QDMI_DEVICE_PROPERTY_OPERATIONS)(
+      Device_query(session, QDMI_DEVICE_PROPERTY_OPERATIONS)(
           sizeof(expected_operations), expected_operations.data(), nullptr),
       QDMI_SUCCESS);
   EXPECT_EQ(*operations, std::vector<Operation>(expected_operations.begin(),
                                                 expected_operations.end()));
 
   // A one-byte bool advertises zero bytes in the undersized probe.
-  const auto zone = ReadBool(
-      SiteQuery(session, expected_sites[0], QDMI_SITE_PROPERTY_ISZONE));
+  const auto zone = Read_bool(
+      Site_query(session, expected_sites[0], QDMI_SITE_PROPERTY_ISZONE));
   ASSERT_TRUE(zone);
   EXPECT_TRUE(*zone);
 }
