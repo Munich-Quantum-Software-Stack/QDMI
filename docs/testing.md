@@ -139,6 +139,9 @@ requirements.
 
 The suite assumes valid native scalar object representations. ABI-invalid or
 memory-corrupting providers require separate memory-safety and sanitizer checks.
+Payload-shape and value checks do not prove that every successful query wrote
+its full payload. Buffer-overrun detection belongs to separate memory-safety
+testing.
 
 Unit strings are checked for nonempty content, shape, and conditional
 availability. The headers do not define accepted symbols, spellings, or aliases,
