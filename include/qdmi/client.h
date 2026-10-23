@@ -1079,6 +1079,9 @@ QDMI_DRIVER_EXPORT int QDMI_job_query_property(QDMI_Job job,
  * @return @ref QDMI_ERROR_INVALIDARGUMENT if @p job is @c NULL.
  * @return @ref QDMI_ERROR_BADSTATE if a required program or format is missing
  * or the job was retrieved.
+ * @return @ref QDMI_ERROR_NOTSUPPORTED if a program uses unsupported
+ * features, including selected output types that the device cannot return as
+ * specified by @ref QDMI_JOB_RESULT_T.
  * @return @ref QDMI_ERROR_PERMISSIONDENIED if the driver does not allow using
  * the @ref client_job_interface "client job interface" for the device in the
  * current session.
