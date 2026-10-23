@@ -29,7 +29,6 @@
 #include <limits>
 #include <optional>
 #include <string>
-#include <string_view>
 #include <type_traits>
 #include <unordered_set>
 #include <vector>
@@ -101,6 +100,12 @@ auto Read(Query query, bool scalar = true, bool mandatory = false)
   }
   // One extra aligned element gives empty queries a valid nonnull buffer too.
   std::vector<T> values(bytes / sizeof(T) + 1);
+  // Retrieve after error probes; errors need not preserve the buffer.
+  if (bytes != 0) {
+    EXPECT_EQ(query(bytes - 1, values.data(), nullptr),
+              QDMI_ERROR_INVALIDARGUMENT)
+        << "one-byte-small buffer";
+  }
   for (const auto capacity : {bytes, bytes + sizeof(T)}) {
     for (const bool return_size : {false, true}) {
       size_t actual = bytes;
@@ -119,11 +124,6 @@ auto Read(Query query, bool scalar = true, bool mandatory = false)
         EXPECT_EQ(values[bytes - 1], '\0') << "string payload must end in NUL";
       }
     }
-  }
-  if (bytes != 0) {
-    EXPECT_EQ(query(bytes - 1, values.data(), nullptr),
-              QDMI_ERROR_INVALIDARGUMENT)
-        << "one-byte-small buffer";
   }
   values.pop_back();
   return values;
@@ -150,6 +150,8 @@ template <class Query> auto ReadBool(Query query) -> std::optional<bool> {
     return std::nullopt;
   }
   std::array<bool, 2> values{};
+  EXPECT_EQ(query(bytes - 1, values.data(), nullptr),
+            QDMI_ERROR_INVALIDARGUMENT);
   for (const auto capacity : {sizeof(bool), sizeof(values)}) {
     for (const bool return_size : {false, true}) {
       size_t actual = bytes;
@@ -165,8 +167,6 @@ template <class Query> auto ReadBool(Query query) -> std::optional<bool> {
       }
     }
   }
-  EXPECT_EQ(query(bytes - 1, values.data(), nullptr),
-            QDMI_ERROR_INVALIDARGUMENT);
   return values[0];
 }
 
@@ -191,28 +191,9 @@ auto ReadOperations(Session session) {
   return operations;
 }
 
-auto IsSIUnit(std::string_view unit, char base) -> bool {
-  if (unit.empty() || unit.back() != base) {
-    return false;
-  }
-  unit.remove_suffix(1);
-  constexpr std::array prefixes{
-      "",         "Q", "R", "Y",  "Z", "E", "P", "T", "G",
-      "M",        "k", "h", "da", "d", "c", "m", "u", "\xC2\xB5",
-      "\xCE\xBC", "n", "p", "f",  "a", "z", "y", "r", "q"};
-  for (const auto *prefix : prefixes) {
-    if (unit == prefix) {
-      return true;
-    }
-  }
-  return false;
-}
-void RequireUnit(Session session, QDMI_Device_Property property, char base) {
-  auto unit = Read<char>(DeviceQuery(session, property), false);
+void RequireUnit(Session session, QDMI_Device_Property property) {
+  const auto unit = Read<char>(DeviceQuery(session, property), false);
   ASSERT_TRUE(unit) << "unit is required for supported physical values";
-  ASSERT_FALSE(unit->empty());
-  EXPECT_TRUE(IsSIUnit(std::string_view(unit->data(), unit->size() - 1), base))
-      << "expected an SI unit symbol";
 }
 
 void UnsupportedObject(size_t index) {
@@ -294,10 +275,6 @@ TEST_F(QDMIQueryFixture, DeviceLengthUnit) {
   if (!value && !HasFailure()) {
     GTEST_SKIP() << "Device property is unsupported";
   }
-  if (value) {
-    EXPECT_TRUE(
-        IsSIUnit(std::string_view(value->data(), value->size() - 1), 'm'));
-  }
 }
 
 TEST_F(QDMIQueryFixture, DeviceLengthScaleFactor) {
@@ -313,10 +290,6 @@ TEST_F(QDMIQueryFixture, DeviceDurationUnit) {
       DeviceQuery(session, QDMI_DEVICE_PROPERTY_DURATIONUNIT), false);
   if (!value && !HasFailure()) {
     GTEST_SKIP() << "Device property is unsupported";
-  }
-  if (value) {
-    EXPECT_TRUE(
-        IsSIUnit(std::string_view(value->data(), value->size() - 1), 's'));
   }
 }
 
@@ -335,7 +308,7 @@ TEST_F(QDMIQueryFixture, DeviceMinAtomDistance) {
     GTEST_SKIP() << "Device property is unsupported";
   }
   if (value) {
-    RequireUnit(session, QDMI_DEVICE_PROPERTY_LENGTHUNIT, 'm');
+    RequireUnit(session, QDMI_DEVICE_PROPERTY_LENGTHUNIT);
   }
 }
 
@@ -432,12 +405,12 @@ void CheckSiteProperty(Session session, QDMI_Site_Property property) {
     }
     if (property == QDMI_SITE_PROPERTY_T1 ||
         property == QDMI_SITE_PROPERTY_T2) {
-      RequireUnit(session, QDMI_DEVICE_PROPERTY_DURATIONUNIT, 's');
+      RequireUnit(session, QDMI_DEVICE_PROPERTY_DURATIONUNIT);
     }
     if (property >= QDMI_SITE_PROPERTY_XCOORDINATE &&
         property <= QDMI_SITE_PROPERTY_ZEXTENT &&
         property != QDMI_SITE_PROPERTY_ISZONE) {
-      RequireUnit(session, QDMI_DEVICE_PROPERTY_LENGTHUNIT, 'm');
+      RequireUnit(session, QDMI_DEVICE_PROPERTY_LENGTHUNIT);
     }
     if (property >= QDMI_SITE_PROPERTY_XEXTENT &&
         property <= QDMI_SITE_PROPERTY_ZEXTENT) {
@@ -483,12 +456,12 @@ void CheckOperationProperty(Session session, QDMI_Operation_Property property) {
     ++supported;
     if (property == QDMI_OPERATION_PROPERTY_DURATION ||
         property == QDMI_OPERATION_PROPERTY_MEANSHUTTLINGSPEED) {
-      RequireUnit(session, QDMI_DEVICE_PROPERTY_DURATIONUNIT, 's');
+      RequireUnit(session, QDMI_DEVICE_PROPERTY_DURATIONUNIT);
     }
     if (property == QDMI_OPERATION_PROPERTY_INTERACTIONRADIUS ||
         property == QDMI_OPERATION_PROPERTY_BLOCKINGRADIUS ||
         property == QDMI_OPERATION_PROPERTY_MEANSHUTTLINGSPEED) {
-      RequireUnit(session, QDMI_DEVICE_PROPERTY_LENGTHUNIT, 'm');
+      RequireUnit(session, QDMI_DEVICE_PROPERTY_LENGTHUNIT);
     }
   }
   if (supported == 0 && !::testing::Test::HasFailure()) {

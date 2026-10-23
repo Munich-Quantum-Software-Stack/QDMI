@@ -40,6 +40,8 @@ std::array<CONTROL_QDMI_Operation_impl_d, 2> operations{{{0}, {1}}};
 auto Copy(size_t bytes, const void *source, size_t size, void *value,
           size_t *size_ret) -> int {
   if (value != nullptr && size < bytes) {
+    // Error returns may overwrite the advertised buffer bytes.
+    std::memset(value, 0, size);
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   if (size_ret != nullptr) {
@@ -89,6 +91,8 @@ int CONTROL_QDMI_device_session_query_device_property(
     return QDMI_ERROR_INVALIDARGUMENT;
   }
   switch (prop) {
+  case QDMI_DEVICE_PROPERTY_QUBITSNUM:
+    return Scalar(size_t{0x11223344}, size, value, size_ret);
   case QDMI_DEVICE_PROPERTY_STATUS:
     return Scalar(QDMI_DEVICE_STATUS_IDLE, size, value, size_ret);
   case QDMI_DEVICE_PROPERTY_SITES: {
@@ -102,7 +106,7 @@ int CONTROL_QDMI_device_session_query_device_property(
   case QDMI_DEVICE_PROPERTY_COUPLINGMAP:
     return Copy(0, nullptr, size, value, size_ret);
   case QDMI_DEVICE_PROPERTY_DURATIONUNIT:
-    return Copy(3, "ps", size, value, size_ret);
+    return Copy(sizeof("picosecond"), "picosecond", size, value, size_ret);
   case QDMI_DEVICE_PROPERTY_QUEUELENGTH:
     // A scalar must report sizeof(size_t), not one byte.
     return Scalar(char{0}, size, value, size_ret);
@@ -120,6 +124,9 @@ int CONTROL_QDMI_device_session_query_site_property(
     QDMI_Site_Property prop, size_t size, void *value, size_t *size_ret) {
   if (session == nullptr || site == nullptr || prop == QDMI_SITE_PROPERTY_MAX) {
     return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  if (prop == QDMI_SITE_PROPERTY_ISZONE) {
+    return Scalar(true, size, value, size_ret);
   }
   if (prop == QDMI_SITE_PROPERTY_INDEX && site != &sites[2]) {
     return Scalar(site->index, size, value, size_ret);

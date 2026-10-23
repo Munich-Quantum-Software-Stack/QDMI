@@ -88,6 +88,8 @@ set(QDMI_QUERY_FIXTURE_HEADER
     "${CMAKE_CURRENT_SOURCE_DIR}/query/negative_fixture.hpp")
 configure_file("${PROJECT_SOURCE_DIR}/cmake/device_query_tests.cpp.in"
                "${CMAKE_CURRENT_BINARY_DIR}/query_control_tests.cpp" @ONLY)
+file(APPEND "${CMAKE_CURRENT_BINARY_DIR}/query_control_tests.cpp"
+     "\n#include \"${CMAKE_CURRENT_SOURCE_DIR}/query/positive_controls.hpp\"\n")
 add_executable(query-control
                "${CMAKE_CURRENT_BINARY_DIR}/query_control_tests.cpp")
 target_link_libraries(query-control PRIVATE query-control-device
@@ -104,7 +106,7 @@ add_test(
   NAME query-positive-mixed-support
   COMMAND
     query-control
-    "--gtest_filter=QDMIQueryFixture.SiteT1:QDMIQueryFixture.OperationName:QDMIQueryFixture.DeviceCouplingMap:QDMIQueryFixture.RemovedDeviceProperties"
+    "--gtest_filter=QDMIQueryFixture.SiteT1:QDMIQueryFixture.OperationName:QDMIQueryFixture.DeviceCouplingMap:QDMIQueryFixture.RemovedDeviceProperties:QDMIQueryFixture.SuccessfulPayloadSnapshot:QDMIQueryFixture.DeviceDurationUnit"
 )
 set_tests_properties(
   query-positive-mixed-support
