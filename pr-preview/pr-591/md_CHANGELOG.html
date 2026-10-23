@@ -199,6 +199,11 @@ Added</h2>
 <ul>
 <li>✨ Add an opt-in reusable offline device query conformance suite with source and installed CMake consumers, positive and negative controls, and integration guidance (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/591">#591</a>) (<a href="https://github.com/marcelwa">@marcelwa</a>).</li>
 </ul>
+<h2 class="doxsection"><a class="anchor" id="fixed"></a>
+Fixed</h2>
+<ul>
+<li>🐛 Keep producer compiler warning flags out of installed packages (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/591">#591</a>) (<a href="https://github.com/marcelwa">@marcelwa</a>).</li>
+</ul>
 <h1 class="doxsection"><a class="anchor" id="autotoc_md140---2026-10-11"></a>
 <a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/releases/tag/v1.4.0">1.4.0</a> - 2026-10-11</h1>
 <p><em>If you are upgrading: please see <a class="el" href="md_UPGRADING.html#autotoc_md140" title="&lt;a href=&quot;https://github.com/Munich-Quantum-Software-Stack/QDMI/compare/v1.3.3...v1.4.0&quot; &gt;1.4.0&lt;/a&gt;">`UPGRADING.md`</a>.</em></p>
@@ -225,7 +230,7 @@ Changed</h2>
 <li>⬆️ Raise generated device projects' macOS deployment target to 13.3 (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/515">#515</a>) (<a href="https://github.com/denialhaag">@denialhaag</a>)</li>
 <li>💥 Require generated device projects to use Python 3.11 or newer (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/515">#515</a>) (<a href="https://github.com/denialhaag">@denialhaag</a>)</li>
 </ul>
-<h2 class="doxsection"><a class="anchor" id="fixed"></a>
+<h2 class="doxsection"><a class="anchor" id="fixed-1"></a>
 Fixed</h2>
 <ul>
 <li>🐛 Keep the example device job ready when result preparation fails instead of letting a C++ exception escape the Device Interface (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/576">#576</a>) (<a href="https://github.com/burgholzer">@burgholzer</a>).</li>
@@ -278,7 +283,7 @@ Added</h2>
 <li>✨ Add support for child devices to the QDMI device interface to enable multicore architectures (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/230">#230</a>) (<a href="https://github.com/ystade">@ystade</a>)</li>
 <li>✨ Add support for batch jobs to the QDMI job interface (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/230">#230</a>) (<a href="https://github.com/ystade">@ystade</a>)</li>
 </ul>
-<h2 class="doxsection"><a class="anchor" id="fixed-1"></a>
+<h2 class="doxsection"><a class="anchor" id="fixed-2"></a>
 Fixed</h2>
 <ul>
 <li>🐛 Fix Windows shared-library detection in the Python wrappers of the example and template device packages by resolving packaged libraries from <span class="tt">bin</span> instead of only <span class="tt">lib</span>/<span class="tt">lib64</span> (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/409">#409</a>) (<a href="https://github.com/marcelwa">@marcelwa</a>)</li>
@@ -314,7 +319,7 @@ Changed</h2>
 <li>📝 Improve contributing guidelines and documentation (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/354">#354</a>) (<a href="https://github.com/burgholzer">@burgholzer</a>)</li>
 <li>📝 Improve documentation of the QDMI device template (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/354">#354</a>) (<a href="https://github.com/burgholzer">@burgholzer</a>)</li>
 </ul>
-<h2 class="doxsection"><a class="anchor" id="fixed-2"></a>
+<h2 class="doxsection"><a class="anchor" id="fixed-3"></a>
 Fixed</h2>
 <ul>
 <li>🐛 Install CMake config files as part of the <span class="tt">qdmi_Development</span> component (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/371">#371</a>) (<a href="https://github.com/burgholzer">@burgholzer</a>)</li>
@@ -335,7 +340,7 @@ Changed</h2>
 <li>🚸 Improve prefix handling by making the device target name flexible (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/274">#274</a>, <a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/275">#275</a>) (<a href="https://github.com/burgholzer">@burgholzer</a>)</li>
 <li>👨‍💻 Turn off building QDMI documentation by default (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/269">#269</a>) (<a href="https://github.com/burgholzer">@burgholzer</a>)</li>
 </ul>
-<h2 class="doxsection"><a class="anchor" id="fixed-3"></a>
+<h2 class="doxsection"><a class="anchor" id="fixed-4"></a>
 Fixed</h2>
 <ul>
 <li>🐛 Ensure devices can be instantiated from an installed version of QDMI (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/273">#273</a>) (<a href="https://github.com/burgholzer">@burgholzer</a>)</li>
@@ -370,7 +375,7 @@ Changed</h2>
 <li>🔧 Improve library installation setup and header management for better downstream integration (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/228">#228</a>) (<a href="https://github.com/burgholzer">@burgholzer</a>)</li>
 <li>🔧 Set C++ standard on a per-target basis rather than globally (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/165">#165</a>) (<a href="https://github.com/ystade">@ystade</a>)</li>
 </ul>
-<h2 class="doxsection"><a class="anchor" id="fixed-4"></a>
+<h2 class="doxsection"><a class="anchor" id="fixed-5"></a>
 Fixed</h2>
 <ul>
 <li>🐛 Fix incorrect definitions of <span class="tt"><a class="el" href="types_8h.html#ab26279159380e378f258cb663968b9ec" title="A handle for a site.">QDMI_Site</a></span> and <span class="tt"><a class="el" href="types_8h.html#ae777e8f92186c1e6f836eeaa53b149d7" title="A handle for an operation.">QDMI_Operation</a></span> in device template (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/169">#169</a>) (<a href="https://github.com/ystade">@ystade</a>)</li>
