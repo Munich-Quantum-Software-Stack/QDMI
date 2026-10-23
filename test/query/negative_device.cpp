@@ -66,7 +66,8 @@ auto Copy(size_t bytes, const void *source, size_t size, void *value,
 template <class T>
 auto Scalar(const T &source, size_t size, void *value, size_t *size_ret)
     -> int {
-  return Copy(sizeof(T), &source, size, value, size_ret);
+  return Copy(sizeof(T), static_cast<const void *>(&source), size, value,
+              size_ret);
 }
 } // namespace
 
@@ -87,7 +88,7 @@ int CONTROL_QDMI_device_finalize() {
 int CONTROL_QDMI_device_session_alloc(CONTROL_QDMI_Device_Session *session) {
   const auto *control = std::getenv("QDMI_QUERY_CONTROL");
   *session = new CONTROL_QDMI_Device_Session_impl_d{
-      control != nullptr ? control : "", {}};
+      .control = control != nullptr ? control : "", .child = {}};
   return QDMI_SUCCESS;
 }
 int CONTROL_QDMI_device_session_init(CONTROL_QDMI_Device_Session /*session*/) {
@@ -118,7 +119,7 @@ int CONTROL_QDMI_device_session_query_device_property(
                              session->control == "DeviceSites" ? nullptr
                                                                : &sites[2]};
     const auto bytes = session->control == "single-coordinate"
-                           ? sizeof(handles[0])
+                           ? sizeof(CONTROL_QDMI_Site)
                            : sizeof(handles);
     return Copy(bytes, static_cast<const void *>(handles.data()), size, value,
                 size_ret);
@@ -179,7 +180,7 @@ int CONTROL_QDMI_device_session_query_site_property(
     }
     int64_t coordinate = std::numeric_limits<int64_t>::min();
     if (prop == varying) {
-      if (site == &sites[0] ||
+      if (site == sites.data() ||
           (site == &sites[2] &&
            session->control == "SiteCoordinateUniqueness")) {
         coordinate = std::numeric_limits<int64_t>::max();
