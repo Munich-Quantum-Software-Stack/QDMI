@@ -72,3 +72,58 @@ add_dependencies(qdmi_test my-qdmi-device-test)
 if(UNIX)
   add_subdirectory(exports)
 endif()
+
+# Fixed query defects and valid edge cases share a small offline provider.
+generate_prefixed_qdmi_headers(CONTROL)
+add_library(query-control-device STATIC query/negative_device.cpp)
+target_include_directories(query-control-device
+                           PUBLIC "${CMAKE_CURRENT_BINARY_DIR}/include")
+target_compile_definitions(query-control-device
+                           PUBLIC CONTROL_QDMI_STATIC_DEFINE)
+target_compile_features(query-control-device PRIVATE cxx_std_20)
+target_link_libraries(query-control-device PRIVATE qdmi::qdmi_project_warnings)
+set(QDMI_QUERY_PREFIX CONTROL)
+set(QDMI_QUERY_prefix control)
+set(QDMI_QUERY_FIXTURE_HEADER
+    "${CMAKE_CURRENT_SOURCE_DIR}/query/negative_fixture.hpp")
+configure_file("${PROJECT_SOURCE_DIR}/cmake/device_query_tests.cpp.in"
+               "${CMAKE_CURRENT_BINARY_DIR}/query_control_tests.cpp" @ONLY)
+add_executable(query-control
+               "${CMAKE_CURRENT_BINARY_DIR}/query_control_tests.cpp")
+target_link_libraries(query-control PRIVATE query-control-device
+                                            GTest::gtest_main)
+target_compile_features(query-control PRIVATE cxx_std_20)
+add_test(
+  NAME query-positive
+  COMMAND
+    query-control
+    "--gtest_filter=-QDMIQueryFixture.DeviceQueueLength:QDMIQueryFixture.DeviceSupportedProgramFormats:QDMIQueryFixture.DeviceInvalidProperty:QDMIQueryFixture.SiteIndex"
+)
+set_tests_properties(query-positive PROPERTIES LABELS qdmi-query)
+add_test(
+  NAME query-positive-mixed-support
+  COMMAND
+    query-control
+    "--gtest_filter=QDMIQueryFixture.SiteT1:QDMIQueryFixture.OperationName:QDMIQueryFixture.DeviceCouplingMap:QDMIQueryFixture.RemovedDeviceProperties"
+)
+set_tests_properties(
+  query-positive-mixed-support
+  PROPERTIES LABELS qdmi-query FAIL_REGULAR_EXPRESSION "\\[  SKIPPED \\]")
+foreach(
+  control IN
+  ITEMS "DeviceQueueLength|scalar payload size"
+        "DeviceSupportedProgramFormats|array payload size"
+        "DeviceInvalidProperty|invalid device property"
+        "SiteIndex|mandatory site index")
+  string(REPLACE "|" ";" fields "${control}")
+  list(GET fields 0 case)
+  list(GET fields 1 diagnostic)
+  add_test(
+    NAME "query-negative.${case}"
+    COMMAND
+      "${CMAKE_COMMAND}" "-DEXECUTABLE=$<TARGET_FILE:query-control>"
+      "-DCASE=${case}" "-DDIAGNOSTIC=${diagnostic}"
+      "-DREPORT=${CMAKE_CURRENT_BINARY_DIR}/negative-${case}.xml" -P
+      "${CMAKE_CURRENT_SOURCE_DIR}/query/check_negative.cmake")
+  set_tests_properties("query-negative.${case}" PROPERTIES LABELS qdmi-query)
+endforeach()
