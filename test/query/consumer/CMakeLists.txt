@@ -81,5 +81,6 @@ foreach(name IN ITEMS query-first query-second)
     TARGET
     OFF
     FIXTURE_HEADER
-    "${CMAKE_CURRENT_BINARY_DIR}/fixture with spaces/query_fixture.hpp")
+    "${CMAKE_CURRENT_BINARY_DIR}/fixture with spaces/query_fixture.hpp"
+    ${QUERY_EXTRA_ARGUMENT})
 endforeach()

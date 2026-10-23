@@ -45,6 +45,22 @@ run("${CMAKE_COMMAND}"
     ${dependencies}
     "-DQDMI_SOURCE_DIR=${SOURCE_DIR}"
     "-DDEVICE_SOURCE=${SOURCE_DIR}/examples/device/src/cxx_device.cpp")
+# False-like unknown arguments are still errors; valid OFF identifiers work
+# above.
+execute_process(
+  COMMAND
+    "${CMAKE_COMMAND}" -S "${SOURCE_DIR}/test/query/consumer" -B
+    "${root}/invalid argument" ${common} ${dependencies}
+    "-DQDMI_SOURCE_DIR=${SOURCE_DIR}"
+    "-DDEVICE_SOURCE=${SOURCE_DIR}/examples/device/src/cxx_device.cpp"
+    -DQUERY_EXTRA_ARGUMENT=OFF
+  RESULT_VARIABLE result
+  OUTPUT_VARIABLE output
+  ERROR_VARIABLE error)
+if(result EQUAL 0 OR NOT "${output}${error}" MATCHES "requires a name")
+  message(
+    FATAL_ERROR "Unknown OFF argument was not rejected: ${output}${error}")
+endif()
 run("${CMAKE_COMMAND}"
     --build
     "${root}/source"

@@ -22,8 +22,8 @@
 function(add_qdmi_device_query_tests name)
   cmake_parse_arguments(PARSE_ARGV 1 ARG "" "PREFIX;TARGET;FIXTURE_HEADER" "")
   if("${name}" STREQUAL ""
-     OR ARG_UNPARSED_ARGUMENTS
-     OR ARG_KEYWORDS_MISSING_VALUES)
+     OR NOT "${ARG_UNPARSED_ARGUMENTS}" STREQUAL ""
+     OR NOT "${ARG_KEYWORDS_MISSING_VALUES}" STREQUAL "")
     message(
       FATAL_ERROR
         "add_qdmi_device_query_tests requires a name, PREFIX, TARGET, and FIXTURE_HEADER"
