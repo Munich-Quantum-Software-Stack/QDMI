@@ -24,6 +24,15 @@ enable_language(CXX)
 
 add_subdirectory(utils)
 
+add_qdmi_device_query_tests(
+  cxx-device-query-test
+  PREFIX
+  CXX
+  TARGET
+  cxx-qdmi-device
+  FIXTURE_HEADER
+  "${CMAKE_CURRENT_SOURCE_DIR}/query/example_fixture.hpp")
+
 # ------------------------------------------------------------------------------
 # Functional Tests
 # ------------------------------------------------------------------------------
