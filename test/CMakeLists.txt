@@ -75,6 +75,8 @@ endif()
 
 # Fixed query defects and valid edge cases share a small offline provider.
 generate_prefixed_qdmi_headers(CONTROL)
+# The consumer fixture is also linted from the root compilation database.
+generate_prefixed_qdmi_headers(OFF)
 add_library(query-control-device STATIC query/negative_device.cpp)
 target_include_directories(query-control-device
                            PUBLIC "${CMAKE_CURRENT_BINARY_DIR}/include")
@@ -89,7 +91,7 @@ set(QDMI_QUERY_FIXTURE_HEADER
 configure_file("${PROJECT_SOURCE_DIR}/cmake/device_query_tests.cpp.in"
                "${CMAKE_CURRENT_BINARY_DIR}/query_control_tests.cpp" @ONLY)
 file(APPEND "${CMAKE_CURRENT_BINARY_DIR}/query_control_tests.cpp"
-     "\n#include \"${CMAKE_CURRENT_SOURCE_DIR}/query/positive_controls.hpp\"\n")
+     "\n#include \"${CMAKE_CURRENT_SOURCE_DIR}/query/positive_controls.inc\"\n")
 add_executable(query-control
                "${CMAKE_CURRENT_BINARY_DIR}/query_control_tests.cpp")
 target_link_libraries(query-control PRIVATE query-control-device

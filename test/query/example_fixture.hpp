@@ -21,6 +21,7 @@
 
 #include "cxx_qdmi/device.h"
 
+#include <array>
 #include <gtest/gtest.h>
 
 class QDMIQueryFixture : public ::testing::Test {
@@ -38,11 +39,11 @@ protected:
   void SetUp() override {
     ASSERT_EQ(CXX_QDMI_device_session_alloc(&session), QDMI_SUCCESS);
     // The example accepts this local placeholder; no credentials are used.
-    constexpr char token[] = "token";
-    ASSERT_EQ(
-        CXX_QDMI_device_session_set_parameter(
-            session, QDMI_DEVICE_SESSION_PARAMETER_TOKEN, sizeof(token), token),
-        QDMI_SUCCESS);
+    constexpr std::array token{'t', 'o', 'k', 'e', 'n', '\0'};
+    ASSERT_EQ(CXX_QDMI_device_session_set_parameter(
+                  session, QDMI_DEVICE_SESSION_PARAMETER_TOKEN, token.size(),
+                  token.data()),
+              QDMI_SUCCESS);
     ASSERT_EQ(CXX_QDMI_device_session_init(session), QDMI_SUCCESS);
   }
 

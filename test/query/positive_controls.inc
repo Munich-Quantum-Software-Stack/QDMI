@@ -28,7 +28,8 @@ TEST_F(QDMIQueryFixture, SuccessfulPayloadSnapshot) {
   ASSERT_TRUE(sites);
   std::array<Site, 3> expected_sites{};
   ASSERT_EQ(Device_query(session, QDMI_DEVICE_PROPERTY_SITES)(
-                sizeof(expected_sites), expected_sites.data(), nullptr),
+                sizeof(expected_sites),
+                static_cast<void *>(expected_sites.data()), nullptr),
             QDMI_SUCCESS);
   EXPECT_EQ(*sites,
             std::vector<Site>(expected_sites.begin(), expected_sites.end()));
@@ -36,10 +37,10 @@ TEST_F(QDMIQueryFixture, SuccessfulPayloadSnapshot) {
   const auto operations = Read_operations(session);
   ASSERT_TRUE(operations);
   std::array<Operation, 2> expected_operations{};
-  ASSERT_EQ(
-      Device_query(session, QDMI_DEVICE_PROPERTY_OPERATIONS)(
-          sizeof(expected_operations), expected_operations.data(), nullptr),
-      QDMI_SUCCESS);
+  ASSERT_EQ(Device_query(session, QDMI_DEVICE_PROPERTY_OPERATIONS)(
+                sizeof(expected_operations),
+                static_cast<void *>(expected_operations.data()), nullptr),
+            QDMI_SUCCESS);
   EXPECT_EQ(*operations, std::vector<Operation>(expected_operations.begin(),
                                                 expected_operations.end()));
 
@@ -157,7 +158,7 @@ TEST_F(QDMIQueryFixture, EmptyArrayPayload) {
   };
   const auto values = Read<size_t>(query, false);
   ASSERT_TRUE(values);
-  EXPECT_TRUE(values->empty());
+  EXPECT_TRUE(values && values->empty());
   EXPECT_EQ(probes, 3U);
   EXPECT_EQ(retrievals, 4U);
 }

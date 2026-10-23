@@ -33,9 +33,12 @@ struct CONTROL_QDMI_Operation_impl_d {
 };
 
 namespace {
+// The fake C ABI needs process-wide state and stable, mutable opaque handles.
+// NOLINTBEGIN(cppcoreguidelines-avoid-non-const-global-variables)
 bool initialized = false;
 std::array<CONTROL_QDMI_Site_impl_d, 3> sites{{{17}, {42}, {99}}};
 std::array<CONTROL_QDMI_Operation_impl_d, 2> operations{{{0}, {1}}};
+// NOLINTEND(cppcoreguidelines-avoid-non-const-global-variables)
 
 auto Copy(size_t bytes, const void *source, size_t size, void *value,
           size_t *size_ret) -> int {
@@ -78,7 +81,7 @@ int CONTROL_QDMI_device_session_alloc(CONTROL_QDMI_Device_Session *session) {
   *session = new CONTROL_QDMI_Device_Session_impl_d;
   return QDMI_SUCCESS;
 }
-int CONTROL_QDMI_device_session_init(CONTROL_QDMI_Device_Session) {
+int CONTROL_QDMI_device_session_init(CONTROL_QDMI_Device_Session /*session*/) {
   return initialized ? QDMI_SUCCESS : QDMI_ERROR_BADSTATE;
 }
 void CONTROL_QDMI_device_session_free(CONTROL_QDMI_Device_Session session) {
@@ -96,22 +99,22 @@ int CONTROL_QDMI_device_session_query_device_property(
   case QDMI_DEVICE_PROPERTY_STATUS:
     return Scalar(QDMI_DEVICE_STATUS_IDLE, size, value, size_ret);
   case QDMI_DEVICE_PROPERTY_SITES: {
-    const std::array handles{&sites[0], &sites[1], &sites[2]};
-    return Copy(sizeof(handles), handles.data(), size, value, size_ret);
+    const std::array handles{sites.data(), &sites[1], &sites[2]};
+    return Copy(sizeof(handles), static_cast<const void *>(handles.data()),
+                size, value, size_ret);
   }
   case QDMI_DEVICE_PROPERTY_OPERATIONS: {
-    const std::array handles{&operations[0], &operations[1]};
-    return Copy(sizeof(handles), handles.data(), size, value, size_ret);
+    const std::array handles{operations.data(), &operations[1]};
+    return Copy(sizeof(handles), static_cast<const void *>(handles.data()),
+                size, value, size_ret);
   }
   case QDMI_DEVICE_PROPERTY_COUPLINGMAP:
     return Copy(0, nullptr, size, value, size_ret);
   case QDMI_DEVICE_PROPERTY_DURATIONUNIT:
     return Copy(sizeof("picosecond"), "picosecond", size, value, size_ret);
   case QDMI_DEVICE_PROPERTY_QUEUELENGTH:
-    // A scalar must report sizeof(size_t), not one byte.
-    return Scalar(char{0}, size, value, size_ret);
   case QDMI_DEVICE_PROPERTY_SUPPORTEDPROGRAMFORMATS:
-    // A format array must contain whole enum elements.
+    // Both a size_t scalar and an enum array need more than one byte.
     return Scalar(char{0}, size, value, size_ret);
   case QDMI_DEVICE_PROPERTY_MAX:
     return QDMI_SUCCESS;
@@ -138,7 +141,8 @@ int CONTROL_QDMI_device_session_query_site_property(
 }
 int CONTROL_QDMI_device_session_query_operation_property(
     CONTROL_QDMI_Device_Session session, CONTROL_QDMI_Operation operation,
-    size_t, const CONTROL_QDMI_Site *, size_t, const double *,
+    size_t /*num_sites*/, const CONTROL_QDMI_Site * /*sites*/,
+    size_t /*num_params*/, const double * /*params*/,
     QDMI_Operation_Property prop, size_t size, void *value, size_t *size_ret) {
   if (session == nullptr || operation == nullptr ||
       prop == QDMI_OPERATION_PROPERTY_MAX) {
