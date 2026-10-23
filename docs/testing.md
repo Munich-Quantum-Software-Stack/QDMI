@@ -67,6 +67,12 @@ defined enum values, and advertised nonnull handles. Invalid enums, removed
 device property IDs 8 and 9, and isolated null arguments are checked against the
 specified errors. Error returns may overwrite the supplied buffer.
 
+Each of the 53 contract checks runs as four separate GoogleTest cases: exact and
+oversized buffers, each with and without `size_ret`. Each case validates its
+retrieved values and relationships before another retrieval can replace them.
+Test names identify the variant as `ExactWithoutSize`, `ExactWithSize`,
+`OversizedWithoutSize`, or `OversizedWithSize`.
+
 Device coverage includes name, version, library version, ID, status, qubit
 count, queue length, site and operation lists, coupling map, child devices,
 supported program formats, length and duration units and scale factors, and
@@ -152,8 +158,8 @@ change the normative API docstrings.
 
 QDMI CI runs positive controls and fixed negative controls for malformed sizes,
 invalid properties, empty units, missing mandatory indices, omitted size
-outputs, and missing string terminators at every retrieval position. It also
-runs two source consumers and relocated installed consumers on Linux and macOS.
-The consumer checks include fixture/install paths with spaces, missing installed
-assets, and explicit opt-out. This workflow does not run on Windows; local
-Windows verification is separate.
+outputs, invalid status values, and missing string terminators in every
+retrieval variant. It also runs two source consumers and relocated installed
+consumers on Linux and macOS. The consumer checks include fixture/install paths
+with spaces, missing installed assets, and explicit opt-out. This workflow does
+not run on Windows; local Windows verification is separate.

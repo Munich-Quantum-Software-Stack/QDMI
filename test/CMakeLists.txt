@@ -101,14 +101,14 @@ add_test(
   NAME query-positive
   COMMAND
     query-control
-    "--gtest_filter=-QDMIQueryFixture.DeviceLengthUnit:QDMIQueryFixture.SiteXCoordinate:QDMIQueryFixture.DeviceQueueLength:QDMIQueryFixture.DeviceSupportedProgramFormats:QDMIQueryFixture.DeviceInvalidProperty:QDMIQueryFixture.SiteIndex:QDMIQueryFixture.Missing*"
+    "--gtest_filter=-*/QDMIQueryTest.DeviceLengthUnit/*:*/QDMIQueryTest.SiteXCoordinate/*:*/QDMIQueryTest.DeviceQueueLength/*:*/QDMIQueryTest.DeviceSupportedProgramFormats/*:*/QDMIQueryTest.DeviceInvalidProperty/*:*/QDMIQueryTest.SiteIndex/*:*/QDMIQueryTest.Missing*/*:*/QDMIQueryTest.InvalidStatus/*"
 )
 set_tests_properties(query-positive PROPERTIES LABELS qdmi-query)
 add_test(
   NAME query-positive-mixed-support
   COMMAND
     query-control
-    "--gtest_filter=QDMIQueryFixture.SiteT1:QDMIQueryFixture.OperationName:QDMIQueryFixture.DeviceCouplingMap:QDMIQueryFixture.RemovedDeviceProperties:QDMIQueryFixture.SuccessfulPayloadSnapshot:QDMIQueryFixture.DeviceDurationUnit"
+    "--gtest_filter=*/QDMIQueryTest.SiteT1/*:*/QDMIQueryTest.OperationName/*:*/QDMIQueryTest.DeviceCouplingMap/*:*/QDMIQueryTest.RemovedDeviceProperties/*:*/QDMIQueryTest.SuccessfulPayloadSnapshot/*:*/QDMIQueryTest.DeviceDurationUnit/*"
 )
 set_tests_properties(
   query-positive-mixed-support
@@ -125,21 +125,26 @@ foreach(
         "MissingBoolProbeSize|size probe did not set"
         "MissingArrayRetrievalSize|payload size changed"
         "MissingBoolRetrievalSize|payload size changed"
-        "MissingTerminator0|string payload must end in NUL"
-        "MissingTerminator1|string payload must end in NUL"
-        "MissingTerminator2|string payload must end in NUL"
-        "MissingTerminator3|string payload must end in NUL")
+        "MissingTerminator|string payload must end in NUL"
+        "InvalidStatus|device status must be a defined status")
   string(REPLACE "|" ";" fields "${control}")
   list(GET fields 0 case)
   list(GET fields 1 diagnostic)
-  add_test(
-    NAME "query-negative.${case}"
-    COMMAND
-      "${CMAKE_COMMAND}" "-DEXECUTABLE=$<TARGET_FILE:query-control>"
-      "-DCASE=${case}" "-DDIAGNOSTIC=${diagnostic}"
-      "-DREPORT=${CMAKE_CURRENT_BINARY_DIR}/negative-${case}.xml" -P
-      "${CMAKE_CURRENT_SOURCE_DIR}/query/check_negative.cmake")
-  set_tests_properties("query-negative.${case}" PROPERTIES LABELS qdmi-query)
+  foreach(variant IN ITEMS ExactWithoutSize ExactWithSize OversizedWithoutSize
+                           OversizedWithSize)
+    if(case MATCHES "Missing.*RetrievalSize" AND variant MATCHES "WithoutSize")
+      continue()
+    endif()
+    add_test(
+      NAME "query-negative.${case}.${variant}"
+      COMMAND
+        "${CMAKE_COMMAND}" "-DEXECUTABLE=$<TARGET_FILE:query-control>"
+        "-DCASE=${case}" "-DVARIANT=${variant}" "-DDIAGNOSTIC=${diagnostic}"
+        "-DREPORT=${CMAKE_CURRENT_BINARY_DIR}/negative-${case}-${variant}.xml"
+        -P "${CMAKE_CURRENT_SOURCE_DIR}/query/check_negative.cmake")
+    set_tests_properties("query-negative.${case}.${variant}"
+                         PROPERTIES LABELS qdmi-query)
+  endforeach()
 endforeach()
 
 add_test(

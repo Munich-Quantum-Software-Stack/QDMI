@@ -17,8 +17,10 @@
 
 file(REMOVE "${REPORT}")
 execute_process(
-  COMMAND "${EXECUTABLE}" "--gtest_filter=QDMIQueryFixture.${CASE}"
-          "--gtest_color=no" "--gtest_output=xml:${REPORT}"
+  COMMAND
+    "${EXECUTABLE}"
+    "--gtest_filter=QueryVariants/QDMIQueryTest.${CASE}/${VARIANT}"
+    "--gtest_color=no" "--gtest_output=xml:${REPORT}"
   RESULT_VARIABLE result
   OUTPUT_VARIABLE output
   ERROR_VARIABLE errors
@@ -40,8 +42,8 @@ if(NOT failure_count EQUAL 1)
       "Expected one contract assertion, got ${failure_count}: ${report}")
 endif()
 if(NOT report MATCHES [[tests="1" failures="1" disabled="0" errors="0"]]
-   OR NOT report MATCHES "<testcase name=\"${CASE}\""
-   OR NOT report MATCHES [[classname="QDMIQueryFixture"]]
+   OR NOT report MATCHES "<testcase name=\"${CASE}/${VARIANT}\""
+   OR NOT report MATCHES [[classname="QueryVariants/QDMIQueryTest"]]
    OR NOT report MATCHES "${DIAGNOSTIC}")
   message(FATAL_ERROR "Wrong failure for ${CASE}: ${report}${output}${errors}")
 endif()

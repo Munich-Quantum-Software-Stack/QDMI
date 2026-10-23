@@ -33,6 +33,14 @@
 #include <unordered_set>
 #include <vector>
 
+struct QueryVariant {
+  bool oversized;
+  bool return_size;
+};
+
+class QDMIQueryTest : public QDMIQueryFixture,
+                      public ::testing::WithParamInterface<QueryVariant> {};
+
 namespace {
 using Session = @QDMI_QUERY_PREFIX@_QDMI_Device_Session;
 using Site = @QDMI_QUERY_PREFIX@_QDMI_Site;
@@ -111,31 +119,30 @@ auto Read(Query query, bool scalar = true, bool mandatory = false)
               QDMI_ERROR_INVALIDARGUMENT)
         << "one-byte-small buffer";
   }
-  for (const auto capacity : {bytes, bytes + sizeof(T)}) {
-    for (const bool return_size : {false, true}) {
-      if constexpr (std::is_same_v<T, char>) {
-        std::fill(values.begin(), values.end(), '\x7f');
-      }
-      size_t actual = std::numeric_limits<size_t>::max();
-      const auto result =
-          query(capacity, static_cast<void *>(values.data()), return_size ? &actual : nullptr);
-      EXPECT_EQ(result, QDMI_SUCCESS) << "payload retrieval failed; metadata "
-                                         "may have changed since size probe";
-      if (result != QDMI_SUCCESS) {
-        return std::nullopt;
-      }
-      if (return_size) {
-        EXPECT_EQ(actual, bytes) << "payload size changed since size probe";
-      }
-      if (return_size && actual != bytes) {
-        return std::nullopt;
-      }
-      if constexpr (std::is_same_v<T, char>) {
-        EXPECT_EQ(values[bytes - 1], '\0') << "string payload must end in NUL";
-        if (values[bytes - 1] != '\0') {
-          return std::nullopt;
-        }
-      }
+  const auto variant = QDMIQueryTest::GetParam();
+  const auto capacity = bytes + (variant.oversized ? sizeof(T) : 0);
+  const bool return_size = variant.return_size;
+  if constexpr (std::is_same_v<T, char>) {
+    std::fill(values.begin(), values.end(), '\x7f');
+  }
+  size_t actual = std::numeric_limits<size_t>::max();
+  const auto result = query(capacity, static_cast<void *>(values.data()),
+                            return_size ? &actual : nullptr);
+  EXPECT_EQ(result, QDMI_SUCCESS)
+      << "payload retrieval failed; metadata may have changed since size probe";
+  if (result != QDMI_SUCCESS) {
+    return std::nullopt;
+  }
+  if (return_size) {
+    EXPECT_EQ(actual, bytes) << "payload size changed since size probe";
+  }
+  if (return_size && actual != bytes) {
+    return std::nullopt;
+  }
+  if constexpr (std::is_same_v<T, char>) {
+    EXPECT_EQ(values[bytes - 1], '\0') << "string payload must end in NUL";
+    if (values[bytes - 1] != '\0') {
+      return std::nullopt;
     }
   }
   values.pop_back();
@@ -170,22 +177,21 @@ template <class Query> auto Read_bool(Query query) -> std::optional<bool> {
   std::array<bool, 2> values{};
   EXPECT_EQ(query(bytes - 1, static_cast<void *>(values.data()), nullptr),
             QDMI_ERROR_INVALIDARGUMENT);
-  for (const auto capacity : {sizeof(bool), sizeof(values)}) {
-    for (const bool return_size : {false, true}) {
-      size_t actual = std::numeric_limits<size_t>::max();
-      const auto result =
-          query(capacity, static_cast<void *>(values.data()), return_size ? &actual : nullptr);
-      EXPECT_EQ(result, QDMI_SUCCESS);
-      if (result != QDMI_SUCCESS) {
-        return std::nullopt;
-      }
-      if (return_size) {
-        EXPECT_EQ(actual, bytes) << "payload size changed since size probe";
-      }
-      if (return_size && actual != bytes) {
-        return std::nullopt;
-      }
-    }
+  const auto variant = QDMIQueryTest::GetParam();
+  const auto capacity = variant.oversized ? sizeof(values) : sizeof(bool);
+  const bool return_size = variant.return_size;
+  size_t actual = std::numeric_limits<size_t>::max();
+  const auto result = query(capacity, static_cast<void *>(values.data()),
+                            return_size ? &actual : nullptr);
+  EXPECT_EQ(result, QDMI_SUCCESS);
+  if (result != QDMI_SUCCESS) {
+    return std::nullopt;
+  }
+  if (return_size) {
+    EXPECT_EQ(actual, bytes) << "payload size changed since size probe";
+  }
+  if (return_size && actual != bytes) {
+    return std::nullopt;
   }
   return values[0];
 }
@@ -231,7 +237,7 @@ void Unsupported_objects(size_t count) {
 }
 } // namespace
 
-TEST_F(QDMIQueryFixture, DeviceName) {
+TEST_P(QDMIQueryTest, DeviceName) {
   const auto value =
       Read<char>(Device_query(session, QDMI_DEVICE_PROPERTY_NAME), false);
   if (!value && !HasFailure()) {
@@ -239,7 +245,7 @@ TEST_F(QDMIQueryFixture, DeviceName) {
   }
 }
 
-TEST_F(QDMIQueryFixture, DeviceVersion) {
+TEST_P(QDMIQueryTest, DeviceVersion) {
   const auto value =
       Read<char>(Device_query(session, QDMI_DEVICE_PROPERTY_VERSION), false);
   if (!value && !HasFailure()) {
@@ -247,7 +253,7 @@ TEST_F(QDMIQueryFixture, DeviceVersion) {
   }
 }
 
-TEST_F(QDMIQueryFixture, DeviceStatus) {
+TEST_P(QDMIQueryTest, DeviceStatus) {
   const auto value = Read<QDMI_Device_Status>(
       Device_query(session, QDMI_DEVICE_PROPERTY_STATUS), true);
   if (!value && !HasFailure()) {
@@ -259,7 +265,7 @@ TEST_F(QDMIQueryFixture, DeviceStatus) {
   }
 }
 
-TEST_F(QDMIQueryFixture, DeviceLibraryVersion) {
+TEST_P(QDMIQueryTest, DeviceLibraryVersion) {
   const auto value = Read<char>(
       Device_query(session, QDMI_DEVICE_PROPERTY_LIBRARYVERSION), false);
   if (!value && !HasFailure()) {
@@ -267,7 +273,7 @@ TEST_F(QDMIQueryFixture, DeviceLibraryVersion) {
   }
 }
 
-TEST_F(QDMIQueryFixture, DeviceQubitsNum) {
+TEST_P(QDMIQueryTest, DeviceQubitsNum) {
   const auto value =
       Read<size_t>(Device_query(session, QDMI_DEVICE_PROPERTY_QUBITSNUM), true);
   if (!value && !HasFailure()) {
@@ -275,7 +281,7 @@ TEST_F(QDMIQueryFixture, DeviceQubitsNum) {
   }
 }
 
-TEST_F(QDMIQueryFixture, DeviceSites) {
+TEST_P(QDMIQueryTest, DeviceSites) {
   const auto value =
       Read<Site>(Device_query(session, QDMI_DEVICE_PROPERTY_SITES), false);
   if (!value && !HasFailure()) {
@@ -283,7 +289,7 @@ TEST_F(QDMIQueryFixture, DeviceSites) {
   }
 }
 
-TEST_F(QDMIQueryFixture, DeviceOperations) {
+TEST_P(QDMIQueryTest, DeviceOperations) {
   const auto value = Read<Operation>(
       Device_query(session, QDMI_DEVICE_PROPERTY_OPERATIONS), false);
   if (!value && !HasFailure()) {
@@ -291,7 +297,7 @@ TEST_F(QDMIQueryFixture, DeviceOperations) {
   }
 }
 
-TEST_F(QDMIQueryFixture, DeviceCouplingMap) {
+TEST_P(QDMIQueryTest, DeviceCouplingMap) {
   const auto value =
       Read<Site>(Device_query(session, QDMI_DEVICE_PROPERTY_COUPLINGMAP), false);
   if (!value && !HasFailure()) {
@@ -299,14 +305,14 @@ TEST_F(QDMIQueryFixture, DeviceCouplingMap) {
   }
 }
 
-TEST_F(QDMIQueryFixture, DeviceLengthUnit) {
+TEST_P(QDMIQueryTest, DeviceLengthUnit) {
   const auto value = Read_unit(session, QDMI_DEVICE_PROPERTY_LENGTHUNIT);
   if (!value && !HasFailure()) {
     GTEST_SKIP() << "Device property is unsupported";
   }
 }
 
-TEST_F(QDMIQueryFixture, DeviceLengthScaleFactor) {
+TEST_P(QDMIQueryTest, DeviceLengthScaleFactor) {
   const auto value = Read<double>(
       Device_query(session, QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR), true);
   if (!value && !HasFailure()) {
@@ -314,14 +320,14 @@ TEST_F(QDMIQueryFixture, DeviceLengthScaleFactor) {
   }
 }
 
-TEST_F(QDMIQueryFixture, DeviceDurationUnit) {
+TEST_P(QDMIQueryTest, DeviceDurationUnit) {
   const auto value = Read_unit(session, QDMI_DEVICE_PROPERTY_DURATIONUNIT);
   if (!value && !HasFailure()) {
     GTEST_SKIP() << "Device property is unsupported";
   }
 }
 
-TEST_F(QDMIQueryFixture, DeviceDurationScaleFactor) {
+TEST_P(QDMIQueryTest, DeviceDurationScaleFactor) {
   const auto value = Read<double>(
       Device_query(session, QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR), true);
   if (!value && !HasFailure()) {
@@ -329,7 +335,7 @@ TEST_F(QDMIQueryFixture, DeviceDurationScaleFactor) {
   }
 }
 
-TEST_F(QDMIQueryFixture, DeviceMinAtomDistance) {
+TEST_P(QDMIQueryTest, DeviceMinAtomDistance) {
   const auto value = Read<uint64_t>(
       Device_query(session, QDMI_DEVICE_PROPERTY_MINATOMDISTANCE), true);
   if (!value && !HasFailure()) {
@@ -340,7 +346,7 @@ TEST_F(QDMIQueryFixture, DeviceMinAtomDistance) {
   }
 }
 
-TEST_F(QDMIQueryFixture, DeviceSupportedProgramFormats) {
+TEST_P(QDMIQueryTest, DeviceSupportedProgramFormats) {
   const auto value = Read<QDMI_Program_Format>(
       Device_query(session, QDMI_DEVICE_PROPERTY_SUPPORTEDPROGRAMFORMATS),
       false);
@@ -369,7 +375,7 @@ TEST_F(QDMIQueryFixture, DeviceSupportedProgramFormats) {
   }
 }
 
-TEST_F(QDMIQueryFixture, DeviceChildDevices) {
+TEST_P(QDMIQueryTest, DeviceChildDevices) {
   const auto value = Read<@QDMI_QUERY_PREFIX@_QDMI_Child_Device>(
       Device_query(session, QDMI_DEVICE_PROPERTY_CHILDDEVICES), false);
   if (!value && !HasFailure()) {
@@ -377,7 +383,7 @@ TEST_F(QDMIQueryFixture, DeviceChildDevices) {
   }
 }
 
-TEST_F(QDMIQueryFixture, DeviceQueueLength) {
+TEST_P(QDMIQueryTest, DeviceQueueLength) {
   const auto value = Read<size_t>(
       Device_query(session, QDMI_DEVICE_PROPERTY_QUEUELENGTH), true);
   if (!value && !HasFailure()) {
@@ -385,7 +391,7 @@ TEST_F(QDMIQueryFixture, DeviceQueueLength) {
   }
 }
 
-TEST_F(QDMIQueryFixture, DeviceId) {
+TEST_P(QDMIQueryTest, DeviceId) {
   const auto value =
       Read<char>(Device_query(session, QDMI_DEVICE_PROPERTY_ID), false);
   if (!value && !HasFailure()) {
@@ -507,114 +513,114 @@ void Check_operation_property(Session session, QDMI_Operation_Property property)
 }
 } // namespace
 
-TEST_F(QDMIQueryFixture, SiteIndex) {
+TEST_P(QDMIQueryTest, SiteIndex) {
   Check_site_property<size_t>(session, QDMI_SITE_PROPERTY_INDEX);
 }
 
-TEST_F(QDMIQueryFixture, SiteT1) {
+TEST_P(QDMIQueryTest, SiteT1) {
   Check_site_property<uint64_t>(session, QDMI_SITE_PROPERTY_T1);
 }
 
-TEST_F(QDMIQueryFixture, SiteT2) {
+TEST_P(QDMIQueryTest, SiteT2) {
   Check_site_property<uint64_t>(session, QDMI_SITE_PROPERTY_T2);
 }
 
-TEST_F(QDMIQueryFixture, SiteName) {
+TEST_P(QDMIQueryTest, SiteName) {
   Check_site_property<char>(session, QDMI_SITE_PROPERTY_NAME);
 }
 
-TEST_F(QDMIQueryFixture, SiteXCoordinate) {
+TEST_P(QDMIQueryTest, SiteXCoordinate) {
   Check_site_property<int64_t>(session, QDMI_SITE_PROPERTY_XCOORDINATE);
 }
 
-TEST_F(QDMIQueryFixture, SiteYCoordinate) {
+TEST_P(QDMIQueryTest, SiteYCoordinate) {
   Check_site_property<int64_t>(session, QDMI_SITE_PROPERTY_YCOORDINATE);
 }
 
-TEST_F(QDMIQueryFixture, SiteZCoordinate) {
+TEST_P(QDMIQueryTest, SiteZCoordinate) {
   Check_site_property<int64_t>(session, QDMI_SITE_PROPERTY_ZCOORDINATE);
 }
 
-TEST_F(QDMIQueryFixture, SiteIsZone) {
+TEST_P(QDMIQueryTest, SiteIsZone) {
   Check_site_property<bool>(session, QDMI_SITE_PROPERTY_ISZONE);
 }
 
-TEST_F(QDMIQueryFixture, SiteXExtent) {
+TEST_P(QDMIQueryTest, SiteXExtent) {
   Check_site_property<uint64_t>(session, QDMI_SITE_PROPERTY_XEXTENT);
 }
 
-TEST_F(QDMIQueryFixture, SiteYExtent) {
+TEST_P(QDMIQueryTest, SiteYExtent) {
   Check_site_property<uint64_t>(session, QDMI_SITE_PROPERTY_YEXTENT);
 }
 
-TEST_F(QDMIQueryFixture, SiteZExtent) {
+TEST_P(QDMIQueryTest, SiteZExtent) {
   Check_site_property<uint64_t>(session, QDMI_SITE_PROPERTY_ZEXTENT);
 }
 
-TEST_F(QDMIQueryFixture, SiteModuleIndex) {
+TEST_P(QDMIQueryTest, SiteModuleIndex) {
   Check_site_property<uint64_t>(session, QDMI_SITE_PROPERTY_MODULEINDEX);
 }
 
-TEST_F(QDMIQueryFixture, SiteSubmoduleIndex) {
+TEST_P(QDMIQueryTest, SiteSubmoduleIndex) {
   Check_site_property<uint64_t>(session, QDMI_SITE_PROPERTY_SUBMODULEINDEX);
 }
 
-TEST_F(QDMIQueryFixture, OperationName) {
+TEST_P(QDMIQueryTest, OperationName) {
   Check_operation_property<char>(session, QDMI_OPERATION_PROPERTY_NAME);
 }
 
-TEST_F(QDMIQueryFixture, OperationQubitsNum) {
+TEST_P(QDMIQueryTest, OperationQubitsNum) {
   Check_operation_property<size_t>(session, QDMI_OPERATION_PROPERTY_QUBITSNUM);
 }
 
-TEST_F(QDMIQueryFixture, OperationParametersNum) {
+TEST_P(QDMIQueryTest, OperationParametersNum) {
   Check_operation_property<size_t>(session,
                                  QDMI_OPERATION_PROPERTY_PARAMETERSNUM);
 }
 
-TEST_F(QDMIQueryFixture, OperationDuration) {
+TEST_P(QDMIQueryTest, OperationDuration) {
   Check_operation_property<uint64_t>(session, QDMI_OPERATION_PROPERTY_DURATION);
 }
 
-TEST_F(QDMIQueryFixture, OperationFidelity) {
+TEST_P(QDMIQueryTest, OperationFidelity) {
   Check_operation_property<double>(session, QDMI_OPERATION_PROPERTY_FIDELITY);
 }
 
-TEST_F(QDMIQueryFixture, OperationInteractionRadius) {
+TEST_P(QDMIQueryTest, OperationInteractionRadius) {
   Check_operation_property<uint64_t>(session,
                                    QDMI_OPERATION_PROPERTY_INTERACTIONRADIUS);
 }
 
-TEST_F(QDMIQueryFixture, OperationBlockingRadius) {
+TEST_P(QDMIQueryTest, OperationBlockingRadius) {
   Check_operation_property<uint64_t>(session,
                                    QDMI_OPERATION_PROPERTY_BLOCKINGRADIUS);
 }
 
-TEST_F(QDMIQueryFixture, OperationIdlingFidelity) {
+TEST_P(QDMIQueryTest, OperationIdlingFidelity) {
   Check_operation_property<double>(session,
                                  QDMI_OPERATION_PROPERTY_IDLINGFIDELITY);
 }
 
-TEST_F(QDMIQueryFixture, OperationIsZoned) {
+TEST_P(QDMIQueryTest, OperationIsZoned) {
   Check_operation_property<bool>(session, QDMI_OPERATION_PROPERTY_ISZONED);
 }
 
-TEST_F(QDMIQueryFixture, OperationSites) {
+TEST_P(QDMIQueryTest, OperationSites) {
   Check_operation_property<Site>(session, QDMI_OPERATION_PROPERTY_SITES);
 }
 
-TEST_F(QDMIQueryFixture, OperationMeanShuttlingSpeed) {
+TEST_P(QDMIQueryTest, OperationMeanShuttlingSpeed) {
   Check_operation_property<uint64_t>(session,
                                    QDMI_OPERATION_PROPERTY_MEANSHUTTLINGSPEED);
 }
 
-TEST_F(QDMIQueryFixture, DeviceInvalidProperty) {
+TEST_P(QDMIQueryTest, DeviceInvalidProperty) {
   EXPECT_EQ(Device_query(session, QDMI_DEVICE_PROPERTY_MAX)(0, nullptr, nullptr),
             QDMI_ERROR_INVALIDARGUMENT)
       << "invalid device property";
 }
 
-TEST_F(QDMIQueryFixture, RemovedDeviceProperties) {
+TEST_P(QDMIQueryTest, RemovedDeviceProperties) {
   for (const auto reserved : {8, 9}) {
     SCOPED_TRACE(reserved);
     const auto query =
@@ -626,7 +632,7 @@ TEST_F(QDMIQueryFixture, RemovedDeviceProperties) {
   }
 }
 
-TEST_F(QDMIQueryFixture, DeviceNullSession) {
+TEST_P(QDMIQueryTest, DeviceNullSession) {
   for (int i = 0; i < QDMI_DEVICE_PROPERTY_MAX; ++i) {
     if (i == 8 || i == 9) {
       continue;
@@ -645,7 +651,7 @@ TEST_F(QDMIQueryFixture, DeviceNullSession) {
       << "No supported device property for a single-error null-session query";
 }
 
-TEST_F(QDMIQueryFixture, SiteInvalidProperty) {
+TEST_P(QDMIQueryTest, SiteInvalidProperty) {
   const auto sites = Read_sites(session);
   if (!sites || sites->empty()) {
     if (!HasFailure()) {
@@ -664,7 +670,7 @@ TEST_F(QDMIQueryFixture, SiteInvalidProperty) {
   }
 }
 
-TEST_F(QDMIQueryFixture, OperationInvalidProperty) {
+TEST_P(QDMIQueryTest, OperationInvalidProperty) {
   const auto operations = Read_operations(session);
   if (!operations || operations->empty()) {
     if (!HasFailure()) {
@@ -683,7 +689,7 @@ TEST_F(QDMIQueryFixture, OperationInvalidProperty) {
   }
 }
 
-TEST_F(QDMIQueryFixture, SiteNullSession) {
+TEST_P(QDMIQueryTest, SiteNullSession) {
   const auto objects = Read_sites(session);
   if (!objects) {
     if (!HasFailure()) {
@@ -713,7 +719,7 @@ TEST_F(QDMIQueryFixture, SiteNullSession) {
   }
 }
 
-TEST_F(QDMIQueryFixture, SiteNullHandle) {
+TEST_P(QDMIQueryTest, SiteNullHandle) {
   const auto objects = Read_sites(session);
   if (!objects) {
     if (!HasFailure()) {
@@ -743,7 +749,7 @@ TEST_F(QDMIQueryFixture, SiteNullHandle) {
   }
 }
 
-TEST_F(QDMIQueryFixture, OperationNullSession) {
+TEST_P(QDMIQueryTest, OperationNullSession) {
   const auto objects = Read_operations(session);
   if (!objects) {
     if (!HasFailure()) {
@@ -773,7 +779,7 @@ TEST_F(QDMIQueryFixture, OperationNullSession) {
   }
 }
 
-TEST_F(QDMIQueryFixture, OperationNullHandle) {
+TEST_P(QDMIQueryTest, OperationNullHandle) {
   const auto objects = Read_operations(session);
   if (!objects) {
     if (!HasFailure()) {
@@ -803,7 +809,7 @@ TEST_F(QDMIQueryFixture, OperationNullHandle) {
   }
 }
 
-TEST_F(QDMIQueryFixture, CouplingMapRelationships) {
+TEST_P(QDMIQueryTest, CouplingMapRelationships) {
   const auto edges =
       Read<Site>(Device_query(session, QDMI_DEVICE_PROPERTY_COUPLINGMAP), false);
   if (!edges) {
@@ -827,7 +833,7 @@ TEST_F(QDMIQueryFixture, CouplingMapRelationships) {
   }
 }
 
-TEST_F(QDMIQueryFixture, SiteCoordinateUniqueness) {
+TEST_P(QDMIQueryTest, SiteCoordinateUniqueness) {
   const auto sites = Read_sites(session);
   if (!sites) {
     if (!HasFailure()) {
@@ -866,7 +872,7 @@ TEST_F(QDMIQueryFixture, SiteCoordinateUniqueness) {
   }
 }
 
-TEST_F(QDMIQueryFixture, OperationSiteRelationships) {
+TEST_P(QDMIQueryTest, OperationSiteRelationships) {
   const auto operations = Read_operations(session);
   if (!operations) {
     if (!HasFailure()) {
@@ -931,3 +937,12 @@ TEST_F(QDMIQueryFixture, OperationSiteRelationships) {
     GTEST_SKIP() << "Operation sites are unsupported";
   }
 }
+
+INSTANTIATE_TEST_SUITE_P(
+    QueryVariants, QDMIQueryTest,
+    ::testing::Values(QueryVariant{false, false}, QueryVariant{false, true},
+                      QueryVariant{true, false}, QueryVariant{true, true}),
+    [](const ::testing::TestParamInfo<QueryVariant> &test_info) {
+      return std::string(test_info.param.oversized ? "Oversized" : "Exact") +
+             (test_info.param.return_size ? "WithSize" : "WithoutSize");
+    });

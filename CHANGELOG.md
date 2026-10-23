@@ -15,8 +15,9 @@ clients compiled against a different minor or major version.
 ### Added
 
 - ✨ Add an opt-in reusable offline device query conformance suite with source
-  and installed CMake consumers, positive and negative controls, and integration
-  guidance ([#591]) ([\@marcelwa]).
+  and installed CMake consumers, value checks for every retrieval variant,
+  positive and negative controls, and integration guidance ([#591])
+  ([\@marcelwa]).
 
 ### Fixed
 

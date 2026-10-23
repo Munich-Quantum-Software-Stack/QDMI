@@ -18,7 +18,7 @@
  */
 
 // Included after the shared suite only in the fixed fake-provider executable.
-TEST_F(QDMIQueryFixture, SuccessfulPayloadSnapshot) {
+TEST_P(QDMIQueryTest, SuccessfulPayloadSnapshot) {
   const auto count =
       Read<size_t>(Device_query(session, QDMI_DEVICE_PROPERTY_QUBITSNUM));
   ASSERT_TRUE(count);
@@ -51,7 +51,7 @@ TEST_F(QDMIQueryFixture, SuccessfulPayloadSnapshot) {
   EXPECT_TRUE(*zone);
 }
 
-TEST_F(QDMIQueryFixture, MissingArrayProbeSize) {
+TEST_P(QDMIQueryTest, MissingArrayProbeSize) {
   const auto query = [](size_t, void *value, size_t *size_ret) {
     if (value != nullptr && size_ret != nullptr) {
       *size_ret = 0;
@@ -61,7 +61,7 @@ TEST_F(QDMIQueryFixture, MissingArrayProbeSize) {
   (void)Read<size_t>(query, false);
 }
 
-TEST_F(QDMIQueryFixture, MissingBoolProbeSize) {
+TEST_P(QDMIQueryTest, MissingBoolProbeSize) {
   const auto query = [](size_t size, void *value, size_t *size_ret) {
     if (value != nullptr && size < sizeof(bool)) {
       return QDMI_ERROR_INVALIDARGUMENT;
@@ -77,7 +77,7 @@ TEST_F(QDMIQueryFixture, MissingBoolProbeSize) {
   (void)Read_bool(query);
 }
 
-TEST_F(QDMIQueryFixture, MissingArrayRetrievalSize) {
+TEST_P(QDMIQueryTest, MissingArrayRetrievalSize) {
   const auto query = [](size_t size, void *value, size_t *size_ret) {
     if (value != nullptr && size < sizeof(size_t)) {
       return QDMI_ERROR_INVALIDARGUMENT;
@@ -93,7 +93,7 @@ TEST_F(QDMIQueryFixture, MissingArrayRetrievalSize) {
   (void)Read<size_t>(query, false);
 }
 
-TEST_F(QDMIQueryFixture, MissingBoolRetrievalSize) {
+TEST_P(QDMIQueryTest, MissingBoolRetrievalSize) {
   const auto query = [](size_t size, void *value, size_t *size_ret) {
     if (value != nullptr && size < sizeof(bool)) {
       return QDMI_ERROR_INVALIDARGUMENT;
@@ -109,11 +109,9 @@ TEST_F(QDMIQueryFixture, MissingBoolRetrievalSize) {
   (void)Read_bool(query);
 }
 
-namespace {
-void Check_missing_terminator(size_t missing_retrieval) {
-  size_t retrieval = 0;
-  const auto query = [&retrieval, missing_retrieval](size_t size, void *value,
-                                                     size_t *size_ret) {
+TEST_P(QDMIQueryTest, MissingTerminator) {
+  const auto variant = GetParam();
+  const auto query = [variant](size_t size, void *value, size_t *size_ret) {
     if (value != nullptr && size < 4) {
       return QDMI_ERROR_INVALIDARGUMENT;
     }
@@ -123,7 +121,8 @@ void Check_missing_terminator(size_t missing_retrieval) {
     if (value != nullptr) {
       auto *text = static_cast<char *>(value);
       std::fill_n(text, 3, 'a');
-      if (retrieval++ != missing_retrieval) {
+      if (size != (variant.oversized ? 5U : 4U) ||
+          (size_ret != nullptr) != variant.return_size) {
         text[3] = '\0';
       }
     }
@@ -132,17 +131,32 @@ void Check_missing_terminator(size_t missing_retrieval) {
   (void)Read<char>(query, false);
 }
 
-} // namespace
+TEST_P(QDMIQueryTest, InvalidStatus) {
+  const auto variant = GetParam();
+  const auto query = [variant](size_t size, void *value, size_t *size_ret) {
+    if (value != nullptr && size < sizeof(QDMI_Device_Status)) {
+      return QDMI_ERROR_INVALIDARGUMENT;
+    }
+    if (size_ret != nullptr) {
+      *size_ret = sizeof(QDMI_Device_Status);
+    }
+    if (value != nullptr) {
+      const bool selected =
+          size == sizeof(QDMI_Device_Status) * (variant.oversized ? 2U : 1U) &&
+          (size_ret != nullptr) == variant.return_size;
+      *static_cast<QDMI_Device_Status *>(value) =
+          selected ? QDMI_DEVICE_STATUS_MAX : QDMI_DEVICE_STATUS_IDLE;
+    }
+    return QDMI_SUCCESS;
+  };
+  const auto status = Read<QDMI_Device_Status>(query);
+  if (status) {
+    EXPECT_LT((*status)[0], QDMI_DEVICE_STATUS_MAX)
+        << "device status must be a defined status";
+  }
+}
 
-TEST_F(QDMIQueryFixture, MissingTerminator0) { Check_missing_terminator(0); }
-
-TEST_F(QDMIQueryFixture, MissingTerminator1) { Check_missing_terminator(1); }
-
-TEST_F(QDMIQueryFixture, MissingTerminator2) { Check_missing_terminator(2); }
-
-TEST_F(QDMIQueryFixture, MissingTerminator3) { Check_missing_terminator(3); }
-
-TEST_F(QDMIQueryFixture, EmptyArrayPayload) {
+TEST_P(QDMIQueryTest, EmptyArrayPayload) {
   size_t probes = 0;
   size_t retrievals = 0;
   const auto query = [&](size_t, void *value, size_t *size_ret) {
@@ -160,5 +174,31 @@ TEST_F(QDMIQueryFixture, EmptyArrayPayload) {
   ASSERT_TRUE(values);
   EXPECT_TRUE(values && values->empty());
   EXPECT_EQ(probes, 3U);
-  EXPECT_EQ(retrievals, 4U);
+  EXPECT_EQ(retrievals, 1U);
+}
+
+TEST_P(QDMIQueryTest, RetrievalVariant) {
+  size_t retrievals = 0;
+  const auto variant = GetParam();
+  const auto query = [&](size_t size, void *value, size_t *size_ret) {
+    if (value != nullptr && size < sizeof(size_t)) {
+      return QDMI_ERROR_INVALIDARGUMENT;
+    }
+    if (size_ret != nullptr) {
+      *size_ret = sizeof(size_t);
+    }
+    if (value != nullptr) {
+      ++retrievals;
+      EXPECT_EQ(size, sizeof(size_t) * (variant.oversized ? 2U : 1U));
+      EXPECT_EQ(size_ret != nullptr, variant.return_size);
+      *static_cast<size_t *>(value) = retrievals;
+    }
+    return QDMI_SUCCESS;
+  };
+  const auto first = Read<size_t>(query);
+  const auto second = Read<size_t>(query);
+  ASSERT_TRUE(first);
+  ASSERT_TRUE(second);
+  EXPECT_EQ((*first)[0], 1U);
+  EXPECT_EQ((*second)[0], 2U);
 }
