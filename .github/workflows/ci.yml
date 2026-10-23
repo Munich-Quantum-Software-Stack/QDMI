@@ -47,9 +47,9 @@ jobs:
       clang-version: 21
       cpp-linter-extra-args: >-
         -std=c++20
-        -I${{ github.workspace }}/build/test/include
-        -I${{ github.workspace }}/build/examples/device/src/include
-        -I${{ github.workspace }}/build/_deps/googletest-src/googletest/include
+        -Itest/include
+        -Iexamples/device/src/include
+        -I_deps/googletest-src/googletest/include
 
   template:
     name: 🏗️ Build and Test Templates
