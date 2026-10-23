@@ -18,6 +18,11 @@ clients compiled against a different minor or major version.
   and installed CMake consumers, positive and negative controls, and integration
   guidance ([#591]) ([\@marcelwa]).
 
+### Fixed
+
+- 🐛 Keep producer compiler warning flags out of installed packages ([#591])
+  ([\@marcelwa]).
+
 ## [1.4.0] - 2026-10-11
 
 _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#140)._

@@ -211,8 +211,16 @@ auto Read_operations(Session session) {
   return operations;
 }
 
-void Require_unit(Session session, QDMI_Device_Property property) {
+auto Read_unit(Session session, QDMI_Device_Property property) {
   const auto unit = Read<char>(Device_query(session, property), false);
+  if (unit) {
+    EXPECT_NE((*unit)[0], '\0') << "unit must not be empty";
+  }
+  return unit;
+}
+
+void Require_unit(Session session, QDMI_Device_Property property) {
+  const auto unit = Read_unit(session, property);
   ASSERT_TRUE(unit) << "unit is required for supported physical values";
 }
 
@@ -292,8 +300,7 @@ TEST_F(QDMIQueryFixture, DeviceCouplingMap) {
 }
 
 TEST_F(QDMIQueryFixture, DeviceLengthUnit) {
-  const auto value =
-      Read<char>(Device_query(session, QDMI_DEVICE_PROPERTY_LENGTHUNIT), false);
+  const auto value = Read_unit(session, QDMI_DEVICE_PROPERTY_LENGTHUNIT);
   if (!value && !HasFailure()) {
     GTEST_SKIP() << "Device property is unsupported";
   }
@@ -308,8 +315,7 @@ TEST_F(QDMIQueryFixture, DeviceLengthScaleFactor) {
 }
 
 TEST_F(QDMIQueryFixture, DeviceDurationUnit) {
-  const auto value = Read<char>(
-      Device_query(session, QDMI_DEVICE_PROPERTY_DURATIONUNIT), false);
+  const auto value = Read_unit(session, QDMI_DEVICE_PROPERTY_DURATIONUNIT);
   if (!value && !HasFailure()) {
     GTEST_SKIP() << "Device property is unsupported";
   }
@@ -427,6 +433,14 @@ void Check_site_property(Session session, QDMI_Site_Property property) {
             << "site indices must be unique";
       }
     }
+    if (property >= QDMI_SITE_PROPERTY_XEXTENT &&
+        property <= QDMI_SITE_PROPERTY_ZEXTENT) {
+      const auto zone =
+          Read_bool(Site_query(session, site, QDMI_SITE_PROPERTY_ISZONE));
+      EXPECT_TRUE(zone.value_or(false)) << "nonzone extent must be unsupported";
+    }
+  }
+  if (supported != 0) {
     if (property == QDMI_SITE_PROPERTY_T1 ||
         property == QDMI_SITE_PROPERTY_T2) {
       Require_unit(session, QDMI_DEVICE_PROPERTY_DURATIONUNIT);
@@ -435,12 +449,6 @@ void Check_site_property(Session session, QDMI_Site_Property property) {
         property <= QDMI_SITE_PROPERTY_ZEXTENT &&
         property != QDMI_SITE_PROPERTY_ISZONE) {
       Require_unit(session, QDMI_DEVICE_PROPERTY_LENGTHUNIT);
-    }
-    if (property >= QDMI_SITE_PROPERTY_XEXTENT &&
-        property <= QDMI_SITE_PROPERTY_ZEXTENT) {
-      const auto zone =
-          Read_bool(Site_query(session, site, QDMI_SITE_PROPERTY_ISZONE));
-      EXPECT_TRUE(zone.value_or(false)) << "nonzone extent must be unsupported";
     }
   }
   Unsupported_objects(unsupported);
@@ -480,6 +488,8 @@ void Check_operation_property(Session session, QDMI_Operation_Property property)
       continue;
     }
     ++supported;
+  }
+  if (supported != 0) {
     if (property == QDMI_OPERATION_PROPERTY_DURATION ||
         property == QDMI_OPERATION_PROPERTY_MEANSHUTTLINGSPEED) {
       Require_unit(session, QDMI_DEVICE_PROPERTY_DURATIONUNIT);

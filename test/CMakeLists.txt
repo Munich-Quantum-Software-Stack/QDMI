@@ -101,7 +101,7 @@ add_test(
   NAME query-positive
   COMMAND
     query-control
-    "--gtest_filter=-QDMIQueryFixture.DeviceQueueLength:QDMIQueryFixture.DeviceSupportedProgramFormats:QDMIQueryFixture.DeviceInvalidProperty:QDMIQueryFixture.SiteIndex:QDMIQueryFixture.Missing*"
+    "--gtest_filter=-QDMIQueryFixture.DeviceLengthUnit:QDMIQueryFixture.SiteXCoordinate:QDMIQueryFixture.DeviceQueueLength:QDMIQueryFixture.DeviceSupportedProgramFormats:QDMIQueryFixture.DeviceInvalidProperty:QDMIQueryFixture.SiteIndex:QDMIQueryFixture.Missing*"
 )
 set_tests_properties(query-positive PROPERTIES LABELS qdmi-query)
 add_test(
@@ -115,7 +115,9 @@ set_tests_properties(
   PROPERTIES LABELS qdmi-query FAIL_REGULAR_EXPRESSION "\\[  SKIPPED \\]")
 foreach(
   control IN
-  ITEMS "DeviceQueueLength|scalar payload size"
+  ITEMS "DeviceLengthUnit|unit must not be empty"
+        "SiteXCoordinate|unit must not be empty"
+        "DeviceQueueLength|scalar payload size"
         "DeviceSupportedProgramFormats|array payload size"
         "DeviceInvalidProperty|invalid device property"
         "SiteIndex|mandatory site index"

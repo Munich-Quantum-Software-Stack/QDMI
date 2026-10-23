@@ -93,7 +93,7 @@ buffer checks above; the final column records additional support rules.
 | DEVICE: SITES                                  | prefixed QDMI_Site array         | Optional; query only advertised nonnull handles                                                                                                     |
 | DEVICE: OPERATIONS                             | prefixed QDMI_Operation array    | Optional; query only advertised nonnull handles                                                                                                     |
 | DEVICE: COUPLINGMAP                            | prefixed QDMI_Site array         | Optional; even length; endpoints belong to SITES when available                                                                                     |
-| DEVICE: LENGTHUNIT, DURATIONUNIT               | char string                      | Required when related length/duration values are supported; string shape; unit notation remains unspecified                                         |
+| DEVICE: LENGTHUNIT, DURATIONUNIT               | char string                      | Required when related length/duration values are supported; nonempty string; unit notation remains unspecified                                      |
 | DEVICE: LENGTHSCALEFACTOR, DURATIONSCALEFACTOR | double                           | Optional; unsupported means default 1.0; no invented numeric bounds                                                                                 |
 | DEVICE: MINATOMDISTANCE                        | uint64_t                         | Optional; requires LENGTHUNIT                                                                                                                       |
 | DEVICE: SUPPORTEDPROGRAMFORMATS                | QDMI_Program_Format array        | Optional; empty allowed; defined regular/custom formats only; no job calls                                                                          |
@@ -137,16 +137,20 @@ with null inputs; context-dependent metadata is excluded. It adds no
 undocumented numerical bounds, gate names, ordering, or topology symmetry
 requirements.
 
-Unit strings are checked for shape and conditional availability. The headers do
-not define accepted symbols, spellings, or aliases, so unit notation needs a
-separate specification decision. Radius and idling-fidelity applicability and
-zero-arity local-operation tuple semantics also need clarification before adding
-stronger assertions. The suite does not change the normative API docstrings.
+The suite assumes valid native scalar object representations. ABI-invalid or
+memory-corrupting providers require separate memory-safety and sanitizer checks.
+
+Unit strings are checked for nonempty content, shape, and conditional
+availability. The headers do not define accepted symbols, spellings, or aliases,
+so unit notation needs a separate specification decision. Radius and
+idling-fidelity applicability and zero-arity local-operation tuple semantics
+also need clarification before adding stronger assertions. The suite does not
+change the normative API docstrings.
 
 QDMI CI runs positive controls and fixed negative controls for malformed sizes,
-invalid properties, missing mandatory indices, omitted size outputs, and missing
-string terminators at every retrieval position. It also runs two source
-consumers and relocated installed consumers on Linux and macOS. The consumer
-checks include fixture/install paths with spaces, missing installed assets, and
-explicit opt-out. This workflow does not run on Windows; local Windows
-verification is separate.
+invalid properties, empty units, missing mandatory indices, omitted size
+outputs, and missing string terminators at every retrieval position. It also
+runs two source consumers and relocated installed consumers on Linux and macOS.
+The consumer checks include fixture/install paths with spaces, missing installed
+assets, and explicit opt-out. This workflow does not run on Windows; local
+Windows verification is separate.

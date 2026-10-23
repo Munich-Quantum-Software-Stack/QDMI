@@ -45,6 +45,7 @@ jobs:
     uses: munich-quantum-toolkit/workflows/.github/workflows/reusable-cpp-linter.yml@6c933678406ab1887a137839dfd0e290f12917da # v2.5.2
     with:
       clang-version: 21
+      # Include paths are relative to the compilation database build directory.
       cpp-linter-extra-args: >-
         -std=c++20
         -Itest/include

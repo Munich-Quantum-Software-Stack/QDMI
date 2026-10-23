@@ -110,6 +110,8 @@ int CONTROL_QDMI_device_session_query_device_property(
   }
   case QDMI_DEVICE_PROPERTY_COUPLINGMAP:
     return Copy(0, nullptr, size, value, size_ret);
+  case QDMI_DEVICE_PROPERTY_LENGTHUNIT:
+    return Copy(sizeof(""), "", size, value, size_ret);
   case QDMI_DEVICE_PROPERTY_DURATIONUNIT:
     return Copy(sizeof("picosecond"), "picosecond", size, value, size_ret);
   case QDMI_DEVICE_PROPERTY_QUEUELENGTH:
@@ -127,6 +129,9 @@ int CONTROL_QDMI_device_session_query_site_property(
     QDMI_Site_Property prop, size_t size, void *value, size_t *size_ret) {
   if (session == nullptr || site == nullptr || prop == QDMI_SITE_PROPERTY_MAX) {
     return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  if (prop == QDMI_SITE_PROPERTY_XCOORDINATE) {
+    return Scalar(int64_t{17}, size, value, size_ret);
   }
   if (prop == QDMI_SITE_PROPERTY_ISZONE) {
     return Scalar(true, size, value, size_ret);
