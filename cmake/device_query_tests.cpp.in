@@ -282,16 +282,14 @@ TEST_P(QDMIQueryTest, DeviceQubitsNum) {
 }
 
 TEST_P(QDMIQueryTest, DeviceSites) {
-  const auto value =
-      Read<Site>(Device_query(session, QDMI_DEVICE_PROPERTY_SITES), false);
+  const auto value = Read_sites(session);
   if (!value && !HasFailure()) {
     GTEST_SKIP() << "Device property is unsupported";
   }
 }
 
 TEST_P(QDMIQueryTest, DeviceOperations) {
-  const auto value = Read<Operation>(
-      Device_query(session, QDMI_DEVICE_PROPERTY_OPERATIONS), false);
+  const auto value = Read_operations(session);
   if (!value && !HasFailure()) {
     GTEST_SKIP() << "Device property is unsupported";
   }
@@ -378,6 +376,11 @@ TEST_P(QDMIQueryTest, DeviceSupportedProgramFormats) {
 TEST_P(QDMIQueryTest, DeviceChildDevices) {
   const auto value = Read<@QDMI_QUERY_PREFIX@_QDMI_Child_Device>(
       Device_query(session, QDMI_DEVICE_PROPERTY_CHILDDEVICES), false);
+  if (value) {
+    for (auto *child : *value) {
+      EXPECT_NE(child, nullptr) << "advertised child device handle";
+    }
+  }
   if (!value && !HasFailure()) {
     GTEST_SKIP() << "Device property is unsupported";
   }
@@ -841,8 +844,8 @@ TEST_P(QDMIQueryTest, SiteCoordinateUniqueness) {
     }
     return;
   }
-  std::unordered_set<std::string> coordinates;
-  size_t complete = 0;
+  std::vector<std::array<int64_t, 3>> coordinates;
+  coordinates.reserve(sites->size());
   size_t unsupported = 0;
   for (size_t i = 0; i < sites->size(); ++i) {
     SCOPED_TRACE(i);
@@ -860,14 +863,14 @@ TEST_P(QDMIQueryTest, SiteCoordinateUniqueness) {
       ++unsupported;
       continue;
     }
-    ++complete;
-    const auto key = std::to_string((*x)[0]) + "," + std::to_string((*y)[0]) +
-                     "," + std::to_string((*z)[0]);
-    EXPECT_TRUE(coordinates.insert(key).second)
-        << "coordinate triples must be unique";
+    coordinates.push_back({(*x)[0], (*y)[0], (*z)[0]});
   }
+  std::sort(coordinates.begin(), coordinates.end());
+  EXPECT_TRUE(std::adjacent_find(coordinates.begin(), coordinates.end()) ==
+              coordinates.end())
+      << "coordinate triples must be unique";
   Unsupported_objects(unsupported);
-  if (complete == 0 && !HasFailure()) {
+  if (coordinates.empty() && !HasFailure()) {
     GTEST_SKIP() << "No complete coordinate triple";
   }
 }

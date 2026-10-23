@@ -22,9 +22,16 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <cstdlib>
 #include <cstring>
+#include <limits>
+#include <string_view>
 
-struct CONTROL_QDMI_Device_Session_impl_d {};
+struct CONTROL_QDMI_Child_Device_impl_d {};
+struct CONTROL_QDMI_Device_Session_impl_d {
+  std::string_view control;
+  CONTROL_QDMI_Child_Device_impl_d child;
+};
 struct CONTROL_QDMI_Site_impl_d {
   size_t index;
 };
@@ -78,7 +85,9 @@ int CONTROL_QDMI_device_finalize() {
   return QDMI_SUCCESS;
 }
 int CONTROL_QDMI_device_session_alloc(CONTROL_QDMI_Device_Session *session) {
-  *session = new CONTROL_QDMI_Device_Session_impl_d;
+  const auto *control = std::getenv("QDMI_QUERY_CONTROL");
+  *session = new CONTROL_QDMI_Device_Session_impl_d{
+      control != nullptr ? control : "", {}};
   return QDMI_SUCCESS;
 }
 int CONTROL_QDMI_device_session_init(CONTROL_QDMI_Device_Session /*session*/) {
@@ -93,23 +102,44 @@ int CONTROL_QDMI_device_session_query_device_property(
   if (session == nullptr) {
     return QDMI_ERROR_INVALIDARGUMENT;
   }
+  if (session->control == "empty-handles" &&
+      (prop == QDMI_DEVICE_PROPERTY_SITES ||
+       prop == QDMI_DEVICE_PROPERTY_OPERATIONS ||
+       prop == QDMI_DEVICE_PROPERTY_CHILDDEVICES)) {
+    return Copy(0, nullptr, size, value, size_ret);
+  }
   switch (prop) {
   case QDMI_DEVICE_PROPERTY_QUBITSNUM:
     return Scalar(size_t{0x11223344}, size, value, size_ret);
   case QDMI_DEVICE_PROPERTY_STATUS:
     return Scalar(QDMI_DEVICE_STATUS_IDLE, size, value, size_ret);
   case QDMI_DEVICE_PROPERTY_SITES: {
-    const std::array handles{sites.data(), &sites[1], &sites[2]};
-    return Copy(sizeof(handles), static_cast<const void *>(handles.data()),
-                size, value, size_ret);
+    const std::array handles{sites.data(), &sites[1],
+                             session->control == "DeviceSites" ? nullptr
+                                                               : &sites[2]};
+    const auto bytes = session->control == "single-coordinate"
+                           ? sizeof(handles[0])
+                           : sizeof(handles);
+    return Copy(bytes, static_cast<const void *>(handles.data()), size, value,
+                size_ret);
   }
   case QDMI_DEVICE_PROPERTY_OPERATIONS: {
-    const std::array handles{operations.data(), &operations[1]};
+    const std::array handles{
+        operations.data(),
+        session->control == "DeviceOperations" ? nullptr : &operations[1]};
     return Copy(sizeof(handles), static_cast<const void *>(handles.data()),
                 size, value, size_ret);
   }
   case QDMI_DEVICE_PROPERTY_COUPLINGMAP:
     return Copy(0, nullptr, size, value, size_ret);
+  case QDMI_DEVICE_PROPERTY_CHILDDEVICES:
+    if (session->control == "DeviceChildDevices") {
+      return Scalar(CONTROL_QDMI_Child_Device{nullptr}, size, value, size_ret);
+    }
+    if (session->control == "valid-handles") {
+      return Scalar(&session->child, size, value, size_ret);
+    }
+    return QDMI_ERROR_NOTSUPPORTED;
   case QDMI_DEVICE_PROPERTY_LENGTHUNIT:
     return Copy(sizeof(""), "", size, value, size_ret);
   case QDMI_DEVICE_PROPERTY_DURATIONUNIT:
@@ -129,6 +159,35 @@ int CONTROL_QDMI_device_session_query_site_property(
     QDMI_Site_Property prop, size_t size, void *value, size_t *size_ret) {
   if (session == nullptr || site == nullptr || prop == QDMI_SITE_PROPERTY_MAX) {
     return QDMI_ERROR_INVALIDARGUMENT;
+  }
+  if ((session->control.starts_with("coordinate-") ||
+       session->control == "partial-coordinates" ||
+       session->control == "single-coordinate" ||
+       session->control == "SiteCoordinateUniqueness") &&
+      (prop == QDMI_SITE_PROPERTY_XCOORDINATE ||
+       prop == QDMI_SITE_PROPERTY_YCOORDINATE ||
+       prop == QDMI_SITE_PROPERTY_ZCOORDINATE)) {
+    if (session->control == "partial-coordinates" && site == &sites[1] &&
+        prop == QDMI_SITE_PROPERTY_YCOORDINATE) {
+      return QDMI_ERROR_NOTSUPPORTED;
+    }
+    auto varying = QDMI_SITE_PROPERTY_XCOORDINATE;
+    if (session->control == "coordinate-y") {
+      varying = QDMI_SITE_PROPERTY_YCOORDINATE;
+    } else if (session->control == "coordinate-z") {
+      varying = QDMI_SITE_PROPERTY_ZCOORDINATE;
+    }
+    int64_t coordinate = std::numeric_limits<int64_t>::min();
+    if (prop == varying) {
+      if (site == &sites[0] ||
+          (site == &sites[2] &&
+           session->control == "SiteCoordinateUniqueness")) {
+        coordinate = std::numeric_limits<int64_t>::max();
+      } else if (site == &sites[2]) {
+        coordinate = 0;
+      }
+    }
+    return Scalar(coordinate, size, value, size_ret);
   }
   if (prop == QDMI_SITE_PROPERTY_XCOORDINATE) {
     return Scalar(int64_t{17}, size, value, size_ret);

@@ -103,7 +103,7 @@ buffer checks above; the final column records additional support rules.
 | DEVICE: LENGTHSCALEFACTOR, DURATIONSCALEFACTOR | double                           | Optional; unsupported means default 1.0; no invented numeric bounds                                                                                 |
 | DEVICE: MINATOMDISTANCE                        | uint64_t                         | Optional; requires LENGTHUNIT                                                                                                                       |
 | DEVICE: SUPPORTEDPROGRAMFORMATS                | QDMI_Program_Format array        | Optional; empty allowed; defined regular/custom formats only; no job calls                                                                          |
-| DEVICE: CHILDDEVICES                           | prefixed QDMI_Child_Device array | Optional; no child configuration or job calls                                                                                                       |
+| DEVICE: CHILDDEVICES                           | prefixed QDMI_Child_Device array | Optional; nonnull handles; no child configuration or job calls                                                                                      |
 | DEVICE: numeric 8, 9                           | none                             | Must return NOTSUPPORTED with a valid session                                                                                                       |
 | SITE: INDEX                                    | size_t                           | Mandatory per advertised site; unique, sparse and unsorted allowed                                                                                  |
 | SITE: T1, T2                                   | uint64_t                         | Optional per site; requires DURATIONUNIT                                                                                                            |
@@ -158,8 +158,11 @@ change the normative API docstrings.
 
 QDMI CI runs positive controls and fixed negative controls for malformed sizes,
 invalid properties, empty units, missing mandatory indices, omitted size
-outputs, invalid status values, and missing string terminators in every
-retrieval variant. It also runs two source consumers and relocated installed
-consumers on Linux and macOS. The consumer checks include fixture/install paths
-with spaces, missing installed assets, and explicit opt-out. This workflow does
-not run on Windows; local Windows verification is separate.
+outputs, invalid status values, missing string terminators, null advertised
+handles, and duplicate coordinate triples in every retrieval variant. Positive
+controls cover empty and valid handle lists, integer coordinate extremes,
+differences on each coordinate axis, and partial coordinate support. It also
+runs two source consumers and relocated installed consumers on Linux and macOS.
+The consumer checks include fixture/install paths with spaces, missing installed
+assets, and explicit opt-out. This workflow does not run on Windows; local
+Windows verification is separate.

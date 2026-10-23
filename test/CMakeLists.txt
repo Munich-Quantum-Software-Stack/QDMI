@@ -126,7 +126,11 @@ foreach(
         "MissingArrayRetrievalSize|payload size changed"
         "MissingBoolRetrievalSize|payload size changed"
         "MissingTerminator|string payload must end in NUL"
-        "InvalidStatus|device status must be a defined status")
+        "InvalidStatus|device status must be a defined status"
+        "DeviceSites|advertised site handle"
+        "DeviceOperations|advertised operation handle"
+        "DeviceChildDevices|advertised child device handle"
+        "SiteCoordinateUniqueness|coordinate triples must be unique")
   string(REPLACE "|" ";" fields "${control}")
   list(GET fields 0 case)
   list(GET fields 1 diagnostic)
@@ -145,6 +149,32 @@ foreach(
     set_tests_properties("query-negative.${case}.${variant}"
                          PROPERTIES LABELS qdmi-query)
   endforeach()
+endforeach()
+
+foreach(control IN ITEMS coordinate-x coordinate-y coordinate-z
+                         partial-coordinates single-coordinate)
+  add_test(
+    NAME "query-positive.${control}"
+    COMMAND
+      "${CMAKE_COMMAND}" -E env "QDMI_QUERY_CONTROL=${control}"
+      $<TARGET_FILE:query-control>
+      "--gtest_filter=*/QDMIQueryTest.SiteCoordinateUniqueness/*")
+  set_tests_properties(
+    "query-positive.${control}"
+    PROPERTIES LABELS qdmi-query FAIL_REGULAR_EXPRESSION "\\[  SKIPPED \\]")
+endforeach()
+
+foreach(control IN ITEMS valid-handles empty-handles)
+  add_test(
+    NAME "query-positive.${control}"
+    COMMAND
+      "${CMAKE_COMMAND}" -E env "QDMI_QUERY_CONTROL=${control}"
+      $<TARGET_FILE:query-control>
+      "--gtest_filter=*/QDMIQueryTest.DeviceSites/*:*/QDMIQueryTest.DeviceOperations/*:*/QDMIQueryTest.DeviceChildDevices/*"
+  )
+  set_tests_properties(
+    "query-positive.${control}"
+    PROPERTIES LABELS qdmi-query FAIL_REGULAR_EXPRESSION "\\[  SKIPPED \\]")
 endforeach()
 
 add_test(

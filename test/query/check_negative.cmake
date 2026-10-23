@@ -18,7 +18,7 @@
 file(REMOVE "${REPORT}")
 execute_process(
   COMMAND
-    "${EXECUTABLE}"
+    "${CMAKE_COMMAND}" -E env "QDMI_QUERY_CONTROL=${CASE}" "${EXECUTABLE}"
     "--gtest_filter=QueryVariants/QDMIQueryTest.${CASE}/${VARIANT}"
     "--gtest_color=no" "--gtest_output=xml:${REPORT}"
   RESULT_VARIABLE result
