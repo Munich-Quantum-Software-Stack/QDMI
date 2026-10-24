@@ -45,7 +45,12 @@ jobs:
     uses: munich-quantum-toolkit/workflows/.github/workflows/reusable-cpp-linter.yml@a4b4977405c7685f95e127cdb6db396bbadce787 # v2.5.5
     with:
       clang-version: 21
-      cpp-linter-extra-args: "-std=c++20"
+      # Include paths are relative to the compilation database build directory.
+      cpp-linter-extra-args: >-
+        -std=c++20
+        -Itest/include
+        -Iexamples/device/src/include
+        -I_deps/googletest-src/googletest/include
 
   template:
     name: 🏗️ Build and Test Templates

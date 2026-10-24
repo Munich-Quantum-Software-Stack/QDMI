@@ -12,6 +12,18 @@ clients compiled against a different minor or major version.
 
 ## [Unreleased]
 
+### Added
+
+- ✨ Add an opt-in reusable offline device query conformance suite with source
+  and installed CMake consumers, value checks for every retrieval variant,
+  positive and negative controls, and integration guidance ([#591])
+  ([\@marcelwa]).
+
+### Fixed
+
+- 🐛 Keep producer compiler warning flags out of installed packages ([#591])
+  ([\@marcelwa]).
+
 ## [1.4.0] - 2026-10-11
 
 _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#140)._
@@ -298,6 +310,7 @@ for previous changelogs._
 
 <!-- PR links -->
 
+[#591]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/591
 [#576]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/576
 [#575]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/575
 [#559]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/559
