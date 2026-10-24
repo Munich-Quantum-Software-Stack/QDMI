@@ -11,6 +11,21 @@ releases, please refer to the
 
 ## [Unreleased]
 
+### Canonical length and duration unit strings
+
+`QDMI_DEVICE_PROPERTY_LENGTHUNIT` and `QDMI_DEVICE_PROPERTY_DURATIONUNIT` now
+explicitly require the case-sensitive ASCII symbols listed in their API
+documentation. Each list covers the base unit (`m` or `s`) and every SI prefix,
+using `u` for micro. Devices returning full names, Unicode micro prefixes, or
+other aliases must return the corresponding listed symbol instead. Existing
+outputs such as `mm`, `um`, `nm`, `ms`, `us`, and `ns` remain valid.
+
+Changing only a spelling preserves the raw values and scale factor. Changing the
+unit's magnitude requires adjusting the raw values or scale factor to preserve
+the physical quantity. The scale factor still multiplies the raw value in the
+reported unit: raw `5`, scale factor `2`, and unit `ns` represent `10 ns`. There
+is no ABI change.
+
 ## [1.4.0]
 
 ### CMake consumption

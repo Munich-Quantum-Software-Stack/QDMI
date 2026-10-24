@@ -365,10 +365,21 @@ enum QDMI_DEVICE_PROPERTY_T {
    */
   /**
    * @brief `char*` (string) The length unit reported by the device.
-   * @details The device implementation must report a known SI unit (e.g., "mm",
-   * "um", or "nm") for this property. A client querying a length value must
-   * first scale it using @ref QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR. The
-   * resulting value is then interpreted in the unit specified by this property.
+   * @details The device implementation must report a null-terminated ASCII
+   * string containing exactly one of these case-sensitive symbols:
+   * `"qm"`, `"rm"`, `"ym"`, `"zm"`, `"am"`, `"fm"`, `"pm"`, `"nm"`, `"um"`,
+   * `"mm"`, `"cm"`, `"dm"`, `"m"`, `"dam"`, `"hm"`, `"km"`, `"Mm"`, `"Gm"`,
+   * `"Tm"`, `"Pm"`, `"Em"`, `"Zm"`, `"Ym"`, `"Rm"`, or `"Qm"`.
+   * These are the metre and its decimal multiples and submultiples from the
+   * [SI prefix table](https://www.bipm.org/en/measurement-units/si-prefixes),
+   * using ASCII `u` for micro. No other spellings are permitted: full names
+   * such as `"millimetre"`, whitespace, and Unicode micro prefixes (U+00B5 or
+   * U+03BC) are invalid. For example, `"um"` is valid; `"UM"` and `"u m"` are
+   * not. A device may choose any listed unit, but must use its listed spelling.
+   * A client must multiply a raw length value by
+   * @ref QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR. The result is in the reported
+   * unit, including its prefix: raw `5`, scale factor `2`, and unit `"mm"`
+   * represent `10 mm`, or `0.01 m`.
    * @note If the device reports any length values, this property must be set.
    */
   QDMI_DEVICE_PROPERTY_LENGTHUNIT = 10,
@@ -384,10 +395,21 @@ enum QDMI_DEVICE_PROPERTY_T {
   QDMI_DEVICE_PROPERTY_LENGTHSCALEFACTOR = 11,
   /**
    * @brief `char*` (string) The duration unit reported by the device.
-   * @details The device implementation must report a known SI unit (e.g., "ms",
-   * "us", or "ns") for this property. A client querying a duration value must
-   * first scale it using @ref QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR. The
-   * resulting value is then interpreted in the unit specified by this property.
+   * @details The device implementation must report a null-terminated ASCII
+   * string containing exactly one of these case-sensitive symbols:
+   * `"qs"`, `"rs"`, `"ys"`, `"zs"`, `"as"`, `"fs"`, `"ps"`, `"ns"`, `"us"`,
+   * `"ms"`, `"cs"`, `"ds"`, `"s"`, `"das"`, `"hs"`, `"ks"`, `"Ms"`, `"Gs"`,
+   * `"Ts"`, `"Ps"`, `"Es"`, `"Zs"`, `"Ys"`, `"Rs"`, or `"Qs"`.
+   * These are the second and its decimal multiples and submultiples from the
+   * [SI prefix table](https://www.bipm.org/en/measurement-units/si-prefixes),
+   * using ASCII `u` for micro. No other spellings are permitted: full names
+   * such as `"nanosecond"`, whitespace, and Unicode micro prefixes (U+00B5 or
+   * U+03BC) are invalid. For example, `"us"` is valid; `"US"` and `"u s"` are
+   * not. A device may choose any listed unit, but must use its listed spelling.
+   * A client must multiply a raw duration value by
+   * @ref QDMI_DEVICE_PROPERTY_DURATIONSCALEFACTOR. The result is in the
+   * reported unit, including its prefix: raw `5`, scale factor `2`, and unit
+   * `"ns"` represent `10 ns`, or `1e-8 s`.
    * @note If the device reports any duration values, this property must be set.
    */
   QDMI_DEVICE_PROPERTY_DURATIONUNIT = 12,
