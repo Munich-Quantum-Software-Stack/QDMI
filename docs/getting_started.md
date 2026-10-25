@@ -149,3 +149,6 @@ project's installation and configuration guides for catalogues, endpoints,
 credentials, and deployment. Match the runtime and device versions before
 submitting work. Installing the standalone QDMI headers is not an additional
 runtime step when using a packaged application stack.
+
+For offline device property validation, see
+[Device Query Conformance Tests](testing.md).

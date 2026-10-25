@@ -111,7 +111,8 @@ function(set_project_warnings target_name)
         "No compiler warnings set for '${CMAKE_C_COMPILER_ID}' compiler.")
   endif()
 
-  target_compile_options(${target_name} INTERFACE ${project_warnings})
+  target_compile_options(${target_name}
+                         INTERFACE "$<BUILD_INTERFACE:${project_warnings}>")
 
   if(MSVC)
     add_compile_options(/bigobj)
