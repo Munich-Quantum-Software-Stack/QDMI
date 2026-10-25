@@ -12,6 +12,11 @@ clients compiled against a different minor or major version.
 
 ## [Unreleased]
 
+### Changed
+
+- 📝 Define canonical ASCII symbols for length and duration units, and clarify
+  how their prefixes combine with scale factors ([#593]) ([\@marcelwa]).
+
 ## [1.4.0] - 2026-10-11
 
 _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#140)._
@@ -356,6 +361,8 @@ for previous changelogs._
 [#160]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/160
 
 <!-- Contributors -->
+
+[#593]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/593
 
 [\@burgholzer]: https://github.com/burgholzer
 [\@ystade]: https://github.com/ystade
