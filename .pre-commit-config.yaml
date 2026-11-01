@@ -83,7 +83,7 @@ repos:
 
     ## Format Markdown files with rumdl
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: v0.3.0
+    rev: v0.3.2
     hooks:
       - id: rumdl
         args: [--fix]
