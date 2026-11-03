@@ -144,7 +144,10 @@ int CONTROL_QDMI_device_session_query_device_property(
   case QDMI_DEVICE_PROPERTY_LENGTHUNIT:
     return Copy(sizeof(""), "", size, value, size_ret);
   case QDMI_DEVICE_PROPERTY_DURATIONUNIT:
-    return Copy(sizeof("picosecond"), "picosecond", size, value, size_ret);
+    if (session->control == "DeviceDurationUnit") {
+      return Copy(sizeof("picosecond"), "picosecond", size, value, size_ret);
+    }
+    return Copy(sizeof("ns"), "ns", size, value, size_ret);
   case QDMI_DEVICE_PROPERTY_QUEUELENGTH:
   case QDMI_DEVICE_PROPERTY_SUPPORTEDPROGRAMFORMATS:
     // Both a size_t scalar and an enum array need more than one byte.

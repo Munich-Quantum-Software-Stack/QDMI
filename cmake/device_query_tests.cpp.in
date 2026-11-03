@@ -29,6 +29,7 @@
 #include <limits>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <type_traits>
 #include <unordered_set>
 #include <vector>
@@ -217,10 +218,26 @@ auto Read_operations(Session session) {
   return operations;
 }
 
+auto Is_canonical_unit(std::string_view unit, char base) -> bool {
+  constexpr std::array<std::string_view, 25> prefixes{
+      "q", "r", "y", "z", "a", "f", "p", "n", "u", "m", "c", "d", "",
+      "da", "h", "k", "M", "G", "T", "P", "E", "Z", "Y", "R", "Q"};
+  return !unit.empty() && unit.back() == base &&
+         std::find(prefixes.begin(), prefixes.end(),
+                   unit.substr(0, unit.size() - 1)) != prefixes.end();
+}
+
 auto Read_unit(Session session, QDMI_Device_Property property) {
   const auto unit = Read<char>(Device_query(session, property), false);
   if (unit) {
-    EXPECT_NE((*unit)[0], '\0') << "unit must not be empty";
+    const std::string_view symbol(unit->data(), unit->size() - 1);
+    if (symbol.empty()) {
+      ADD_FAILURE() << "unit must not be empty";
+    } else {
+      EXPECT_TRUE(Is_canonical_unit(
+          symbol, property == QDMI_DEVICE_PROPERTY_LENGTHUNIT ? 'm' : 's'))
+          << "unit must use a canonical symbol";
+    }
   }
   return unit;
 }

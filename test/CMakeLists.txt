@@ -101,14 +101,14 @@ add_test(
   NAME query-positive
   COMMAND
     query-control
-    "--gtest_filter=-*/QDMIQueryTest.DeviceLengthUnit/*:*/QDMIQueryTest.SiteXCoordinate/*:*/QDMIQueryTest.DeviceQueueLength/*:*/QDMIQueryTest.DeviceSupportedProgramFormats/*:*/QDMIQueryTest.DeviceInvalidProperty/*:*/QDMIQueryTest.SiteIndex/*:*/QDMIQueryTest.Missing*/*:*/QDMIQueryTest.InvalidStatus/*"
+    "--gtest_filter=-*/QDMIQueryTest.DeviceLengthUnit/*:*/QDMIQueryTest.DeviceDurationUnit/*:*/QDMIQueryTest.SiteXCoordinate/*:*/QDMIQueryTest.DeviceQueueLength/*:*/QDMIQueryTest.DeviceSupportedProgramFormats/*:*/QDMIQueryTest.DeviceInvalidProperty/*:*/QDMIQueryTest.SiteIndex/*:*/QDMIQueryTest.Missing*/*:*/QDMIQueryTest.InvalidStatus/*"
 )
 set_tests_properties(query-positive PROPERTIES LABELS qdmi-query)
 add_test(
   NAME query-positive-mixed-support
   COMMAND
     query-control
-    "--gtest_filter=*/QDMIQueryTest.SiteT1/*:*/QDMIQueryTest.OperationName/*:*/QDMIQueryTest.DeviceCouplingMap/*:*/QDMIQueryTest.RemovedDeviceProperties/*:*/QDMIQueryTest.SuccessfulPayloadSnapshot/*:*/QDMIQueryTest.DeviceDurationUnit/*"
+    "--gtest_filter=*/QDMIQueryTest.SiteT1/*:*/QDMIQueryTest.OperationName/*:*/QDMIQueryTest.DeviceCouplingMap/*:*/QDMIQueryTest.RemovedDeviceProperties/*:*/QDMIQueryTest.SuccessfulPayloadSnapshot/*"
 )
 set_tests_properties(
   query-positive-mixed-support
@@ -116,6 +116,7 @@ set_tests_properties(
 foreach(
   control IN
   ITEMS "DeviceLengthUnit|unit must not be empty"
+        "DeviceDurationUnit|unit must use a canonical symbol"
         "SiteXCoordinate|unit must not be empty"
         "DeviceQueueLength|scalar payload size"
         "DeviceSupportedProgramFormats|array payload size"

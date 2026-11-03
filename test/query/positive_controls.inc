@@ -18,6 +18,22 @@
  */
 
 // Included after the shared suite only in the fixed fake-provider executable.
+TEST(QueryUnitSymbols, CanonicalSpellings) {
+  constexpr std::array<std::string_view, 25> prefixes{
+      "q", "r", "y", "z", "a", "f", "p", "n", "u", "m", "c", "d", "",
+      "da", "h", "k", "M", "G", "T", "P", "E", "Z", "Y", "R", "Q"};
+  for (const auto prefix : prefixes) {
+    EXPECT_TRUE(Is_canonical_unit(std::string(prefix) + "m", 'm'));
+    EXPECT_TRUE(Is_canonical_unit(std::string(prefix) + "s", 's'));
+  }
+  for (const auto unit : {"", "UM", "u m", "millimetre", "µm", "μm", "mmx"}) {
+    EXPECT_FALSE(Is_canonical_unit(unit, 'm'));
+  }
+  EXPECT_FALSE(Is_canonical_unit(std::string_view("m\0x", 3), 'm'));
+  EXPECT_FALSE(Is_canonical_unit("ms", 'm'));
+  EXPECT_FALSE(Is_canonical_unit("mm", 's'));
+}
+
 TEST_P(QDMIQueryTest, SuccessfulPayloadSnapshot) {
   const auto count =
       Read<size_t>(Device_query(session, QDMI_DEVICE_PROPERTY_QUBITSNUM));
