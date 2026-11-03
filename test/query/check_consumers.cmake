@@ -35,6 +35,8 @@ set(common
 if(GTEST_SOURCE)
   file(COPY "${GTEST_SOURCE}/" DESTINATION "${root}/googletest source")
   set(dependencies "-DGOOGLETEST_SOURCE_DIR=${root}/googletest source")
+  set(project_dependencies
+      "-DFETCHCONTENT_SOURCE_DIR_GOOGLETEST=${root}/googletest source")
 endif()
 run("${CMAKE_COMMAND}"
     -S
@@ -108,6 +110,43 @@ file(COPY "${SOURCE_DIR}/test/query/consumer/" DESTINATION "${root}/consumer")
 file(COPY "${SOURCE_DIR}/examples/device/src/cxx_device.cpp"
      DESTINATION "${root}/consumer")
 set(package "${root}/relocated package")
+# Simulate a compatible installation made before the query helper existed.
+file(COPY "${package}/" DESTINATION "${root}/older package")
+set(older_config "${root}/older package/share/cmake/qdmi/qdmi-config.cmake")
+file(READ "${older_config}" older_contents)
+string(REGEX REPLACE "include\\([^\n]*DeviceQueryTests\\.cmake[^\n]*\\)\n" ""
+                     older_contents "${older_contents}")
+if(older_contents MATCHES "DeviceQueryTests\\.cmake")
+  message(FATAL_ERROR "Failed to simulate an older QDMI package")
+endif()
+file(WRITE "${older_config}" "${older_contents}")
+run("${CMAKE_COMMAND}"
+    -S
+    "${SOURCE_DIR}"
+    -B
+    "${root}/older installed"
+    ${common}
+    ${project_dependencies}
+    -DUSE_INSTALLED_QDMI=ON
+    "-DCMAKE_PREFIX_PATH=${root}/older package")
+run("${CMAKE_COMMAND}"
+    --build
+    "${root}/older installed"
+    --config
+    Release
+    --target
+    cxx-device-query-test
+    --parallel
+    2)
+run("${CTEST_COMMAND}"
+    --test-dir
+    "${root}/older installed"
+    -C
+    Release
+    -R
+    "cxx-device-query-test.*DeviceLengthUnit"
+    --output-on-failure
+    --no-tests=error)
 file(GLOB_RECURSE package_files "${package}/*.cmake" "${package}/*.in")
 foreach(path IN LISTS package_files)
   file(READ "${path}" contents)

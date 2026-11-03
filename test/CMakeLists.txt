@@ -24,6 +24,9 @@ enable_language(CXX)
 
 add_subdirectory(utils)
 
+if(NOT COMMAND add_qdmi_device_query_tests)
+  include("${PROJECT_SOURCE_DIR}/cmake/DeviceQueryTests.cmake")
+endif()
 add_qdmi_device_query_tests(
   cxx-device-query-test
   PREFIX
@@ -88,10 +91,18 @@ set(QDMI_QUERY_PREFIX CONTROL)
 set(QDMI_QUERY_prefix control)
 set(QDMI_QUERY_FIXTURE_HEADER
     "${CMAKE_CURRENT_SOURCE_DIR}/query/negative_fixture.hpp")
-configure_file("${PROJECT_SOURCE_DIR}/cmake/device_query_tests.cpp.in"
-               "${CMAKE_CURRENT_BINARY_DIR}/query_control_tests.cpp" @ONLY)
-file(APPEND "${CMAKE_CURRENT_BINARY_DIR}/query_control_tests.cpp"
-     "\n#include \"${CMAKE_CURRENT_SOURCE_DIR}/query/positive_controls.inc\"\n")
+set_property(
+  DIRECTORY
+  APPEND
+  PROPERTY CMAKE_CONFIGURE_DEPENDS
+           "${PROJECT_SOURCE_DIR}/cmake/device_query_tests.cpp.in")
+file(READ "${PROJECT_SOURCE_DIR}/cmake/device_query_tests.cpp.in"
+     query_template)
+string(
+  APPEND query_template
+  "\n#include \"${CMAKE_CURRENT_SOURCE_DIR}/query/positive_controls.inc\"\n")
+file(CONFIGURE OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/query_control_tests.cpp"
+     CONTENT "${query_template}" @ONLY)
 add_executable(query-control
                "${CMAKE_CURRENT_BINARY_DIR}/query_control_tests.cpp")
 target_link_libraries(query-control PRIVATE query-control-device

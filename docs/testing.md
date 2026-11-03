@@ -18,6 +18,9 @@ included. `add_subdirectory` exposes the helper from a source checkout;
 from an installation. QDMI's own tests, examples, and templates may all be
 disabled.
 
+The installation must include the query helper. Older QDMI releases may satisfy
+the package version check without providing `add_qdmi_device_query_tests`.
+
 ```cmake
 find_package(qdmi CONFIG REQUIRED)
 find_package(GTest CONFIG REQUIRED)
@@ -155,7 +158,7 @@ zero-arity local-operation tuple semantics also need clarification before adding
 stronger assertions. The suite does not change the normative API docstrings.
 
 QDMI CI runs positive controls and fixed negative controls for malformed sizes,
-invalid properties, empty units, missing mandatory indices, omitted size
+invalid device properties, empty units, missing mandatory indices, omitted size
 outputs, invalid status values, missing string terminators, null advertised
 handles, and duplicate coordinate triples in every retrieval variant. Positive
 controls cover empty and valid handle lists, integer coordinate extremes,
