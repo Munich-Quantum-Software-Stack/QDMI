@@ -303,6 +303,7 @@ for previous changelogs._
 
 <!-- PR links -->
 
+[#593]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/593
 [#576]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/576
 [#575]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/575
 [#559]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/559
@@ -361,8 +362,6 @@ for previous changelogs._
 [#160]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/160
 
 <!-- Contributors -->
-
-[#593]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/593
 
 [\@burgholzer]: https://github.com/burgholzer
 [\@ystade]: https://github.com/ystade
