@@ -42,5 +42,6 @@ var searchData=
   ['driver_39',['Implementing a QDMI Driver',['../md_docs_2examples.html#driver',1,'']]],
   ['drivers_20and_20stable_20device_20ids_40',['Replaceable QDMI drivers and stable device IDs',['../md_UPGRADING.html#replaceable-qdmi-drivers-and-stable-device-ids',1,'']]],
   ['duration_20breaking_20change_41',['Units for Length and Duration (Breaking Change)',['../md_UPGRADING.html#units-for-length-and-duration-breaking-change',1,'']]],
-  ['dynamic_20content_42',['Dynamic Content',['../md_docs_2contributing.html#dynamic-content',1,'']]]
+  ['duration_20unit_20strings_42',['Canonical length and duration unit strings',['../md_UPGRADING.html#canonical-length-and-duration-unit-strings',1,'']]],
+  ['dynamic_20content_43',['Dynamic Content',['../md_docs_2contributing.html#dynamic-content',1,'']]]
 ];
