@@ -199,6 +199,11 @@ Added</h2>
 <ul>
 <li>✨ Add an opt-in reusable offline device query conformance suite with source and installed CMake consumers, value checks for every retrieval variant, positive and negative controls, and integration guidance (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/591">#591</a>) (<a href="https://github.com/marcelwa">@marcelwa</a>).</li>
 </ul>
+<h2 class="doxsection"><a class="anchor" id="changed"></a>
+Changed</h2>
+<ul>
+<li>📝 Define canonical ASCII symbols for length and duration units, and clarify how their prefixes combine with scale factors (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/593">#593</a>) (<a href="https://github.com/marcelwa">@marcelwa</a>).</li>
+</ul>
 <h2 class="doxsection"><a class="anchor" id="fixed"></a>
 Fixed</h2>
 <ul>
@@ -217,7 +222,7 @@ Added</h2>
 <li>✨ Add optional target-specific export control for device and client libraries (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/559">#559</a>) (<a href="https://github.com/marcelwa">@marcelwa</a>)</li>
 <li>✨ Add ordered multi-program jobs with one aggregate lifecycle, indexed program and result queries, optional individual status queries, and three required Device Interface job functions (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/509">#509</a>) (<a href="https://github.com/ystade">@ystade</a>, <a href="https://github.com/burgholzer">@burgholzer</a>).</li>
 </ul>
-<h2 class="doxsection"><a class="anchor" id="changed"></a>
+<h2 class="doxsection"><a class="anchor" id="changed-1"></a>
 Changed</h2>
 <ul>
 <li>📝 Reorganize documentation around QDMI's international ecosystem, origins, maintenance, and integration roles. Add publication-backed adoption accounts, MQT Core's DDSIM device, public MQSS components, IBM and other hardware integrations, and implementation guides; fix navigation, API-index anchors, contributor links, and responsive layouts, and provide reproducible onboarding (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/575">#575</a>) (<a href="https://github.com/denialhaag">@denialhaag</a>, <a href="https://github.com/burgholzer">@burgholzer</a>).</li>
@@ -266,7 +271,7 @@ Added</h2>
 <ul>
 <li>🚸 Add <a href="https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html">CMake presets</a> to provide a standardized and reproducible way to configure builds (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/426">#426</a>) (<a href="https://github.com/denialhaag">@denialhaag</a>)</li>
 </ul>
-<h2 class="doxsection"><a class="anchor" id="changed-1"></a>
+<h2 class="doxsection"><a class="anchor" id="changed-2"></a>
 Changed</h2>
 <ul>
 <li>📝 Move contribution guide to documentation (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/457">#457</a>) (<a href="https://github.com/denialhaag">@denialhaag</a>)</li>
@@ -296,7 +301,7 @@ Added</h2>
 <ul>
 <li>👨‍💻 Add an option to disable installation instructions for QDMI (example and template) device (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/326">#326</a>) (<a href="https://github.com/ystade">@ystade</a>)</li>
 </ul>
-<h2 class="doxsection"><a class="anchor" id="changed-2"></a>
+<h2 class="doxsection"><a class="anchor" id="changed-3"></a>
 Changed</h2>
 <ul>
 <li>🚸 Export <em>all</em> device headers (incl. <span class="tt"><a class="el" href="constants_8h.html" title="Defines all enums used within QDMI across the QDMI Client Interface and the QDMI Device Interface.">constants.h</a></span>) as part of device implementations such that they do not need to link against the header-only QDMI library anymore (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/325">#325</a>, <a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/373">#373</a>) (<a href="https://github.com/ystade">@ystade</a>, <a href="https://github.com/burgholzer">@burgholzer</a>)</li>
@@ -312,7 +317,7 @@ Added</h2>
 <li>👷 Add mergify configuration for easier backports and maintenance of release branches (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/355">#355</a>) (<a href="https://github.com/burgholzer">@burgholzer</a>)</li>
 <li>🤖 Add policy for AI usage within the project (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/354">#354</a>) (<a href="https://github.com/burgholzer">@burgholzer</a>)</li>
 </ul>
-<h2 class="doxsection"><a class="anchor" id="changed-3"></a>
+<h2 class="doxsection"><a class="anchor" id="changed-4"></a>
 Changed</h2>
 <ul>
 <li>🚸 Increase robustness of the QDMI device template (complete install instructions, uv caching, code cleanup) (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/333">#333</a>) (<a href="https://github.com/burgholzer">@burgholzer</a>)</li>
@@ -332,7 +337,7 @@ Added</h2>
 <ul>
 <li>🚸 Provide compile definitions for inferring device and QDMI versions automatically (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/272">#272</a>) (<a href="https://github.com/burgholzer">@burgholzer</a>)</li>
 </ul>
-<h2 class="doxsection"><a class="anchor" id="changed-4"></a>
+<h2 class="doxsection"><a class="anchor" id="changed-5"></a>
 Changed</h2>
 <ul>
 <li>🚸 Modernize QDMI device template (C++20, boilerplate docs, installation instructions, Python distribution, and more) (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/285">#285</a>) (<a href="https://github.com/burgholzer">@burgholzer</a>)</li>
@@ -363,7 +368,7 @@ Added</h2>
 <li>🚸 Add additional <span class="tt">QDMI_JOB_STATUS</span> enum values for improved job lifecycle management (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/160">#160</a>) (<a href="https://github.com/ystade">@ystade</a>)</li>
 <li>📝 Add comprehensive changelog and upgrade guide documentation (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/160">#160</a>) (<a href="https://github.com/ystade">@ystade</a>, <a href="https://github.com/burgholzer">@burgholzer</a>)</li>
 </ul>
-<h2 class="doxsection"><a class="anchor" id="changed-5"></a>
+<h2 class="doxsection"><a class="anchor" id="changed-6"></a>
 Changed</h2>
 <ul>
 <li>🚚 <b>Breaking</b>: Rename <span class="tt">QDMI_SITE_PROPERTY_ID</span> to <span class="tt"><a class="el" href="constants_8h.html#a69ef10d452cc6f03cac8a917ba48d6e2a02a5ff9f7dfc10bb579e93d95bef06cf" title="size_t The unique index (or ID) to identify the site in a program.">QDMI_SITE_PROPERTY_INDEX</a></span> for improved naming consistency (<a href="https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/160">#160</a>) (<a href="https://github.com/ystade">@ystade</a>)</li>
