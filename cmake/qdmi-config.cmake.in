@@ -29,6 +29,7 @@ set(qdmi_INCLUDE_DIR "@PACKAGE_CMAKE_INSTALL_INCLUDEDIR@")
 set(qdmi_CMAKE_DIR "${CMAKE_CURRENT_LIST_DIR}")
 
 include("${CMAKE_CURRENT_LIST_DIR}/PrefixHandling.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/DeviceQueryTests.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/qdmi-targets.cmake")
 
 if(NOT qdmi_FIND_QUIETLY)

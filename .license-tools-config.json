@@ -41,6 +41,7 @@
     "prefix_defs.txt",
     "client_version.h.in",
     "test_defs.cpp.in",
+    "device_query_tests.cpp.in",
     "LICENSE"
   ]
 }

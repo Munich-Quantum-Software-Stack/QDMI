@@ -55,6 +55,8 @@ jobs:
       # build the project
       - name: Build the project
         run: cmake --build install-build --config Release
+      - name: Test source query contracts and consumer packaging
+        run: ctest -C Release --output-on-failure --test-dir install-build -L qdmi-query --no-tests=error --timeout 600
       # install the project
       - name: Install QDMI
         run: cmake --install install-build --prefix install-dir

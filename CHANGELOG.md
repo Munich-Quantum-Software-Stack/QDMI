@@ -12,10 +12,22 @@ clients compiled against a different minor or major version.
 
 ## [Unreleased]
 
+### Added
+
+- ✨ Add an opt-in reusable offline device query conformance suite with source
+  and installed CMake consumers, value checks for every retrieval variant,
+  positive and negative controls, and integration guidance ([#591])
+  ([\@marcelwa]).
+
 ### Changed
 
 - 📝 Define canonical ASCII symbols for length and duration units, and clarify
   how their prefixes combine with scale factors ([#593]) ([\@marcelwa]).
+
+### Fixed
+
+- 🐛 Keep producer compiler warning flags out of installed packages ([#591])
+  ([\@marcelwa]).
 
 ## [1.4.0] - 2026-10-11
 
@@ -304,6 +316,7 @@ for previous changelogs._
 <!-- PR links -->
 
 [#593]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/593
+[#591]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/591
 [#576]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/576
 [#575]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/575
 [#559]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/559

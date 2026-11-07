@@ -292,6 +292,9 @@ ctest -C Release --test-dir build
 \note If you want to disable configuring and building the C++ tests, you can
 pass `-DBUILD_QDMI_TESTS=OFF` to the CMake configure step.
 
+For reusable device property checks, see
+[Device Query Conformance Tests](testing.md).
+
 #### Code Formatting and Linting {#code-formatting-and-linting}
 
 This project mostly follows the
