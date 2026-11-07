@@ -60,7 +60,7 @@ repos:
 
   ## Check for typos
   - repo: https://github.com/adhtruong/mirrors-typos
-    rev: v1.51.1
+    rev: v1.52.0
     hooks:
       - id: typos
         priority: 3
