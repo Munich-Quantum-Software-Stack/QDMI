@@ -37,14 +37,14 @@ repos:
 
   ## Check for security issues in GitHub Actions workflows
   - repo: https://github.com/zizmorcore/zizmor-pre-commit
-    rev: v1.31.1
+    rev: v1.32.0
     hooks:
       - id: zizmor
         priority: 0
 
   ## Check pyproject.toml file
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
-    rev: 2026.10.30
+    rev: 2026.11.06
     hooks:
       - id: validate-pyproject
         priority: 0
