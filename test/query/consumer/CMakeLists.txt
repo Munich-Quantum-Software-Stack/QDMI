@@ -49,7 +49,7 @@ if(TARGET GTest::gtest_main OR TARGET cxx-qdmi-device)
   message(FATAL_ERROR "QDMI introduced an implicit test dependency")
 endif()
 if(NOT QUERY_TESTS)
-  if(TARGET query-first OR TARGET query-second)
+  if(TARGET query-first)
     message(FATAL_ERROR "Query tests were not explicitly requested")
   endif()
   return()
@@ -80,9 +80,16 @@ target_compile_definitions(
           OFF_QDMI_DEVICE_VERSION="1.0.0")
 # Include a space in the fixture path, independently of the source checkout
 # path.
-configure_file(query_fixture.hpp "fixture with spaces/query_fixture.hpp"
-               COPYONLY)
-foreach(name IN ITEMS query-first query-second)
+file(READ "${FIXTURE_SOURCE}" fixture)
+string(REPLACE "CXX" "OFF" fixture "${fixture}")
+string(REPLACE "cxx_qdmi" "off_qdmi" fixture "${fixture}")
+file(CONFIGURE OUTPUT "fixture with spaces/query_fixture.hpp" CONTENT
+     "@fixture@" @ONLY)
+set(query_targets query-first)
+if(QDMI_SOURCE_DIR)
+  list(APPEND query_targets query-second)
+endif()
+foreach(name IN LISTS query_targets)
   add_qdmi_device_query_tests(
     ${name}
     PREFIX

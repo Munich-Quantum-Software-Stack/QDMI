@@ -49,7 +49,7 @@ session in `SetUp`, free it in `TearDown`, and finalize the device in
 `TearDownTestSuite`. Check setup errors with GoogleTest assertions and make
 cleanup safe after partial setup. GoogleTest supplies `main`; do not define
 another one. See `test/query/example_fixture.hpp` for a complete offline
-example, and `test/query/consumer` for a separate project that opts in twice.
+example, and `test/query/consumer` for a separate consumer project.
 
 ```console
 cmake --build build --target my-query-tests
@@ -70,7 +70,7 @@ defined enum values, and advertised nonnull handles. Invalid enums, removed
 device property IDs 8 and 9, and isolated null arguments are checked against the
 specified errors. Error returns may overwrite the supplied buffer.
 
-Each of the 53 contract checks runs as four separate GoogleTest cases: exact and
+Each of the 51 contract checks runs as four separate GoogleTest cases: exact and
 oversized buffers, each with and without `size_ret`. Each case validates its
 retrieved values and relationships before another retrieval can replace them.
 Test names identify the variant as `ExactWithoutSize`, `ExactWithSize`,
@@ -87,44 +87,6 @@ tuples, and mean shuttling speed. Relationships include distinct site indices
 and supported coordinate triples, coupling endpoints in advertised sites, and
 conditional unit availability. The installed headers remain the normative
 reference.
-
-The table uses suffixes from the source enums \ref QDMI_Device_Property, \ref
-QDMI_Site_Property, and \ref QDMI_Operation_Property in
-[constants.h](../include/qdmi/constants.h). The query error and buffer contracts
-are defined in [device.h](../include/qdmi/device.h). All payloads receive the
-buffer checks above; the final column records additional support rules.
-
-| Property suffix (source enum prefix omitted)   | Payload                          | Required support / assertions                                                                                                                       |
-| ---------------------------------------------- | -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| DEVICE: NAME, VERSION, LIBRARYVERSION, ID      | char string                      | Optional directly; no name, version format, or client ID stability assumptions                                                                      |
-| DEVICE: STATUS                                 | QDMI_Device_Status               | Optional; scalar shape and one defined status, excluding MAX                                                                                        |
-| DEVICE: QUBITSNUM, QUEUELENGTH                 | size_t                           | Optional; no equality with site count or queue stability                                                                                            |
-| DEVICE: SITES                                  | prefixed QDMI_Site array         | Optional; query only advertised nonnull handles                                                                                                     |
-| DEVICE: OPERATIONS                             | prefixed QDMI_Operation array    | Optional; query only advertised nonnull handles                                                                                                     |
-| DEVICE: COUPLINGMAP                            | prefixed QDMI_Site array         | Optional; even length; endpoints belong to SITES when available                                                                                     |
-| DEVICE: LENGTHUNIT, DURATIONUNIT               | char string                      | Required when related length/duration values are supported; canonical case-sensitive ASCII unit symbol                                              |
-| DEVICE: LENGTHSCALEFACTOR, DURATIONSCALEFACTOR | double                           | Optional; unsupported means default 1.0; no invented numeric bounds                                                                                 |
-| DEVICE: MINATOMDISTANCE                        | uint64_t                         | Optional; requires LENGTHUNIT                                                                                                                       |
-| DEVICE: SUPPORTEDPROGRAMFORMATS                | QDMI_Program_Format array        | Optional; empty allowed; defined regular/custom formats only; no job calls                                                                          |
-| DEVICE: CHILDDEVICES                           | prefixed QDMI_Child_Device array | Optional; nonnull handles; no child configuration or job calls                                                                                      |
-| DEVICE: numeric 8, 9                           | none                             | Must return NOTSUPPORTED with a valid session                                                                                                       |
-| SITE: INDEX                                    | size_t                           | Mandatory per advertised site; unique, sparse and unsorted allowed                                                                                  |
-| SITE: T1, T2                                   | uint64_t                         | Optional per site; requires DURATIONUNIT                                                                                                            |
-| SITE: NAME                                     | char string                      | Optional per site                                                                                                                                   |
-| SITE: XCOORDINATE, YCOORDINATE, ZCOORDINATE    | int64_t                          | Optional per site; requires LENGTHUNIT; complete coordinate triples unique                                                                          |
-| SITE: ISZONE                                   | bool                             | Optional; unsupported means false                                                                                                                   |
-| SITE: XEXTENT, YEXTENT, ZEXTENT                | uint64_t                         | Optional on zones; NOTSUPPORTED on nonzones; requires LENGTHUNIT                                                                                    |
-| SITE: MODULEINDEX, SUBMODULEINDEX              | uint64_t                         | Optional; grouping IDs need not be unique per site                                                                                                  |
-| OPERATION: NAME                                | char string                      | Optional context-free                                                                                                                               |
-| OPERATION: QUBITSNUM, PARAMETERSNUM            | size_t                           | Optional context-free                                                                                                                               |
-| OPERATION: DURATION                            | uint64_t                         | Optional context-free; requires DURATIONUNIT                                                                                                        |
-| OPERATION: FIDELITY, IDLINGFIDELITY            | double                           | Optional context-free; no inferred [0,1] bound                                                                                                      |
-| OPERATION: INTERACTIONRADIUS, BLOCKINGRADIUS   | uint64_t                         | Optional context-free; requires LENGTHUNIT                                                                                                          |
-| OPERATION: ISZONED                             | bool                             | Optional context-free; unsupported means false                                                                                                      |
-| OPERATION: SITES                               | prefixed QDMI_Site array         | Optional context-free; membership; local tuple width when arity available; zone membership for global operations when site classification available |
-| OPERATION: MEANSHUTTLINGSPEED                  | uint64_t                         | Optional context-free; requires both units                                                                                                          |
-| DEVICE/SITE/OPERATION: MAX                     | none                             | Invalid enum; require INVALIDARGUMENT with other arguments valid                                                                                    |
-| DEVICE/SITE/OPERATION: CUSTOM1..CUSTOM5        | implementation-defined           | Deliberately unqueried: neither type nor support is generic                                                                                         |
 
 Optional unsupported properties skip when no advertised object supports them.
 Mixed support across objects is valid; mandatory site index support is checked
@@ -163,7 +125,6 @@ outputs, invalid status values, missing string terminators, null advertised
 handles, and duplicate coordinate triples in every retrieval variant. Positive
 controls cover empty and valid handle lists, integer coordinate extremes,
 differences on each coordinate axis, and partial coordinate support. It also
-runs two source consumers and relocated installed consumers on Linux and macOS.
-The consumer checks include fixture/install paths with spaces, missing installed
-assets, and explicit opt-out. This workflow does not run on Windows; local
-Windows verification is separate.
+runs source and relocated installed consumers on Linux and macOS. The consumer
+checks include fixture/install paths with spaces and explicit opt-out. This
+workflow does not run on Windows; local Windows verification is separate.

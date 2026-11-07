@@ -61,10 +61,24 @@ TEST_P(QDMIQueryTest, SuccessfulPayloadSnapshot) {
                                                 expected_operations.end()));
 
   // A one-byte bool advertises zero bytes in the undersized probe.
-  const auto zone = Read_bool(
+  const auto zone = Read<bool>(
       Site_query(session, expected_sites[0], QDMI_SITE_PROPERTY_ISZONE));
   ASSERT_TRUE(zone);
   EXPECT_TRUE(*zone);
+  const auto nonzone = Read<bool>([](size_t size, void *value, size_t *size_ret) {
+    if (value != nullptr && size < sizeof(bool)) {
+      return QDMI_ERROR_INVALIDARGUMENT;
+    }
+    if (size_ret != nullptr) {
+      *size_ret = sizeof(bool);
+    }
+    if (value != nullptr) {
+      *static_cast<bool *>(value) = false;
+    }
+    return QDMI_SUCCESS;
+  });
+  ASSERT_TRUE(nonzone);
+  EXPECT_FALSE(*nonzone);
 }
 
 TEST_P(QDMIQueryTest, MissingArrayProbeSize) {
@@ -90,7 +104,7 @@ TEST_P(QDMIQueryTest, MissingBoolProbeSize) {
     }
     return QDMI_SUCCESS;
   };
-  (void)Read_bool(query);
+  (void)Read<bool>(query);
 }
 
 TEST_P(QDMIQueryTest, MissingArrayRetrievalSize) {
@@ -122,7 +136,7 @@ TEST_P(QDMIQueryTest, MissingBoolRetrievalSize) {
     }
     return QDMI_SUCCESS;
   };
-  (void)Read_bool(query);
+  (void)Read<bool>(query);
 }
 
 TEST_P(QDMIQueryTest, MissingTerminator) {

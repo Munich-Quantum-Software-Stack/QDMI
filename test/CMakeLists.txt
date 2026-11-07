@@ -78,8 +78,6 @@ endif()
 
 # Fixed query defects and valid edge cases share a small offline provider.
 generate_prefixed_qdmi_headers(CONTROL)
-# The consumer fixture is also linted from the root compilation database.
-generate_prefixed_qdmi_headers(OFF)
 add_library(query-control-device STATIC query/negative_device.cpp)
 target_include_directories(query-control-device
                            PUBLIC "${CMAKE_CURRENT_BINARY_DIR}/include")

@@ -33,20 +33,47 @@ set(common
     "-DCMAKE_CXX_COMPILER=${CXX_COMPILER}" -DCMAKE_BUILD_TYPE=Release
     -DENABLE_CACHE=OFF)
 if(GTEST_SOURCE)
-  file(COPY "${GTEST_SOURCE}/" DESTINATION "${root}/googletest source")
-  set(dependencies "-DGOOGLETEST_SOURCE_DIR=${root}/googletest source")
+  set(dependencies "-DGOOGLETEST_SOURCE_DIR=${GTEST_SOURCE}")
   set(project_dependencies
-      "-DFETCHCONTENT_SOURCE_DIR_GOOGLETEST=${root}/googletest source")
+      "-DFETCHCONTENT_SOURCE_DIR_GOOGLETEST=${GTEST_SOURCE}")
 endif()
-run("${CMAKE_COMMAND}"
-    -S
-    "${SOURCE_DIR}/test/query/consumer"
-    -B
-    "${root}/source"
-    ${common}
-    ${dependencies}
-    "-DQDMI_SOURCE_DIR=${SOURCE_DIR}"
-    "-DDEVICE_SOURCE=${SOURCE_DIR}/examples/device/src/cxx_device.cpp")
+function(check_consumer name source)
+  set(build "${root}/${name}")
+  run("${CMAKE_COMMAND}"
+      -S
+      "${source}"
+      -B
+      "${build}"
+      ${common}
+      ${dependencies}
+      ${ARGN})
+  run("${CMAKE_COMMAND}"
+      --build
+      "${build}"
+      --config
+      Release
+      --parallel
+      2)
+  run("${CTEST_COMMAND}"
+      --test-dir
+      "${build}"
+      -C
+      Release
+      --output-on-failure
+      --no-tests=error)
+  run("${CMAKE_COMMAND}"
+      -S
+      "${source}"
+      -B
+      "${build} optout"
+      ${common}
+      ${ARGN}
+      -DQUERY_TESTS=OFF)
+endfunction()
+check_consumer(
+  source "${SOURCE_DIR}/test/query/consumer" "-DQDMI_SOURCE_DIR=${SOURCE_DIR}"
+  "-DDEVICE_SOURCE=${SOURCE_DIR}/examples/device/src/cxx_device.cpp"
+  "-DFIXTURE_SOURCE=${SOURCE_DIR}/test/query/example_fixture.hpp")
 # False-like unknown arguments are still errors; valid OFF identifiers work
 # above.
 execute_process(
@@ -55,6 +82,7 @@ execute_process(
     "${root}/invalid argument" ${common} ${dependencies}
     "-DQDMI_SOURCE_DIR=${SOURCE_DIR}"
     "-DDEVICE_SOURCE=${SOURCE_DIR}/examples/device/src/cxx_device.cpp"
+    "-DFIXTURE_SOURCE=${SOURCE_DIR}/test/query/example_fixture.hpp"
     -DQUERY_EXTRA_ARGUMENT=OFF
   RESULT_VARIABLE result
   OUTPUT_VARIABLE output
@@ -63,29 +91,6 @@ if(result EQUAL 0 OR NOT "${output}${error}" MATCHES "requires a name")
   message(
     FATAL_ERROR "Unknown OFF argument was not rejected: ${output}${error}")
 endif()
-run("${CMAKE_COMMAND}"
-    --build
-    "${root}/source"
-    --config
-    Release
-    --parallel
-    2)
-run("${CTEST_COMMAND}"
-    --test-dir
-    "${root}/source"
-    -C
-    Release
-    --output-on-failure
-    --no-tests=error)
-run("${CMAKE_COMMAND}"
-    -S
-    "${SOURCE_DIR}/test/query/consumer"
-    -B
-    "${root}/source optout"
-    ${common}
-    "-DQDMI_SOURCE_DIR=${SOURCE_DIR}"
-    -DQUERY_TESTS=OFF)
-
 # Install without test dependencies, then move the package and consumer inputs.
 run("${CMAKE_COMMAND}"
     -S
@@ -108,8 +113,18 @@ file(COPY "${root}/staged/" DESTINATION "${root}/relocated package")
 file(REMOVE_RECURSE "${root}/staged")
 file(COPY "${SOURCE_DIR}/test/query/consumer/" DESTINATION "${root}/consumer")
 file(COPY "${SOURCE_DIR}/examples/device/src/cxx_device.cpp"
+          "${SOURCE_DIR}/test/query/example_fixture.hpp"
      DESTINATION "${root}/consumer")
 set(package "${root}/relocated package")
+file(GLOB_RECURSE package_files "${package}/*.cmake" "${package}/*.in")
+foreach(path IN LISTS package_files)
+  file(READ "${path}" contents)
+  string(FIND "${contents}" "${SOURCE_DIR}" source_reference)
+  string(FIND "${contents}" "${root}/package" build_reference)
+  if(NOT source_reference EQUAL -1 OR NOT build_reference EQUAL -1)
+    message(FATAL_ERROR "Installed asset references the original tree: ${path}")
+  endif()
+endforeach()
 # Simulate a compatible installation made before the query helper existed.
 file(COPY "${package}/" DESTINATION "${root}/older package")
 set(older_config "${root}/older package/share/cmake/qdmi/qdmi-config.cmake")
@@ -129,82 +144,9 @@ run("${CMAKE_COMMAND}"
     ${project_dependencies}
     -DUSE_INSTALLED_QDMI=ON
     "-DCMAKE_PREFIX_PATH=${root}/older package")
-run("${CMAKE_COMMAND}"
-    --build
-    "${root}/older installed"
-    --config
-    Release
-    --target
-    cxx-device-query-test
-    --parallel
-    2)
-run("${CTEST_COMMAND}"
-    --test-dir
-    "${root}/older installed"
-    -C
-    Release
-    -R
-    "cxx-device-query-test.*DeviceLengthUnit"
-    --output-on-failure
-    --no-tests=error)
-file(GLOB_RECURSE package_files "${package}/*.cmake" "${package}/*.in")
-foreach(path IN LISTS package_files)
-  file(READ "${path}" contents)
-  string(FIND "${contents}" "${SOURCE_DIR}" source_reference)
-  string(FIND "${contents}" "${root}/package" build_reference)
-  if(NOT source_reference EQUAL -1 OR NOT build_reference EQUAL -1)
-    message(FATAL_ERROR "Installed asset references the original tree: ${path}")
-  endif()
-endforeach()
-# Missing-asset controls change generated installations, never tracked sources.
-foreach(asset IN ITEMS DeviceQueryTests.cmake device_query_tests.cpp.in)
-  set(path "${package}/share/cmake/qdmi/${asset}")
-  file(RENAME "${path}" "${path}.saved")
-  execute_process(
-    COMMAND
-      "${CMAKE_COMMAND}" -S "${root}/consumer" -B "${root}/missing-${asset}"
-      ${common} ${dependencies} "-DCMAKE_PREFIX_PATH=${package}"
-      "-DDEVICE_SOURCE=${root}/consumer/cxx_device.cpp"
-    RESULT_VARIABLE result
-    OUTPUT_VARIABLE output
-    ERROR_VARIABLE error)
-  file(RENAME "${path}.saved" "${path}")
-  if(result EQUAL 0 OR NOT "${output}${error}" MATCHES "${asset}")
-    message(FATAL_ERROR "Missing ${asset} was not diagnosed: ${output}${error}")
-  endif()
-endforeach()
-run("${CMAKE_COMMAND}"
-    -S
-    "${root}/consumer"
-    -B
-    "${root}/installed"
-    ${common}
-    ${dependencies}
-    "-DCMAKE_PREFIX_PATH=${package}"
-    "-DDEVICE_SOURCE=${root}/consumer/cxx_device.cpp")
-run("${CMAKE_COMMAND}"
-    --build
-    "${root}/installed"
-    --config
-    Release
-    --parallel
-    2)
-run("${CTEST_COMMAND}"
-    --test-dir
-    "${root}/installed"
-    -C
-    Release
-    --output-on-failure
-    --no-tests=error)
-run("${CMAKE_COMMAND}"
-    -S
-    "${root}/consumer"
-    -B
-    "${root}/installed optout"
-    ${common}
-    "-DCMAKE_PREFIX_PATH=${package}"
-    -DQUERY_TESTS=OFF)
+check_consumer(
+  installed "${root}/consumer" "-DCMAKE_PREFIX_PATH=${package}"
+  "-DDEVICE_SOURCE=${root}/consumer/cxx_device.cpp"
+  "-DFIXTURE_SOURCE=${root}/consumer/example_fixture.hpp")
 message(
-  STATUS
-    "Source and relocated installed consumers passed; opt-outs and missing assets checked"
-)
+  STATUS "Source and relocated installed consumers passed; opt-outs checked")
