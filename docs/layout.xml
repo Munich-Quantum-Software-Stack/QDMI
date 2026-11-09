@@ -38,6 +38,7 @@
       <tab type="user" title="Using QDMI with CMake" url="md_docs_2installation.html"/>
       <tab type="user" title="Examples" url="md_docs_2examples.html"/>
       <tab type="user" title="Template" url="md_docs_2templates.html"/>
+      <tab type="user" title="Device Testing" url="md_docs_2testing.html"/>
     </tab>
     <tab type="user" title="Changelog" url="md_CHANGELOG.html"/>
     <tab type="user" title="Upgrade Guide" url="md_UPGRADING.html"/>
