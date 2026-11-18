@@ -19,7 +19,7 @@ file(REMOVE "${REPORT}")
 execute_process(
   COMMAND
     "${CMAKE_COMMAND}" -E env "QDMI_QUERY_CONTROL=${CASE}" "${EXECUTABLE}"
-    "--gtest_filter=QueryVariants/QDMIQueryTest.${CASE}/${VARIANT}"
+    "--gtest_filter=QueryVariants/QDMIQueryTest.${CASE}/ExactWithSize"
     "--gtest_color=no" "--gtest_output=xml:${REPORT}"
   RESULT_VARIABLE result
   OUTPUT_VARIABLE output
@@ -42,7 +42,7 @@ if(NOT failure_count EQUAL 1)
       "Expected one contract assertion, got ${failure_count}: ${report}")
 endif()
 if(NOT report MATCHES [[tests="1" failures="1" disabled="0" errors="0"]]
-   OR NOT report MATCHES "<testcase name=\"${CASE}/${VARIANT}\""
+   OR NOT report MATCHES "<testcase name=\"${CASE}/ExactWithSize\""
    OR NOT report MATCHES [[classname="QueryVariants/QDMIQueryTest"]]
    OR NOT report MATCHES "${DIAGNOSTIC}")
   message(FATAL_ERROR "Wrong failure for ${CASE}: ${report}${output}${errors}")

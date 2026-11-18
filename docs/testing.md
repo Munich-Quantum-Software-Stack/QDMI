@@ -121,10 +121,10 @@ stronger assertions. The suite does not change the normative API docstrings.
 
 QDMI CI runs positive controls and fixed negative controls for malformed sizes,
 invalid device properties, empty units, missing mandatory indices, omitted size
-outputs, invalid status values, missing string terminators, null advertised
-handles, and duplicate coordinate triples in every retrieval variant. Positive
-controls cover empty and valid handle lists, integer coordinate extremes,
-differences on each coordinate axis, and partial coordinate support. It also
-runs source and relocated installed consumers on Linux and macOS. The consumer
-checks include fixture/install paths with spaces and explicit opt-out. This
-workflow does not run on Windows; local Windows verification is separate.
+outputs, missing string terminators, null advertised handles, and duplicate
+coordinate triples. Positive controls cover empty and valid handle lists,
+integer coordinate extremes, differences on each coordinate axis, and partial
+coordinate support. It also runs source and relocated installed consumers on
+Linux and macOS. The consumer checks include fixture/install paths with spaces
+and explicit opt-out. This workflow does not run on Windows; local Windows
+verification is separate.

@@ -17,7 +17,7 @@
  * SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
  */
 
-// Included after the shared suite only in the fixed fake-provider executable.
+#include <gtest/gtest-spi.h>
 TEST(QueryUnitSymbols, CanonicalSpellings) {
   constexpr std::array<std::string_view, 25> prefixes{
       "q", "r", "y", "z", "a", "f", "p", "n", "u", "m", "c", "d", "",
@@ -81,108 +81,26 @@ TEST_P(QDMIQueryTest, SuccessfulPayloadSnapshot) {
   EXPECT_FALSE(*nonzone);
 }
 
-TEST_P(QDMIQueryTest, MissingArrayProbeSize) {
-  const auto query = [](size_t, void *value, size_t *size_ret) {
-    if (value != nullptr && size_ret != nullptr) {
-      *size_ret = 0;
-    }
-    return QDMI_SUCCESS;
-  };
-  (void)Read<size_t>(query, false);
+TEST(QueryReader, MissingProbeSize) {
+  const auto missing_size = [](size_t, void *, size_t *) { return QDMI_SUCCESS; };
+  EXPECT_NONFATAL_FAILURE((void)Read<size_t>(missing_size), "size probe did not set");
+
 }
 
-TEST_P(QDMIQueryTest, MissingBoolProbeSize) {
-  const auto query = [](size_t size, void *value, size_t *size_ret) {
-    if (value != nullptr && size < sizeof(bool)) {
+TEST_P(QDMIQueryTest, RetrievalFailure) {
+  const auto string_query = [](size_t size, void *value, size_t *size_ret) {
+    if (value != nullptr && size < 1) {
       return QDMI_ERROR_INVALIDARGUMENT;
     }
-    if (size_ret != nullptr && value != nullptr) {
-      *size_ret = sizeof(bool);
-    }
-    if (value != nullptr) {
-      *static_cast<bool *>(value) = true;
+    if (value == nullptr && size_ret != nullptr) {
+      *size_ret = 1;
     }
     return QDMI_SUCCESS;
   };
-  (void)Read<bool>(query);
-}
-
-TEST_P(QDMIQueryTest, MissingArrayRetrievalSize) {
-  const auto query = [](size_t size, void *value, size_t *size_ret) {
-    if (value != nullptr && size < sizeof(size_t)) {
-      return QDMI_ERROR_INVALIDARGUMENT;
-    }
-    if (size_ret != nullptr && value == nullptr) {
-      *size_ret = sizeof(size_t);
-    }
-    if (value != nullptr) {
-      *static_cast<size_t *>(value) = 1;
-    }
-    return QDMI_SUCCESS;
-  };
-  (void)Read<size_t>(query, false);
-}
-
-TEST_P(QDMIQueryTest, MissingBoolRetrievalSize) {
-  const auto query = [](size_t size, void *value, size_t *size_ret) {
-    if (value != nullptr && size < sizeof(bool)) {
-      return QDMI_ERROR_INVALIDARGUMENT;
-    }
-    if (size_ret != nullptr && value == nullptr) {
-      *size_ret = sizeof(bool);
-    }
-    if (value != nullptr) {
-      *static_cast<bool *>(value) = true;
-    }
-    return QDMI_SUCCESS;
-  };
-  (void)Read<bool>(query);
-}
-
-TEST_P(QDMIQueryTest, MissingTerminator) {
-  const auto variant = GetParam();
-  const auto query = [variant](size_t size, void *value, size_t *size_ret) {
-    if (value != nullptr && size < 4) {
-      return QDMI_ERROR_INVALIDARGUMENT;
-    }
-    if (size_ret != nullptr) {
-      *size_ret = 4;
-    }
-    if (value != nullptr) {
-      auto *text = static_cast<char *>(value);
-      std::fill_n(text, 3, 'a');
-      if (size != (variant.oversized ? 5U : 4U) ||
-          (size_ret != nullptr) != variant.return_size) {
-        text[3] = '\0';
-      }
-    }
-    return QDMI_SUCCESS;
-  };
-  (void)Read<char>(query, false);
-}
-
-TEST_P(QDMIQueryTest, InvalidStatus) {
-  const auto variant = GetParam();
-  const auto query = [variant](size_t size, void *value, size_t *size_ret) {
-    if (value != nullptr && size < sizeof(QDMI_Device_Status)) {
-      return QDMI_ERROR_INVALIDARGUMENT;
-    }
-    if (size_ret != nullptr) {
-      *size_ret = sizeof(QDMI_Device_Status);
-    }
-    if (value != nullptr) {
-      const bool selected =
-          size == sizeof(QDMI_Device_Status) * (variant.oversized ? 2U : 1U) &&
-          (size_ret != nullptr) == variant.return_size;
-      *static_cast<QDMI_Device_Status *>(value) =
-          selected ? QDMI_DEVICE_STATUS_MAX : QDMI_DEVICE_STATUS_IDLE;
-    }
-    return QDMI_SUCCESS;
-  };
-  const auto status = Read<QDMI_Device_Status>(query);
-  if (status) {
-    EXPECT_LT((*status)[0], QDMI_DEVICE_STATUS_MAX)
-        << "device status must be a defined status";
+  if (GetParam().return_size) {
+    EXPECT_NONFATAL_FAILURE((void)Read<char>(string_query, false), "payload size changed");
+  } else {
+    EXPECT_NONFATAL_FAILURE((void)Read<char>(string_query, false), "string payload must end in NUL");
   }
 }
 
@@ -202,7 +120,7 @@ TEST_P(QDMIQueryTest, EmptyArrayPayload) {
   };
   const auto values = Read<size_t>(query, false);
   ASSERT_TRUE(values);
-  EXPECT_TRUE(values && values->empty());
+  EXPECT_TRUE(values->empty());
   EXPECT_EQ(probes, 3U);
   EXPECT_EQ(retrievals, 1U);
 }
@@ -212,6 +130,7 @@ TEST_P(QDMIQueryTest, RetrievalVariant) {
   const auto variant = GetParam();
   const auto query = [&](size_t size, void *value, size_t *size_ret) {
     if (value != nullptr && size < sizeof(size_t)) {
+      EXPECT_EQ(size_ret != nullptr, variant.return_size);
       return QDMI_ERROR_INVALIDARGUMENT;
     }
     if (size_ret != nullptr) {

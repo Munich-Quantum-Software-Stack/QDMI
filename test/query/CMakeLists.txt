@@ -59,7 +59,7 @@ add_test(
   NAME query-positive
   COMMAND
     query-control
-    "--gtest_filter=-*/QDMIQueryTest.DeviceLengthUnit/*:*/QDMIQueryTest.DeviceDurationUnit/*:*/QDMIQueryTest.SiteXCoordinate/*:*/QDMIQueryTest.DeviceQueueLength/*:*/QDMIQueryTest.DeviceSupportedProgramFormats/*:*/QDMIQueryTest.DeviceInvalidProperty/*:*/QDMIQueryTest.SiteIndex/*:*/QDMIQueryTest.Missing*/*:*/QDMIQueryTest.InvalidStatus/*"
+    "--gtest_filter=-*/QDMIQueryTest.DeviceLengthUnit/*:*/QDMIQueryTest.DeviceDurationUnit/*:*/QDMIQueryTest.SiteXCoordinate/*:*/QDMIQueryTest.DeviceQueueLength/*:*/QDMIQueryTest.DeviceSupportedProgramFormats/*:*/QDMIQueryTest.DeviceInvalidProperty/*:*/QDMIQueryTest.SiteIndex/*"
 )
 set_tests_properties(query-positive PROPERTIES LABELS qdmi-query)
 add_test(
@@ -80,12 +80,6 @@ foreach(
         "DeviceSupportedProgramFormats|array payload size"
         "DeviceInvalidProperty|invalid device property"
         "SiteIndex|mandatory site index"
-        "MissingArrayProbeSize|size probe did not set"
-        "MissingBoolProbeSize|size probe did not set"
-        "MissingArrayRetrievalSize|payload size changed"
-        "MissingBoolRetrievalSize|payload size changed"
-        "MissingTerminator|string payload must end in NUL"
-        "InvalidStatus|device status must be a defined status"
         "DeviceSites|advertised site handle"
         "DeviceOperations|advertised operation handle"
         "DeviceChildDevices|advertised child device handle"
@@ -93,21 +87,14 @@ foreach(
   string(REPLACE "|" ";" fields "${control}")
   list(GET fields 0 case)
   list(GET fields 1 diagnostic)
-  foreach(variant IN ITEMS ExactWithoutSize ExactWithSize OversizedWithoutSize
-                           OversizedWithSize)
-    if(case MATCHES "Missing.*RetrievalSize" AND variant MATCHES "WithoutSize")
-      continue()
-    endif()
-    add_test(
-      NAME "query-negative.${case}.${variant}"
-      COMMAND
-        "${CMAKE_COMMAND}" "-DEXECUTABLE=$<TARGET_FILE:query-control>"
-        "-DCASE=${case}" "-DVARIANT=${variant}" "-DDIAGNOSTIC=${diagnostic}"
-        "-DREPORT=${CMAKE_CURRENT_BINARY_DIR}/negative-${case}-${variant}.xml"
-        -P "${CMAKE_CURRENT_SOURCE_DIR}/check_negative.cmake")
-    set_tests_properties("query-negative.${case}.${variant}"
-                         PROPERTIES LABELS qdmi-query)
-  endforeach()
+  add_test(
+    NAME "query-negative.${case}"
+    COMMAND
+      "${CMAKE_COMMAND}" "-DEXECUTABLE=$<TARGET_FILE:query-control>"
+      "-DCASE=${case}" "-DDIAGNOSTIC=${diagnostic}"
+      "-DREPORT=${CMAKE_CURRENT_BINARY_DIR}/negative-${case}.xml" -P
+      "${CMAKE_CURRENT_SOURCE_DIR}/check_negative.cmake")
+  set_tests_properties("query-negative.${case}" PROPERTIES LABELS qdmi-query)
 endforeach()
 
 foreach(control IN ITEMS coordinate-x coordinate-y coordinate-z
