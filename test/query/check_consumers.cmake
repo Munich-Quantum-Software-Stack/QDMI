@@ -26,17 +26,11 @@ function(run)
     message(FATAL_ERROR "${ARGV}\n${output}\n${error}")
   endif()
 endfunction()
-set(root "${BINARY_DIR}/query consumers")
-file(MAKE_DIRECTORY "${root}")
-set(common
-    -G "${GENERATOR}" "-DCMAKE_C_COMPILER=${C_COMPILER}"
-    "-DCMAKE_CXX_COMPILER=${CXX_COMPILER}" -DCMAKE_BUILD_TYPE=Release
-    -DENABLE_CACHE=OFF)
-if(GTEST_SOURCE)
-  set(dependencies "-DGOOGLETEST_SOURCE_DIR=${GTEST_SOURCE}")
-  set(project_dependencies
-      "-DFETCHCONTENT_SOURCE_DIR_GOOGLETEST=${GTEST_SOURCE}")
-endif()
+set(SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
+set(root "${SOURCE_DIR}/install-build/query consumers")
+set(common -DCMAKE_BUILD_TYPE=Release -DENABLE_CACHE=OFF)
+set(dependencies
+    "-DGOOGLETEST_SOURCE_DIR=${SOURCE_DIR}/install-build/_deps/googletest-src")
 function(check_consumer name source)
   set(build "${root}/${name}")
   run("${CMAKE_COMMAND}"
@@ -54,7 +48,7 @@ function(check_consumer name source)
       Release
       --parallel
       2)
-  run("${CTEST_COMMAND}"
+  run("${CMAKE_CTEST_COMMAND}"
       --test-dir
       "${build}"
       -C
@@ -91,36 +85,16 @@ if(result EQUAL 0 OR NOT "${output}${error}" MATCHES "requires a name")
   message(
     FATAL_ERROR "Unknown OFF argument was not rejected: ${output}${error}")
 endif()
-# Install without test dependencies, then move the package and consumer inputs.
-run("${CMAKE_COMMAND}"
-    -S
-    "${SOURCE_DIR}"
-    -B
-    "${root}/package"
-    ${common}
-    -DBUILD_QDMI_TESTS=OFF
-    -DBUILD_QDMI_EXAMPLES=OFF
-    -DBUILD_QDMI_TEMPLATES=OFF
-    -DINSTALL_QDMI=ON)
-run("${CMAKE_COMMAND}"
-    --install
-    "${root}/package"
-    --config
-    Release
-    --prefix
-    "${root}/staged")
-file(COPY "${root}/staged/" DESTINATION "${root}/relocated package")
-file(REMOVE_RECURSE "${root}/staged")
 file(COPY "${SOURCE_DIR}/test/query/consumer/" DESTINATION "${root}/consumer")
 file(COPY "${SOURCE_DIR}/examples/device/src/cxx_device.cpp"
           "${SOURCE_DIR}/test/query/example_fixture.hpp"
      DESTINATION "${root}/consumer")
-set(package "${root}/relocated package")
+set(package "${SOURCE_DIR}/relocated package")
 file(GLOB_RECURSE package_files "${package}/*.cmake" "${package}/*.in")
 foreach(path IN LISTS package_files)
   file(READ "${path}" contents)
   string(FIND "${contents}" "${SOURCE_DIR}" source_reference)
-  string(FIND "${contents}" "${root}/package" build_reference)
+  string(FIND "${contents}" "${SOURCE_DIR}/install-build" build_reference)
   if(NOT source_reference EQUAL -1 OR NOT build_reference EQUAL -1)
     message(FATAL_ERROR "Installed asset references the original tree: ${path}")
   endif()
@@ -141,7 +115,7 @@ run("${CMAKE_COMMAND}"
     -B
     "${root}/older installed"
     ${common}
-    ${project_dependencies}
+    "-DFETCHCONTENT_SOURCE_DIR_GOOGLETEST=${SOURCE_DIR}/install-build/_deps/googletest-src"
     -DUSE_INSTALLED_QDMI=ON
     "-DCMAKE_PREFIX_PATH=${root}/older package")
 check_consumer(

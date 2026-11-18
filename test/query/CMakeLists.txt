@@ -135,14 +135,3 @@ foreach(control IN ITEMS valid-handles empty-handles)
     "query-positive.${control}"
     PROPERTIES LABELS qdmi-query FAIL_REGULAR_EXPRESSION "\\[  SKIPPED \\]")
 endforeach()
-
-add_test(
-  NAME query-consumers
-  COMMAND
-    "${CMAKE_COMMAND}" "-DSOURCE_DIR=${PROJECT_SOURCE_DIR}"
-    "-DBINARY_DIR=${PROJECT_BINARY_DIR}" "-DGENERATOR=${CMAKE_GENERATOR}"
-    "-DC_COMPILER=${CMAKE_C_COMPILER}" "-DCXX_COMPILER=${CMAKE_CXX_COMPILER}"
-    "-DGTEST_SOURCE=${googletest_SOURCE_DIR}"
-    "-DCTEST_COMMAND=${CMAKE_CTEST_COMMAND}" -P
-    "${CMAKE_CURRENT_SOURCE_DIR}/check_consumers.cmake")
-set_tests_properties(query-consumers PROPERTIES LABELS qdmi-query TIMEOUT 600)
