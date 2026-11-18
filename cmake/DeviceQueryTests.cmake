@@ -20,7 +20,8 @@
 # QDMIQueryFixture, initializes/finalizes the device once per suite, and owns an
 # initialized, protected session for each test.
 function(add_qdmi_device_query_tests name)
-  cmake_parse_arguments(PARSE_ARGV 1 ARG "" "PREFIX;TARGET;FIXTURE_HEADER" "")
+  cmake_parse_arguments(PARSE_ARGV 1 ARG "NO_ADD_TEST"
+                        "PREFIX;TARGET;FIXTURE_HEADER" "")
   if("${name}" STREQUAL ""
      OR NOT "${ARG_UNPARSED_ARGUMENTS}" STREQUAL ""
      OR NOT "${ARG_KEYWORDS_MISSING_VALUES}" STREQUAL "")
@@ -81,6 +82,8 @@ function(add_qdmi_device_query_tests name)
     endif()
   endif()
 
-  add_test(NAME ${name} COMMAND ${name})
-  set_tests_properties(${name} PROPERTIES LABELS qdmi-query)
+  if(NOT ARG_NO_ADD_TEST)
+    add_test(NAME ${name} COMMAND ${name})
+    set_tests_properties(${name} PROPERTIES LABELS qdmi-query)
+  endif()
 endfunction()

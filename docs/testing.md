@@ -43,6 +43,9 @@ responsibility. CTest runs each executable once under its target name and the
 label `qdmi-query`. Use GoogleTest filters on the executable to select
 individual cases.
 
+If a wrapper starts a local server for the suite, pass `NO_ADD_TEST` and
+register the wrapper with `add_test`.
+
 The header defines `QDMIQueryFixture`, derived from `::testing::Test`, with a
 protected initialized session named `session` of the prefixed session type.
 Initialize the device once in `SetUpTestSuite`, allocate and initialize a
