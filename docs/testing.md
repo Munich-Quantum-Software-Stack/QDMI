@@ -39,8 +39,9 @@ relative paths are resolved against the caller's source directory. Paths may
 contain spaces. Invoke the helper with distinct executable names to test several
 devices. On Windows, the helper copies a shared device target's DLL beside the
 test executable. Other runtime dependencies remain the consumer's
-responsibility. Tests have distinct executable-name prefixes and the CTest label
-`qdmi-query`.
+responsibility. CTest runs each executable once under its target name and the
+label `qdmi-query`. Use GoogleTest filters on the executable to select
+individual cases.
 
 The header defines `QDMIQueryFixture`, derived from `::testing::Test`, with a
 protected initialized session named `session` of the prefixed session type.

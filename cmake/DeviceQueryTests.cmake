@@ -81,11 +81,6 @@ function(add_qdmi_device_query_tests name)
     endif()
   endif()
 
-  include(GoogleTest)
-  gtest_discover_tests(
-    ${name}
-    TEST_PREFIX "${name}."
-    WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}" DISCOVERY_MODE PRE_TEST
-                                                    DISCOVERY_TIMEOUT 60
-    PROPERTIES LABELS qdmi-query)
+  add_test(NAME ${name} COMMAND ${name})
+  set_tests_properties(${name} PROPERTIES LABELS qdmi-query)
 endfunction()
