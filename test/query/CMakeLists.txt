@@ -38,8 +38,7 @@ target_compile_features(query-control-device PRIVATE cxx_std_20)
 target_link_libraries(query-control-device PRIVATE qdmi::qdmi_project_warnings)
 set(QDMI_QUERY_PREFIX CONTROL)
 set(QDMI_QUERY_prefix control)
-set(QDMI_QUERY_FIXTURE_HEADER
-    "${CMAKE_CURRENT_SOURCE_DIR}/negative_fixture.hpp")
+set(QDMI_QUERY_FIXTURE_HEADER "${CMAKE_CURRENT_SOURCE_DIR}/control_fixture.hpp")
 set_property(
   DIRECTORY
   APPEND
