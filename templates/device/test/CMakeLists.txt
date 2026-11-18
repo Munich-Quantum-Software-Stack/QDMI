@@ -44,6 +44,17 @@ target_compile_definitions(
     ${QDMI_PREFIX}_QDMI_DEVICE_ID="$<TARGET_PROPERTY:${QDMI_TARGET_NAME},QDMI_DEVICE_ID>"
 )
 
+if(COMMAND add_qdmi_device_query_tests)
+  add_qdmi_device_query_tests(
+    ${QDMI_TARGET_NAME}-query-test
+    PREFIX
+    ${QDMI_PREFIX}
+    TARGET
+    ${QDMI_TARGET_NAME}
+    FIXTURE_HEADER
+    query_fixture.hpp)
+endif()
+
 add_dependencies(${QDMI_TEST_TARGET_NAME} qdmi_test_my_device_defs)
 
 if(WIN32)
