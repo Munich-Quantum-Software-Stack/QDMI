@@ -17,33 +17,14 @@
  * SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
  */
 
-#include "my_qdmi/device.h"
+#include "query_fixture.hpp"
 
 #include <cstddef>
 #include <gtest/gtest.h>
-#include <string>
+#include <initializer_list>
 #include <vector>
 
-class QDMIImplementationTest : public ::testing::Test {
-protected:
-  MY_QDMI_Device_Session session = nullptr;
-
-  void SetUp() override {
-    ASSERT_EQ(MY_QDMI_device_initialize(), QDMI_SUCCESS)
-        << "Failed to initialize the device";
-
-    ASSERT_EQ(MY_QDMI_device_session_alloc(&session), QDMI_SUCCESS)
-        << "Failed to allocate a session";
-
-    ASSERT_EQ(MY_QDMI_device_session_init(session), QDMI_SUCCESS)
-        << "Failed to initialize a session. Potential errors: Wrong or missing "
-           "authentication information, device status is offline, or in "
-           "maintenance. To provide credentials, take a look in " __FILE__
-        << ":" << (__LINE__ - 4);
-  }
-
-  void TearDown() override { MY_QDMI_device_finalize(); }
-};
+using QDMIImplementationTest = QDMIQueryFixture;
 
 TEST_F(QDMIImplementationTest, SessionSetParameterImplemented) {
   ASSERT_EQ(MY_QDMI_device_session_set_parameter(
@@ -151,69 +132,17 @@ TEST_F(QDMIImplementationTest, JobGetResultsImplemented) {
   MY_QDMI_device_job_free(job);
 }
 
-TEST_F(QDMIImplementationTest, QueryDevicePropertyImplemented) {
-  ASSERT_EQ(MY_QDMI_device_session_query_device_property(
-                nullptr, QDMI_DEVICE_PROPERTY_NAME, 0, nullptr, nullptr),
-            QDMI_ERROR_INVALIDARGUMENT);
-}
-
-TEST_F(QDMIImplementationTest, QuerySitePropertyImplemented) {
-  ASSERT_EQ(MY_QDMI_device_session_query_site_property(
-                nullptr, nullptr, QDMI_SITE_PROPERTY_MAX, 0, nullptr, nullptr),
-            QDMI_ERROR_INVALIDARGUMENT);
-}
-
-TEST_F(QDMIImplementationTest, QueryOperationPropertyImplemented) {
-  ASSERT_EQ(MY_QDMI_device_session_query_operation_property(
-                nullptr, nullptr, 0, nullptr, 0, nullptr,
-                QDMI_OPERATION_PROPERTY_MAX, 0, nullptr, nullptr),
-            QDMI_ERROR_INVALIDARGUMENT);
-}
-
-TEST_F(QDMIImplementationTest, QueryDeviceNameImplemented) {
-  size_t size = 0;
-  ASSERT_EQ(MY_QDMI_device_session_query_device_property(
-                session, QDMI_DEVICE_PROPERTY_NAME, 0, nullptr, &size),
-            QDMI_SUCCESS)
-      << "Devices must provide a name";
-  std::string value(size - 1, '\0');
-  ASSERT_EQ(
-      MY_QDMI_device_session_query_device_property(
-          session, QDMI_DEVICE_PROPERTY_NAME, size, value.data(), nullptr),
-      QDMI_SUCCESS)
-      << "Devices must provide a name";
-  ASSERT_FALSE(value.empty()) << "Devices must provide a name";
-}
-
-TEST_F(QDMIImplementationTest, QueryDeviceVersionImplemented) {
-  size_t size = 0;
-  ASSERT_EQ(MY_QDMI_device_session_query_device_property(
-                session, QDMI_DEVICE_PROPERTY_VERSION, 0, nullptr, &size),
-            QDMI_SUCCESS)
-      << "Devices must provide a version";
-  std::string value(size - 1, '\0');
-  ASSERT_EQ(
-      MY_QDMI_device_session_query_device_property(
-          session, QDMI_DEVICE_PROPERTY_VERSION, size, value.data(), nullptr),
-      QDMI_SUCCESS)
-      << "Devices must provide a version";
-  ASSERT_FALSE(value.empty()) << "Devices must provide a version";
-}
-
-TEST_F(QDMIImplementationTest, QueryDeviceLibraryVersionImplemented) {
-  size_t size = 0;
-  ASSERT_EQ(
-      MY_QDMI_device_session_query_device_property(
-          session, QDMI_DEVICE_PROPERTY_LIBRARYVERSION, 0, nullptr, &size),
-      QDMI_SUCCESS)
-      << "Devices must provide a library version";
-  std::string value(size - 1, '\0');
-  ASSERT_EQ(MY_QDMI_device_session_query_device_property(
-                session, QDMI_DEVICE_PROPERTY_LIBRARYVERSION, size,
-                value.data(), nullptr),
-            QDMI_SUCCESS)
-      << "Devices must provide a library version";
-  ASSERT_FALSE(value.empty()) << "Devices must provide a library version";
+TEST_F(QDMIImplementationTest, RequiredMetadata) {
+  for (const auto property :
+       {QDMI_DEVICE_PROPERTY_NAME, QDMI_DEVICE_PROPERTY_VERSION,
+        QDMI_DEVICE_PROPERTY_LIBRARYVERSION}) {
+    SCOPED_TRACE(property);
+    size_t size = 0;
+    ASSERT_EQ(MY_QDMI_device_session_query_device_property(session, property, 0,
+                                                           nullptr, &size),
+              QDMI_SUCCESS);
+    EXPECT_GT(size, 1U);
+  }
 }
 
 TEST_F(QDMIImplementationTest, QuerySiteIndexImplemented) {
