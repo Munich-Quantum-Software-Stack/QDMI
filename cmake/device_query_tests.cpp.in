@@ -120,13 +120,15 @@ auto Read(Query query, bool scalar = true, bool mandatory = false)
   if constexpr (!std::is_same_v<T, bool>) {
     values.resize((bytes / sizeof(T)) + 1);
   }
+  const auto variant = QDMIQueryTest::GetParam();
   // Retrieve after error probes; errors need not preserve the buffer.
   if (bytes != 0) {
-    EXPECT_EQ(query(bytes - 1, static_cast<void *>(values.data()), nullptr),
+    size_t ignored = 0;
+    EXPECT_EQ(query(bytes - 1, static_cast<void *>(values.data()),
+                    variant.return_size ? &ignored : nullptr),
               QDMI_ERROR_INVALIDARGUMENT)
         << "one-byte-small buffer";
   }
-  const auto variant = QDMIQueryTest::GetParam();
   const auto capacity = bytes + (variant.oversized ? sizeof(T) : 0);
   const bool return_size = variant.return_size;
   if constexpr (std::is_same_v<T, char>) {
