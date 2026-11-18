@@ -170,6 +170,7 @@ TEST_F(QDMIImplementationTest, QuerySiteIndexImplemented) {
                 session, QDMI_DEVICE_PROPERTY_SITES, 0, nullptr, &size),
             QDMI_SUCCESS)
       << "Devices must provide a list of sites";
+  ASSERT_EQ(size % sizeof(MY_QDMI_Site), 0U);
   std::vector<MY_QDMI_Site> sites(size / sizeof(MY_QDMI_Site));
   ASSERT_EQ(MY_QDMI_device_session_query_device_property(
                 session, QDMI_DEVICE_PROPERTY_SITES, size,
