@@ -47,7 +47,7 @@ set_property(
 file(READ "${PROJECT_SOURCE_DIR}/cmake/device_query_tests.cpp.in"
      query_template)
 string(APPEND query_template
-       "\n#include \"${CMAKE_CURRENT_SOURCE_DIR}/positive_controls.inc\"\n")
+       "\n#include \"${CMAKE_CURRENT_SOURCE_DIR}/control_tests.inc\"\n")
 file(CONFIGURE OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/query_control_tests.cpp"
      CONTENT "${query_template}" @ONLY)
 add_executable(query-control
