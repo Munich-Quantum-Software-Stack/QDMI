@@ -17,6 +17,7 @@
  * SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
  */
 
+#include "my_qdmi/device.h"
 #include "query_fixture.hpp"
 
 #include <cstddef>
@@ -132,6 +133,19 @@ TEST_F(QDMIImplementationTest, JobGetResultsImplemented) {
   MY_QDMI_device_job_free(job);
 }
 
+TEST_F(QDMIImplementationTest, NullQueryHandles) {
+  EXPECT_EQ(MY_QDMI_device_session_query_device_property(
+                nullptr, QDMI_DEVICE_PROPERTY_NAME, 0, nullptr, nullptr),
+            QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_EQ(MY_QDMI_device_session_query_site_property(
+                nullptr, nullptr, QDMI_SITE_PROPERTY_MAX, 0, nullptr, nullptr),
+            QDMI_ERROR_INVALIDARGUMENT);
+  EXPECT_EQ(MY_QDMI_device_session_query_operation_property(
+                nullptr, nullptr, 0, nullptr, 0, nullptr,
+                QDMI_OPERATION_PROPERTY_MAX, 0, nullptr, nullptr),
+            QDMI_ERROR_INVALIDARGUMENT);
+}
+
 TEST_F(QDMIImplementationTest, RequiredMetadata) {
   for (const auto property :
        {QDMI_DEVICE_PROPERTY_NAME, QDMI_DEVICE_PROPERTY_VERSION,
@@ -141,7 +155,12 @@ TEST_F(QDMIImplementationTest, RequiredMetadata) {
     ASSERT_EQ(MY_QDMI_device_session_query_device_property(session, property, 0,
                                                            nullptr, &size),
               QDMI_SUCCESS);
-    EXPECT_GT(size, 1U);
+    ASSERT_GT(size, 1U);
+    std::vector<char> value(size);
+    ASSERT_EQ(MY_QDMI_device_session_query_device_property(
+                  session, property, size, value.data(), nullptr),
+              QDMI_SUCCESS);
+    EXPECT_NE(value.front(), '\0');
   }
 }
 
