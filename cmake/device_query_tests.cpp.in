@@ -579,10 +579,12 @@ TEST_P(QDMIQueryTest, RemovedDeviceProperties) {
 }
 
 TEST_P(QDMIQueryTest, DeviceNullSession) {
+  bool checked = false;
   for (int i = 0; i < QDMI_DEVICE_PROPERTY_MAX; ++i) {
     if (i == 8 || i == 9) {
       continue;
     }
+    SCOPED_TRACE(i);
     const auto property = static_cast<QDMI_Device_Property>(i);
     const auto status = Device_query(session, property)(0, nullptr, nullptr);
     if (status == QDMI_ERROR_NOTSUPPORTED) {
@@ -591,10 +593,11 @@ TEST_P(QDMIQueryTest, DeviceNullSession) {
     ASSERT_EQ(status, QDMI_SUCCESS);
     EXPECT_EQ(Device_query(nullptr, property)(0, nullptr, nullptr),
               QDMI_ERROR_INVALIDARGUMENT);
-    return;
+    checked = true;
   }
-  GTEST_SKIP()
-      << "No supported device property for a single-error null-session query";
+  if (!checked) {
+    GTEST_SKIP() << "No supported device property";
+  }
 }
 
 TEST_P(QDMIQueryTest, SiteInvalidProperty) {
@@ -643,11 +646,14 @@ TEST_P(QDMIQueryTest, SiteNullArguments) {
     }
     return;
   }
+  bool checked = false;
   for (auto *const object : *objects) {
     if (object == nullptr) {
       continue;
     }
     for (int i = 0; i < QDMI_SITE_PROPERTY_MAX; ++i) {
+      SCOPED_TRACE(object);
+      SCOPED_TRACE(i);
       const auto property = static_cast<QDMI_Site_Property>(i);
       const auto status =
           Site_query(session, object, property)(0, nullptr, nullptr);
@@ -659,10 +665,10 @@ TEST_P(QDMIQueryTest, SiteNullArguments) {
                 QDMI_ERROR_INVALIDARGUMENT);
       EXPECT_EQ(Site_query(session, nullptr, property)(0, nullptr, nullptr),
                 QDMI_ERROR_INVALIDARGUMENT);
-      return;
+      checked = true;
     }
   }
-  if (!HasFailure()) {
+  if (!checked && !HasFailure()) {
     GTEST_SKIP() << "No supported property on a valid advertised object";
   }
 }
@@ -675,11 +681,14 @@ TEST_P(QDMIQueryTest, OperationNullArguments) {
     }
     return;
   }
+  bool checked = false;
   for (auto *const object : *objects) {
     if (object == nullptr) {
       continue;
     }
     for (int i = 0; i < QDMI_OPERATION_PROPERTY_MAX; ++i) {
+      SCOPED_TRACE(object);
+      SCOPED_TRACE(i);
       const auto property = static_cast<QDMI_Operation_Property>(i);
       const auto status =
           Operation_query(session, object, property)(0, nullptr, nullptr);
@@ -691,10 +700,10 @@ TEST_P(QDMIQueryTest, OperationNullArguments) {
                 QDMI_ERROR_INVALIDARGUMENT);
       EXPECT_EQ(Operation_query(session, nullptr, property)(0, nullptr, nullptr),
                 QDMI_ERROR_INVALIDARGUMENT);
-      return;
+      checked = true;
     }
   }
-  if (!HasFailure()) {
+  if (!checked && !HasFailure()) {
     GTEST_SKIP() << "No supported property on a valid advertised object";
   }
 }
