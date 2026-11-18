@@ -111,6 +111,7 @@ repos:
     rev: v0.6.13
     hooks:
       - id: cmake-format
+        language_version: python3.13
         additional_dependencies: [pyyaml]
         types: [file]
         files: (\.cmake|CMakeLists.txt)(.in)?$
