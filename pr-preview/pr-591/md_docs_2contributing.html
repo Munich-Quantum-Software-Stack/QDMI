@@ -323,7 +323,6 @@ Running the C++ Tests and Code Coverage</h3>
 <p>Most IDEs like <a href="https://www.jetbrains.com/clion/">CLion</a> or <a href="https://code.visualstudio.com/">Visual Studio Code</a> provide a convenient way to run the tests directly from the IDE. If you prefer to run the tests from the command line, you can use CMake's test runner <a href="https://cmake.org/cmake/help/latest/manual/ctest.1.html">CTest</a>. To run the tests, run the following command from the main project directory after building the project as described above:</p>
 <div class="fragment"><div class="line">ctest -C Release --test-dir build</div>
 </div><!-- fragment --><dl class="section note"><dt>Note</dt><dd>If you want to disable configuring and building the C++ tests, you can pass <span class="tt">-DBUILD_QDMI_TESTS=OFF</span> to the CMake configure step.</dd></dl>
-<p>For reusable device property checks, see <a class="el" href="md_docs_2testing.html" title="Device Query Conformance Tests">Device Query Conformance Tests</a>.</p>
 <h3 class="doxsection"><a class="anchor" id="code-formatting-and-linting"></a>
 Code Formatting and Linting</h3>
 <p>This project mostly follows the <a href="https://llvm.org/docs/CodingStandards.html">LLVM Coding Standard</a>, a set of guidelines for writing C/C++ code. To ensure the quality of the code and that it conforms to these guidelines, we use</p>
