@@ -29,7 +29,7 @@ add_qdmi_device_query_tests(
 
 # Fixed query defects and valid edge cases share a small offline provider.
 generate_prefixed_qdmi_headers(CONTROL)
-add_library(query-control-device STATIC negative_device.cpp)
+add_library(query-control-device STATIC control_device.cpp)
 target_include_directories(query-control-device
                            PUBLIC "${CMAKE_CURRENT_BINARY_DIR}/include")
 target_compile_definitions(query-control-device
