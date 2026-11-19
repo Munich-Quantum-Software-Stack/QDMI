@@ -241,6 +241,7 @@ describes QDMI 1.2; its API examples differ from the current interface.
    Interface: Hardware-Software Interface for the Munich Quantum Software
    Stack.* IEEE International Conference on Quantum Computing and Engineering
    (QCE), 2024. [DOI: 10.1109/QCE60285.2024.10411][qdmi-paper].
+
 2. **System architecture and deployment.** This paper places QDMI within MQSS
    and describes integration with compilation, resource management, and quantum
    systems at LRZ.
@@ -249,6 +250,7 @@ describes QDMI 1.2; its API examples differ from the current interface.
    Users, Integrating Diverse Quantum Technologies, Accelerating HPC.*
    SCA/HPCAsia, 2026. [DOI: 10.1145/3773656.3773669][mqss-paper];
    [arXiv:2509.02674](https://arxiv.org/abs/2509.02674).
+
 3. **Real-hardware integration.** This paper demonstrates architecture and
    calibration queries, execution on IQM hardware, and integration with
    application SDKs and HPC workflows.
@@ -256,12 +258,14 @@ describes QDMI 1.2; its API examples differ from the current interface.
    Lukas Burgholzer et al. *Practical HPCQC Integration with QDMI: A
    Real-Hardware Case Study with IQM Systems.* 2026.
    [arXiv:2604.19869][iqm-paper].
+
 4. **Cloud integration.** This paper uses Amazon Braket to examine the mapping
    of a cloud service onto QDMI's sessions, queries, jobs, and results.
 
    Patrick Hopf, Sebastian Stern, Robert Wille, and Lukas Burgholzer.
    *Standardizing Access to Heterogeneous Quantum Backends: A Case Study on
    Cloud Service Integration with QDMI.* 2026. [arXiv:2603.05138][braket-paper].
+
 5. **International architectural context.** This paper surveys quantum–HPC
    stacks, discusses QDMI, and develops a reference architecture for an
    interoperable ecosystem.
