@@ -232,7 +232,9 @@ Embed the Source with FetchContent</h1>
 <div class="line"> </div>
 <div class="line">target_link_libraries(my_target PRIVATE qdmi::qdmi)</div>
 </div><!-- fragment --><p>QDMI defaults to disabling installation, tests, examples, and templates when included as a subproject. Documentation is also disabled by default. This path needs network access for the initial checkout, unless you supply a local source directory with <span class="tt">FETCHCONTENT_SOURCE_DIR_QDMI</span>.</p>
-<h1 class="doxsection"><a class="anchor" id="installation-exports"></a>
+<p>The <span class="tt">qdmi::qdmi</span> target exposes the QDMI package version through its <span class="tt">VERSION</span> property in both source and installed builds.</p>
+<div class="fragment"><div class="line">get_target_property(qdmi_version qdmi::qdmi VERSION)</div>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="installation-exports"></a>
 Control Shared-Library Exports</h1>
 <p>Use <span class="tt">configure_qdmi_exports</span> to restrict a shared or module library to its QDMI interface and explicitly listed additional C symbols:</p>
 <div class="fragment"><div class="line">configure_qdmi_exports(TARGET my_device INTERFACE device PREFIX MY)</div>
