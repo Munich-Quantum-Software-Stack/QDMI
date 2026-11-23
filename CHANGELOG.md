@@ -17,6 +17,10 @@ clients compiled against a different minor or major version.
 - 📝 Define canonical ASCII symbols for length and duration units, and clarify
   how their prefixes combine with scale factors ([#593]) ([\@marcelwa]).
 
+### Fixed
+
+- 🐛 Export the `VERSION` property of the installed `qdmi::qdmi` CMake target.
+
 ## [1.4.0] - 2026-10-11
 
 _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md#140)._

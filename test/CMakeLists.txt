@@ -19,6 +19,19 @@ if(TARGET qdmi_test)
   return()
 endif()
 
+get_target_property(qdmi_target_version qdmi::qdmi VERSION)
+if(USE_INSTALLED_QDMI)
+  set(qdmi_expected_version "${QDMI_VERSION}")
+else()
+  set(qdmi_expected_version "${PROJECT_VERSION}")
+endif()
+if(NOT qdmi_target_version STREQUAL qdmi_expected_version)
+  message(
+    FATAL_ERROR
+      "Expected qdmi::qdmi VERSION ${qdmi_expected_version}, got ${qdmi_target_version}"
+  )
+endif()
+
 # add CXX language support
 enable_language(CXX)
 
