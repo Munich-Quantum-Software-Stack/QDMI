@@ -94,6 +94,13 @@ included as a subproject. Documentation is also disabled by default. This path
 needs network access for the initial checkout, unless you supply a local source
 directory with `FETCHCONTENT_SOURCE_DIR_QDMI`.
 
+The `qdmi::qdmi` target exposes the QDMI package version through its `VERSION`
+property in both source and installed builds.
+
+```cmake
+get_target_property(qdmi_version qdmi::qdmi VERSION)
+```
+
 ## Control Shared-Library Exports {#installation-exports}
 
 Use `configure_qdmi_exports` to restrict a shared or module library to its QDMI

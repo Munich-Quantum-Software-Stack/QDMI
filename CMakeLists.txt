@@ -138,7 +138,8 @@ if(NOT USE_INSTALLED_QDMI)
     set_target_properties(
       qdmi
       PROPERTIES VERSION ${PROJECT_VERSION}
-                 SOVERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR})
+                 SOVERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
+                 EXPORT_PROPERTIES VERSION)
 
     # add alias
     add_library(qdmi::qdmi ALIAS qdmi)
