@@ -19,7 +19,8 @@ clients compiled against a different minor or major version.
 
 ### Fixed
 
-- 🐛 Export the `VERSION` property of the installed `qdmi::qdmi` CMake target.
+- 🐛 Export the `VERSION` property of the installed `qdmi::qdmi` CMake target
+  ([#616]) ([\@burgholzer]).
 
 ## [1.4.0] - 2026-10-11
 
@@ -307,6 +308,7 @@ for previous changelogs._
 
 <!-- PR links -->
 
+[#616]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/616
 [#593]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/593
 [#576]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/576
 [#575]: https://github.com/Munich-Quantum-Software-Stack/QDMI/pull/575
