@@ -92,6 +92,7 @@ if(NOT USE_INSTALLED_QDMI)
   include(cmake/Cache.cmake)
 
   include(cmake/PrefixHandling.cmake)
+  include(cmake/DeviceQueryTests.cmake)
   include(GNUInstallDirs)
 
   # add warnings target
@@ -229,6 +230,8 @@ if(INSTALL_QDMI)
           ${PROJECT_SOURCE_DIR}/cmake/PrefixHandling.cmake
           ${PROJECT_SOURCE_DIR}/cmake/ExportHandling.cmake
           ${PROJECT_SOURCE_DIR}/cmake/test_defs.cpp.in
+          ${PROJECT_SOURCE_DIR}/cmake/DeviceQueryTests.cmake
+          ${PROJECT_SOURCE_DIR}/cmake/device_query_tests.cpp.in
     DESTINATION ${QDMI_CONFIG_INSTALL_DIR}
     COMPONENT ${PROJECT_NAME}_Development)
 endif()
